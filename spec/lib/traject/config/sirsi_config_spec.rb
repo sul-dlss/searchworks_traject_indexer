@@ -130,4 +130,64 @@ RSpec.describe 'Sirsi config' do
       expect(results).not_to include hash_including(field => ['nope'])
     end
   end
+  describe 'vern_title_variant_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_title_variant_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      expect(select_by_id('2xxVernSearch')[field][0]).to eq 'vern210a vern210b'
+      expect(select_by_id('2xxVernSearch')[field][1]).to eq 'vern222a vern222b'
+      expect(select_by_id('2xxVernSearch')[field][2]).to eq 'vern242a vern242b'\
+        ' vern242n vern242p'
+      expect(select_by_id('2xxVernSearch')[field][3]).to eq 'vern243a vern243d'\
+        ' vern243f vern243g vern243k vern243l vern243m vern243n vern243o'\
+        ' vern243p vern243r vern243s'
+      expect(select_by_id('2xxVernSearch')[field][4]).to eq 'vern246a vern246b'\
+        ' vern246f vern246g vern246n vern246p'
+      expect(select_by_id('2xxVernSearch')[field][5]).to eq 'vern247a vern247b'\
+        ' vern247f vern247g vern247n vern247p'
+
+      expect(results).not_to include hash_including(field => ['nope'])
+      expect(results).not_to include hash_including(field => ['vern243'])
+    end
+  end
+  describe 'title_related_search' do
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_related_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      expect(select_by_id('505')[field]).to eq ['505t']
+      expect(results).not_to include hash_including(field => ['nope'])
+
+      expect(select_by_id('700')[field][0]).to eq '700f 700g 700k 700l 700m 70'\
+        '0n 700o 700p 700r 700s 700t'
+
+      expect(select_by_id('710')[field][0]).to eq '710d 710f 710g 710k 710l 71'\
+        '0m 710n 710o 710p 710r 710s 710t'
+
+      expect(select_by_id('711')[field][0]).to eq '711f 711g 711k 711l 711n 71'\
+        '1p 711s 711t'
+
+      expect(select_by_id('730')[field][0]).to eq '730a 730d 730f 730g 730k 73'\
+        '0l 730m 730n 730o 730p 730r 730s 730t'
+
+      expect(select_by_id('740')[field][0]).to eq '740a 740n 740p'
+
+      expect(select_by_id('246aAnd740')[field][0]).to eq '740 subfield a'
+
+      expect(select_by_id('76x')[field]).to eq [
+        '760s 760t', '762s 762t', '765s 765t', '767s 767t'
+      ]
+
+      expect(select_by_id('77x')[field]).to eq [
+        '770s 770t', '772s 772t', '773s 773t', '774s 774t', '775s 775t',
+        '776s 776t', '777s 777t'
+      ]
+
+      expect(select_by_id('78x')[field]).to eq [
+        '780s 780t', '785s 785t', '786s 786t', '787s 787t'
+      ]
+      # TODO: 780tNota etc, 796, 797, 798, 799
+    end
+  end
 end
