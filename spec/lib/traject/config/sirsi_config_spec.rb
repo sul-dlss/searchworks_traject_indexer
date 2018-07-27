@@ -45,4 +45,14 @@ RSpec.describe 'Sirsi config' do
       assert_single_result('2xx', field, '2xx')
     end
   end
+  describe 'vern_title_245a_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_title_245a_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      assert_single_result('2xxVernSearch', field, 'vern245a')
+      assert_zero_result(field, 'vern245b')
+      assert_zero_result(field, 'vern245b')
+    end
+  end
 end

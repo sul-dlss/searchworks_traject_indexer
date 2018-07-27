@@ -25,6 +25,7 @@ to_field 'marcxml', serialized_marc(
 # 
 # # Title Search Fields
 to_field 'title_245a_search', extract_marc('245a')
+to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
 # vern_title_245a_search = custom, getLinkedField(245a)
 # to_field 'title_245_search', extract_marc('245abfgknps')
 # vern_title_245_search = custom, getLinkedField(245abfgknps)
