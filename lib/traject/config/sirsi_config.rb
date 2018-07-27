@@ -12,7 +12,12 @@ to_field 'id', extract_marc('001') do |_record, accumulator|
   end
 end
 
-# to_field 'marcxml', serialized_marc(format: 'xml', binary_escape: false, allow_oversized: true)
+to_field 'marcxml', serialized_marc(
+  format: 'xml',
+  binary_escape: false,
+  allow_oversized: true
+)
+
 # to_field 'marcbib_xml' #TODO
 
 #all_search = custom, getAllFields

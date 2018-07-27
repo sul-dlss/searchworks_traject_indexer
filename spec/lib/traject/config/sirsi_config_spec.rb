@@ -13,14 +13,22 @@ RSpec.describe 'Sirsi config' do
   describe 'id' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     it do
-      expect(results).to a_hash_including('id' => ['001suba'])
-      expect(results).to a_hash_including('id' => ['001subaAnd004nosub'])
-      expect(results).to a_hash_including('id' => ['001subaAnd004suba'])
+      expect(results).to include hash_including('id' => ['001suba'])
+      expect(results).to include hash_including('id' => ['001subaAnd004nosub'])
+      expect(results).to include hash_including('id' => ['001subaAnd004suba'])
       # TODO: Fix these
       # expect(results).not_to a_hash_including('id' => ['001noSubNo004'])
       # expect(results).not_to a_hash_including('id' => ['001and004nosub'])
-      expect(results).not_to a_hash_including('id' => ['004noSuba'])
-      expect(results).not_to a_hash_including('id' => ['004suba'])
+      expect(results).not_to include hash_including('id' => ['004noSuba'])
+      expect(results).not_to include hash_including('id' => ['004suba'])
+    end
+  end
+  describe 'marcxml' do
+    let(:fixture_name) { 'fieldOrdering.mrc' }
+    it do
+      ix650 = result['marcxml'].first.index '650first'
+      ix600 = result['marcxml'].first.index '600second'
+      expect(ix650 < ix600).to be true
     end
   end
 end
