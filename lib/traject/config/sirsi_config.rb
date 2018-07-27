@@ -24,7 +24,7 @@ to_field 'marcxml', serialized_marc(
 # vern_all_search = custom, getAllLinkedSearchableFields
 # 
 # # Title Search Fields
-# to_field 'title_245a_search', extract_marc('245a')
+to_field 'title_245a_search', extract_marc('245a')
 # vern_title_245a_search = custom, getLinkedField(245a)
 # to_field 'title_245_search', extract_marc('245abfgknps')
 # vern_title_245_search = custom, getLinkedField(245abfgknps)
