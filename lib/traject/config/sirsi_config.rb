@@ -29,7 +29,8 @@ to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
 to_field 'title_245_search', extract_marc('245abfgknps')
 to_field 'vern_title_245_search', extract_marc('245abfgknps', alternate_script: :only)
 to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true)
-# vern_title_uniform_search = custom, getVernacular(130adfgklmnoprst:240adfgklmnoprs, first)
+to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: :only)
+to_field 'title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: false)
 # title_variant_search = 210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp
 # vern_title_variant_search = custom, getLinkedField(210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp)
 # title_related_search = 505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst

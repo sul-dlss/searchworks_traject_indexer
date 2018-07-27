@@ -100,4 +100,34 @@ RSpec.describe 'Sirsi config' do
       expect(results).not_to include hash_including(field => ['130'])
     end
   end
+  describe 'vern_title_uniform_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_title_uniform_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      expect(select_by_id('2xxVernSearch')[field].first)
+        .to eq 'vern130a vern130d vern130f vern130g vern130k vern130l vern130m'\
+          ' vern130n vern130o vern130p vern130r vern130s vern130t'
+      expect(select_by_id('240VernSearch')[field].first)
+        .to eq 'vern240a vern240d vern240f vern240g vern240k vern240l vern240m'\
+          ' vern240n vern240o vern240p vern240r vern240s'
+      expect(results).not_to include hash_including(field => ['nope'])
+    end
+  end
+  describe 'title_variant_search' do
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_variant_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      expect(select_by_id('2xx')[field][0]).to eq '210a 210b'
+      expect(select_by_id('2xx')[field][1]).to eq '222a 222b'
+      expect(select_by_id('2xx')[field][2]).to eq '242a 242b 242n 242p'
+      expect(select_by_id('2xx')[field][3]).to eq '243a 243d 243f 243g 243k '\
+        '243l 243m 243n 243o 243p 243r 243s'
+      expect(select_by_id('2xx')[field][4]).to eq '246a 246b 246f 246g 246n 246p'
+      expect(select_by_id('2xx')[field][5]).to eq '247a 247b 247f 247g 247n 247p'
+
+      expect(results).not_to include hash_including(field => ['nope'])
+    end
+  end
 end
