@@ -27,8 +27,8 @@ to_field 'marcxml', serialized_marc(
 to_field 'title_245a_search', extract_marc('245a')
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
 to_field 'title_245_search', extract_marc('245abfgknps')
-# vern_title_245_search = custom, getLinkedField(245abfgknps)
-# title_uniform_search = 130adfgklmnoprst:240adfgklmnoprs, first
+to_field 'vern_title_245_search', extract_marc('245abfgknps', alternate_script: :only)
+to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true)
 # vern_title_uniform_search = custom, getVernacular(130adfgklmnoprst:240adfgklmnoprs, first)
 # title_variant_search = 210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp
 # vern_title_variant_search = custom, getLinkedField(210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp)

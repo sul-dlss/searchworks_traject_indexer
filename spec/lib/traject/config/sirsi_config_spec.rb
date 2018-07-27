@@ -54,8 +54,8 @@ RSpec.describe 'Sirsi config' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('2xxVernSearch')[field].first).to match(/vern245a/)
-      expect(results).not_to include hash_including(field => 'vern245b')
-      expect(results).not_to include hash_including(field => 'vern245p')
+      expect(results).not_to include hash_including(field => ['vern245b'])
+      expect(results).not_to include hash_including(field => ['vern245p'])
     end
   end
   describe 'title_245_search' do
@@ -76,6 +76,28 @@ RSpec.describe 'Sirsi config' do
 
       result = select_by_id('245nAndp')[field]
       expect(result.first).to include 'humanities'
+    end
+  end
+  describe 'vern_title_245_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_title_245_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      expect(select_by_id('2xxVernSearch')[field].first)
+        .to eq 'vern245a vern245b vern245f vern245g vern245k vern245n vern245p vern245s'
+      expect(results).not_to include hash_including(field => ['nope'])
+    end
+  end
+  describe 'title_uniform_search' do
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_uniform_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      expect(select_by_id('130240')[field]).to eq ['Hoos Foos']
+      expect(select_by_id('130')[field]).to eq ['The Snimm.']
+
+      expect(results).not_to include hash_including(field => ['balloon'])
+      expect(results).not_to include hash_including(field => ['130'])
     end
   end
 end
