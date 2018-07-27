@@ -23,7 +23,7 @@ to_field 'marcxml', serialized_marc(
 #all_search = custom, getAllFields
 # vern_all_search = custom, getAllLinkedSearchableFields
 # 
-# # Title Search Fields
+# Title Search Fields
 to_field 'title_245a_search', extract_marc('245a')
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
 to_field 'title_245_search', extract_marc('245abfgknps')
@@ -33,7 +33,7 @@ to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmn
 to_field 'title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: false)
 to_field 'vern_title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: :only)
 to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst')
-# vern_title_related_search = custom, getLinkedField(505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst)
+to_field 'vern_title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # # Title Display Fields
 # title_245a_display = custom, removeTrailingPunct(245a, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
 # vern_title_245a_display = custom, vernRemoveTrailingPunc(245a, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))

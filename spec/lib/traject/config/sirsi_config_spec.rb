@@ -187,7 +187,46 @@ RSpec.describe 'Sirsi config' do
       expect(select_by_id('78x')[field]).to eq [
         '780s 780t', '785s 785t', '786s 786t', '787s 787t'
       ]
-      # TODO: 780tNota etc, 796, 797, 798, 799
+
+      ['780tNota', '780aAndt', '780tNota'].each do |id|
+        expect(select_by_id(id)[field].first).to include '780 subfield t'
+      end
+
+      ['785tNota', '785aAndt'].each do |id|
+        expect(select_by_id(id)[field].first).to include '785 subfield t'
+      end
+
+      ['780tNota', '785tNota'].each do |id|
+        expect(select_by_id(id)[field].first).to include 'only'
+      end
+
+      expect(select_by_id('785aNott')[field]).to be_nil
+    end
+  end
+  describe 'vern_title_related_search' do
+    let(:field) { 'vern_title_related_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    context 'with summaryTests' do
+      let(:fixture_name) { 'summaryTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('505')[field]).to eq ['vern505t']
+        expect(results).not_to include hash_including(field => ['nope'])
+      end
+    end
+    context 'with vernacularSearchTests.mrc' do
+      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('7xxLowVernSearch')[field][0]).to eq 'vern700f ver'\
+          'n700g vern700k vern700l vern700m vern700n vern700o vern700p vern700'\
+          'r vern700s vern700t'
+
+        ['7xxLowVernSearch', '7xxVernPersonSearch'].each do |id|
+          expect(select_by_id(id)[field].first).to include 'vern700g'
+        end
+
+        expect(results).not_to include hash_including(field => ['vern700j'])
+        expect(results).not_to include hash_including(field => ['nope'])
+      end
     end
   end
 end
