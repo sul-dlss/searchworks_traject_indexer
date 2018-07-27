@@ -37,12 +37,15 @@ RSpec.describe 'Sirsi config' do
     let(:field) { 'title_245a_search' }
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     it 'has the correct titles' do
-      assert_single_result('245allSubs', field, '245a')
-      assert_zero_result(field, 'electronic')
-      assert_zero_result(field, 'john')
-      assert_zero_result(field, 'handbook')
-      pending 'failed assertion'
-      assert_single_result('2xx', field, '2xx')
+      result = select_by_id('245allSubs')[field]
+      expect(result).to eq ['245a']
+
+      expect(results).not_to include hash_including(field => ['electronic'])
+      expect(results).not_to include hash_including(field => ['john'])
+      expect(results).not_to include hash_including(field => ['handbook'])
+
+      result = select_by_id('2xx')[field]
+      expect(result).to eq ['2xx fields']
     end
   end
   describe 'vern_title_245a_search' do
@@ -50,9 +53,29 @@ RSpec.describe 'Sirsi config' do
     let(:field) { 'vern_title_245a_search' }
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     it 'has the correct titles' do
-      assert_single_result('2xxVernSearch', field, 'vern245a')
-      assert_zero_result(field, 'vern245b')
-      assert_zero_result(field, 'vern245b')
+      expect(select_by_id('2xxVernSearch')[field].first).to match(/vern245a/)
+      expect(results).not_to include hash_including(field => 'vern245b')
+      expect(results).not_to include hash_including(field => 'vern245p')
+    end
+  end
+  describe 'title_245_search' do
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_245_search' }
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it 'has the correct titles' do
+      result = select_by_id('245allSubs')[field]
+      expect(result).to eq [
+        '245a 245b 245p1 245s 245k1 245f 245n1 245g 245p2 245k2 245n2'
+      ]
+
+      result = select_by_id('245pNotn')[field]
+      expect(result.first).to include 'handbook'
+
+      result = select_by_id('245pThenn')[field]
+      expect(result.first).to include 'Verzeichnis'
+
+      result = select_by_id('245nAndp')[field]
+      expect(result.first).to include 'humanities'
     end
   end
 end

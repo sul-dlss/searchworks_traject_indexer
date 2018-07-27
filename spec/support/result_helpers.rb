@@ -1,5 +1,5 @@
 module ResultHelpers
-  def select_by_id(results, id)
+  def select_by_id(id)
     results.select { |r| r['id'] == [id] }.first
   end
 
