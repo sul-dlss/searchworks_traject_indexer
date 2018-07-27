@@ -226,6 +226,68 @@ RSpec.describe 'Sirsi config' do
 
         expect(results).not_to include hash_including(field => ['vern700j'])
         expect(results).not_to include hash_including(field => ['nope'])
+
+        expect(select_by_id('7xxLowVernSearch')[field][1]).to eq 'vern710d ver'\
+          'n710f vern710g vern710k vern710l vern710m vern710n vern710o vern710'\
+          'p vern710r vern710s vern710t'
+
+        expect(select_by_id('7xxVernCorpSearch')[field][0]).to eq 'vern710d ve'\
+          'rn710f vern710g vern710k vern710n'
+
+        expect(select_by_id('7xxLowVernSearch')[field][2]).to eq 'vern711f ver'\
+          'n711g vern711k vern711l vern711n vern711p vern711s vern711t'
+
+        expect(select_by_id('7xxLowVernSearch')[field][3]).to eq 'vern730a ver'\
+          'n730d vern730f vern730g vern730k vern730l vern730m vern730n vern730'\
+          'o vern730p vern730r vern730s vern730t'
+
+        expect(select_by_id('7xxLowVernSearch')[field][4]).to eq 'vern740a ver'\
+          'n740n vern740p'
+
+        expect(select_by_id('76xVernSearch')[field][0]).to eq 'vern760s vern760t'
+        expect(select_by_id('76xVernSearch')[field][1]).to eq 'vern762s vern762t'
+        expect(select_by_id('76xVernSearch')[field][2]).to eq 'vern765s vern765t'
+        expect(select_by_id('76xVernSearch')[field][3]).to eq 'vern767s vern767t'
+
+        expect(select_by_id('78xVernSearch')[field][0]).to eq 'vern780s vern780t'
+        expect(select_by_id('78xVernSearch')[field][1]).to eq 'vern785s vern785t'
+        expect(select_by_id('78xVernSearch')[field][2]).to eq 'vern786s vern786t'
+        expect(select_by_id('78xVernSearch')[field][3]).to eq 'vern787s vern787t'
+
+        expect(select_by_id('79xVernSearch')[field][0]).to eq 'vern796f vern79'\
+          '6g vern796k vern796l vern796m vern796n vern796o vern796p vern796r v'\
+          'ern796s vern796t'
+
+        expect(select_by_id('79xVernSearch')[field].first).to include 'vern796g'
+        expect(results).not_to include hash_including(field => ['vern796j'])
+
+        expect(select_by_id('79xVernSearch')[field][0]).to eq 'vern796f vern79'\
+          '6g vern796k vern796l vern796m vern796n vern796o vern796p vern796r v'\
+          'ern796s vern796t'
+
+        expect(select_by_id('79xVernSearch')[field][1]).to eq 'vern797d vern79'\
+          '7f vern797g vern797k vern797l vern797m vern797n vern797o vern797p v'\
+          'ern797r vern797s vern797t'
+
+        ['7xxVernCorpSearch'].each do |id|
+          expect(select_by_id(id)[field]).to include(/vern797d/)
+        end
+
+        expect(select_by_id('79xVernSearch')[field][2]).to eq 'vern798f vern79'\
+          '8g vern798k vern798l vern798n vern798p vern798s vern798t'
+
+        ['7xxVernMeetingSearch'].each do |id|
+          expect(select_by_id(id)[field]).to include(/vern798g/)
+          expect(select_by_id(id)[field]).to include(/vern798n/)
+        end
+
+        expect(select_by_id('79xVernSearch')[field][3]).to eq 'vern799a vern79'\
+          '9d vern799f vern799g vern799k vern799l vern799m vern799n vern799o v'\
+          'ern799p vern799r vern799s vern799t'
+
+        expect(results).not_to include hash_including(field => ['nope'])
+        pending
+        expect(select_by_id('7xxVernPersonSearch')[field].first).to include 'vern796g'
       end
     end
   end
