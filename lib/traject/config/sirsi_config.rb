@@ -81,28 +81,62 @@ to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnopr
 # vern_author_meeting_display = custom, getLinkedField(111[a-z])
 # # Author Sort Field
 # author_sort = custom, getSortableAuthor
-# 
+#
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
-# topic_search = custom, getTopicAllAlphaExcept(650vxyz:653vxyz:654vxyz:690vxyz)
-# vern_topic_search = custom, getVernAllAlphaExcept(650vxyz:653vxyz:654vxyz:690vxyz)
-# topic_subx_search = 600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x
-# vern_topic_subx_search = custom, getLinkedField(600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x)
-# geographic_search = custom, getAllAlphaExcept(651vxyz:691vxyz)
-# vern_geographic_search = custom, getVernAllAlphaExcept(651vxyz:691vxyz)
-# geographic_subz_search = 600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z
-# vern_geographic_subz_search = custom, getLinkedField(600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z)
-# subject_other_search = custom, getTopicAllAlphaExcept(600vxyz:610vxyz:611vxyz:630vxyz:655vxyz:656vxyz:657vxyz:658vxyz:696vxyz:697vxyz:698vxyz:699vxyz)
-# vern_subject_other_search = custom, getVernAllAlphaExcept(600vxyz:610vxyz:611vxyz:630vxyz:655vxyz:656vxyz:657vxyz:658vxyz:696vxyz:697vxyz:698vxyz:699vxyz)
-# subject_other_subvy_search = 600vy:610vy:611vy:630vy:650vy:651vy:654vy:655vy:656vy:657vy:690vy:691vy:696vy:697vy:698vy:699vy
-# vern_subject_other_subvy_search = custom, getLinkedField(600vy:610vy:611vy:630vy:650vy:651vy:654vy:655vy:656vy:657vy:690vy:691vy:696vy:697vy:698vy:699vy)
-# subject_all_search = custom, getAllAlphaSubfields(600:610:611:630:648:650:651:652:653:654:655:656:657:658:662:690:691:696:697:698:699)
-# vern_subject_all_search = custom, getLinkedField(600[a-z]:610[a-z]:611[a-z]:630[a-z]:648[a-z]:650[a-z]:651[a-z]:652[a-z]:653[a-z]:654[a-z]:655[a-z]:656[a-z]:657[a-z]:658[a-z]:662[a-z]:690[a-z]:691[a-z]:696[a-z]:697[a-z]:698[a-z]:699[a-z])
-# # Subject Facet Fields
-# topic_facet = custom, getTopicWithoutTrailingPunct(600abcdq:600t:610ab:610t:630a:630t:650a, [\\\\,;:], ([\\p{L}\\p{N}]{4}|[A-Za-z]{3}|[\\)]) )
-# geographic_facet = custom, getGeographicFacet([\\\\,;], ([A-Za-z0-9]{2}|\\)) )
-# era_facet = custom, removeTrailingPunct(650y:651y, [\\\\,;], ([A-Za-z0-9]{2}) )
-# 
+to_field "topic_search", extract_marc("650abcdefghijklmnopqrstu:653abcdefghijklmnopqrstu:654abcdefghijklmnopqrstu:690abcdefghijklmnopqrstu", alternate_script: false) do |record, accumulator|
+  accumulator.reject! { |v| v == 'nomesh' }
+  if record['999'] && record['999']['m'] == 'LANE-MED'
+    arr = []
+    extract_marc('655a').call(record, arr, nil)
+    accumulator.reject! { |v| arr.include? v }
+  end
+end
+
+to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstu:653abcdefghijklmnopqrstu:654abcdefghijklmnopqrstu:690abcdefghijklmnopqrstu", alternate_script: :only)
+to_field "topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: false)
+to_field "vern_topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: :only)
+to_field "geographic_search", extract_marc("651abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu", alternate_script: false)
+to_field "vern_geographic_search", extract_marc("651abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu", alternate_script: :only)
+to_field "geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: false)
+to_field "vern_geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: :only)
+to_field "subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstu"}.join(':'), alternate_script: false) do |record, accumulator|
+  accumulator.reject! { |v| v == 'nomesh' }
+  if record['999'] && record['999']['m'] == 'LANE-MED'
+    arr = []
+    extract_marc('655a').call(record, arr, nil)
+    accumulator.reject! { |v| arr.include? v }
+  end
+end
+to_field "vern_subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstu"}.join(':'), alternate_script: :only)
+to_field "subject_other_subvy_search", extract_marc(%w(600 610 611 630 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: false)
+to_field "vern_subject_other_subvy_search", extract_marc(%w(600 610 611 630 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: :only)
+to_field "subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), alternate_script: false)
+to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz"}.join(':'), alternate_script: :only)
+
+# Subject Facet Fields
+to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false, trim_punctuation: true) do |record, accumulator|
+  accumulator.reject! { |v| v == 'nomesh' }
+  accumulator.map! { |v| v.gsub(/([\p{L}\p{N}]{4}|[A-Za-z]{3}|\))[\\,;:\.]\.?$/, '\1')}
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+to_field "geographic_facet", extract_marc("651a:" + (600...699).map { |x| "#{x}z" }.join(':'), alternate_script: false) do |record, accumulator|
+  accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
+end
+to_field "era_facet", extract_marc("650y:651y", alternate_script: false, trim_punctuation: true) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+
+def clean_facet_punctuation(value)
+  new_value = value.gsub(/^[%\\*]/, ''). # begins with percent sign or asterisk
+                    gsub(/\({2,}+/, '('). # two or more open parentheses
+                    gsub(/\){2,}+/, ')'). # two or more close parentheses
+                    gsub(/!{2,}+/, '!'). #  two or more exlamation points
+                    gsub(/\s+/, ' ') # one or more spaces
+
+  new_value[/(?<valid>\(\g<valid>*\)|[^()])+/x] # remove unmatched parentheses
+end
+
 # # Publication Fields
 # pub_search = custom, getPublication
 # vern_pub_search = custom, getLinkedField(260ab:264ab)
