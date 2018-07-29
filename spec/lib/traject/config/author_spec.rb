@@ -39,4 +39,31 @@ RSpec.describe 'Author config' do
       expect(results).not_to include hash_including(field => ['none'])
     end
   end
+
+  describe 'vern_author_1xx_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_author_1xx_search' }
+    it 'has all subfields from linked 100' do
+      result = select_by_id('100VernSearch')[field]
+      expect(result).to eq ['vern100a vern100b vern100c vern100d vern100g vern100j vern100q vern100u']
+      expect(results).not_to include hash_including(field => ['vern100e'])
+      expect(results).not_to include hash_including(field => ['none'])
+    end
+
+    it 'has all subfields from linked 110' do
+      result = select_by_id('110VernSearch')[field]
+      expect(result).to eq ['vern110a vern110b vern110c vern110d vern110g vern110n vern110u']
+      expect(results).not_to include hash_including(field => ['vern110e'])
+      expect(results).not_to include hash_including(field => ['vern110f'])
+      expect(results).not_to include hash_including(field => ['vern110k'])
+      expect(results).not_to include hash_including(field => ['none'])
+    end
+
+    it 'has all subfields from linked 111' do
+      result = select_by_id('111VernSearch')[field]
+      expect(result).to eq ['vern111a vern111c vern111d vern111e vern111g vern111j vern111n vern111q vern111u']
+      expect(results).not_to include hash_including(field => ['vern111i'])
+      expect(results).not_to include hash_including(field => ['none'])
+    end
+  end
 end
