@@ -22,7 +22,7 @@ to_field 'marcxml', serialized_marc(
 
 #all_search = custom, getAllFields
 # vern_all_search = custom, getAllLinkedSearchableFields
-# 
+#
 # Title Search Fields
 to_field 'title_245a_search', extract_marc('245a', first: true)
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
@@ -78,19 +78,19 @@ def extract_sortable_title(fields, record)
     str
   end.first
 end
-# 
+#
 # # Series Search Fields
 # series_search = 440anpv:490av:800[a-x]:810[a-x]:811[a-x]:830[a-x]
 # vern_series_search = custom, getLinkedField(440anpv:490av:800[a-x]:810[a-x]:811[a-x]:830[a-x])
 # series_exact_search = 830a
-# 
+#
 # # Author Title Search Fields
 # author_title_search = custom, getAuthorTitleSearch
-# 
+#
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
-# author_1xx_search = 100abcdgjqu:110abcdgnu:111acdegjnqu
+to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu')
 # vern_author_1xx_search = custom, getLinkedField(100abcdgjqu:110abcdgnu:111acdegjnqu)
 # author_7xx_search = 700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu
 # vern_author_7xx_search = custom, getLinkedField(700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu)
@@ -243,7 +243,7 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # url_suppl = custom, getSupplUrls
 # url_sfx = 956u, (pattern_map.sfx)
 # url_restricted = custom, getRestrictedUrls
-# 
+#
 # # Standard Number Fields
 # isbn_search = custom, getUserISBNs
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
@@ -252,33 +252,33 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # issn_display = custom, getISSNs
 # lccn = 010a:010z, (pattern_map.lccn), first
 # oclc = custom, getOCLCNums
-# 
+#
 # # Call Number Fields
 # callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
 # callnum_search = custom, getLocalCallNums
 # shelfkey = custom, getShelfkeys
 # reverse_shelfkey = custom, getReverseShelfkeys
-# 
+#
 # # Location facet
 # location_facet = custom, getLocationFacet
-# 
+#
 # # Stanford student work facet
 # stanford_work_facet_hsim = custom, getStanfordWorkFacet
 # stanford_dept_sim = custom, getStanfordDeptFacet
-# 
+#
 # # Item Info Fields (from 999 that aren't call number)
 # barcode_search = 999i
 # preferred_barcode = custom, getPreferredItemBarcode
 # access_facet = custom, getAccessMethods
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
-# 
+#
 # on_order_library_ssim = custom, getOnOrderLibraries, library_on_order_map.properties
-# 
+#
 # mhld_display = custom, getMhldDisplay
 # bookplates_display = custom, getBookplatesDisplay
 # fund_facet = custom, getFundFacet
-# 
+#
 # # Digitized Items Fields
 to_field 'managed_purl_urls' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
@@ -375,8 +375,8 @@ end
 # # INDEX-142 NOTE 3: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
 # # so need to account for it in the pattern match below
 # pattern_map.issn.pattern_0 = ^(\\d{4}-\\d{3}[X\\d]\\D*)$=>$1
-# 
+#
 # pattern_map.lccn.pattern_0 = ^(([ a-z]{3}\\d{8})|([ a-z]{2}\\d{10})) ?|( /.*)?$=>$1
-# 
+#
 # pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
 # pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1
