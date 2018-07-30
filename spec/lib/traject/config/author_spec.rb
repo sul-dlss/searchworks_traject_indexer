@@ -148,4 +148,26 @@ RSpec.describe 'Author config' do
       end
     end
   end
+
+  describe 'author_8xx_search' do
+    let(:field) { 'author_8xx_search' }
+
+    it 'has all subfields from 800' do
+      result = select_by_id('800search')[field]
+      expect(result).to eq ['800a 800b 800c 800d 800e 800g 800j 800q 800u']
+    end
+
+    it 'has all subfields from 810' do
+      result = select_by_id('810search')[field]
+      expect(result).to eq ['810a 810b 810c 810d 810e 810g 810n 810u']
+      expect(results).not_to include hash_including(field => ['810f'])
+      expect(results).not_to include hash_including(field => ['810k'])
+      expect(results).not_to include hash_including(field => ['none'])
+    end
+
+    it 'has all subfields from 811' do
+      result = select_by_id('811search')[field]
+      expect(result).to eq ['811a 811c 811d 811e 811g 811j 811n 811q 811u']
+    end
+  end
 end
