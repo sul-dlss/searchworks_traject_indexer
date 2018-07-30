@@ -78,4 +78,74 @@ RSpec.describe 'Author config' do
       expect(results).not_to include hash_including(field => ['none'])
     end
   end
+
+  describe 'vern_author_7xx_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_author_7xx_search' }
+
+    context 'personal name fields' do
+      it 'has all subfields from linked 700, 720, and 796' do
+        result = select_by_id('7xxVernPersonSearch')[field]
+        expect(result).to eq ['vern700a vern700b vern700c vern700d vern700g vern700j vern700q vern700u',
+                              'vern720a vern720e',
+                              'vern796a vern796b vern796c vern796d vern796g vern796j vern796q vern796u']
+        expect(results).not_to include hash_including(field => ['vern700e'])
+        expect(results).not_to include hash_including(field => ['vern796e'])
+        expect(results).not_to include hash_including(field => ['none'])
+      end
+
+      it 'has subfields that overlap with title', pending: :fixme do
+        result = select_by_id('7xxLowVernSearch')[field][0]
+        expect(result).to eq 'vern700g vern700j'
+
+        ['7xxLowVernSearch', '7xxVernPersonSearch'].each do |id|
+          expect(select_by_id(id)[field].first).to include 'vern700g vern700j'
+        end
+
+        expect(select_by_id('79xVernSearch')[field].first).to include 'vern796g vern796j'
+      end
+    end
+
+    context 'corporate name fields' do
+      it 'has all subfields from linked 710 and 797' do
+        result = select_by_id('7xxVernCorpSearch')[field]
+        expect(result).to eq ['vern710a vern710b vern710c vern710d vern710g vern710n vern710u',
+                              'vern797a vern797b vern797c vern797d vern797g vern797n vern797u']
+        expect(results).not_to include hash_including(field => ['vern710e'])
+        expect(results).not_to include hash_including(field => ['vern710f'])
+        expect(results).not_to include hash_including(field => ['vern710k'])
+        expect(results).not_to include hash_including(field => ['vern797e'])
+        expect(results).not_to include hash_including(field => ['vern797f'])
+        expect(results).not_to include hash_including(field => ['vern797k'])
+        expect(results).not_to include hash_including(field => ['none'])
+      end
+
+      it 'has subfields that overlap with title' do
+        result = select_by_id('7xxLowVernSearch')[field][1]
+        expect(result).to eq 'vern710d vern710g vern710n'
+
+        result = select_by_id('79xVernSearch')[field][1]
+        expect(result).to eq 'vern797d vern797g vern797n'
+      end
+    end
+
+    context 'meeting name fields' do
+      it 'has all subfields from linked 711 and 798' do
+        result = select_by_id('7xxVernMeetingSearch')[field]
+        expect(result).to eq ['vern711a vern711c vern711d vern711e vern711g vern711j vern711n vern711q vern711u',
+                              'vern798a vern798c vern798d vern798e vern798g vern798j vern798n vern798q vern798u']
+        expect(results).not_to include hash_including(field => ['vern711i'])
+        expect(results).not_to include hash_including(field => ['vern798i'])
+        expect(results).not_to include hash_including(field => ['none'])
+      end
+
+      it 'has subfields that overlap with title', pending: :fixme do
+        result = select_by_id('7xxLowVernSearch')[field][2]
+        expect(result).to eq 'vern711g vern711n'
+
+        result = select_by_id('79xVernSearch')[field][2]
+        expect(result).to eq 'vern798e vern798g vern798n'
+      end
+    end
+  end
 end
