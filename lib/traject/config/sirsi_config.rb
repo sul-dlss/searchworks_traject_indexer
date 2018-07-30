@@ -129,23 +129,23 @@ to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnopr
 # copyright_year_isi = custom, get008Date2(t)
 # # from 260c
 # imprint_display = custom, getImprint
-# 
+#
 # # Date field for new items feed
 # date_cataloged = custom, getDateCataloged
-# 
+#
 # language = custom, getLanguages, language_map.properties
-# 
+#
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
 # format_main_ssim = custom, getMainFormats
 # format_physical_ssim = custom, getPhysicalFormats
 # genre_ssim = custom, getAllGenres
-# 
+#
 # db_az_subject = custom, getDbAZSubjects, db_subjects_map.properties
-# 
-# physical = 300abcefg
-# vern_physical = custom, getLinkedField(300abcefg)
-# 
+
+to_field "physical", extract_marc("300abcefg", alternate_script: false)
+to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
+
 # toc_search = 905art:505art
 # vern_toc_search = custom, getLinkedField(505art)
 # context_search = 518a
