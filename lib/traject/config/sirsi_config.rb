@@ -42,9 +42,7 @@ to_field 'title_245a_display', extract_marc('245a', alternate_script: false, tri
 to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only, trim_punctuation: true)
 to_field 'title_245c_display', extract_marc('245c', alternate_script: false, trim_punctuation: true)
 to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only, trim_punctuation: true)
-# no sub c in title_display
-to_field 'title_display', extract_marc('245abdefghijklmnoqrstuvwxyz', alternate_script: false, trim_punctuation: true)
-# TODO: p subfield causing UTF-8 issues for `title_display`
+to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false, trim_punctuation: true)
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only, trim_punctuation: true)
 to_field 'title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :false)
 to_field 'vern_title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :only)

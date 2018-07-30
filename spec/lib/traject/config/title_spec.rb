@@ -316,18 +316,16 @@ RSpec.describe 'Title spec' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:field) { 'title_display' }
     it 'has the correct titles' do
-      pending 'p causing utf-8 errors'
       expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p [electronic resource]']
-      pending 'legacy test has punctuation at end here, but claims to trim punctuation'
-      expect(select_by_id('245nNotp')[field]).to eq ['245 n but no p Part one.']
       expect(select_by_id('245pNotn')[field]).to eq ['245 p but no n. subfield b Student handbook']
       expect(select_by_id('245nAndp')[field]).to eq ['245 n and p: A, The humanities and social sciences']
       expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n first p subfield first n subfield second p subfield second n subfield']
+      pending 'legacy test has punctuation at end here, but claims to trim punctuation'
+      expect(select_by_id('245nNotp')[field]).to eq ['245 n but no p Part one.']
     end
     context 'trailing punctuation' do
       let(:fixture_name) { 'displayFieldsTests.mrc' }
       it 'has the correct titles' do
-        pending 'p causing utf-8 errors'
         expect(select_by_id('2451')[field]).to eq ['Heritage Books archives. Underwood biographical dictionary. Volumes 1 & 2 revised [electronic resource]']
         expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia : mythistorema']
         expect(select_by_id('2453')[field]).to eq ['Proceedings']
