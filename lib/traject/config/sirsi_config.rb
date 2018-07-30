@@ -92,7 +92,7 @@ end
 # #   (keep using stemmed version for everything search to match stemmed query)
 to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu')
 to_field 'vern_author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', alternate_script: :only)
-# author_7xx_search = 700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu
+to_field 'author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu')
 # vern_author_7xx_search = custom, getLinkedField(700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu)
 # author_8xx_search = 800abcdegjqu:810abcdegnu:811acdegjnqu
 # vern_author_8xx_search = custom, getLinkedField(800abcdegjqu:810abcdegnu:811acdegjnqu)

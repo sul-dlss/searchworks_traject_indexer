@@ -66,4 +66,16 @@ RSpec.describe 'Author config' do
       expect(results).not_to include hash_including(field => ['none'])
     end
   end
+
+  describe 'author_7xx_search' do
+    let(:field) { 'author_7xx_search' }
+
+    it 'has all subfields from 700, 720, and 796' do
+      result = select_by_id('7xxPersonSearch')[field]
+      expect(result).to eq ['700a 700b 700c 700d 700g 700j 700q 700u', '720a 720e', '796a 796b 796c 796d 796g 796j 796q 796u']
+      expect(results).not_to include hash_including(field => ['700e'])
+      expect(results).not_to include hash_including(field => ['796e'])
+      expect(results).not_to include hash_including(field => ['none'])
+    end
+  end
 end
