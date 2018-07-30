@@ -146,27 +146,47 @@ end
 # pub_date = custom, getPubDate
 # pub_date_sort = custom, getPubDateSort
 # pub_year_tisim = custom, getPubDateSliderVals
+def marc_008_date(byte6values, byte_range, u_replacement)
+  lambda do |record, accumulator|
+    field008 = Traject::MarcExtractor.cached("008").extract(record).first
+
+    if byte6values.include? field008.slice(6)
+      year = field008[byte_range]
+      next unless year =~ /(\d{4}|\d{3}u)/
+      year.gsub!(/u$/, u_replacement)
+      next unless (500..(Time.now.year + 10)).include? year.to_i
+      accumulator << year
+    end
+  end
+end
 # # from 008 date 1
-# publication_year_isi = custom, get008Date1(est)
-# beginning_year_isi = custom, get008Date1(cdmu)
-# earliest_year_isi = custom, get008Date1(ik)
-# earliest_poss_year_isi = custom, get008Date1(q)
-# release_year_isi = custom, get008Date1(p)
-# reprint_year_isi = custom, get008Date1(r)
-# other_year_isi = custom, getOtherYear
+to_field 'publication_year_isi', marc_008_date(%w[e s t], 7..10, '0')
+to_field 'beginning_year_isi', marc_008_date(%w[c d m u], 7..10, '0')
+to_field 'earliest_year_isi', marc_008_date(%w[i k], 7..10, '0')
+to_field 'earliest_poss_year_isi', marc_008_date(%w[q], 7..10, '0')
+to_field 'release_year_isi', marc_008_date(%w[p], 7..10, '0')
+to_field 'reprint_year_isi', marc_008_date(%w[r], 7..10, '0')
+to_field 'other_year_isi', marc_008_date(%w[a b f g h j l n o v w x y z | $], 7..10, '0')
 # # from 008 date 2
-# ending_year_isi = custom, get008Date2(dm)
-# latest_year_isi = custom, get008Date2(ik)
-# latest_poss_year_isi = custom, get008Date2(q)
-# production_year_isi = custom, get008Date2(p)
-# original_year_isi = custom, get008Date2(r)
-# copyright_year_isi = custom, get008Date2(t)
+to_field 'ending_year_isi', marc_008_date(%w[d m], 11..14, '9')
+to_field 'latest_year_isi', marc_008_date(%w[i k], 11..14, '9')
+to_field 'latest_poss_year_isi', marc_008_date(%w[q], 11..14, '9')
+to_field 'production_year_isi', marc_008_date(%w[p], 11..14, '9')
+to_field 'original_year_isi', marc_008_date(%w[r], 11..14, '9')
+to_field 'copyright_year_isi', marc_008_date(%w[t], 11..14, '9')
 # # from 260c
 # imprint_display = custom, getImprint
 # 
 # # Date field for new items feed
-# date_cataloged = custom, getDateCataloged
-# 
+to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
+  accumulator.reject! { |v| v =~ /NEVER/i }
+
+  accumulator.map! do |v|
+    "#{v[0..3]}-#{v[4..5]}-#{v[6..7]}T00:00:00Z"
+  end
+end
+
+#
 # language = custom, getLanguages, language_map.properties
 # 
 # # old format field, left for continuity in UI URLs for old formats
