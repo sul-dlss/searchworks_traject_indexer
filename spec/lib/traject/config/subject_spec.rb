@@ -1,4 +1,4 @@
-RSpec.describe 'Sirsi config' do
+RSpec.describe 'Subject config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
 
