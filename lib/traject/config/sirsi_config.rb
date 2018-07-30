@@ -1544,7 +1544,7 @@ to_field 'stanford_dept_sim' do |record, accumulator, context|
 end
 #
 # # Item Info Fields (from 999 that aren't call number)
-# barcode_search = 999i
+to_field 'barcode_search', extract_marc('999i')
 # preferred_barcode = custom, getPreferredItemBarcode
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
