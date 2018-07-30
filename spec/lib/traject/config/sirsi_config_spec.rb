@@ -291,4 +291,216 @@ RSpec.describe 'Sirsi config' do
       end
     end
   end
+  describe 'title_245a_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_245a_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p']
+      expect(select_by_id('245nAndp')[field]).to eq ['245 n and p']
+      expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n']
+    end
+    context 'trailing punctuation' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('2451')[field]).to eq ['Heritage Books archives']
+        expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia']
+      end
+    end
+  end
+  describe 'vern_title_245a_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_title_245a_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('allVern')[field]).to eq ['vernacular title 245']
+      expect(select_by_id('trailingPunct')[field]).to eq ['vernacular ends in slash']
+    end
+  end
+  describe 'title_245c_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_245c_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('245NoNorP')[field]).to eq ['by John Sandford']
+    end
+    context 'trailing punctuation' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('2451')[field]).to eq ['Laverne Galeener-Moore']
+        expect(select_by_id('2453')[field]).to eq ['...']
+      end
+    end
+  end
+  describe 'vern_title_245c_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_title_245c_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('RtoL')[field]).to eq ['crocodile for is c']
+    end
+  end
+  describe 'title_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_display' }
+    it 'has the correct titles' do
+      pending 'p causing utf-8 errors'
+      expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p [electronic resource]']
+      pending 'legacy test has punctuation at end here, but claims to trim punctuation'
+      expect(select_by_id('245nNotp')[field]).to eq ['245 n but no p Part one.']
+      expect(select_by_id('245pNotn')[field]).to eq ['245 p but no n. subfield b Student handbook']
+      expect(select_by_id('245nAndp')[field]).to eq ['245 n and p: A, The humanities and social sciences']
+      expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n first p subfield first n subfield second p subfield second n subfield']
+    end
+    context 'trailing punctuation' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has the correct titles' do
+        pending 'p causing utf-8 errors'
+        expect(select_by_id('2451')[field]).to eq ['Heritage Books archives. Underwood biographical dictionary. Volumes 1 & 2 revised [electronic resource]']
+        expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia : mythistorema']
+        expect(select_by_id('2453')[field]).to eq ['Proceedings']
+      end
+    end
+    context 'non-filing' do
+      let(:fixture_name) { 'titleTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('115472')[field]).to eq ['India and the European Economic Community']
+        expect(select_by_id('7117119')[field]).to eq ['HOUSING CARE AND SUPPORT PUTTING GOOD IDEAS INTO PRACTICE']
+        expect(select_by_id('1962398')[field]).to eq ['A guide to resources in United States libraries']
+        expect(select_by_id('4428936')[field]).to eq ['Il cinema della transizione']
+        expect(select_by_id('1261173')[field]).to eq ['The second part of the Confutation of the Ballancing letter']
+        expect(select_by_id('575946')[field]).to eq ['Der Ruckzug der biblischen Prophetie von der neueren Geschichte']
+        expect(select_by_id('666')[field]).to eq ['ZZZZ']
+
+        expect(select_by_id('2400')[field]).to eq ['240 0 non-filing']
+        expect(select_by_id('2402')[field]).to eq ['240 2 non-filing']
+        expect(select_by_id('2407')[field]).to eq ['240 7 non-filing']
+        expect(select_by_id('130')[field]).to eq ['130 4 non-filing']
+        expect(select_by_id('130240')[field]).to eq ['130 and 240']
+
+        expect(select_by_id('2458')[field]).to eq ['245 has sub 8']
+      end
+    end
+  end
+  describe 'vern_title_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_title_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('trailingPunct')[field]).to eq ['vernacular ends in slash']
+    end
+  end
+  describe 'title_full_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_full_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p [electronic resource] / by John Sandford.']
+      expect(select_by_id('245nNotp')[field]).to eq ['245 n but no p Part one.']
+      expect(select_by_id('245pNotn')[field]).to eq ['245 p but no n. subfield b Student handbook.']
+      expect(select_by_id('245nAndp')[field]).to eq ['245 n and p: A, The humanities and social sciences.']
+      expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n first p subfield first n subfield second p subfield second n subfield']
+    end
+    context 'display field tests' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('2451')[field]).to eq ['Heritage Books archives. Underwood biographical dictionary. Volumes 1 & 2 revised [electronic resource] / Laverne Galeener-Moore.']
+        expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia : mythistorema / Spyrou Gkrintzou.']
+        expect(select_by_id('2453')[field]).to eq ['Proceedings / ...']
+      end
+    end
+    context 'vernacular tests' do
+      let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('hebrew1')[field]).to include 'Alef bet shel Yahadut.'
+        expect(select_by_id('RtoL')[field]).to include 'a is for alligator / c is for crocodile, 1980'
+      end
+    end
+  end
+  describe 'vern_title_full_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_title_full_display' }
+    it 'has the correct titles' do
+      pending 'none of these work, order is incorrect and alternate script chars incorrect'
+      expect(select_by_id('RtoL')[field]).to eq ['1980 ,crocodile for is c / alligator for is a']
+      expect(select_by_id('RtoL2')[field]).to eq ['1980 ,vern (RTL?) c followed by number / vern (RTL?) a']
+      expect(select_by_id('hebrew1')[field]).to eq ['אל״ף בי״ת של יהדות הלל צייטלין ; תירגם וערך מנחם ברש־רועי /']
+      expect(select_by_id('hebrew1')[field]).to eq ['אל״ף בי״ת של יהדות / הלל צייטלין ; תירגם וערך מנחם ברש־רועי']
+    end
+  end
+  describe 'title_uniform_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_uniform_display' }
+    it 'has the correct titles' do
+      # no 240 or 130
+      expect(select_by_id('115472')[field]).to be_nil
+      expect(select_by_id('7117119')[field]).to be_nil
+      expect(select_by_id('1962398')[field]).to be_nil
+      expect(select_by_id('4428936')[field]).to be_nil
+      expect(select_by_id('1261173')[field]).to be_nil
+
+      # 240 only
+      expect(select_by_id('575946')[field]).to eq ['De incertitudine et vanitate scientiarum. German']
+      expect(select_by_id('666')[field]).to eq ['De incertitudine et vanitate scientiarum. German']
+      expect(select_by_id('2400')[field]).to eq ['Wacky']
+      expect(select_by_id('2402')[field]).to eq ['A Wacky']
+      expect(select_by_id('2407')[field]).to eq ['A Wacky Tacky']
+
+      # uniform title 130 if exists, 240 if not
+      expect(select_by_id('130')[field]).to eq ['The Snimm.']
+      expect(select_by_id('130240')[field]).to eq ['Hoos Foos']
+
+      # numeric subfields
+      expect(select_by_id('1306')[field]).to eq ['Sox on Fox']
+      expect(select_by_id('0240')[field]).to eq ['sleep little fishies']
+      expect(select_by_id('24025')[field]).to eq ['la di dah']
+    end
+    context 'display field tests' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('2401')[field]).to eq ['Variations, piano, 4 hands, K. 501, G major']
+        expect(select_by_id('2402')[field]).to eq ['Treaties, etc. Poland, 1948 Mar. 2. Protocols, etc., 1951 Mar. 6']
+        expect(select_by_id('130')[field]).to eq ['Bible. O.T. Five Scrolls. Hebrew. Biblioteca apostolica vaticana. Manuscript. Urbiniti Hebraicus 1. 1980.']
+        expect(select_by_id('11332244')[field]).to eq ['Bodkin Van Horn']
+      end
+    end
+  end
+  describe 'vern_title_uniform_display' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_title_uniform_display' }
+    it 'has the correct titles' do
+      expect(select_by_id('130only')[field]).to eq ['vernacular main entry uniform title']
+      expect(select_by_id('240only')[field]).to eq ['vernacular uniform title']
+    end
+    context 'unmatched 800' do
+      let(:fixture_name) { 'unmatched880sTests.mrc' }
+      it 'has the correct titles' do
+        expect(select_by_id('4')[field]).to eq ['vern130a']
+        expect(select_by_id('5')[field]).to eq ['vern240a']
+      end
+    end
+  end
+  describe 'title_sort' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'titleTests.mrc' }
+    let(:field) { 'title_sort' }
+    it 'has the correct titles' do
+      pending 'custom sw logic needs some research'
+      # 130 (with non-filing)
+      expect(select_by_id('130')[field]).to eq ['Snimm 130 4 nonfiling']
+      expect(select_by_id('1306')[field]).to eq ['Sox on Fox 130 has sub 6']
+      expect(select_by_id('888')[field]).to eq ['interspersed punctuation here']
+
+      # 240
+      expect(select_by_id('0240')[field]).to eq ['240 has sub 0']
+      expect(select_by_id('24025')[field]).to eq ['240 has sub 2 and 5']
+
+      # 130 and 240
+      expect(select_by_id('130240')[field]).to eq ['Hoos Foos 130 and 240']
+    end
+  end
 end

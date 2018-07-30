@@ -1,5 +1,8 @@
 require 'traject'
 
+require 'traject/macros/marc21_semantics'
+extend  Traject::Macros::Marc21Semantics
+
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
@@ -34,21 +37,25 @@ to_field 'title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnop
 to_field 'vern_title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: :only)
 to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst')
 to_field 'vern_title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
-# # Title Display Fields
-# title_245a_display = custom, removeTrailingPunct(245a, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# vern_title_245a_display = custom, vernRemoveTrailingPunc(245a, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# title_245c_display = custom, removeTrailingPunct(245c, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# vern_title_245c_display = custom, vernRemoveTrailingPunc(245c, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# # no sub c in title_display
-# title_display = custom, removeTrailingPunct(245abdefghijklmnopqrstuvwxyz, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# vern_title_display = custom, vernRemoveTrailingPunc(245abdefghijklmnopqrstuvwxyz, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# title_full_display = custom, getAllAlphaSubfields(245)
+# Title Display Fields
+to_field 'title_245a_display', extract_marc('245a', alternate_script: false, trim_punctuation: true)
+to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only, trim_punctuation: true)
+to_field 'title_245c_display', extract_marc('245c', alternate_script: false, trim_punctuation: true)
+to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only, trim_punctuation: true)
+# no sub c in title_display
+to_field 'title_display', extract_marc('245abdefghijklmnoqrstuvwxyz', alternate_script: false, trim_punctuation: true)
+# TODO: p subfield causing UTF-8 issues for `title_display`
+to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only, trim_punctuation: true)
+to_field 'title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :false)
+to_field 'vern_title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :only)
 # vern_title_full_display = custom, getLinkedField(245[a-z])
+# TODO: vern_title_full_display is rendering incorrectly                  
+to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
-# title_uniform_display = custom, getAllAlphaSubfields(130:240, first)
-# vern_title_uniform_display = custom, getVernacular(130abcdefghijklmnopqrstuvwxyz:240abcdefghijklmnopqrstuvwxyz, first)
+# TODO: Remove looks like SearchWorks is not using, confirm relevancy changes
+to_field 'vern_title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: :only)
 # # Title Sort Field
-# title_sort = custom, getSortTitle
+to_field 'title_sort', marc_sortable_title
 # 
 # # Series Search Fields
 # series_search = 440anpv:490av:800[a-x]:810[a-x]:811[a-x]:830[a-x]
