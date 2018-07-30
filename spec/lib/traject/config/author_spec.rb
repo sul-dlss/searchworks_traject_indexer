@@ -170,4 +170,54 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['811a 811c 811d 811e 811g 811j 811n 811q 811u']
     end
   end
+
+  describe 'vern_author_8xx_search' do
+    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:field) { 'vern_author_8xx_search' }
+
+    context 'personal name fields' do
+      it 'has all subfields from linked 800' do
+        result = select_by_id('800VernSearch')[field]
+        expect(result).to eq ['vern800a vern800b vern800c vern800d vern800e vern800g vern800j vern800q vern800u']
+      end
+
+      it 'has subfields that overlap with title', pending: :fixme do
+        result = select_by_id('8xxVernSearch')[field][0]
+        expect(result).to eq 'vern800g vern800j'
+
+        ['800VernSearch', '8xxVernSearch'].each do |id|
+          expect(select_by_id(id)[field].first).to include 'vern800g vern800j'
+        end
+
+        expect(select_by_id('8xxVernSearch')[field].first).to include 'vern800g vern800j'
+      end
+    end
+
+    context 'corporate name fields' do
+      it 'has all subfields from linked 810' do
+        result = select_by_id('810VernSearch')[field]
+        expect(result).to eq ['vern810a vern810b vern810c vern810d vern810e vern810g vern810n vern810u']
+        expect(results).not_to include hash_including(field => ['vern810f'])
+        expect(results).not_to include hash_including(field => ['vern810k'])
+        expect(results).not_to include hash_including(field => ['none'])
+      end
+
+      it 'has subfields that overlap with title' do
+        result = select_by_id('8xxVernSearch')[field][1]
+        expect(result).to eq 'vern810d vern810g vern810n'
+      end
+    end
+
+    context 'meeting name fields' do
+      it 'has all subfields from linked 811' do
+        result = select_by_id('811VernSearch')[field]
+        expect(result).to eq ['vern811a vern811c vern811d vern811e vern811g vern811j vern811n vern811q vern811u']
+      end
+
+      it 'has subfields that overlap with title', pending: :fixme do
+        result = select_by_id('8xxVernSearch')[field][2]
+        expect(result).to eq 'vern811g vern811n'
+      end
+    end
+  end
 end
