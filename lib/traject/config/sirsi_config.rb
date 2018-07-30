@@ -146,14 +146,15 @@ to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnopr
 to_field "physical", extract_marc("300abcefg", alternate_script: false)
 to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 
-# toc_search = 905art:505art
-# vern_toc_search = custom, getLinkedField(505art)
-# context_search = 518a
-# vern_context_search = custom, getLinkedField(518a)
-# summary_search = 920ab:520ab
-# vern_summary_search = custom, getLinkedField(520ab)
-# award_search = 986a:586a
-# 
+to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
+to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
+to_field "context_search", extract_marc("518a", alternate_script: false)
+to_field "vern_context_search", extract_marc("518a", alternate_script: :only)
+to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
+to_field "vern_summary_search", extract_marc("520ab", alternate_script: :only)
+to_field "award_search", extract_marc("986a:586a", alternate_script: false)
+
+#
 # # URL Fields
 # url_fulltext = custom, getFullTextUrls
 # url_suppl = custom, getSupplUrls
