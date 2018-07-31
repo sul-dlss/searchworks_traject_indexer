@@ -176,7 +176,7 @@ to_field 'original_year_isi', marc_008_date(%w[r], 11..14, '9')
 to_field 'copyright_year_isi', marc_008_date(%w[t], 11..14, '9')
 # # from 260c
 # imprint_display = custom, getImprint
-# 
+#
 # # Date field for new items feed
 to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
   accumulator.reject! { |v| v =~ /NEVER/i }
@@ -188,26 +188,27 @@ end
 
 #
 # language = custom, getLanguages, language_map.properties
-# 
+#
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
 # format_main_ssim = custom, getMainFormats
 # format_physical_ssim = custom, getPhysicalFormats
 # genre_ssim = custom, getAllGenres
-# 
+#
 # db_az_subject = custom, getDbAZSubjects, db_subjects_map.properties
-# 
-# physical = 300abcefg
-# vern_physical = custom, getLinkedField(300abcefg)
-# 
-# toc_search = 905art:505art
-# vern_toc_search = custom, getLinkedField(505art)
-# context_search = 518a
-# vern_context_search = custom, getLinkedField(518a)
-# summary_search = 920ab:520ab
-# vern_summary_search = custom, getLinkedField(520ab)
-# award_search = 986a:586a
-# 
+
+to_field "physical", extract_marc("300abcefg", alternate_script: false)
+to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
+
+to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
+to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
+to_field "context_search", extract_marc("518a", alternate_script: false)
+to_field "vern_context_search", extract_marc("518a", alternate_script: :only)
+to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
+to_field "vern_summary_search", extract_marc("520ab", alternate_script: :only)
+to_field "award_search", extract_marc("986a:586a", alternate_script: false)
+
+#
 # # URL Fields
 # url_fulltext = custom, getFullTextUrls
 # url_suppl = custom, getSupplUrls
