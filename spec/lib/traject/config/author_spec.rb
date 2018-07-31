@@ -220,4 +220,51 @@ RSpec.describe 'Author config' do
       end
     end
   end
+
+  describe 'author_person_facet' do
+    let(:field) { 'author_person_facet' }
+    it 'removes trailing period that isn\'t an initial' do
+      result = select_by_id('345228')[field]
+      expect(result).to eq ['Bashkov, Vladimir']
+
+      result = select_by_id('690002')[field]
+      expect(result).to eq ['Wallin, J. E. Wallace (John Edward Wallace), b. 1876']
+
+      result = select_by_id('4428936')[field]
+      expect(result).to eq ['Zagarrio, Vito']
+
+      result = select_by_id('1261173')[field]
+      expect(result).to eq ['Johnson, Samuel, 1649-1703']
+    end
+
+    it 'leaves in trailing period for B.C. acronym', pending: :fixme do
+      result = select_by_id('8634')[field]
+      expect(result).to eq ['Sallust, 86-34 B.C.']
+    end
+
+    it 'leaves in trailing period for author initials' do
+      result = select_by_id('harrypotter')[field]
+      expect(result).to eq ['Heyman, David', 'Rowling, J. K.']
+    end
+
+    it 'leaves in trailing hyphen for birth/death date' do
+      result = select_by_id('919006')[field]
+      expect(result).to eq ['Oeftering, Michael, 1872-']
+    end
+
+    it 'removes trailing comma' do
+      result = select_by_id('7651581')[field]
+      expect(result).to eq ['Coutinho, Frederico dos Reys']
+    end
+
+    it 'removes trailing period for hyphen, comma, period combo', pending: :fixme do
+      result = select_by_id('700friedman')[field]
+      expect(result).to eq ['Friedman, Eli A., 1933-']
+    end
+
+    it 'removes trailing period when fuller form of name is in parentheses', pending: :fixme do
+      result = select_by_id('700sayers')[field]
+      expect(result).to eq ['Whimsey, Peter', 'Sayers, Dorothy L. (Dorothy Leigh), 1893-1957']
+    end
+  end
 end
