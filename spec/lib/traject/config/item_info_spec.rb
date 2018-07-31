@@ -22,171 +22,88 @@ RSpec.describe 'ItemInfo config' do
       expect(result).to eq ['36105033811451']
     end
   end
+
+  describe 'building_facet' do
+    let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
+    let(:fixture_name) { 'buildingTests.xml' }
+    let(:field) { 'building_facet' }
+
+    it 'has data' do
+      expect(select_by_id('229800')[field]).to eq ['Archive of Recorded Sound']
+      expect(select_by_id('345228')[field]).to eq ['Art & Architecture (Bowes)']
+      expect(select_by_id('804724')[field]).to eq ['SAL Newark (off-campus storage)']
+      expect(select_by_id('1147269')[field]).to eq ['Classics']
+      expect(select_by_id('1505065')[field]).to eq ['Earth Sciences (Branner)']
+      expect(select_by_id('1618836')[field]).to eq ['Education (Cubberley)']
+      expect(select_by_id('1849258')[field]).to eq ['Engineering (Terman)']
+      expect(select_by_id('2678655')[field]).to eq ['Business']
+      expect(select_by_id('3027805')[field]).to eq ['Marine Biology (Miller)']
+      expect(select_by_id('4258089')[field]).to eq ['Special Collections']
+      expect(select_by_id('4428936')[field]).to eq ['Philosophy (Tanner)']
+      expect(select_by_id('4823592')[field]).to eq ['Law (Crown)']
+      expect(select_by_id('5666387')[field]).to eq ['Music']
+      expect(select_by_id('6676531')[field]).to eq ['East Asia']
+      expect(select_by_id('10421123')[field]).to eq ['Lathrop']
+      expect(select_by_id('2797608')[field]).to eq ['Media & Microtext Center']
+      expect(select_by_id('2797609')[field]).to eq ['David Rumsey Map Center']
+      expect(select_by_id('11847684')[field]).to eq ['Science (Li and Ma)']
+
+      # Green
+
+      expect(select_by_id('1033119')[field]).to include 'Green'
+      expect(select_by_id('1261173')[field]).to include 'Green'
+      expect(select_by_id('2557826')[field]).to include 'Green'
+      expect(select_by_id('3941911')[field]).to include 'Green'
+      expect(select_by_id('4114632')[field]).to include 'Green'
+      expect(select_by_id('2099904')[field]).to include 'Green'
+      # checked out
+      expect(select_by_id('575946')[field]).to include 'Green'
+      # NOT  3277173  (withdrawn)
+
+      # SAL 1 & 2
+      expect(select_by_id('1033119')[field]).to include 'SAL1&2 (on-campus shelving)'
+      expect(select_by_id('1962398')[field]).to include 'SAL1&2 (on-campus shelving)'
+      expect(select_by_id('2328381')[field]).to include 'SAL1&2 (on-campus shelving)'
+      expect(select_by_id('2913114')[field]).to include 'SAL1&2 (on-campus shelving)'
+
+      # SAL3 (off-campus storage)
+      expect(select_by_id('690002')[field]).to include 'SAL3 (off-campus storage)'
+      expect(select_by_id('2328381')[field]).to include 'SAL3 (off-campus storage)'
+      expect(select_by_id('3941911')[field]).to include 'SAL3 (off-campus storage)'
+      expect(select_by_id('7651581')[field]).to include 'SAL3 (off-campus storage)'
+
+      # Lane
+      expect(select_by_id('7370014')[field]).to include 'Medical (Lane)'
+      expect(select_by_id('7233951')[field]).to include 'Medical (Lane)'
+
+      # Hoover
+      expect(select_by_id('3743949')[field]).to include 'Hoover Library'
+      expect(select_by_id('3400092')[field]).to include 'Hoover Archives'
+    end
+
+    it 'skips invalid buildings' do
+      buildings = []
+      results.map do |result|
+        buildings << result[field]
+      end
+
+      expect(buildings.flatten).not_to include(
+        'APPLIEDPHY', # Applied Physics Department
+        'CPM', # 1391080 GREEN - Current Periodicals & Microtext
+        'GRN-REF', # 2442876, GREEN - Reference - Obsolete
+        'ILB', # 1111, Inter-Library Borrowing
+        'SPEC-DESK', # GREEN (Humanities & Social Sciences)
+        'SUL',
+        'PHYSICS', # Physics Library
+        'MEYER', # INDEX-168 Meyer
+        'BIOLOGY', # closed
+        'CHEMCHMENG', # closed
+        'MATH-CS' # closed
+      )
+    end
+  end
 end
 
-
-# package edu.stanford;
-#
-# import java.io.File;
-# import java.io.IOException;
-# import java.util.HashSet;
-# import java.util.Set;
-#
-# import javax.xml.parsers.ParserConfigurationException;
-#
-# import org.apache.solr.client.solrj.SolrServerException;
-# import org.junit.Before;
-# import org.junit.Test;
-# import org.marc4j.marc.*;
-# import org.xml.sax.SAXException;
-#
-# import edu.stanford.enumValues.CallNumberType;
-#
-# /**
-#  * junit4 tests for Stanford University's fields derived from item info in
-#  * 999 other than call number (building_facet, access_facet, location, barcode,
-#  * etc.)
-#  * @author Naomi Dushay
-#  */
-# public class ItemInfoTests extends AbstractStanfordTest {
-#
-# @Before
-# 	public final void setup()
-# 	{
-# 		mappingTestInit();
-# 	}
-#
-# 	/**
-# 	 * Test building facet values.  Skipped building values are in a separate test
-# 	 */
-# @Test
-# 	public final void testBuildingFacet()
-# 			throws ParserConfigurationException, IOException, SAXException, SolrServerException
-# 	{
-# 		String fldName = "building_facet";
-# 		createFreshIx("buildingTests.xml");
-#
-# 	    assertSingleResult("229800", fldName, "\"Archive of Recorded Sound\"");
-# 	    assertSingleResult("345228", fldName, "\"Art & Architecture (Bowes)\"");
-# 	    assertSingleResult("804724", fldName, "\"SAL Newark (off-campus storage)\"");
-# 	    assertSingleResult("1147269", fldName, "\"Classics\"");
-# 	    assertSingleResult("1505065", fldName, "\"Earth Sciences (Branner)\"");
-# 	    assertSingleResult("1618836", fldName, "\"Education (Cubberley)\"");
-# 	    assertSingleResult("1849258", fldName, "\"Engineering (Terman)\"");
-# 	    assertSingleResult("2678655", fldName, "Business");
-# 	    assertSingleResult("3027805", fldName, "\"Marine Biology (Miller)\"");
-# 	    assertSingleResult("4258089", fldName, "\"Special Collections\"");
-# 	    assertSingleResult("4428936", fldName, "\"Philosophy (Tanner)\"");
-# 	    assertSingleResult("4823592", fldName, "\"Law (Crown)\"");
-# 	    assertSingleResult("5666387", fldName, "Music");
-# 	    assertSingleResult("6676531", fldName, "\"East Asia\"");
-# 	    assertSingleResult("10421123", fldName, "Lathrop");
-# 	    assertSingleResult("2797608", fldName, "\"Media & Microtext Center\"");
-# 			assertSingleResult("2797609", fldName, "\"David Rumsey Map Center\"");
-#       assertSingleResult("11847684", fldName, "\"Science (Li and Ma)\"");
-#
-# 	    // hoover tests are a separate method below
-#
-# 	    Set<String> docIds = new HashSet<String>();
-# 	    docIds.add("1033119");
-# 	    docIds.add("1261173");
-# 	    docIds.add("2557826");
-# 	    docIds.add("3941911");
-# 	    docIds.add("4114632");
-# 	    docIds.add("2099904");
-# 	    // checked out
-# 	    docIds.add("575946");
-# 	    // NOT  3277173  (withdrawn)
-# 	    assertSearchResults(fldName, "\"Green\"", docIds);
-#
-# 	    docIds.clear();
-# 	    docIds.add("1033119");
-# 	    docIds.add("1962398");
-# 	    docIds.add("2328381");
-# 	    docIds.add("2913114");
-# 	    assertSearchResults(fldName, "\"SAL1&2 (on-campus shelving)\"", docIds);
-#
-# 	    docIds.clear();
-# 	    docIds.add("690002");
-# 	    docIds.add("2328381");
-# 	    docIds.add("3941911");
-# 	    docIds.add("7651581");
-# 	    // education - withdrawn;  SAL3 STACKS
-# 	    docIds.add("2214009");
-# 	    assertSearchResults(fldName, "\"SAL3 (off-campus storage)\"", docIds);
-#
-# 	    docIds.clear();
-# 	    docIds.add("7370014");
-# 	    // ask@lane
-# 	    docIds.add("7233951");
-# 	    assertSearchResults(fldName, "\"Medical (Lane)\"", docIds);
-# 	}
-#
-# 	/**
-# 	 * ensure that there are no building facet values for items that are in
-# 	 *  buildings without translations in the library_map
-# 	 */
-# @Test
-# 	public void testSkipBuildingFacet()
-# 			throws ParserConfigurationException, IOException, SAXException, SolrServerException
-# 	{
-# 		String fldName = "building_facet";
-# 		createFreshIx("buildingTests.xml");
-#
-# 		// APPLIEDPHY (Applied Physics Department is no longer a valid building)
-# //	    assertSingleResult("115472", fldName, "\"Applied Physics Department\"");
-# 	    assertZeroResults(fldName, "\"APPLIEDPHY\"");
-#
-# 	    // CPM not a valid building
-# //	    assertSingleResult("1391080", fldName, "\"GREEN - Current Periodicals & Microtext\"");
-# 	    assertZeroResults(fldName, "\"CPM\"");
-#
-# 	    // GRN-REF GREEN - Reference - Obsolete
-# //	    assertSingleResult("2442876", fldName, "\"GREEN - Reference\"");
-# 	    assertZeroResults(fldName, "\"GRN-REF\"");
-#
-# 	    // ILB Inter-Library Borrowing - Obsolete
-# //	    assertSingleResult("1111", fldName, "\"Inter-Library Borrowing\"");
-# 	    assertZeroResults(fldName, "\"ILB\"");
-#
-# 	    // SPEC-DESK   GREEN (Humanities & Social Sciences)   not a valid building
-# //	    assertSingleResult("2222", fldName, "GREEN (Humanities & Social Sciences)");
-# 	    assertZeroResults(fldName, "SPEC-DESK");
-#
-# 	    // SUL  Stanford University Libraries   not a valid building
-# //	    assertSingleResult("6493823", fldName, "Stanford University Libraries");
-# //	    assertSingleResult("7117119", fldName, "Stanford University Libraries");
-# 	    assertZeroResults(fldName, "\"SUL\"");
-#
-# 		// PHYSICS (Physics Library is no longer a valid building)
-# //	    assertSingleResult("3142611", fldName, "Physics");
-# 	    assertZeroResults(fldName, "\"PHYSICS\"");
-#
-# 	    // INDEX-168 Meyer no longer exists
-# 	    assertZeroResults(fldName, "\"MEYER\"");
-#
-#       // BIOLOGY, CHEMCHMENG, and MATH-CS are closed Libraries
-#       assertZeroResults(fldName, "\"BIOLOGY\"");
-#       assertZeroResults(fldName, "\"CHEMCHMENG\"");
-#       assertZeroResults(fldName, "\"MATH-CS\"");
-#
-# 	}
-#
-# 	/**
-# 	 * ensure that the two hoover library codes have separate values for the
-# 	 *  building facet
-# 	 */
-# @Test
-# 	public void testHoover2Locs()
-# 			throws ParserConfigurationException, IOException, SAXException, SolrServerException
-# 	{
-# 		String fldName = "building_facet";
-# 		createFreshIx("buildingTests.mrc");
-# 	    assertSingleResult("3743949", fldName, "\"Hoover Library\"");
-# 	    assertSingleResult("3400092", fldName, "\"Hoover Archives\"");
-# 	}
-#
-#
 # 	/**
 # 	 * test if barcode_search field is populated correctly
 # 	 */
