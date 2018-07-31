@@ -288,12 +288,39 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # # Standard Number Fields
 # isbn_search = custom, getUserISBNs
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
+# TODO: figure out what "(pattern_map.issn)" is intending to do, add the behavior in traject and test it
+to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x')
 # issn_search = 022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x, (pattern_map.issn)
 # isbn_display = custom, getISBNs
 # issn_display = custom, getISSNs
 # lccn = 010a:010z, (pattern_map.lccn), first
-# oclc = custom, getOCLCNums
-# 
+
+# Not using traject's oclcnum here because we have more complicated logic
+to_field 'oclc' do |record, accumulator|
+  marc035_with_m_suffix = []
+  marc035_without_m_suffix = []
+  Traject::MarcExtractor.new('035a', separator: nil).extract(record).map do |data|
+    if data.start_with?('(OCoLC-M)')
+      marc035_with_m_suffix << data.sub(/^\(OCoLC-M\)\s*/, '')
+    elsif data.start_with?('(OCoLC)')
+      marc035_without_m_suffix << data.sub(/^\(OCoLC\)\s*/, '')
+    end
+  end.flatten.compact.uniq
+
+  marc079 = Traject::MarcExtractor.new('079a', separator: nil).extract(record).map do |data|
+    next unless data[/\A(?:ocm)|(?:ocn)|(?:on)/]
+    data.sub(/\A(?:ocm)|(?:ocn)|(?:on)/, '')
+  end.flatten.compact.uniq
+
+  if marc035_with_m_suffix.any?
+    accumulator.concat marc035_with_m_suffix
+  elsif marc079.any?
+    accumulator.concat marc079
+  elsif marc035_without_m_suffix.any?
+    accumulator.concat marc035_without_m_suffix
+  end
+end
+#
 # # Call Number Fields
 # callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
 # callnum_search = custom, getLocalCallNums
