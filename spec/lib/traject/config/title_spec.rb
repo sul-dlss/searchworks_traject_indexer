@@ -390,11 +390,7 @@ RSpec.describe 'Title spec' do
     let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
     let(:field) { 'vern_title_full_display' }
     it 'has the correct titles' do
-      pending 'none of these work, order is incorrect and alternate script chars incorrect'
-      expect(select_by_id('RtoL')[field]).to eq ['1980 ,crocodile for is c / alligator for is a']
-      expect(select_by_id('RtoL2')[field]).to eq ['1980 ,vern (RTL?) c followed by number / vern (RTL?) a']
-      expect(select_by_id('hebrew1')[field]).to eq ['אל״ף בי״ת של יהדות הלל צייטלין ; תירגם וערך מנחם ברש־רועי /']
-      expect(select_by_id('hebrew1')[field]).to eq ['אל״ף בי״ת של יהדות / הלל צייטלין ; תירגם וערך מנחם ברש־רועי']
+      skip 'No tests in solrmarc-sw actually run / pass'
     end
   end
   describe 'title_uniform_display' do
@@ -454,7 +450,6 @@ RSpec.describe 'Title spec' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:field) { 'title_sort' }
     it 'has the correct titles' do
-      pending 'custom sw logic needs some research'
       # 130 (with non-filing)
       expect(select_by_id('130')[field]).to eq ['Snimm 130 4 nonfiling']
       expect(select_by_id('1306')[field]).to eq ['Sox on Fox 130 has sub 6']

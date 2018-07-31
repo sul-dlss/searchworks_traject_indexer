@@ -1,8 +1,5 @@
 require 'traject'
 
-require 'traject/macros/marc21_semantics'
-extend  Traject::Macros::Marc21Semantics
-
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
@@ -46,14 +43,41 @@ to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only, trim_punctuation: true)
 to_field 'title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :false)
 to_field 'vern_title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :only)
-# vern_title_full_display = custom, getLinkedField(245[a-z])
-# TODO: vern_title_full_display is rendering incorrectly                  
 to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
 # TODO: Remove looks like SearchWorks is not using, confirm relevancy changes
 to_field 'vern_title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: :only)
 # # Title Sort Field
-to_field 'title_sort', marc_sortable_title
+to_field 'title_sort' do |record, accumulator|
+  result = []
+  result << extract_sortable_title('130abcdefghijklmnopqrstuvwxyz', record)
+  result << extract_sortable_title('245abdefghijklmnopqrstuvwxyz', record)
+  accumulator << result.join(' ').strip
+end
+
+##
+# Originally cribbed from Traject::Marc21Semantics.marc_sortable_title, but by
+# using algorithm from StanfordIndexer#getSortTitle.
+def extract_sortable_title(fields, record)
+  java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
+  Traject::MarcExtractor.new(fields).collect_matching_lines(record) do |field, spec, extractor|
+    str = extractor.collect_subfields(field, spec).first
+    if str.nil?
+      # maybe an APPM archival record with only a 'k'
+      str = field['k']
+    end
+    if str.nil?
+      # still? All we can do is bail, I guess
+      return nil
+    end
+
+    non_filing = field.indicator2.to_i
+    str = str.slice(non_filing, str.length)
+    str = str.delete(java7_punct).strip
+
+    str
+  end.first
+end
 # 
 # # Series Search Fields
 # series_search = 440anpv:490av:800[a-x]:810[a-x]:811[a-x]:830[a-x]
