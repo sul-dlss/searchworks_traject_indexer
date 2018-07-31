@@ -517,4 +517,13 @@ RSpec.describe 'Date config' do
       expect(result).to eq ['2007-11-08T00:00:00Z']
     end
   end
+
+  context 'a blank record (particularly without an 008 field)' do
+    subject(:result) { |rec| indexer.map_record(record) }
+    let(:record) {  MARC::Record.new }
+
+    it 'indexes fine' do
+      expect(result.keys).not_to include(/year_isi$/)
+    end
+  end
 end

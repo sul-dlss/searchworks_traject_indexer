@@ -177,14 +177,14 @@ end
 # pub_year_tisim = custom, getPubDateSliderVals
 def marc_008_date(byte6values, byte_range, u_replacement)
   lambda do |record, accumulator|
-    field008 = Traject::MarcExtractor.cached("008").extract(record).first
-
-    if byte6values.include? field008.slice(6)
-      year = field008[byte_range]
-      next unless year =~ /(\d{4}|\d{3}u)/
-      year.gsub!(/u$/, u_replacement)
-      next unless (500..(Time.now.year + 10)).include? year.to_i
-      accumulator << year
+    Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, spec, extractor|
+      if byte6values.include? field.value[6]
+        year = field.value[byte_range]
+        next unless year =~ /(\d{4}|\d{3}u)/
+        year.gsub!(/u$/, u_replacement)
+        next unless (500..(Time.now.year + 10)).include? year.to_i
+        accumulator << year
+      end
     end
   end
 end
