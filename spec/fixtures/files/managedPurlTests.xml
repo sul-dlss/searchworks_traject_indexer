@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">amanagedPurlItem1Collection</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Managed PURL Item with 1 Collection</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/nz353cp1092</subfield>
+      <subfield code="x">SDR-PURL</subfield>
+      <subfield code="x">item</subfield>
+      <subfield code="x">file:file1.jpg</subfield>
+      <subfield code="x">collection:yg867hg1375:9615156:Francis E. Stafford photographs, 1909-1933</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">amanagedPurlItem3Collections</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Managed PURL Item with 3 Collections</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/wd297xz1362</subfield>
+      <subfield code="x">SDR-PURL</subfield>
+      <subfield code="x">item</subfield>
+      <subfield code="x">file:file1.jpg</subfield>
+      <subfield code="x">collection:yg867hg1375:9615156:Francis E. Stafford photographs, 1909-1933</subfield>
+      <subfield code="x">collection:aa000bb1111:123456789:Test Collection, 1963-2015</subfield>
+      <subfield code="x">collection:yy000zz1111::Test Collection2, 1968-2015</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">amanagedPurlCollection</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Managed PURL Collection</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/ct961sj2730</subfield>
+      <subfield code="x">SDR-PURL</subfield>
+      <subfield code="x">collection</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">aNoManagedPurlItem</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">No Managed PURL</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/ct961sj2730</subfield>
+      <subfield code="x">DDR-PURL</subfield>
+      <subfield code="x">item</subfield>
+      <subfield code="x">file:file1.jpg</subfield>
+      <subfield code="x">collection:aa000bb1111:123456789:Test Collection, 1963-2015</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">aNoManagedPurlCollection</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">No Managed PURL</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/ct961sj2730</subfield>
+      <subfield code="x">DDR-PURL</subfield>
+      <subfield code="x">collection</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">aManagedAnd2UnmanagedPurlCollection</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Managed And Two Unmanaged 856</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/yy000zz0000</subfield>
+      <subfield code="x">DDR-PURL</subfield>
+      <subfield code="x">collection</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/ct961sj2730</subfield>
+      <subfield code="x">SDR-PURL</subfield>
+      <subfield code="x">collection</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/aa000bb1111</subfield>
+      <subfield code="x">DDR-PURL</subfield>
+      <subfield code="x">collection</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">amanagedPurlItem1Set1Collection</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Managed PURL Item with 1 Set and 1 Collection</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/nz353cp1092</subfield>
+      <subfield code="x">SDR-PURL</subfield>
+      <subfield code="x">item</subfield>
+      <subfield code="x">file:file1.jpg</subfield>
+      <subfield code="x">collection:yg867hg1375:9615156:Francis E. Stafford photographs, 1909-1933</subfield>
+      <subfield code="x">set:aa000bb1111:123456789:Test Set, 1963-2015</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01541cai a2200349Ia 4500</leader>
+    <controlfield tag="001">amanagedPurlItem3Sets2Collections</controlfield>
+    <controlfield tag="008">040727c20049999nyuuu dss     0    2eng d</controlfield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Managed PURL Item with 3 Sets and 2 Collections</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="0">
+      <subfield code="u">https://purl.stanford.edu/wd297xz1362</subfield>
+      <subfield code="x">SDR-PURL</subfield>
+      <subfield code="x">item</subfield>
+      <subfield code="x">file:file1.jpg</subfield>
+      <subfield code="x">collection:yg867hg1375:9615156:Francis E. Stafford photographs, 1909-1933</subfield>
+      <subfield code="x">collection:aa000bb1111:123456789:Test Collection, 1963-2015</subfield>
+      <subfield code="x">set:aa000bb1111::Test set1</subfield>
+      <subfield code="x">set:yy000zz1111::Test set2</subfield>
+      <subfield code="x">set:cc000dd1111:987654:Test set3</subfield>
+    </datafield>
+  </record>
+</collection>

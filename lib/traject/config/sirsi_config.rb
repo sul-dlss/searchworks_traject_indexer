@@ -280,14 +280,98 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # fund_facet = custom, getFundFacet
 # 
 # # Digitized Items Fields
-# managed_purl_urls = custom, getManagedPurls
-# collection = custom, getCollectionDruids
-# collection_with_title = custom, getCollectionsWithTitles
-# set = custom, getSetDruids
-# set_with_title = custom, getSetsWithTitles
-# collection_type = custom, getCollectionType
-# file_id = custom, getFileId
-# 
+to_field 'managed_purl_urls' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    if field['x'] =~ /SDR-PURL/
+      accumulator.concat extractor.collect_subfields(field, spec)
+    end
+  end
+end
+
+to_field 'collection', literal('sirsi')
+to_field 'collection' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+    next unless subfields[0] == 'SDR-PURL' && subfields[1] == 'item'
+
+    accumulator.concat(subfields.slice(2..-1).map do |v|
+      v.split(':')
+    end.select do |(type, _druid, _id, _title)|
+      type == 'collection'
+    end.map do |(_type, druid, id, _title)|
+      id.empty? ? druid : id
+    end)
+  end
+end
+
+to_field 'collection_with_title' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+    next unless subfields[0] == 'SDR-PURL' && subfields[1] == 'item'
+
+    accumulator.concat(subfields.slice(2..-1).map do |v|
+      v.split(':')
+    end.select do |(type, _druid, _id, _title)|
+      type == 'collection'
+    end.map do |(_type, druid, id, title)|
+      "#{id.empty? ? druid : id}-|-#{title}"
+    end)
+  end
+end
+
+to_field 'set' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+    next unless subfields[0] == 'SDR-PURL' && subfields[1] == 'item'
+
+    accumulator.concat(subfields.slice(2..-1).map do |v|
+      v.split(':')
+    end.select do |(type, _druid, _id, _title)|
+      type == 'set'
+    end.map do |(_type, druid, id, _title)|
+      id.empty? ? druid : id
+    end)
+  end
+end
+
+to_field 'set_with_title' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+    next unless subfields[0] == 'SDR-PURL' && subfields[1] == 'item'
+
+    accumulator.concat(subfields.slice(2..-1).map do |v|
+      v.split(':')
+    end.select do |(type, _druid, _id, _title)|
+      type == 'set'
+    end.map do |(_type, druid, id, title)|
+      "#{id.empty? ? druid : id}-|-#{title}"
+    end)
+  end
+end
+
+to_field 'collection_type' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+
+    accumulator << 'Digital Collection' if subfields[0] == 'SDR-PURL' && subfields[1] == 'collection'
+  end
+end
+
+to_field 'file_id' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+    next unless subfields[0] == 'SDR-PURL' && subfields[1] == 'item'
+
+    accumulator.concat(subfields.slice(2..-1).map do |v|
+      v.split(':')
+    end.select do |(type, _file_id)|
+      type == 'file'
+    end.map do |(_type, file_id)|
+      file_id
+    end)
+  end
+end
+#
 # # INDEX-142 NOTE 3: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
 # # so need to account for it in the pattern match below
 # pattern_map.issn.pattern_0 = ^(\\d{4}-\\d{3}[X\\d]\\D*)$=>$1
