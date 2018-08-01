@@ -24,9 +24,9 @@ to_field 'marcxml', serialized_marc(
 # vern_all_search = custom, getAllLinkedSearchableFields
 # 
 # Title Search Fields
-to_field 'title_245a_search', extract_marc('245a')
+to_field 'title_245a_search', extract_marc('245a', first: true)
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
-to_field 'title_245_search', extract_marc('245abfgknps')
+to_field 'title_245_search', extract_marc('245abfgknps', first: true)
 to_field 'vern_title_245_search', extract_marc('245abfgknps', alternate_script: :only)
 to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true)
 to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: :only)
@@ -41,7 +41,7 @@ to_field 'title_245c_display', extract_marc('245c', alternate_script: false, tri
 to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only, trim_punctuation: true)
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false, trim_punctuation: true)
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only, trim_punctuation: true)
-to_field 'title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :false)
+to_field 'title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', first: true, alternate_script: :false)
 to_field 'vern_title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :only)
 to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
