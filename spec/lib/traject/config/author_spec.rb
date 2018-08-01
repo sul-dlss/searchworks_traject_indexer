@@ -94,9 +94,9 @@ RSpec.describe 'Author config' do
         expect(results).not_to include hash_including(field => ['none'])
       end
 
-      it 'has subfields that overlap with title', pending: :fixme do
+      it 'has subfields that overlap with title' do
         result = select_by_id('7xxLowVernSearch')[field][0]
-        expect(result).to eq 'vern700g vern700j'
+        expect(result).to eq 'vern700g vern700j nope'
 
         ['7xxLowVernSearch', '7xxVernPersonSearch'].each do |id|
           expect(select_by_id(id)[field].first).to include 'vern700g vern700j'
@@ -139,12 +139,12 @@ RSpec.describe 'Author config' do
         expect(results).not_to include hash_including(field => ['none'])
       end
 
-      it 'has subfields that overlap with title', pending: :fixme do
+      it 'has subfields that overlap with title' do
         result = select_by_id('7xxLowVernSearch')[field][2]
-        expect(result).to eq 'vern711g vern711n'
+        expect(result).to eq 'vern711g nope vern711n'
 
         result = select_by_id('79xVernSearch')[field][2]
-        expect(result).to eq 'vern798e vern798g vern798n'
+        expect(result).to eq 'vern798e vern798g nope vern798n'
       end
     end
   end
@@ -181,9 +181,9 @@ RSpec.describe 'Author config' do
         expect(result).to eq ['vern800a vern800b vern800c vern800d vern800e vern800g vern800j vern800q vern800u']
       end
 
-      it 'has subfields that overlap with title', pending: :fixme do
+      it 'has subfields that overlap with title' do
         result = select_by_id('8xxVernSearch')[field][0]
-        expect(result).to eq 'vern800g vern800j'
+        expect(result).to eq 'vern800g vern800j nope'
 
         ['800VernSearch', '8xxVernSearch'].each do |id|
           expect(select_by_id(id)[field].first).to include 'vern800g vern800j'
@@ -214,9 +214,9 @@ RSpec.describe 'Author config' do
         expect(result).to eq ['vern811a vern811c vern811d vern811e vern811g vern811j vern811n vern811q vern811u']
       end
 
-      it 'has subfields that overlap with title', pending: :fixme do
+      it 'has subfields that overlap with title' do
         result = select_by_id('8xxVernSearch')[field][2]
-        expect(result).to eq 'vern811g vern811n'
+        expect(result).to eq 'vern811g nope vern811n'
       end
     end
   end
@@ -237,7 +237,7 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['Johnson, Samuel, 1649-1703']
     end
 
-    it 'leaves in trailing period for B.C. acronym', pending: :fixme do
+    it 'leaves in trailing period for B.C. acronym' do
       result = select_by_id('8634')[field]
       expect(result).to eq ['Sallust, 86-34 B.C.']
     end
@@ -257,14 +257,19 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['Coutinho, Frederico dos Reys']
     end
 
-    it 'removes trailing period for hyphen, comma, period combo', pending: :fixme do
+    it 'removes trailing period for hyphen, comma, period combo' do
       result = select_by_id('700friedman')[field]
       expect(result).to eq ['Friedman, Eli A., 1933-']
     end
 
-    it 'removes trailing period when fuller form of name is in parentheses', pending: :fixme do
+    it 'removes trailing period when fuller form of name is in parentheses' do
       result = select_by_id('700sayers')[field]
       expect(result).to eq ['Whimsey, Peter', 'Sayers, Dorothy L. (Dorothy Leigh), 1893-1957']
     end
+  end
+
+  describe 'author_other_facet' do
+    let(:field) { 'author_other_facet' }
+
   end
 end
