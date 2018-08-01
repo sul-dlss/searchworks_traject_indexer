@@ -97,8 +97,9 @@ to_field 'vern_author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:7
 to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu')
 to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
 # # Author Facet Fields
-to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', trim_punctuation: true) do |record, accumulator|
-  accumulator.map! { |v| v.gsub(/([A-Za-z]{4}|[0-9]{3}|[\)-])[\\,;:]\.?$/, '\1')}
+to_field 'author_person_facet', extract_marc('100abcdq:700abcdq') do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
 end
 # author_other_facet = custom, removeTrailingPunct(110abcdn:111acdn:710abcdn:711acdn, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,) )
