@@ -1,5 +1,8 @@
 require 'traject'
 
+ALPHABET = [*'a'..'z'].join('')
+A_X = ALPHABET.slice(0, 24)
+
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
@@ -78,12 +81,12 @@ def extract_sortable_title(fields, record)
     str
   end.first
 end
-# 
-# # Series Search Fields
-# series_search = 440anpv:490av:800[a-x]:810[a-x]:811[a-x]:830[a-x]
-# vern_series_search = custom, getLinkedField(440anpv:490av:800[a-x]:810[a-x]:811[a-x]:830[a-x])
-# series_exact_search = 830a
-# 
+
+# Series Search Fields
+to_field 'series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}")
+to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
+to_field 'series_exact_search', extract_marc('830a')
+
 # # Author Title Search Fields
 # author_title_search = custom, getAuthorTitleSearch
 # 
