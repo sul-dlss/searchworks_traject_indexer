@@ -44,16 +44,16 @@ to_field 'title_245c_display', extract_marc('245c', alternate_script: false, tri
 to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only, trim_punctuation: true)
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false, trim_punctuation: true)
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only, trim_punctuation: true)
-to_field 'title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', first: true, alternate_script: :false)
-to_field 'vern_title_full_display', extract_marc('245abcdefghijklmnopqrstuvwxyz', alternate_script: :only)
-to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: false)
+to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :false)
+to_field 'vern_title_full_display', extract_marc("245#{ALPHABET}", alternate_script: :only)
+to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}#{ALPHABET}" }.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
 # TODO: Remove looks like SearchWorks is not using, confirm relevancy changes
-to_field 'vern_title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), first: true, alternate_script: :only)
+to_field 'vern_title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}#{ALPHABET}" }.join(':'), first: true, alternate_script: :only)
 # # Title Sort Field
 to_field 'title_sort' do |record, accumulator|
   result = []
-  result << extract_sortable_title('130abcdefghijklmnopqrstuvwxyz', record)
+  result << extract_sortable_title("130#{ALPHABET}", record)
   result << extract_sortable_title('245abdefghijklmnopqrstuvwxyz', record)
   accumulator << result.join(' ').strip
 end
@@ -143,8 +143,8 @@ end
 to_field "vern_subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstu"}.join(':'), alternate_script: :only)
 to_field "subject_other_subvy_search", extract_marc(%w(600 610 611 630 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: false)
 to_field "vern_subject_other_subvy_search", extract_marc(%w(600 610 611 630 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: :only)
-to_field "subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz" }.join(':'), alternate_script: false)
-to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuvwxyz"}.join(':'), alternate_script: :only)
+to_field "subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}" }.join(':'), alternate_script: false)
+to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}"}.join(':'), alternate_script: :only)
 
 # Subject Facet Fields
 to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false, trim_punctuation: true) do |record, accumulator|
