@@ -317,6 +317,14 @@ to_field 'isbn_display' do |record, accumulator|
   end
 end
 
+# issn_display = custom, getISSNs
+
+to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
+  lccn_pattern = /^(?:([ a-z]{2}\d{10})|([ a-z]{3}\d{8})|((\d{11}|\d{10}|\d{8})).*)$/
+  accumulator.map! do |value|
+    value.scan(lccn_pattern).flatten.compact.first
+  end
+end
 # lccn = 010a:010z, (pattern_map.lccn), first
 
 # Not using traject's oclcnum here because we have more complicated logic

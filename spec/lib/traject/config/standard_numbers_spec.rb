@@ -281,42 +281,43 @@ RSpec.describe 'Standard Numbers' do
 # 	assertSingleResult("785x", fldName, "8750-2836");
 #
 # }
-#
-# 	/**
-# 	 * Test population of lccn field
-# 	 */
-# @Test
-# 	public final void testLCCN()
-# 	{
-# 		String fldName = "lccn";
-# 		String testFilePath = testDataParentPath + File.separator + "lccnTests.mrc";
-#
-# 		// no lccn
-# 		solrFldMapTest.assertNoSolrFld(testFilePath, "No010", fldName);
-# // TODO:  the 9 digit lccn passes.  I don't know why.  I no longer care.
-# //		solrFldMapTest.assertNoSolrFld(testFilePath, "010bad", fldName);
-# 		// 010 sub a only
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba8digit", fldName, "85153773");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba10digit", fldName, "2001627090");
-# 		// prefix
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba8digitPfx", fldName, "a  60123456");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba8digit2LetPfx", fldName, "bs 66654321");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba8digit3LetPfx", fldName, "cad77665544");
-# 		// according to loc marc doc, shouldn't have prefix for 10 digit, but
-# 		//  what the heck - let's test
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba10digitPfx", fldName, "r 2001336783");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba10digit2LetPfx", fldName, "ne2001045944");
-# 		// suffix
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba8digitSfx", fldName, "79139101");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba10digitSfx", fldName, "2006002284");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010suba8digitSfx2", fldName, "73002284");
-# 		// sub z
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010subz", fldName, "20072692384");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010subaAndZ", fldName, "76647633");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "010subaAndZ", fldName, "76000587");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "010multSubZ", fldName, "76647633");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "010multSubZ", fldName, "2000123456");
-# 	}
-#
-# }
+
+  describe 'lccn' do
+    let(:fixture_name) { 'lccnTests.mrc' }
+    let(:field) { 'lccn' }
+
+    it 'has the correct data' do
+      # no lccn
+      expect(select_by_id('No010')[field]).to be_nil
+
+      # TODO:  the 9 digit lccn passes.  I don't know why.  I no longer care.
+      # solrFldMapTest.assertNoSolrFld(testFilePath, "010bad", fldName);
+      # converted for rspec
+      # expect(select_by_id('010bad')[field]).to be_nil
+
+      # 010 sub a only
+      expect(select_by_id('010suba8digit')[field]).to eq(['85153773'])
+      expect(select_by_id('010suba10digit')[field]).to eq(['2001627090'])
+
+      # prefix
+      expect(select_by_id('010suba8digitPfx')[field]).to eq(['a  60123456'])
+      expect(select_by_id('010suba8digit2LetPfx')[field]).to eq(['bs 66654321'])
+      expect(select_by_id('010suba8digit3LetPfx')[field]).to eq(['cad77665544'])
+
+      # according to loc marc doc, shouldn't have prefix for 10 digit, but
+      # what the heck - let's test
+      expect(select_by_id('010suba10digitPfx')[field]).to eq(['r 2001336783'])
+      expect(select_by_id('010suba10digit2LetPfx')[field]).to eq(['ne2001045944'])
+
+      # suffix
+      expect(select_by_id('010suba8digitSfx')[field]).to eq(['79139101'])
+      expect(select_by_id('010suba10digitSfx')[field]).to eq(['2006002284'])
+      expect(select_by_id('010suba8digitSfx2')[field]).to eq(['73002284'])
+
+      # sub z
+      expect(select_by_id('010subz')[field]).to eq(['20072692384'])
+      expect(select_by_id('010subaAndZ')[field]).to eq(['76647633'])
+      expect(select_by_id('010multSubZ')[field]).to eq(['76647633'])
+    end
+  end
 end
