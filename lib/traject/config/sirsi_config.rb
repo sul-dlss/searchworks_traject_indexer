@@ -127,7 +127,7 @@ to_field 'series_exact_search', extract_marc('830a')
 
 # # Author Title Search Fields
 # author_title_search = custom, getAuthorTitleSearch
-# 
+#
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
@@ -284,15 +284,39 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # url_suppl = custom, getSupplUrls
 # url_sfx = 956u, (pattern_map.sfx)
 # url_restricted = custom, getRestrictedUrls
-# 
+#
 # # Standard Number Fields
 # isbn_search = custom, getUserISBNs
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
 # TODO: figure out what "(pattern_map.issn)" is intending to do, add the behavior in traject and test it
 to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x')
 # issn_search = 022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x, (pattern_map.issn)
-# isbn_display = custom, getISBNs
-# issn_display = custom, getISSNs
+
+def extract_isbn(values)
+  isbn10_pattern = /^\d{9}[\dX].*/
+  isbn13_pattern = /^(978|9)\d{9}[\dX].*/
+  isbn13_any = /^\d{12}[\dX].*/
+
+  values.map do |value|
+    if value =~ isbn13_pattern
+      value[0, 13]
+    elsif value =~ isbn10_pattern && value !~ isbn13_any
+      value[0, 10]
+    end
+  end.compact
+end
+
+to_field 'isbn_display' do |record, accumulator|
+  marc020a = Traject::MarcExtractor.new('020a').extract(record)
+  marc020z = Traject::MarcExtractor.new('020z').extract(record)
+
+  if marc020a.any?
+    accumulator.concat extract_isbn(marc020a)
+  elsif marc020z.any?
+    accumulator.concat extract_isbn(marc020z)
+  end
+end
+
 # lccn = 010a:010z, (pattern_map.lccn), first
 
 # Not using traject's oclcnum here because we have more complicated logic
@@ -326,27 +350,27 @@ end
 # callnum_search = custom, getLocalCallNums
 # shelfkey = custom, getShelfkeys
 # reverse_shelfkey = custom, getReverseShelfkeys
-# 
+#
 # # Location facet
 # location_facet = custom, getLocationFacet
-# 
+#
 # # Stanford student work facet
 # stanford_work_facet_hsim = custom, getStanfordWorkFacet
 # stanford_dept_sim = custom, getStanfordDeptFacet
-# 
+#
 # # Item Info Fields (from 999 that aren't call number)
 # barcode_search = 999i
 # preferred_barcode = custom, getPreferredItemBarcode
 # access_facet = custom, getAccessMethods
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
-# 
+#
 
 to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
 # mhld_display = custom, getMhldDisplay
 # bookplates_display = custom, getBookplatesDisplay
 # fund_facet = custom, getFundFacet
-# 
+#
 # # Digitized Items Fields
 to_field 'managed_purl_urls' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
@@ -443,8 +467,8 @@ end
 # # INDEX-142 NOTE 3: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
 # # so need to account for it in the pattern match below
 # pattern_map.issn.pattern_0 = ^(\\d{4}-\\d{3}[X\\d]\\D*)$=>$1
-# 
+#
 # pattern_map.lccn.pattern_0 = ^(([ a-z]{3}\\d{8})|([ a-z]{2}\\d{10})) ?|( /.*)?$=>$1
-# 
+#
 # pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
 # pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1

@@ -55,76 +55,67 @@ RSpec.describe 'Standard Numbers' do
     end
   end
 
+  describe 'isbn_display [the ISBNs used for external lookups (e.g. Google Book Search)]' do
+    let(:fixture_name) { 'isbnTests.mrc' }
+    let(:field) { 'isbn_display' }
 
+    it 'has the correct data' do#
+      # no isbn
+      expect(select_by_id('No020')[field]).to be_nil
+      expect(select_by_id('020noSubaOrz')[field]).to be_nil
+
+      # 020 subfield a 10 digit varieties
+      expect(select_by_id('020suba10digit')[field]).to eq(['1417559128'])
+      expect(select_by_id('020suba10endsX')[field]).to eq(['123456789X'])
+      expect(select_by_id('020suba10trailingText')[field]).to eq(
+        ['1234567890', '0123456789', '0521672694', '052185668X']
+      )
 #
-# 	/**
-# 	 * Test population of isbn_display: the ISBNs used for external
-# 	 *  lookups (e.g. Google Book Search)
-# 	 */
-# @Test
-# 	public final void testISBNdisplay()
-# 	{
-# 		String fldName = "isbn_display";
-# 		String testFilePath = testDataParentPath + File.separator + "isbnTests.mrc";
-#
-# 		// no isbn
-# 	    solrFldMapTest.assertNoSolrFld(testFilePath, "No020", fldName);
-# 	    solrFldMapTest.assertNoSolrFld(testFilePath, "020noSubaOrz", fldName);
-#
-# 		// 020 subfield a 10 digit varieties
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba10digit", fldName, "1417559128");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba10endsX", fldName, "123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba10trailingText", fldName, "1234567890");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba10trailingText", fldName, "0123456789");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba10trailingText", fldName, "0521672694");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba10trailingText", fldName, "052185668X");
-#
-# 		// 020 subfield a 13 digit varieties
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba13", fldName, "9780809424887");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba13endsX", fldName, "979123456789X");
-# 	    solrFldMapTest.assertNoSolrFld(testFilePath, "020suba13bad", fldName);
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "020suba13bad", fldName, "000123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba13trailingText", fldName, "978185585039X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba13trailingText", fldName, "9780809424887");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020suba13trailingText", fldName, "9780809424870");
-# 		// sub a mixed 10 and 13 digit
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subaMult", fldName, "0809424886");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subaMult", fldName, "123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subaMult", fldName, "1234567890");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subaMult", fldName, "979123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subaMult", fldName, "9780809424887");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subaMult", fldName, "9781855850484");
-# 		// no subfield a in 020, but has subfield z 10 digit
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz10digit", fldName, "9876543210");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz10endsX", fldName, "123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz10trailingText", fldName, "1234567890");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz10trailingText", fldName, "0123456789");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz10trailingText", fldName, "0521672694");
-# 		// no subfield a in 020, but has subfield z 13 digit
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz13digit", fldName, "9780809424887");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz13endsX", fldName, "979123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz13trailingText", fldName, "978185585039X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz13trailingText", fldName, "9780809424887");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020subz13trailingText", fldName, "9780809424870");
-# 		// mult subfield z in single 020
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "9802311987");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "9802311995");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "9802312002");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "9876543210");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "9780809424887");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "979123456789X");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020multSubz", fldName, "9780809424870");
-#
-# 		// mult a and z - should only have a
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020SubaAndz", fldName, "0123456789");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020SubaAndz", fldName, "0521672694");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "020SubaAndz", fldName, "9802311987");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "020SubaAndz", fldName, "052185668X");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "020SubaAndz", fldName, "123456789X");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "020SubaAndz", fldName, "9780809424887");
-# 	}
-#
+# 		# 020 subfield a 13 digit varieties
+      expect(select_by_id('020suba13')[field]).to eq(['9780809424887'])
+      expect(select_by_id('020suba13endsX')[field]).to eq(['979123456789X'])
+      expect(select_by_id('020suba13bad')[field]).to be_nil
+      expect(select_by_id('020suba13trailingText')[field]).to eq(['978185585039X', '9780809424887', '9780809424870'])
+
+      # sub a mixed 10 and 13 digit
+      expect(select_by_id('020subaMult')[field]).to eq(
+        ['0809424886', '123456789X', '1234567890', '979123456789X', '9780809424887', '9781855850484']
+      )
+
+      # no subfield a in 020, but has subfield z 10 digit
+      expect(select_by_id('020subz10digit')[field]).to eq(['9876543210'])
+      expect(select_by_id('020subz10endsX')[field]).to eq(['123456789X'])
+      expect(select_by_id('020subz10trailingText')[field]).to eq(
+        ['1234567890', '0123456789', '0521672694']
+      )
+
+      # no subfield a in 020, but has subfield z 13 digit
+      expect(select_by_id('020subz13digit')[field]).to eq(['9780809424887'])
+      expect(select_by_id('020subz13endsX')[field]).to eq(['979123456789X'])
+      expect(select_by_id('020subz13trailingText')[field]).to eq(
+        ['978185585039X', '9780809424887', '9780809424870']
+      )
+
+      # mult subfield z in single 020
+      expect(select_by_id('020multSubz')[field].sort).to eq(
+        [
+          '9802311987',
+          '9802311995',
+          '9802312002',
+          '9876543210',
+          '123456789X',
+          '9780809424887',
+          '979123456789X',
+          '9780809424870'
+        ].sort
+      )
+
+      # mult a and z - should only have a
+      expect(select_by_id('020SubaAndz')[field]).to eq(
+        ['0123456789', '0521672694', '052185668X']
+      )
+    end
+  end
 # 	/**
 # 	 * Test population of isbn_search field: the ISBNs that an end user can
 # 	 *  search for in our index
