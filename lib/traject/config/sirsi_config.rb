@@ -169,6 +169,30 @@ def clean_facet_punctuation(value)
   new_value[/(?<valid>\(\g<valid>*\)|[^()])+/x] # remove unmatched parentheses
 end
 
+# Custom method for traject's trim_punctuation
+# https://github.com/traject/traject/blob/5754e3c0c207d461ca3a98728f7e1e7cf4ebbece/lib/traject/macros/marc21.rb#L227-L246
+# Does the same except removes trailing period when preceded by at
+# least four letters instead of three.
+def trim_punctuation_custom(str)
+  # If something went wrong and we got a nil, just return it
+  return str unless str
+  # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
+  str = str.sub(/ *[ ,\/;:] *\Z/, '')
+
+  # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
+  str = str.gsub(/( *[[:word:]]{4,}|[0-9]{4})\. *\Z/, '\1')
+
+  # single square bracket characters if they are the start and/or end
+  #   chars and there are no internal square brackets.
+  str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+
+  # trim any leading or trailing whitespace
+  str.strip!
+
+  return str
+end
+
+
 # # Publication Fields
 # pub_search = custom, getPublication
 # vern_pub_search = custom, getLinkedField(260ab:264ab)
