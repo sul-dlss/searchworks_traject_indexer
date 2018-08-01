@@ -270,6 +270,63 @@ RSpec.describe 'Author config' do
 
   describe 'author_other_facet' do
     let(:field) { 'author_other_facet' }
+    it 'removes trailing period that isn\'t an initial' do
+      # field 110
+      result = select_by_id('110foo')[field]
+      expect(result).to eq ['SAFE Association (U.S.). Symposium']
+      # field 110
+      result = select_by_id('NYPL')[field]
+      expect(result).to eq ['New York Public Library']
+      # field 110
+      result = select_by_id('110710corpname')[field][0]
+      expect(result).to eq 'Thelma'
+    end
 
+    it 'removes trailing period preceded by 4-digit year' do
+      # field 710
+      result = select_by_id('110710corpname')[field][1]
+      expect(result).to eq 'Roaring Woman, Louise. 2000-2001'
+    end
+
+    it 'removes trailing period when preceded by a close parenthesis' do
+      # field 111
+      result = select_by_id('111faim')[field]
+      expect(result).to eq ['FAIM (Forum)']
+      # field 111 sub a n d c
+      result = select_by_id('5666387')[field]
+      expect(result).to eq ['International Jean Sibelius Conference (3rd : 2000 : Helsinki, Finland)']
+      # field 710
+      result = select_by_id('987666')[field][2]
+      expect(result).to eq '(this was a value in a non-latin script)'
+
+      result = select_by_id('710corpname')[field][1]
+      expect(result).to eq 'Warner Bros. Pictures (1969- )'
+
+      # field 711
+      result = select_by_id('711')[field]
+      expect(result).to eq ['European Conference on Computer Vision (2006 : Graz, Austria)']
+    end
+
+    it 'leaves in trailing period for abbreviations' do
+      # field 710
+      result = select_by_id('6280316')[field][1]
+      expect(result).to eq 'Julius Bien & Co.'
+
+      result = select_by_id('57136914')[field]
+      expect(result).to eq ['NetLibrary, Inc.']
+    end
+
+    it 'leaves in trailing period for Dept. abbreviation' do
+      pending 'legacy test doesn\'t check for punctuation for Dept.; solrmarc-sw doesn\'t handle it correctly either.'
+      # field 710
+      result = select_by_id('6280316')[field][0]
+      expect(result).to eq 'United States. War Dept.'
+    end
+
+    it 'removes leading whitespace' do
+      # field 710
+      result = select_by_id('710corpname')[field][0]
+      expect(result).to eq 'Heyday Films'
+    end
   end
 end
