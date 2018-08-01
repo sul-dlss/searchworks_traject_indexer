@@ -415,4 +415,15 @@ RSpec.describe 'Author config' do
       end
     end
   end
+
+  describe 'vern_author_person_full_display' do
+    let(:field) { 'vern_author_person_full_display' }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    it 'has correct display for RTL script' do
+      pending 'legacy test doesn\'t run but solrmarc-sw returns incorrect display too'
+      # "vern_author_person_display":"vern (RTL?) a (first) : vern (RTL?) b (second), vern (RTL?) c (third)"
+      result = select_by_id('RtoL2')[field]
+      expect(result).to eq ['vern (RTL?) c (third) ,vern (RTL?) b (second) : vern (RTL?) a (first)']
+    end
+  end
 end
