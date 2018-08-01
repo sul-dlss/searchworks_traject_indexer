@@ -329,4 +329,42 @@ RSpec.describe 'Author config' do
       expect(result).to eq 'Heyday Films'
     end
   end
+
+  describe 'author_person_display' do
+    let(:field) { 'author_person_display' }
+    it 'removes trailing period for field 110a' do
+      result = select_by_id('345228')[field]
+      expect(result).to eq ['Bashkov, Vladimir']
+    end
+
+    it 'retains trailing hyphen for 100ad' do
+      result = select_by_id('919006')[field]
+      expect(result).to eq ['Oeftering, Michael, 1872-']
+    end
+
+    it 'removes trailing comma for 100ae (e is not indexed)' do
+      result = select_by_id('7651581')[field]
+      expect(result).to eq ['Coutinho, Frederico dos Reys']
+    end
+
+    it 'removes trailing period for field 100aqd' do
+      result = select_by_id('690002')[field]
+      expect(result).to eq ['Wallin, J. E. Wallace (John Edward Wallace), b. 1876']
+    end
+
+    it 'removes trailing period for field 100ad' do
+      result = select_by_id('1261173')[field]
+      expect(result).to eq ['Johnson, Samuel, 1649-1703']
+    end
+
+    it 'leaves in trailing period for B.C. acronym' do
+      result = select_by_id('8634')[field]
+      expect(result).to eq ['Sallust, 86-34 B.C.']
+    end
+
+    it '100a with unlinked 880' do
+      result = select_by_id('1006')[field]
+      expect(result).to eq ['Sox on Fox']
+    end
+  end
 end
