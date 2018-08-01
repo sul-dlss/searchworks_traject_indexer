@@ -426,4 +426,30 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['vern (RTL?) c (third) ,vern (RTL?) b (second) : vern (RTL?) a (first)']
     end
   end
+
+  describe 'author_corp_display' do
+    let(:field) { 'author_corp_display' }
+    it 'has correct display for 110a' do
+      result = select_by_id('NYPL')[field]
+      expect(result).to eq ['New York Public Library.']
+    end
+
+    it 'has correct display for 110abbb' do
+      result = select_by_id('5511738')[field]
+      expect(result).to eq ['United States. Congress. House. Committee on Agriculture. Subcommittee on Department Operations, Oversight, Nutrition, and Forestry.']
+    end
+
+    it 'has correct display for 110abn' do
+      result = select_by_id('4578538')[field]
+      expect(result).to eq ['Stanford University. Stanford Electronics Laboratories. SEL-69-048.']
+    end
+
+    context 'display fields test file' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has correct display for 110abndb' do
+        result = select_by_id('110')[field]
+        expect(result).to eq ['United States. Congress (97th, 2nd session : 1982). House.']
+      end
+    end
+  end
 end
