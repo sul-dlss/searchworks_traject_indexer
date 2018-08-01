@@ -367,4 +367,13 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['Sox on Fox']
     end
   end
+
+  describe 'vern_author_person_display' do
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_author_person_display' }
+    it 'has correct vernacular author display' do
+      result = select_by_id('trailingPunct')[field]
+      expect(result).to eq ['vernacular internal colon : vernacular ending period']
+    end
+  end
 end

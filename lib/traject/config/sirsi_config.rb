@@ -153,7 +153,10 @@ to_field 'author_person_display', extract_marc('100abcdq') do |record, accumulat
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
 end
-# vern_author_person_display = custom, vernRemoveTrailingPunc(100abcdq, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
+to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
 # author_person_full_display = custom, getAllAlphaSubfields(100)
 # vern_author_person_full_display = custom, getLinkedField(100[a-z])
 # author_corp_display = custom, getAllAlphaSubfields(110)
