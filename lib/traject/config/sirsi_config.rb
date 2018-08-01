@@ -157,7 +157,7 @@ to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
 end
-# author_person_full_display = custom, getAllAlphaSubfields(100)
+to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :false)
 # vern_author_person_full_display = custom, getLinkedField(100[a-z])
 # author_corp_display = custom, getAllAlphaSubfields(110)
 # vern_author_corp_display = custom, getLinkedField(110[a-z])

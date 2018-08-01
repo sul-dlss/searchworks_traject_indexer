@@ -376,4 +376,43 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['vernacular internal colon : vernacular ending period']
     end
   end
+
+  describe 'author_person_full_display' do
+    let(:field) { 'author_person_full_display' }
+    it 'has correct display for 100ae' do
+      result = select_by_id('7651581')[field]
+      expect(result).to eq ['Coutinho, Frederico dos Reys, ed.']
+    end
+
+    context 'display fields test file' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has correct display for 100ac' do
+        result = select_by_id('1001')[field]
+        expect(result).to eq ['Seuss, Dr.']
+      end
+
+      it 'has correct display for 100aqd' do
+        result = select_by_id('1002')[field]
+        expect(result).to eq ['Fowler, T. M. (Thaddeus Mortimer) 1842-1922.']
+      end
+
+      it 'has correct display for 100a40' do
+        result = select_by_id('1003')[field]
+        expect(result).to eq ['Bach, Johann Sebastian.']
+      end
+
+      it 'uses only first 100 field for display' do
+        result = select_by_id('1004')[field]
+        expect(result).to eq ['Fowler, T. M. (Thaddeus Mortimer) 1842-1922.']
+      end
+    end
+
+    context 'vernacular non search test file' do
+      let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+      it 'has correct display for RTL script' do
+        result = select_by_id('RtoL2')[field]
+        expect(result).to eq ['LTR a : LTR b, LTR c']
+      end
+    end
+  end
 end
