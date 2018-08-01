@@ -31,7 +31,18 @@ to_field 'marcbib_xml' do |record, accumulator|
   filtered_fields.map { |f| new_record.append(f) }
   accumulator << MARC::FastXMLWriter.encode(new_record)
 end
-#all_search = custom, getAllFields
+to_field 'all_search' do |record, accumulator|
+  keep_fields = %w[024 027 028 033 905 908 920 986 979]
+  record.each do |field|
+    next unless (100..899).cover?(field.tag.to_i) || keep_fields.include?(field.tag)
+
+    subfield_values = field.subfields.collect(&:value)
+    next unless subfield_values.length > 0
+
+    accumulator << subfield_values.join(' ')
+  end
+end
+
 # vern_all_search = custom, getAllLinkedSearchableFields
 # 
 # Title Search Fields
