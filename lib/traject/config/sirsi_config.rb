@@ -1,4 +1,5 @@
 require 'traject'
+require 'traject/marc_extractor'
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
@@ -18,8 +19,18 @@ to_field 'marcxml', serialized_marc(
   allow_oversized: true
 )
 
-# to_field 'marcbib_xml' #TODO
-
+to_field 'marcbib_xml' do |record, accumulator|
+  skip_fields = %w[852 853 854 855 863 864 865 866 867 868 999]
+  filtered_fields = MARC::FieldMap.new
+  record.each do |field|
+    next if skip_fields.include?(field.tag)
+    filtered_fields.push(field)
+  end
+  new_record = MARC::Record.new
+  new_record.leader = record.leader
+  filtered_fields.map { |f| new_record.append(f) }
+  accumulator << MARC::FastXMLWriter.encode(new_record)
+end
 #all_search = custom, getAllFields
 # vern_all_search = custom, getAllLinkedSearchableFields
 # 
