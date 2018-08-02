@@ -315,14 +315,16 @@ to_field 'isbn_display' do |record, accumulator, context|
   accumulator.concat marc020z.map(&method(:extract_isbn))
 end
 
-  if marc020a.any?
-    accumulator.concat extract_isbn(marc020a)
-  elsif marc020z.any?
-    accumulator.concat extract_isbn(marc020z)
-  end
+to_field 'issn_display', extract_marc('022a') do |_record, accumulator|
+  accumulator.select! { |v| v =~ /^\d{4}-\d{3}[X\d]\D*$/ }
 end
 
-# issn_display = custom, getISSNs
+to_field 'issn_display' do |record, accumulator, context|
+  next if context.output_hash['issn_display']
+
+  marc022z = Traject::MarcExtractor.new('022z').extract(record)
+  accumulator.concat(marc022z.select { |v| v =~ /^\d{4}-\d{3}[X\d]\D*$/ })
+end
 
 to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
   lccn_pattern = /^(?:([ a-z]{2}\d{10})|([ a-z]{3}\d{8})|((\d{11}|\d{10}|\d{8})).*)$/

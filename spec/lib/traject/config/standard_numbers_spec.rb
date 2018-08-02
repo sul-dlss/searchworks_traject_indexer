@@ -165,39 +165,51 @@ RSpec.describe 'Standard Numbers' do
 # 		assertSearchResults(fldName, "052185668X", docIds);
 # 		assertSearchResults(fldName, "052185668x", docIds);
 # 	}
-#
-# 	/**
-# 	 * Test population of issn_display field: the ISSNs used for
-# 	 *  external lookups (e.g. xISSN)
-# 	 */
-# @Test
-# 	public final void testISSNdisplay()
-# 	{
-# 		String fldName = "issn_display";
-# 		String testFilePath = testDataParentPath + File.separator + "issnTests.mrc";
-#
-# 		// no issn
-# 	    solrFldMapTest.assertNoSolrFld(testFilePath, "No022", fldName);
-# 	    solrFldMapTest.assertNoSolrFld(testFilePath, "022subaNoHyphen", fldName);
-# 	    solrFldMapTest.assertNoSolrFld(testFilePath, "022subaTooManyChars", fldName);
-# 		// 022 single subfield
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "022suba", fldName, "1047-2010");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "022subaX", fldName, "1047-201X");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subL", fldName, "0796-5621");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subM", fldName, "0863-4564");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subY", fldName, "0813-1964");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "022subZ", fldName, "1144-585X");
-# 		// 022 mult subfields
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "022subAandL", fldName, "0945-2419");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subAandL", fldName, "0796-5621");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subLandM", fldName, "0038-6073");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subLandM", fldName, "0796-5621");
-# 		solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subMandZ", fldName, "0103-8915");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "022subMandZ", fldName, "1144-5858");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "Two022a", fldName, "0666-7770");
-# 	    solrFldMapTest.assertSolrFldValue(testFilePath, "Two022a", fldName, "1221-2112");
-# 	}
+  describe 'issn_display' do
+    let(:fixture_name) { 'issnTests.mrc' }
+    let(:field) { 'issn_display' }
 
+    it 'has the correct data' do
+      # no issn
+      expect(select_by_id('No022')[field]).to be_nil
+      expect(select_by_id('022subaNoHyphen')[field]).to be_nil
+      expect(select_by_id('022subaTooManyChars')[field]).to be_nil
+
+      # 022 single subfield
+      expect(select_by_id('022suba')[field]).to eq(['1047-2010'])
+      expect(select_by_id('022subaX')[field]).to eq(['1047-201X'])
+      expect(select_by_id('022subL')[field]).to be_nil
+      expect(select_by_id('022subM')[field]).to be_nil
+      expect(select_by_id('022subY')[field]).to be_nil
+      expect(select_by_id('022subZ')[field]).to eq(['1144-585X'])
+
+      # 022 mult subfields
+      expect(select_by_id('022subAandL')[field]).to eq(['0945-2419'])
+      expect(select_by_id('022subLandM')[field]).to be_nil
+      expect(select_by_id('022subMandZ')[field]).to eq(['1144-5858'])
+      expect(select_by_id('Two022a')[field]).to eq(['0666-7770', '1221-2112'])
+    end
+
+    describe 'lane records' do
+      let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
+      let(:fixture_name) { 'issnTestsLane.xml' }
+
+      it 'has the correct data' do
+        # no issn
+        expect(select_by_id('No022')[field]).to be_nil
+        expect(select_by_id('022subaNoHyphen')[field]).to be_nil
+        expect(select_by_id('022subaTooManyChars')[field]).to be_nil
+
+        # 022 single subfield
+        expect(select_by_id('022suba')[field]).to eq(['1047-2010 (Print)'])
+        expect(select_by_id('022subaX')[field]).to eq(['1047-201X (Print)'])
+
+        # 022 mult subfields
+        expect(select_by_id('022subAandL')[field]).to eq(['0945-2419 (Print)'])
+        expect(select_by_id('022subLandM')[field]).to be_nil
+      end
+    end
+  end
 
   describe 'issn_search' do
     let(:fixture_name) { 'issnTests.mrc' }
@@ -220,29 +232,7 @@ RSpec.describe 'Standard Numbers' do
       expect(select_by_id('785x')[field]).to eq(['8750-2836'])
     end
   end
-  # /**
-  #  * Test population of issn_display field: the ISSNs used for
-  #  *  external lookups (e.g. xISSN) - for Lane-specific ISSNs
-  #  */
-# @Test
-# public final void testISSNdisplayLane()
-# {
-# 	String fldName = "issn_display";
-# 	String testFilePath = testDataParentPath + File.separator + "issnTestsLane.xml";
-#
-# 	// no issn
-#     solrFldMapTest.assertNoSolrFld(testFilePath, "No022", fldName);
-#     solrFldMapTest.assertNoSolrFld(testFilePath, "022subaNoHyphen", fldName);
-#     solrFldMapTest.assertNoSolrFld(testFilePath, "022subaTooManyChars", fldName);
-# 	// 022 single subfield
-#     solrFldMapTest.assertSolrFldValue(testFilePath, "022suba", fldName, "1047-2010 (Print)");
-#     solrFldMapTest.assertSolrFldValue(testFilePath, "022subaX", fldName, "1047-201X (Print)");
-#     // 022 mult subfields
-#     solrFldMapTest.assertSolrFldValue(testFilePath, "022subAandL", fldName, "0945-2419 (Print)");
-# 	solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subAandL", fldName, "0796-5621");
-# 	solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subLandM", fldName, "0038-6073 (Print)");
-# 	solrFldMapTest.assertSolrFldHasNoValue(testFilePath, "022subLandM", fldName, "0796-5621 (George)");
-# }
+
 #
 # /**
 # 	 * Test population of issn_search field: the ISSNs that an end user can
