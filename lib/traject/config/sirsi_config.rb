@@ -289,13 +289,14 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 to_field 'isbn_search', extract_marc('020a:020z:770z:771z:772z:773z:774z:775z:776z:777z:778z:779z:780z:781z:782z:783z:784z:785z:786z:787z:788z:789z') do |_record, accumulator|
   accumulator.map!(&method(:extract_isbn))
 end
+
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
-# TODO: figure out what "(pattern_map.issn)" is intending to do, add the behavior in traject and test it
 to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x') do |_record, accumulator|
   accumulator.select! { |v| v =~ issn_pattern }
 end
-# issn_search = 022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x, (pattern_map.issn)
 
+# INDEX-142 NOTE: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
+# so need to account for it in the pattern match below
 def issn_pattern
   /^\d{4}-\d{3}[X\d]\D*$/
 end
@@ -340,7 +341,6 @@ to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) 
     value.scan(lccn_pattern).flatten.compact.first
   end
 end
-# lccn = 010a:010z, (pattern_map.lccn), first
 
 # Not using traject's oclcnum here because we have more complicated logic
 to_field 'oclc' do |record, accumulator|
@@ -486,12 +486,6 @@ to_field 'file_id' do |record, accumulator|
     end)
   end
 end
-#
-# # INDEX-142 NOTE 3: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
-# # so need to account for it in the pattern match below
-# pattern_map.issn.pattern_0 = ^(\\d{4}-\\d{3}[X\\d]\\D*)$=>$1
-#
-# pattern_map.lccn.pattern_0 = ^(([ a-z]{3}\\d{8})|([ a-z]{2}\\d{10})) ?|( /.*)?$=>$1
 #
 # pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
 # pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1
