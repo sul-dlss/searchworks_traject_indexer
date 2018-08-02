@@ -460,4 +460,17 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['北京市妇女联合会.']
     end
   end
+
+  describe 'author_meeting_display' do
+    let(:field) { 'author_meeting_display' }
+    it 'has correct display for 111a' do
+      result = select_by_id('111faim')[field]
+      expect(result).to eq ['FAIM (Forum).']
+    end
+
+    it 'has correct display for 111andc' do
+      result = select_by_id('5666387')[field]
+      expect(result).to eq ['International Jean Sibelius Conference (3rd : 2000 : Helsinki, Finland)']
+    end
+  end
 end
