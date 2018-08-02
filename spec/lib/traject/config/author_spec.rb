@@ -296,7 +296,7 @@ RSpec.describe 'Author config' do
       result = select_by_id('5666387')[field]
       expect(result).to eq ['International Jean Sibelius Conference (3rd : 2000 : Helsinki, Finland)']
       # field 710
-      result = select_by_id('987666')[field][2]
+      result = select_by_id('987666')[field][1]
       expect(result).to eq '(this was a value in a non-latin script)'
 
       result = select_by_id('710corpname')[field][1]
