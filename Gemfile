@@ -8,4 +8,6 @@ group :development, :test do
   gem 'rspec'
 end
 
+gem 'http'
 gem 'rake'
+gem 'stanford-mods'
