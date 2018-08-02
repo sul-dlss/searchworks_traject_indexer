@@ -276,8 +276,8 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 # 
-# on_order_library_ssim = custom, getOnOrderLibraries, library_on_order_map.properties
-# 
+
+to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
 # mhld_display = custom, getMhldDisplay
 # bookplates_display = custom, getBookplatesDisplay
 # fund_facet = custom, getFundFacet
