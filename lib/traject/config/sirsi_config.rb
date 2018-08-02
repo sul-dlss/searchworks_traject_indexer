@@ -21,11 +21,49 @@ to_field 'marcxml', serialized_marc(
   allow_oversized: true
 )
 
-# to_field 'marcbib_xml' #TODO
+to_field 'marcbib_xml' do |record, accumulator|
+  skip_fields = %w[852 853 854 855 863 864 865 866 867 868 999]
+  filtered_fields = MARC::FieldMap.new
+  record.each do |field|
+    next if skip_fields.include?(field.tag)
+    filtered_fields.push(field)
+  end
+  new_record = MARC::Record.new
+  new_record.leader = record.leader
+  filtered_fields.map { |f| new_record.append(f) }
+  accumulator << MARC::FastXMLWriter.encode(new_record)
+end
 
-#all_search = custom, getAllFields
-# vern_all_search = custom, getAllLinkedSearchableFields
-# 
+to_field 'all_search' do |record, accumulator|
+  keep_fields = %w[024 027 028 033 905 908 920 986 979]
+  result = []
+  record.each do |field|
+    next unless (100..899).cover?(field.tag.to_i) || keep_fields.include?(field.tag)
+
+    subfield_values = field.subfields.collect(&:value)
+    next unless subfield_values.length > 0
+
+    result << subfield_values.join(' ')
+  end
+  accumulator << result.join(' ')
+end
+
+to_field 'vern_all_search' do |record, accumulator|
+  keep_fields = %w[880]
+  result = []
+  record.each do |field|
+    next unless  keep_fields.include?(field.tag)
+    subfield_values = field.subfields
+                           .reject { |sf| sf.code == '6' }
+                           .collect(&:value)
+
+    next unless subfield_values.length > 0
+
+    result << subfield_values.join(' ')
+  end
+  accumulator << result.join(' ')
+end
+
 # Title Search Fields
 to_field 'title_245a_search', extract_marc('245a', first: true)
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
