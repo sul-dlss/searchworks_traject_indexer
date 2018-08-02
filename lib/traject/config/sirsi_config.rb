@@ -291,8 +291,14 @@ to_field 'isbn_search', extract_marc('020a:020z:770z:771z:772z:773z:774z:775z:77
 end
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
 # TODO: figure out what "(pattern_map.issn)" is intending to do, add the behavior in traject and test it
-to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x')
+to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x') do |_record, accumulator|
+  accumulator.select! { |v| v =~ issn_pattern }
+end
 # issn_search = 022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x, (pattern_map.issn)
+
+def issn_pattern
+  /^\d{4}-\d{3}[X\d]\D*$/
+end
 
 def extract_isbn(value)
   isbn10_pattern = /^\d{9}[\dX].*/
@@ -318,14 +324,14 @@ to_field 'isbn_display' do |record, accumulator, context|
 end
 
 to_field 'issn_display', extract_marc('022a') do |_record, accumulator|
-  accumulator.select! { |v| v =~ /^\d{4}-\d{3}[X\d]\D*$/ }
+  accumulator.select! { |v| v =~ issn_pattern }
 end
 
 to_field 'issn_display' do |record, accumulator, context|
   next if context.output_hash['issn_display']
 
   marc022z = Traject::MarcExtractor.new('022z').extract(record)
-  accumulator.concat(marc022z.select { |v| v =~ /^\d{4}-\d{3}[X\d]\D*$/ })
+  accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
 end
 
 to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
