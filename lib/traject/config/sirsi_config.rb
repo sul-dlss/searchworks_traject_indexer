@@ -527,7 +527,20 @@ end
 # format_physical_ssim = custom, getPhysicalFormats
 # genre_ssim = custom, getAllGenres
 #
-# db_az_subject = custom, getDbAZSubjects, db_subjects_map.properties
+to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
+  if context.output_hash['format_main_ssim'].include? 'Database'
+    translation_map = Traject::TranslationMap.new('db_subjects_map')
+    accumulator.replace translation_map.translate_array(accumulator).flatten
+  end
+end
+
+to_field 'db_az_subject' do |record, accumulator, context|
+  if context.output_hash['format_main_ssim'].include? 'Database'
+    if record['099'].nil?
+      accumulator << 'Uncategorized'
+    end
+  end
+end
 
 to_field "physical", extract_marc("300abcefg", alternate_script: false)
 to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
