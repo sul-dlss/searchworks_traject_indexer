@@ -433,7 +433,6 @@ to_field 'format_main_ssim' do |record, accumulator, context|
   end
 end
 
-
 # /* If the call number prefixes in the MARC 999a are for Archive/Manuscript items, add Archive/Manuscript format
 #  * A (e.g. A0015), F (e.g. F0110), M (e.g. M1810), MISC (e.g. MISC 1773), MSS CODEX (e.g. MSS CODEX 0335),
 #   MSS MEDIA (e.g. MSS MEDIA 0025), MSS PHOTO (e.g. MSS PHOTO 0463), MSS PRINTS (e.g. MSS PRINTS 0417),
@@ -464,7 +463,6 @@ end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
   if (record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd')
-    #     if (item.hasLaneLoc()
     Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
       if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
         context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
@@ -537,7 +535,156 @@ to_field 'format_main_ssim' do |record, accumulator, context|
   accumulator << 'Other' if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].empty?
 end
 
-# format_physical_ssim = custom, getPhysicalFormats
+# * INDEX-89 - Add video physical formats
+to_field 'format_physical_ssim', extract_marc('999a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /BLU-RAY/
+      'Blu-ray'
+    when /ZVC/, /ARTVC/, /MVC/
+      'Videocassette (VHS)'
+    when /ZDVD/, /ARTDVD/, /MDVD/, /ADVD/
+      'DVD'
+    when /AVC/
+      'Videocassette'
+    when /ZVD/, /MVD/
+      'Laser disc'
+    end
+  end)
+end
+
+to_field 'format_physical_ssim', extract_marc('007') do |record, accumulator, context|
+  accumulator.replace(accumulator.map do |value|
+    case value[0]
+    when 'g'
+      'Slide' if value[1] == 's'
+    when 'h'
+      if value[1] =~ /[bcdhj]/
+        'Microfilm'
+      elsif value[1] =~ /[efg]/
+        'Microfiche'
+      end
+    when 'k'
+      'Photo' if value[1] == 'h'
+    when 'm'
+      'Film'
+    when 'r'
+      'Remote-sensing image'
+    when 's'
+      if Array(context.output_hash['access_facet']).include? 'At the Library'
+        case value[1]
+        when 'd'
+          case value[3]
+          when 'b'
+            'Vinyl disc'
+          when 'd'
+            '78 rpm (shellac)'
+          when 'f'
+            'CD'
+          end
+        else
+          if value[6] == 'j'
+            'Audiocassette'
+          elsif value[1] == 'q'
+            'Piano/Organ roll'
+          end
+        end
+      end
+    when 'v'
+      case value[4]
+      when 'a', 'i', 'j'
+        'Videocassette (Beta)'
+      when 'b'
+        'Videocassette (VHS)'
+      when 'g'
+        'Laser disc'
+      when 'q'
+        'Hi-8 mm'
+      when 's'
+        'Blu-ray'
+      when 'v'
+        'DVD'
+      when nil, ''
+      else
+        'Other video'
+      end
+    end
+
+  end)
+end
+
+# INDEX-89 - Add video physical formats from 538$a
+to_field 'format_physical_ssim', extract_marc('538a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /Bluray/, /Blu-ray/, /Blu ray/
+      'Blu-ray'
+    when /VHS/
+      'Videocassette (VHS)'
+    when /DVD/
+      'DVD'
+    when /CAV/, /CLV/
+      'Laser disc'
+    when /VCD/, /Video CD/, /VideoCD/
+      'Video CD'
+    end
+  end)
+end
+
+# INDEX-89 - Add video physical formats from 300$b, 347$b
+to_field 'format_physical_ssim', extract_marc('300b:347b:338a:300a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /MP4/, /MPEG-4/
+      'MPEG-4'
+    when /VCD/, /Video CD/, /VideoCD/
+      'Video CD'
+    when /audio roll/, /piano roll/, /organ roll/
+      'Piano/Organ roll'
+    end
+  end)
+end
+
+to_field 'format_physical_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
+    next unless field['a']
+
+    if field['a'].start_with? 'MFICHE'
+      accumulator << 'Microfiche'
+    elsif field['a'].start_with? 'MFILM'
+      accumulator << 'Microfilm'
+    end
+  end
+end
+
+to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}") do |record, accumulator|
+  values = accumulator.dup.join("\n")
+  accumulator.replace([])
+
+  case values
+  when %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,;.])? (c )?(4 3/4|12 c)}
+    accumulator << 'CD' unless values =~ /(DVD|SACD|blu[- ]?ray)/
+  when %r{33(\.3| 1/3) ?rpm}
+    accumulator << 'Vinyl disc' if values =~ /(10|12) ?in/
+  end
+end
+
+to_field 'format_physical_ssim', extract_marc('300a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /microfiche/i
+      'Microfiche'
+    when /microfilm/i
+      'Microfilm'
+    when /photograph/i
+      'Photo'
+    when /remote-sensing image/i, /remote sensing image/i
+      'Remote-sensing image'
+    when /slide/i
+      'Slide'
+    end
+  end)
+end
 # genre_ssim = custom, getAllGenres
 #
 to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
