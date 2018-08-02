@@ -1,4 +1,5 @@
 require 'rspec'
+require 'rspec-benchmark'
 require 'traject'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -22,6 +23,7 @@ RSpec.configure do |config|
   end
 
   config.include ResultHelpers
+  config.include RSpec::Benchmark::Matchers
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
