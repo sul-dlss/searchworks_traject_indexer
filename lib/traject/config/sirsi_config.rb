@@ -1281,8 +1281,189 @@ end
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
+# 
+# Instantiate once, not on each record
+skipped_locations = Traject::TranslationMap.new('locations_skipped_list')
+missing_locations = Traject::TranslationMap.new('locations_missing_list')
+
 to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
-# mhld_display = custom, getMhldDisplay
+to_field 'mhld_display' do |record, accumulator|
+  prefix852 = []
+  df852has_equals_sf = false
+  patterns853 = {}
+  most_recent863link_num = 0
+  most_recent863seq_num = 0
+  most_recent863 = nil
+  results = []
+  latest_recd_out = false
+  has866 = false
+  has867 = false
+  has868 = false
+  Traject::MarcExtractor.new('852').collect_matching_lines(record) do |field, spec, extractor|
+    used_sub_fields = field.subfields.select do |sf|
+      %w[3 z b c].include? sf.code
+    end
+    comment = []
+    comment << used_sub_fields.map { |sf| sf.value if sf.code == '3' }.compact.join(' ')
+    comment << used_sub_fields.map { |sf| sf.value if sf.code == 'z' && !sf.value.match(/all holdings transferred/i) }.compact.join(' ')
+    library_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'b' }.compact.join(' ')
+    location_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'c' }.compact.join(' ')
+
+    next if skipped_locations[location_code] || missing_locations[location_code]
+
+    prefix852 = [library_code, location_code, comment.join('')]
+
+    df852has_equals_sf = field.subfields.select do |sf|
+      ['='].include? sf.code
+    end.compact.any?
+  end
+  Traject::MarcExtractor.new('853').collect_matching_lines(record) do |field, _spec, _extractor|
+    link_seq_num = field.subfields.select do |sf|
+      %w[8].include? sf.code
+    end.collect(&:value).first.to_i
+
+    patterns853[link_seq_num] = field
+  end
+  Traject::MarcExtractor.new('863').collect_matching_lines(record) do |field, _spec, _extractor|
+    sub8 = field.subfields.select do |sf|
+      %w[8].include? sf.code
+    end.collect(&:value).first.strip
+    link_num, seq_num = sub8.split('.').map(&:to_i)
+
+    if most_recent863link_num < link_num || (
+      most_recent863link_num == link_num && most_recent863seq_num < seq_num
+    )
+      most_recent863link_num = link_num
+      most_recent863seq_num = seq_num
+      most_recent863 = field
+    end
+  end
+  Traject::MarcExtractor.new('866').collect_matching_lines(record) do |field, _spec, _extractor|
+    next if prefix852.empty?
+    sub_a = field.subfields.select do |sf|
+      %w[a].include? sf.code
+    end.collect(&:value).join('')
+    results << get_library_has(field)
+    if sub_a.end_with?('-')
+      unless latest_recd_out
+        results[-1] += " -|- #{get_latest_received(most_recent863, most_recent863link_num, patterns853)}"
+        latest_recd_out = true
+      end
+    end
+    has866 = true
+  end
+  Traject::MarcExtractor.new('867').collect_matching_lines(record) do |field, _spec, _extractor|
+    results << "Supplement: #{get_library_has(field)}"
+    results << get_latest_received(most_recent863, most_recent863link_num, patterns853) unless has866
+    has867 = true
+  end
+  Traject::MarcExtractor.new('868').collect_matching_lines(record) do |field, _spec, _extractor|
+    results << "Index: #{get_library_has(field)}"
+    results << get_latest_received(most_recent863, most_recent863link_num, patterns853) unless has866
+    has868 = true
+  end
+  if !has866 && !has867 && !has868
+    if df852has_equals_sf
+      results << get_latest_received(most_recent863, most_recent863link_num, patterns853)
+    else
+      results << ''
+    end
+  end
+  results.each do |result|
+    accumulator << prefix852.dup.push(result).push('').join(' -|- ')
+  end
+end
+
+def get_latest_received(most_recent863, most_recent863link_num, patterns853)
+  if most_recent863 && most_recent863link_num != 0
+    pattern853 = patterns853[most_recent863link_num]
+    get863display_value(most_recent863, pattern853)
+  end
+end
+
+def get863display_value(most_recent863, pattern853)
+  return unless pattern853
+  result = ''
+  [*'a'..'f'].map do |char|
+    caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
+    value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
+    break unless caption && value
+    result += ':' if !result.empty?
+    result += get_captioned(caption, value)
+  end
+  alt_scheme = ''
+  [*'g'..'h'].map do |char|
+    caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
+    value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
+    break unless caption && value
+    alt_scheme += ', ' if char != 'g'
+    alt_scheme += "#{caption}#{value}"
+  end
+  result += ":(#{alt_scheme})" unless alt_scheme.empty?
+  prepender = ''
+  shall_i_prepend = false
+  chronology = ''
+  [*'i'..'m'].map do |char|
+    caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
+    value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
+    break unless caption && value
+    case caption
+    when /(\(month\)|\(season\)|\(unit\))/i
+      value = translate_month_or_season(value)
+      prepender = ':'
+    when /\(day\)/i
+      prepender = ' '
+    end
+    chronology += if shall_i_prepend
+                    "#{prepender}#{value}"
+                  else
+                    value
+                  end
+    shall_i_prepend = true
+  end
+  result += if !result.empty?
+              " (#{chronology})"
+            else
+              chronology
+            end
+  result
+end
+
+def get_captioned(caption, value)
+  value = translate_month_or_season(value) if caption =~ /(\(month\)|\(season\))/i
+  caption = '' if caption =~ /^\(.*\)$/
+  "#{caption}#{value}"
+end
+
+def translate_month_or_season(value)
+  value.gsub('01', 'January')
+       .gsub('02', 'February')
+       .gsub('03', 'March')
+       .gsub('04', 'April')
+       .gsub('05', 'May')
+       .gsub('06', 'June')
+       .gsub('07', 'July')
+       .gsub('08', 'August')
+       .gsub('09', 'September')
+       .gsub('10', 'October')
+       .gsub('11', 'November')
+       .gsub('12', 'December')
+       .gsub('13', 'Spring')
+       .gsub('14', 'Summer')
+       .gsub('15', 'Autumn')
+       .gsub('16', 'Winter')
+       .gsub('21', 'Spring')
+       .gsub('22', 'Summer')
+       .gsub('23', 'Autumn')
+       .gsub('24', 'Winter')
+end
+
+def get_library_has(field)
+  field.subfields.select do |sf|
+    %w[a z].include? sf.code
+  end.collect(&:value).join(' ')
+end
+
 # bookplates_display = custom, getBookplatesDisplay
 # fund_facet = custom, getFundFacet
 #
