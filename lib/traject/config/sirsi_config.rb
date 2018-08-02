@@ -292,23 +292,28 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x')
 # issn_search = 022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x, (pattern_map.issn)
 
-def extract_isbn(values)
+def extract_isbn(value)
   isbn10_pattern = /^\d{9}[\dX].*/
   isbn13_pattern = /^(978|9)\d{9}[\dX].*/
   isbn13_any = /^\d{12}[\dX].*/
 
-  values.map do |value|
-    if value =~ isbn13_pattern
-      value[0, 13]
-    elsif value =~ isbn10_pattern && value !~ isbn13_any
-      value[0, 10]
-    end
-  end.compact
+  if value =~ isbn13_pattern
+    value[0, 13]
+  elsif value =~ isbn10_pattern && value !~ isbn13_any
+    value[0, 10]
+  end
 end
 
-to_field 'isbn_display' do |record, accumulator|
-  marc020a = Traject::MarcExtractor.new('020a').extract(record)
+to_field 'isbn_display', extract_marc('020a') do |_record, accumulator|
+  accumulator.map!(&method(:extract_isbn))
+end
+
+to_field 'isbn_display' do |record, accumulator, context|
+  next unless context.output_hash['isbn_display'].nil?
+
   marc020z = Traject::MarcExtractor.new('020z').extract(record)
+  accumulator.concat marc020z.map(&method(:extract_isbn))
+end
 
   if marc020a.any?
     accumulator.concat extract_isbn(marc020a)
