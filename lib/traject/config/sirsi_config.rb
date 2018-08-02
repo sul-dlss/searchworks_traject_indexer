@@ -318,13 +318,87 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # url_restricted = custom, getRestrictedUrls
 #
 # # Standard Number Fields
-# isbn_search = custom, getUserISBNs
+to_field 'isbn_search', extract_marc('020a:020z:770z:771z:772z:773z:774z:775z:776z:777z:778z:779z:780z:781z:782z:783z:784z:785z:786z:787z:788z:789z') do |_record, accumulator|
+  accumulator.map!(&method(:extract_isbn))
+end
+
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
-# issn_search = 022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x, (pattern_map.issn)
-# isbn_display = custom, getISBNs
-# issn_display = custom, getISSNs
-# lccn = 010a:010z, (pattern_map.lccn), first
-# oclc = custom, getOCLCNums
+to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x') do |_record, accumulator|
+  accumulator.select! { |v| v =~ issn_pattern }
+end
+
+# INDEX-142 NOTE: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
+# so need to account for it in the pattern match below
+def issn_pattern
+  /^\d{4}-\d{3}[X\d]\D*$/
+end
+
+def extract_isbn(value)
+  isbn10_pattern = /^\d{9}[\dX].*/
+  isbn13_pattern = /^(978|9)\d{9}[\dX].*/
+  isbn13_any = /^\d{12}[\dX].*/
+
+  if value =~ isbn13_pattern
+    value[0, 13]
+  elsif value =~ isbn10_pattern && value !~ isbn13_any
+    value[0, 10]
+  end
+end
+
+to_field 'isbn_display', extract_marc('020a') do |_record, accumulator|
+  accumulator.map!(&method(:extract_isbn))
+end
+
+to_field 'isbn_display' do |record, accumulator, context|
+  next unless context.output_hash['isbn_display'].nil?
+
+  marc020z = Traject::MarcExtractor.new('020z').extract(record)
+  accumulator.concat marc020z.map(&method(:extract_isbn))
+end
+
+to_field 'issn_display', extract_marc('022a') do |_record, accumulator|
+  accumulator.select! { |v| v =~ issn_pattern }
+end
+
+to_field 'issn_display' do |record, accumulator, context|
+  next if context.output_hash['issn_display']
+
+  marc022z = Traject::MarcExtractor.new('022z').extract(record)
+  accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
+end
+
+to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
+  lccn_pattern = /^(?:([ a-z]{2}\d{10})|([ a-z]{3}\d{8})|((\d{11}|\d{10}|\d{8})).*)$/
+  accumulator.map! do |value|
+    value.scan(lccn_pattern).flatten.compact.first
+  end
+end
+
+# Not using traject's oclcnum here because we have more complicated logic
+to_field 'oclc' do |record, accumulator|
+  marc035_with_m_suffix = []
+  marc035_without_m_suffix = []
+  Traject::MarcExtractor.new('035a', separator: nil).extract(record).map do |data|
+    if data.start_with?('(OCoLC-M)')
+      marc035_with_m_suffix << data.sub(/^\(OCoLC-M\)\s*/, '')
+    elsif data.start_with?('(OCoLC)')
+      marc035_without_m_suffix << data.sub(/^\(OCoLC\)\s*/, '')
+    end
+  end.flatten.compact.uniq
+
+  marc079 = Traject::MarcExtractor.new('079a', separator: nil).extract(record).map do |data|
+    next unless data[/\A(?:ocm)|(?:ocn)|(?:on)/]
+    data.sub(/\A(?:ocm)|(?:ocn)|(?:on)/, '')
+  end.flatten.compact.uniq
+
+  if marc035_with_m_suffix.any?
+    accumulator.concat marc035_with_m_suffix
+  elsif marc079.any?
+    accumulator.concat marc079
+  elsif marc035_without_m_suffix.any?
+    accumulator.concat marc035_without_m_suffix
+  end
+end
 #
 # # Call Number Fields
 # callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
@@ -443,12 +517,6 @@ to_field 'file_id' do |record, accumulator|
     end)
   end
 end
-#
-# # INDEX-142 NOTE 3: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
-# # so need to account for it in the pattern match below
-# pattern_map.issn.pattern_0 = ^(\\d{4}-\\d{3}[X\\d]\\D*)$=>$1
-#
-# pattern_map.lccn.pattern_0 = ^(([ a-z]{3}\\d{8})|([ a-z]{2}\\d{10})) ?|( /.*)?$=>$1
 #
 # pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
 # pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1
