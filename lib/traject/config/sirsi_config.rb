@@ -160,7 +160,7 @@ end
 to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :false)
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
 to_field 'author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :false)
-# vern_author_corp_display = custom, getLinkedField(110[a-z])
+to_field 'vern_author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :only)
 # author_meeting_display = custom, getAllAlphaSubfields(111)
 # vern_author_meeting_display = custom, getLinkedField(111[a-z])
 # # Author Sort Field

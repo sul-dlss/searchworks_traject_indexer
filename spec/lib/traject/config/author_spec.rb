@@ -452,4 +452,12 @@ RSpec.describe 'Author config' do
       end
     end
   end
+
+  describe 'vern_author_corp_display' do
+    let(:field) { 'vern_author_corp_display' }
+    it 'has correct display for linked 110a' do
+      result = select_by_id('987666')[field]
+      expect(result).to eq ['北京市妇女联合会.']
+    end
+  end
 end
