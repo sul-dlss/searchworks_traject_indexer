@@ -127,19 +127,27 @@ to_field 'series_exact_search', extract_marc('830a')
 
 # # Author Title Search Fields
 # author_title_search = custom, getAuthorTitleSearch
-# 
+#
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
-# author_1xx_search = 100abcdgjqu:110abcdgnu:111acdegjnqu
-# vern_author_1xx_search = custom, getLinkedField(100abcdgjqu:110abcdgnu:111acdegjnqu)
-# author_7xx_search = 700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu
-# vern_author_7xx_search = custom, getLinkedField(700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu)
-# author_8xx_search = 800abcdegjqu:810abcdegnu:811acdegjnqu
-# vern_author_8xx_search = custom, getLinkedField(800abcdegjqu:810abcdegnu:811acdegjnqu)
+to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu')
+to_field 'vern_author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', alternate_script: :only)
+to_field 'author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu')
+to_field 'vern_author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu', alternate_script: :only)
+to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu')
+to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
 # # Author Facet Fields
-# author_person_facet = custom, removeTrailingPunct(100abcdq:700abcdq, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,) )
-# author_other_facet = custom, removeTrailingPunct(110abcdn:111acdn:710abcdn:711acdn, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,) )
+to_field 'author_person_facet', extract_marc('100abcdq:700abcdq') do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn') do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
 # # Author Display Fields
 # author_person_display = custom, removeTrailingPunct(100abcdq, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,) )
 # vern_author_person_display = custom, vernRemoveTrailingPunc(100abcdq, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
@@ -206,6 +214,30 @@ def clean_facet_punctuation(value)
 
   new_value[/(?<valid>\(\g<valid>*\)|[^()])+/x] # remove unmatched parentheses
 end
+
+# Custom method for traject's trim_punctuation
+# https://github.com/traject/traject/blob/5754e3c0c207d461ca3a98728f7e1e7cf4ebbece/lib/traject/macros/marc21.rb#L227-L246
+# Does the same except removes trailing period when preceded by at
+# least four letters instead of three.
+def trim_punctuation_custom(str)
+  # If something went wrong and we got a nil, just return it
+  return str unless str
+  # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
+  str = str.sub(/ *[ ,\/;:] *\Z/, '')
+
+  # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
+  str = str.gsub(/( *[[:word:]]{4,}|[0-9]{4})\. *\Z/, '\1')
+
+  # single square bracket characters if they are the start and/or end
+  #   chars and there are no internal square brackets.
+  str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+
+  # trim any leading or trailing whitespace
+  str.strip!
+
+  return str
+end
+
 
 # # Publication Fields
 # pub_search = custom, getPublication
@@ -284,7 +316,7 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # url_suppl = custom, getSupplUrls
 # url_sfx = 956u, (pattern_map.sfx)
 # url_restricted = custom, getRestrictedUrls
-# 
+#
 # # Standard Number Fields
 # isbn_search = custom, getUserISBNs
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
@@ -293,33 +325,32 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # issn_display = custom, getISSNs
 # lccn = 010a:010z, (pattern_map.lccn), first
 # oclc = custom, getOCLCNums
-# 
+#
 # # Call Number Fields
 # callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
 # callnum_search = custom, getLocalCallNums
 # shelfkey = custom, getShelfkeys
 # reverse_shelfkey = custom, getReverseShelfkeys
-# 
+#
 # # Location facet
 # location_facet = custom, getLocationFacet
-# 
+#
 # # Stanford student work facet
 # stanford_work_facet_hsim = custom, getStanfordWorkFacet
 # stanford_dept_sim = custom, getStanfordDeptFacet
-# 
+#
 # # Item Info Fields (from 999 that aren't call number)
 # barcode_search = 999i
 # preferred_barcode = custom, getPreferredItemBarcode
 # access_facet = custom, getAccessMethods
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
-# 
 
 to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
 # mhld_display = custom, getMhldDisplay
 # bookplates_display = custom, getBookplatesDisplay
 # fund_facet = custom, getFundFacet
-# 
+#
 # # Digitized Items Fields
 to_field 'managed_purl_urls' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
@@ -416,8 +447,8 @@ end
 # # INDEX-142 NOTE 3: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
 # # so need to account for it in the pattern match below
 # pattern_map.issn.pattern_0 = ^(\\d{4}-\\d{3}[X\\d]\\D*)$=>$1
-# 
+#
 # pattern_map.lccn.pattern_0 = ^(([ a-z]{3}\\d{8})|([ a-z]{2}\\d{10})) ?|( /.*)?$=>$1
-# 
+#
 # pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
 # pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1
