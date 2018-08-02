@@ -473,4 +473,13 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['International Jean Sibelius Conference (3rd : 2000 : Helsinki, Finland)']
     end
   end
+
+  describe 'vern_author_meeting_display' do
+    let(:field) { 'vern_author_meeting_display' }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    it 'has correct display for linked 111a' do
+      result = select_by_id('MeetingAuthorVern')[field]
+      expect(result).to eq ['vernacular mtg name author']
+    end
+  end
 end
