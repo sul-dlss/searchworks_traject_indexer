@@ -299,7 +299,231 @@ end
 #
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
-# format_main_ssim = custom, getMainFormats
+to_field 'format_main_ssim' do |record, accumulator|
+  value = case record.leader[6]
+  when 'a', 't'
+    arr = []
+
+    if ['a', 'm'].include? record.leader[7]
+      arr << 'Book'
+    end
+
+    if record.leader[7] == 'c'
+      arr << 'Archive/Manuscript'
+    end
+
+    arr
+  when 'b', 'p'
+    'Archive/Manuscript'
+  when 'c'
+    'Music/Score'
+  when 'd'
+    ['Music/Score', 'Archive/Manuscript']
+  when 'e'
+    'Map'
+  when 'f'
+    ['Map', 'Archive/Manuscript']
+  when 'g'
+    if record['008'] && record['008'].value[33] =~ /[ |[0-9]fmv]/
+      'Video'
+    elsif record['008'] && record['008'].value[33] =~ /[aciklnopst]/
+      'Image'
+    end
+  when 'i'
+    'Sound Recording'
+  when 'j'
+    'Music Recording'
+  when 'k'
+    'Image' if record['008'] && record['008'].value[33] =~ /[ |[0-9]aciklnopst]/
+  when 'm'
+    if record['008'] && record['008'].value[26] == 'a'
+      'Dataset'
+    else
+      'Software/Multimedia'
+    end
+  when 'o' # instructional kit
+    'Other'
+  when 'r' # 3D object
+    'Object'
+  end
+
+  accumulator.concat(Array(value))
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  next unless context.output_hash['format_main_ssim'].nil?
+
+  accumulator << if record.leader[7] == 's' && record['008'] && record['008'].value[21]
+    case record['008'].value[21]
+    when 'm'
+      'Book'
+    when 'n'
+      'Newspaper'
+    when 'p', ' ', '|', '#'
+      'Journal/Periodical'
+    when 'd'
+      'Database'
+    when 'w'
+      'Journal/Periodical'
+    else
+      'Book'
+    end
+  elsif record['006'] && record['006'].value[0] == 's'
+    case record['006'].value[4]
+    when 'l', 'm'
+      'Book'
+    when 'n'
+      'Newspaper'
+    when 'p', ' ', '|', '#'
+      'Journal/Periodical'
+    when 'd'
+      'Database'
+    when 'w'
+      'Journal/Periodical'
+    else
+      'Book'
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  next unless context.output_hash['format_main_ssim'].nil?
+
+  if record.leader[7] == 'i'
+    accumulator << case record['008'].value[21]
+    when nil
+      nil
+    when 'd'
+      'Database'
+    when 'l'
+      'Book'
+    when 'w'
+      'Journal/Periodical'
+    else
+      'Book'
+    end
+  end
+end
+
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  Traject::MarcExtractor.new('999t').collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Database' if extractor.collect_subfields(field, spec).include? 'DATABASE'
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  # if it is a Database and a Software/Multimedia, and it is not
+  #  "At the Library", then it should only be a Database
+  if context.output_hash.fetch('format_main_ssim', []).include?('Database') && context.output_hash['format_main_ssim'].include?('Software/Multimedia') && !Array(context.output_hash['access_facet']).include?('At the Library')
+    context.output_hash['format_main_ssim'].delete('Software/Multimedia')
+  end
+end
+
+
+# /* If the call number prefixes in the MARC 999a are for Archive/Manuscript items, add Archive/Manuscript format
+#  * A (e.g. A0015), F (e.g. F0110), M (e.g. M1810), MISC (e.g. MISC 1773), MSS CODEX (e.g. MSS CODEX 0335),
+#   MSS MEDIA (e.g. MSS MEDIA 0025), MSS PHOTO (e.g. MSS PHOTO 0463), MSS PRINTS (e.g. MSS PRINTS 0417),
+#   PC (e.g. PC0012), SC (e.g. SC1076), SCD (e.g. SCD0012), SCM (e.g. SCM0348), and V (e.g. V0321).  However,
+#   A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
+#   the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
+#  */
+to_field 'format_main_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
+    if field['m'] == 'SPEC-COLL' && field['w'] == 'ALPHANUM' && field['a'] =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|D|M]|V\d)/i
+      accumulator << 'Archive/Manuscript'
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
+    if extractor.collect_subfields(field, spec).join(' ') =~ /manuscript/
+
+      Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
+        if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
+          accumulator << 'Book'
+        end
+      end
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  if (record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd')
+    #     if (item.hasLaneLoc()
+    Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
+      if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
+        context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
+        accumulator << 'Book'
+      end
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('590a').collect_matching_lines(record) do |field, spec, extractor|
+    if extractor.collect_subfields(field, spec).any? { |x| x =~ /MARCit brief record/ }
+      accumulator << 'Journal/Periodical'
+    end
+  end
+end
+
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  # // If it is Equipment, add Equipment resource type and remove 3D object resource type
+  # // INDEX-123 If it is Equipment, that should be the only item in main_formats
+  Traject::MarcExtractor.new('914a').collect_matching_lines(record) do |field, spec, extractor|
+    if extractor.collect_subfields(field, spec).include? 'EQUIP'
+      context.output_hash['format_main_ssim'].replace([])
+      accumulator << 'Equipment'
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].include?('Other')
+    format = Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
+      value = extractor.collect_subfields(field, spec).join(' ').downcase
+
+      case value
+      when /(video|motion picture|filmstrip|vcd-dvd)/
+        'Video'
+      when /manuscript/
+        'Archive/Manuscript'
+      when /sound recording/
+        'Sound Recording'
+      when /(graphic|slide|chart|art reproduction|technical drawing|flash card|transparency|activity card|picture|diapositives)/
+        'Image'
+      when /kit/
+        case record['007'].value[0]
+        when 'a', 'd'
+          'Map'
+        when 'c'
+          'Software/Multimedia'
+        when 'g', 'm', 'v'
+          'Video'
+        when 'k', 'r'
+          'Image'
+        when 'q'
+          'Music/Score'
+        when 's'
+          'Sound Recording'
+        end
+      end
+    end
+
+    if format
+      accumulator.concat format
+      context.output_hash['format_main_ssim'].delete('Other') if context.output_hash['format_main_ssim']
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  accumulator << 'Other' if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].empty?
+end
+
 # format_physical_ssim = custom, getPhysicalFormats
 # genre_ssim = custom, getAllGenres
 #
