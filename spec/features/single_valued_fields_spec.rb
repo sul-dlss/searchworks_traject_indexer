@@ -10,7 +10,7 @@ RSpec.describe 'Single valued fields' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:single_valued_fields) do
-    %w[title_245a_search title_245_search title_uniform_search vern_title_uniform_search title_full_display]
+    %w[title_245a_search title_245_search title_uniform_search vern_title_uniform_search title_full_display all_search vern_all_search]
   end
 
   context 'Arabic example' do
