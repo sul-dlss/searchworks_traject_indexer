@@ -286,7 +286,9 @@ to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 # url_restricted = custom, getRestrictedUrls
 #
 # # Standard Number Fields
-# isbn_search = custom, getUserISBNs
+to_field 'isbn_search', extract_marc('020a:020z:770z:771z:772z:773z:774z:775z:776z:777z:778z:779z:780z:781z:782z:783z:784z:785z:786z:787z:788z:789z') do |_record, accumulator|
+  accumulator.map!(&method(:extract_isbn))
+end
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
 # TODO: figure out what "(pattern_map.issn)" is intending to do, add the behavior in traject and test it
 to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x')

@@ -116,55 +116,27 @@ RSpec.describe 'Standard Numbers' do
       )
     end
   end
-# 	/**
-# 	 * Test population of isbn_search field: the ISBNs that an end user can
-# 	 *  search for in our index
-# 	 */
-# @Test
-# 	public final void testISBNsearch()
-# 		throws IOException, ParserConfigurationException, SAXException, SolrServerException
-# 	{
-# 		String fldName = "isbn_search";
-# 		createFreshIx("isbnTests.mrc");
-#
-# 		// searches are not exhaustive  (b/c programmer is exhausted)
-#
-# 		// isbn search with sub a value from record with mult a and z
-# 		Set<String> docIds = new HashSet<String>();
-# 		docIds.add("020suba10trailingText");
-# 		docIds.add("020SubaAndz");
-# 		assertSearchResults(fldName, "052185668X", docIds);
-#
-# 		// isbn search with sub z value from record with mult a and z
-# 		docIds.clear();
-# 		docIds.add("020suba13");
-# 		docIds.add("020suba13trailingText");
-# 		docIds.add("020subaMult");
-# 		docIds.add("020subz13digit");
-# 		docIds.add("020subz13trailingText");
-# 		docIds.add("020multSubz");
-# 		docIds.add("020SubaAndz");
-# 		assertSearchResults(fldName, "9780809424887", docIds);
-#
-# 		assertSingleResult("774z", fldName, "0001112223");
-# 	}
-#
-# 	/**
-# 	 * isbn_search should be case insensitive
-# 	 */
-# @Test
-# 	public final void testISBNSearchCaseInsensitive()
-# 		throws IOException, ParserConfigurationException, SAXException, SolrServerException
-# 	{
-# 		String fldName = "isbn_search";
-# 		createFreshIx("isbnTests.mrc");
-#
-# 		Set<String> docIds = new HashSet<String>();
-# 		docIds.add("020suba10trailingText");
-# 		docIds.add("020SubaAndz");
-# 		assertSearchResults(fldName, "052185668X", docIds);
-# 		assertSearchResults(fldName, "052185668x", docIds);
-# 	}
+
+  describe 'isbn_search' do
+    let(:fixture_name) { 'isbnTests.mrc' }
+    let(:field) { 'isbn_search' }
+
+    it 'has the correct data' do
+      expect(select_by_id('020suba10trailingText')[field]).to include('052185668X')
+      expect(select_by_id('020SubaAndz')[field]).to include('052185668X')
+
+      # isbn search with sub z value from record with mult a and z
+      expect(select_by_id('020suba13')[field]).to include('9780809424887')
+      expect(select_by_id('020suba13trailingText')[field]).to include('9780809424887')
+      expect(select_by_id('020subaMult')[field]).to include('9780809424887')
+      expect(select_by_id('020subz13digit')[field]).to include('9780809424887')
+      expect(select_by_id('020subz13trailingText')[field]).to include('9780809424887')
+      expect(select_by_id('020multSubz')[field]).to include('9780809424887')
+      expect(select_by_id('020SubaAndz')[field]).to include('9780809424887')
+      expect(select_by_id('774z')[field]).to eq(['0001112223'])
+    end
+  end
+
   describe 'issn_display' do
     let(:fixture_name) { 'issnTests.mrc' }
     let(:field) { 'issn_display' }
