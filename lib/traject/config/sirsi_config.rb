@@ -295,8 +295,21 @@ to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
 end
 
 #
-# language = custom, getLanguages, language_map.properties
-#
+to_field 'language', extract_marc('008') do |record, accumulator|
+  accumulator.map! { |v| v[35..37] }
+  translation_map = Traject::TranslationMap.new('language_map')
+  accumulator.replace translation_map.translate_array(accumulator).flatten
+end
+
+# split out separate lang codes only from 041a if they are smushed together.
+to_field 'language', extract_marc('041a') do |record, accumulator|
+  accumulator.map! { |v| v.scan(/.{3}/) }.flatten!
+  translation_map = Traject::TranslationMap.new('language_map')
+  accumulator.replace translation_map.translate_array(accumulator).flatten
+end
+
+to_field 'language', extract_marc('041d:041e:041j', translation_map: 'language_map')
+
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
 to_field 'format_main_ssim' do |record, accumulator|
