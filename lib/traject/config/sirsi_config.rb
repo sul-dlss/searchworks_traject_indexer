@@ -310,6 +310,71 @@ end
 
 to_field 'language', extract_marc('041d:041e:041j', translation_map: 'language_map')
 
+
+#
+# # URL Fields
+# get full text urls from 856, then reject gsb forms
+to_field 'url_fulltext' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    case field.indicator2
+    when '0'
+      accumulator.concat extractor.collect_subfields(field, spec)
+    when '2'
+      # no-op
+    else
+      accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
+    end
+  end
+
+  accumulator.reject! do |v|
+    v.start_with?('http://www.gsb.stanford.edu/jacksonlibrary/services/') ||
+    v.start_with?('https://www.gsb.stanford.edu/jacksonlibrary/services/')
+  end
+end
+
+# get all 956 subfield u containing fulltext urls that aren't SFX
+to_field 'url_fulltext', extract_marc('956u') do |record, accumulator|
+  accumulator.reject! do |v|
+    v.start_with?('http://caslon.stanford.edu:3210/sfxlcl3?') ||
+    v.start_with?('http://library.stanford.edu/sfx?')
+  end
+end
+
+# returns the URLs for supplementary information (rather than fulltext)
+to_field 'url_suppl' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    case field.indicator2
+    when '0'
+      # no-op
+    when '2'
+      accumulator.concat extractor.collect_subfields(field, spec)
+    else
+      accumulator.concat extractor.collect_subfields(field, spec) if (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
+    end
+  end
+end
+
+to_field 'url_sfx', extract_marc('956u') do |record, accumulator|
+  accumulator.select! { |v| v =~ Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+}) }
+end
+
+# returns the URLs for restricted full text of a resource described
+#  by the 856u.  Restricted is determined by matching a string against
+#  the 856z.  ("available to stanford-affiliated users at:")
+to_field 'url_restricted' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record)  do |field, spec, extractor|
+    next unless field.subfields.select { |f| f.code == 'z' }.map(&:value).any? { |z| z =~ /available to stanford-affiliated users at:/i }
+    case field.indicator2
+    when '0'
+      accumulator.concat extractor.collect_subfields(field, spec)
+    when '2'
+      # no-op
+    else
+      accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
+    end
+  end
+end
+
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
 to_field 'format_main_ssim' do |record, accumulator|
@@ -793,13 +858,6 @@ to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
 to_field "vern_summary_search", extract_marc("520ab", alternate_script: :only)
 to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 
-#
-# # URL Fields
-# url_fulltext = custom, getFullTextUrls
-# url_suppl = custom, getSupplUrls
-# url_sfx = 956u, (pattern_map.sfx)
-# url_restricted = custom, getRestrictedUrls
-#
 # # Standard Number Fields
 to_field 'isbn_search', extract_marc('020a:020z:770z:771z:772z:773z:774z:775z:776z:777z:778z:779z:780z:781z:782z:783z:784z:785z:786z:787z:788z:789z') do |_record, accumulator|
   accumulator.map!(&method(:extract_isbn))
@@ -1000,6 +1058,3 @@ to_field 'file_id' do |record, accumulator|
     end)
   end
 end
-#
-# pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
-# pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1
