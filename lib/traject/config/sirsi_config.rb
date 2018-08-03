@@ -1281,17 +1281,16 @@ end
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
-# 
+to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
+##
 # Instantiate once, not on each record
 skipped_locations = Traject::TranslationMap.new('locations_skipped_list')
 missing_locations = Traject::TranslationMap.new('locations_missing_list')
-
-to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
-to_field 'mhld_display' do |record, accumulator|
-  MhldField = Struct.new(:library, :location, :public_note, :library_has, :latest_received)
+MhldField = Struct.new(:library, :location, :public_note, :library_has, :latest_received)
+to_field 'mhld_display' do |record, accumulator, context|
   mhld_field = MhldField.new
   mhld_results = []
-  prefix852 = []
+  results852 = []
   df852has_equals_sf = false
   patterns853 = {}
   most_recent863link_num = 0
@@ -1302,21 +1301,23 @@ to_field 'mhld_display' do |record, accumulator|
   has867 = false
   has868 = false
   Traject::MarcExtractor.new('852').collect_matching_lines(record) do |field, spec, extractor|
+    # mhld_field = MhldField.new
     used_sub_fields = field.subfields.select do |sf|
       %w[3 z b c].include? sf.code
     end
     comment = []
     comment << used_sub_fields.map { |sf| sf.value if sf.code == '3' }.compact.join(' ')
-    comment << used_sub_fields.map { |sf| sf.value if sf.code == 'z' && !sf.value.match(/all holdings transferred/i) }.compact.join(' ')
+    comment << used_sub_fields.map { |sf| sf.value if sf.code == 'z' }.compact.join(' ')
+    break if comment =~ /all holdings transferred/i
     library_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'b' }.compact.join(' ')
     location_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'c' }.compact.join(' ')
 
     next if skipped_locations[location_code] || missing_locations[location_code]
     mhld_field[:library] = library_code
     mhld_field[:location] = location_code
-    mhld_field[:public_note] = comment.join('')
-    prefix852 = [library_code, location_code, comment.join('')]
-
+    mhld_field[:public_note] = comment.reject(&:empty?).join(' ')
+    results852 << mhld_field.dup
+    # puts results852
     df852has_equals_sf = field.subfields.select do |sf|
       ['='].include? sf.code
     end.compact.any?
@@ -1343,7 +1344,6 @@ to_field 'mhld_display' do |record, accumulator|
     end
   end
   Traject::MarcExtractor.new('866').collect_matching_lines(record) do |field, _spec, _extractor|
-    next if prefix852.empty?
     sub_a = field.subfields.select do |sf|
       %w[a].include? sf.code
     end.collect(&:value).join('')
@@ -1372,10 +1372,14 @@ to_field 'mhld_display' do |record, accumulator|
     has868 = true
     mhld_results << mhld_dup
   end
-  if !has866 && !has867 && !has868 && df852has_equals_sf
-    mhld_dup = mhld_field.dup
-    mhld_dup[:latest_received] = get_latest_received(most_recent863, most_recent863link_num, patterns853)
-    mhld_results << mhld_dup
+  # Go back through the 852's if there are no 866, 867, or 868 :sad_kitty:
+  if !has866 && !has867 && !has868
+    results852.each do |mhld|
+      if df852has_equals_sf
+        mhld[:latest_received] = get_latest_received(most_recent863, most_recent863link_num, patterns853)
+      end
+      mhld_results << mhld.dup
+    end
   end
   mhld_results.each do |m|
     accumulator << m.values.join(' -|- ')
