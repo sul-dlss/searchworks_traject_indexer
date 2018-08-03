@@ -296,7 +296,7 @@ RSpec.describe 'Author config' do
       result = select_by_id('5666387')[field]
       expect(result).to eq ['International Jean Sibelius Conference (3rd : 2000 : Helsinki, Finland)']
       # field 710
-      result = select_by_id('987666')[field][2]
+      result = select_by_id('987666')[field][1]
       expect(result).to eq '(this was a value in a non-latin script)'
 
       result = select_by_id('710corpname')[field][1]
@@ -327,6 +327,159 @@ RSpec.describe 'Author config' do
       # field 710
       result = select_by_id('710corpname')[field][0]
       expect(result).to eq 'Heyday Films'
+    end
+  end
+
+  describe 'author_person_display' do
+    let(:field) { 'author_person_display' }
+    it 'removes trailing period for field 110a' do
+      result = select_by_id('345228')[field]
+      expect(result).to eq ['Bashkov, Vladimir']
+    end
+
+    it 'retains trailing hyphen for 100ad' do
+      result = select_by_id('919006')[field]
+      expect(result).to eq ['Oeftering, Michael, 1872-']
+    end
+
+    it 'removes trailing comma for 100ae (e is not indexed)' do
+      result = select_by_id('7651581')[field]
+      expect(result).to eq ['Coutinho, Frederico dos Reys']
+    end
+
+    it 'removes trailing period for field 100aqd' do
+      result = select_by_id('690002')[field]
+      expect(result).to eq ['Wallin, J. E. Wallace (John Edward Wallace), b. 1876']
+    end
+
+    it 'removes trailing period for field 100ad' do
+      result = select_by_id('1261173')[field]
+      expect(result).to eq ['Johnson, Samuel, 1649-1703']
+    end
+
+    it 'leaves in trailing period for B.C. acronym' do
+      result = select_by_id('8634')[field]
+      expect(result).to eq ['Sallust, 86-34 B.C.']
+    end
+
+    it '100a with unlinked 880' do
+      result = select_by_id('1006')[field]
+      expect(result).to eq ['Sox on Fox']
+    end
+  end
+
+  describe 'vern_author_person_display' do
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:field) { 'vern_author_person_display' }
+    it 'has correct vernacular author display' do
+      result = select_by_id('trailingPunct')[field]
+      expect(result).to eq ['vernacular internal colon : vernacular ending period']
+    end
+  end
+
+  describe 'author_person_full_display' do
+    let(:field) { 'author_person_full_display' }
+    it 'has correct display for 100ae' do
+      result = select_by_id('7651581')[field]
+      expect(result).to eq ['Coutinho, Frederico dos Reys, ed.']
+    end
+
+    context 'display fields test file' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has correct display for 100ac' do
+        result = select_by_id('1001')[field]
+        expect(result).to eq ['Seuss, Dr.']
+      end
+
+      it 'has correct display for 100aqd' do
+        result = select_by_id('1002')[field]
+        expect(result).to eq ['Fowler, T. M. (Thaddeus Mortimer) 1842-1922.']
+      end
+
+      it 'has correct display for 100a40' do
+        result = select_by_id('1003')[field]
+        expect(result).to eq ['Bach, Johann Sebastian.']
+      end
+
+      it 'uses only first 100 field for display' do
+        result = select_by_id('1004')[field]
+        expect(result).to eq ['Fowler, T. M. (Thaddeus Mortimer) 1842-1922.']
+      end
+    end
+
+    context 'vernacular non search test file' do
+      let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+      it 'has correct display for RTL script' do
+        result = select_by_id('RtoL2')[field]
+        expect(result).to eq ['LTR a : LTR b, LTR c']
+      end
+    end
+  end
+
+  describe 'vern_author_person_full_display' do
+    let(:field) { 'vern_author_person_full_display' }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    it 'has correct display for RTL script' do
+      pending 'legacy test doesn\'t run but solrmarc-sw returns incorrect display too'
+      # "vern_author_person_display":"vern (RTL?) a (first) : vern (RTL?) b (second), vern (RTL?) c (third)"
+      result = select_by_id('RtoL2')[field]
+      expect(result).to eq ['vern (RTL?) c (third) ,vern (RTL?) b (second) : vern (RTL?) a (first)']
+    end
+  end
+
+  describe 'author_corp_display' do
+    let(:field) { 'author_corp_display' }
+    it 'has correct display for 110a' do
+      result = select_by_id('NYPL')[field]
+      expect(result).to eq ['New York Public Library.']
+    end
+
+    it 'has correct display for 110abbb' do
+      result = select_by_id('5511738')[field]
+      expect(result).to eq ['United States. Congress. House. Committee on Agriculture. Subcommittee on Department Operations, Oversight, Nutrition, and Forestry.']
+    end
+
+    it 'has correct display for 110abn' do
+      result = select_by_id('4578538')[field]
+      expect(result).to eq ['Stanford University. Stanford Electronics Laboratories. SEL-69-048.']
+    end
+
+    context 'display fields test file' do
+      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      it 'has correct display for 110abndb' do
+        result = select_by_id('110')[field]
+        expect(result).to eq ['United States. Congress (97th, 2nd session : 1982). House.']
+      end
+    end
+  end
+
+  describe 'vern_author_corp_display' do
+    let(:field) { 'vern_author_corp_display' }
+    it 'has correct display for linked 110a' do
+      result = select_by_id('987666')[field]
+      expect(result).to eq ['北京市妇女联合会.']
+    end
+  end
+
+  describe 'author_meeting_display' do
+    let(:field) { 'author_meeting_display' }
+    it 'has correct display for 111a' do
+      result = select_by_id('111faim')[field]
+      expect(result).to eq ['FAIM (Forum).']
+    end
+
+    it 'has correct display for 111andc' do
+      result = select_by_id('5666387')[field]
+      expect(result).to eq ['International Jean Sibelius Conference (3rd : 2000 : Helsinki, Finland)']
+    end
+  end
+
+  describe 'vern_author_meeting_display' do
+    let(:field) { 'vern_author_meeting_display' }
+    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    it 'has correct display for linked 111a' do
+      result = select_by_id('MeetingAuthorVern')[field]
+      expect(result).to eq ['vernacular mtg name author']
     end
   end
 end

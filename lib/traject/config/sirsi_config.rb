@@ -149,14 +149,20 @@ to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn')
   accumulator.map!(&method(:clean_facet_punctuation))
 end
 # # Author Display Fields
-# author_person_display = custom, removeTrailingPunct(100abcdq, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,) )
-# vern_author_person_display = custom, vernRemoveTrailingPunc(100abcdq, [\\\\,/;:], ([A-Za-z]{4}|[0-9]{3}|\\)|\\,))
-# author_person_full_display = custom, getAllAlphaSubfields(100)
-# vern_author_person_full_display = custom, getLinkedField(100[a-z])
-# author_corp_display = custom, getAllAlphaSubfields(110)
-# vern_author_corp_display = custom, getLinkedField(110[a-z])
-# author_meeting_display = custom, getAllAlphaSubfields(111)
-# vern_author_meeting_display = custom, getLinkedField(111[a-z])
+to_field 'author_person_display', extract_marc('100abcdq') do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :false)
+to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
+to_field 'author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :false)
+to_field 'vern_author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :only)
+to_field 'author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :false)
+to_field 'vern_author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :only)
 # # Author Sort Field
 # author_sort = custom, getSortableAuthor
 #
