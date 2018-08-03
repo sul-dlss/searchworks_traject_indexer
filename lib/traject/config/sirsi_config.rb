@@ -375,6 +375,26 @@ to_field 'url_restricted' do |record, accumulator|
   end
 end
 
+#
+to_field 'access_facet' do |record, accumulator, context|
+  online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
+  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
+    if online_locs.include?(field['k']) || online_locs.include?(field['l']) # || TODO: normCallnum.startsWith(ECALLNUM)
+      accumulator << 'Online'
+    elsif (field['k'] == 'ON-ORDER' || field['l'] == 'ON-ORDER') # TODO: && normCallnum.startsWith(TMP_CALLNUM_PREFIX)
+      accumulator << 'On order'
+    else
+      accumulator << 'At the Library'
+    end
+  end
+
+  # accumulator << 'On order' unless record['999']
+  accumulator << 'Online' if context.output_hash['url_fulltext']
+  accumulator << 'Online' if context.output_hash['url_sfx']
+
+  accumulator.uniq!
+end
+
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
 to_field 'format_main_ssim' do |record, accumulator|
@@ -957,7 +977,6 @@ end
 # # Item Info Fields (from 999 that aren't call number)
 # barcode_search = 999i
 # preferred_barcode = custom, getPreferredItemBarcode
-# access_facet = custom, getAccessMethods
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
