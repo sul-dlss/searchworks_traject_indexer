@@ -482,4 +482,126 @@ RSpec.describe 'Author config' do
       expect(result).to eq ['vernacular mtg name author']
     end
   end
+
+  describe 'author_sort' do
+    let(:field) { 'author_sort' }
+    MAX_CODE_POINT = 0x10FFFD.chr(Encoding::UTF_8) + ' '
+    context 'has the correct fields:' do
+      it '100 then 245' do
+        result = select_by_id('345228')[field]
+        expect(result).to eq ['Bashkov Vladimir 100a only']
+      end
+
+      it '110 then 245' do
+        result = select_by_id('110710corpname')[field]
+        expect(result).to eq ['Thelma facets from 110 and 710']
+      end
+
+      it '111 then 245' do
+        result = select_by_id('111faim')[field]
+        expect(result).to eq ['FAIM Forum mtg name facet from 111 should be FAIM Forum']
+      end
+
+      it 'no 1xx but 240 then 245' do
+        result = select_by_id('666')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'De incertitudine et vanitate scientiarum German ZZZZ']
+      end
+
+      it '100 then 240 then 245' do
+        result = select_by_id('100240')[field]
+        expect(result).to eq ['Hoos Foos Marvin OGravel Balloon Face 100 and 240']
+      end
+
+      it 'no 1xx no 240, 245 only' do
+        result = select_by_id('245only')[field]
+        expect(result).to eq [MAX_CODE_POINT + '245 no 100 or 240']
+      end
+    end
+
+    context 'ignores non-filing characters' do
+      it '0 non-filing in the 240 field' do
+        result = select_by_id('2400')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'Wacky 240 0 nonfiling']
+      end
+      it '2 non-filing in the 240 field' do
+        result = select_by_id('2402')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'Wacky 240 2 nonfiling']
+      end
+      it '7 non-filing in the 240 field' do
+        result = select_by_id('2407')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'Tacky 240 7 nonfiling']
+      end
+      it 'in the 245 field and a 240 field without non-filing characters' do
+        result = select_by_id('575946')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'De incertitudine et vanitate scientiarum German Ruckzug der biblischen Prophetie von der neueren Geschichte']
+      end
+      it 'in the 245 field' do
+        result = select_by_id('1261174')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'second part of the Confutation of the Ballancing letter']
+      end
+      it 'in the 240 and 245 field' do
+        result = select_by_id('892452')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'Wacky 240 245 nonfiling']
+      end
+    end
+
+    context 'handles numeric subfields correctly' do
+      it 'in the 100 field' do
+        result = select_by_id('1006')[field]
+        expect(result).to eq ['Sox on Fox 100 has sub 6']
+      end
+
+      it 'in the 240 field' do
+        result = select_by_id('0240')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'sleep little fishies 240 has sub 0']
+      end
+
+      it 'in the 240 field with multiple numeric subfields' do
+        result = select_by_id('24025')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'la di dah 240 has sub 2 and 5']
+      end
+
+      it 'in the 245 field' do
+        result = select_by_id('2458')[field]
+        expect(result).to eq [MAX_CODE_POINT + '245 has sub 8']
+      end
+    end
+
+    context 'ignores punctuation correctly:' do
+      it 'quotation marks' do
+        result = select_by_id('111')[field]
+        expect(result).to eq ['ind 0 leading quotes in 100']
+      end
+
+      it 'leading hyphens' do
+        result = select_by_id('333')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'ind 0 leading hyphens in 240']
+      end
+
+      it 'leading elipsis' do
+        result = select_by_id('444')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'ind 0 leading elipsis in 240']
+      end
+
+      it 'leading quotation mark and elipsis' do
+        result = select_by_id('555')[field]
+        expect(result).to eq ['ind 0 leading quote elipsis in 100']
+      end
+
+      it 'non-filing characters with leading quotation mark and elipsis' do
+        result = select_by_id('777')[field]
+        expect(result).to eq [MAX_CODE_POINT + 'ind 4 leading quote elipsis in 240']
+      end
+
+      it 'interspersed punctuation across fields' do
+        result = select_by_id('888')[field]
+        expect(result).to eq ['interspersed punctuation here']
+      end
+
+      it 'interspersed punctuation in 100 field' do
+        result = select_by_id('999')[field]
+        expect(result).to eq ['everything in 100']
+      end
+    end
+  end
 end
