@@ -345,7 +345,7 @@ to_field 'format_main_ssim' do |record, accumulator|
   when 'i'
     'Sound Recording'
   when 'j'
-    'Music Recording'
+    'Music recording'
   when 'k'
     'Image' if record['008'] && record['008'].value[33] =~ /[ |[0-9]aciklnopst]/
   when 'm'
@@ -685,8 +685,88 @@ to_field 'format_physical_ssim', extract_marc('300a') do |record, accumulator|
     end
   end)
 end
-# genre_ssim = custom, getAllGenres
-#
+
+# look for thesis by existence of 502 field
+to_field 'genre_ssim' do |record, accumulator|
+  accumulator << 'Thesis/Dissertation' if record['502']
+end
+
+to_field 'genre_ssim', extract_marc('655av')do |record, accumulator|
+  # normalize values
+  accumulator.map! do |v|
+    previous_v = nil
+    until v == previous_v
+      previous_v = v
+      v = v.strip.sub(/([\\,;:])+$/, '').sub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[..{2,}]|[AMUaw][adir][cirt])\.$/, '\1').strip
+    end
+    v
+  end
+
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+
+to_field 'genre_ssim', extract_marc('600v:610v:611v:630v:647v:648v:650v:651v:654v:656v:657v') do |record, accumulator|
+  # normalize values
+  accumulator.map! do |v|
+    previous_v = nil
+    until v == previous_v
+      previous_v = v
+      v = v.strip.sub(/([\\,;:])+$/, '').sub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[..{2,}]|[AMUaw][adir][cirt])\.$/, '\1').strip
+    end
+    v
+  end
+
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+
+#  look for conference proceedings in 6xx sub x or v
+to_field 'genre_ssim' do |record, accumulator|
+  f600xorvspec = (600..699).flat_map { |x| ["#{x}x", "#{x}v"] }
+  Traject::MarcExtractor.new(f600xorvspec).collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Conference proceedings' if extractor.collect_subfields(field, spec).any? { |x| x =~ /congresses/i }
+  end
+end
+
+# Based upon SW-1056, added the following to the algorithm to determine if something is a conference proceeding:
+# Leader/07 = 'm' or 's' and 008/29 = '1'
+to_field 'genre_ssim' do |record, accumulator|
+  if record.leader[7] == 'm' || record.leader[7] == 's'
+    accumulator << 'Conference proceedings' if record['008'] && record['008'].value[29] == '1'
+  end
+end
+
+# /** Based upon SW-1489, if the record is for a certain format (MARC, MRDF,
+#  *  MAP, SERIAL, or VM and not SCORE, RECORDING, and MANUSCRIPT) and it has
+#  *  something in the 008/28 byte, I’m supposed to give it a genre type of
+#  *  government document
+# **/
+to_field 'genre_ssim' do |record, accumulator, context|
+  next if (context.output_hash['format_main_ssim'] || []).include? 'Archive/Manuscript'
+  next if (context.output_hash['format_main_ssim'] || []).include? 'Music score'
+  next if (context.output_hash['format_main_ssim'] || []).include? 'Music recording'
+
+  if record['008'] && record['008'].value[28] && record['008'].value[28] != ' '
+    accumulator << 'Government document'
+  end
+end
+
+# /** Based upon SW-1506 - add technical report as a genre if
+#  *  leader/06: a or t AND 008/24-27 (any position, i.e. 24, 25, 26, or 27): t
+#  *    OR
+#  *  Presence of 027 OR 088
+#  *    OR
+#  *  006/00: a or t AND 006/7-10 (any position, i.e. 7, 8, 9, or 10): t
+# **/
+to_field 'genre_ssim' do |record, accumulator|
+  if (record.leader[6] == 'a' || record.leader[6] == 't') && record['008'] && record['008'].value[24..28] =~ /t/
+    accumulator << 'Technical report'
+  elsif record['027'] || record['088']
+    accumulator << 'Technical report'
+  elsif record['006'] && (record['006'].value[0] == 'a' || record['006'].value[0] == 't') && record['006'].value[7..11] =~ /t/
+    accumulator << 'Technical report'
+  end
+end
+
 to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
   if context.output_hash['format_main_ssim'].include? 'Database'
     translation_map = Traject::TranslationMap.new('db_subjects_map')
