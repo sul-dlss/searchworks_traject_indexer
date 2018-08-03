@@ -1288,13 +1288,15 @@ missing_locations = Traject::TranslationMap.new('locations_missing_list')
 
 to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
 to_field 'mhld_display' do |record, accumulator|
+  MhldField = Struct.new(:library, :location, :public_note, :library_has, :latest_received)
+  mhld_field = MhldField.new
+  mhld_results = []
   prefix852 = []
   df852has_equals_sf = false
   patterns853 = {}
   most_recent863link_num = 0
   most_recent863seq_num = 0
   most_recent863 = nil
-  results = []
   latest_recd_out = false
   has866 = false
   has867 = false
@@ -1310,7 +1312,9 @@ to_field 'mhld_display' do |record, accumulator|
     location_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'c' }.compact.join(' ')
 
     next if skipped_locations[location_code] || missing_locations[location_code]
-
+    mhld_field[:library] = library_code
+    mhld_field[:location] = location_code
+    mhld_field[:public_note] = comment.join('')
     prefix852 = [library_code, location_code, comment.join('')]
 
     df852has_equals_sf = field.subfields.select do |sf|
@@ -1343,34 +1347,38 @@ to_field 'mhld_display' do |record, accumulator|
     sub_a = field.subfields.select do |sf|
       %w[a].include? sf.code
     end.collect(&:value).join('')
-    results << get_library_has(field)
+    mhld_dup = mhld_field.dup
+    mhld_dup[:library_has] = get_library_has(field)
     if sub_a.end_with?('-')
       unless latest_recd_out
-        results[-1] += " -|- #{get_latest_received(most_recent863, most_recent863link_num, patterns853)}"
+        mhld_dup[:latest_received] = get_latest_received(most_recent863, most_recent863link_num, patterns853)
         latest_recd_out = true
       end
     end
     has866 = true
+    mhld_results << mhld_dup
   end
   Traject::MarcExtractor.new('867').collect_matching_lines(record) do |field, _spec, _extractor|
-    results << "Supplement: #{get_library_has(field)}"
-    results << get_latest_received(most_recent863, most_recent863link_num, patterns853) unless has866
+    mhld_dup = mhld_field.dup
+    mhld_dup[:library_has] = "Supplement: #{get_library_has(field)}"
+    mhld_dup[:latest_received] = get_latest_received(most_recent863, most_recent863link_num, patterns853) unless has866
     has867 = true
+    mhld_results << mhld_dup
   end
   Traject::MarcExtractor.new('868').collect_matching_lines(record) do |field, _spec, _extractor|
-    results << "Index: #{get_library_has(field)}"
-    results << get_latest_received(most_recent863, most_recent863link_num, patterns853) unless has866
+    mhld_dup = mhld_field.dup
+    mhld_dup[:library_has] = "Index: #{get_library_has(field)}"
+    mhld_dup[:latest_received] = get_latest_received(most_recent863, most_recent863link_num, patterns853) unless has866
     has868 = true
+    mhld_results << mhld_dup
   end
-  if !has866 && !has867 && !has868
-    if df852has_equals_sf
-      results << get_latest_received(most_recent863, most_recent863link_num, patterns853)
-    else
-      results << ''
-    end
+  if !has866 && !has867 && !has868 && df852has_equals_sf
+    mhld_dup = mhld_field.dup
+    mhld_dup[:latest_received] = get_latest_received(most_recent863, most_recent863link_num, patterns853)
+    mhld_results << mhld_dup
   end
-  results.each do |result|
-    accumulator << prefix852.dup.push(result).push('').join(' -|- ')
+  mhld_results.each do |m|
+    accumulator << m.values.join(' -|- ')
   end
 end
 
@@ -1388,7 +1396,7 @@ def get863display_value(most_recent863, pattern853)
     caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
     value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
     break unless caption && value
-    result += ':' if !result.empty?
+    result += ':' unless result.empty?
     result += get_captioned(caption, value)
   end
   alt_scheme = ''
@@ -1421,11 +1429,13 @@ def get863display_value(most_recent863, pattern853)
                   end
     shall_i_prepend = true
   end
-  result += if !result.empty?
-              " (#{chronology})"
-            else
-              chronology
-            end
+  unless chronology.empty?
+    result += if !result.empty?
+                " (#{chronology})"
+              else
+                chronology
+              end
+  end
   result
 end
 
