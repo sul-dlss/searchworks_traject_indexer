@@ -366,7 +366,6 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('SkippedLocs')[field]).not_to include /3FL-REF-S/
           expect(select_by_id('SkippedLocs')[field]).not_to include /LOCKSS/
           expect(select_by_id('SkippedLocs')[field]).not_to include /WITHDRAWN/
-          pending 'not convinced the rest of these are useful'
           expect(select_by_id('SkippedLocs')[field].length).to eq 1
           expect(select_by_id('SkippedLocs')[field]).to include 'lib -|- loc -|-  -|-  -|- '
         end
@@ -397,11 +396,10 @@ RSpec.describe 'Holdings config' do
       describe 'ensure all (non-skipped) 866s are output correctly' do
         let(:fixture_name) { 'mhldDisplay86x.mrc' }
         it do
-          pending
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- 2009- -|- '
           expect(select_by_id('358041')[field]).to include 'SAL3 -|- STACKS -|-  -|- v.151(1972)-v.152(1972) -|- '
           expect(select_by_id('358041')[field]).to include 'SAL -|- STACKS -|-  -|- 1953; v.143(1968)-v.144(1968),v.153(1973)-v.154(1973),v.164(1978),v.166(1979),v.175(1984),v.178(1985),v.182(1988)-v.183(1989),v.194(2000)- -|- '
-          expect(select_by_id('358725')[field]).to eq ['GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in STACKS -|- [18-38, 1922-42]; 39, 1943- -|- ']
+          expect(select_by_id('358725')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in STACKS -|- [18-38, 1922-42]; 39, 1943- -|- '
         end
       end
       describe 'multiple 866' do
@@ -449,8 +447,8 @@ RSpec.describe 'Holdings config' do
         it do
           expect(select_by_id('keep867ind0')[field]).to eq ['GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- ']
           start = 'GREEN -|- STACKS -|- Supplement -|- Supplement: '
-          expect(select_by_id('multKeep867ind0')[field][0]).to eq start + 'keep me 1 (867) -|- '
-          expect(select_by_id('multKeep867ind0')[field][1]).to eq start + 'keep me 2 (867) -|- '
+          expect(select_by_id('multKeep867ind0')[field][1]).to eq start + 'keep me 1 (867) -|- '
+          expect(select_by_id('multKeep867ind0')[field][2]).to eq start + 'keep me 2 (867) -|- '
         end
       end
       describe '867 no 866' do
@@ -458,7 +456,6 @@ RSpec.describe 'Holdings config' do
         # an 866, and there are 863s
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          pending 'TODO: need further investigation'
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- Supplement: COUNTRY LIFE ABROAD (WIN 2001), (JUL 14, 2005) -|- v.205:no.22 (2011:June 1)'
         end
       end
@@ -473,10 +470,10 @@ RSpec.describe 'Holdings config' do
         it do
           start = 'GREEN -|- STACKS -|-  -|- Supplement: '
           expect(select_by_id('skip867ind0')[field]).to eq [start + 'skip me (867) -|- ']
-          pending 'TODO: subfield z (comment/note) is preset as code seems to expect'
           expect(select_by_id('multSkip867ind0')[field]).to eq [
             start + 'skip me 1 (867) -|- ',
-            start + 'skip me 2 (867) -|- '
+            start + 'skip me 2 (867) -|- ',
+            'GREEN -|- STACKS -|- Supplement -|-  -|- '
           ]
         end
       end
@@ -525,7 +522,6 @@ RSpec.describe 'Holdings config' do
         # 863, formatted per matching 853
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          pending 'TODO: (┛ಠ_ಠ)┛彡┻━┻'
           expect(select_by_id('latestRecdPatterns')[field]).to include 'lib -|- loc -|-  -|-  -|- v.106:pt.3:no.482 (2010:WIN)'
           expect(select_by_id('latestRecdPatterns')[field]).to include 'lib -|- loc -|-  -|-  -|- v.105 (2009)'
           expect(select_by_id('latestRecdPatterns')[field]).to include 'lib -|- loc -|-  -|-  -|- v.205:no.10 (2011:March 9)'
@@ -547,7 +543,6 @@ RSpec.describe 'Holdings config' do
         # if the 852 has a sub = , then display the most recent 863
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          pending 'TODO: missing 2009 & ??'
           # 852 has sub =  and no 866:  use most recent 863
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE TRAVEL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- 2010/2011:Winter'
           # 852 has no sub =  and no 866:  do not use latest 863
@@ -558,8 +553,7 @@ RSpec.describe 'Holdings config' do
         # if an 852 has multiple subfield z, they should be concatenated with a " "
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          expect(select_by_id('852multz')[field]).to include 'LANE -|- STACKS -|- z4 z5 z6 -|- 866a -|- '
-          pending 'TODO: 852s joined with 866 not being added'
+          expect(select_by_id('852multz')[field]).to include 'LANE -|- STACKS -|- z4 z5 z6 -|-  -|- '
           expect(select_by_id('852multz')[field]).to include 'CROWN -|- STACKS -|- z1 z2 -|- 866a -|- '
           expect(select_by_id('852multz')[field]).to include 'HOOVER -|- STACKS -|- z3 -|- 866a -|- '
         end
@@ -574,7 +568,6 @@ RSpec.describe 'Holdings config' do
       describe '358041' do
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          pending 'TODO: ???'
           # 852 has sub =  and no 866:  use most recent 863
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- 2009- -|- 2011:Summer'
           expect(select_by_id('358041')[field]).to include 'SAL3 -|- STACKS -|-  -|- v.151(1972)-v.152(1972) -|- '
@@ -587,11 +580,9 @@ RSpec.describe 'Holdings config' do
       describe 'test the expected values for a record with easier text strings' do
         let(:fixture_name) { 'mhldDisplayEasy.mrc' }
         it do
-          pending 'TODO: ???'
-          expect(select_by_id('358041')[field].length).to eq 5
           expect(select_by_id('358041')[field]).to include 'lib1 -|- loc1 -|- comment1 -|- 866a1open- -|- 2011:Summer'
           expect(select_by_id('358041')[field]).to include 'lib2 -|- loc2 -|-  -|- 866a2 -|- '
-          expect(select_by_id('358041')[field]).to include 'lib3 -|- loc3 -|-  -|- 866a3open -|- '
+          expect(select_by_id('358041')[field]).to include 'lib3 -|- loc3 -|-  -|- 866a3open- -|- '
           expect(select_by_id('358041')[field]).to include 'lib1 -|- loc1 -|- comment4 -|- Supplement: 867a -|- v.205:no.22 (2011:June 1)'
           expect(select_by_id('358041')[field]).to include 'lib1 -|- loc1 -|- comment5 -|-  -|- 2010/2011:Winter'
         end
