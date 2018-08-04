@@ -246,12 +246,126 @@ end
 
 
 # # Publication Fields
-# pub_search = custom, getPublication
-# vern_pub_search = custom, getLinkedField(260ab:264ab)
-# pub_country = 008[15-17]:008[15-16], country_map.properties, first
+
+# 260ab and 264ab, without s.l in 260a and without s.n. in 260b
+to_field 'pub_search' do |record, accumulator|
+  Traject::MarcExtractor.new('260:264').collect_matching_lines(record) do |field, spec, extractor|
+    data = field.subfields.select { |x| x.code == 'a' || x.code == 'b' }
+                 .reject { |x| x.code == 'a' && (x.value =~ /s\.l\./i || x.value =~ /place of .* not identified/i) }
+                 .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
+                 .map(&:value)
+
+    accumulator << trim_punctuation_custom(data.join(' ')) unless data.empty?
+  end
+end
+to_field 'vern_pub_search', extract_marc('260ab:264ab', alternate_script: :only)
+to_field 'pub_country', extract_marc('008') do |record, accumulator|
+  three_char_country_codes = accumulator.flat_map { |v| v[15..17] }
+  two_char_country_codes = accumulator.flat_map { |v| v[15..16] }
+  translation_map = Traject::TranslationMap.new('country_map')
+  accumulator.replace [translation_map.translate_array(three_char_country_codes + two_char_country_codes).first]
+end
+
 # # publication dates
+def clean_date_string(value)
+  valid_year_regex = /(?:20|19|18|17|16|15|14|13|12|11|10|09|08|07|06|05)[0-9][0-9]/
+
+  # some nice regular expressions looking for years embedded in strings
+  matches = Regexp.union(
+    /^(#{valid_year_regex})\D{0,2}$/,
+    /^\[(#{valid_year_regex})\]$/,
+    /^\[?[©Ⓟcp](#{valid_year_regex})\D?$/,
+    /i\. ?e\. ?(#{valid_year_regex})\D?$/,
+    /\[(#{valid_year_regex})\D.*\]/,
+  ).match(value)
+
+  best_match = matches[1..999].compact.first if matches
+
+  # reject BC dates altogether.
+  return if value =~ /[0-9]+ B\.?C\.?/i
+
+  # else if (bracesAround19Matcher.find())
+  #   cleanDate = bracesAround19Matcher.group().replaceAll("\\[", "").replaceAll("\\]", "");
+  # else if (unclearLastDigitMatcher.find())
+  #   cleanDate = unclearLastDigitMatcher.group().replaceAll("[-?]", "0");
+
+  # if a year starts with an l instead of a 1
+  best_match ||= if value =~ /l((?:9|8|7|6|5)\d{2,2})\D?/
+    "1#{$1}"
+  end
+  # brackets around the century, e.g. [19]56
+  best_match ||= if value =~ /\[19\](\d\d)\D?/
+    "19#{$1}"
+  end
+  # uncertain last digit
+  best_match ||= if value =~ /((?:20|19|18|17|16|15)[0-9])[-?]/
+    "#{$1}0"
+  end
+
+  # is the date no more than 1 year in the future?
+  best_match if best_match.to_i >= 500 && best_match.to_i < Time.now.year + 1
+end
+
 # # deprecated
-# pub_date = custom, getPubDate
+# returns the publication date from a record, if it is present and not
+#      *  beyond the current year + 1 (and not earlier than EARLIEST_VALID_YEAR if it is a
+#      *  4 digit year
+#      *   four digit years < EARLIEST_VALID_YEAR trigger an attempt to get a 4 digit date from 260c
+to_field 'pub_date' do |record, accumulator|
+  valid_range = 500..(Time.now.year + 10)
+
+  f008_bytes7to10 = record['008'].value[7..10] if record['008']
+
+  year = case f008_bytes7to10
+  when /\d\d\d\d/
+    year = record['008'].value[7..10].to_i
+    record['008'].value[7..10] if valid_range.cover? year
+  when /\d\d\du/
+    "#{record['008'].value[7..9]}0s" if record['008'].value[7..9] <= Time.now.year.to_s[0..2]
+  when /\d\duu/
+    if record['008'].value[7..8] <= Time.now.year.to_s[0..1]
+      century_year = (record['008'].value[7..8].to_i + 1).to_s
+
+      century_suffix = if ['11', '12', '13'].include? century_year
+        "th"
+      else
+        case century_year[-1]
+        when '1'
+          'st'
+        when '2'
+          'nd'
+        when '3'
+          'rd'
+        else
+          'th'
+        end
+      end
+
+      "#{century_year}#{century_suffix} century"
+    end
+  end
+
+  # find a valid year in the 264c with ind2 = 1
+  year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+    next unless field.indicator2 == '1'
+    extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
+  end.compact.first
+
+  year ||= Traject::MarcExtractor.new('260c:264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+    extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
+  end.compact.first
+
+  accumulator << year if year
+end
+
+# *  use 008 date1 if it is 3 or 4 digits and in valid range
+# *  If not, check for a 4 digit date in the 264c if 2nd ind is 1
+# *  If not, take usable 260c date
+# *  If not, take any other usable date in the 264c
+# *  If still without date, look at 008 date2
+# *
+# *  If still without date, use dduu from date 1 as dd00
+# *  If still without date, use dduu from date 2 as dd99
 # pub_date_sort = custom, getPubDateSort
 # pub_year_tisim = custom, getPubDateSliderVals
 def marc_008_date(byte6values, byte_range, u_replacement)
@@ -282,8 +396,20 @@ to_field 'latest_poss_year_isi', marc_008_date(%w[q], 11..14, '9')
 to_field 'production_year_isi', marc_008_date(%w[p], 11..14, '9')
 to_field 'original_year_isi', marc_008_date(%w[r], 11..14, '9')
 to_field 'copyright_year_isi', marc_008_date(%w[t], 11..14, '9')
-# # from 260c
-# imprint_display = custom, getImprint
+
+# returns the a value comprised of 250ab and 260a-g, suitable for display
+to_field 'imprint_display' do |record, accumulator|
+  edition = Traject::MarcExtractor.new('250ab', separator: nil, alternate_script: false).extract(record).map(&:strip).join(' ')
+  vernEdition = Traject::MarcExtractor.new('250ab', separator: nil, alternate_script: :only).extract(record).map(&:strip).join(' ')
+
+  imprint = Traject::MarcExtractor.new('260abcefg', separator: nil, alternate_script: false).extract(record).map(&:strip).join(' ')
+  vernImprint = Traject::MarcExtractor.new('260abcefg', separator: nil, alternate_script: :only).extract(record).map(&:strip).join(' ')
+
+  accumulator << [
+    [edition, vernEdition].compact.reject(&:empty?).join(' '),
+    [imprint, vernImprint].compact.reject(&:empty?).join(' ')
+  ].compact.reject(&:empty?).join(' - ')
+end
 #
 # # Date field for new items feed
 to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
