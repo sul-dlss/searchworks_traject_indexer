@@ -421,26 +421,25 @@ RSpec.describe 'Publication config' do
     let(:field) { 'pub_year_tisim' }
 
     {
-      [{ '250' => { 'subfields' => [{ 'c' => '1973' }]}}] => '1973',
-      [{ '250' => { 'subfields' => [{ 'c' => '[1973]' }]}}] => '1973',
-      [{ '250' => { 'subfields' => [{ 'c' => '1973]' }]}}] => '1973',
-      [{ '250' => { 'subfields' => [{ 'c' => '[1973?]' }]}}] => '1973',
-      [{ '250' => { 'subfields' => [{ 'c' => '[196-?]' }]}}] => '1960',
-      [{ '250' => { 'subfields' => [{ 'c' => 'March 1987.' }]}}] => '1987',
-      [{ '250' => { 'subfields' => [{ 'c' => 'c1975.' }]}}] => '1975',
-      [{ '250' => { 'subfields' => [{ 'c' => '[c1973]' }]}}] => '1973',
-      [{ '250' => { 'subfields' => [{ 'c' => 'c1973]' }]}}] => '1973',
-      [{ '250' => { 'subfields' => [{ 'c' => '1973 [i.e. 1974]' }]}}] => '1974',
-      [{ '250' => { 'subfields' => [{ 'c' => '1971[i.e.1972]' }]}}] => '1972',
-      [{ '250' => { 'subfields' => [{ 'c' => '1973 [i.e.1974]' }]}}] => '1974',
-      [{ '250' => { 'subfields' => [{ 'c' => '1967 [i. e. 1968]' }]}}] => '1968'
+      [{ '260' => { 'subfields' => [{ 'c' => '1973' }]}}] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '[1973]' }]}}] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '1973]' }]}}] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '[1973?]' }]}}] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '[196-?]' }]}}] => '1960',
+      [{ '260' => { 'subfields' => [{ 'c' => 'c1975.' }]}}] => '1975',
+      [{ '260' => { 'subfields' => [{ 'c' => '[c1973]' }]}}] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => 'c1973]' }]}}] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '1973 [i.e. 1974]' }]}}] => '1974',
+      [{ '260' => { 'subfields' => [{ 'c' => '1971[i.e.1972]' }]}}] => '1972',
+      [{ '260' => { 'subfields' => [{ 'c' => '1973 [i.e.1974]' }]}}] => '1974',
+      [{ '260' => { 'subfields' => [{ 'c' => '1967 [i. e. 1968]' }]}}] => '1968'
     }.each do |fields, expected|
       context 'with a single value in a 260c' do
         let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
         subject(:result) { indexer.map_record(record) }
 
         it 'populates correctly' do
-          expect(result[field]).to eq expected
+          expect(result[field]).to eq [expected]
         end
       end
     end
@@ -456,23 +455,23 @@ RSpec.describe 'Publication config' do
     end
 
     it 'maps the right data' do
-      expect(select_by_id('pubDate195u')[field]).to eq ['1950', '1957', '1964', '1970', '1982']
+      expect(select_by_id('pubDate195u')[field].uniq).to match_array ('1950'..'1982').to_a
       expect(select_by_id('bothDates008')[field]).to eq ['1964']
       expect(select_by_id('s195u')[field]).to eq ['1950']
       expect(select_by_id('pubDate0059')[field]).to eq ['2005']
       expect(select_by_id('j2005')[field]).to eq ['2005']
-      expect(select_by_id('contRes')[field]).to eq ['2005']
+      expect(select_by_id('contRes')[field].uniq).to match_array ('1984'..Time.now.year.to_s).to_a
       expect(select_by_id('pubDate0197-1')[field]).to eq ['1970']
       expect(select_by_id('pubDate0197-2')[field]).to eq ['1970']
 
       # future dates are ignored/skipped
-      expect(select_by_id('6666')[field]).to be_nil
-      expect(select_by_id('8610')[field]).to be_nil
-      expect(select_by_id('9999')[field]).to be_nil
+      expect(results).not_to include(hash_including(field => include('6666')))
+      expect(results).not_to include(hash_including(field => include('8610')))
+      expect(results).not_to include(hash_including(field => include('9999')))
 
       # dates before 500 are ignored/skipped
-      expect(select_by_id('0000')[field]).to be_nil
-      expect(select_by_id('0019')[field]).to be_nil
+      expect(results).not_to include(hash_including(field => include('0000')))
+      expect(results).not_to include(hash_including(field => include('0019')))
     end
   end
 

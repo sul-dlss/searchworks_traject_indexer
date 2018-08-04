@@ -412,7 +412,57 @@ to_field 'pub_date_sort' do |record, accumulator|
   accumulator << year if year
 end
 
-# pub_year_tisim = custom, getPubDateSliderVals
+to_field 'pub_year_tisim' do |record, accumulator|
+  valid_range = 500..(Time.now.year + 10)
+
+  if record['008']
+    f008_bytes7to10 = record['008'].value[7..10]
+
+    year_date1 = case f008_bytes7to10
+    when /\d\d\d\d/
+      year = record['008'].value[7..10].to_i
+      record['008'].value[7..10] if valid_range.cover? year
+    when /\d\d\du/
+      "#{record['008'].value[7..9]}0" if record['008'].value[7..9] <= Time.now.year.to_s[0..2]
+    end
+
+    f008_bytes11to14 = record['008'].value[11..14]
+    year_date2 = case f008_bytes11to14
+    when /\d\d\d\d/
+      year = record['008'].value[11..14].to_i
+      record['008'].value[11..14] if valid_range.cover? year
+    when /\d\d\du/
+      "#{record['008'].value[11..13]}9" if record['008'].value[11..13] <= Time.now.year.to_s[0..2]
+    end
+
+    case record['008'].value[6]
+    when 'd', 'i', 'k', 'q', 'm'
+      # index start, end and years between
+      accumulator << year_date1 if year_date1
+      accumulator << year_date2 if year_date2 && year_date2 != '9999'
+      accumulator.concat(((year_date1.to_i)..(year_date2.to_i)).map(&:to_s)) if year_date1 && year_date2 && year_date2 != '9999'
+    when 'c'
+      # if open range, index all thru present
+      if year_date1
+        accumulator << year_date1
+        accumulator.concat(((year_date1.to_i)..(Time.now.year)).map(&:to_s)) if f008_bytes11to14 == '9999'
+      end
+    when 'p', 'r', 't'
+      # index only start and end
+      accumulator << year_date1 if year_date1
+      accumulator << year_date2 if year_date2
+    else
+      accumulator << year_date1 if year_date1
+    end
+  end
+
+  if accumulator.empty?
+    Traject::MarcExtractor.new('260c').collect_matching_lines(record) do |field, spec, extractor|
+      accumulator.concat extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }
+    end
+  end
+end
+
 def marc_008_date(byte6values, byte_range, u_replacement)
   lambda do |record, accumulator|
     Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, spec, extractor|
