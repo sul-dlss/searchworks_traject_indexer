@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+  <record>
+    <leader>00880cam a2200229K  45 0</leader>
+    <controlfield tag="001">a655aGenre</controlfield>
+    <controlfield tag="008">870518s1946    bl            000 0 por d</controlfield>
+    <datafield tag="245" ind1="1" ind2="3">
+      <subfield code="a">Genre from 655 a</subfield>
+    </datafield>
+    <datafield tag="655" ind1=" " ind2=" ">
+      <subfield code="a">Silent films.</subfield>
+    </datafield>
+    <datafield tag="655" ind1=" " ind2=" ">
+      <subfield code="a">Correspondence</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00880cam a2200229K  45 0</leader>
+    <controlfield tag="001">aNoGenre</controlfield>
+    <controlfield tag="008">870518s1946    bl            000 0 por d</controlfield>
+    <datafield tag="245" ind1="1" ind2="3">
+      <subfield code="a">No Genre</subfield>
+    </datafield>
+    <datafield tag="600" ind1=" " ind2=" ">
+      <subfield code="a">Gautama Buddha</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00880cam a2200229K  45 0</leader>
+    <controlfield tag="001">a610vGenre</controlfield>
+    <controlfield tag="008">870518s1946    bl            000 0 por d</controlfield>
+    <datafield tag="245" ind1="1" ind2="3">
+      <subfield code="a">Genre from 610 v</subfield>
+    </datafield>
+    <datafield tag="610" ind1=" " ind2=" ">
+      <subfield code="a">Austen, Jane, 1775-1817.</subfield>
+      <subfield code="v">Correspondence</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00880cam a2200229K  45 0</leader>
+    <controlfield tag="001">a610vGenre2</controlfield>
+    <controlfield tag="008">870518s1946    bl            000 0 por d</controlfield>
+    <datafield tag="245" ind1="1" ind2="3">
+      <subfield code="a">Genre from 610 v</subfield>
+    </datafield>
+    <datafield tag="610" ind1=" " ind2=" ">
+      <subfield code="a">Twain, Mark, 1835-1910.</subfield>
+      <subfield code="v">Correspondence</subfield>
+    </datafield>
+  </record>
+</collection>

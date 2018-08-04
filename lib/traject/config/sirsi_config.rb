@@ -333,15 +333,577 @@ to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
 end
 
 #
-# language = custom, getLanguages, language_map.properties
+to_field 'language', extract_marc('008') do |record, accumulator|
+  accumulator.map! { |v| v[35..37] }
+  translation_map = Traject::TranslationMap.new('language_map')
+  accumulator.replace translation_map.translate_array(accumulator).flatten
+end
+
+# split out separate lang codes only from 041a if they are smushed together.
+to_field 'language', extract_marc('041a') do |record, accumulator|
+  accumulator.map! { |v| v.scan(/.{3}/) }.flatten!
+  translation_map = Traject::TranslationMap.new('language_map')
+  accumulator.replace translation_map.translate_array(accumulator).flatten
+end
+
+to_field 'language', extract_marc('041d:041e:041j', translation_map: 'language_map')
+
+
 #
+# # URL Fields
+# get full text urls from 856, then reject gsb forms
+to_field 'url_fulltext' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    case field.indicator2
+    when '0'
+      accumulator.concat extractor.collect_subfields(field, spec)
+    when '2'
+      # no-op
+    else
+      accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
+    end
+  end
+
+  accumulator.reject! do |v|
+    v.start_with?('http://www.gsb.stanford.edu/jacksonlibrary/services/') ||
+    v.start_with?('https://www.gsb.stanford.edu/jacksonlibrary/services/')
+  end
+end
+
+# get all 956 subfield u containing fulltext urls that aren't SFX
+to_field 'url_fulltext', extract_marc('956u') do |record, accumulator|
+  accumulator.reject! do |v|
+    v.start_with?('http://caslon.stanford.edu:3210/sfxlcl3?') ||
+    v.start_with?('http://library.stanford.edu/sfx?')
+  end
+end
+
+# returns the URLs for supplementary information (rather than fulltext)
+to_field 'url_suppl' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    case field.indicator2
+    when '0'
+      # no-op
+    when '2'
+      accumulator.concat extractor.collect_subfields(field, spec)
+    else
+      accumulator.concat extractor.collect_subfields(field, spec) if (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
+    end
+  end
+end
+
+to_field 'url_sfx', extract_marc('956u') do |record, accumulator|
+  accumulator.select! { |v| v =~ Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+}) }
+end
+
+# returns the URLs for restricted full text of a resource described
+#  by the 856u.  Restricted is determined by matching a string against
+#  the 856z.  ("available to stanford-affiliated users at:")
+to_field 'url_restricted' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record)  do |field, spec, extractor|
+    next unless field.subfields.select { |f| f.code == 'z' }.map(&:value).any? { |z| z =~ /available to stanford-affiliated users at:/i }
+    case field.indicator2
+    when '0'
+      accumulator.concat extractor.collect_subfields(field, spec)
+    when '2'
+      # no-op
+    else
+      accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
+    end
+  end
+end
+
+#
+to_field 'access_facet' do |record, accumulator, context|
+  online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
+  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
+    if online_locs.include?(field['k']) || online_locs.include?(field['l']) # || TODO: normCallnum.startsWith(ECALLNUM)
+      accumulator << 'Online'
+    elsif (field['k'] == 'ON-ORDER' || field['l'] == 'ON-ORDER') # TODO: && normCallnum.startsWith(TMP_CALLNUM_PREFIX)
+      accumulator << 'On order'
+    else
+      accumulator << 'At the Library'
+    end
+  end
+
+  # accumulator << 'On order' unless record['999']
+  accumulator << 'Online' if context.output_hash['url_fulltext']
+  accumulator << 'Online' if context.output_hash['url_sfx']
+
+  accumulator.uniq!
+end
+
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
-# format_main_ssim = custom, getMainFormats
-# format_physical_ssim = custom, getPhysicalFormats
-# genre_ssim = custom, getAllGenres
-#
-# db_az_subject = custom, getDbAZSubjects, db_subjects_map.properties
+to_field 'format_main_ssim' do |record, accumulator|
+  value = case record.leader[6]
+  when 'a', 't'
+    arr = []
+
+    if ['a', 'm'].include? record.leader[7]
+      arr << 'Book'
+    end
+
+    if record.leader[7] == 'c'
+      arr << 'Archive/Manuscript'
+    end
+
+    arr
+  when 'b', 'p'
+    'Archive/Manuscript'
+  when 'c'
+    'Music/Score'
+  when 'd'
+    ['Music/Score', 'Archive/Manuscript']
+  when 'e'
+    'Map'
+  when 'f'
+    ['Map', 'Archive/Manuscript']
+  when 'g'
+    if record['008'] && record['008'].value[33] =~ /[ |[0-9]fmv]/
+      'Video'
+    elsif record['008'] && record['008'].value[33] =~ /[aciklnopst]/
+      'Image'
+    end
+  when 'i'
+    'Sound Recording'
+  when 'j'
+    'Music recording'
+  when 'k'
+    'Image' if record['008'] && record['008'].value[33] =~ /[ |[0-9]aciklnopst]/
+  when 'm'
+    if record['008'] && record['008'].value[26] == 'a'
+      'Dataset'
+    else
+      'Software/Multimedia'
+    end
+  when 'o' # instructional kit
+    'Other'
+  when 'r' # 3D object
+    'Object'
+  end
+
+  accumulator.concat(Array(value))
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  next unless context.output_hash['format_main_ssim'].nil?
+
+  accumulator << if record.leader[7] == 's' && record['008'] && record['008'].value[21]
+    case record['008'].value[21]
+    when 'm'
+      'Book'
+    when 'n'
+      'Newspaper'
+    when 'p', ' ', '|', '#'
+      'Journal/Periodical'
+    when 'd'
+      'Database'
+    when 'w'
+      'Journal/Periodical'
+    else
+      'Book'
+    end
+  elsif record['006'] && record['006'].value[0] == 's'
+    case record['006'].value[4]
+    when 'l', 'm'
+      'Book'
+    when 'n'
+      'Newspaper'
+    when 'p', ' ', '|', '#'
+      'Journal/Periodical'
+    when 'd'
+      'Database'
+    when 'w'
+      'Journal/Periodical'
+    else
+      'Book'
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  next unless context.output_hash['format_main_ssim'].nil?
+
+  if record.leader[7] == 'i'
+    accumulator << case record['008'].value[21]
+    when nil
+      nil
+    when 'd'
+      'Database'
+    when 'l'
+      'Book'
+    when 'w'
+      'Journal/Periodical'
+    else
+      'Book'
+    end
+  end
+end
+
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  Traject::MarcExtractor.new('999t').collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Database' if extractor.collect_subfields(field, spec).include? 'DATABASE'
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  # if it is a Database and a Software/Multimedia, and it is not
+  #  "At the Library", then it should only be a Database
+  if context.output_hash.fetch('format_main_ssim', []).include?('Database') && context.output_hash['format_main_ssim'].include?('Software/Multimedia') && !Array(context.output_hash['access_facet']).include?('At the Library')
+    context.output_hash['format_main_ssim'].delete('Software/Multimedia')
+  end
+end
+
+# /* If the call number prefixes in the MARC 999a are for Archive/Manuscript items, add Archive/Manuscript format
+#  * A (e.g. A0015), F (e.g. F0110), M (e.g. M1810), MISC (e.g. MISC 1773), MSS CODEX (e.g. MSS CODEX 0335),
+#   MSS MEDIA (e.g. MSS MEDIA 0025), MSS PHOTO (e.g. MSS PHOTO 0463), MSS PRINTS (e.g. MSS PRINTS 0417),
+#   PC (e.g. PC0012), SC (e.g. SC1076), SCD (e.g. SCD0012), SCM (e.g. SCM0348), and V (e.g. V0321).  However,
+#   A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
+#   the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
+#  */
+to_field 'format_main_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
+    if field['m'] == 'SPEC-COLL' && field['w'] == 'ALPHANUM' && field['a'] =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|D|M]|V\d)/i
+      accumulator << 'Archive/Manuscript'
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
+    if extractor.collect_subfields(field, spec).join(' ') =~ /manuscript/
+
+      Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
+        if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
+          accumulator << 'Book'
+        end
+      end
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  if (record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd')
+    Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
+      if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
+        context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
+        accumulator << 'Book'
+      end
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('590a').collect_matching_lines(record) do |field, spec, extractor|
+    if extractor.collect_subfields(field, spec).any? { |x| x =~ /MARCit brief record/ }
+      accumulator << 'Journal/Periodical'
+    end
+  end
+end
+
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  # // If it is Equipment, add Equipment resource type and remove 3D object resource type
+  # // INDEX-123 If it is Equipment, that should be the only item in main_formats
+  Traject::MarcExtractor.new('914a').collect_matching_lines(record) do |field, spec, extractor|
+    if extractor.collect_subfields(field, spec).include? 'EQUIP'
+      context.output_hash['format_main_ssim'].replace([])
+      accumulator << 'Equipment'
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].include?('Other')
+    format = Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
+      value = extractor.collect_subfields(field, spec).join(' ').downcase
+
+      case value
+      when /(video|motion picture|filmstrip|vcd-dvd)/
+        'Video'
+      when /manuscript/
+        'Archive/Manuscript'
+      when /sound recording/
+        'Sound Recording'
+      when /(graphic|slide|chart|art reproduction|technical drawing|flash card|transparency|activity card|picture|diapositives)/
+        'Image'
+      when /kit/
+        case record['007'].value[0]
+        when 'a', 'd'
+          'Map'
+        when 'c'
+          'Software/Multimedia'
+        when 'g', 'm', 'v'
+          'Video'
+        when 'k', 'r'
+          'Image'
+        when 'q'
+          'Music/Score'
+        when 's'
+          'Sound Recording'
+        end
+      end
+    end
+
+    if format
+      accumulator.concat format
+      context.output_hash['format_main_ssim'].delete('Other') if context.output_hash['format_main_ssim']
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  accumulator << 'Other' if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].empty?
+end
+
+# * INDEX-89 - Add video physical formats
+to_field 'format_physical_ssim', extract_marc('999a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /BLU-RAY/
+      'Blu-ray'
+    when /ZVC/, /ARTVC/, /MVC/
+      'Videocassette (VHS)'
+    when /ZDVD/, /ARTDVD/, /MDVD/, /ADVD/
+      'DVD'
+    when /AVC/
+      'Videocassette'
+    when /ZVD/, /MVD/
+      'Laser disc'
+    end
+  end)
+end
+
+to_field 'format_physical_ssim', extract_marc('007') do |record, accumulator, context|
+  accumulator.replace(accumulator.map do |value|
+    case value[0]
+    when 'g'
+      'Slide' if value[1] == 's'
+    when 'h'
+      if value[1] =~ /[bcdhj]/
+        'Microfilm'
+      elsif value[1] =~ /[efg]/
+        'Microfiche'
+      end
+    when 'k'
+      'Photo' if value[1] == 'h'
+    when 'm'
+      'Film'
+    when 'r'
+      'Remote-sensing image'
+    when 's'
+      if Array(context.output_hash['access_facet']).include? 'At the Library'
+        case value[1]
+        when 'd'
+          case value[3]
+          when 'b'
+            'Vinyl disc'
+          when 'd'
+            '78 rpm (shellac)'
+          when 'f'
+            'CD'
+          end
+        else
+          if value[6] == 'j'
+            'Audiocassette'
+          elsif value[1] == 'q'
+            'Piano/Organ roll'
+          end
+        end
+      end
+    when 'v'
+      case value[4]
+      when 'a', 'i', 'j'
+        'Videocassette (Beta)'
+      when 'b'
+        'Videocassette (VHS)'
+      when 'g'
+        'Laser disc'
+      when 'q'
+        'Hi-8 mm'
+      when 's'
+        'Blu-ray'
+      when 'v'
+        'DVD'
+      when nil, ''
+      else
+        'Other video'
+      end
+    end
+
+  end)
+end
+
+# INDEX-89 - Add video physical formats from 538$a
+to_field 'format_physical_ssim', extract_marc('538a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /Bluray/, /Blu-ray/, /Blu ray/
+      'Blu-ray'
+    when /VHS/
+      'Videocassette (VHS)'
+    when /DVD/
+      'DVD'
+    when /CAV/, /CLV/
+      'Laser disc'
+    when /VCD/, /Video CD/, /VideoCD/
+      'Video CD'
+    end
+  end)
+end
+
+# INDEX-89 - Add video physical formats from 300$b, 347$b
+to_field 'format_physical_ssim', extract_marc('300b:347b:338a:300a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /MP4/, /MPEG-4/
+      'MPEG-4'
+    when /VCD/, /Video CD/, /VideoCD/
+      'Video CD'
+    when /audio roll/, /piano roll/, /organ roll/
+      'Piano/Organ roll'
+    end
+  end)
+end
+
+to_field 'format_physical_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
+    next unless field['a']
+
+    if field['a'].start_with? 'MFICHE'
+      accumulator << 'Microfiche'
+    elsif field['a'].start_with? 'MFILM'
+      accumulator << 'Microfilm'
+    end
+  end
+end
+
+to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}") do |record, accumulator|
+  values = accumulator.dup.join("\n")
+  accumulator.replace([])
+
+  case values
+  when %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,;.])? (c )?(4 3/4|12 c)}
+    accumulator << 'CD' unless values =~ /(DVD|SACD|blu[- ]?ray)/
+  when %r{33(\.3| 1/3) ?rpm}
+    accumulator << 'Vinyl disc' if values =~ /(10|12) ?in/
+  end
+end
+
+to_field 'format_physical_ssim', extract_marc('300a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /microfiche/i
+      'Microfiche'
+    when /microfilm/i
+      'Microfilm'
+    when /photograph/i
+      'Photo'
+    when /remote-sensing image/i, /remote sensing image/i
+      'Remote-sensing image'
+    when /slide/i
+      'Slide'
+    end
+  end)
+end
+
+# look for thesis by existence of 502 field
+to_field 'genre_ssim' do |record, accumulator|
+  accumulator << 'Thesis/Dissertation' if record['502']
+end
+
+to_field 'genre_ssim', extract_marc('655av')do |record, accumulator|
+  # normalize values
+  accumulator.map! do |v|
+    previous_v = nil
+    until v == previous_v
+      previous_v = v
+      v = v.strip.sub(/([\\,;:])+$/, '').sub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[..{2,}]|[AMUaw][adir][cirt])\.$/, '\1').strip
+    end
+    v
+  end
+
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+
+to_field 'genre_ssim', extract_marc('600v:610v:611v:630v:647v:648v:650v:651v:654v:656v:657v') do |record, accumulator|
+  # normalize values
+  accumulator.map! do |v|
+    previous_v = nil
+    until v == previous_v
+      previous_v = v
+      v = v.strip.sub(/([\\,;:])+$/, '').sub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[..{2,}]|[AMUaw][adir][cirt])\.$/, '\1').strip
+    end
+    v
+  end
+
+  accumulator.map!(&method(:clean_facet_punctuation))
+end
+
+#  look for conference proceedings in 6xx sub x or v
+to_field 'genre_ssim' do |record, accumulator|
+  f600xorvspec = (600..699).flat_map { |x| ["#{x}x", "#{x}v"] }
+  Traject::MarcExtractor.new(f600xorvspec).collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Conference proceedings' if extractor.collect_subfields(field, spec).any? { |x| x =~ /congresses/i }
+  end
+end
+
+# Based upon SW-1056, added the following to the algorithm to determine if something is a conference proceeding:
+# Leader/07 = 'm' or 's' and 008/29 = '1'
+to_field 'genre_ssim' do |record, accumulator|
+  if record.leader[7] == 'm' || record.leader[7] == 's'
+    accumulator << 'Conference proceedings' if record['008'] && record['008'].value[29] == '1'
+  end
+end
+
+# /** Based upon SW-1489, if the record is for a certain format (MARC, MRDF,
+#  *  MAP, SERIAL, or VM and not SCORE, RECORDING, and MANUSCRIPT) and it has
+#  *  something in the 008/28 byte, I’m supposed to give it a genre type of
+#  *  government document
+# **/
+to_field 'genre_ssim' do |record, accumulator, context|
+  next if (context.output_hash['format_main_ssim'] || []).include? 'Archive/Manuscript'
+  next if (context.output_hash['format_main_ssim'] || []).include? 'Music score'
+  next if (context.output_hash['format_main_ssim'] || []).include? 'Music recording'
+
+  if record['008'] && record['008'].value[28] && record['008'].value[28] != ' '
+    accumulator << 'Government document'
+  end
+end
+
+# /** Based upon SW-1506 - add technical report as a genre if
+#  *  leader/06: a or t AND 008/24-27 (any position, i.e. 24, 25, 26, or 27): t
+#  *    OR
+#  *  Presence of 027 OR 088
+#  *    OR
+#  *  006/00: a or t AND 006/7-10 (any position, i.e. 7, 8, 9, or 10): t
+# **/
+to_field 'genre_ssim' do |record, accumulator|
+  if (record.leader[6] == 'a' || record.leader[6] == 't') && record['008'] && record['008'].value[24..28] =~ /t/
+    accumulator << 'Technical report'
+  elsif record['027'] || record['088']
+    accumulator << 'Technical report'
+  elsif record['006'] && (record['006'].value[0] == 'a' || record['006'].value[0] == 't') && record['006'].value[7..11] =~ /t/
+    accumulator << 'Technical report'
+  end
+end
+
+to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
+  if context.output_hash['format_main_ssim'].include? 'Database'
+    translation_map = Traject::TranslationMap.new('db_subjects_map')
+    accumulator.replace translation_map.translate_array(accumulator).flatten
+  end
+end
+
+to_field 'db_az_subject' do |record, accumulator, context|
+  if context.output_hash['format_main_ssim'].include? 'Database'
+    if record['099'].nil?
+      accumulator << 'Uncategorized'
+    end
+  end
+end
 
 to_field "physical", extract_marc("300abcefg", alternate_script: false)
 to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
@@ -354,13 +916,6 @@ to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
 to_field "vern_summary_search", extract_marc("520ab", alternate_script: :only)
 to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 
-#
-# # URL Fields
-# url_fulltext = custom, getFullTextUrls
-# url_suppl = custom, getSupplUrls
-# url_sfx = 956u, (pattern_map.sfx)
-# url_restricted = custom, getRestrictedUrls
-#
 # # Standard Number Fields
 to_field 'isbn_search', extract_marc('020a:020z:770z:771z:772z:773z:774z:775z:776z:777z:778z:779z:780z:781z:782z:783z:784z:785z:786z:787z:788z:789z') do |_record, accumulator|
   accumulator.map!(&method(:extract_isbn))
@@ -460,7 +1015,6 @@ end
 # # Item Info Fields (from 999 that aren't call number)
 # barcode_search = 999i
 # preferred_barcode = custom, getPreferredItemBarcode
-# access_facet = custom, getAccessMethods
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
@@ -561,6 +1115,3 @@ to_field 'file_id' do |record, accumulator|
     end)
   end
 end
-#
-# pattern_map.sfx.pattern_0 = ^(http://library.stanford.edu/sfx\\?(.+))=>$1
-# pattern_map.sfx.pattern_1 = ^(http://caslon.stanford.edu:3210/sfxlcl3\\?(.+))=>$1
