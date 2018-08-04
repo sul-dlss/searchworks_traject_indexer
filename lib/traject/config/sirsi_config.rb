@@ -2,6 +2,7 @@ require 'traject'
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
+MAX_CODE_POINT = 0x10FFFD.chr(Encoding::UTF_8)
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
@@ -164,7 +165,44 @@ to_field 'vern_author_corp_display', extract_marc('110abcdefgklnptu', first: tru
 to_field 'author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :false)
 to_field 'vern_author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :only)
 # # Author Sort Field
-# author_sort = custom, getSortableAuthor
+to_field 'author_sort' do |record, accumulator|
+  accumulator << extract_sortable_author('100abcdefgjklnpqtu:110abcdefgklnptu:111acdefgjklnpqtu',
+                                         '240adfghklmnoprs:245abcfghknps',
+                                         record)
+end
+
+# Custom method cribbed from Traject::Macros::Marc21Semantics.marc_sortable_author
+# https://github.com/traject/traject/blob/0914a396306c2489a7e270f33793ca76665f8f19/lib/traject/macros/marc21_semantics.rb#L51-L88
+# Port from Solrmarc:MarcUtils#getSortableAuthor wasn't accurate
+# This method differs in that:
+#  245 field returned independent of 240 being present
+#  punctuation actually gets stripped
+#  only alpha subfields used
+#  ensures record with no 1xx sorts after records with a 1xx by prepending UTF-8 max code point to title string
+def extract_sortable_author(author_fields, title_fields, record)
+  punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
+  onexx = Traject::MarcExtractor.cached(author_fields).collect_matching_lines(record) do |field, spec, extractor|
+    non_filing = field.indicator2.to_i
+    str = extractor.collect_subfields(field, spec).first
+    str = str.slice(non_filing, str.length)
+    str.delete(punct).strip
+  end.first
+
+  onexx ||= MAX_CODE_POINT
+
+  titles = []
+  Traject::MarcExtractor.cached(title_fields).collect_matching_lines(record) do |field, spec, extractor|
+    non_filing = field.indicator2.to_i
+    str = extractor.collect_subfields(field, spec).join(' ')
+    str = str.slice(non_filing, str.length)
+    titles << str
+  end
+
+  title = titles.compact.join(' ')
+  title = title.delete(punct).strip if title
+
+  return [onexx, title].compact.join(' ')
+end
 #
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
