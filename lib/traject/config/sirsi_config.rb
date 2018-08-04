@@ -3,6 +3,7 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
+require 'sirsi_holding'
 require 'mhld_field'
 require 'csv'
 
@@ -1287,7 +1288,20 @@ end
 #
 # # Call Number Fields
 # callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
-# callnum_search = custom, getLocalCallNums
+to_field 'callnum_search' do |record, accumulator|
+  good_call_numbers = []
+  record.each_by_tag('999') do |item|
+    holding = SirsiHolding.new(item)
+    next if holding.call_number.empty? ||
+            holding.shelved_by_location? ||
+            holding.skipped_call_number? ||
+            holding.bad_lc_lane_call_number?
+
+    good_call_numbers << holding.call_number
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
 # shelfkey = custom, getShelfkeys
 # reverse_shelfkey = custom, getReverseShelfkeys
 #
