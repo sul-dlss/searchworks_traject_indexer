@@ -366,7 +366,52 @@ end
 # *
 # *  If still without date, use dduu from date 1 as dd00
 # *  If still without date, use dduu from date 2 as dd99
-# pub_date_sort = custom, getPubDateSort
+to_field 'pub_date_sort' do |record, accumulator|
+  valid_range = 500..(Time.now.year + 10)
+
+  f008_bytes7to10 = record['008'].value[7..10] if record['008']
+
+  year = case f008_bytes7to10
+  when /\d\d\d\d/
+    year = record['008'].value[7..10].to_i
+    record['008'].value[7..10] if valid_range.cover? year
+  when /\d\d\du/
+    "#{record['008'].value[7..9]}0" if record['008'].value[7..9] <= Time.now.year.to_s[0..2]
+  end
+
+  # find a valid year in the 264c with ind2 = 1
+  year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+    next unless field.indicator2 == '1'
+    extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
+  end.compact.first
+
+  year ||= Traject::MarcExtractor.new('260c:264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+    extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
+  end.compact.first
+
+  f008_bytes11to14 = record['008'].value[11..14] if record['008']
+  year ||= case f008_bytes11to14
+  when /\d\d\d\d/
+    year = record['008'].value[11..14].to_i
+    record['008'].value[11..14] if valid_range.cover? year
+  when /\d\d\du/
+    "#{record['008'].value[11..13]}9" if record['008'].value[11..13] <= Time.now.year.to_s[0..2]
+  end
+
+  # hyphens sort before 0, so the lexical sorting will be correct. I think.
+  year ||= if f008_bytes7to10 =~ /\d\duu/
+    "#{record['008'].value[7..8]}--"
+  end
+
+  # colons sort after 9, so the lexical sorting will be correct. I think.
+  # NOTE: the solrmarc code has this comment, and yet still uses hyphens below; maybe a bug?
+  year ||= if f008_bytes11to14 =~ /\d\duu/
+    "#{record['008'].value[11..12]}--"
+  end
+
+  accumulator << year if year
+end
+
 # pub_year_tisim = custom, getPubDateSliderVals
 def marc_008_date(byte6values, byte_range, u_replacement)
   lambda do |record, accumulator|

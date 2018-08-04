@@ -417,91 +417,65 @@ RSpec.describe 'Publication config' do
   end
 
   describe 'pub_year_tisim' do
-#
-#
-#
-# 	/**
-# 	 * functional test: assure date slider pub_year_tisim field is populated correctly from single value in single 260c
-# 	 */
-# @Test
-# 	public void test260SingleValueInDateSlider()
-# 	{
-# 		String solrFldName = "pub_year_tisim";
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "1973", solrFldName, "1973");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "[1973]", solrFldName, "1973");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "1973]", solrFldName, "1973");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "[1973?]", solrFldName, "1973");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "[196-?]", solrFldName, "1960");
-# //	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "March 1987.", solrFldName, "1987");
-# 	    // copyright year
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "c1975.", solrFldName, "1975");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "[c1973]", solrFldName, "1973");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "c1973]", solrFldName, "1973");
-# 		// with corrected date
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "1973 [i.e. 1974]", solrFldName, "1974");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "1971[i.e.1972]", solrFldName, "1972");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "1973 [i.e.1974]", solrFldName, "1974");
-# 	    assertSingleSolrFldValFromMarcSubfld("260", 'c', "1967 [i. e. 1968]", solrFldName, "1968");
-# 	}
-#
-# 	/**
-# 	 * functional test: assure date slider pub_year_tisim field is not populated when no 008 or 260c usable value
-# 	 */
-# @Test
-# 	public void test260NoValueInDateSlider()
-# 	{
-# 		String solrFldName = "pub_year_tisim";
-# 	    assertNoSolrFldFromMarcSubfld("260", 'c', "[19--]", solrFldName);
-# 	}
-#
-#
-# 	/**
-# 	 * integration test: pub_year_tisim
-# 	 */
-# @Test
-# 	public final void testPubDateForSlider()
-# 			throws ParserConfigurationException, IOException, SAXException, SolrServerException
-# 	{
-# 		createFreshIx("pubDateTests.mrc");
-# 		String fldName = "pub_year_tisim";
-# 		Set<String> docIds = new HashSet<String>();
-#
-# //		assertSingleResult("zpubDate2010", fldName, "2010");
-#
-# 		// multiple dates
-# 		assertSingleResult("pubDate195u", fldName, "1957");
-# 		assertSingleResult("pubDate195u", fldName, "1982");
-# 		docIds.add("pubDate195u");
-# 		docIds.add("bothDates008");
-# 		assertSearchResults(fldName, "1964", docIds);
-# 		docIds.remove("bothDates008");
-# 		docIds.add("s195u");
-# 		assertSearchResults(fldName, "1950", docIds);
-#
-# 		// future dates are ignored/skipped
-# 		assertZeroResults(fldName, "6666");
-# 		assertZeroResults(fldName, "8610");
-# 		assertZeroResults(fldName, "9999");
-#
-# 		// dates before 500 are ignored/skipped
-# 		assertZeroResults(fldName, "0000");
-# 		assertZeroResults(fldName, "0019");
-#
-# 		// corrected values
-# 		docIds.clear();
-# 		docIds.add("pubDate0059");
-# 		docIds.add("j2005");
-# 		docIds.add("contRes");
-# 		assertSearchResults(fldName, "2005", docIds);
-# 		docIds.clear();
-# 		docIds.add("pubDate195u");  // it's a range including 1970
-# 		docIds.add("pubDate0197-1");
-# 		docIds.add("pubDate0197-2");
-# 		assertSearchResults(fldName, "1970", docIds);
-# 	}
+    let(:fixture_name) { 'pubDateTests.mrc' }
+    let(:field) { 'pub_year_tisim' }
+
+    {
+      [{ '250' => { 'subfields' => [{ 'c' => '1973' }]}}] => '1973',
+      [{ '250' => { 'subfields' => [{ 'c' => '[1973]' }]}}] => '1973',
+      [{ '250' => { 'subfields' => [{ 'c' => '1973]' }]}}] => '1973',
+      [{ '250' => { 'subfields' => [{ 'c' => '[1973?]' }]}}] => '1973',
+      [{ '250' => { 'subfields' => [{ 'c' => '[196-?]' }]}}] => '1960',
+      [{ '250' => { 'subfields' => [{ 'c' => 'March 1987.' }]}}] => '1987',
+      [{ '250' => { 'subfields' => [{ 'c' => 'c1975.' }]}}] => '1975',
+      [{ '250' => { 'subfields' => [{ 'c' => '[c1973]' }]}}] => '1973',
+      [{ '250' => { 'subfields' => [{ 'c' => 'c1973]' }]}}] => '1973',
+      [{ '250' => { 'subfields' => [{ 'c' => '1973 [i.e. 1974]' }]}}] => '1974',
+      [{ '250' => { 'subfields' => [{ 'c' => '1971[i.e.1972]' }]}}] => '1972',
+      [{ '250' => { 'subfields' => [{ 'c' => '1973 [i.e.1974]' }]}}] => '1974',
+      [{ '250' => { 'subfields' => [{ 'c' => '1967 [i. e. 1968]' }]}}] => '1968'
+    }.each do |fields, expected|
+      context 'with a single value in a 260c' do
+        let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
+        subject(:result) { indexer.map_record(record) }
+
+        it 'populates correctly' do
+          expect(result[field]).to eq expected
+        end
+      end
+    end
+
+    context 'without a 008 or 260c usable value' do
+      let(:fields) { [{ '250' => { 'subfields' => [{ 'c' => '[19--]' }]}}]}
+      let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
+      subject(:result) { indexer.map_record(record) }
+
+      it 'is not populated' do
+        expect(result[field]).to be_nil
+      end
+    end
+
+    it 'maps the right data' do
+      expect(select_by_id('pubDate195u')[field]).to eq ['1950', '1957', '1964', '1970', '1982']
+      expect(select_by_id('bothDates008')[field]).to eq ['1964']
+      expect(select_by_id('s195u')[field]).to eq ['1950']
+      expect(select_by_id('pubDate0059')[field]).to eq ['2005']
+      expect(select_by_id('j2005')[field]).to eq ['2005']
+      expect(select_by_id('contRes')[field]).to eq ['2005']
+      expect(select_by_id('pubDate0197-1')[field]).to eq ['1970']
+      expect(select_by_id('pubDate0197-2')[field]).to eq ['1970']
+
+      # future dates are ignored/skipped
+      expect(select_by_id('6666')[field]).to be_nil
+      expect(select_by_id('8610')[field]).to be_nil
+      expect(select_by_id('9999')[field]).to be_nil
+
+      # dates before 500 are ignored/skipped
+      expect(select_by_id('0000')[field]).to be_nil
+      expect(select_by_id('0019')[field]).to be_nil
+    end
   end
-#
-#
+
   describe 'imprint_display' do
     let(:field) { 'imprint_display' }
 
@@ -680,207 +654,54 @@ RSpec.describe 'Publication config' do
 
 
   describe 'pub_date_sort' do
-#
-#
-# 	/**
-# 	 * integration test: pub_date_sort field population and ascending sort.
-# 	 */
-# @Test
-# 	public final void testPubDateSortAsc()
-# 			throws ParserConfigurationException, IOException, SAXException, InvocationTargetException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SolrServerException
-# 	{
-# 		createFreshIx("pubDateTests.mrc");
-#
-# 		// list of doc ids in correct publish date sort order
-# 		List<String> expectedOrderList = new ArrayList<String>(50);
-#
-# 		expectedOrderList.add("pubDate00uu");   // "1st century"
-# 		expectedOrderList.add("pubDate01uu");   // "2nd century"
-# 		expectedOrderList.add("pubDate02uu");   // "3rd century"
-# 		expectedOrderList.add("pubDate03uu");   // "4th century"
-# 		expectedOrderList.add("pubDate0500");   // 0500
-# 		expectedOrderList.add("pubDate08uu");   // "9th century"
-# 		expectedOrderList.add("pubDate0801");   // 0801
-# 		expectedOrderList.add("pubDate09uu");   // "10th century"
-# 		expectedOrderList.add("pubDate0960");   // 0960
-# 		expectedOrderList.add("pubDate0963");   // 0963
-# 		expectedOrderList.add("pubDate10uu");   // "11th century"
-# 		expectedOrderList.add("pubDate11uu");   // "12th century"
-# 		expectedOrderList.add("pubDate12uu");   // "13th century"
-# 		expectedOrderList.add("pubDate13uu");   // "14th century"
-# 		expectedOrderList.add("pubDate16uu");   // "17th century"
-# 		expectedOrderList.add("p19uu");   // "20th century"
-# 		expectedOrderList.add("pubDate19uu");   // "20th century"
-# 		expectedOrderList.add("r1900");   // "1900"
-# 		expectedOrderList.add("s190u");   // "1900s"
-# 		expectedOrderList.add("pubDate195u");   // "1950s"
-# 		expectedOrderList.add("s195u");   // "1950s"
-# 		expectedOrderList.add("g1958");   // "1958"
-# 		expectedOrderList.add("w1959");   // "1959"ˇ
-# 		expectedOrderList.add("bothDates008");  // "1964"
-# //		expectedOrderList.add("pubDate0197-1");  // 1970
-# 		expectedOrderList.add("contRes");       // "1984"
-# 		expectedOrderList.add("y1989");   // "1989"
-# 		expectedOrderList.add("b199u");   // "1990s"
-# 		expectedOrderList.add("k1990");   // "1990"
-# 		expectedOrderList.add("m1991");   // "1991"
-# 		expectedOrderList.add("e1997");   // "1997"
-# 		expectedOrderList.add("c1998");   // "1998"
-# 		expectedOrderList.add("w1999");   // "1999"
-# 		expectedOrderList.add("o20uu");   // "21st century"
-# 		expectedOrderList.add("pubDate20uu");   // "21st century"
-# 		expectedOrderList.add("f2000");   // "2000"
-# 		expectedOrderList.add("firstDateOnly008");  // "2000"
-# 		expectedOrderList.add("x200u");   // "2000s"
-# 		expectedOrderList.add("q2001");   // "2001"
-# //		expectedOrderList.add("pubDate0204");  // 2004
-# //		expectedOrderList.add("pubDate0059");  // 2005
-# 		expectedOrderList.add("z2006");   // "2006"
-# 		expectedOrderList.add("v2007");   // "2007"
-# 		expectedOrderList.add("b2008");   // "2008"
-# 		expectedOrderList.add("z2009");   // "2009"
-# 		expectedOrderList.add("zpubDate2010");   // "2010"
-#
-# 		// invalid/missing dates are designated as last in solr schema file
-# 		//  they are in order of occurrence in the raw data
-# 		expectedOrderList.add("pubDate0000");
-# 		expectedOrderList.add("pubDate0019");
-# //		expectedOrderList.add("pubDate0059");  // 2005 not in 008
-# //		expectedOrderList.add("pubDate0197-1");
-# //		expectedOrderList.add("pubDate0204");  // 2004  not in 008
-# 		expectedOrderList.add("pubDate1uuu");
-# 		expectedOrderList.add("pubDate6666");
-# 		expectedOrderList.add("pubDate9999");
-#
-# 		// get search results sorted by pub_date_sort field
-#         SolrDocumentList results = getAscSortDocs("collection", "sirsi", "pub_date_sort");
-#
-#         SolrDocument firstDoc = results.get(0);
-# 		assertTrue("9999 pub date should not sort first", (String) firstDoc.getFirstValue(docIDfname) != "pubDate9999");
-#
-# 		// we know we have documents that are not in the expected order list,
-# 		//  so we must allow for gaps
-# 		// author_sort isn't stored, so we must look at id field
-# 		int expDocIx = -1;
-# 		for (SolrDocument doc : results)
-# 		{
-# 			if (expDocIx < expectedOrderList.size() - 1)
-# 			{
-# 				String resultDocId = (String) doc.getFirstValue(docIDfname);
-# 				// is it a match?
-#                 if (resultDocId.equals(expectedOrderList.get(expDocIx + 1)))
-#                 	expDocIx++;
-# 			}
-# 			else break;  // we found all the documents in the expected order list
-# 		}
-#
-# 		if (expDocIx != expectedOrderList.size() - 1)
-# 		{
-# 			String lastCorrDocId = expectedOrderList.get(expDocIx);
-# 			fail("Publish Date Sort Order is incorrect.  Last correct document was " + lastCorrDocId);
-# 		}
-# 	}
-#
-#
-# 	/**
-# 	 * integration test: pub date descending sort should start with oldest and go to newest
-# 	 *  (missing dates sort order tested in another method)
-# 	 */
-# @Test
-# 	public void testPubDateSortDesc()
-# 			throws ParserConfigurationException, IOException, SAXException, NoSuchMethodException, InstantiationException, InvocationTargetException, ClassNotFoundException, IllegalAccessException, SolrServerException
-# 	{
-# 		createFreshIx("pubDateTests.mrc");
-#
-# 		// list of doc ids in correct publish date sort order
-# 		List<String> expectedOrderList = new ArrayList<String>(50);
-#
-# 		expectedOrderList.add("zpubDate2010");   // "2010"
-# 		expectedOrderList.add("z2009");   // "2009"
-# 		expectedOrderList.add("b2008");   // "2008"
-# 		expectedOrderList.add("v2007");   // "2007"
-# 		expectedOrderList.add("z2006");   // "2006"
-# //		expectedOrderList.add("pubDate0059");  // 2005
-# //		expectedOrderList.add("pubDate0204");  // 2004
-# 		expectedOrderList.add("q2001");   // "2001"
-# 		expectedOrderList.add("f2000");   // "2000"
-# 		expectedOrderList.add("firstDateOnly008");  // "2000"
-# 		expectedOrderList.add("x200u");   // "2000s"
-# 		expectedOrderList.add("o20uu");   // "21st century"
-# 		expectedOrderList.add("pubDate20uu");   // "21st century"
-# 		expectedOrderList.add("w1999");   // "1999"
-# 		expectedOrderList.add("c1998");   // "1998"
-# 		expectedOrderList.add("e1997");   // "1997"
-# 		expectedOrderList.add("m1991");   // "1991"
-# 		expectedOrderList.add("b199u");   // "1990s"
-# 		expectedOrderList.add("k1990");   // "1990"
-# 		expectedOrderList.add("y1989");   // "1989"
-# 		expectedOrderList.add("contRes");       // "1984"
-# //		expectedOrderList.add("pubDate0197-1");  // 1970
-# 		expectedOrderList.add("bothDates008");  // "1964"
-# 		expectedOrderList.add("w1959");   // "1959"ˇ
-# 		expectedOrderList.add("g1958");   // "1958"
-# 		expectedOrderList.add("pubDate195u");   // "1950s"
-# 		expectedOrderList.add("s195u");   // "1950s"
-# 		expectedOrderList.add("r1900");   // "1900"
-# 		expectedOrderList.add("s190u");   // "1900s"
-# 		expectedOrderList.add("p19uu");   // "20th century"
-# 		expectedOrderList.add("pubDate19uu");   // "20th century"
-# 		expectedOrderList.add("pubDate16uu");   // "17th century"
-# 		expectedOrderList.add("pubDate13uu");   // "14th century"
-# 		expectedOrderList.add("pubDate12uu");   // "13th century"
-# 		expectedOrderList.add("pubDate11uu");   // "12th century"
-# 		expectedOrderList.add("pubDate10uu");   // "11th century"
-# 		expectedOrderList.add("pubDate0963");   // 0963
-# 		expectedOrderList.add("pubDate0960");   // 0960
-# 		expectedOrderList.add("pubDate09uu");   // "10th century"
-# 		expectedOrderList.add("pubDate0801");   // 0801
-# 		expectedOrderList.add("pubDate08uu");   // "9th century"
-# 		expectedOrderList.add("pubDate0500");   // 0500
-# 		expectedOrderList.add("pubDate03uu");   // "4th century"
-# 		expectedOrderList.add("pubDate02uu");   // "3rd century"
-# 		expectedOrderList.add("pubDate01uu");   // "2nd century"
-# 		expectedOrderList.add("pubDate00uu");   // "1st century"
-#
-# 		// invalid/missing dates are designated as last or first in solr
-# 		//  schema file.
-# 		expectedOrderList.add("pubDate0000");
-# 		expectedOrderList.add("pubDate0019");
-# //		expectedOrderList.add("pubDate0059");  // 2005 not in 008
-# //		expectedOrderList.add("pubDate0197-1");
-# //		expectedOrderList.add("pubDate0204");  // 2004  not in 008
-# 		expectedOrderList.add("pubDate1uuu");
-# 		expectedOrderList.add("pubDate6666");
-# 		expectedOrderList.add("pubDate9999");
-#
-# 		// get search results sorted by pub_date_sort field
-#         SolrDocumentList results = getDescSortDocs("collection", "sirsi", "pub_date_sort");
-#
-#         SolrDocument firstDoc = results.get(0);
-# 		assertTrue("0000 pub date should not sort first", (String) firstDoc.getFirstValue(docIDfname) != "pubDate0000");
-#
-# 		// we know we have documents that are not in the expected order list,
-# 		//  so we must allow for gaps
-# 		// author_sort isn't stored, so we must look at id field
-# 		int expDocIx = -1;
-# 		for (SolrDocument doc : results)
-# 		{
-# 			if (expDocIx < expectedOrderList.size() - 1)
-# 			{
-# 				String resultDocId = (String) doc.getFirstValue(docIDfname);
-# 				// is it a match?
-#                 if (resultDocId.equals(expectedOrderList.get(expDocIx + 1)))
-#                 	expDocIx++;
-# 			}
-# 			else break;  // we found all the documents in the expected order list
-# 		}
-#
-# 		if (expDocIx != expectedOrderList.size() - 1)
-# 		{
-# 			String lastCorrDocId = expectedOrderList.get(expDocIx);
-# 			fail("Publish Date Sort Order is incorrect.  Last correct document was " + lastCorrDocId);
-# 		}
-# 	}
+    let(:fixture_name) { 'pubDateTests.mrc' }
+    let(:field) { 'pub_date_sort' }
+
+    specify do
+      expect(select_by_id('pubDate00uu')[field]).to eq ['00--']
+      expect(select_by_id('pubDate01uu')[field]).to eq ['01--']
+      expect(select_by_id('pubDate02uu')[field]).to eq ['02--']
+      expect(select_by_id('pubDate03uu')[field]).to eq ['03--']
+      expect(select_by_id('pubDate0500')[field]).to eq ['0500']
+      expect(select_by_id('pubDate08uu')[field]).to eq ['08--']
+      expect(select_by_id('pubDate0801')[field]).to eq ['0801']
+      expect(select_by_id('pubDate09uu')[field]).to eq ['09--']
+      expect(select_by_id('pubDate0960')[field]).to eq ['0960']
+      expect(select_by_id('pubDate0963')[field]).to eq ['0963']
+      expect(select_by_id('pubDate10uu')[field]).to eq ['10--']
+      expect(select_by_id('pubDate11uu')[field]).to eq ['11--']
+      expect(select_by_id('pubDate12uu')[field]).to eq ['12--']
+      expect(select_by_id('pubDate13uu')[field]).to eq ['13--']
+      expect(select_by_id('pubDate16uu')[field]).to eq ['16--']
+      expect(select_by_id('p19uu')[field]).to eq ['19--']
+      expect(select_by_id('pubDate19uu')[field]).to eq ['19--']
+      expect(select_by_id('r1900')[field]).to eq ['1900']
+      expect(select_by_id('s190u')[field]).to eq ['1900']
+      expect(select_by_id('pubDate195u')[field]).to eq ['1950']
+      expect(select_by_id('s195u')[field]).to eq ['1950']
+      expect(select_by_id('g1958')[field]).to eq ['1958']
+      expect(select_by_id('w1959')[field]).to eq ['1959']
+      expect(select_by_id('bothDates008')[field]).to eq ['1964']
+      expect(select_by_id('contRes')[field]).to eq ['1984']
+      expect(select_by_id('y1989')[field]).to eq ['1989']
+      expect(select_by_id('b199u')[field]).to eq ['1990']
+      expect(select_by_id('k1990')[field]).to eq ['1990']
+      expect(select_by_id('m1991')[field]).to eq ['1991']
+      expect(select_by_id('e1997')[field]).to eq ['1997']
+      expect(select_by_id('c1998')[field]).to eq ['1998']
+      expect(select_by_id('w1999')[field]).to eq ['1999']
+      expect(select_by_id('o20uu')[field]).to eq ['20--']
+      expect(select_by_id('pubDate20uu')[field]).to eq ['20--']
+      expect(select_by_id('f2000')[field]).to eq ['2000']
+      expect(select_by_id('firstDateOnly008')[field]).to eq ['2000']
+      expect(select_by_id('x200u')[field]).to eq ['2000']
+      expect(select_by_id('q2001')[field]).to eq ['2001']
+      expect(select_by_id('z2006')[field]).to eq ['2006']
+      expect(select_by_id('v2007')[field]).to eq ['2007']
+      expect(select_by_id('b2008')[field]).to eq ['2008']
+      expect(select_by_id('z2009')[field]).to eq ['2009']
+      expect(select_by_id('zpubDate2010')[field]).to eq ['2010']
+    end
   end
 
 end
