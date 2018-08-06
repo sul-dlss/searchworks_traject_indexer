@@ -589,4 +589,69 @@ RSpec.describe 'Holdings config' do
       end
     end
   end
+  describe 'bookplates_display' do
+    let(:field) { 'bookplates_display' }
+    describe 'population of bookplates_display' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
+          r.append(MARC::DataField.new('979', ' ', ' ',
+            MARC::Subfield.new('f', 'BAILEYT'),
+            MARC::Subfield.new('b', 'druid:tf882hn2198'),
+            MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
+            MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')
+          ))
+        end
+      end
+      it do
+        expect(result[field]).to eq ['BAILEYT -|- tf882hn2198 -|- tf882hn2198_00_0001.jp2 -|- Annie Nelson Bailey Memorial Book Fund']
+      end
+    end
+    describe 'multiple 979' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
+          r.append(MARC::DataField.new('979', ' ', ' ',
+            MARC::Subfield.new('f', 'BAILEYT'),
+            MARC::Subfield.new('b', 'druid:tf882hn2198'),
+            MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
+            MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')
+          ))
+          r.append(MARC::DataField.new('979', ' ', ' ',
+            MARC::Subfield.new('f', 'HARRISL'),
+            MARC::Subfield.new('b', 'druid:bm267dr4255'),
+            MARC::Subfield.new('c', 'No content metadata'),
+            MARC::Subfield.new('d', 'Lucie King Harris Fund')
+          ))
+          r.append(MARC::DataField.new('979', ' ', ' ',
+            MARC::Subfield.new('f', 'BENDERRM'),
+            MARC::Subfield.new('b', 'druid:hd360gv1231'),
+            MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
+            MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')
+          ))
+        end
+      end
+      it do
+        expect(result[field].count).to eq 2
+        expect(result[field][0]).to eq 'BAILEYT -|- tf882hn2198 -|- tf882hn2198_00_0001.jp2 -|- Annie Nelson Bailey Memorial Book Fund'
+        expect(result[field][1]).to eq 'BENDERRM -|- hd360gv1231 -|- hd360gv1231_00_0001.jp2 -|- Stanford Bookstore : Centennial'
+      end
+    end
+    describe 'no content' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
+          r.append(MARC::DataField.new('979', ' ', ' ',
+            MARC::Subfield.new('f', 'HARRISL'),
+            MARC::Subfield.new('b', 'druid:bm267dr4255'),
+            MARC::Subfield.new('c', 'No content metadata'),
+            MARC::Subfield.new('d', 'Lucie King Harris Fund')
+          ))
+        end
+      end
+      it do
+        expect(result[field]).to be_nil
+      end
+    end
+  end
 end
