@@ -38,6 +38,13 @@ RSpec.describe 'Author config' do
       expect(results).not_to include hash_including(field => ['111i'])
       expect(results).not_to include hash_including(field => ['none'])
     end
+
+    it 'does not include linked 880 fields' do
+      result = select_by_id('987666')[field]
+      expect(result).to eq ['Beijing Shi fu nü lian he hui.']
+      expect(results).not_to include hash_including(field => ['Beijing Shi fu nü lian he hui.', '北京市妇女联合会.'])
+      expect(results).not_to include hash_including(field => ['北京市妇女联合会.'])
+    end
   end
 
   describe 'vern_author_1xx_search' do
