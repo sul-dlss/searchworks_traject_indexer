@@ -129,8 +129,48 @@ to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:8
 to_field 'series_exact_search', extract_marc('830a')
 
 # # Author Title Search Fields
-# author_title_search = custom, getAuthorTitleSearch
-#
+to_field 'author_title_search' do |record, accumulator|
+  onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first
+
+  twoxx = if record['240']
+     Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first
+  elsif record['245']
+     Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first
+  end
+
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx or twoxx
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: :only).extract(record).first
+
+  twoxx = if record['240']
+     Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first
+  elsif record['245']
+     Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first
+  end
+
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if twoxx
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  Traject::MarcExtractor.cached('700abcdfghjklmnopqrstuvwyz:710abcdfghjklmnopqrstuvwyz:711abcdefghjklmnopqrstuvwyz', alternate_script: false).collect_matching_lines(record)  do |field, spec, extractor|
+    accumulator.concat extractor.collect_subfields(field, spec) if field['t']
+  end
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  Traject::MarcExtractor.cached('700abcdfghjklmnopqrstuvwyz:710abcdfghjklmnopqrstuvwyz:711abcdefghjklmnopqrstuvwyz', alternate_script: :only).collect_matching_lines(record)  do |field, spec, extractor|
+    accumulator.concat extractor.collect_subfields(field, spec) if field['t']
+  end
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  Traject::MarcExtractor.cached('800abcdfghijklmnopqrstuyz:810abcdfghijklmnopqrstuyz:811abcdfghijklmnopqrstuyz').collect_matching_lines(record)  do |field, spec, extractor|
+    accumulator.concat extractor.collect_subfields(field, spec) if field['t']
+  end
+end
+
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
