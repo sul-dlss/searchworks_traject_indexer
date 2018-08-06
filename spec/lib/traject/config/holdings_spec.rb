@@ -8,7 +8,7 @@ RSpec.describe 'Holdings config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).to_s, {}).to_a }
   let(:record) { records.first }
   let(:fixture_name) { '44794.marc' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }

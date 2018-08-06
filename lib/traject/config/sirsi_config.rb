@@ -1307,6 +1307,7 @@ to_field 'mhld_display' do |record, accumulator, context|
       comment = []
       comment << used_sub_fields.map { |sf| sf.value if sf.code == '3' }.compact.join(' ')
       comment << used_sub_fields.map { |sf| sf.value if sf.code == 'z' }.compact.join(' ')
+      comment = comment.reject(&:empty?).join(' ')
       next if comment =~ /all holdings transferred/i
 
       library_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'b' }.compact.join(' ')
@@ -1316,7 +1317,7 @@ to_field 'mhld_display' do |record, accumulator, context|
 
       mhld_field.library = library_code
       mhld_field.location = location_code
-      mhld_field.public_note = comment.reject(&:empty?).join(' ')
+      mhld_field.public_note = comment
 
       ##
       # Check if a subfield = exists
@@ -1332,7 +1333,8 @@ to_field 'mhld_display' do |record, accumulator, context|
     when '863'
       sub8 = field.subfields.select do |sf|
         %w[8].include? sf.code
-      end.collect(&:value).first.strip
+      end.collect(&:value).first.to_s.strip
+      next if sub8.empty?
       link_num, seq_num = sub8.split('.').map(&:to_i)
 
       if mhld_field.most_recent863link_num < link_num || (
