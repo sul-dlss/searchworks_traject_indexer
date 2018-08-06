@@ -1413,7 +1413,14 @@ to_field 'bookplates_display' do |record, accumulator|
     accumulator << [fund_name, druid[1], file, text].join(' -|- ')
   end
 end
-# fund_facet = custom, getFundFacet
+to_field 'fund_facet' do |record, accumulator|
+  Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, spec, extractor|
+    file = field['c']
+    next if file =~ /no content metadata/i
+    druid = field.subfields.select { |sf| sf.code == 'b' }.collect(&:value).first.split(':')
+    accumulator << druid[1]
+  end
+end
 #
 # # Digitized Items Fields
 to_field 'managed_purl_urls' do |record, accumulator|
