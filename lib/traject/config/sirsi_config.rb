@@ -85,7 +85,7 @@ to_field 'title_245c_display', extract_marc('245c', alternate_script: false, tri
 to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only, trim_punctuation: true)
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false, trim_punctuation: true)
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only, trim_punctuation: true)
-to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :false)
+to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: false)
 to_field 'vern_title_full_display', extract_marc("245#{ALPHABET}", alternate_script: :only)
 to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}#{ALPHABET}" }.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
@@ -134,11 +134,11 @@ to_field 'series_exact_search', extract_marc('830a')
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
-to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu')
+to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', alternate_script: false)
 to_field 'vern_author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', alternate_script: :only)
-to_field 'author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu')
+to_field 'author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu', alternate_script: false)
 to_field 'vern_author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu', alternate_script: :only)
-to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu')
+to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: false)
 to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
 # # Author Facet Fields
 to_field 'author_person_facet', extract_marc('100abcdq:700abcdq') do |record, accumulator|
@@ -160,11 +160,11 @@ to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
 end
-to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :false)
+to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: false)
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
-to_field 'author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :false)
+to_field 'author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: false)
 to_field 'vern_author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :only)
-to_field 'author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :false)
+to_field 'author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: false)
 to_field 'vern_author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :only)
 # # Author Sort Field
 to_field 'author_sort' do |record, accumulator|
