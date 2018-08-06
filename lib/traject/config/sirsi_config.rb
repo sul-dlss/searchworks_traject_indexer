@@ -1,5 +1,6 @@
 require 'traject'
 require 'traject/readers/marc_combining_reader'
+require 'mhld_field'
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
@@ -1288,32 +1289,17 @@ skipped_locations = Traject::TranslationMap.new('locations_skipped_list')
 missing_locations = Traject::TranslationMap.new('locations_missing_list')
 
 to_field 'mhld_display' do |record, accumulator, context|
-  mhld_field = OpenStruct.new(
-    fields866: [],
-    fields867: [],
-    fields868: [],
-    patterns853: {},
-    most_recent863link_num: 0,
-    most_recent863seq_num: 0,
-    most_recent863: nil
-  )
+  mhld_field = MhldField.new
   mhld_results = []
 
   Traject::MarcExtractor.new('852:853:863:866:867:868').collect_matching_lines(record) do |field, spec, extractor|
     case field.tag
     when '852'
+      # Adds the previous 852 with setup things from other fields (853, 863, 866, 867, 868)
       mhld_results.concat add_values_to_result(mhld_field)
 
       # Reset to process new 852
-      mhld_field = OpenStruct.new(
-        fields866: [],
-        fields867: [],
-        fields868: [],
-        patterns853: {},
-        most_recent863link_num: 0,
-        most_recent863seq_num: 0,
-        most_recent863: nil
-      )
+      mhld_field = MhldField.new
 
       used_sub_fields = field.subfields.select do |sf|
         %w[3 z b c].include? sf.code
@@ -1328,13 +1314,13 @@ to_field 'mhld_display' do |record, accumulator, context|
 
       next if skipped_locations[location_code] || missing_locations[location_code]
 
-      mhld_field[:library] = library_code
-      mhld_field[:location] = location_code
-      mhld_field[:public_note] = comment.reject(&:empty?).join(' ')
+      mhld_field.library = library_code
+      mhld_field.location = location_code
+      mhld_field.public_note = comment.reject(&:empty?).join(' ')
 
       ##
       # Check if a subfield = exists
-      mhld_field[:df852has_equals_sf] = field.subfields.select do |sf|
+      mhld_field.df852has_equals_sf = field.subfields.select do |sf|
         ['='].include? sf.code
       end.compact.any?
     when '853'
@@ -1342,26 +1328,26 @@ to_field 'mhld_display' do |record, accumulator, context|
         %w[8].include? sf.code
       end.collect(&:value).first.to_i
 
-      mhld_field[:patterns853][link_seq_num] = field
+      mhld_field.patterns853[link_seq_num] = field
     when '863'
       sub8 = field.subfields.select do |sf|
         %w[8].include? sf.code
       end.collect(&:value).first.strip
       link_num, seq_num = sub8.split('.').map(&:to_i)
 
-      if mhld_field[:most_recent863link_num] < link_num || (
-        mhld_field[:most_recent863link_num] == link_num && mhld_field[:most_recent863seq_num] < seq_num
+      if mhld_field.most_recent863link_num < link_num || (
+        mhld_field.most_recent863link_num == link_num && mhld_field.most_recent863seq_num < seq_num
       )
-        mhld_field[:most_recent863link_num] = link_num
-        mhld_field[:most_recent863seq_num] = seq_num
-        mhld_field[:most_recent863] = field
+        mhld_field.most_recent863link_num = link_num
+        mhld_field.most_recent863seq_num = seq_num
+        mhld_field.most_recent863 = field
       end
     when '866'
-      mhld_field[:fields866] << field
+      mhld_field.fields866 << field
     when '867'
-      mhld_field[:fields867] << field
+      mhld_field.fields867 << field
     when '868'
-      mhld_field[:fields868] << field
+      mhld_field.fields868 << field
     end
   end
   accumulator.concat mhld_results.concat add_values_to_result(mhld_field)
@@ -1374,139 +1360,44 @@ def add_values_to_result(mhld_field)
   has867 = false
   has868 = false
   mhld_results = []
-  # require 'byebug'; byebug
-  mhld_field[:fields866].each do |f|
+  mhld_field.fields866.each do |f|
     sub_a = f.subfields.select do |sf|
       %w[a].include? sf.code
     end.collect(&:value).join('')
 
-    mhld_field[:library_has] = get_library_has(f)
+    mhld_field.library_has = library_has(f)
     if sub_a.end_with?('-')
       unless latest_recd_out
-        latest_received = get_latest_received(mhld_field[:most_recent863], mhld_field[:most_recent863link_num], mhld_field[:patterns853])
+        latest_received = mhld_field.latest_received
         latest_recd_out = true
       end
     end
     has866 = true
-    mhld_results << display_mhld(mhld_field, latest_received)
+    mhld_results << mhld_field.display(latest_received)
   end
-  mhld_field[:fields867].each do |f|
-    mhld_field[:library_has] = "Supplement: #{get_library_has(f)}"
-    latest_received = get_latest_received(mhld_field[:most_recent863], mhld_field[:most_recent863link_num], mhld_field[:patterns853]) unless has866
+  mhld_field.fields867.each do |f|
+    mhld_field.library_has = "Supplement: #{library_has(f)}"
+    latest_received = mhld_field.latest_received unless has866
     has867 = true
-    mhld_results << display_mhld(mhld_field, latest_received)
+    mhld_results << mhld_field.display(latest_received)
   end
-  mhld_field[:fields868].each do |f|
-    mhld_field[:library_has] = "Index: #{get_library_has(f)}"
-    latest_received = get_latest_received(mhld_field[:most_recent863], mhld_field[:most_recent863link_num], mhld_field[:patterns853]) unless has866
+  mhld_field.fields868.each do |f|
+    mhld_field.library_has = "Index: #{library_has(f)}"
+    latest_received = mhld_field.latest_received unless has866
     has868 = true
-    mhld_results << display_mhld(mhld_field, latest_received)
+    mhld_results << mhld_field.display(latest_received)
   end
   if !has866 && !has867 && !has868
-    if mhld_field[:df852has_equals_sf]
-      latest_received = get_latest_received(mhld_field[:most_recent863], mhld_field[:most_recent863link_num], mhld_field[:patterns853])
+    if mhld_field.df852has_equals_sf
+      latest_received = mhld_field.latest_received
     end
-    mhld_results << display_mhld(mhld_field, latest_received)
+    mhld_results << mhld_field.display(latest_received)
   end
 
   mhld_results
 end
 
-def display_mhld(mhld_field, latest_received)
-  [
-    mhld_field.library, mhld_field.location,
-    mhld_field.public_note, mhld_field.library_has,
-    latest_received
-  ].join(' -|- ')
-end
-
-def get_latest_received(most_recent863, most_recent863link_num, patterns853)
-  if most_recent863 && most_recent863link_num != 0
-    pattern853 = patterns853[most_recent863link_num]
-    get863display_value(most_recent863, pattern853)
-  end
-end
-
-def get863display_value(most_recent863, pattern853)
-  return unless pattern853
-  result = ''
-  [*'a'..'f'].map do |char|
-    caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
-    value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
-    break unless caption && value
-    result += ':' unless result.empty?
-    result += get_captioned(caption, value)
-  end
-  alt_scheme = ''
-  [*'g'..'h'].map do |char|
-    caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
-    value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
-    break unless caption && value
-    alt_scheme += ', ' if char != 'g'
-    alt_scheme += "#{caption}#{value}"
-  end
-  result += ":(#{alt_scheme})" unless alt_scheme.empty?
-  prepender = ''
-  shall_i_prepend = false
-  chronology = ''
-  [*'i'..'m'].map do |char|
-    caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
-    value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
-    break unless caption && value
-    case caption
-    when /(\(month\)|\(season\)|\(unit\))/i
-      value = translate_month_or_season(value)
-      prepender = ':'
-    when /\(day\)/i
-      prepender = ' '
-    end
-    chronology += if shall_i_prepend
-                    "#{prepender}#{value}"
-                  else
-                    value
-                  end
-    shall_i_prepend = true
-  end
-  unless chronology.empty?
-    result += if !result.empty?
-                " (#{chronology})"
-              else
-                chronology
-              end
-  end
-  result
-end
-
-def get_captioned(caption, value)
-  value = translate_month_or_season(value) if caption =~ /(\(month\)|\(season\))/i
-  caption = '' if caption =~ /^\(.*\)$/
-  "#{caption}#{value}"
-end
-
-def translate_month_or_season(value)
-  value.gsub('01', 'January')
-       .gsub('02', 'February')
-       .gsub('03', 'March')
-       .gsub('04', 'April')
-       .gsub('05', 'May')
-       .gsub('06', 'June')
-       .gsub('07', 'July')
-       .gsub('08', 'August')
-       .gsub('09', 'September')
-       .gsub('10', 'October')
-       .gsub('11', 'November')
-       .gsub('12', 'December')
-       .gsub('13', 'Spring')
-       .gsub('14', 'Summer')
-       .gsub('15', 'Autumn')
-       .gsub('16', 'Winter')
-       .gsub('21', 'Spring')
-       .gsub('22', 'Summer')
-       .gsub('23', 'Autumn')
-       .gsub('24', 'Winter')
-end
-
-def get_library_has(field)
+def library_has(field)
   field.subfields.select do |sf|
     %w[a z].include? sf.code
   end.collect(&:value).join(' ')
