@@ -1,7 +1,8 @@
+$LOAD_PATH << File.expand_path('../..', __dir__)
+
 require 'traject'
 require 'stanford-mods'
-require_relative File.expand_path('../../sdr_stuff', __dir__)
-
+require 'sdr_stuff'
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
