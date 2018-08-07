@@ -1,3 +1,5 @@
+$LOAD_PATH << File.expand_path('../..', __dir__)
+
 require 'traject'
 require 'traject/readers/marc_combining_reader'
 require 'mhld_field'
