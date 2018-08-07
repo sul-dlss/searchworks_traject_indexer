@@ -320,7 +320,6 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('245pNotn')[field]).to eq ['245 p but no n. subfield b Student handbook']
       expect(select_by_id('245nAndp')[field]).to eq ['245 n and p: A, The humanities and social sciences']
       expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n first p subfield first n subfield second p subfield second n subfield']
-      pending 'legacy test has punctuation at end here, but claims to trim punctuation'
       expect(select_by_id('245nNotp')[field]).to eq ['245 n but no p Part one.']
     end
     context 'trailing punctuation' do
