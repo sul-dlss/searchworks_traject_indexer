@@ -1288,16 +1288,108 @@ end
 #
 # # Call Number Fields
 # callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
+
+to_field 'callnum_facet_hsim' do |record, accumulator|
+  record.each_by_tag('999') do |item|
+    holding = SirsiHolding.new(item)
+
+    next if holding.dewey?
+    next unless holding.valid_lc? && holding.call_number_type == 'LC' # We want Dewey call numbers with an LC scheme to fall back to dewey
+    next if holding.call_number.to_s.empty? ||
+            holding.bad_lc_lane_call_number? ||
+            holding.shelved_by_location? ||
+            holding.lost_or_missing? ||
+            holding.ignored_call_number?
+
+    translation_map = Traject::TranslationMap.new('call_number')
+    cn = holding.call_number.normalized_lc
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    next unless first_letter && translation_map[first_letter]
+
+    accumulator << [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+end
+
+to_field 'callnum_facet_hsim' do |record, accumulator|
+  marc_086 = record.fields('086')
+  gov_doc_values = []
+  record.each_by_tag('999') do |item|
+    holding = SirsiHolding.new(item)
+    next unless holding.gov_doc_loc? ||
+                marc_086.any? ||
+                holding.call_number_type == 'SUDOC'
+
+    translation_map = Traject::TranslationMap.new('gov_docs_locations', default: 'Other')
+    raw_location = translation_map[holding.home_location]
+
+    if raw_location == 'Other'
+      if marc_086.any?
+        marc_086.each do |marc_field|
+          gov_doc_values << if marc_field['2'] == 'cadocs'
+                              'California'
+                            elsif marc_field['2'] == 'sudocs'
+                              'Federal'
+                            elsif marc_field['2'] == 'undocs'
+                              'International'
+                            elsif marc_field.indicator1 == '0'
+                              'Federal'
+                            else
+                              raw_location
+                            end
+        end
+      else
+        gov_doc_values << raw_location
+      end
+    else
+      gov_doc_values << raw_location
+    end
+  end
+
+  gov_doc_values.uniq.each do |gov_doc_value|
+    accumulator << ['Government Document', gov_doc_value].join('|')
+  end
+end
+
+to_field 'callnum_facet_hsim' do |record, accumulator|
+  record.each_by_tag('999') do |item|
+    holding = SirsiHolding.new(item)
+    next unless holding.dewey?
+    next if holding.ignored_call_number? ||
+            holding.shelved_by_location? ||
+            holding.lost_or_missing?
+
+    cn = holding.call_number.with_leading_zeros
+    first_digit = "#{cn[0, 1]}00s"
+    two_digits = "#{cn[0, 2]}0s"
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    accumulator << [
+      'Dewey Classification',
+      translation_map[first_digit],
+      translation_map[two_digits]
+    ].join('|')
+  end
+
+  accumulator.uniq!
+end
+
 to_field 'callnum_search' do |record, accumulator|
   good_call_numbers = []
   record.each_by_tag('999') do |item|
     holding = SirsiHolding.new(item)
-    next if holding.call_number.empty? ||
+    next if holding.call_number.to_s.empty? ||
             holding.shelved_by_location? ||
-            holding.skipped_call_number? ||
+            holding.ignored_call_number? ||
             holding.bad_lc_lane_call_number?
 
-    good_call_numbers << holding.call_number
+    good_call_numbers << holding.call_number.to_s
   end
 
   accumulator.concat(good_call_numbers.uniq)

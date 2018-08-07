@@ -1,4 +1,4 @@
-RSpec.describe 'Standard Numbers' do
+RSpec.describe 'Call Numbers' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
 
