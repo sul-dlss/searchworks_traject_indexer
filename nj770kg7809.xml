@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:nj770kg7809" published="2017-06-20T21:16:15Z" publishVersion="dor-services/5.17.3">
+  <identityMetadata>
+    <objectId>druid:nj770kg7809</objectId>
+    <objectCreator>DOR</objectCreator>
+    <objectLabel>Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)</objectLabel>
+    <objectType>collection</objectType>
+    <adminPolicy>druid:yf767bj4831</adminPolicy>
+    <otherId name="catkey">9665836</otherId>
+    <otherId name="uuid">58ce676e-4d7a-11e4-9b83-0050569b3c3c</otherId>
+    <tag>Remediated By : 4.13.0</tag>
+    <displayType>file</displayType>
+  </identityMetadata>
+  <xml/>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (archivesref@stanford.edu).</human>
+      <human type="creativeCommons"/>
+      <machine type="creativeCommons"/>
+    </use>
+    <copyright>
+      <human/>
+    </copyright>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:nj770kg7809">
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)</dc:title>
+    <dc:contributor>Stanford University News Service.</dc:contributor>
+    <dc:type>Collection</dc:type>
+    <dc:type>Audiotapes.</dc:type>
+    <dc:type>Interviews.</dc:type>
+    <dc:date>1936-2011</dc:date>
+    <dc:language>eng</dc:language>
+    <dc:format>63 linear feet</dc:format>
+    <dc:description>The materials consist of audio and video recordings done by the News and Publication Service.</dc:description>
+    <dc:rights>The materials are open for research use. Audio-visual materials are not available in original format, and must be reformatted to a digital use copy.</dc:rights>
+    <dc:description type="preferred citation">[identification of item], Stanford University, News and Publication Service, Audiovisual Recordings (SC1125). Dept. of Special Collections and University Archives, Stanford University Libraries, Stanford, Calif.</dc:description>
+    <dc:description type="acquisition">All requests to reproduce, publish, quote from, or otherwise use collection materials must be submitted in writing to the Head of Special Collections and University Archives, Stanford University Libraries, Stanford, California 94305-6064. Consent is given on behalf of Special Collections as the owner of the physical items and is not intended to include or imply permission from the copyright owner. Such permission must be obtained from the copyright owner, heir(s) or assigns. See: http://library.stanford.edu/depts/spc/pubserv/permissions.html. Restrictions also apply to digital representations of the original materials. Use of digital files is restricted to research and educational purposes.</dc:description>
+    <dc:subject>AdministrationStanford University</dc:subject>
+    <dc:subject>FacultyStanford University</dc:subject>
+    <dc:identifier>http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv</dc:identifier>
+  </oai_dc:dc>
+  <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+    <titleInfo>
+      <title>Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)</title>
+    </titleInfo>
+    <name type="corporate">
+      <namePart>Stanford University</namePart>
+      <namePart>News Service.</namePart>
+    </name>
+    <typeOfResource collection="yes" manuscript="yes">mixed material</typeOfResource>
+    <genre authority="">Audiotapes.</genre>
+    <genre authority="">Interviews.</genre>
+    <originInfo>
+      <dateIssued encoding="marc" point="start">1936</dateIssued>
+      <dateIssued encoding="marc" point="end">2011</dateIssued>
+      <issuance>monographic</issuance>
+    </originInfo>
+    <language>
+      <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <physicalDescription>
+      <extent>63 linear feet</extent>
+      <extent>17.4 gigabytes</extent>
+    </physicalDescription>
+    <abstract>The materials consist of audio and video recordings done by the News and Publication Service.</abstract>
+    <note type="statement of responsibility" altRepGroup="00"/>
+    <note type="preferred citation">[identification of item], Stanford University, News and Publication Service, Audiovisual Recordings (SC1125). Dept. of Special Collections and University Archives, Stanford University Libraries, Stanford, Calif.</note>
+    <note type="acquisition">All requests to reproduce, publish, quote from, or otherwise use collection materials must be submitted in writing to the Head of Special Collections and University Archives, Stanford University Libraries, Stanford, California 94305-6064. Consent is given on behalf of Special Collections as the owner of the physical items and is not intended to include or imply permission from the copyright owner. Such permission must be obtained from the copyright owner, heir(s) or assigns. See: http://library.stanford.edu/depts/spc/pubserv/permissions.html. Restrictions also apply to digital representations of the original materials. Use of digital files is restricted to research and educational purposes.</note>
+    <subject authority="lcsh">
+      <name type="corporate">
+        <namePart>Stanford University</namePart>
+      </name>
+      <topic>Administration</topic>
+    </subject>
+    <subject authority="lcsh">
+      <name type="corporate">
+        <namePart>Stanford University</namePart>
+      </name>
+      <topic>Faculty</topic>
+    </subject>
+    <location>
+      <url displayLabel="Finding aid" usage="primary display">http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv</url>
+    </location>
+    <recordInfo>
+      <descriptionStandard>aacr</descriptionStandard>
+      <descriptionStandard>dacs</descriptionStandard>
+      <recordContentSource authority="marcorg">CSt</recordContentSource>
+      <recordCreationDate encoding="marc">120724</recordCreationDate>
+      <recordChangeDate encoding="iso8601">20120729011058.0</recordChangeDate>
+      <recordIdentifier source="SIRSI">a9665836</recordIdentifier>
+      <recordOrigin>Converted from MARCXML to MODS version 3.4 using MARC21slim2MODS3-4_SDR.xsl (Version 1.2.5 2013/08/11)</recordOrigin>
+    </recordInfo>
+    <accessCondition type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (archivesref@stanford.edu).</accessCondition>
+  </mods>
+  <releaseData>
+    <release to="Searchworks">true</release>
+  </releaseData>
+</publicObject>
