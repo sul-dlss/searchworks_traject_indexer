@@ -1,5 +1,6 @@
 require 'traject'
 require 'traject/readers/marc_combining_reader'
+require 'mhld_field'
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
@@ -1282,9 +1283,146 @@ end
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
 to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
-# mhld_display = custom, getMhldDisplay
-# bookplates_display = custom, getBookplatesDisplay
-# fund_facet = custom, getFundFacet
+##
+# Instantiate once, not on each record
+skipped_locations = Traject::TranslationMap.new('locations_skipped_list')
+missing_locations = Traject::TranslationMap.new('locations_missing_list')
+
+to_field 'mhld_display' do |record, accumulator, context|
+  mhld_field = MhldField.new
+  mhld_results = []
+
+  Traject::MarcExtractor.new('852:853:863:866:867:868').collect_matching_lines(record) do |field, spec, extractor|
+    case field.tag
+    when '852'
+      # Adds the previous 852 with setup things from other fields (853, 863, 866, 867, 868)
+      mhld_results.concat add_values_to_result(mhld_field)
+
+      # Reset to process new 852
+      mhld_field = MhldField.new
+
+      used_sub_fields = field.subfields.select do |sf|
+        %w[3 z b c].include? sf.code
+      end
+      comment = []
+      comment << used_sub_fields.map { |sf| sf.value if sf.code == '3' }.compact.join(' ')
+      comment << used_sub_fields.map { |sf| sf.value if sf.code == 'z' }.compact.join(' ')
+      comment = comment.reject(&:empty?).join(' ')
+      next if comment =~ /all holdings transferred/i
+
+      library_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'b' }.compact.join(' ')
+      location_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'c' }.compact.join(' ')
+
+      next if skipped_locations[location_code] || missing_locations[location_code]
+
+      mhld_field.library = library_code
+      mhld_field.location = location_code
+      mhld_field.public_note = comment
+
+      ##
+      # Check if a subfield = exists
+      mhld_field.df852has_equals_sf = field.subfields.select do |sf|
+        ['='].include? sf.code
+      end.compact.any?
+    when '853'
+      link_seq_num = field.subfields.select do |sf|
+        %w[8].include? sf.code
+      end.collect(&:value).first.to_i
+
+      mhld_field.patterns853[link_seq_num] = field
+    when '863'
+      sub8 = field.subfields.select do |sf|
+        %w[8].include? sf.code
+      end.collect(&:value).first.to_s.strip
+      next if sub8.empty?
+      link_num, seq_num = sub8.split('.').map(&:to_i)
+
+      if mhld_field.most_recent863link_num < link_num || (
+        mhld_field.most_recent863link_num == link_num && mhld_field.most_recent863seq_num < seq_num
+      )
+        mhld_field.most_recent863link_num = link_num
+        mhld_field.most_recent863seq_num = seq_num
+        mhld_field.most_recent863 = field
+      end
+    when '866'
+      mhld_field.fields866 << field
+    when '867'
+      mhld_field.fields867 << field
+    when '868'
+      mhld_field.fields868 << field
+    end
+  end
+  accumulator.concat mhld_results.concat add_values_to_result(mhld_field)
+end
+
+def add_values_to_result(mhld_field)
+  return [] if mhld_field.library.nil?
+  latest_recd_out = false
+  has866 = false
+  has867 = false
+  has868 = false
+  mhld_results = []
+  mhld_field.fields866.each do |f|
+    sub_a = f.subfields.select do |sf|
+      %w[a].include? sf.code
+    end.collect(&:value).join('')
+
+    mhld_field.library_has = library_has(f)
+    if sub_a.end_with?('-')
+      unless latest_recd_out
+        latest_received = mhld_field.latest_received
+        latest_recd_out = true
+      end
+    end
+    has866 = true
+    mhld_results << mhld_field.display(latest_received)
+  end
+  mhld_field.fields867.each do |f|
+    mhld_field.library_has = "Supplement: #{library_has(f)}"
+    latest_received = mhld_field.latest_received unless has866
+    has867 = true
+    mhld_results << mhld_field.display(latest_received)
+  end
+  mhld_field.fields868.each do |f|
+    mhld_field.library_has = "Index: #{library_has(f)}"
+    latest_received = mhld_field.latest_received unless has866
+    has868 = true
+    mhld_results << mhld_field.display(latest_received)
+  end
+  if !has866 && !has867 && !has868
+    if mhld_field.df852has_equals_sf
+      latest_received = mhld_field.latest_received
+    end
+    mhld_results << mhld_field.display(latest_received)
+  end
+
+  mhld_results
+end
+
+def library_has(field)
+  field.subfields.select do |sf|
+    %w[a z].include? sf.code
+  end.collect(&:value).join(' ')
+end
+
+to_field 'bookplates_display' do |record, accumulator|
+  Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, spec, extractor|
+    file = field['c']
+    next if file =~ /no content metadata/i
+    fund_name = field['f']
+    druid = field.subfields.select { |sf| sf.code == 'b' }.collect(&:value).first.split(':')
+    text = field['d']
+    accumulator << [fund_name, druid[1], file, text].join(' -|- ')
+  end
+end
+to_field 'fund_facet' do |record, accumulator|
+  Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, spec, extractor|
+    file = field['c']
+    next if file =~ /no content metadata/i
+    druid = field.subfields.select { |sf| sf.code == 'b' }.collect(&:value).first.split(':')
+    accumulator << druid[1]
+  end
+end
 #
 # # Digitized Items Fields
 to_field 'managed_purl_urls' do |record, accumulator|
