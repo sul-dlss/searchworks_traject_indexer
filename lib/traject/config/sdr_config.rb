@@ -3,12 +3,13 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'stanford-mods'
 require 'sdr_stuff'
+require 'traject/readers/purl_fetcher_reader'
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
-  provide 'reader_class_name', 'SdrReader'
+  provide 'reader_class_name', 'PurlFetcherReader'
 end
 
 def stanford_mods(method, *args, default: nil)

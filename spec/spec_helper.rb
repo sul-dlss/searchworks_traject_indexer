@@ -2,6 +2,8 @@ require 'rspec'
 require 'traject'
 require 'traject/readers/delete_reader'
 require 'traject/readers/marc_combining_reader'
+require 'traject/readers/purl_fetcher_reader'
+require 'sdr_stuff'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
