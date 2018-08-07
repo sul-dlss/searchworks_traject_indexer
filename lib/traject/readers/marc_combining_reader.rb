@@ -1,8 +1,41 @@
-class Traject::MarcCombiningReader < Traject::MarcReader
+class CombiningEnumerable
+  def initialize(left, right)
+    @left = left
+    @right = right
+  end
+
+  def each(*args, &block)
+    return to_enum(:each, *args) unless block_given?
+    @left.each(*args, &block)
+    @right.each(*args, &block)
+  end
+end
+
+class Traject::MarcCombiningReader
+  include Enumerable
+
+  attr_reader :settings, :input_stream, :marc_reader
+
+  def initialize(input_stream, settings)
+    @marc_reader = Traject::MarcReader.new(input_stream, settings)
+  end
+
   def each
     return enum_for(:each) unless block_given?
 
-    self.internal_reader.each.slice_when { |i, j| i['001'].value != j['001'].value }.each do |records_to_combine|
+    # See https://github.com/jruby/jruby/issues/5275;
+    enumerable = if defined?(JRUBY_VERSION)
+      peek = marc_reader.each.first(2)
+      if peek.length == 1
+        peek
+      else
+        CombiningEnumerable.new(peek, marc_reader)
+      end
+    else
+      marc_reader
+    end
+
+    enumerable.each.slice_when { |i, j| i['001'].value != j['001'].value }.each do |records_to_combine|
       if records_to_combine.length == 1
         yield records_to_combine.first
       else
