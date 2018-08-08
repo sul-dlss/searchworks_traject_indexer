@@ -619,7 +619,7 @@ end
 
 # split out separate lang codes only from 041a if they are smushed together.
 to_field 'language', extract_marc('041a') do |record, accumulator|
-  accumulator.map! { |v| v.scan(/.{3}/) }.flatten!
+  accumulator.map! { |v| v.each_char.each_slice(3).map(&:join) }.flatten!
   translation_map = Traject::TranslationMap.new('language_map')
   accumulator.replace translation_map.translate_array(accumulator).flatten
 end
@@ -1247,7 +1247,9 @@ end
 to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
   lccn_pattern = /^(?:([ a-z]{2}\d{10})|([ a-z]{3}\d{8})|((\d{11}|\d{10}|\d{8})).*)$/
   accumulator.map! do |value|
-    value.scan(lccn_pattern).flatten.compact.first
+    match = value.match(lccn_pattern)
+
+    match.to_a.slice(1..-1).compact.first if match
   end
 end
 
