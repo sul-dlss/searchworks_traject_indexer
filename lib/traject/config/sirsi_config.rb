@@ -4,6 +4,7 @@ require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
 require 'mhld_field'
+require 'csv'
 
 extend Traject::Macros::Marc21Semantics
 
@@ -16,7 +17,23 @@ settings do
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide "reader_class_name", "Traject::MarcCombiningReader"
+  provide 'reserves_file', ENV['RESERVES_FILE']
 end
+
+reserves_lookup = {}
+File.open(settings['reserves_file'], 'r').each do |line|
+  csv_options = {
+    col_sep: '|', headers: 'rez_desk|resctl_exp_date|resctl_status|ckey|barcode|home_loc|curr_loc|item_rez_status|loan_period|rez_expire_date|rez_stage|course_id|course_name|term|instructor_name',
+    header_converters: :symbol, quote_char: "\x00"
+  }
+  CSV.parse(line, csv_options) do |row|
+    if row[:item_rez_status] == 'ON_RESERVE'
+      ckey = row[:ckey]
+      crez_value = reserves_lookup[ckey] || []
+      reserves_lookup[ckey] = crez_value << row
+    end
+  end
+end if settings['reserves_file']
 
 to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
@@ -1519,5 +1536,68 @@ to_field 'file_id' do |record, accumulator|
     end.map do |(_type, file_id)|
       file_id
     end)
+  end
+end
+
+##
+# Course Reserves Fields
+REZ_DESK_2_BLDG_FACET = Traject::TranslationMap.new('rez_desk_2_bldg_facet').freeze
+REZ_DESK_2_REZ_LOC_FACET = Traject::TranslationMap.new('rez_desk_2_rez_loc_facet').freeze
+DEPT_CODE_2_USER_STR = Traject::TranslationMap.new('dept_code_2_user_str').freeze
+
+to_field 'crez_instructor_search' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  course_reserves.each do |row|
+    accumulator << row[:instructor_name]
+  end
+end
+
+to_field 'crez_course_name_search' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  course_reserves.each do |row|
+    accumulator << row[:course_name]
+  end
+end
+
+to_field 'crez_course_id_search' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  course_reserves.each do |row|
+    accumulator << row[:course_id]
+  end
+end
+
+to_field 'crez_desk_facet' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  course_reserves.each do |row|
+    accumulator << REZ_DESK_2_REZ_LOC_FACET[row[:rez_desk]]
+  end
+end
+
+to_field 'crez_dept_facet' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  course_reserves.each do |row|
+    dept = row[:course_id].split('-')[0].split(' ')[0]
+    accumulator << DEPT_CODE_2_USER_STR[dept]
+  end
+end
+
+to_field 'crez_course_info' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  course_reserves.each do |row|
+    accumulator << %i[course_id course_name instructor_name].map do |sym|
+      row[sym]
+    end.join(' -|- ')
   end
 end
