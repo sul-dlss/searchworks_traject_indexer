@@ -11,3 +11,11 @@ end
 gem 'http'
 gem 'rake'
 gem 'stanford-mods'
+
+group :deployment do
+  gem 'capistrano', '~> 3.0'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
+  gem 'capistrano-shared_configs'
+  gem 'dlss-capistrano'
+end
