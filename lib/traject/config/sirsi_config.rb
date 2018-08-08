@@ -1,8 +1,11 @@
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
 require 'traject'
+require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
 require 'mhld_field'
+
+extend Traject::Macros::Marc21Semantics
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
@@ -611,21 +614,7 @@ to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
 end
 
 #
-to_field 'language', extract_marc('008') do |record, accumulator|
-  accumulator.map! { |v| v[35..37] }
-  translation_map = Traject::TranslationMap.new('language_map')
-  accumulator.replace translation_map.translate_array(accumulator).flatten
-end
-
-# split out separate lang codes only from 041a if they are smushed together.
-to_field 'language', extract_marc('041a') do |record, accumulator|
-  accumulator.map! { |v| v.each_char.each_slice(3).map(&:join) }.flatten!
-  translation_map = Traject::TranslationMap.new('language_map')
-  accumulator.replace translation_map.translate_array(accumulator).flatten
-end
-
-to_field 'language', extract_marc('041d:041e:041j', translation_map: 'language_map')
-
+to_field 'language', marc_languages('008[35-37]:041a:041d:041e:041j')
 
 #
 # # URL Fields
