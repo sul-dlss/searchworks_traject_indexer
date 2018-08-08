@@ -16,13 +16,13 @@ RSpec.describe 'Language config' do
 
   it 'populates the language field' do
     expect(select_by_id('008mul041atha')[field]).to eq ['Thai']
-    expect(select_by_id('008eng3041a')[field]).to eq ['English', 'English', 'German', 'Russian']
-    expect(select_by_id('008eng2041a041h')[field]).to eq ['English', 'English', 'Greek, Ancient (to 1453)']
+    expect(select_by_id('008eng3041a')[field]).to eq ['English', 'German', 'Russian']
+    expect(select_by_id('008eng2041a041h')[field]).to eq ['English', 'Greek, Ancient (to 1453)']
     expect(select_by_id('008nor041ad')[field]).to eq ['Norwegian', 'Swedish']
     expect(results).not_to include(hash_including(field => include('Italian')))
 
     expect(select_by_id('008spa')[field]).to eq ['Spanish']
-    expect(select_by_id('008fre041d')[field]).to eq ['French', 'French', 'Spanish']
+    expect(select_by_id('008fre041d')[field]).to eq ['French', 'Spanish']
   end
 
   it 'parses out the 041a, which may have multiple languages smushed together', jira: 'SW-364' do
