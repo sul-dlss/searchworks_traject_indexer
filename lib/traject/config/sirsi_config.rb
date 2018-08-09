@@ -22,6 +22,19 @@ settings do
   provide 'reserves_file', ENV['RESERVES_FILE']
 end
 
+# Change the XMLNS to match how solrmarc handles this
+class SolrMarcStyleFastXMLWriter < MARC::FastXMLWriter
+  class << self
+    def open_collection(use_ns)
+      if use_ns
+        %Q{<collection xmlns="http://www.loc.gov/MARC21/slim">}.dup
+      else
+        "<collection>".dup
+      end
+    end
+  end
+end
+
 reserves_lookup = {}
 File.open(settings['reserves_file'], 'r').each do |line|
   csv_options = {
@@ -43,11 +56,9 @@ to_field 'id', extract_marc('001') do |_record, accumulator|
   end
 end
 
-to_field 'marcxml', serialized_marc(
-  format: 'xml',
-  binary_escape: false,
-  allow_oversized: true
-)
+to_field 'marcxml' do |record, accumulator|
+  accumulator << (SolrMarcStyleFastXMLWriter.single_record_document(record, include_namespace: true) + "\n")
+end
 
 to_field 'marcbib_xml' do |record, accumulator|
   skip_fields = %w[852 853 854 855 863 864 865 866 867 868 999]
@@ -59,7 +70,7 @@ to_field 'marcbib_xml' do |record, accumulator|
   new_record = MARC::Record.new
   new_record.leader = record.leader
   filtered_fields.map { |f| new_record.append(f) }
-  accumulator << MARC::FastXMLWriter.encode(new_record)
+  accumulator << (SolrMarcStyleFastXMLWriter.single_record_document(new_record, include_namespace: true) + "\n")
 end
 
 to_field 'all_search' do |record, accumulator|

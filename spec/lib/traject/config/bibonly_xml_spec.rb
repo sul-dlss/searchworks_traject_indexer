@@ -12,13 +12,13 @@ RSpec.describe 'Bibonly_xml config' do
   let(:record) { records.first }
   let(:pristine_xml) do
     <<-XML
-      <record><leader>01952cas  2200457Ia 4500</leader><controlfield tag="001">aBibOnly</controlfield><controlfield tag="008">780930m19391944nyu           000 0 eng d</controlfield><datafield tag="245" ind1=" " ind2=" "><subfield code="a">title</subfield></datafield><datafield tag="856" ind1=" " ind2=" "><subfield code="a">all of the cats</subfield></datafield></record>
+      <?xml version="1.0" encoding="UTF-8"?><collection xmlns="http://www.loc.gov/MARC21/slim"><record><leader>01952cas  2200457Ia 4500</leader><controlfield tag="001">aBibOnly</controlfield><controlfield tag="008">780930m19391944nyu           000 0 eng d</controlfield><datafield tag="245" ind1=" " ind2=" "><subfield code="a">title</subfield></datafield><datafield tag="856" ind1=" " ind2=" "><subfield code="a">all of the cats</subfield></datafield></record></collection>
     XML
   end
 
   describe 'marcbib_xml' do
     it do
-      expect(result['marcbib_xml'][0]).to eq pristine_xml.strip
+      expect(result['marcbib_xml'][0].strip).to eq pristine_xml.strip
       expect(result['marcbib_xml'][0]).not_to include '999'
       expect(result['marcbib_xml'][0]).not_to include 'GREEN'
       expect(result['marcbib_xml'][0]).not_to include '852'
