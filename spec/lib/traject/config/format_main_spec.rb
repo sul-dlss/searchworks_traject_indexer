@@ -20,7 +20,7 @@ RSpec.describe 'Format main config' do
         end
       end
       it 'is a sound recording' do
-        expect(result[field]).to eq ['Sound Recording']
+        expect(result[field]).to eq ['Sound recording']
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe 'Format main config' do
       end
 
       xit 'is a sound recording' do
-        expect(result[field]).to eq ['Sound Recording']
+        expect(result[field]).to eq ['Sound recording']
       end
     end
 
@@ -1952,7 +1952,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Music/Score', 'Archive/Manuscript']
+      expect(result[field]).to eq ['Music score', 'Archive/Manuscript']
     end
   end
 
@@ -2018,7 +2018,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a Music recording' do
-      expect(result[field]).to eq ['Music/Score']
+      expect(result[field]).to eq ['Music score']
     end
   end
 
@@ -2031,7 +2031,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a Music recording' do
-      expect(result[field]).to eq ['Music/Score', 'Archive/Manuscript']
+      expect(result[field]).to eq ['Music score', 'Archive/Manuscript']
     end
   end
 
@@ -2049,7 +2049,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a Music recording' do
-      expect(result[field]).to eq ['Music/Score', 'Archive/Manuscript']
+      expect(result[field]).to eq ['Music score', 'Archive/Manuscript']
     end
   end
 
@@ -2976,7 +2976,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a music score' do
-      expect(result[field]).to eq ['Music/Score']
+      expect(result[field]).to eq ['Music score']
     end
   end
 
@@ -3010,7 +3010,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a sound recording' do
-      expect(result[field]).to eq ['Sound Recording']
+      expect(result[field]).to eq ['Sound recording']
     end
   end
 
