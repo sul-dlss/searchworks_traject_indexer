@@ -1292,8 +1292,19 @@ end
 # reverse_shelfkey = custom, getReverseShelfkeys
 #
 # # Location facet
-# location_facet = custom, getLocationFacet
-#
+to_field 'location_facet', extract_marc('852c:999l') do |record, accumulator|
+  location_values = accumulator.dup
+  accumulator.replace([])
+
+  if location_values.any? { |x| x == 'CURRICULUM' }
+    accumulator << 'Curriculum Collection'
+  end
+
+  if location_values.any? { |x| x =~ /^ARTLCK/ or x == 'PAGE-AR'}
+    accumulator << 'Art Locked Stacks'
+  end
+end
+
 # # Stanford student work facet
 # stanford_work_facet_hsim = custom, getStanfordWorkFacet
 # stanford_dept_sim = custom, getStanfordDeptFacet
