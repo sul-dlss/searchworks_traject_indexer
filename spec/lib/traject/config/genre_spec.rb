@@ -541,6 +541,17 @@ RSpec.describe 'Format physical config' do
     specify { expect(result[field]).to eq ['Thesis/Dissertation', 'Government document'] }
   end
 
+  context 'with the presence of a 008 that says it is not a report' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+      r.append(MARC::ControlField.new('008', '091123s2014    si a    sbt   101 0 eng d'))
+        r.append(MARC::DataField.new('027', ' ', ' ', MARC::Subfield.new('a', 'I exist')))
+      end
+    end
+
+    specify { expect(result[field]).not_to eq 'Technical report' }
+  end
+
   context 'with the presence of 027' do
     let(:record) do
       MARC::Record.new.tap do |r|
