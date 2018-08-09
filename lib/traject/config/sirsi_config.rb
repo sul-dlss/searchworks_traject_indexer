@@ -216,18 +216,18 @@ to_field 'vern_author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:7
 to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: false)
 to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
 # # Author Facet Fields
-to_field 'author_person_facet', extract_marc('100abcdq:700abcdq') do |record, accumulator|
+to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
 end
-to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn') do |record, accumulator|
+to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
 end
 # # Author Display Fields
-to_field 'author_person_display', extract_marc('100abcdq') do |record, accumulator|
+to_field 'author_person_display', extract_marc('100abcdq', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
 end

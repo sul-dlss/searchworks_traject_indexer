@@ -230,6 +230,12 @@ RSpec.describe 'Author config' do
 
   describe 'author_person_facet' do
     let(:field) { 'author_person_facet' }
+
+    it 'is just the 100xx field' do
+      result = select_by_id('100search')[field]
+      expect(result).to eq ['100a 100b 100c 100d 100q']
+    end
+
     it 'removes trailing period that isn\'t an initial' do
       result = select_by_id('345228')[field]
       expect(result).to eq ['Bashkov, Vladimir']
@@ -277,6 +283,12 @@ RSpec.describe 'Author config' do
 
   describe 'author_other_facet' do
     let(:field) { 'author_other_facet' }
+
+    it 'is just the 110xx field' do
+      result = select_by_id('110search')[field]
+      expect(result).to eq ['110a 110b 110c 110d 110n']
+    end
+
     it 'removes trailing period that isn\'t an initial' do
       # field 110
       result = select_by_id('110foo')[field]
@@ -339,6 +351,12 @@ RSpec.describe 'Author config' do
 
   describe 'author_person_display' do
     let(:field) { 'author_person_display' }
+
+    it 'is just the 100xx field' do
+      result = select_by_id('100search')[field]
+      expect(result).to eq ['100a 100b 100c 100d 100q']
+    end
+
     it 'removes trailing period for field 110a' do
       result = select_by_id('345228')[field]
       expect(result).to eq ['Bashkov, Vladimir']
