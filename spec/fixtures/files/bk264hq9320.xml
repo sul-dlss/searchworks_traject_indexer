@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:bk264hq9320" published="2017-11-29T21:59:17Z" publishVersion="dor-services/5.23.1">
+  <identityMetadata>
+    <sourceId source="sul">sc1125_s02_b11_04-0209-1</sourceId>
+    <objectId>druid:bk264hq9320</objectId>
+    <objectCreator>DOR</objectCreator>
+    <objectLabel>Trustees Demo reel</objectLabel>
+    <objectType>item</objectType>
+    <otherId name="label"/>
+    <otherId name="uuid">393da490-1bab-11e6-86cd-005056a7ed61</otherId>
+    <tag>Process : Content Type : Media</tag>
+    <tag>Project : SC1125 news : minidv</tag>
+    <tag>SMPL : video : ua</tag>
+    <tag>JIRA : PROJQUEUE-230</tag>
+    <tag>Registered By : gwillard</tag>
+  </identityMetadata>
+  <contentMetadata objectId="bk264hq9320" type="media">
+    <resource sequence="1" id="bk264hq9320_1" type="video">
+      <label>Tape 1</label>
+      <file id="bk264hq9320_sl.mp4" mimetype="video/mp4" size="30383762">
+      
+      
+    </file>
+    </resource>
+    <resource sequence="2" id="bk264hq9320_2" type="image">
+      <label>Image of media (1 of 2)</label>
+      <file id="bk264hq9320_img_1.jp2" mimetype="image/jp2" size="156819">
+        <imageData width="1066" height="781"/>
+      </file>
+    </resource>
+    <resource sequence="3" id="bk264hq9320_3" type="image">
+      <label>Image of media (2 of 2)</label>
+      <file id="bk264hq9320_img_2.jp2" mimetype="image/jp2" size="206500">
+        <imageData width="1050" height="1044"/>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu).</human>
+      <human type="creativeCommons"/>
+      <machine type="creativeCommons"/>
+    </use>
+    <copyright>
+      <human/>
+    </copyright>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:bk264hq9320">
+      <fedora:isMemberOf rdf:resource="info:fedora/druid:nj770kg7809"/>
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:nj770kg7809"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Trustees Demo reel</dc:title>
+    <dc:contributor>Stanford University. News and Publications Service (pro producer)</dc:contributor>
+    <dc:type>MovingImage</dc:type>
+    <dc:date>2004-02-09</dc:date>
+    <dc:language>eng English</dc:language>
+    <dc:format>1 MiniDV tape</dc:format>
+    <dc:format>videocassette</dc:format>
+    <dc:format>video/mp4</dc:format>
+    <dc:description>Reformatted by Stanford University Libraries in 2017.</dc:description>
+    <dc:identifier>sc1125_s02_b11_04-0209-1</dc:identifier>
+    <dc:relation type="repository">Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320</dc:relation>
+    <dc:relation type="collection">Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.loc.gov/mods/v3" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+    <titleInfo>
+      <title>Trustees Demo reel</title>
+    </titleInfo>
+    <name type="corporate" usage="primary" authority="naf" authorityURI="http://id.loc.gov/authorities/names" valueURI="http://id.loc.gov/authorities/names/n83041062">
+      <namePart>Stanford University. News and Publications Service</namePart>
+      <role>
+        <roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/pro">pro</roleTerm>
+        <roleTerm type="text" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/pro">producer</roleTerm>
+      </role>
+    </name>
+    <typeOfResource>moving image</typeOfResource>
+    <originInfo>
+      <place>
+        <placeTerm type="code" authority="naf" authorityURI="http://id.loc.gov/authorities/names" valueURI="http://id.loc.gov/authorities/names/n50046557">cau</placeTerm>
+        <placeTerm type="text" authority="naf" authorityURI="http://id.loc.gov/authorities/names" valueURI="http://id.loc.gov/authorities/names/n50046557">Stanford (Calif.)</placeTerm>
+      </place>
+      <dateCreated keyDate="yes" encoding="w3cdtf">2004-02-09</dateCreated>
+    </originInfo>
+    <language>
+      <languageTerm authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" type="code">eng</languageTerm>
+      <languageTerm authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" type="text">English</languageTerm>
+    </language>
+    <physicalDescription>
+      <form authority="rdacarrier" authorityURI="http://id.loc.gov/vocabulary/carriers" valueURI="http://id.loc.gov/vocabulary/carriers/vf">videocassette</form>
+      <extent>1 MiniDV tape</extent>
+      <reformattingQuality>access</reformattingQuality>
+      <digitalOrigin>reformatted digital</digitalOrigin>
+      <internetMediaType>video/mp4</internetMediaType>
+      <internetMediaType>image/jpeg</internetMediaType>
+      <note displayLabel="Broadcast standard">NTSC</note>
+      <note displayLabel="Sound content">Sound</note>
+      <note displayLabel="Color content">Color</note>
+    </physicalDescription>
+    <note>Reformatted by Stanford University Libraries in 2017.</note>
+    <identifier type="local" displayLabel="Source ID">sc1125_s02_b11_04-0209-1</identifier>
+    <location>
+      <physicalLocation type="repository" authority="naf" valueURI="http://id.loc.gov/authorities/names/no2014019980">Stanford University. Libraries. Department of Special Collections and University Archives</physicalLocation>
+      <shelfLocator>SC1125</shelfLocator>
+      <url usage="primary display">https://purl.stanford.edu/bk264hq9320</url>
+    </location>
+    <relatedItem type="host" displayLabel="Finding Aid">
+      <titleInfo>
+        <title>Stanford University, News and Publication Service, Audiovisual Recordings (SC1125)</title>
+      </titleInfo>
+      <location>
+        <url>http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv</url>
+      </location>
+    </relatedItem>
+    <recordInfo>
+      <languageOfCataloging usage="primary">
+        <languageTerm type="text" authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng">English</languageTerm>
+        <languageTerm type="code" authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource authority="marcorg" authorityURI="http://id.loc.gov/vocabulary/organizations" valueURI="http://id.loc.gov/vocabulary/organizations/cst">CSt</recordContentSource>
+      <recordOrigin>human prepared</recordOrigin>
+    </recordInfo>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/nj770kg7809</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu).</accessCondition>
+  </mods>
+  <releaseData>
+    <release to="Searchworks">true</release>
+  </releaseData>
+  <thumb>bk264hq9320/bk264hq9320_img_1.jp2</thumb>
+</publicObject>

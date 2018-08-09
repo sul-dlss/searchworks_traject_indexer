@@ -27,6 +27,10 @@ to_field 'id' do |record, accumulator|
   accumulator << record.druid
 end
 
+to_field 'druid' do |record, accumulator|
+  accumulator << record.druid
+end
+
 to_field 'modsxml', stanford_mods(:to_xml)
 to_field 'all_search', stanford_mods(:text) do |record, accumulator|
   accumulator.map! { |x| x.gsub(/\s+/, ' ') }
@@ -35,8 +39,8 @@ end
 ##
 # Title Fields
 to_field 'title_245a_search', stanford_mods(:sw_short_title, default: '[Untitled]')
-to_field 'title_245_search', stanford_mods(:sw_short_title, default: '[Untitled]')
-to_field 'title_variant_search', stanford_mods(:sw_addl_titles, default: '[Untitled]')
+to_field 'title_245_search', stanford_mods(:sw_full_title, default: '[Untitled]')
+to_field 'title_variant_search', stanford_mods(:sw_addl_titles)
 to_field 'title_sort', stanford_mods(:sw_sort_title, default: '[Untitled]')
 to_field 'title_245a_display', stanford_mods(:sw_sort_title, default: '[Untitled]')
 to_field 'title_display', stanford_mods(:sw_title_display, default: '[Untitled]')
@@ -82,10 +86,10 @@ to_field 'pub_year_ss', stanford_mods(:pub_year_display_str)
 to_field 'pub_year_tisim', stanford_mods(:pub_year_int)
 
 to_field 'creation_year_isi' do |record, accumulator|
-  record.stanford_mods.year_int(record.stanford_mods.date_created_elements)
+  accumulator << record.stanford_mods.year_int(record.stanford_mods.date_created_elements)
 end
 to_field 'publication_year_isi' do |record, accumulator|
-  record.stanford_mods.year_int(record.stanford_mods.date_issued_elements)
+  accumulator << record.stanford_mods.year_int(record.stanford_mods.date_issued_elements)
 end
 
 to_field 'format_main_ssim', stanford_mods(:format_main)
@@ -110,21 +114,21 @@ to_field 'file_id' do |record, accumulator|
 end
 
 to_field 'collection' do |record, accumulator|
-  accumulator << record.collections.map(&:searchworks_id)
+  accumulator.concat record.collections.map(&:searchworks_id)
 end
 
 to_field 'collection_with_title' do |record, accumulator|
-  accumulator << record.collections.map do |collection|
+  accumulator.concat(record.collections.map do |collection|
     "#{collection.searchworks_id}-|-#{collection.label}"
-  end
+  end)
 end
 
 to_field 'set' do |record, accumulator|
-  accumulator << record.constituents.map(&:searchworks_id)
+  accumulator.concat record.constituents.map(&:searchworks_id)
 end
 
 to_field 'set_with_title' do |record, accumulator|
-  accumulator << record.constituents.map do |constituent|
+  accumulator.concat(record.constituents.map do |constituent|
     "#{constituent.searchworks_id}-|-#{constituent.label}"
-  end
+  end)
 end
