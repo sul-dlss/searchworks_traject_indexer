@@ -736,9 +736,9 @@ to_field 'format_main_ssim' do |record, accumulator|
   when 'b', 'p'
     'Archive/Manuscript'
   when 'c'
-    'Music/Score'
+    'Music score'
   when 'd'
-    ['Music/Score', 'Archive/Manuscript']
+    ['Music score', 'Archive/Manuscript']
   when 'e'
     'Map'
   when 'f'
@@ -750,7 +750,7 @@ to_field 'format_main_ssim' do |record, accumulator|
       'Image'
     end
   when 'i'
-    'Sound Recording'
+    'Sound recording'
   when 'j'
     'Music recording'
   when 'k'
@@ -910,7 +910,7 @@ to_field 'format_main_ssim' do |record, accumulator, context|
       when /manuscript/
         'Archive/Manuscript'
       when /sound recording/
-        'Sound Recording'
+        'Sound recording'
       when /(graphic|slide|chart|art reproduction|technical drawing|flash card|transparency|activity card|picture|diapositives)/
         'Image'
       when /kit/
@@ -924,9 +924,9 @@ to_field 'format_main_ssim' do |record, accumulator, context|
         when 'k', 'r'
           'Image'
         when 'q'
-          'Music/Score'
+          'Music score'
         when 's'
-          'Sound Recording'
+          'Sound recording'
         end
       end
     end
