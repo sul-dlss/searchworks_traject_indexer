@@ -1,6 +1,6 @@
 require 'sirsi_holding'
 
-def record_with_999(call_number:, scheme:, home_location: 'STACKS', library: 'GREEN', indexer:)
+def record_with_999(call_number:, scheme:, home_location: 'STACKS', library: 'GREEN', type: '', indexer:)
   indexer.map_record(
     MARC::Record.new.tap do |r|
       r.append(
@@ -11,6 +11,7 @@ def record_with_999(call_number:, scheme:, home_location: 'STACKS', library: 'GR
           MARC::Subfield.new('a', call_number),
           MARC::Subfield.new('l', home_location),
           MARC::Subfield.new('m', library),
+          MARC::Subfield.new('t', type),
           MARC::Subfield.new('w', scheme)
         )
       )
@@ -40,6 +41,19 @@ RSpec.describe 'Call Number Facet' do
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'XX', indexer: indexer)[field]).to be_nil
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'ASIS', indexer: indexer)[field]).to be_nil
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'AUTO', indexer: indexer)[field]).to be_nil
+    end
+
+    it 'handles skipped items (by not includeing them)' do
+      # skipped location
+      expect(record_with_999(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC', indexer: indexer)[field]).to be_nil
+      # skipped type
+      expect(record_with_999(call_number: 'M123 .M234', type: 'EDI-REMOVE', scheme: 'LC', indexer: indexer)[field]).to be_nil
+      # Physics
+      expect(record_with_999(call_number: 'M123 .M234', library: 'PHYSICS', scheme: 'LC', indexer: indexer)[field]).to be_nil
+      # Includes PHYSTEMP Physics
+      expect(record_with_999(call_number: 'M123 .M234', library: 'PHYSICS', home_location: 'PHYSTEMP', scheme: 'LC', indexer: indexer)[field]).not_to be_nil
+      # Closed Library
+      expect(record_with_999(call_number: 'M123 .M234', library: 'MATH-CS', scheme: 'LC', indexer: indexer)[field]).to be_nil
     end
 
     it 'handles weird LC callnum from Lane-Med (by not including them)' do

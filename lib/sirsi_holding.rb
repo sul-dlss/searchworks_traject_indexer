@@ -6,20 +6,34 @@ class SirsiHolding
   delegate [:dewey?, :valid_lc?] => :call_number
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
+  CLOSED_LIBS = %w[BIOLOGY CHEMCHMENG MATH-CS].freeze
   ECALLNUM = 'INTERNET RESOURCE'.freeze
   GOV_DOCS_LOCS = %w[BRIT-DOCS CALIF-DOCS FED-DOCS INTL-DOCS SSRC-DOCS SSRC-FICHE SSRC-NWDOC].freeze
   LOST_OR_MISSING_LOCS = %w[ASSMD-LOST LOST-ASSUM LOST-CLAIM LOST-PAID MISSING].freeze
   SHELBY_LOCS = %w[BUS-PER BUSDISPLAY BUS-MAKENA SHELBYTITL SHELBYSER STORBYTITL].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
+  SKIPPED_LOCS = %w[3FL-REF-S BASECALNUM BENDER-S CDPSHADOW DISCARD DISCARD-NS EAL-TEMP-S
+                    E-INPROC-S E-ORDER-S E-REQST-S FED-DOCS-S LOCKSS LOST MAPCASES-S MAPFILE-S
+                    MISS-INPRO MEDIA-MTXO NEG-PURCH SEL-NOTIF SHADOW SPECA-S SPECAX-S SPECB-S
+                    SPECBX-S SPECM-S SPECMED-S SPECMEDX-S SPECMX-S SSRC-FIC-S SSRC-SLS STAFSHADOW
+                    TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :call_number, :current_location, :home_location, :library, :scheme
-  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '')
+  attr_reader :call_number, :current_location, :home_location, :library, :scheme, :type
+  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '')
     @call_number = CallNumber.new(call_number)
     @current_location = current_location
     @home_location = home_location
     @library = library
     @scheme = scheme
+    @type = type
+  end
+
+  def skipped?
+    ([home_location, current_location] & SKIPPED_LOCS).any? ||
+      type == 'EDI-REMOVE' ||
+      physics_not_temp? ||
+      CLOSED_LIBS.include?(library)
   end
 
   def shelved_by_location?
@@ -76,27 +90,11 @@ class SirsiHolding
     ([home_location, current_location] & GOV_DOCS_LOCS).any?
   end
 
-  # def call_number
-  #   CallNumber.new((field['a'] || '').strip)
-  # end
-  #
-  # def current_location
-  #   field['k']
-  # end
-  #
-  # def home_location
-  #   field['l']
-  # end
-  #
-  # def library
-  #   field['m']
-  # end
-  #
-  # def scheme
-  #   field['w']
-  # end
-
   private
+
+  def physics_not_temp?
+    library == 'PHYSICS' && ![home_location, current_location].include?('PHYSTEMP')
+  end
 
   class CallNumber
     BEGIN_CUTTER_REGEX = /( +|(\.[A-Z])| *\/)/
