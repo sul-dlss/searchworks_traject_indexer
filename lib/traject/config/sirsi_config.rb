@@ -18,6 +18,7 @@ settings do
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide "reader_class_name", "Traject::MarcCombiningReader"
   provide 'reserves_file', ENV['RESERVES_FILE']
+  provide 'allow_duplicate_values',  false
 end
 
 reserves_lookup = {}
