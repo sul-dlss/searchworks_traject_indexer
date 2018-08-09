@@ -1289,7 +1289,13 @@ end
 # # Call Number Fields
 to_field 'callnum_facet_hsim' do |record, accumulator|
   record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(item)
+    holding = SirsiHolding.new(
+      call_number: (item['a'] || '').strip,
+      current_location: item['k'],
+      home_location: item['l'],
+      library: item['m'],
+      scheme: item['w']
+    )
 
     next if holding.dewey?
     next unless holding.valid_lc? && holding.call_number_type == 'LC' # We want Dewey call numbers with an LC scheme to fall back to dewey
@@ -1318,7 +1324,13 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
   marc_086 = record.fields('086')
   gov_doc_values = []
   record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(item)
+    holding = SirsiHolding.new(
+      call_number: (item['a'] || '').strip,
+      current_location: item['k'],
+      home_location: item['l'],
+      library: item['m'],
+      scheme: item['w']
+    )
     next unless holding.gov_doc_loc? ||
                 marc_086.any? ||
                 holding.call_number_type == 'SUDOC'
@@ -1356,7 +1368,13 @@ end
 
 to_field 'callnum_facet_hsim' do |record, accumulator|
   record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(item)
+    holding = SirsiHolding.new(
+      call_number: (item['a'] || '').strip,
+      current_location: item['k'],
+      home_location: item['l'],
+      library: item['m'],
+      scheme: item['w']
+    )
     next unless holding.dewey?
     next if holding.ignored_call_number? ||
             holding.shelved_by_location? ||
@@ -1381,7 +1399,13 @@ end
 to_field 'callnum_search' do |record, accumulator|
   good_call_numbers = []
   record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(item)
+    holding = SirsiHolding.new(
+      call_number: (item['a'] || '').strip,
+      current_location: item['k'],
+      home_location: item['l'],
+      library: item['m'],
+      scheme: item['w']
+    )
     next if holding.call_number.to_s.empty? ||
             holding.shelved_by_location? ||
             holding.ignored_call_number? ||

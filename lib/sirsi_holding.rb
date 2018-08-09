@@ -13,9 +13,13 @@ class SirsiHolding
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :field
-  def initialize(field)
-    @field = field
+  attr_reader :call_number, :current_location, :home_location, :library, :scheme
+  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '')
+    @call_number = CallNumber.new(call_number)
+    @current_location = current_location
+    @home_location = home_location
+    @library = library
+    @scheme = scheme
   end
 
   def shelved_by_location?
@@ -72,25 +76,25 @@ class SirsiHolding
     ([home_location, current_location] & GOV_DOCS_LOCS).any?
   end
 
-  def call_number
-    CallNumber.new((field['a'] || '').strip)
-  end
-
-  def current_location
-    field['k']
-  end
-
-  def home_location
-    field['l']
-  end
-
-  def library
-    field['m']
-  end
-
-  def scheme
-    field['w']
-  end
+  # def call_number
+  #   CallNumber.new((field['a'] || '').strip)
+  # end
+  #
+  # def current_location
+  #   field['k']
+  # end
+  #
+  # def home_location
+  #   field['l']
+  # end
+  #
+  # def library
+  #   field['m']
+  # end
+  #
+  # def scheme
+  #   field['w']
+  # end
 
   private
 
