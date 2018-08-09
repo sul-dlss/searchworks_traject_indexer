@@ -6,8 +6,11 @@ require 'traject/readers/marc_combining_reader'
 # in spec/support/ and its subdirectories.
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 
+def file_fixture_path
+  File.join(__dir__, 'fixtures', 'files')
+end
+
 def file_fixture(fixture_name)
-  file_fixture_path = File.join(__dir__, 'fixtures', 'files')
   path = Pathname.new(File.join(file_fixture_path, fixture_name))
   if path.exist?
     path
