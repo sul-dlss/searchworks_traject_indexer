@@ -1,3 +1,5 @@
+require 'sirsi_holding'
+
 def record_with_999(call_number:, scheme:, home_location: 'STACKS', library: 'GREEN', indexer:)
   indexer.map_record(
     MARC::Record.new.tap do |r|
@@ -17,8 +19,6 @@ def record_with_999(call_number:, scheme:, home_location: 'STACKS', library: 'GR
   )
 end
 
-require 'sirsi_holding'
-
 RSpec.describe 'Call Number Facet' do
   subject(:result) { indexer.map_record(record) }
 
@@ -28,13 +28,8 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  # let(:fixture_name) { 'callNumberTests.mrc' }
-  # let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  # let(:record) { records.first }
   let(:field) { 'callnum_facet_hsim' }
   let(:record) { record_with_999(call_number: call_number, scheme: scheme) }
-  #
-  # subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
 
   context 'call numbers excluded for various reasons' do
     it 'handles unexpected callnum type (by not including them)' do

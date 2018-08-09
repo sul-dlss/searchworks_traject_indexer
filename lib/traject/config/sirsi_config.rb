@@ -1287,8 +1287,6 @@ to_field 'oclc' do |record, accumulator|
 end
 #
 # # Call Number Fields
-# callnum_facet_hsim = custom, getCallNumHierarchVals(|, callnumber_map)
-
 to_field 'callnum_facet_hsim' do |record, accumulator|
   record.each_by_tag('999') do |item|
     holding = SirsiHolding.new(item)
