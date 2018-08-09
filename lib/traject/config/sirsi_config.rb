@@ -1306,8 +1306,106 @@ to_field 'location_facet', extract_marc('852c:999l') do |record, accumulator|
 end
 
 # # Stanford student work facet
-# stanford_work_facet_hsim = custom, getStanfordWorkFacet
-# stanford_dept_sim = custom, getStanfordDeptFacet
+# Get hierarchical values if 502 field contains "Stanford"
+#  Thesis/Dissertation:
+#    "Thesis/Dissertation|Degree level|Degree"
+#      e.g. "Thesis/Dissertation|Master's|Engineer"
+#      e.g. "Thesis/Dissertation|Doctoral|Doctor of Education (EdD)"
+#
+#  it is expected that these values will go to a field analyzed with
+#   solr.PathHierarchyTokenizerFactory  so a value like
+#    "Thesis/Dissertation|Master's|Engineer"
+#  will be indexed as 3 values:
+#    "Thesis/Dissertation|Master's|Engineer"
+#    "Thesis/Dissertation|Master's"
+#    "Thesis/Dissertation"
+to_field 'stanford_work_facet_hsim' do |record, accumulator|
+  Traject::MarcExtractor.cached('502').collect_matching_lines(record) do |field, spec, extractor|
+    str = extractor.collect_subfields(field, spec).join(' ').downcase
+    if str =~ /(.*)[Ss]tanford(.*)/
+      degree = case str
+      when /^thesis\s?.?b\.?\s?a\.?\s?(.*)/
+        'Thesis/Dissertation|Bachelor\'s|Bachelor of Arts (BA)'
+      when /(.*)d\.?\s?m\.?\s?a\.?(.*)/
+        'Thesis/Dissertation|Doctoral|Doctor of Musical Arts (DMA)'
+      when /(.*)ed\.?\s?d\.?(.*)/
+        'Thesis/Dissertation|Doctoral|Doctor of Education (EdD)'
+      when /(.*)ed\.?\s?m\.?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of Education (EdM)'
+      when /(.*)(eng[^l]{1,}\.?r?\.?)(.*)/
+        'Thesis/Dissertation|Master\'s|Engineer'
+      when /(.*)j\.?\s?d\.?(.*)/
+        'Thesis/Dissertation|Doctoral|Doctor of Jurisprudence (JD)'
+      when /(.*)j\.?\s?s\.?\s?d\.?(.*)/
+        'Thesis/Dissertation|Doctoral|Doctor of the Science of Law (JSD)'
+      when /(.*)j\.?\s?s\.?\s?m\.?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of the Science of Law (JSM)'
+      when /(.*)l\.?\s?l\.?\s?m\.?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of Laws (LLM)'
+      # periods between letters NOT optional else "masters" or "drama" matches
+      when /(.*)\s?.?a\.\s?m\.\s?(.*)/, /(.*)m\.\s?a[\.\)]\s?(.*)/, /(.*)m\.\s?a\.?\s?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of Arts (MA)'
+      when /^thesis\s?.?m\.\s?d\.\s?(.*)/
+        'Thesis/Dissertation|Doctoral|Doctor of Medicine (MD)'
+      when /(.*)m\.?\s?f\.?\s?a\.?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of Fine Arts (MFA)'
+      when /(.*)m\.?\s?l\.?\s?a\.?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of Liberal Arts (MLA)'
+      when /(.*)m\.?\s?l\.?\s?s\.?(.*)/
+        'Thesis/Dissertation|Master\'s|Master of Legal Studies (MLS)'
+      # periods between letters NOT optional else "programs" matches
+      when /(.*)m\.\s?s\.(.*)/, /master of science/
+        'Thesis/Dissertation|Master\'s|Master of Science (MS)'
+      when /(.*)ph\s?\.?\s?d\.?(.*)/
+        'Thesis/Dissertation|Doctoral|Doctor of Philosophy (PhD)'
+      when /student report/
+        'Other student work|Student report'
+      when /(.*)honor'?s?(.*)(thesis|project)/, /(thesis|project)(.*)honor'?s?(.*)/
+        'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
+      when /(doctoral|graduate school of business)/
+        'Thesis/Dissertation|Doctoral|Unspecified'
+      when /(.*)master'?s(.*)/
+        'Thesis/Dissertation|Master\'s|Unspecified'
+      else
+        'Thesis/Dissertation|Unspecified'
+      end
+      accumulator << degree
+    end
+  end
+end
+
+# Get facet values for Stanford school and departments
+# Only if record is for a Stanford thesis or dissertation
+# Returns first 710b if 710a contains "Stanford"
+# Returns 710a if it contains "Stanford" and no subfield b
+# Replaces "Dept." with "Department" and cleans up punctuation
+to_field 'stanford_dept_sim' do |record, accumulator, context|
+  if context.output_hash['stanford_work_facet_hsim']&.any?
+    Traject::MarcExtractor.cached('710ab').collect_matching_lines(record) do |field, spec, extractor|
+      sub_a ||= field['a']
+      sub_b ||= field['b']
+      if sub_a =~ /stanford/i
+        if !sub_b.nil? # subfield b exists
+          sub_b = sub_b.strip # could contain just whitespace
+          if sub_b.empty?
+            accumulator << sub_a
+          else
+            accumulator << sub_b
+          end
+        else # subfield b does not exist, subfield a is Stanford
+          accumulator << sub_a
+        end
+      end
+    end
+  end
+
+  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.replace(accumulator.map do |value|
+    value = value.gsub(/Dept\./, 'Department')
+    value = value.gsub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[..{2,}]|[LAE][arn][wtg])\.$/, '\1')
+  end)
+end
 #
 # # Item Info Fields (from 999 that aren't call number)
 # barcode_search = 999i
