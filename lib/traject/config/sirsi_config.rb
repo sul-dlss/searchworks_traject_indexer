@@ -169,11 +169,8 @@ to_field 'series_exact_search', extract_marc('830a')
 to_field 'author_title_search' do |record, accumulator|
   onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first
 
-  twoxx = if record['240']
-     Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first
-  elsif record['245']
-     Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first
-  end
+  twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first if record['240']
+  twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
 
   accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx or twoxx
 end
@@ -181,12 +178,8 @@ end
 to_field 'author_title_search' do |record, accumulator|
   onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: :only).extract(record).first
 
-  twoxx = if record['240']
-     Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first
-  elsif record['245']
-     Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first
-  end
-
+  twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first if record['240']
+  twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first if record['245']
   accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if twoxx
 end
 
