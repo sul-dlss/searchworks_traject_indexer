@@ -375,7 +375,7 @@ end
 
 # 260ab and 264ab, without s.l in 260a and without s.n. in 260b
 to_field 'pub_search' do |record, accumulator|
-  Traject::MarcExtractor.new('260:264').collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new('260:264', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     data = field.subfields.select { |x| x.code == 'a' || x.code == 'b' }
                  .reject { |x| x.code == 'a' && (x.value =~ /s\.l\./i || x.value =~ /place of .* not identified/i) }
                  .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
