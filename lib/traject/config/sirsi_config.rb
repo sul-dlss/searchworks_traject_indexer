@@ -167,9 +167,9 @@ to_field 'series_exact_search', extract_marc('830a')
 
 # # Author Title Search Fields
 to_field 'author_title_search' do |record, accumulator|
-  onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first
+  onexx = trim_punctuation_custom(Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first)
 
-  twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first if record['240']
+  twoxx = trim_punctuation_custom(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false, trim_punctuation: true).extract(record).first) if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
 
   accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx or twoxx
