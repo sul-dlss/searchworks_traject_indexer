@@ -1839,8 +1839,6 @@ to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_ord
   accumulator.replace library_map.translate_array(accumulator)
 end
 
-# item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
-
 to_field 'item_display' do |record, accumulator|
   record.each_by_tag('999') do |item_999|
     holding = SirsiHolding.new(
@@ -1869,6 +1867,12 @@ to_field 'item_display' do |record, accumulator|
       holding.call_number_type
     ].join(' -|- ')
   end
+end
+
+##
+# Skip records for missing `item_display` field
+each_record do |record, context|
+  context.skip!('No item_display field') if context.output_hash['item_display'].nil?
 end
 
 to_field 'on_order_library_ssim', extract_marc('596a', translation_map: 'library_on_order_map')
