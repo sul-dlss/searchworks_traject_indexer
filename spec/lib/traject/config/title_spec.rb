@@ -278,6 +278,7 @@ RSpec.describe 'Title spec' do
       it 'has the correct titles' do
         expect(select_by_id('2451')[field]).to eq ['Heritage Books archives']
         expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia']
+        expect(select_by_id('14161')[field]).to eq ['The study of man.']
       end
     end
   end
@@ -311,6 +312,11 @@ RSpec.describe 'Title spec' do
     it 'has the correct titles' do
       expect(select_by_id('RtoL')[field]).to eq ['crocodile for is c']
     end
+    context 'trailing punctuation' do
+      it 'has the correct titles' do
+        expect(select_by_id('7070581')[field]).to eq ['王建革著']
+      end
+    end
   end
   describe 'title_display' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
@@ -328,6 +334,7 @@ RSpec.describe 'Title spec' do
         expect(select_by_id('2451')[field]).to eq ['Heritage Books archives. Underwood biographical dictionary. Volumes 1 & 2 revised [electronic resource]']
         expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia : mythistorema']
         expect(select_by_id('2453')[field]).to eq ['Proceedings']
+        expect(select_by_id('14161')[field]).to eq ['The study of man.']
       end
     end
     context 'non-filing' do
