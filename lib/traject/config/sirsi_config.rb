@@ -73,7 +73,7 @@ to_field 'all_search' do |record, accumulator|
 
     result << subfield_values.join(' ')
   end
-  accumulator << result.join(' ')
+  accumulator << result.join(' ') if result.any?
 end
 
 to_field 'vern_all_search' do |record, accumulator|
@@ -89,7 +89,7 @@ to_field 'vern_all_search' do |record, accumulator|
 
     result << subfield_values.join(' ')
   end
-  accumulator << result.join(' ')
+  accumulator << result.join(' ') if result.any?
 end
 
 # Title Search Fields
@@ -619,10 +619,12 @@ to_field 'imprint_display' do |record, accumulator|
   imprint = Traject::MarcExtractor.new('260abcefg', separator: nil, alternate_script: false).extract(record).map(&:strip).join(' ')
   vernImprint = Traject::MarcExtractor.new('260abcefg', separator: nil, alternate_script: :only).extract(record).map(&:strip).join(' ')
 
-  accumulator << [
+  data = [
     [edition, vernEdition].compact.reject(&:empty?).join(' '),
     [imprint, vernImprint].compact.reject(&:empty?).join(' ')
-  ].compact.reject(&:empty?).join(' - ')
+  ].compact.reject(&:empty?)
+
+  accumulator << data.join(' - ') if data.any?
 end
 #
 # # Date field for new items feed
