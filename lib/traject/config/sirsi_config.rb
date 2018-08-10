@@ -1549,7 +1549,7 @@ end
 # building_facet = custom, getBuildings, library_map.properties
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
-to_field 'on_order_library_ssim', extract_marc('596', translation_map: 'library_on_order_map')
+to_field 'on_order_library_ssim', extract_marc('596a', translation_map: 'library_on_order_map')
 ##
 # Instantiate once, not on each record
 skipped_locations = Traject::TranslationMap.new('locations_skipped_list')
