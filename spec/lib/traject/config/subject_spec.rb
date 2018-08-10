@@ -825,6 +825,24 @@ RSpec.describe 'Subject config' do
     let(:fixture_name) { 'subjectTests.mrc' }
     let(:field) { 'geographic_facet' }
 
+    context 'a record with multiple 6xx subfield z' do
+      let(:records) { [record] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01952cid  2200457Ia 4500'
+          r.append(MARC::DataField.new('600', ' ', ' ',
+            MARC::Subfield.new('z', 'Stanford'),
+            MARC::Subfield.new('z', 'Berkeley')
+          ))
+          r.append(MARC::DataField.new('600', ' ', ' ', MARC::Subfield.new('z', 'San Jose')))
+        end
+      end
+
+      it 'takes only the first subfield z from a field' do
+        expect(results.first[field]).to eq ['Stanford', 'San Jose']
+      end
+    end
+
     it 'strips trailing periods' do
       result = select_by_id('651a')[field]
       expect(result).to eq ['Muppets']

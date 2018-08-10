@@ -320,9 +320,18 @@ to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", 
   accumulator.map! { |v| v.gsub(/([\p{L}\p{N}]{4}|[A-Za-z]{3}|\))[\\,;:\.]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
 end
-to_field "geographic_facet", extract_marc("651a:" + (600...699).map { |x| "#{x}z" }.join(':'), alternate_script: false) do |record, accumulator|
+
+to_field "geographic_facet", extract_marc('651a', alternate_script: false) do |record, accumulator|
   accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
 end
+to_field "geographic_facet" do |record, accumulator|
+  Traject::MarcExtractor.new((600...699).map { |x| "#{x}z" }.join(':')).collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << field['z'] if field['z'] # take only the first subfield z
+  end
+
+  accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
+end
+
 to_field "era_facet", extract_marc("650y:651y", alternate_script: false, trim_punctuation: true) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
 end
