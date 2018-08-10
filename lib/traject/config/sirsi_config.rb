@@ -5,6 +5,7 @@ require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
 require 'sirsi_holding'
 require 'mhld_field'
+require 'utils'
 require 'csv'
 
 extend Traject::Macros::Marc21Semantics
@@ -343,7 +344,7 @@ def clean_facet_punctuation(value)
                     gsub(/!{2,}+/, '!'). #  two or more exlamation points
                     gsub(/\s+/, ' ') # one or more spaces
 
-  new_value[/(?<valid>\(\g<valid>*\)|[^()])+/x] # remove unmatched parentheses
+  StringScrubbing.balance_parentheses(new_value)
 end
 
 # Custom method for traject's trim_punctuation
