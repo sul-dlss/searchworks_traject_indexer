@@ -239,7 +239,7 @@ to_field 'vern_author_meeting_display', extract_marc('111acdefgjklnpqtu', first:
 # # Author Sort Field
 to_field 'author_sort' do |record, accumulator|
   accumulator << extract_sortable_author('100abcdefgjklnpqtu:110abcdefgklnptu:111acdefgjklnpqtu',
-                                         '240adfghklmnoprs:245abcfghknps',
+                                         '240acdfghklmnoprs:245abfghknps',
                                          record)
 end
 
@@ -253,7 +253,7 @@ end
 #  ensures record with no 1xx sorts after records with a 1xx by prepending UTF-8 max code point to title string
 def extract_sortable_author(author_fields, title_fields, record)
   punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
-  onexx = Traject::MarcExtractor.cached(author_fields).collect_matching_lines(record) do |field, spec, extractor|
+  onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
     str = extractor.collect_subfields(field, spec).first
     str = str.slice(non_filing, str.length)
@@ -263,7 +263,7 @@ def extract_sortable_author(author_fields, title_fields, record)
   onexx ||= MAX_CODE_POINT
 
   titles = []
-  Traject::MarcExtractor.cached(title_fields).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.cached(title_fields, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
     str = extractor.collect_subfields(field, spec).join(' ')
     str = str.slice(non_filing, str.length)
