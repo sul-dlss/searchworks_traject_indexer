@@ -2,7 +2,7 @@
 # from http://www-sul.stanford.edu/depts/ts/tsdepts/cat/docs/cat_policy/nonprint/intercat/sectionviiDatabaseMap.html
 # and additionally from http://www.loc.gov/catdir/cpso/lcco/
 
-displayRawIfMissing: true
+__default__: __passthrough__
 
 AC: General and Reference Works
 AE: General and Reference Works
