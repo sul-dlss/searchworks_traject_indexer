@@ -314,7 +314,7 @@ RSpec.describe 'Title spec' do
     end
     context 'trailing punctuation' do
       it 'has the correct titles' do
-        expect(select_by_id('7070581')[field]).to eq ['王建革著']
+        expect(select_by_id('7070581')[field]).to eq ['王建革著.']
       end
     end
   end

@@ -363,7 +363,7 @@ def trim_punctuation_custom(str)
   str = str.sub(/ *[ ,\/;:] *\Z/, '')
 
   # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
-  str = str.gsub(/( *[[:word:]]{4,}|[0-9]{4})\. *\Z/, '\1')
+  str = str.gsub(/( *[A-Za-z]{4,}|[0-9]{4})\. *\Z/, '\1')
 
   # single square bracket characters if they are the start and/or end
   #   chars and there are no internal square brackets.
