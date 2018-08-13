@@ -12,7 +12,7 @@ extend Traject::Macros::Marc21Semantics
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
-MAX_CODE_POINT = 0x10FFFD.chr(Encoding::UTF_8)
+MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']

@@ -510,7 +510,7 @@ RSpec.describe 'Author config' do
 
   describe 'author_sort' do
     let(:field) { 'author_sort' }
-    MAX_CODE_POINT = 0x10FFFD.chr(Encoding::UTF_8) + ' '
+    MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8) + ' '
     context 'has the correct fields:' do
       it '100 then 245' do
         result = select_by_id('345228')[field]
