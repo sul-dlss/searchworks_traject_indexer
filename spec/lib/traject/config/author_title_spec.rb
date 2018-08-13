@@ -34,9 +34,9 @@ RSpec.describe 'Author-title config' do
     end
 
     it 'skips the 7xx field if there is no subfield t' do
-      expect(select_by_id('700nosubt')[field]).to eq ['seven-oh-oh without subfield t']
-      expect(select_by_id('710nosubt')[field]).to eq ['seven-one-oh without subfield t']
-      expect(select_by_id('711nosubt')[field]).to eq ['seven-one-one without subfield t']
+      expect(select_by_id('700nosubt')[field]).to eq nil
+      expect(select_by_id('710nosubt')[field]).to eq nil
+      expect(select_by_id('711nosubt')[field]).to eq nil
     end
   end
 
@@ -48,9 +48,9 @@ RSpec.describe 'Author-title config' do
     end
 
     it 'skips the 8xx field if there is no subfield t' do
-      expect(select_by_id('800nosubt')[field]).to eq ['eight hundred without subfield t']
-      expect(select_by_id('810nosubt')[field]).to eq ['eight ten without subfield t']
-      expect(select_by_id('811nosubt')[field]).to eq ['eight eleven without subfield t']
+      expect(select_by_id('800nosubt')[field]).to eq nil
+      expect(select_by_id('810nosubt')[field]).to eq nil
+      expect(select_by_id('811nosubt')[field]).to eq nil
     end
   end
 
@@ -83,9 +83,9 @@ RSpec.describe 'Author-title config' do
     end
 
     it 'skips the vern7xx field if there is no subfield t' do
-      expect(select_by_id('vern700nosubt')[field]).to eq ['vern seven-oh-oh without subfield t']
-      expect(select_by_id('vern710nosubt')[field]).to eq ['vern seven-one-oh without subfield t']
-      expect(select_by_id('vern711nosubt')[field]).to eq ['vern seven-one-one without subfield t']
+      expect(select_by_id('vern700nosubt')[field]).to eq nil
+      expect(select_by_id('vern710nosubt')[field]).to eq nil
+      expect(select_by_id('vern711nosubt')[field]).to eq nil
     end
   end
 
@@ -97,9 +97,9 @@ RSpec.describe 'Author-title config' do
     end
 
     it 'skips the vern8xx field if there is no subfield t' do
-      expect(select_by_id('vern800nosubt')[field]).to eq ['vern eight-oh-oh without subfield t']
-      expect(select_by_id('vern810nosubt')[field]).to eq ['vern eight-one-oh without subfield t']
-      expect(select_by_id('vern811nosubt')[field]).to eq ['vern eight-one-one without subfield t']
+      expect(select_by_id('vern800nosubt')[field]).to eq nil
+      expect(select_by_id('vern810nosubt')[field]).to eq nil
+      expect(select_by_id('vern811nosubt')[field]).to eq nil
     end
   end
 end

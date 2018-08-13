@@ -184,7 +184,7 @@ to_field 'author_title_search' do |record, accumulator|
   twoxx = trim_punctuation_custom(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false, trim_punctuation: true).extract(record).first) if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
 
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx or twoxx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -192,7 +192,7 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first if record['245']
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if twoxx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx && twoxx
 end
 
 to_field 'author_title_search' do |record, accumulator|
