@@ -7,6 +7,9 @@ require 'sirsi_holding'
 require 'mhld_field'
 require 'utils'
 require 'csv'
+require 'i18n'
+
+I18n.available_locales = [:en]
 
 extend Traject::Macros::Marc21Semantics
 
@@ -1441,7 +1444,38 @@ to_field 'callnum_search' do |record, accumulator|
   accumulator.concat(good_call_numbers.uniq)
 end
 # shelfkey = custom, getShelfkeys
-# reverse_shelfkey = custom, getReverseShelfkeys
+
+# given a shelfkey (a lexicaly sortable call number), return the reverse
+# shelf key - a sortable version of the call number that will give the
+# reverse order (for getting "previous" call numbers in a list)
+#
+# return the reverse String value, mapping A --> 9, B --> 8, ...
+#   9 --> A and also non-alphanum to sort properly (before or after alphanum)
+to_field 'reverse_shelfkey' do |record, accumulator, context|
+  accumulator.concat(Array(context.output_hash['shelfkey']).map do |shelfkey|
+    forward_chars = ('0'..'9').to_a + ('a'..'z').to_a
+    reverse_chars = forward_chars.reverse
+    char_map = forward_chars.zip(reverse_chars).to_h
+    char_map.merge! '.' => '}', '{' => ' ', '|' => ' ', '}' => ' ', '~' => ' ', ' ' => '~'
+
+    shelfkey.chars.map do |c|
+      # map latin chars with diacritic to char without and normalize case
+      c = I18n.transliterate(c).downcase
+
+      if char_map[c]
+        char_map[c]
+      elsif c =~ /\w/
+        # if it's not a character in our map, it's probably a non-latin, non-digit
+        # which ordinarily sorts after 0-9, A-Z, so sort it first.
+        '0'
+      else
+        # and if it is not a letter or a digit, sort it last
+        '~'
+      end
+    end.join('').ljust(50, '~') # for some reason, we pad this to 50 characters.
+  end)
+end
+
 #
 # # Location facet
 to_field 'location_facet', extract_marc('852c:999l') do |record, accumulator|

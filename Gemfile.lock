@@ -141,6 +141,7 @@ DEPENDENCIES
   capistrano-shared_configs
   dlss-capistrano
   http
+  i18n
   rake
   rspec
   stanford-mods
