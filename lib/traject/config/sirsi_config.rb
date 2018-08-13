@@ -1207,7 +1207,9 @@ to_field 'db_az_subject' do |record, accumulator, context|
   end
 end
 
-to_field "physical", extract_marc("300abcefg", alternate_script: false)
+to_field "physical", extract_marc("300abcefg", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
 to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
