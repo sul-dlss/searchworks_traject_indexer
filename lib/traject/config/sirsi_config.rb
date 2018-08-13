@@ -153,8 +153,9 @@ end
 # using algorithm from StanfordIndexer#getSortTitle.
 def extract_sortable_title(fields, record)
   java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
-  Traject::MarcExtractor.new(fields).collect_matching_lines(record) do |field, spec, extractor|
-    str = extractor.collect_subfields(field, spec).first
+  Traject::MarcExtractor.new(fields, separator: false).collect_matching_lines(record) do |field, spec, extractor|
+    str = extractor.collect_subfields(field, spec).map { |x| x.delete(java7_punct) }.map(&:strip).join(' ')
+
     if str.nil?
       # maybe an APPM archival record with only a 'k'
       str = field['k']
@@ -166,7 +167,7 @@ def extract_sortable_title(fields, record)
 
     non_filing = field.indicator2.to_i
     str = str.slice(non_filing, str.length)
-    str = str.delete(java7_punct).strip
+    str = str.strip
 
     str
   end.first
@@ -265,9 +266,9 @@ end
 #  ensures record with no 1xx sorts after records with a 1xx by prepending UTF-8 max code point to title string
 def extract_sortable_author(author_fields, title_fields, record)
   punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
-  onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+  onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    str = extractor.collect_subfields(field, spec).first
+    str = extractor.collect_subfields(field, spec).map { |x| x.delete(punct) }.map(&:strip).join(' ')
     str = str.slice(non_filing, str.length)
     str.delete(punct).strip
   end.first
@@ -275,9 +276,9 @@ def extract_sortable_author(author_fields, title_fields, record)
   onexx ||= MAX_CODE_POINT
 
   titles = []
-  Traject::MarcExtractor.cached(title_fields, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.cached(title_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    str = extractor.collect_subfields(field, spec).join(' ')
+    str = extractor.collect_subfields(field, spec).map { |x| x.delete(punct) }.map(&:strip).join(' ')
     str = str.slice(non_filing, str.length)
     titles << str
   end
