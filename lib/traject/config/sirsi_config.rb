@@ -349,7 +349,7 @@ to_field "subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 6
 to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}"}.join(':'), alternate_script: :only)
 
 # Subject Facet Fields
-to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false, trim_punctuation: true) do |record, accumulator|
+to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false) do |record, accumulator|
   accumulator.reject! { |v| v == 'nomesh' }
   accumulator.map! { |v| v.gsub(/([\p{L}\p{N}]{4}|[A-Za-z]{3}|\))[\\,;:\.]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
