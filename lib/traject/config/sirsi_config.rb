@@ -11,6 +11,7 @@ require 'i18n'
 
 I18n.available_locales = [:en]
 
+extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 
 ALPHABET = [*'a'..'z'].join('')
