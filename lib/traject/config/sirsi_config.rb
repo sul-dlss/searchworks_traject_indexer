@@ -174,9 +174,9 @@ def extract_sortable_title(fields, record)
 end
 
 # Series Search Fields
-to_field 'series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}")
+to_field 'series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: false)
 to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
-to_field 'series_exact_search', extract_marc('830a')
+to_field 'series_exact_search', extract_marc('830a', alternate_script: false)
 
 # # Author Title Search Fields
 to_field 'author_title_search' do |record, accumulator|
