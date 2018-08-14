@@ -3,6 +3,11 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
+require 'call_numbers/lc'
+require 'call_numbers/dewey'
+require 'call_numbers/other'
+require 'call_numbers/shelfkey'
+require 'call_numbers/serial_shelfkey'
 require 'sirsi_holding'
 require 'mhld_field'
 require 'utils'
@@ -388,7 +393,7 @@ def clean_facet_punctuation(value)
                     gsub(/!{2,}+/, '!'). #  two or more exlamation points
                     gsub(/\s+/, ' ') # one or more spaces
 
-  StringScrubbing.balance_parentheses(new_value)
+  Utils.balance_parentheses(new_value)
 end
 
 # Custom method for traject's trim_punctuation
@@ -1563,6 +1568,34 @@ end
 
 # shelfkey = custom, getShelfkeys
 
+to_field 'shelfkey' do |record, accumulator, context|
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
+
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t']
+    )
+
+    next if holding.skipped?
+
+    case holding.call_number_type
+    when 'LC'
+      accumulator << CallNumbers::LC.new(holding.call_number.to_s, serial: serial).to_shelfkey
+    when 'DEWEY'
+      accumulator << CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial).to_shelfkey
+    when 'ALPHANUM', 'OTHER'
+      accumulator << CallNumbers::Other.new(holding.call_number.to_s).to_shelfkey
+    when 'SUDOC'
+      # TODO
+    end
+  end
+end
+
 # given a shelfkey (a lexicaly sortable call number), return the reverse
 # shelf key - a sortable version of the call number that will give the
 # reverse order (for getting "previous" call numbers in a list)
@@ -1750,7 +1783,30 @@ end
 
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
-to_field 'item_display' do |record, accumulator|
+to_field 'item_display' do |record, accumulator, context|
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
+
+  non_skipped_or_ignored_holdings = []
+
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t']
+    )
+    next if holding.skipped? || holding.ignored_call_number?
+
+    non_skipped_or_ignored_holdings << holding
+  end
+
+  # Group by library, home location, and call numbe type
+  non_skipped_or_ignored_holdings = non_skipped_or_ignored_holdings.group_by do |holding|
+    [holding.library, holding.home_location, holding.call_number_type]
+  end
+
   record.each_by_tag('999') do |item_999|
     holding = SirsiHolding.new(
       call_number: (item_999['a'] || '').strip,
@@ -1763,17 +1819,52 @@ to_field 'item_display' do |record, accumulator|
 
     next if holding.skipped?
 
+    call_number_object = case holding.call_number_type
+                         when 'LC'
+                           CallNumbers::LC.new(holding.call_number.to_s, serial: serial)
+                         when 'DEWEY'
+                           CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial)
+                         when 'ALPHANUM', 'OTHER', 'SUDOC'
+                           call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
+                           CallNumbers::Other.new(
+                             holding.call_number.to_s,
+                             longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
+                             scheme: holding.call_number_type
+                           )
+                         end
+
+    if call_number_object
+      # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
+      if (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length || 0) <= 1
+        shelfkey = call_number_object.to_shelfkey
+        volume_sort = call_number_object.to_shelfkey
+        reverse_shelfkey = call_number_object.to_reverse_shelfkey
+        lopped_call_number = holding.call_number.to_s
+      else
+        # there's more than one item in the library/home_location/call_number_type, so we lop
+        shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
+        volume_sort = call_number_object.to_shelfkey
+        reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
+        lopped_call_number = call_number_object.lopped == holding.call_number.to_s ? holding.call_number.to_s : "#{call_number_object.lopped} ..."
+      end
+    else
+      shelfkey = ''
+      volume_sort = ''
+      reverse_shelfkey = ''
+      lopped_call_number = holding.call_number.to_s
+    end
+
     accumulator << [
       item_999['i'],
       holding.library,
       holding.home_location,
       holding.current_location,
       holding.type,
-      '', # itemDispCallnum/loppedCallnum
-      '', # shelfkey
-      '', # reverse shelfkey
+      lopped_call_number,
+      shelfkey,
+      reverse_shelfkey,
       (holding.call_number unless holding.ignored_call_number?),
-      '', # volSort
+      volume_sort,
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
       holding.call_number_type
     ].join(' -|- ')
