@@ -254,21 +254,21 @@ to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acd
 to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |record, accumulator|
   accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |record, accumulator|
   accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 # # Author Display Fields
 to_field 'author_person_display', extract_marc('100abcdq', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: false)
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
@@ -386,7 +386,7 @@ end
 # least four letters instead of three.
 def trim_punctuation_custom(str, trailing_period_regex = nil)
   return str unless str
-  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{4})\. *\Z/
+  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/
 
   previous_str = nil
   until str == previous_str
@@ -397,10 +397,6 @@ def trim_punctuation_custom(str, trailing_period_regex = nil)
 
     # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
     str = str.gsub(trailing_period_regex, '\1')
-
-    # single square bracket characters if they are the start and/or end
-    #   chars and there are no internal square brackets.
-    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
 
     # trim any leading or trailing whitespace
     str.strip!
