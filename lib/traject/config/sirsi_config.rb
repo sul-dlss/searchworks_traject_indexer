@@ -172,7 +172,12 @@ def extract_sortable_title(fields, record)
 end
 
 # Series Search Fields
-to_field 'series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: false)
+to_field 'series_search', extract_marc("440anpv:490av", alternate_script: false)
+
+to_field 'series_search', extract_marc("800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff))
+end
+
 to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
 to_field 'series_exact_search', extract_marc('830a', alternate_script: false)
 
