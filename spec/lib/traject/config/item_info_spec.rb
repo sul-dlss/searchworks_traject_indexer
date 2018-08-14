@@ -610,7 +610,12 @@ RSpec.describe 'ItemInfo config' do
       #
     end
 
-    skip 'forward sort key (shelfkey)' do
+    describe 'forward sort key (shelfkey)' do
+      let(:fixture_name) { 'buildingTests.mrc' }
+
+      it 'has the correct data' do
+
+      end
       # 	/**
       # 	 * test if item_display field is populated correctly, focused on forward sorting callnums
       # 	 *  item_display contains:  (separator is " -|- ")
@@ -756,6 +761,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     skip 'reverse shelfkeys' do
+      let(:fixture_name) { 'buildingTests.mrc' }
       # /**
       # 	 * test if item_display field is populated correctly, focused on backward sorting callnums
       # 	 *  item_display contains:  (separator is " -|- ")
@@ -960,35 +966,49 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    skip 'volsort/full shelfkey' do
-      # 	/**
-      # 	 * test if item_display field is populated correctly, focused on sorting call numbers for show view
-      # 	 *  item_display contains:  (separator is " -|- ")
-      # 	 *    barcode -|- library(short version) -|- location -|-
-      # 	 *     lopped call number (no volume/part info) -|-
-      # 	 *     shelfkey (from lopped call num) -|-
-      # 	 *     reverse_shelfkey (from lopped call num) -|-
-      # 	 *     full callnum -|- callnum sortable for show view
-      # 	 */
-      # @Test
-      # 	public final void testItemDisplayCallnumVolumeSort()
-      # 			throws ParserConfigurationException, IOException, SAXException
-      # 	{
-      # 		String fldName = "item_display";
-      # 	    String testFilePath = testDataParentPath + File.separator + "buildingTests.mrc";
-      #
-      # 		// are we getting the volume sortable call number we expect?
-      # 		String id = "460947";
-      # 		String callnum = "E184.S75 R47A V.1 1980";
-      # 		String lopped = CallNumUtils.removeLCVolSuffix(callnum) + " ...";
-      # 		String shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		String reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		String volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		String fldVal = "36105007402873 -|- SCIENCE -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 	}
-      #
+    describe 'volsort/full shelfkey' do
+      context 'LC' do
+        let(:fixture_name) { 'buildingTests.mrc' }
+
+        it 'is included' do
+          expect(select_by_id('460947')[field].length).to eq 2
+          expect(select_by_id('460947')[field].first).to include(
+            '-|- E184.S75 R47A V.1 1980 -|-'
+          )
+          # Note that the previous shelfkey had "r0.470000 a" instead of "r0.470000a"
+          expect(select_by_id('460947')[field].first).to include(
+            '-|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-'
+          )
+
+          expect(select_by_id('460947')[field].last).to include(
+            '-|- E184.S75 R47A V.2 1980 -|-'
+          )
+          expect(select_by_id('460947')[field].last).to include(
+            '-|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-'
+          )
+        end
+      end
+
+      context 'DEWEY' do
+        let(:fixture_name) { 'shelfkeyMatchItemDispTests.mrc' }
+
+        it 'is inlcuded' do
+          expect(select_by_id('373245')[field].length).to eq 2
+          expect(select_by_id('373245')[field].first).to include(
+            '-|- 553.2805 .P187 V.1-2 1916-1918 -|-'
+          )
+          expect(select_by_id('373245')[field].first).to include(
+            '-|- dewey 553.28050000 p187 v.000001-000002 001916-001918 -|-'
+          )
+
+          expect(select_by_id('373245')[field].last).to include(
+            '-|- 553.2805 .P187 V.1-2 1919-1920 -|-'
+          )
+          expect(select_by_id('373245')[field].last).to include(
+            '-|- dewey 553.28050000 p187 v.000001-000002 001919-001920 -|-'
+          )
+        end
+      end
     end
 
     skip 'shefkey field data is the same as the field in the item_display' do
@@ -1033,17 +1053,16 @@ RSpec.describe 'ItemInfo config' do
       # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
       # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
       # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
-      #
-      # 	    id = "373245";
-      # 		callnum = "553.2805 .P187 V.1-2 1916-1918";
-      # 		lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.DEWEY, isSerial) + " ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.DEWEY, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		fldVal = "36105027549075 -|- SAL3 -|- STACKS -|- " + SEP + "STKS-PERI" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.DEWEY;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
+      # id = "373245";
+      # callnum = "553.2805 .P187 V.1-2 1916-1918";
+      # lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.DEWEY, isSerial) + " ...";
+      # shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.DEWEY, id).toLowerCase();
+      # reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
+      # volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
+      # fldVal = "36105027549075 -|- SAL3 -|- STACKS -|- " + SEP + "STKS-PERI" + SEP +
+      #   lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.DEWEY;
+      # solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
+      # solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
       #
       # 	    id = "373759";
       # 		callnum = "553.2805 .P494 V.11 1924:JAN.-JUNE";
