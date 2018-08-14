@@ -1287,7 +1287,7 @@ end
 
 def extract_isbn(value)
   isbn10_pattern = /^\d{9}[\dX].*/
-  isbn13_pattern = /^(978|9)\d{9}[\dX].*/
+  isbn13_pattern = /^(978|979)\d{9}[\dX].*/
   isbn13_any = /^\d{12}[\dX].*/
 
   if value =~ isbn13_pattern
