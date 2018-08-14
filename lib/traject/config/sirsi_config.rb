@@ -436,7 +436,7 @@ to_field 'pub_search' do |record, accumulator|
                  .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
                  .map(&:value)
 
-    accumulator << trim_punctuation_custom(data.join(' ')) unless data.empty?
+    accumulator << trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(data.join(' ')) unless data.empty?
   end
 end
 to_field 'vern_pub_search', extract_marc('260ab:264ab', alternate_script: :only)
