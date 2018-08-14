@@ -154,22 +154,20 @@ end
 def extract_sortable_title(fields, record)
   java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
   Traject::MarcExtractor.new(fields, separator: false).collect_matching_lines(record) do |field, spec, extractor|
-    str = extractor.collect_subfields(field, spec).map { |x| x.delete(java7_punct) }.map(&:strip).join(' ')
+    subfields = extractor.collect_subfields(field, spec)
 
-    if str.nil?
+    if subfields.empty?
       # maybe an APPM archival record with only a 'k'
-      str = field['k']
+      subfields = [field['k']]
     end
-    if str.nil?
+    if subfields.empty?
       # still? All we can do is bail, I guess
       return nil
     end
 
     non_filing = field.indicator2.to_i
-    str = str.slice(non_filing, str.length)
-    str = str.strip
-
-    str
+    subfields[0] = subfields[0].slice(non_filing..-1)
+    subfields.map { |x| x.delete(java7_punct) }.map(&:strip).join(' ')
   end.first
 end
 
@@ -268,9 +266,9 @@ def extract_sortable_author(author_fields, title_fields, record)
   punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
   onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    str = extractor.collect_subfields(field, spec).map { |x| x.delete(punct) }.map(&:strip).join(' ')
-    str = str.slice(non_filing, str.length)
-    str.delete(punct).strip
+    subfields = extractor.collect_subfields(field, spec)
+    subfields[0] = subfields[0].slice(non_filing..-1)
+    subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end.first
 
   onexx ||= MAX_CODE_POINT
@@ -278,9 +276,9 @@ def extract_sortable_author(author_fields, title_fields, record)
   titles = []
   Traject::MarcExtractor.cached(title_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    str = extractor.collect_subfields(field, spec).map { |x| x.delete(punct) }.map(&:strip).join(' ')
-    str = str.slice(non_filing, str.length)
-    titles << str
+    subfields = extractor.collect_subfields(field, spec)
+    subfields[0] = subfields[0].slice(non_filing..-1)
+    titles << subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end
 
   title = titles.compact.join(' ')
