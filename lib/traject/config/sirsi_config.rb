@@ -117,6 +117,7 @@ to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnopr
 to_field 'vern_title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only) do |record, accumulator|
@@ -129,6 +130,7 @@ to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only) do |record, accumulator|
@@ -228,23 +230,23 @@ to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnq
 to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
 # # Author Facet Fields
 to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 # # Author Display Fields
 to_field 'author_person_display', extract_marc('100abcdq', alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: false)
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
@@ -360,21 +362,27 @@ end
 # https://github.com/traject/traject/blob/5754e3c0c207d461ca3a98728f7e1e7cf4ebbece/lib/traject/macros/marc21.rb#L227-L246
 # Does the same except removes trailing period when preceded by at
 # least four letters instead of three.
-def trim_punctuation_custom(str)
-  # If something went wrong and we got a nil, just return it
+def trim_punctuation_custom(str, trailing_period_regex = nil)
   return str unless str
-  # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
-  str = str.sub(/ *[ ,\/;:] *\Z/, '')
+  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{4})\. *\Z/
 
-  # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
-  str = str.gsub(/( *[A-Za-z]{4,}|[0-9]{4})\. *\Z/, '\1')
+  previous_str = nil
+  until str == previous_str
+    previous_str = str
+    # If something went wrong and we got a nil, just return it
+    # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
+    str = str.sub(/ *[ ,\/;:] *\Z/, '')
 
-  # single square bracket characters if they are the start and/or end
-  #   chars and there are no internal square brackets.
-  str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+    # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
+    str = str.gsub(trailing_period_regex, '\1')
 
-  # trim any leading or trailing whitespace
-  str.strip!
+    # single square bracket characters if they are the start and/or end
+    #   chars and there are no internal square brackets.
+    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+
+    # trim any leading or trailing whitespace
+    str.strip!
+  end
 
   return str
 end
