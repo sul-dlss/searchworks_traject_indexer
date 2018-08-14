@@ -1487,7 +1487,17 @@ to_field 'callnum_search' do |record, accumulator|
             holding.ignored_call_number? ||
             holding.bad_lc_lane_call_number?
 
-    good_call_numbers << holding.call_number.to_s
+    call_number = holding.call_number.to_s
+
+    if holding.call_number_type == 'DEWEY' || holding.call_number_type == 'LC'
+      call_number = call_number.strip
+      call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+      call_number = call_number.gsub(/\. \./, ' .') # reduce multiple whitespace chars to a single space
+      call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
+      call_number = call_number.gsub(/\s*\.$/, '') # remove trailing period and any spaces before it
+    end
+
+    good_call_numbers << call_number
   end
 
   accumulator.concat(good_call_numbers.uniq)
