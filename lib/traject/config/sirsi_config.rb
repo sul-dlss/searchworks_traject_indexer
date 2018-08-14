@@ -1502,6 +1502,44 @@ to_field 'callnum_search' do |record, accumulator|
 
   accumulator.concat(good_call_numbers.uniq)
 end
+
+to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, context|
+  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
+
+  accumulator.map! do |cn|
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    next unless first_letter && translation_map[first_letter]
+
+    [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+end
+
+to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
+  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
+  accumulator.map! do |cn|
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    next unless first_letter && translation_map[first_letter]
+
+    [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+end
+
 # shelfkey = custom, getShelfkeys
 
 # given a shelfkey (a lexicaly sortable call number), return the reverse
