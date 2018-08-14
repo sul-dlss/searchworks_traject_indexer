@@ -145,6 +145,7 @@ to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_245c_display', extract_marc('245c', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only) do |record, accumulator|
