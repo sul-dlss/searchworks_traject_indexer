@@ -1720,6 +1720,13 @@ to_field 'building_facet' do |record, accumulator|
   end
   accumulator.replace library_map.translate_array(accumulator)
 end
+
+to_field 'building_facet' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Stanford Digital Repository' if field['x'] =~ /SDR-PURL/ || field['u'] =~ /purl\.stanford\.edu/
+  end
+end
+
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
 to_field 'item_display' do |record, accumulator|
