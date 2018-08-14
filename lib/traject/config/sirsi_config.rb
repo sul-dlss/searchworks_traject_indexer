@@ -778,7 +778,7 @@ to_field 'access_facet' do |record, accumulator, context|
     end
   end
 
-  # accumulator << 'On order' unless record['999']
+  accumulator << 'On order' unless record['999']
   accumulator << 'Online' if context.output_hash['url_fulltext']
   accumulator << 'Online' if context.output_hash['url_sfx']
 
