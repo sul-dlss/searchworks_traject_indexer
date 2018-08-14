@@ -39,6 +39,24 @@ class SolrMarcStyleFastXMLWriter < MARC::FastXMLWriter
   end
 end
 
+# Monkey-patch MarcExtractor in order to add logic to strip subfields before
+# joining them, for parity with solrmarc.
+class Traject::MarcExtractor
+  def collect_subfields(field, spec)
+      subfields = field.subfields.collect do |subfield|
+        subfield.value if spec.includes_subfield_code?(subfield.code)
+      end.compact
+
+      return subfields if subfields.empty? # empty array, just return it.
+
+      if options[:separator] && spec.joinable?
+        subfields = [subfields.map(&:strip).join(options[:separator])]
+      end
+
+      return subfields
+  end
+end
+
 reserves_lookup = {}
 File.open(settings['reserves_file'], 'r').each do |line|
   csv_options = {
