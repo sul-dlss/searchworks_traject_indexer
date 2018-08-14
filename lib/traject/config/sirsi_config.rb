@@ -415,7 +415,12 @@ def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(st
                    .sub(/(\p{L}\p{L})\.$/, '\1')
                    .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/, '\1')
 
-    str.sub(/^\[?([^\[\]]*)\]?$/, '\1')
+
+    # single square bracket characters if they are the start and/or end
+    #   chars and there are no internal square brackets.
+    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+
+    str
   end
 
   str
