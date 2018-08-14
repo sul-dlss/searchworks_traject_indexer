@@ -1320,11 +1320,11 @@ to_field 'issn_display' do |record, accumulator, context|
 end
 
 to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
-  lccn_pattern = /^(?:([ a-z]{2}\d{10})|([ a-z]{3}\d{8})|((\d{11}|\d{10}|\d{8})).*)$/
-  accumulator.map! do |value|
-    match = value.match(lccn_pattern)
+  lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
+  accumulator.select! { |x| x =~ lccn_pattern }
 
-    match.to_a.slice(1..-1).compact.first if match
+  accumulator.map! do |value|
+    value.gsub(lccn_pattern, '\1')
   end
 end
 
