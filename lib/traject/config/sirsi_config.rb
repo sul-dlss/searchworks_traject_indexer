@@ -1012,20 +1012,19 @@ end
 
 # * INDEX-89 - Add video physical formats
 to_field 'format_physical_ssim', extract_marc('999a') do |record, accumulator|
-  accumulator.replace(accumulator.map do |value|
-    case value
-    when /BLU-RAY/
-      'Blu-ray'
-    when /ZVC/, /ARTVC/, /MVC/
-      'Videocassette (VHS)'
-    when /ZDVD/, /ARTDVD/, /MDVD/, /ADVD/
-      'DVD'
-    when /AVC/
-      'Videocassette'
-    when /ZVD/, /MVD/
-      'Laser disc'
-    end
+  accumulator.replace(accumulator.flat_map do |value|
+    result = []
+
+    result << 'Blu-ray' if value =~ /BLU-RAY/
+    result << 'Videocassette (VHS)' if value =~ Regexp.union(/ZVC/, /ARTVC/, /MVC/)
+    result << 'DVD' if value =~ Regexp.union(/ZDVD/, /ARTDVD/, /MDVD/, /ADVD/)
+    result << 'Videocassette' if value =~ /AVC/
+    result << 'Laser disc' if value =~ Regexp.union(/ZVD/, /MVD/)
+
+    result unless result.empty?
   end)
+
+  accumulator.compact!
 end
 
 to_field 'format_physical_ssim', extract_marc('007') do |record, accumulator, context|
