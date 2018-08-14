@@ -1564,33 +1564,31 @@ end
 to_field 'barcode_search', extract_marc('999i')
 # preferred_barcode = custom, getPreferredItemBarcode
 # access_facet = custom, getAccessMethods
-# to_field 'building_facet', extract_marc('999m', translation_map: 'library_map')
 
 library_map = Traject::TranslationMap.new('library_map')
 resv_locs = Traject::TranslationMap.new('locations_reserves_list')
 
-to_field 'building_facet', extract_marc('999klm') do |record, accumulator|
-  buildings = []
+to_field 'building_facet' do |record, accumulator|
   record.each_by_tag('999') do |item|
     curr_loc = item['k']
     home_loc = item['l']
     library = item['m']
 
     if resv_locs.hash.key?(curr_loc)
-      buildings << curr_loc
+      accumulator << curr_loc
     else
-      buildings << library
+      accumulator << library
       # https://github.com/sul-dlss/solrmarc-sw/issues/101
       # Per Peter Blank - items with library = SAL3 and home location = PAGE-AR
       # should be given two library facet values:
       # SAL3 (off-campus storage) <- they are currently getting this
       # and Art & Architecture (Bowes) <- new requirement
       if (library == 'SAL3') && (home_loc == 'PAGE-AR')
-        buildings << 'ART'
+        accumulator << 'ART'
       end
     end
   end
-  accumulator.replace library_map.translate_array(buildings)
+  accumulator.replace library_map.translate_array(accumulator)
 end
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
