@@ -1327,7 +1327,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     translation_map = Traject::TranslationMap.new('call_number')
     cn = holding.call_number.normalized_lc
     first_letter = cn[0, 1].upcase
-    letters = cn.split(/[^A-Z]+/).first
+    letters = cn[/^[A-Z]+/]
 
     next unless first_letter && translation_map[first_letter]
 
