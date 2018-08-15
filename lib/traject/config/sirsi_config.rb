@@ -990,19 +990,21 @@ to_field 'format_main_ssim' do |record, accumulator, context|
       when /(graphic|slide|chart|art reproduction|technical drawing|flash card|transparency|activity card|picture|diapositives)/
         'Image'
       when /kit/
-        case record['007'].value[0]
-        when 'a', 'd'
-          'Map'
-        when 'c'
-          'Software/Multimedia'
-        when 'g', 'm', 'v'
-          'Video'
-        when 'k', 'r'
-          'Image'
-        when 'q'
-          'Music score'
-        when 's'
-          'Sound recording'
+        if record['007']
+          case record['007'].value[0]
+          when 'a', 'd'
+            'Map'
+          when 'c'
+            'Software/Multimedia'
+          when 'g', 'm', 'v'
+            'Video'
+          when 'k', 'r'
+            'Image'
+          when 'q'
+            'Music score'
+          when 's'
+            'Sound recording'
+          end
         end
       end
     end
