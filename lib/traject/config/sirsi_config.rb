@@ -1499,7 +1499,7 @@ to_field 'callnum_search' do |record, accumulator|
 
     call_number = holding.call_number.to_s
 
-    if holding.call_number_type == 'DEWEY' || holding.call_number_type == 'LC'
+    if holding.call_number_type == 'DEWEY' || holding.valid_lc?
       call_number = call_number.strip
       call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
       call_number = call_number.gsub(/\. \./, ' .') # reduce multiple whitespace chars to a single space
