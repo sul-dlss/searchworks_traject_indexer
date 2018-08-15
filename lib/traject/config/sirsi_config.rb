@@ -1459,7 +1459,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     )
 
     next if holding.skipped?
-    next unless holding.dewey?
+    next unless holding.call_number_type == 'DEWEY'
     next if holding.ignored_call_number? ||
             holding.shelved_by_location? ||
             holding.lost_or_missing?
