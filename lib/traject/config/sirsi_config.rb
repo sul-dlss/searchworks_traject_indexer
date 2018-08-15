@@ -73,6 +73,10 @@ File.open(settings['reserves_file'], 'r').each do |line|
   end
 end if settings['reserves_file']
 
+each_record do |record|
+  puts record if ENV['q']
+end
+
 to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
     v.sub(/^a/, '')
