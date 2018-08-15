@@ -182,7 +182,7 @@ end
 # using algorithm from StanfordIndexer#getSortTitle.
 def extract_sortable_title(fields, record)
   java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
-  Traject::MarcExtractor.new(fields, separator: false).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new(fields, separator: false, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     subfields = extractor.collect_subfields(field, spec)
 
     if subfields.empty?
