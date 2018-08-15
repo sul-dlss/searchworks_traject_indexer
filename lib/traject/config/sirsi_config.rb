@@ -374,6 +374,7 @@ end
 
 to_field "era_facet", extract_marc("650y:651y", alternate_script: false, trim_punctuation: true) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |v| trim_punctuation_custom(v, /([A-Za-z0-9]{2})\. *\Z/) }
 end
 
 def clean_facet_punctuation(value)
