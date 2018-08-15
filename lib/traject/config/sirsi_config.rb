@@ -1170,7 +1170,7 @@ to_field 'genre_ssim' do |record, accumulator|
   accumulator << 'Thesis/Dissertation' if record['502']
 end
 
-to_field 'genre_ssim', extract_marc('655av')do |record, accumulator|
+to_field 'genre_ssim', extract_marc('655av', alternate_script: false)do |record, accumulator|
   # normalize values
   accumulator.map! do |v|
     previous_v = nil
@@ -1184,7 +1184,7 @@ to_field 'genre_ssim', extract_marc('655av')do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
 end
 
-to_field 'genre_ssim', extract_marc('600v:610v:611v:630v:647v:648v:650v:651v:654v:656v:657v') do |record, accumulator|
+to_field 'genre_ssim', extract_marc('600v:610v:611v:630v:647v:648v:650v:651v:654v:656v:657v', alternate_script: false) do |record, accumulator|
   # normalize values
   accumulator.map! do |v|
     previous_v = nil
