@@ -15,17 +15,17 @@ RSpec.describe 'Access config' do
 
   describe 'with fulltext URLs in bib' do
     it 'is considered online' do
-      expect(select_by_id('856ind2is0')[field]).to eq ['Online']
-      expect(select_by_id('856ind2is0Again')[field]).to eq ['Online']
-      expect(select_by_id('856ind2is1NotToc')[field]).to eq ['Online']
-      expect(select_by_id('856ind2isBlankFulltext')[field]).to eq ['Online']
-      expect(select_by_id('956BlankIndicators')[field]).to eq ['Online']
-      expect(select_by_id('956ind2is0')[field]).to eq ['Online']
-      expect(select_by_id('956and856TOC')[field]).to eq ['Online']
-      expect(select_by_id('mult856and956')[field]).to eq ['Online']
-      expect(select_by_id('956and856TOCand856suppl')[field]).to eq ['Online']
-      expect(select_by_id('7117119')[field]).to eq ['Online']
-      expect(select_by_id('newSfx')[field]).to eq ['Online']
+      expect(select_by_id('856ind2is0')[field]).to include 'Online'
+      expect(select_by_id('856ind2is0Again')[field]).to include 'Online'
+      expect(select_by_id('856ind2is1NotToc')[field]).to include 'Online'
+      expect(select_by_id('856ind2isBlankFulltext')[field]).to include 'Online'
+      expect(select_by_id('956BlankIndicators')[field]).to include 'Online'
+      expect(select_by_id('956ind2is0')[field]).to include 'Online'
+      expect(select_by_id('956and856TOC')[field]).to include 'Online'
+      expect(select_by_id('mult856and956')[field]).to include 'Online'
+      expect(select_by_id('956and856TOCand856suppl')[field]).to include 'Online'
+      expect(select_by_id('7117119')[field]).to include 'Online'
+      expect(select_by_id('newSfx')[field]).to include 'Online'
     end
   end
 

@@ -11,6 +11,7 @@ require 'i18n'
 
 I18n.available_locales = [:en]
 
+extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 
 ALPHABET = [*'a'..'z'].join('')
@@ -36,6 +37,24 @@ class SolrMarcStyleFastXMLWriter < MARC::FastXMLWriter
         "<collection>".dup
       end
     end
+  end
+end
+
+# Monkey-patch MarcExtractor in order to add logic to strip subfields before
+# joining them, for parity with solrmarc.
+class Traject::MarcExtractor
+  def collect_subfields(field, spec)
+      subfields = field.subfields.collect do |subfield|
+        subfield.value if spec.includes_subfield_code?(subfield.code)
+      end.compact
+
+      return subfields if subfields.empty? # empty array, just return it.
+
+      if options[:separator] && spec.joinable?
+        subfields = [subfields.map(&:strip).join(options[:separator])]
+      end
+
+      return subfields
   end
 end
 
@@ -97,7 +116,7 @@ to_field 'vern_all_search' do |record, accumulator|
   record.each do |field|
     next unless  keep_fields.include?(field.tag)
     subfield_values = field.subfields
-                           .reject { |sf| sf.code == '6' }
+                           .select { |sf| ALPHABET.include? sf.code }
                            .collect(&:value)
 
     next unless subfield_values.length > 0
@@ -108,15 +127,18 @@ to_field 'vern_all_search' do |record, accumulator|
 end
 
 # Title Search Fields
-to_field 'title_245a_search', extract_marc('245a', first: true)
+to_field 'title_245a_search', extract_marc('245a', first: true) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
+
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
 to_field 'title_245_search', extract_marc('245abfgknps', first: true)
 to_field 'vern_title_245_search', extract_marc('245abfgknps', alternate_script: :only)
-to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true)
+to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: false)
 to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: :only)
 to_field 'title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: false)
 to_field 'vern_title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: :only)
-to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst')
+to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: false)
 to_field 'vern_title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', alternate_script: false) do |record, accumulator|
@@ -127,6 +149,7 @@ to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_245c_display', extract_marc('245c', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only) do |record, accumulator|
@@ -150,15 +173,16 @@ to_field 'title_sort' do |record, accumulator|
   result = []
   result << extract_sortable_title("130#{ALPHABET}", record)
   result << extract_sortable_title('245abdefghijklmnopqrstuvwxyz', record)
-  accumulator << result.join(' ').strip
+  str = result.join(' ').strip
+  accumulator << str unless str.empty?
 end
 
 ##
 # Originally cribbed from Traject::Marc21Semantics.marc_sortable_title, but by
 # using algorithm from StanfordIndexer#getSortTitle.
 def extract_sortable_title(fields, record)
-  java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
-  Traject::MarcExtractor.new(fields, separator: false).collect_matching_lines(record) do |field, spec, extractor|
+  java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
+  Traject::MarcExtractor.new(fields, separator: false, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     subfields = extractor.collect_subfields(field, spec)
 
     if subfields.empty?
@@ -192,8 +216,9 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first) if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
+  twoxx ||= 'null'
 
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -201,7 +226,7 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first if record['245']
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx && twoxx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -235,21 +260,21 @@ to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acd
 to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |record, accumulator|
   accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |record, accumulator|
   accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 # # Author Display Fields
 to_field 'author_person_display', extract_marc('100abcdq', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
+  accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: false)
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
@@ -260,7 +285,7 @@ to_field 'vern_author_meeting_display', extract_marc('111acdefgjklnpqtu', first:
 # # Author Sort Field
 to_field 'author_sort' do |record, accumulator|
   accumulator << extract_sortable_author('100abcdefgjklnpqtu:110abcdefgklnptu:111acdefgjklnpqtu',
-                                         '240acdfghklmnoprs:245abfghknps',
+                                         '240acdfghklmnoprst:245abfghknps',
                                          record)
 end
 
@@ -294,12 +319,12 @@ def extract_sortable_author(author_fields, title_fields, record)
   title = titles.compact.join(' ')
   title = title.delete(punct).strip if title
 
-  return [onexx, title].compact.join(' ')
+  return [onexx, title].compact.reject(&:empty?).join(' ')
 end
 #
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
-to_field "topic_search", extract_marc("650abcdefghijklmnopqrstu:653abcdefghijklmnopqrstu:654abcdefghijklmnopqrstu:690abcdefghijklmnopqrstu", alternate_script: false) do |record, accumulator|
+to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: false) do |record, accumulator|
   accumulator.reject! { |v| v == 'nomesh' }
   if record['999'] && record['999']['m'] == 'LANE-MED'
     arr = []
@@ -308,14 +333,14 @@ to_field "topic_search", extract_marc("650abcdefghijklmnopqrstu:653abcdefghijklm
   end
 end
 
-to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstu:653abcdefghijklmnopqrstu:654abcdefghijklmnopqrstu:690abcdefghijklmnopqrstu", alternate_script: :only)
+to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: :only)
 to_field "topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: false)
 to_field "vern_topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: :only)
-to_field "geographic_search", extract_marc("651abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu", alternate_script: false)
-to_field "vern_geographic_search", extract_marc("651abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu:691abcdefghijklmnopqrstu", alternate_script: :only)
+to_field "geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: false)
+to_field "vern_geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: :only)
 to_field "geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: false)
 to_field "vern_geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: :only)
-to_field "subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstu"}.join(':'), alternate_script: false) do |record, accumulator|
+to_field "subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: false) do |record, accumulator|
   accumulator.reject! { |v| v == 'nomesh' }
   if record['999'] && record['999']['m'] == 'LANE-MED'
     arr = []
@@ -323,16 +348,16 @@ to_field "subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658
     accumulator.reject! { |v| arr.include? v }
   end
 end
-to_field "vern_subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstu"}.join(':'), alternate_script: :only)
+to_field "vern_subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: :only)
 to_field "subject_other_subvy_search", extract_marc(%w(600 610 611 630 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: false)
 to_field "vern_subject_other_subvy_search", extract_marc(%w(600 610 611 630 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: :only)
 to_field "subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}" }.join(':'), alternate_script: false)
 to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}"}.join(':'), alternate_script: :only)
 
 # Subject Facet Fields
-to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false, trim_punctuation: true) do |record, accumulator|
+to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false) do |record, accumulator|
   accumulator.reject! { |v| v == 'nomesh' }
-  accumulator.map! { |v| v.gsub(/([\p{L}\p{N}]{4}|[A-Za-z]{3}|\))[\\,;:\.]\.?$/, '\1')}
+  accumulator.map! { |v| trim_punctuation_custom(v, /([\p{L}\p{N}]{4}|[A-Za-z]{3}|[\)])\. *\Z/) }
   accumulator.map!(&method(:clean_facet_punctuation))
 end
 
@@ -340,7 +365,7 @@ to_field "geographic_facet", extract_marc('651a', alternate_script: false) do |r
   accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
 end
 to_field "geographic_facet" do |record, accumulator|
-  Traject::MarcExtractor.new((600...699).map { |x| "#{x}z" }.join(':')).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new((600...699).map { |x| "#{x}z" }.join(':'), alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     accumulator << field['z'] if field['z'] # take only the first subfield z
   end
 
@@ -349,10 +374,11 @@ end
 
 to_field "era_facet", extract_marc("650y:651y", alternate_script: false, trim_punctuation: true) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |v| trim_punctuation_custom(v, /([A-Za-z0-9]{2})\. *\Z/) }
 end
 
 def clean_facet_punctuation(value)
-  new_value = value.gsub(/^[%\\*]/, ''). # begins with percent sign or asterisk
+  new_value = value.gsub(/^[%\*]/, ''). # begins with percent sign or asterisk
                     gsub(/\({2,}+/, '('). # two or more open parentheses
                     gsub(/\){2,}+/, ')'). # two or more close parentheses
                     gsub(/!{2,}+/, '!'). #  two or more exlamation points
@@ -367,21 +393,17 @@ end
 # least four letters instead of three.
 def trim_punctuation_custom(str, trailing_period_regex = nil)
   return str unless str
-  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{4})\. *\Z/
+  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/
 
   previous_str = nil
   until str == previous_str
     previous_str = str
     # If something went wrong and we got a nil, just return it
     # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
-    str = str.sub(/ *[ ,\/;:] *\Z/, '')
+    str = str.sub(/ *[ \\,\/;:] *\Z/, '')
 
     # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
     str = str.gsub(trailing_period_regex, '\1')
-
-    # single square bracket characters if they are the start and/or end
-    #   chars and there are no internal square brackets.
-    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
 
     # trim any leading or trailing whitespace
     str.strip!
@@ -400,7 +422,12 @@ def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(st
                    .sub(/(\p{L}\p{L})\.$/, '\1')
                    .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/, '\1')
 
-    str.sub(/^\[?([^\[\]]*)\]?$/, '\1')
+
+    # single square bracket characters if they are the start and/or end
+    #   chars and there are no internal square brackets.
+    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+
+    str
   end
 
   str
@@ -416,7 +443,7 @@ to_field 'pub_search' do |record, accumulator|
                  .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
                  .map(&:value)
 
-    accumulator << trim_punctuation_custom(data.join(' ')) unless data.empty?
+    accumulator << trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(data.join(' ')) unless data.empty?
   end
 end
 to_field 'vern_pub_search', extract_marc('260ab:264ab', alternate_script: :only)
@@ -679,7 +706,8 @@ to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
 end
 
 #
-to_field 'language', marc_languages('008[35-37]:041a:041d:041e:041j')
+to_field 'language', extract_marc('008[35-37]:041d:041e:041j', translation_map: 'marc_languages')
+to_field 'language', marc_languages('041a')
 
 #
 # # URL Fields
@@ -749,16 +777,16 @@ end
 to_field 'access_facet' do |record, accumulator, context|
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
   Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
-    if online_locs.include?(field['k']) || online_locs.include?(field['l']) # || TODO: normCallnum.startsWith(ECALLNUM)
+    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || field['a'] == 'INTERNET RESOURCE'
       accumulator << 'Online'
-    elsif (field['k'] == 'ON-ORDER' || field['l'] == 'ON-ORDER') # TODO: && normCallnum.startsWith(TMP_CALLNUM_PREFIX)
+    elsif (field['k'] == 'ON-ORDER' || field['l'] == 'ON-ORDER') && field['a'] =~ /^XX/
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
     end
   end
 
-  # accumulator << 'On order' unless record['999']
+  accumulator << 'On order' unless record['999']
   accumulator << 'Online' if context.output_hash['url_fulltext']
   accumulator << 'Online' if context.output_hash['url_sfx']
 
@@ -992,20 +1020,19 @@ end
 
 # * INDEX-89 - Add video physical formats
 to_field 'format_physical_ssim', extract_marc('999a') do |record, accumulator|
-  accumulator.replace(accumulator.map do |value|
-    case value
-    when /BLU-RAY/
-      'Blu-ray'
-    when /ZVC/, /ARTVC/, /MVC/
-      'Videocassette (VHS)'
-    when /ZDVD/, /ARTDVD/, /MDVD/, /ADVD/
-      'DVD'
-    when /AVC/
-      'Videocassette'
-    when /ZVD/, /MVD/
-      'Laser disc'
-    end
+  accumulator.replace(accumulator.flat_map do |value|
+    result = []
+
+    result << 'Blu-ray' if value =~ /BLU-RAY/
+    result << 'Videocassette (VHS)' if value =~ Regexp.union(/ZVC/, /ARTVC/, /MVC/)
+    result << 'DVD' if value =~ Regexp.union(/ZDVD/, /ARTDVD/, /MDVD/, /ADVD/)
+    result << 'Videocassette' if value =~ /AVC/
+    result << 'Laser disc' if value =~ Regexp.union(/ZVD/, /MVD/)
+
+    result unless result.empty?
   end)
+
+  accumulator.compact!
 end
 
 to_field 'format_physical_ssim', extract_marc('007') do |record, accumulator, context|
@@ -1146,7 +1173,7 @@ to_field 'genre_ssim' do |record, accumulator|
   accumulator << 'Thesis/Dissertation' if record['502']
 end
 
-to_field 'genre_ssim', extract_marc('655av')do |record, accumulator|
+to_field 'genre_ssim', extract_marc('655av', alternate_script: false)do |record, accumulator|
   # normalize values
   accumulator.map! do |v|
     previous_v = nil
@@ -1160,7 +1187,7 @@ to_field 'genre_ssim', extract_marc('655av')do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
 end
 
-to_field 'genre_ssim', extract_marc('600v:610v:611v:630v:647v:648v:650v:651v:654v:656v:657v') do |record, accumulator|
+to_field 'genre_ssim', extract_marc('600v:610v:611v:630v:647v:648v:650v:651v:654v:656v:657v', alternate_script: false) do |record, accumulator|
   # normalize values
   accumulator.map! do |v|
     previous_v = nil
@@ -1268,7 +1295,7 @@ end
 
 def extract_isbn(value)
   isbn10_pattern = /^\d{9}[\dX].*/
-  isbn13_pattern = /^(978|9)\d{9}[\dX].*/
+  isbn13_pattern = /^(978|979)\d{9}[\dX].*/
   isbn13_any = /^\d{12}[\dX].*/
 
   if value =~ isbn13_pattern
@@ -1300,12 +1327,14 @@ to_field 'issn_display' do |record, accumulator, context|
   accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
 end
 
-to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
-  lccn_pattern = /^(?:([ a-z]{2}\d{10})|([ a-z]{3}\d{8})|((\d{11}|\d{10}|\d{8})).*)$/
-  accumulator.map! do |value|
-    match = value.match(lccn_pattern)
+to_field 'lccn', extract_marc('010a:010z', first: true) do |record, accumulator|
+  accumulator.map!(&:strip)
 
-    match.to_a.slice(1..-1).compact.first if match
+  lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
+  accumulator.select! { |x| x =~ lccn_pattern }
+
+  accumulator.map! do |value|
+    value.gsub(lccn_pattern, '\1')
   end
 end
 
@@ -1430,7 +1459,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     )
 
     next if holding.skipped?
-    next unless holding.dewey?
+    next unless holding.call_number_type == 'DEWEY'
     next if holding.ignored_call_number? ||
             holding.shelved_by_location? ||
             holding.lost_or_missing?
@@ -1468,11 +1497,59 @@ to_field 'callnum_search' do |record, accumulator|
             holding.ignored_call_number? ||
             holding.bad_lc_lane_call_number?
 
-    good_call_numbers << holding.call_number.to_s
+    call_number = holding.call_number.to_s
+
+    if holding.call_number_type == 'DEWEY' || holding.valid_lc?
+      call_number = call_number.strip
+      call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+      call_number = call_number.gsub(/\. \./, ' .') # reduce multiple whitespace chars to a single space
+      call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
+      call_number = call_number.gsub(/\s*\.$/, '') # remove trailing period and any spaces before it
+    end
+
+    good_call_numbers << call_number
   end
 
   accumulator.concat(good_call_numbers.uniq)
 end
+
+to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, context|
+  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
+
+  accumulator.map! do |cn|
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    next unless first_letter && translation_map[first_letter]
+
+    [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+end
+
+to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
+  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
+  accumulator.map! do |cn|
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    next unless first_letter && translation_map[first_letter]
+
+    [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+end
+
 # shelfkey = custom, getShelfkeys
 
 # given a shelfkey (a lexicaly sortable call number), return the reverse
@@ -1653,6 +1730,13 @@ to_field 'building_facet' do |record, accumulator|
   end
   accumulator.replace library_map.translate_array(accumulator)
 end
+
+to_field 'building_facet' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Stanford Digital Repository' if field['x'] =~ /SDR-PURL/ || field['u'] =~ /purl\.stanford\.edu/
+  end
+end
+
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
 to_field 'item_display' do |record, accumulator|
