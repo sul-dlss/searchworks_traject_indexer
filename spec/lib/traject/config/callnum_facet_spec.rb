@@ -528,7 +528,7 @@ RSpec.describe 'Call Number Facet' do
 
   context 'invalid DEWEY call numbers' do
     it 'are not included' do
-      expect(record_with_999(call_number: '180.8 DX25 V.1', scheme: 'DEWEY', indexer: indexer)[field]).to be_nil
+      expect(record_with_999(call_number: '180.8 DX25 V.1', scheme: 'LC', indexer: indexer)[field]).to be_nil
     end
   end
 
