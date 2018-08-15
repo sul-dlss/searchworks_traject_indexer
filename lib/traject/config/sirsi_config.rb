@@ -116,7 +116,7 @@ to_field 'vern_all_search' do |record, accumulator|
   record.each do |field|
     next unless  keep_fields.include?(field.tag)
     subfield_values = field.subfields
-                           .reject { |sf| sf.code == '6' }
+                           .select { |sf| ALPHABET.include? sf.code }
                            .collect(&:value)
 
     next unless subfield_values.length > 0
