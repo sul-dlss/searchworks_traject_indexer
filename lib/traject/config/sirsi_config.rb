@@ -185,7 +185,7 @@ def extract_sortable_title(fields, record)
   Traject::MarcExtractor.new(fields, separator: false, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     subfields = extractor.collect_subfields(field, spec).compact
 
-    if subfields.empty?
+    if subfields.empty? && field['k']
       # maybe an APPM archival record with only a 'k'
       subfields = [field['k']]
     end
