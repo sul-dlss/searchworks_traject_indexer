@@ -375,7 +375,7 @@ to_field "era_facet", extract_marc("650y:651y", alternate_script: false, trim_pu
 end
 
 def clean_facet_punctuation(value)
-  new_value = value.gsub(/^[%\\*]/, ''). # begins with percent sign or asterisk
+  new_value = value.gsub(/^[%\*]/, ''). # begins with percent sign or asterisk
                     gsub(/\({2,}+/, '('). # two or more open parentheses
                     gsub(/\){2,}+/, ')'). # two or more close parentheses
                     gsub(/!{2,}+/, '!'). #  two or more exlamation points
