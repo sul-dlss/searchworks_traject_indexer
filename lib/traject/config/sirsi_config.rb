@@ -183,7 +183,7 @@ end
 def extract_sortable_title(fields, record)
   java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
   Traject::MarcExtractor.new(fields, separator: false, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    subfields = extractor.collect_subfields(field, spec)
+    subfields = extractor.collect_subfields(field, spec).compact
 
     if subfields.empty?
       # maybe an APPM archival record with only a 'k'
@@ -301,7 +301,7 @@ def extract_sortable_author(author_fields, title_fields, record)
   punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
   onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    subfields = extractor.collect_subfields(field, spec)
+    subfields = extractor.collect_subfields(field, spec).compact
     subfields[0] = subfields[0].slice(non_filing..-1)
     subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end.first
@@ -311,7 +311,7 @@ def extract_sortable_author(author_fields, title_fields, record)
   titles = []
   Traject::MarcExtractor.cached(title_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    subfields = extractor.collect_subfields(field, spec)
+    subfields = extractor.collect_subfields(field, spec).compact
     subfields[0] = subfields[0].slice(non_filing..-1)
     titles << subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end
