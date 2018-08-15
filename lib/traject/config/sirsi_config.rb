@@ -365,7 +365,7 @@ to_field "geographic_facet", extract_marc('651a', alternate_script: false) do |r
   accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
 end
 to_field "geographic_facet" do |record, accumulator|
-  Traject::MarcExtractor.new((600...699).map { |x| "#{x}z" }.join(':')).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new((600...699).map { |x| "#{x}z" }.join(':'), alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     accumulator << field['z'] if field['z'] # take only the first subfield z
   end
 
