@@ -400,7 +400,7 @@ def trim_punctuation_custom(str, trailing_period_regex = nil)
     previous_str = str
     # If something went wrong and we got a nil, just return it
     # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
-    str = str.sub(/ *[ ,\/;:] *\Z/, '')
+    str = str.sub(/ *[ \\,\/;:] *\Z/, '')
 
     # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
     str = str.gsub(trailing_period_regex, '\1')
