@@ -703,7 +703,8 @@ to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
 end
 
 #
-to_field 'language', marc_languages('008[35-37]:041a:041d:041e:041j')
+to_field 'language', extract_marc('008[35-37]:041d:041e:041j', translation_map: 'marc_languages')
+to_field 'language', marc_languages('041a')
 
 #
 # # URL Fields
