@@ -127,7 +127,10 @@ to_field 'vern_all_search' do |record, accumulator|
 end
 
 # Title Search Fields
-to_field 'title_245a_search', extract_marc('245a', first: true)
+to_field 'title_245a_search', extract_marc('245a', first: true) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
+
 to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
 to_field 'title_245_search', extract_marc('245abfgknps', first: true)
 to_field 'vern_title_245_search', extract_marc('245abfgknps', alternate_script: :only)
@@ -213,7 +216,7 @@ to_field 'author_title_search' do |record, accumulator|
   twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first) if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
 
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -221,7 +224,7 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first if record['245']
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx && twoxx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
 to_field 'author_title_search' do |record, accumulator|
