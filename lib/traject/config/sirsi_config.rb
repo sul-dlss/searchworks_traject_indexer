@@ -173,7 +173,8 @@ to_field 'title_sort' do |record, accumulator|
   result = []
   result << extract_sortable_title("130#{ALPHABET}", record)
   result << extract_sortable_title('245abdefghijklmnopqrstuvwxyz', record)
-  accumulator << result.join(' ').strip
+  str = result.join(' ').strip
+  accumulator << str unless str.empty?
 end
 
 ##
@@ -215,6 +216,7 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first) if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
+  twoxx ||= 'null'
 
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
 end
@@ -317,7 +319,7 @@ def extract_sortable_author(author_fields, title_fields, record)
   title = titles.compact.join(' ')
   title = title.delete(punct).strip if title
 
-  return [onexx, title].compact.join(' ')
+  return [onexx, title].compact.reject(&:empty?).join(' ')
 end
 #
 # # Subject Search Fields
