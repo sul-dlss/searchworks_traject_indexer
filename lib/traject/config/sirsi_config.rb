@@ -12,7 +12,7 @@ extend Traject::Macros::Marc21Semantics
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
-MAX_CODE_POINT = 0x10FFFD.chr(Encoding::UTF_8)
+MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
@@ -117,6 +117,7 @@ to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnopr
 to_field 'vern_title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only) do |record, accumulator|
@@ -129,6 +130,7 @@ to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: :only) do |record, accumulator|
@@ -153,38 +155,42 @@ end
 # using algorithm from StanfordIndexer#getSortTitle.
 def extract_sortable_title(fields, record)
   java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
-  Traject::MarcExtractor.new(fields).collect_matching_lines(record) do |field, spec, extractor|
-    str = extractor.collect_subfields(field, spec).first
-    if str.nil?
+  Traject::MarcExtractor.new(fields, separator: false).collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+
+    if subfields.empty?
       # maybe an APPM archival record with only a 'k'
-      str = field['k']
+      subfields = [field['k']]
     end
-    if str.nil?
+    if subfields.empty?
       # still? All we can do is bail, I guess
       return nil
     end
 
     non_filing = field.indicator2.to_i
-    str = str.slice(non_filing, str.length)
-    str = str.delete(java7_punct).strip
-
-    str
+    subfields[0] = subfields[0].slice(non_filing..-1)
+    subfields.map { |x| x.delete(java7_punct) }.map(&:strip).join(' ')
   end.first
 end
 
 # Series Search Fields
-to_field 'series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}")
+to_field 'series_search', extract_marc("440anpv:490av", alternate_script: false)
+
+to_field 'series_search', extract_marc("800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff))
+end
+
 to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
-to_field 'series_exact_search', extract_marc('830a')
+to_field 'series_exact_search', extract_marc('830a', alternate_script: false)
 
 # # Author Title Search Fields
 to_field 'author_title_search' do |record, accumulator|
-  onexx = trim_punctuation_custom(Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first)
+  onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first)
 
-  twoxx = trim_punctuation_custom(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false, trim_punctuation: true).extract(record).first) if record['240']
+  twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first) if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: false).extract(record).first if record['245']
 
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx or twoxx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -192,7 +198,7 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first if record['240']
   twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first if record['245']
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if twoxx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).join(' ') if onexx && twoxx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -224,23 +230,23 @@ to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnq
 to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
 # # Author Facet Fields
 to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 # # Author Display Fields
 to_field 'author_person_display', extract_marc('100abcdq', alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { |x| trim_punctuation_custom(x, /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/) }
 end
 to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: false)
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
@@ -265,21 +271,21 @@ end
 #  ensures record with no 1xx sorts after records with a 1xx by prepending UTF-8 max code point to title string
 def extract_sortable_author(author_fields, title_fields, record)
   punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
-  onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+  onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    str = extractor.collect_subfields(field, spec).first
-    str = str.slice(non_filing, str.length)
-    str.delete(punct).strip
+    subfields = extractor.collect_subfields(field, spec)
+    subfields[0] = subfields[0].slice(non_filing..-1)
+    subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end.first
 
   onexx ||= MAX_CODE_POINT
 
   titles = []
-  Traject::MarcExtractor.cached(title_fields, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.cached(title_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
-    str = extractor.collect_subfields(field, spec).join(' ')
-    str = str.slice(non_filing, str.length)
-    titles << str
+    subfields = extractor.collect_subfields(field, spec)
+    subfields[0] = subfields[0].slice(non_filing..-1)
+    titles << subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end
 
   title = titles.compact.join(' ')
@@ -356,25 +362,46 @@ end
 # https://github.com/traject/traject/blob/5754e3c0c207d461ca3a98728f7e1e7cf4ebbece/lib/traject/macros/marc21.rb#L227-L246
 # Does the same except removes trailing period when preceded by at
 # least four letters instead of three.
-def trim_punctuation_custom(str)
-  # If something went wrong and we got a nil, just return it
+def trim_punctuation_custom(str, trailing_period_regex = nil)
   return str unless str
-  # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
-  str = str.sub(/ *[ ,\/;:] *\Z/, '')
+  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{4})\. *\Z/
 
-  # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
-  str = str.gsub(/( *[[:word:]]{4,}|[0-9]{4})\. *\Z/, '\1')
+  previous_str = nil
+  until str == previous_str
+    previous_str = str
+    # If something went wrong and we got a nil, just return it
+    # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
+    str = str.sub(/ *[ ,\/;:] *\Z/, '')
 
-  # single square bracket characters if they are the start and/or end
-  #   chars and there are no internal square brackets.
-  str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+    # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
+    str = str.gsub(trailing_period_regex, '\1')
 
-  # trim any leading or trailing whitespace
-  str.strip!
+    # single square bracket characters if they are the start and/or end
+    #   chars and there are no internal square brackets.
+    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+
+    # trim any leading or trailing whitespace
+    str.strip!
+  end
 
   return str
 end
 
+def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(str)
+  previous_str = nil
+  until str == previous_str
+    previous_str = str
+
+    str = str.strip.gsub(/ *([,\/;:])$/, '')
+                   .sub(/(\w\w)\.$/, '\1')
+                   .sub(/(\p{L}\p{L})\.$/, '\1')
+                   .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/, '\1')
+
+    str.sub(/^\[?([^\[\]]*)\]?$/, '\1')
+  end
+
+  str
+end
 
 # # Publication Fields
 
@@ -1207,7 +1234,9 @@ to_field 'db_az_subject' do |record, accumulator, context|
   end
 end
 
-to_field "physical", extract_marc("300abcefg", alternate_script: false)
+to_field "physical", extract_marc("300abcefg", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
 to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)

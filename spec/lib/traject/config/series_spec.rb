@@ -81,7 +81,12 @@ RSpec.describe 'Series config' do
     let(:field) { 'vern_series_search' }
     let(:fixture_name) { 'vernSeriesTests.mrc' }
 
-    it do
+    it 'does not map vernacular data into the series or series_exact fields' do
+      expect(select_by_id('vern490')['series_search']).to eq ['490a']
+      expect(select_by_id('vern830')['series_exact_search']).to eq ['830a']
+    end
+
+    specify do
       expect(select_by_id('vern490')[field]).to eq ['vern490a vern490v']
 
       expect(select_by_id('vern440')[field]).to eq ['vern440a vern440n vern440p vern440v']
