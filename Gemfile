@@ -9,6 +9,7 @@ group :development, :test do
 end
 
 gem 'http'
+gem 'i18n'
 gem 'rake'
 gem 'stanford-mods'
 
