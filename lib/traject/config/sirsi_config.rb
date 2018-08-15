@@ -1323,7 +1323,9 @@ to_field 'issn_display' do |record, accumulator, context|
   accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
 end
 
-to_field 'lccn', extract_marc('010a:010z', first: true, trim_punctuation: true) do |record, accumulator|
+to_field 'lccn', extract_marc('010a:010z', first: true) do |record, accumulator|
+  accumulator.map!(&:strip)
+
   lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
   accumulator.select! { |x| x =~ lccn_pattern }
 
