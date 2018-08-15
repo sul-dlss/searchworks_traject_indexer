@@ -1621,6 +1621,36 @@ to_field 'building_facet' do |record, accumulator|
 end
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
+to_field 'item_display' do |record, accumulator|
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t']
+    )
+
+    next if holding.skipped?
+
+    accumulator << [
+      item_999['i'],
+      holding.library,
+      holding.home_location,
+      holding.current_location,
+      holding.type,
+      '', # itemDispCallnum/loppedCallnum
+      '', # shelfkey
+      '', # reverse shelfkey
+      (holding.call_number unless holding.ignored_call_number?),
+      '', # volSort
+      (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
+      holding.call_number_type
+    ].join(' -|- ')
+  end
+end
+
 to_field 'on_order_library_ssim', extract_marc('596a', translation_map: 'library_on_order_map')
 ##
 # Instantiate once, not on each record
