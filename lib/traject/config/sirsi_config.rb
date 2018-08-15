@@ -131,7 +131,7 @@ to_field 'title_245a_search', extract_marc('245a', first: true) do |record, accu
   accumulator.map!(&:strip)
 end
 
-to_field 'vern_title_245a_search', extract_marc('245a', alternate_script: :only)
+to_field 'vern_title_245a_search', extract_marc('245aa', alternate_script: :only)
 to_field 'title_245_search', extract_marc('245abfgknps', first: true)
 to_field 'vern_title_245_search', extract_marc('245abfgknps', alternate_script: :only)
 to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: false)
@@ -139,20 +139,20 @@ to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmn
 to_field 'title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: false)
 to_field 'vern_title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: :only)
 to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: false)
-to_field 'vern_title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
+to_field 'vern_title_related_search', extract_marc('505tt:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
-to_field 'vern_title_245a_display', extract_marc('245a', alternate_script: :only) do |record, accumulator|
+to_field 'vern_title_245a_display', extract_marc('245aa', alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_245c_display', extract_marc('245c', alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
-to_field 'vern_title_245c_display', extract_marc('245c', alternate_script: :only) do |record, accumulator|
+to_field 'vern_title_245c_display', extract_marc('245cc', alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', alternate_script: false) do |record, accumulator|
@@ -335,11 +335,11 @@ end
 
 to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: :only)
 to_field "topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: false)
-to_field "vern_topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: :only)
+to_field "vern_topic_subx_search", extract_marc("600xx:610xx:611xx:630xx:650xx:651xx:655xx:656xx:657xx:690xx:691xx:696xx:697xx:698xx:699xx", alternate_script: :only)
 to_field "geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: false)
 to_field "vern_geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: :only)
 to_field "geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: false)
-to_field "vern_geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: :only)
+to_field "vern_geographic_subz_search", extract_marc("600zz:610zz:630zz:650zz:651zz:654zz:655zz:656zz:657zz:690zz:691zz:696zz:697zz:698zz:699zz", alternate_script: :only)
 to_field "subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: false) do |record, accumulator|
   accumulator.reject! { |v| v == 'nomesh' }
   if record['999'] && record['999']['m'] == 'LANE-MED'
@@ -1274,7 +1274,7 @@ to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
 to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
 to_field "context_search", extract_marc("518a", alternate_script: false)
-to_field "vern_context_search", extract_marc("518a", alternate_script: :only)
+to_field "vern_context_search", extract_marc("518aa", alternate_script: :only)
 to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
 to_field "vern_summary_search", extract_marc("520ab", alternate_script: :only)
 to_field "award_search", extract_marc("986a:586a", alternate_script: false)
