@@ -777,9 +777,9 @@ end
 to_field 'access_facet' do |record, accumulator, context|
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
   Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
-    if online_locs.include?(field['k']) || online_locs.include?(field['l']) # || TODO: normCallnum.startsWith(ECALLNUM)
+    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || field['a'] == 'INTERNET RESOURCE'
       accumulator << 'Online'
-    elsif (field['k'] == 'ON-ORDER' || field['l'] == 'ON-ORDER') # TODO: && normCallnum.startsWith(TMP_CALLNUM_PREFIX)
+    elsif (field['k'] == 'ON-ORDER' || field['l'] == 'ON-ORDER') && field['a'] =~ /^XX/
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
