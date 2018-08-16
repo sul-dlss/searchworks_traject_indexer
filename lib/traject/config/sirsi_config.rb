@@ -430,6 +430,8 @@ def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(st
     # single square bracket characters if they are the start and/or end
     #   chars and there are no internal square brackets.
     str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+    str = str.sub(/\A\[/, '') if str.index(']').nil? # no closing bracket
+    str = str.sub(/\]\Z/, '') if str.index('[').nil? # no opening bracket
 
     str
   end
