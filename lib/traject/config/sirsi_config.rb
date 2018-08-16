@@ -1233,7 +1233,7 @@ to_field 'genre_ssim' do |record, accumulator, context|
   next if (context.output_hash['format_main_ssim'] || []).include? 'Music score'
   next if (context.output_hash['format_main_ssim'] || []).include? 'Music recording'
 
-  if record['008'] && record['008'].value[28] && record['008'].value[28] != ' '
+  if record['008'] && record['008'].value[28] && record['008'].value[28] =~ /[a-z]/
     accumulator << 'Government document'
   end
 end
