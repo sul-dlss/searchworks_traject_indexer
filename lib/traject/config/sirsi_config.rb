@@ -284,11 +284,11 @@ to_field 'author_person_full_display', extract_marc('100abcdefgjklnpqtu', first:
 to_field 'vern_author_person_full_display', extract_marc('100abcdefgjklnpqtu', first: true, alternate_script: :only)
 to_field 'author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: false)
 to_field 'vern_author_corp_display', extract_marc('110abcdefgklnptu', first: true, alternate_script: :only)
-to_field 'author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: false)
-to_field 'vern_author_meeting_display', extract_marc('111acdefgjklnpqtu', first: true, alternate_script: :only)
+to_field 'author_meeting_display', extract_marc("111#{ALPHABET}", first: true, alternate_script: false)
+to_field 'vern_author_meeting_display', extract_marc("111#{ALPHABET}", first: true, alternate_script: :only)
 # # Author Sort Field
 to_field 'author_sort' do |record, accumulator|
-  accumulator << extract_sortable_author('100abcdefgjklnpqtu:110abcdefgklnptu:111acdefgjklnpqtu',
+  accumulator << extract_sortable_author("100#{ALPHABET}:110#{ALPHABET}:111#{ALPHABET}",
                                          '240acdfghklmnoprst:245abfghknps',
                                          record)
 end
