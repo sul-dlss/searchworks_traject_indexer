@@ -1263,6 +1263,8 @@ to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
   if context.output_hash['format_main_ssim'].include? 'Database'
     translation_map = Traject::TranslationMap.new('db_subjects_map')
     accumulator.replace translation_map.translate_array(accumulator).flatten
+  else
+    accumulator.replace([])
   end
 end
 
