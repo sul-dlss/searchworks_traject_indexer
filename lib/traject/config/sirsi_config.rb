@@ -1888,9 +1888,7 @@ def add_values_to_result(mhld_field)
   has868 = false
   mhld_results = []
   mhld_field.fields866.each do |f|
-    sub_a = f.subfields.select do |sf|
-      %w[a].include? sf.code
-    end.collect(&:value).join('')
+    sub_a = f['a'] || ''
 
     mhld_field.library_has = library_has(f)
     if sub_a.end_with?('-')
@@ -1925,9 +1923,7 @@ def add_values_to_result(mhld_field)
 end
 
 def library_has(field)
-  field.subfields.select do |sf|
-    %w[a z].include? sf.code
-  end.collect(&:value).join(' ')
+  [field['a'], field['z']].compact.join(' ')
 end
 
 to_field 'bookplates_display' do |record, accumulator|
@@ -1935,7 +1931,7 @@ to_field 'bookplates_display' do |record, accumulator|
     file = field['c']
     next if file =~ /no content metadata/i
     fund_name = field['f']
-    druid = field.subfields.select { |sf| sf.code == 'b' }.collect(&:value).first.split(':')
+    druid = field['b'].split(':')
     text = field['d']
     accumulator << [fund_name, druid[1], file, text].join(' -|- ')
   end
@@ -1944,7 +1940,7 @@ to_field 'fund_facet' do |record, accumulator|
   Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, spec, extractor|
     file = field['c']
     next if file =~ /no content metadata/i
-    druid = field.subfields.select { |sf| sf.code == 'b' }.collect(&:value).first.split(':')
+    druid = field['b'].split(':')
     accumulator << druid[1]
   end
 end
