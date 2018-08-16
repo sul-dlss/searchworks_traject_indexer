@@ -1528,6 +1528,8 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
 
   accumulator.map! do |cn|
+    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
+
     first_letter = cn[0, 1].upcase
     letters = cn.split(/[^A-Z]+/).first
 
@@ -1546,6 +1548,8 @@ end
 to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
   accumulator.map! do |cn|
+    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
+
     first_letter = cn[0, 1].upcase
     letters = cn.split(/[^A-Z]+/).first
 
