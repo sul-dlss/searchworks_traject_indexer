@@ -1431,11 +1431,11 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     if raw_location == 'Other'
       if marc_086.any?
         marc_086.each do |marc_field|
-          gov_doc_values << if marc_field['2'] == 'cadocs'
+          gov_doc_values << if false && marc_field['2'] == 'cadocs'
                               'California'
-                            elsif marc_field['2'] == 'sudocs'
+                            elsif false && marc_field['2'] == 'sudocs'
                               'Federal'
-                            elsif marc_field['2'] == 'undocs'
+                            elsif false && marc_field['2'] == 'undocs'
                               'International'
                             elsif marc_field.indicator1 == '0'
                               'Federal'
