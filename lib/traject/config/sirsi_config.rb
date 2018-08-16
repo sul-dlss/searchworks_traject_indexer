@@ -465,9 +465,9 @@ def clean_date_string(value)
   # some nice regular expressions looking for years embedded in strings
   matches = Regexp.union(
     /^(#{valid_year_regex})\D{0,2}$/,
-    /^\[(#{valid_year_regex})\]$/,
+    /\[(#{valid_year_regex})\]/,
     /^\[?[©Ⓟcp](#{valid_year_regex})\D?$/,
-    /i\. ?e\. ?(#{valid_year_regex})\D?$/,
+    /i\. ?e\. ?(#{valid_year_regex})\D?/,
     /\[(#{valid_year_regex})\D.*\]/,
   ).match(value)
 
