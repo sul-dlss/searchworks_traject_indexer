@@ -45,7 +45,7 @@ end
 class Traject::MarcExtractor
   def collect_subfields(field, spec)
       subfields = field.subfields.collect do |subfield|
-        subfield.value.strip if spec.includes_subfield_code?(subfield.code)
+        subfield.value if spec.includes_subfield_code?(subfield.code)
       end.compact
 
       return subfields if subfields.empty? # empty array, just return it.
@@ -1294,6 +1294,7 @@ end
 
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
 to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x') do |_record, accumulator|
+  accumulator.map!(&:strip)
   accumulator.select! { |v| v =~ issn_pattern }
 end
 
@@ -1304,6 +1305,7 @@ def issn_pattern
 end
 
 def extract_isbn(value)
+  value = value.strip
   isbn10_pattern = /^\d{9}[\dX].*/
   isbn13_pattern = /^(978|979)\d{9}[\dX].*/
   isbn13_any = /^\d{12}[\dX].*/
@@ -1338,6 +1340,7 @@ to_field 'issn_display' do |record, accumulator, context|
 end
 
 to_field 'lccn', extract_marc('010a:010z', first: true) do |record, accumulator|
+  accumulator.map!(&:strip)
   lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
   accumulator.select! { |x| x =~ lccn_pattern }
 
@@ -2077,5 +2080,11 @@ to_field 'crez_course_info' do |record, accumulator, context|
     accumulator << %i[course_id course_name instructor_name].map do |sym|
       row[sym]
     end.join(' -|- ')
+  end
+end
+
+each_record do |record, context|
+  context.output_hash.reject { |k, v| k == 'mhld_display' || k =~ /^url_/ }.transform_values do |v|
+    v.map!(&:strip).uniq!
   end
 end
