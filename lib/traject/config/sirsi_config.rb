@@ -463,15 +463,15 @@ def clean_date_string(value)
   valid_year_regex = /(?:20|19|18|17|16|15|14|13|12|11|10|09|08|07|06|05)[0-9][0-9]/
 
   # some nice regular expressions looking for years embedded in strings
-  matches = Regexp.union(
+  matches = [
     /^(#{valid_year_regex})\D{0,2}$/,
     /\[(#{valid_year_regex})\]/,
     /^\[?[©Ⓟcp](#{valid_year_regex})\D?$/,
     /i\. ?e\. ?(#{valid_year_regex})\D?/,
     /\[(#{valid_year_regex})\D.*\]/,
-  ).match(value)
+  ].map { |r| r.match(value)&.captures&.first }
 
-  best_match = matches[1..999].compact.first if matches
+  best_match = matches.compact.first if matches
 
   # reject BC dates altogether.
   return if value =~ /[0-9]+ B\.?C\.?/i
