@@ -142,7 +142,9 @@ to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs'
 to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: :only)
 to_field 'title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: false)
 to_field 'vern_title_variant_search', extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: :only)
-to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: false)
+to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: false) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
 to_field 'vern_title_related_search', extract_marc('505tt:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', alternate_script: false) do |record, accumulator|
@@ -338,11 +340,16 @@ to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijkl
 end
 
 to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: :only)
-to_field "topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: false)
+to_field "topic_subx_search", extract_marc("600x:610x:611x:630x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
 to_field "vern_topic_subx_search", extract_marc("600xx:610xx:611xx:630xx:650xx:651xx:655xx:656xx:657xx:690xx:691xx:696xx:697xx:698xx:699xx", alternate_script: :only)
 to_field "geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: false)
 to_field "vern_geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: :only)
-to_field "geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: false)
+to_field "geographic_subz_search", extract_marc("600z:610z:630z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&:strip)
+end
+
 to_field "vern_geographic_subz_search", extract_marc("600zz:610zz:630zz:650zz:651zz:654zz:655zz:656zz:657zz:690zz:691zz:696zz:697zz:698zz:699zz", alternate_script: :only)
 to_field "subject_other_search", extract_marc(%w(600 610 611 630 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: false) do |record, accumulator|
   accumulator.reject! { |v| v == 'nomesh' }
@@ -366,14 +373,16 @@ to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", 
 end
 
 to_field "geographic_facet", extract_marc('651a', alternate_script: false) do |record, accumulator|
-  accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
+  accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?\s*$/, '\1') }
+  accumulator.map!(&:strip)
 end
 to_field "geographic_facet" do |record, accumulator|
   Traject::MarcExtractor.new((600...699).map { |x| "#{x}z" }.join(':'), alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     accumulator << field['z'] if field['z'] # take only the first subfield z
   end
 
-  accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?$/, '\1') }
+  accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?\s*$/, '\1') }
+  accumulator.map!(&:strip)
 end
 
 to_field "era_facet", extract_marc("650y:651y", alternate_script: false) do |record, accumulator|
