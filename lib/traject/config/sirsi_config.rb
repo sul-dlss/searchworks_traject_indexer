@@ -286,7 +286,7 @@ to_field 'vern_author_meeting_display', extract_marc("111#{ALPHABET}", first: tr
 # # Author Sort Field
 to_field 'author_sort' do |record, accumulator|
   accumulator << extract_sortable_author("100#{ALPHABET}:110#{ALPHABET}:111#{ALPHABET}",
-                                         '240acdfghklmnoprst:245abfghknps',
+                                         "240#{ALPHABET}:245#{ALPHABET.delete('c')}",
                                          record)
 end
 
