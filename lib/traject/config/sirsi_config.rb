@@ -1737,6 +1737,17 @@ resv_locs = Traject::TranslationMap.new('locations_reserves_list')
 
 to_field 'building_facet' do |record, accumulator|
   record.each_by_tag('999') do |item|
+    holding = SirsiHolding.new(
+      call_number: (item['a'] || '').strip,
+      current_location: item['k'],
+      home_location: item['l'],
+      library: item['m'],
+      scheme: item['w'],
+      type: item['t']
+    )
+
+    next if holding.skipped?
+
     curr_loc = item['k']
     home_loc = item['l']
     library = item['m']
