@@ -571,6 +571,15 @@ to_field 'pub_date_sort' do |record, accumulator|
     "#{record['008'].value[7..9]}0" if record['008'].value[7..9] <= Time.now.year.to_s[0..2]
   end
 
+  f008_bytes11to14 = record['008'].value[11..14] if record['008']
+  year ||= case f008_bytes11to14
+  when /\d\d\d\d/
+    year = record['008'].value[11..14].to_i
+    record['008'].value[11..14] if valid_range.cover? year
+  when /\d\d\d[u-]/
+    "#{record['008'].value[11..13]}9" if record['008'].value[11..13] <= Time.now.year.to_s[0..2]
+  end
+
   # find a valid year in the 264c with ind2 = 1
   year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
     next unless field.indicator2 == '1'
@@ -580,15 +589,6 @@ to_field 'pub_date_sort' do |record, accumulator|
   year ||= Traject::MarcExtractor.new('260c:264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
   end.compact.first
-
-  f008_bytes11to14 = record['008'].value[11..14] if record['008']
-  year ||= case f008_bytes11to14
-  when /\d\d\d\d/
-    year = record['008'].value[11..14].to_i
-    record['008'].value[11..14] if valid_range.cover? year
-  when /\d\d\d[u-]/
-    "#{record['008'].value[11..13]}9" if record['008'].value[11..13] <= Time.now.year.to_s[0..2]
-  end
 
   # hyphens sort before 0, so the lexical sorting will be correct. I think.
   year ||= if f008_bytes7to10 =~ /\d\d[u-][u-]/
