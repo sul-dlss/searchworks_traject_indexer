@@ -675,7 +675,18 @@ to_field 'earliest_year_isi', marc_008_date(%w[i k], 7..10, '0')
 to_field 'earliest_poss_year_isi', marc_008_date(%w[q], 7..10, '0')
 to_field 'release_year_isi', marc_008_date(%w[p], 7..10, '0')
 to_field 'reprint_year_isi', marc_008_date(%w[r], 7..10, '0')
-to_field 'other_year_isi', marc_008_date(%w[a b f g h j l n o v w x y z | $], 7..10, '0')
+to_field 'other_year_isi' do |record, accumulator|
+  Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, spec, extractor|
+    unless %w[c d e i k m p q r s t u].include? field.value[6]
+      year = field.value[7..10]
+      next unless year =~ /(\d{4}|\d{3}u)/
+      year.gsub!(/u$/, '0')
+      next unless (500..(Time.now.year + 10)).include? year.to_i
+      accumulator << year
+    end
+  end
+end
+
 # # from 008 date 2
 to_field 'ending_year_isi', marc_008_date(%w[d m], 11..14, '9')
 to_field 'latest_year_isi', marc_008_date(%w[i k], 11..14, '9')
