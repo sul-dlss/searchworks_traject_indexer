@@ -1836,7 +1836,9 @@ to_field 'mhld_display' do |record, accumulator, context|
       next if comment =~ /all holdings transferred/i
 
       library_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'b' }.compact.join(' ')
+      library_code = 'null' if library_code.empty?
       location_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'c' }.compact.join(' ')
+      location_code = 'null' if location_code.empty?
 
       next if skipped_locations[location_code] || missing_locations[location_code]
 
