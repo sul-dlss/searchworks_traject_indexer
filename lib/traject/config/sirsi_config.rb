@@ -1340,13 +1340,14 @@ to_field 'isbn_display' do |record, accumulator, context|
 end
 
 to_field 'issn_display', extract_marc('022a') do |_record, accumulator|
+  accumulator.map!(&:strip)
   accumulator.select! { |v| v =~ issn_pattern }
 end
 
 to_field 'issn_display' do |record, accumulator, context|
   next if context.output_hash['issn_display']
 
-  marc022z = Traject::MarcExtractor.new('022z').extract(record)
+  marc022z = Traject::MarcExtractor.new('022z').extract(record).map(&:strip)
   accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
 end
 
