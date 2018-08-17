@@ -2105,7 +2105,7 @@ to_field 'crez_course_info' do |record, accumulator, context|
 end
 
 each_record do |record, context|
-  context.output_hash.reject { |k, v| k == 'mhld_display' || k =~ /^url_/ }.transform_values do |v|
+  context.output_hash.reject { |k, v| k == 'mhld_display' || k =~ /^url_/ || k =~ /^marc/}.transform_values do |v|
     v.map!(&:strip).uniq!
   end
 end
