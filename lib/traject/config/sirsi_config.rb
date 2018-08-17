@@ -1778,6 +1778,13 @@ to_field 'building_facet' do |record, accumulator|
   end
 end
 
+
+to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_order_map') do |record, accumulator|
+  accumulator.replace([]) if record['999']
+
+  accumulator.replace library_map.translate_array(accumulator)
+end
+
 # item_display = customDeleteRecordIfFieldEmpty, getItemDisplay
 
 to_field 'item_display' do |record, accumulator|
