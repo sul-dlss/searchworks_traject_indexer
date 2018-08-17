@@ -196,7 +196,7 @@ def extract_sortable_title(fields, record)
     end
 
     non_filing = field.indicator2.to_i
-    subfields[0] = subfields[0].slice(non_filing..-1)
+    subfields[0] = subfields[0].slice(non_filing..-1) unless subfields[0].length <= non_filing
     subfields.map { |x| x.delete(java7_punct) }.map(&:strip).join(' ')
   end.first
 end
@@ -304,7 +304,7 @@ def extract_sortable_author(author_fields, title_fields, record)
     non_filing = field.indicator2.to_i
     subfields = extractor.collect_subfields(field, spec).compact
     next if subfields.empty?
-    subfields[0] = subfields[0].slice(non_filing..-1)
+    subfields[0] = subfields[0].slice(non_filing..-1) unless subfields[0].length <= non_filing
     subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
   end.first
 
@@ -316,7 +316,7 @@ def extract_sortable_author(author_fields, title_fields, record)
       non_filing = field.indicator2.to_i
       subfields = extractor.collect_subfields(field, spec).compact
       next if subfields.empty?
-      subfields[0] = subfields[0].slice(non_filing..-1)
+      subfields[0] = subfields[0].slice(non_filing..-1) unless subfields[0].length <= non_filing
       subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
     end.first
   end
