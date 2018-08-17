@@ -311,12 +311,14 @@ def extract_sortable_author(author_fields, title_fields, record)
   onexx ||= MAX_CODE_POINT
 
   titles = []
-  Traject::MarcExtractor.cached(title_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
-    non_filing = field.indicator2.to_i
-    subfields = extractor.collect_subfields(field, spec).compact
-    next if subfields.empty?
-    subfields[0] = subfields[0].slice(non_filing..-1)
-    titles << subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
+  title_fields.split(':').each do |title_spec|
+    titles << Traject::MarcExtractor.cached(title_spec, separator: false).collect_matching_lines(record) do |field, spec, extractor|
+      non_filing = field.indicator2.to_i
+      subfields = extractor.collect_subfields(field, spec).compact
+      next if subfields.empty?
+      subfields[0] = subfields[0].slice(non_filing..-1)
+      subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
+    end.first
   end
 
   title = titles.compact.join(' ')
