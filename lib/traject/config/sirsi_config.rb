@@ -306,8 +306,8 @@ def extract_sortable_author(author_fields, title_fields, record)
   onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
     subfields = extractor.collect_subfields(field, spec).compact
-    subfields[0] = subfields[0].slice(non_filing..-1)
-    subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
+    subfields[0] = Array(subfields[0]).slice(non_filing..-1)
+    subfields.compact.map { |x| x.delete(punct) }.compact.map(&:strip).join(' ')
   end.first
 
   onexx ||= MAX_CODE_POINT
@@ -316,8 +316,8 @@ def extract_sortable_author(author_fields, title_fields, record)
   Traject::MarcExtractor.cached(title_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
     non_filing = field.indicator2.to_i
     subfields = extractor.collect_subfields(field, spec).compact
-    subfields[0] = subfields[0].slice(non_filing..-1)
-    titles << subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
+    subfields[0] = Array(subfields[0]).slice(non_filing..-1)
+    titles << subfields.compact.map { |x| x.delete(punct) }.compact.map(&:strip).join(' ')
   end
 
   title = titles.compact.join(' ')
