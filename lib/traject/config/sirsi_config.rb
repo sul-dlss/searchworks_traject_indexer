@@ -497,7 +497,7 @@ def clean_date_string(value)
   end
 
   # is the date no more than 1 year in the future?
-  best_match if best_match.to_i >= 500 && best_match.to_i < Time.now.year + 1
+  best_match if best_match.to_i >= 500 && best_match.to_i <= Time.now.year + 1
 end
 
 # # deprecated
