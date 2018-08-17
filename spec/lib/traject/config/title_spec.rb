@@ -25,6 +25,13 @@ RSpec.describe 'Title spec' do
       result = select_by_id('2xx')[field]
       expect(result).to eq ['2xx fields']
     end
+    context 'linked fields' do
+      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      it 'are not included' do
+        expect(select_by_id('2xxVernSearch')[field]).not_to eq ['vern245a']
+        expect(select_by_id('2xxVernSearch')[field]).to eq ['2xx title search fields for vernacular, except for 240 -- all subfields']
+      end
+    end
   end
   describe 'vern_title_245a_search' do
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
@@ -34,6 +41,9 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('2xxVernSearch')[field].first).to match(/vern245a/)
       expect(results).not_to include hash_including(field => ['vern245b'])
       expect(results).not_to include hash_including(field => ['vern245p'])
+    end
+    it 'does not have 2nd vernacular 245 field' do
+      expect(select_by_id('2xxVernSearch')[field]).not_to eq ['vern245a', '2nd vern245a']
     end
   end
   describe 'title_245_search' do
@@ -54,15 +64,26 @@ RSpec.describe 'Title spec' do
       result = select_by_id('245nAndp')[field]
       expect(result.first).to include 'humanities'
     end
+    context 'linked fields' do
+      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      it 'are not included' do
+        expect(select_by_id('2xxVernSearch')[field]).to eq ['2xx title search fields for vernacular, except for 240 -- all subfields']
+      end
+    end
   end
   describe 'vern_title_245_search' do
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_title_245_search' }
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     it 'has the correct titles' do
-      expect(select_by_id('2xxVernSearch')[field].first)
-        .to eq 'vern245a vern245b vern245f vern245g vern245k vern245n vern245p vern245s'
+      expect(select_by_id('2xxVernSearch')[field])
+        .to eq ['vern245a vern245b vern245f vern245g vern245k vern245n vern245p vern245s']
       expect(results).not_to include hash_including(field => ['nope'])
+    end
+    it 'does not have 2nd vernacular 245 field' do
+      expect(select_by_id('2xxVernSearch')[field])
+        .not_to eq ['vern245a vern245b vern245f vern245g vern245k vern245n vern245p vern245s',
+                    '2nd vern245a']
     end
   end
   describe 'title_uniform_search' do
@@ -74,6 +95,41 @@ RSpec.describe 'Title spec' do
 
       expect(results).not_to include hash_including(field => ['balloon'])
       expect(results).not_to include hash_including(field => ['130'])
+    end
+    context 'linked fields' do
+      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      it '130 are not included' do
+        expect(select_by_id('2xxVernSearch')[field]).not_to eq ['2nd 130a',
+                                                                'vern130a',
+                                                                'vern130d',
+                                                                'vern130f',
+                                                                'vern130g',
+                                                                'vern130k',
+                                                                'vern130l',
+                                                                'vern130m',
+                                                                'vern130n',
+                                                                'vern130o',
+                                                                'vern130p',
+                                                                'vern130r',
+                                                                'vern130s',
+                                                                'vern130t']
+        expect(select_by_id('2xxVernSearch')[field]).to eq ['130a']
+      end
+      it '240 are not included' do
+        expect(select_by_id('240VernSearch')[field]).to eq ['240a']
+        expect(select_by_id('240VernSearch')[field]).not_to eq ['vern240a',
+                                                                'vern240d',
+                                                                'vern240f',
+                                                                'vern240g',
+                                                                'vern240k',
+                                                                'vern240l',
+                                                                'vern240m',
+                                                                'vern240n',
+                                                                'vern240o',
+                                                                'vern240p',
+                                                                'vern240r',
+                                                                'vern240s']
+      end
     end
   end
   describe 'vern_title_uniform_search' do
