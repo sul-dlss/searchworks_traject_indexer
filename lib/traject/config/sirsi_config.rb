@@ -700,11 +700,11 @@ to_field 'copyright_year_isi', marc_008_date(%w[t], 11..14, '9')
 
 # returns the a value comprised of 250ab and 260a-g, suitable for display
 to_field 'imprint_display' do |record, accumulator|
-  edition = Traject::MarcExtractor.new('250ab', separator: nil, alternate_script: false).extract(record).map(&:strip).join(' ')
-  vernEdition = Traject::MarcExtractor.new('250ab', separator: nil, alternate_script: :only).extract(record).map(&:strip).join(' ')
+  edition = Traject::MarcExtractor.new('250ab', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
+  vernEdition = Traject::MarcExtractor.new('250ab', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
 
-  imprint = Traject::MarcExtractor.new('260abcefg', separator: nil, alternate_script: false).extract(record).map(&:strip).join(' ')
-  vernImprint = Traject::MarcExtractor.new('260abcefg', separator: nil, alternate_script: :only).extract(record).map(&:strip).join(' ')
+  imprint = Traject::MarcExtractor.new('260abcefg', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
+  vernImprint = Traject::MarcExtractor.new('260abcefg', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
 
   data = [
     [edition, vernEdition].compact.reject(&:empty?).join(' '),
