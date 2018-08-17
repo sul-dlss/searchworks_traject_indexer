@@ -2212,7 +2212,7 @@ to_field 'item_display' do |record, accumulator, context|
         course_id ||= ""
         suffix = course_id + sep + rez_desk + sep + loan_period
         # replace current location in existing item_display field with rez_desk
-        old_val_array = orig_item_display_val.split(' -|- ', -1)
+        old_val_array = item_display_value.split(' -|- ', -1)
         old_val_array[3] = rez_desk
         new_val = old_val_array.join(' -|- ')
         new_val + " -|- " + suffix
