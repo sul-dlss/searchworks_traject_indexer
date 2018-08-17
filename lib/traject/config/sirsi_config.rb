@@ -1558,6 +1558,8 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
       translation_map[letters] || letters
     ].join('|')
   end
+
+  accumulator.replace([accumulator.compact.first])
 end
 
 to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
@@ -1578,6 +1580,8 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
       translation_map[letters] || letters
     ].join('|')
   end
+
+  accumulator.replace([accumulator.compact.first])
 end
 
 # shelfkey = custom, getShelfkeys
