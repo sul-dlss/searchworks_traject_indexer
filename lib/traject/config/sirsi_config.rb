@@ -274,7 +274,6 @@ to_field 'author_person_display', extract_marc('100abcdq', alternate_script: fal
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'author_person_full_display', extract_marc("100#{ALPHABET}", first: true, alternate_script: false)
