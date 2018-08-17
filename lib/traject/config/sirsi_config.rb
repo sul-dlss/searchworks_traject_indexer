@@ -728,7 +728,16 @@ to_field 'language', extract_marc('008') do |record, accumulator|
   accumulator.replace translation_map.translate_array(accumulator.map { |v| v[35..37] }).flatten
 end
 to_field 'language', extract_marc('041d:041e:041j', translation_map: 'marc_languages')
-to_field 'language', marc_languages('041a')
+to_field 'language', extract_marc('041a') do |record, accumulator|
+  accumulator.map!(&:strip)
+  translation_map = Traject::TranslationMap.new("marc_languages")
+  accumulator.select! { |value|  (value.length % 3) == 0 }
+  codes = accumulator.flat_map { |value| value.length == 3 ? value : value.chars.each_slice(3).map(&:join) }
+
+  codes = codes.uniq
+  translation_map.translate_array!(codes)
+  accumulator.replace codes
+end
 
 #
 # # URL Fields
