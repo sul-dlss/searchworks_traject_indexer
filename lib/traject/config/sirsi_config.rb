@@ -225,8 +225,8 @@ end
 to_field 'author_title_search' do |record, accumulator|
   onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: :only).extract(record).first
 
-  twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first if record['240']
-  twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first if record['245']
+  twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first
+  twoxx ||= Traject::MarcExtractor.cached('245a', alternate_script: :only).extract(record).first
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
