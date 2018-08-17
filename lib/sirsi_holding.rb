@@ -141,7 +141,7 @@ class SirsiHolding
     def normalized_lc
       call_number.gsub(/\s\s+/, ' ') # change all multiple whitespace chars to a single space
                  .gsub(/\s?\.\s?/, '.') # remove a space before or after a period
-                 .gsub(/^([A-Z][A-Z]?[A-Z]?) ([0-9])/, "\1\2") # remove space between class letters and digits
+                 .gsub(/^([A-Z][A-Z]?[A-Z]?) ([0-9])/, '\1\2') # remove space between class letters and digits
     end
 
     def before_cutter
