@@ -1904,13 +1904,13 @@ def add_values_to_result(mhld_field)
     mhld_results << mhld_field.display(latest_received)
   end
   mhld_field.fields867.each do |f|
-    mhld_field.library_has = "Supplement: #{library_has(f)}"
+    mhld_field.library_has = "Supplement: #{library_has(f).strip}"
     latest_received = mhld_field.latest_received unless has866
     has867 = true
     mhld_results << mhld_field.display(latest_received)
   end
   mhld_field.fields868.each do |f|
-    mhld_field.library_has = "Index: #{library_has(f)}"
+    mhld_field.library_has = "Index: #{library_has(f).strip}"
     latest_received = mhld_field.latest_received unless has866
     has868 = true
     mhld_results << mhld_field.display(latest_received)
