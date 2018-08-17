@@ -52,4 +52,12 @@ RSpec.describe 'Course reserves config' do
       ]
     end
   end
+  describe 'item_display' do
+    let(:fixture_name) { '444.marc' }
+    it do
+      expect(result[field]).to eq [
+                                 'COMPLIT-101 -|- What is Literature? -|- Saldivar, Jose David'
+                               ]
+    end
+  end
 end

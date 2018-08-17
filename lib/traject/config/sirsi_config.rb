@@ -1,3 +1,4 @@
+# coding: utf-8
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
 require 'traject'
@@ -2119,6 +2120,7 @@ end
 REZ_DESK_2_BLDG_FACET = Traject::TranslationMap.new('rez_desk_2_bldg_facet').freeze
 REZ_DESK_2_REZ_LOC_FACET = Traject::TranslationMap.new('rez_desk_2_rez_loc_facet').freeze
 DEPT_CODE_2_USER_STR = Traject::TranslationMap.new('dept_code_2_user_str').freeze
+LOAN_CODE_2_USER_STR = Traject::TranslationMap.new('loan_code_2_user_str').freeze
 
 to_field 'crez_instructor_search' do |record, accumulator, context|
   id = context.output_hash['id']&.first
@@ -2184,5 +2186,37 @@ each_record do |record, context|
     end
 
     v.uniq!
+  end
+end
+
+to_field 'item_display' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  require('byebug'); byebug
+  next unless course_reserves
+
+  # if course reserves
+  # grab item display values
+
+  context.output_hash['item_display'].map do |item_display_value|
+    split_item_display = item_display_value.split("-|-")
+    course_reserves.each do |row|
+      if row[:barcode].strip == split_item_display[0].strip
+        sep = " -|- "
+        rez_desk = row[:rez_desk]
+        rez_desk ||= ""
+        loan_period = LOAN_CODE_2_USER_STR[row[:loan_period]]
+
+        loan_period ||= ""
+        course_id = row[:course_id]
+        course_id ||= ""
+        suffix = course_id + sep + rez_desk + sep + loan_period
+        # replace current location in existing item_display field with rez_desk
+        old_val_array = orig_item_display_val.split(' -|- ', -1)
+        old_val_array[3] = rez_desk
+        new_val = old_val_array.join(' -|- ')
+        new_val + " -|- " + suffix
+      end
+    end
   end
 end
