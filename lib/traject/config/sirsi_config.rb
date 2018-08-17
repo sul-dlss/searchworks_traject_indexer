@@ -744,7 +744,7 @@ end
 # # URL Fields
 # get full text urls from 856, then reject gsb forms
 to_field 'url_fulltext' do |record, accumulator|
-  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new('856u', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     case field.indicator2
     when '0'
       accumulator.concat extractor.collect_subfields(field, spec)
