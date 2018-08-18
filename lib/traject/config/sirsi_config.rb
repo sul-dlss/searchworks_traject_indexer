@@ -1838,9 +1838,149 @@ to_field 'stanford_dept_sim' do |record, accumulator, context|
 end
 #
 # # Item Info Fields (from 999 that aren't call number)
+
+each_record do |record, context|
+  non_skipped_or_ignored_holdings = []
+
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t']
+    )
+    next if holding.skipped? || holding.ignored_call_number?
+
+    non_skipped_or_ignored_holdings << holding
+  end
+
+  # Group by library, home location, and call numbe type
+  result = non_skipped_or_ignored_holdings = non_skipped_or_ignored_holdings.group_by do |holding|
+    [holding.library, holding.home_location, holding.call_number_type]
+  end
+
+  context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type] = result
+end
+
+def call_number_for_holding(holding, context)
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
+  non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
+
+  case holding.call_number_type
+  when 'LC'
+    CallNumbers::LC.new(holding.call_number.to_s, serial: serial)
+  when 'DEWEY'
+    CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial)
+  when 'ALPHANUM', 'OTHER', 'SUDOC'
+    call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
+
+    CallNumbers::Other.new(
+      holding.call_number.to_s,
+      longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
+      scheme: holding.call_number_type
+    )
+  end
+end
+
 to_field 'barcode_search', extract_marc('999i')
-# preferred_barcode = custom, getPreferredItemBarcode
-# access_facet = custom, getAccessMethods
+
+   # * @return the barcode for the item to be used as the default choice for
+   # *  nearby-on-shelf display (i.e. when no particular item is selected by
+   # * preferred item algorithm, per INDEX-153:
+   # * 1. If Green item(s) have shelfkey, do this:
+   # * - pick the LC truncated callnum with the most items
+   # * - pick the shortest LC untruncated callnum if no truncation
+   # * - if no LC, got through callnum scheme order of preference:  LC, Dewey, Sudoc, Alphanum (without box and folder)
+   # * 2. If no Green shelfkey, use the above algorithm libraries (raw codes in 999) in alpha order.
+   # *
+to_field 'preferred_barcode' do |record, accumulator, context|
+  holdings = []
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t'],
+      barcode: item_999['i']
+    )
+
+    next if holding.skipped? || holding.bad_lc_lane_call_number? || holding.ignored_call_number?
+
+    holdings << holding
+  end
+
+  next if holdings.length == 0
+
+  if holdings.length == 1
+    accumulator << holdings.first.barcode
+    next
+  end
+
+  # Prefer GREEN home library, and then any other location prioritized by library code
+  holdings_by_library = holdings.group_by { |x| x.library }
+  chosen_holdings = holdings_by_library['GREEN'] || holdings_by_library[holdings_by_library.keys.sort.first]
+
+  # Prefer LC over Dewey over SUDOC over Alphanum over Other call number types
+  chosen_holdings_by_callnumber_type = chosen_holdings.group_by(&:call_number_type)
+  preferred_callnumber_scheme_holdings = chosen_holdings_by_callnumber_type['LC'] || chosen_holdings_by_callnumber_type['DEWEY'] || chosen_holdings_by_callnumber_type['SUDOC'] || chosen_holdings_by_callnumber_type['ALPHANUM'] || chosen_holdings_by_callnumber_type.values.first
+
+  preferred_callnumber_holdings_by_call_number = preferred_callnumber_scheme_holdings.group_by do |holding|
+    call_number_object = call_number_for_holding(holding, context)
+
+    if preferred_callnumber_scheme_holdings.count { |y| y.home_location == holding.home_location } > 1
+      call_number_object.lopped
+    else
+      call_number_object.call_number
+    end
+  end
+
+  # Prefer the items with the most item for the lopped call number
+  callnumber_with_the_most_items = preferred_callnumber_holdings_by_call_number.max_by { |k, v| v.length }.last
+
+  # If there's a tie, prefer the one with the shortest call number
+  checking_for_ties_holdings = preferred_callnumber_holdings_by_call_number.select { |k, v| v.length == callnumber_with_the_most_items.length }
+  callnumber_with_the_most_items = checking_for_ties_holdings.min_by do |lopped_call_number, _holdings|
+    lopped_call_number.length
+  end.last if checking_for_ties_holdings.length > 1
+
+  # Prefer items with the shortest call number
+  holding_with_the_most_recent_shelfkey = callnumber_with_the_most_items.max_by { |holding| holding.call_number.to_s }
+  accumulator << holding_with_the_most_recent_shelfkey.barcode
+end
+
+to_field 'preferred_barcode' do |record, accumulator, context|
+  next if context.output_hash['preferred_barcode']
+  next unless record['050'] || record['090']
+
+  holdings = []
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t'],
+      barcode: item_999['i']
+    )
+
+    next if holding.skipped? || holding.bad_lc_lane_call_number?
+
+    holdings << holding
+  end
+
+  preferred_holding = holdings.first do |holding|
+    online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
+
+    ignored_call_number? || online_locs.include?(holding.current_location) || online_locs.include?(holding.home_location)
+  end
+
+  accumulator << preferred_holding.barcode if preferred_holding
+end
 
 library_map = Traject::TranslationMap.new('library_map')
 resv_locs = Traject::TranslationMap.new('locations_reserves_list')
@@ -1893,29 +2033,6 @@ to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_ord
 end
 
 to_field 'item_display' do |record, accumulator, context|
-  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
-  non_skipped_or_ignored_holdings = []
-
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t']
-    )
-    next if holding.skipped? || holding.ignored_call_number?
-
-    non_skipped_or_ignored_holdings << holding
-  end
-
-  # Group by library, home location, and call numbe type
-  non_skipped_or_ignored_holdings = non_skipped_or_ignored_holdings.group_by do |holding|
-    [holding.library, holding.home_location, holding.call_number_type]
-  end
-
   record.each_by_tag('999') do |item_999|
     holding = SirsiHolding.new(
       call_number: (item_999['a'] || '').strip,
@@ -1928,19 +2045,9 @@ to_field 'item_display' do |record, accumulator, context|
 
     next if holding.skipped?
 
-    call_number_object = case holding.call_number_type
-                         when 'LC'
-                           CallNumbers::LC.new(holding.call_number.to_s, serial: serial)
-                         when 'DEWEY'
-                           CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial)
-                         when 'ALPHANUM', 'OTHER', 'SUDOC'
-                           call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
-                           CallNumbers::Other.new(
-                             holding.call_number.to_s,
-                             longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
-                             scheme: holding.call_number_type
-                           )
-                         end
+    non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
+
+    call_number_object = call_number_for_holding(holding, context)
 
     if call_number_object
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff

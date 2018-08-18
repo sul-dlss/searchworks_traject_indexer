@@ -19,14 +19,15 @@ class SirsiHolding
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :call_number, :current_location, :home_location, :library, :scheme, :type
-  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '')
+  attr_reader :call_number, :current_location, :home_location, :library, :scheme, :type, :barcode
+  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '', barcode: '')
     @call_number = CallNumber.new(call_number)
     @current_location = current_location
     @home_location = home_location
     @library = library
     @scheme = scheme
     @type = type
+    @barcode = barcode
   end
 
   def skipped?
@@ -67,7 +68,7 @@ class SirsiHolding
   end
 
   def ignored_call_number?
-    SKIPPED_CALL_NUMS.include?(call_number) ||
+    SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
       e_call_number? ||
       temp_call_number?
   end
