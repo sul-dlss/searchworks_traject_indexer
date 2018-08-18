@@ -60,4 +60,12 @@ RSpec.describe 'Course reserves config' do
       expect(result[field]).to eq ["36105041844338 -|- MUSIC -|- SCORES -|-  -|- SCORE -|-  -|-  -|-  -|- M1048 .B41 C7 1973 -|-  -|-  -|- LC"]
     end
   end
+
+  describe 'building_facet' do
+    let(:fixture_name) { '444.marc' }
+    let(:field) { 'building_facet' }
+    it 'updates building_facet with crez info' do
+      result
+    end
+  end
 end
