@@ -2189,11 +2189,31 @@ each_record do |record, context|
   end
 end
 
+# We update item_display once we have crez info
 to_field 'item_display' do |record, accumulator, context|
   id = context.output_hash['id']&.first
   course_reserves = reserves_lookup[id]
-  require('byebug'); byebug
   next unless course_reserves
+
+  context.output_hash['item_display'].map do |item_display_value|
+    split_item_display = item_display_value.split('-|-')
+    course_reserves.each do |row|
+      next unless row[:barcode].strip == split_item_display[0].strip
+      rez_desk = row[:rez_desk]
+      rez_desk ||= ''
+      loan_period = LOAN_CODE_2_USER_STR[row[:loan_period]]
+      loan_period ||= ''
+      course_id = row[:course_id]
+      course_id ||= ''
+      suffix = course_id + ' -|- ' + rez_desk + ' -|- ' + loan_period
+      # replace current location in existing item_display field with rez_desk
+      old_val_array = item_display_value.split(' -|- ', -1)
+      old_val_array[3] = rez_desk
+      new_val = old_val_array.join(' -|- ')
+      new_val + sep + suffix
+    end
+  end
+end
 
   # if course reserves
   # grab item display values
@@ -2212,10 +2232,11 @@ to_field 'item_display' do |record, accumulator, context|
         course_id ||= ""
         suffix = course_id + sep + rez_desk + sep + loan_period
         # replace current location in existing item_display field with rez_desk
-        old_val_array = item_display_value.split(' -|- ', -1)
+        # require('byebug'); byebug
+        old_val_array = item_display_value.split(sep, -1)
         old_val_array[3] = rez_desk
-        new_val = old_val_array.join(' -|- ')
-        new_val + " -|- " + suffix
+        new_val = old_val_array.join(sep)
+        new_val + sep + suffix
       end
     end
   end

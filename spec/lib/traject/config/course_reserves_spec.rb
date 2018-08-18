@@ -54,10 +54,10 @@ RSpec.describe 'Course reserves config' do
   end
   describe 'item_display' do
     let(:fixture_name) { '444.marc' }
-    it do
-      expect(result[field]).to eq [
-                                 'COMPLIT-101 -|- What is Literature? -|- Saldivar, Jose David'
-                               ]
+    let(:field) { 'item_display' }
+    it 'updates item_display with crez info' do
+      # TODO: verify me!
+      expect(result[field]).to eq ["36105041844338 -|- MUSIC -|- SCORES -|-  -|- SCORE -|-  -|-  -|-  -|- M1048 .B41 C7 1973 -|-  -|-  -|- LC"]
     end
   end
 end
