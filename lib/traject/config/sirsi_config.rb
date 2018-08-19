@@ -617,7 +617,7 @@ to_field 'pub_year_tisim' do |record, accumulator|
     when /\d\d\d\d/
       year = record['008'].value[7..10].to_i
       record['008'].value[7..10] if valid_range.cover? year
-    when /\d\d\du/
+    when /\d\d\d[u-]/
       "#{record['008'].value[7..9]}0" if record['008'].value[7..9] <= Time.now.year.to_s[0..2]
     end
 
@@ -626,7 +626,7 @@ to_field 'pub_year_tisim' do |record, accumulator|
     when /\d\d\d\d/
       year = record['008'].value[11..14].to_i
       record['008'].value[11..14] if valid_range.cover? year
-    when /\d\d\du/
+    when /\d\d\d[u-]/
       "#{record['008'].value[11..13]}9" if record['008'].value[11..13] <= Time.now.year.to_s[0..2]
     end
 
@@ -663,8 +663,8 @@ def marc_008_date(byte6values, byte_range, u_replacement)
     Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, spec, extractor|
       if byte6values.include? field.value[6]
         year = field.value[byte_range]
-        next unless year =~ /(\d{4}|\d{3}u)/
-        year.gsub!(/u$/, u_replacement)
+        next unless year =~ /(\d{4}|\d{3}[u-])/
+        year.gsub!(/[u-]$/, u_replacement)
         next unless (500..(Time.now.year + 10)).include? year.to_i
         accumulator << year
       end
@@ -682,8 +682,8 @@ to_field 'other_year_isi' do |record, accumulator|
   Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, spec, extractor|
     unless %w[c d e i k m p q r s t u].include? field.value[6]
       year = field.value[7..10]
-      next unless year =~ /(\d{4}|\d{3}u)/
-      year.gsub!(/u$/, '0')
+      next unless year =~ /(\d{4}|\d{3}[u-])/
+      year.gsub!(/[u-]$/, '0')
       next unless (500..(Time.now.year + 10)).include? year.to_i
       accumulator << year
     end
