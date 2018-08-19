@@ -1423,8 +1423,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     )
 
     next if holding.skipped?
-    next if holding.dewey?
-    next unless holding.valid_lc? && holding.call_number_type == 'LC' # We want Dewey call numbers with an LC scheme to fall back to dewey
+    next unless holding.call_number_type == 'LC'
     next if holding.call_number.to_s.empty? ||
             holding.bad_lc_lane_call_number? ||
             holding.shelved_by_location? ||
@@ -1433,6 +1432,8 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
 
     translation_map = Traject::TranslationMap.new('call_number')
     cn = holding.call_number.normalized_lc
+    next unless SirsiHolding::CallNumber.new(cn).valid_lc?
+
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
 
@@ -1546,7 +1547,7 @@ to_field 'callnum_search' do |record, accumulator|
 
     call_number = holding.call_number.to_s
 
-    if holding.call_number_type == 'DEWEY' || holding.valid_lc?
+    if holding.call_number_type == 'DEWEY' || holding.call_number_type == 'LC'
       call_number = call_number.strip
       call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
       call_number = call_number.gsub(/\. \./, ' .') # reduce multiple whitespace chars to a single space
