@@ -1316,12 +1316,12 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'with 007/00 = v, 300$b = MP4' do
+  context 'with 007/00 = v, 347$b = MPEG-4' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('347', ' ', ' ',
-          MARC::Subfield.new('b', 'MP4')
+          MARC::Subfield.new('b', 'MPEG-4')
         ))
       end
     end

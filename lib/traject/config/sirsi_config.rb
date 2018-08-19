@@ -1162,13 +1162,31 @@ to_field 'format_physical_ssim', extract_marc('538a') do |record, accumulator|
 end
 
 # INDEX-89 - Add video physical formats from 300$b, 347$b
-to_field 'format_physical_ssim', extract_marc('300b:347b:338a:300a') do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc('300b') do |record, accumulator|
   accumulator.replace(accumulator.map do |value|
     case value
-    when /MP4/, /MPEG-4/
+    when /MP4/
       'MPEG-4'
     when /VCD/, /Video CD/, /VideoCD/
       'Video CD'
+    end
+  end)
+end
+
+to_field 'format_physical_ssim', extract_marc('347b') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
+    when /MPEG-4/
+      'MPEG-4'
+    when /VCD/, /Video CD/, /VideoCD/
+      'Video CD'
+    end
+  end)
+end
+
+to_field 'format_physical_ssim', extract_marc('300a:338a') do |record, accumulator|
+  accumulator.replace(accumulator.map do |value|
+    case value
     when /audio roll/, /piano roll/, /organ roll/
       'Piano/Organ roll'
     end
