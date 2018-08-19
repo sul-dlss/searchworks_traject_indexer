@@ -498,7 +498,7 @@ def clean_date_string(value)
   end
 
   # is the date no more than 1 year in the future?
-  best_match if best_match.to_i >= 500 && best_match.to_i <= Time.now.year + 1
+  best_match.to_i.to_s if best_match.to_i >= 500 && best_match.to_i <= Time.now.year + 1
 end
 
 # # deprecated
@@ -550,7 +550,7 @@ to_field 'pub_date' do |record, accumulator|
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
   end.compact.first
 
-  accumulator << year if year
+  accumulator << year.to_s if year
 end
 
 # *  use 008 date1 if it is 3 or 4 digits and in valid range
@@ -604,7 +604,7 @@ to_field 'pub_date_sort' do |record, accumulator|
     "#{record['008'].value[11..12]}--"
   end
 
-  accumulator << year if year
+  accumulator << year.to_s if year
 end
 
 to_field 'pub_year_tisim' do |record, accumulator|
@@ -656,6 +656,10 @@ to_field 'pub_year_tisim' do |record, accumulator|
       accumulator.concat extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }
     end
   end
+
+  accumulator.compact!
+  accumulator.map!(&:to_i)
+  accumulator.map!(&:to_s)
 end
 
 def marc_008_date(byte6values, byte_range, u_replacement)
@@ -666,7 +670,7 @@ def marc_008_date(byte6values, byte_range, u_replacement)
         next unless year =~ /(\d{4}|\d{3}[u-])/
         year.gsub!(/[u-]$/, u_replacement)
         next unless (500..(Time.now.year + 10)).include? year.to_i
-        accumulator << year
+        accumulator << year.to_i.to_s
       end
     end
   end
@@ -685,7 +689,7 @@ to_field 'other_year_isi' do |record, accumulator|
       next unless year =~ /(\d{4}|\d{3}[u-])/
       year.gsub!(/[u-]$/, '0')
       next unless (500..(Time.now.year + 10)).include? year.to_i
-      accumulator << year
+      accumulator << year.to_i.to_s
     end
   end
 end
@@ -2141,6 +2145,10 @@ end
 
 each_record do |record, context|
   context.output_hash.reject { |k, v| k == 'mhld_display' || k =~ /^url_/ || k =~ /^marc/}.transform_values do |v|
-    v.map!(&:strip).uniq!
+    v.map! do |x|
+      x.respond_to?(:strip) ? x.strip : x
+    end
+
+    v.uniq!
   end
 end
