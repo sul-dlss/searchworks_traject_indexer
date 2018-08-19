@@ -1145,20 +1145,16 @@ end
 
 # INDEX-89 - Add video physical formats from 538$a
 to_field 'format_physical_ssim', extract_marc('538a') do |record, accumulator|
-  accumulator.replace(accumulator.map do |value|
-    case value
-    when /Bluray/, /Blu-ray/, /Blu ray/
-      'Blu-ray'
-    when /VHS/
-      'Videocassette (VHS)'
-    when /DVD/
-      'DVD'
-    when /CAV/, /CLV/
-      'Laser disc'
-    when /VCD/, /Video CD/, /VideoCD/
-      'Video CD'
-    end
-  end)
+  video_formats = accumulator.dup
+  accumulator.replace([])
+
+  video_formats.each do |value|
+    accumulator << 'Blu-ray' if value =~ Regexp.union(/Bluray/, /Blu-ray/, /Blu ray/)
+    accumulator << 'Videocassette (VHS)' if value =~ Regexp.union(/VHS/)
+    accumulator << 'DVD' if value =~ Regexp.union(/DVD/)
+    accumulator << 'Laser disc' if value =~ Regexp.union(/CAV/, /CLV/)
+    accumulator << 'Video CD' if value =~ Regexp.union(/VCD/, /Video CD/, /VideoCD/)
+  end
 end
 
 # INDEX-89 - Add video physical formats from 300$b, 347$b
