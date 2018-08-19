@@ -825,7 +825,7 @@ to_field 'access_facet' do |record, accumulator, context|
 
     if online_locs.include?(field['k']) || online_locs.include?(field['l']) || field['a'] == 'INTERNET RESOURCE'
       accumulator << 'Online'
-    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (field['l'] == 'ON-ORDER' && field['k'] != 'INPROCESS'))
+    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && field['l'] != 'INPROCESS' && field['k'] != 'INPROCESS' && field['k'] != 'LAC' && field['l'] != 'LAC' && field['m'] != 'HV-ARCHIVE'))
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
