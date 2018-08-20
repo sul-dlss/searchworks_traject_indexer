@@ -170,7 +170,7 @@ end
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', first: true, alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
 end
-to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :false)
+to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: false)
 to_field 'vern_title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :only)
 to_field 'title_uniform_display', extract_marc(%w(130 240).map { |c| "#{c}#{ALPHABET}" }.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
