@@ -367,6 +367,7 @@ to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", 
 end
 
 to_field "geographic_facet", extract_marc('651a', alternate_script: false) do |record, accumulator|
+  accumulator.map! { |v| v.gsub(/[\\,;]$/, '') }
   accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?\s*$/, '\1') }
 end
 to_field "geographic_facet" do |record, accumulator|
@@ -374,6 +375,7 @@ to_field "geographic_facet" do |record, accumulator|
     accumulator << field['z'] if field['z'] # take only the first subfield z
   end
 
+  accumulator.map! { |v| v.gsub(/[\\,;]$/, '') }
   accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;\.]\.?\s*$/, '\1') }
 end
 
