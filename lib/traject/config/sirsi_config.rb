@@ -1221,20 +1221,14 @@ to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}", alternate_script
 end
 
 to_field 'format_physical_ssim', extract_marc('300a', alternate_script: false) do |record, accumulator|
-  accumulator.replace(accumulator.map do |value|
-    case value
-    when /microfiche/i
-      'Microfiche'
-    when /microfilm/i
-      'Microfilm'
-    when /photograph/i
-      'Photo'
-    when /remote-sensing image/i, /remote sensing image/i
-      'Remote-sensing image'
-    when /slide/i
-      'Slide'
-    end
-  end)
+  values = accumulator.dup.join("\n")
+  accumulator.replace([])
+
+  accumulator << 'Microfiche' if values =~ /microfiche/i
+  accumulator << 'Microfilm' if values =~ /microfilm/i
+  accumulator << 'Photo' if values =~ /photograph/i
+  accumulator << 'Remote-sensing image' if values =~ Regexp.union(/remote-sensing image/i, /remote sensing image/i)
+  accumulator << 'Slide' if values =~ /slide/i
 end
 
 # look for thesis by existence of 502 field
