@@ -58,6 +58,13 @@ class Traject::MarcExtractor
   end
 end
 
+def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
+  lambda do |record, accumulator, context|
+    extract_marc(spec, options.merge(alternate_script: false)).call(record, accumulator, context)
+    extract_marc(spec, options.merge(alternate_script: :only)).call(record, accumulator, context) if accumulator.empty?
+  end
+end
+
 reserves_lookup = {}
 File.open(settings['reserves_file'], 'r').each do |line|
   csv_options = {
@@ -131,9 +138,9 @@ to_field 'vern_all_search' do |record, accumulator|
 end
 
 # Title Search Fields
-to_field 'title_245a_search', extract_marc('245a', first: true, alternate_script: false)
+to_field 'title_245a_search', extract_marc_and_prefer_non_alternate_scripts('245a', first: true)
 to_field 'vern_title_245a_search', extract_marc('245aa', first: true, alternate_script: :only)
-to_field 'title_245_search', extract_marc('245abfgknps', first: true, alternate_script: false)
+to_field 'title_245_search', extract_marc_and_prefer_non_alternate_scripts('245abfgknps', first: true)
 to_field 'vern_title_245_search', extract_marc('245abfgknps', first: true, alternate_script: :only)
 to_field 'title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: false)
 to_field 'vern_title_uniform_search', extract_marc('130adfgklmnoprst:240adfgklmnoprs', first: true, alternate_script: :only)
