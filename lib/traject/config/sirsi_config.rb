@@ -1008,7 +1008,7 @@ to_field 'format_main_ssim' do |record, accumulator, context|
 end
 
 to_field 'format_main_ssim' do |record, accumulator|
-  Traject::MarcExtractor.new('590a').collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new('590a', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     if extractor.collect_subfields(field, spec).any? { |x| x =~ /MARCit brief record/ }
       accumulator << 'Journal/Periodical'
     end
@@ -1029,7 +1029,7 @@ end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
   if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].include?('Other')
-    format = Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
+    format = Traject::MarcExtractor.new('245h', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
       value = extractor.collect_subfields(field, spec).join(' ').downcase
 
       case value
@@ -1150,7 +1150,7 @@ to_field 'format_physical_ssim', extract_marc('007') do |record, accumulator, co
 end
 
 # INDEX-89 - Add video physical formats from 538$a
-to_field 'format_physical_ssim', extract_marc('538a') do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc('538a', alternate_script: false) do |record, accumulator|
   video_formats = accumulator.dup
   accumulator.replace([])
 
@@ -1164,7 +1164,7 @@ to_field 'format_physical_ssim', extract_marc('538a') do |record, accumulator|
 end
 
 # INDEX-89 - Add video physical formats from 300$b, 347$b
-to_field 'format_physical_ssim', extract_marc('300b') do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc('300b', alternate_script: false) do |record, accumulator|
   accumulator.replace(accumulator.map do |value|
     case value
     when /MP4/
@@ -1175,7 +1175,7 @@ to_field 'format_physical_ssim', extract_marc('300b') do |record, accumulator|
   end)
 end
 
-to_field 'format_physical_ssim', extract_marc('347b') do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc('347b', alternate_script: false) do |record, accumulator|
   accumulator.replace(accumulator.map do |value|
     case value
     when /MPEG-4/
@@ -1186,7 +1186,7 @@ to_field 'format_physical_ssim', extract_marc('347b') do |record, accumulator|
   end)
 end
 
-to_field 'format_physical_ssim', extract_marc('300a:338a') do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc('300a:338a', alternate_script: false) do |record, accumulator|
   accumulator.replace(accumulator.map do |value|
     case value
     when /audio roll/, /piano roll/, /organ roll/
@@ -1207,7 +1207,7 @@ to_field 'format_physical_ssim' do |record, accumulator|
   end
 end
 
-to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}") do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}", alternate_script: false) do |record, accumulator|
   values = accumulator.dup.join("\n")
   accumulator.replace([])
 
@@ -1220,7 +1220,7 @@ to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}") do |record, accu
   end
 end
 
-to_field 'format_physical_ssim', extract_marc('300a') do |record, accumulator|
+to_field 'format_physical_ssim', extract_marc('300a', alternate_script: false) do |record, accumulator|
   accumulator.replace(accumulator.map do |value|
     case value
     when /microfiche/i
