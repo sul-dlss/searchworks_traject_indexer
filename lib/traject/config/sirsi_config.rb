@@ -1304,10 +1304,10 @@ end
 # **/
 to_field 'genre_ssim' do |record, accumulator|
   if record['008'] && record['008'].value.length >= 28
-    accumulator << 'Technical report' if (record.leader[6] == 'a' || record.leader[6] == 't') && record['008'].value[24..28] =~ /t/
+    accumulator << 'Technical report' if (record.leader[6] == 'a' || record.leader[6] == 't') && record['008'].value[24..27] =~ /t/
   elsif record['027'] || record['088']
     accumulator << 'Technical report'
-  elsif record['006'] && (record['006'].value[0] == 'a' || record['006'].value[0] == 't') && record['006'].value[7..11] =~ /t/
+  elsif record['006'] && (record['006'].value[0] == 'a' || record['006'].value[0] == 't') && record['006'].value[7..10] =~ /t/
     accumulator << 'Technical report'
   end
 end
