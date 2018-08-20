@@ -732,7 +732,13 @@ to_field 'language', extract_marc('008') do |record, accumulator|
   translation_map = Traject::TranslationMap.new('marc_languages')
   accumulator.replace translation_map.translate_array(accumulator.map { |v| v[35..37] }).flatten
 end
-to_field 'language', extract_marc('041d:041e:041j', translation_map: 'marc_languages')
+
+to_field 'language', extract_marc('041d:041e:041j') do |record, accumulator|
+  accumulator.map!(&:strip)
+  translation_map = Traject::TranslationMap.new('marc_languages')
+  accumulator.replace translation_map.translate_array(accumulator)
+end
+
 to_field 'language', extract_marc('041a') do |record, accumulator|
   accumulator.map!(&:strip)
   translation_map = Traject::TranslationMap.new("marc_languages")
