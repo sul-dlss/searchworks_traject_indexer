@@ -1205,10 +1205,11 @@ to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}") do |record, accu
   values = accumulator.dup.join("\n")
   accumulator.replace([])
 
-  case values
-  when %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,;.])? (c )?(4 3/4|12 c)}
+  if values =~ %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,;.])? (c )?(4 3/4|12 c)}
     accumulator << 'CD' unless values =~ /(DVD|SACD|blu[- ]?ray)/
-  when %r{33(\.3| 1/3) ?rpm}
+  end
+
+  if values =~ %r{33(\.3| 1/3) ?rpm}
     accumulator << 'Vinyl disc' if values =~ /(10|12) ?in/
   end
 end
