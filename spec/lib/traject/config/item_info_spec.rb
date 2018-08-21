@@ -294,116 +294,140 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    pending 'location implies item is shelved by title' do
+    describe 'location implies item is shelved by title' do
       let(:fixture_name) { 'callNumberLCSortTests.mrc' }
 
       it 'handles SHELBYTITL' do
         expect(select_by_id('1111')[field].length).to eq 1
         expect(select_by_id('1111')[field].first).to match(
-          /^36105129694373 -\|- SCIENCE -\|- SHELBYTITL .* Shelved by title/
+          /^36105129694373 -\|- SCIENCE -\|- SHELBYTITL .* Shelved by title VOL 1 1946/
         )
       end
 
-      # 		// callnum for all three is  PQ9661 .P31 C6 VOL 1 1946"
-      # 		// STORBYTITL
-      # 	    fldVal = "36105129694375 -|- SCIENCE -|- STORBYTITL" + SEP + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + show_view_callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, "3311", fldName, fldVal);
+      it 'handles STORBYTITL' do
+        expect(select_by_id('3311')[field].length).to eq 1
+        expect(select_by_id('3311')[field].first).to match(
+          /^36105129694375 -\|- SCIENCE -\|- STORBYTITL .* Shelved by title VOL 1 1946/
+        )
+      end
 
-      # 		// SHELBYSER
-      # 		id = "2211";
-      # 		callnum = "Shelved by Series title";
-      # 		shelfkey = callnum.toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		show_view_callnum = callnum + " VOL 1 1946";
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(show_view_callnum, callnum, shelfkey, CallNumberType.OTHER, isSerial, id);
-      # 		fldVal = "36105129694374 -|- SCIENCE -|- SHELBYSER" + SEP + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + show_view_callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
+      it 'handles SHELBYSER' do
+        expect(select_by_id('2211')[field].length).to eq 1
+        expect(select_by_id('2211')[field].first).to match(
+          /^36105129694374 -\|- SCIENCE -\|- SHELBYSER .* Shelved by Series title VOL 1 1946/
+        )
+      end
 
-      # 	/**
-      # 	 * test that "BUS-PER", "BUSDISPLAY", "NEWS-STKS"
-      # 	 * locations cause call numbers to be ignored (not included in facets) when
-      # 	 * the library is "BUSINESS"
-      # 	 */
-      # @Test
-      # 	public final void testItemDisplayBizShelbyLocs()
-      # 			throws ParserConfigurationException, IOException, SAXException
-      # 	{
-      # 		String fldName = "item_display";
-      # 		MarcFactory factory = MarcFactory.newInstance();
-      # 		String callnum = "Shelved by title";
-      # 		String shelfkey = callnum.toLowerCase();
-      # 		String reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		String show_view_callnum = callnum + " VOL 1 1946";
-      # 		String volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(show_view_callnum, callnum, shelfkey, CallNumberType.LC, isSerial, null);
-      #
-      # 		String fullCallNum = "E184.S75 R47A V.1 1980";
-      # 		String fullShelfkey = edu.stanford.CallNumUtils.getShelfKey(fullCallNum, CallNumberType.LC, null).toLowerCase();
-      # 		String fullReversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(fullShelfkey).toLowerCase();
-      # 		String fullVolSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(fullCallNum, fullCallNum, fullShelfkey, CallNumberType.LC, isSerial, null);
-      #
-      # 		String otherCallnum = "BUS54594-11 V.3 1986 MAY-AUG.";
-      # 		String otherShowViewCallnum = callnum + " V.3 1986 MAY-AUG.";
-      # 		String otherVolSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(otherShowViewCallnum, callnum, shelfkey, CallNumberType.OTHER, isSerial, null);
-      #
-      # 		Leader ldr = factory.newLeader("01247cas a2200337 a 4500");
-      # 		ControlField cf008 = factory.newControlField("008");
-      # 		cf008.setData("830415c19809999vauuu    a    0    0eng  ");
-      #
-      # 		String[] bizShelbyLocs = {"NEWS-STKS"};
-      # 		for (String loc : bizShelbyLocs)
-      # 		{
-      # 			Record record = factory.newRecord();
-      # 			record.setLeader(ldr);
-      # 			record.addVariableField(cf008);
-      # 		    DataField df = factory.newDataField("999", ' ', ' ');
-      # 		    df.addSubfield(factory.newSubfield('a', "PQ9661 .P31 C6 VOL 1 1946"));
-      # 		    df.addSubfield(factory.newSubfield('w', "LC"));
-      # 		    df.addSubfield(factory.newSubfield('i', "36105111222333"));
-      # 		    df.addSubfield(factory.newSubfield('l', loc));
-      # 		    df.addSubfield(factory.newSubfield('m', "BUSINESS"));
-      # 		    record.addVariableField(df);
-      # 			String expFldVal = "36105111222333 -|- BUSINESS -|- " + loc + SEP + SEP + SEP +
-      # 					callnum + SEP + shelfkey + SEP + reversekey + SEP + show_view_callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 		    solrFldMapTest.assertSolrFldValue(record, fldName, expFldVal);
-      #
-      # 			record = factory.newRecord();
-      # 			record.setLeader(ldr);
-      # 			record.addVariableField(cf008);
-      # 		    df = factory.newDataField("999", ' ', ' ');
-      # 		    df.addSubfield(factory.newSubfield('a', otherCallnum));
-      # 		    df.addSubfield(factory.newSubfield('w', "ALPHANUM"));
-      # 		    df.addSubfield(factory.newSubfield('i', "20504037816"));
-      # 		    df.addSubfield(factory.newSubfield('l', loc));
-      # 		    df.addSubfield(factory.newSubfield('m', "BUSINESS"));
-      # 		    record.addVariableField(df);
-      # 			expFldVal = "20504037816 -|- BUSINESS -|- " + loc + SEP + SEP + SEP +
-      # 					callnum + SEP +
-      # 					shelfkey + SEP +
-      # 					reversekey + SEP +
-      # 					otherShowViewCallnum + SEP +
-      # 					otherVolSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 		    solrFldMapTest.assertSolrFldValue(record, fldName, expFldVal);
-      #
-      #
-      # 		    // don't treat these locations specially if used by other libraries
-      # 			record = factory.newRecord();
-      # 			record.setLeader(ldr);
-      # 			record.addVariableField(cf008);
-      # 		    df = factory.newDataField("999", ' ', ' ');
-      # 		    df.addSubfield(factory.newSubfield('a', fullCallNum));
-      # 		    df.addSubfield(factory.newSubfield('w', "LC"));
-      # 		    df.addSubfield(factory.newSubfield('i', "36105444555666"));
-      # 		    df.addSubfield(factory.newSubfield('l', loc));
-      # 		    df.addSubfield(factory.newSubfield('m', "GREEN"));
-      # 		    record.addVariableField(df);
-      # 			expFldVal = "36105444555666 -|- GREEN -|- " + loc + SEP + SEP + SEP +
-      # 					fullCallNum + SEP + fullShelfkey + SEP + fullReversekey + SEP + fullCallNum + SEP + fullVolSort + SEP + SEP + CallNumberType.LC;
-      # 		    solrFldMapTest.assertSolrFldValue(record, fldName, expFldVal);
-      # 		}
-      # 	}
-      #
+      context 'with a NEWS-STKS location' do
+        let(:record) do
+          MARC::Record.new.tap do |record|
+            record.leader = '01247cas a2200337 a 4500'
+            record.append(MARC::ControlField.new(
+              '008', '830415c19809999vauuu    a    0    0eng  '
+            ))
+            record.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', "PQ9661 .P31 C6 VOL 1 1946"),
+                MARC::Subfield.new('w', "LC"),
+                MARC::Subfield.new('i', "36105111222333"),
+                MARC::Subfield.new('l', 'NEWS-STKS'),
+                MARC::Subfield.new('m', "BUSINESS")
+              )
+            )
+          end
+        end
+
+        it 'is shelved by title' do
+          expect(result[field].first.split(' -|- ')).to contain_exactly(
+            '36105111222333',
+            'BUSINESS',
+            'NEWS-STKS',
+            '',
+            '',
+            'Shelved by title',
+            'shelved by title',
+            /~~~/,
+            'Shelved by title VOL 1 1946',
+            /shelved by title/,
+            '',
+            'LC')
+        end
+      end
+
+      context 'with a NEWS-STKS location and an ALPHANUM call number' do
+        let(:record) do
+          MARC::Record.new.tap do |record|
+            record.leader = '01247cas a2200337 a 4500'
+            record.append(MARC::ControlField.new(
+              '008', '830415c19809999vauuu    a    0    0eng  '
+            ))
+            record.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', "BUS54594-11 V.3 1986 MAY-AUG."),
+                MARC::Subfield.new('w', "ALPHANUM"),
+                MARC::Subfield.new('i', "20504037816"),
+                MARC::Subfield.new('l', 'NEWS-STKS'),
+                MARC::Subfield.new('m', "BUSINESS")
+              )
+            )
+          end
+        end
+
+        it 'is shelved by title' do
+          expect(result[field].first.split(' -|- ')).to contain_exactly(
+            '20504037816',
+            'BUSINESS',
+            'NEWS-STKS',
+            '',
+            '',
+            'Shelved by title',
+            'shelved by title',
+            /~~~/,
+            'Shelved by title V.3 1986 MAY-AUG.',
+            /shelved by title/,
+            '',
+            'ALPHANUM')
+        end
+      end
+
+      context 'with a NEWS-STKS location when it is not in BUSINESS' do
+        let(:record) do
+          MARC::Record.new.tap do |record|
+            record.leader = '01247cas a2200337 a 4500'
+            record.append(MARC::ControlField.new(
+              '008', '830415c19809999vauuu    a    0    0eng  '
+            ))
+            record.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', "E184.S75 R47A V.1 1980"),
+                MARC::Subfield.new('w', "LC"),
+                MARC::Subfield.new('i', "36105444555666"),
+                MARC::Subfield.new('l', 'NEWS-STKS'),
+                MARC::Subfield.new('m', "GREEN")
+              )
+            )
+          end
+        end
+
+        it 'does nothing special ' do
+          expect(result[field].first.split(' -|- ')).to contain_exactly(
+            '36105444555666',
+            'GREEN',
+            'NEWS-STKS',
+            '',
+            '',
+            'E184.S75 R47A V.1 1980',
+            /^lc/,
+            /~~~/,
+            'E184.S75 R47A V.1 1980',
+            /^lc/,
+            '',
+            'LC')
+        end
+      end
     end
 
     describe 'locations should not be displayed' do

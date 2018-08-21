@@ -1917,11 +1917,27 @@ to_field 'item_display' do |record, accumulator, context|
 
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
+    call_number = holding.call_number unless holding.ignored_call_number?
     call_number_object = call_number_for_holding(holding, context)
 
     if call_number_object
+      # if it's a shelved-by location, use a totally different way to get the callnumber
+      if holding.shelved_by_location?
+        if [holding.home_location, holding.current_location].include? 'SHELBYSER'
+          lopped_call_number = "Shelved by Series title"
+        else
+          lopped_call_number = "Shelved by title"
+        end
+
+        enumeration = holding.call_number.to_s[call_number_object.lopped.length..-1].strip
+
+        shelfkey = lopped_call_number.downcase
+        reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
+
+        call_number = [lopped_call_number, (enumeration if enumeration)].compact.join(' ')
+        volume_sort = [lopped_call_number, (CallNumbers::ShelfkeyBase.reverse(enumeration) if enumeration)].compact.join(' ').downcase
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
-      if (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length || 0) <= 1
+      elsif (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length || 0) <= 1
         shelfkey = call_number_object.to_shelfkey
         volume_sort = call_number_object.to_shelfkey
         reverse_shelfkey = call_number_object.to_reverse_shelfkey
@@ -1949,7 +1965,7 @@ to_field 'item_display' do |record, accumulator, context|
       lopped_call_number,
       shelfkey,
       reverse_shelfkey,
-      (holding.call_number unless holding.ignored_call_number?),
+      call_number,
       volume_sort,
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
       holding.call_number_type
