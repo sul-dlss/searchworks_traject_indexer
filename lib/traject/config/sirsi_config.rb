@@ -37,6 +37,7 @@ settings do
     require 'traject/manticore_http_client'
     provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
   end
+  provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, SocketError, Errno::ECONNREFUSED, StandardError]
 end
 
 # Change the XMLNS to match how solrmarc handles this
