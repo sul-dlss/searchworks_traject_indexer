@@ -47,7 +47,7 @@ module CallNumbers
               when VOL_PATTERN_LETTERS
                 call_number.slice(0...call_number.index(VOL_PATTERN_LETTERS)).strip
               when ADDL_VOL_PATTERN
-                call_number.slice(0...call_number.index(to_match[ADDL_VOL_PATTERN])).strip
+                call_number.slice(0...call_number.index(ADDL_VOL_PATTERN)).strip
               else
                 call_number
               end
