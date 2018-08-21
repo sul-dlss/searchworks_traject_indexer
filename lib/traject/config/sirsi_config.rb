@@ -25,6 +25,7 @@ settings do
   provide "reader_class_name", "Traject::MarcCombiningReader"
   provide 'reserves_file', ENV['RESERVES_FILE']
   provide 'allow_duplicate_values',  false
+  provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
 end
 
 # Change the XMLNS to match how solrmarc handles this
@@ -1872,7 +1873,7 @@ end
 ##
 # Skip records for missing `item_display` field
 each_record do |record, context|
-  context.skip!('No item_display field') if context.output_hash['item_display'].nil?
+  context.skip!('No item_display field') if context.output_hash['item_display'].nil? && settings['skip_empty_item_display'] > -1
 end
 
 to_field 'on_order_library_ssim', extract_marc('596a', translation_map: 'library_on_order_map')

@@ -3,8 +3,8 @@ describe 'Skips records' do
     Traject::Indexer.new.tap do |i|
       i.settings(
         'solr.url' => 'http://127.0.0.1:8983/solr/fake',
-        'reader_class_name' => 'MARC::Reader',
-        'writer_class_name' => 'Traject::ArrayWriter'
+        'writer_class_name' => 'Traject::ArrayWriter',
+        'skip_empty_item_display' => 1
       )
       i.load_config_file('./lib/traject/config/sirsi_config.rb')
     end
