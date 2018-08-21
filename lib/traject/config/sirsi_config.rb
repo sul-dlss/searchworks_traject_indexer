@@ -1697,26 +1697,7 @@ end
 #   9 --> A and also non-alphanum to sort properly (before or after alphanum)
 to_field 'reverse_shelfkey' do |record, accumulator, context|
   accumulator.concat(Array(context.output_hash['shelfkey']).map do |shelfkey|
-    forward_chars = ('0'..'9').to_a + ('a'..'z').to_a
-    reverse_chars = forward_chars.reverse
-    char_map = forward_chars.zip(reverse_chars).to_h
-    char_map.merge! '.' => '}', '{' => ' ', '|' => ' ', '}' => ' ', '~' => ' ', ' ' => '~'
-
-    shelfkey.chars.map do |c|
-      # map latin chars with diacritic to char without and normalize case
-      c = I18n.transliterate(c).downcase
-
-      if char_map[c]
-        char_map[c]
-      elsif c =~ /\w/
-        # if it's not a character in our map, it's probably a non-latin, non-digit
-        # which ordinarily sorts after 0-9, A-Z, so sort it first.
-        '0'
-      else
-        # and if it is not a letter or a digit, sort it last
-        '~'
-      end
-    end.join('').ljust(50, '~') # for some reason, we pad this to 50 characters.
+    CallNumbers::ShelfkeyBase.reverse(shelfkey)
   end)
 end
 

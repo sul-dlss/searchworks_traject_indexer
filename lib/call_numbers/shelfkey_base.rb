@@ -1,5 +1,6 @@
 module CallNumbers
   require 'forwardable'
+  require 'i18n'
   class ShelfkeyBase
     CUTTER_ROUNDING = 6
     PADDING = 6
@@ -36,7 +37,17 @@ module CallNumbers
     class << self
       def reverse(value)
         value.chars.map do |char|
-          CHAR_MAP[char]
+          char = I18n.transliterate(char).downcase
+          if CHAR_MAP[char]
+            CHAR_MAP[char]
+          elsif char =~ /\w/
+            # if it's not a character in our map, it's probably a non-latin, non-digit
+            # which ordinarily sorts after 0-9, A-Z, so sort it first.
+            '0'
+          else
+            # and if it is not a letter or a digit, sort it last
+            '~'
+          end
         end.join('').ljust(50, '~')
       end
 
