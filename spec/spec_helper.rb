@@ -1,5 +1,6 @@
 require 'rspec'
 require 'traject'
+require 'traject/readers/delete_reader'
 require 'traject/readers/marc_combining_reader'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
