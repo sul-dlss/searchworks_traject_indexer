@@ -1761,7 +1761,7 @@ end
 #   9 --> A and also non-alphanum to sort properly (before or after alphanum)
 to_field 'reverse_shelfkey' do |record, accumulator, context|
   accumulator.concat(Array(context.output_hash['shelfkey']).map do |shelfkey|
-    CallNumbers::ShelfkeyBase.reverse(shelfkey)
+    CallNumbers::ShelfkeyBase.reverse(shelfkey).ljust(50, '~')
   end)
 end
 
@@ -2101,7 +2101,7 @@ to_field 'item_display' do |record, accumulator, context|
       holding.type,
       lopped_call_number,
       shelfkey,
-      reverse_shelfkey,
+      (reverse_shelfkey.ljust(50, '~') unless (reverse_shelfkey || '').empty?),
       call_number,
       volume_sort,
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
