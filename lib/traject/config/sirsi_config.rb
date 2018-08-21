@@ -1581,17 +1581,15 @@ to_field 'shelfkey' do |record, accumulator, context|
       type: item_999['t']
     )
 
-    next if holding.skipped?
+    next if holding.skipped? || holding.shelved_by_location?
 
     case holding.call_number_type
     when 'LC'
       accumulator << CallNumbers::LC.new(holding.call_number.to_s, serial: serial).to_shelfkey
     when 'DEWEY'
       accumulator << CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial).to_shelfkey
-    when 'ALPHANUM', 'OTHER'
+    when 'ALPHANUM', 'OTHER', 'SUDOC'
       accumulator << CallNumbers::Other.new(holding.call_number.to_s).to_shelfkey
-    when 'SUDOC'
-      # TODO
     end
   end
 end
