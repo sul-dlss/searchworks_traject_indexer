@@ -473,6 +473,7 @@ end
 
 # # publication dates
 def clean_date_string(value)
+  value = value.strip
   valid_year_regex = /(?:20|19|18|17|16|15|14|13|12|11|10|09|08|07|06|05)[0-9][0-9]/
 
   # some nice regular expressions looking for years embedded in strings
