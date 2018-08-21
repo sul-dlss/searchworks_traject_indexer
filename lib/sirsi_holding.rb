@@ -91,6 +91,14 @@ class SirsiHolding
     ([home_location, current_location] & GOV_DOCS_LOCS).any?
   end
 
+  def is_in_process?
+    temp_call_number? && (current_location == 'INPROCESS' || (!current_location.nil? && home_location != 'ON-ORDER'))
+  end
+
+  def is_on_order?
+    temp_call_number? && (current_location == 'ON-ORDER' || (!current_location.nil? && home_location == 'ON-ORDER'))
+  end
+
   private
 
   def physics_not_temp?

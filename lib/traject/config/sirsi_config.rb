@@ -1496,7 +1496,7 @@ def call_number_for_holding(record, holding, context)
 
   separate_browse_call_num = []
 
-  if (holding.call_number.to_s.empty? || holding.ignored_call_number?) && (true || !(item.in_process || item.on_order))
+  if (holding.call_number.to_s.empty? || holding.ignored_call_number?) && !(holding.is_in_process? || holding.is_on_order?)
     if record['086']
       record.each_by_tag('086') do |item_086|
         separate_browse_call_num << CallNumbers::Other.new(item_086['a'], scheme: item_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
@@ -1509,6 +1509,9 @@ def call_number_for_holding(record, holding, context)
   end
 
   return separate_browse_call_num.first if separate_browse_call_num.any?
+
+  return OpenStruct.new(scheme: 'OTHER') if holding.e_call_number?
+  return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
 
   case holding.call_number_type
   when 'LC'
