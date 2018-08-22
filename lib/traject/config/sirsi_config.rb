@@ -1498,9 +1498,8 @@ def call_number_for_holding(record, holding, context)
 
   if (holding.call_number.to_s.empty? || holding.ignored_call_number?) && !(holding.is_in_process? || holding.is_on_order?)
     if record['086']
-      record.each_by_tag('086') do |item_086|
-        separate_browse_call_num << CallNumbers::Other.new(item_086['a'], scheme: item_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
-      end
+      last_086 = record.find_all { |f| f.tag == '086' }.last
+      separate_browse_call_num << CallNumbers::Other.new(last_086['a'], scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
     end
 
     Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
