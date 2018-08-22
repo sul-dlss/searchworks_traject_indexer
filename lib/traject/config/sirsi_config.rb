@@ -1738,7 +1738,7 @@ to_field 'shelfkey' do |record, accumulator, context|
       type: item_999['t']
     )
 
-    next if holding.skipped? || holding.shelved_by_location?
+    next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
     if non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length.to_i > 1
@@ -2097,8 +2097,8 @@ to_field 'item_display' do |record, accumulator, context|
       holding.current_location,
       holding.type,
       (lopped_call_number unless holding.ignored_call_number?),
-      shelfkey,
-      (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty?),
+      (shelfkey unless holding.lost_or_missing?),
+      (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
       (call_number unless holding.ignored_call_number?),
       (volume_sort unless holding.ignored_call_number?),
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
