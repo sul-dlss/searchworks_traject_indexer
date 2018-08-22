@@ -840,7 +840,7 @@ to_field 'access_facet' do |record, accumulator, context|
 
     next if holding.skipped?
 
-    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || field['a'] == 'INTERNET RESOURCE'
+    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
       accumulator << 'Online'
     elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && field['l'] != 'INPROCESS' && field['k'] != 'INPROCESS' && field['k'] != 'LAC' && field['l'] != 'LAC' && field['m'] != 'HV-ARCHIVE'))
       accumulator << 'On order'
