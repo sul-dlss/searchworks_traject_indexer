@@ -3,19 +3,21 @@ require 'call_numbers/call_number_base'
 
 module CallNumbers
   class Other < CallNumberBase
+    attr_reader :call_number, :longest_common_prefix, :serial, :scheme
 
-    attr_reader :call_number, :longest_common_prefix, :serial
-
-    def initialize(call_number, longest_common_prefix: '', serial: false, scheme: nil)
+    def initialize(call_number, longest_common_prefix: '', serial: false, scheme: '')
       @call_number = call_number
       @longest_common_prefix = longest_common_prefix
       @serial = serial
       @scheme = scheme
     end
 
-    def scheme
-      return 'sudoc' if @scheme == 'SUDOC'
-      'other'
+    def to_lopped_shelfkey
+      self.class.new(lopped, serial: serial, scheme: scheme).to_shelfkey
+    end
+
+    def to_lopped_reverse_shelfkey
+      self.class.new(lopped, serial: serial, scheme: scheme).to_reverse_shelfkey
     end
 
     def lopped
@@ -36,11 +38,19 @@ module CallNumbers
 
     # shortcutting a shelfkey class as we just need the normalization/reverse methods
     def to_shelfkey
-      [scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number)].join(' ')
+      [shelfkey_scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number)].join(' ')
     end
 
     def to_reverse_shelfkey
       CallNumbers::ShelfkeyBase.reverse(to_shelfkey).ljust(50, '~')
+    end
+
+    private
+
+    # this transfomation only applies when generating shelfkeys
+    def shelfkey_scheme
+      return 'sudoc' if scheme == 'SUDOC'
+      'other'
     end
   end
 end

@@ -1510,6 +1510,7 @@ def call_number_for_holding(record, holding, context)
 
   return separate_browse_call_num.first if separate_browse_call_num.any?
 
+  return OpenStruct.new(scheme: 'OTHER', call_number: holding.call_number.to_s, to_volume_sort: "other #{holding.call_number.to_s}".downcase) if holding.bad_lc_lane_call_number?
   return OpenStruct.new(scheme: 'OTHER') if holding.e_call_number?
   return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
 
@@ -1518,7 +1519,7 @@ def call_number_for_holding(record, holding, context)
     CallNumbers::LC.new(holding.call_number.to_s, serial: serial)
   when 'DEWEY'
     CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial)
-  when 'ALPHANUM', 'OTHER', 'SUDOC'
+  else
     call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
 
     CallNumbers::Other.new(
@@ -2053,8 +2054,8 @@ to_field 'item_display' do |record, accumulator, context|
     call_number = holding.call_number unless holding.ignored_call_number?
     call_number_object = call_number_for_holding(record, holding, context)
 
-    scheme = holding.call_number_type
     if call_number_object
+      scheme = call_number_object.scheme.upcase
       # if it's a shelved-by location, use a totally different way to get the callnumber
       if holding.shelved_by_location?
         if [holding.home_location, holding.current_location].include? 'SHELBYSER'
@@ -2073,23 +2074,18 @@ to_field 'item_display' do |record, accumulator, context|
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
       elsif (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length || 0) <= 1
         shelfkey = call_number_object.to_shelfkey
-        volume_sort = call_number_object.to_shelfkey
+        volume_sort = call_number_object.to_volume_sort
         reverse_shelfkey = call_number_object.to_reverse_shelfkey
-        lopped_call_number = holding.call_number.to_s
-
-        if holding.call_number.to_s != call_number_object.call_number
-          lopped_call_number = nil
-          volume_sort = nil
-          scheme = call_number_object.scheme.upcase
-        end
+        lopped_call_number = call_number_object.call_number
       else
         # there's more than one item in the library/home_location/call_number_type, so we lop
         shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
-        volume_sort = call_number_object.to_shelfkey
+        volume_sort = call_number_object.to_volume_sort
         reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
         lopped_call_number = call_number_object.lopped == holding.call_number.to_s ? holding.call_number.to_s : "#{call_number_object.lopped} ..."
       end
     else
+      scheme = ''
       shelfkey = ''
       volume_sort = ''
       reverse_shelfkey = ''
