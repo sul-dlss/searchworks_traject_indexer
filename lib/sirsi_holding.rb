@@ -19,15 +19,19 @@ class SirsiHolding
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :call_number, :current_location, :home_location, :library, :scheme, :type, :barcode
+  attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode
   def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '', barcode: '')
-    @call_number = CallNumber.new(call_number)
+    @call_number = call_number
     @current_location = current_location
     @home_location = home_location
     @library = library
     @scheme = scheme
     @type = type
     @barcode = barcode
+  end
+
+  def call_number
+    CallNumber.new(normalize_call_number(@call_number))
   end
 
   def skipped?
@@ -100,6 +104,15 @@ class SirsiHolding
   end
 
   private
+
+  # Call number normalization ported from solrmarc code
+  def normalize_call_number(call_number = '')
+    return call_number unless %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
+    call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+    call_number = call_number.gsub(/\. \./, ' .') # reduce double periods to a single period
+    call_number = call_number.gsub(/(\d+\.) ([A-Z])/, "\1\2") # remove space after a period if period is after digits and before letters
+    call_number.sub(/\.$/, '') # remove trailing period
+  end
 
   def physics_not_temp?
     library == 'PHYSICS' && ![home_location, current_location].include?('PHYSTEMP')
