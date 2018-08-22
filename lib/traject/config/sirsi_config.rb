@@ -595,12 +595,12 @@ to_field 'pub_date_sort' do |record, accumulator|
   end
 
   # find a valid year in the 264c with ind2 = 1
-  year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+  year ||= Traject::MarcExtractor.new('264c', alternate_script: false).to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
     next unless field.indicator2 == '1'
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
   end.compact.first
 
-  year ||= Traject::MarcExtractor.new('260c:264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+  year ||= Traject::MarcExtractor.new('260c:264c', alternate_script: false).to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
   end.compact.first
 
@@ -663,7 +663,7 @@ to_field 'pub_year_tisim' do |record, accumulator|
   end
 
   if accumulator.empty?
-    Traject::MarcExtractor.new('260c').collect_matching_lines(record) do |field, spec, extractor|
+    Traject::MarcExtractor.new('260c', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
       accumulator.concat extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }
     end
   end
