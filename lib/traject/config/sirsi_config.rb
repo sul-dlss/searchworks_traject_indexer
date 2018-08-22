@@ -1404,8 +1404,17 @@ to_field 'issn_display' do |record, accumulator, context|
   accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
 end
 
-to_field 'lccn', extract_marc('010a:010z', first: true) do |record, accumulator|
-  accumulator.map!(&:strip)
+to_field 'lccn', extract_marc('010a', first: true) do |record, accumulator|
+  lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
+  accumulator.select! { |x| x =~ lccn_pattern }
+
+  accumulator.map! do |value|
+    value.gsub(lccn_pattern, '\1')
+  end
+end
+
+to_field 'lccn', extract_marc('010z', first: true) do |record, accumulator, context|
+  accumulator.replace([]) and next unless context.output_hash['lccn'].nil?
   lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
   accumulator.select! { |x| x =~ lccn_pattern }
 
