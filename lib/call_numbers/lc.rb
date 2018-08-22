@@ -61,7 +61,6 @@ module CallNumbers
     private
 
     def shelfkey_class
-      return CallNumbers::SerialShelfkey if serial
       CallNumbers::Shelfkey
     end
   end

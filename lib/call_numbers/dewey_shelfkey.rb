@@ -12,11 +12,17 @@ module CallNumbers
         normalize_dewey_cutter(cutter2),
         normalize_dewey_cutter(cutter3),
         (folio || '').downcase.strip,
-        self.class.pad_all_digits(rest)
+        rest_with_serial_behavior
       ].compact.reject(&:empty?).join(' ').strip
     end
 
     private
+
+    def rest_with_serial_behavior
+      return unless rest
+      return self.class.pad_all_digits(rest) unless serial
+      self.class.reverse(self.class.pad_all_digits(rest))
+    end
 
     def klass_number_and_decimal
       [
