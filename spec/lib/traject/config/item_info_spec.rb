@@ -465,207 +465,90 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    skip 'lopped call numbers' do
-      # 	/**
-      # 	 * test if item_display field is populated correctly, focused on lopped callnums
-      # 	 *  item_display contains:  (separator is " -|- ")
-      # 	 *    barcode -|- library(short version) -|- location -|-
-      # 	 *     lopped call number (no volume/part info) -|-
-      # 	 *     shelfkey (from lopped call num) -|-
-      # 	 *     reverse_shelfkey (from lopped call num) -|-
-      # 	 *     full callnum -|- callnum sortable for show view
-      # 	 */
-      #  @Test
-      # 	public final void testItemDisplayLoppedCallnums()
-      # 			throws ParserConfigurationException, IOException, SAXException
-      # 	{
-      # 		String fldName = "item_display";
-      # 	    String testFilePath = testDataParentPath + File.separator + "buildingTests.mrc";
-      #
-      # 		// LC
-      # 		String id = "460947";
-      # 		String callnum = "E184.S75 R47A V.1 1980";
-      # 		String lopped = "E184.S75 R47A ...";
-      # 		String shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		String reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		String volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		String fldVal = "36105007402873 -|- SCIENCE -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      # 		id = "575946";
-      # 		callnum = "CB3 .A6 SUPPL. V.31";
-      # // TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
-      # 		lopped = "CB3 .A6 SUPPL. ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, !isSerial, id);
-      # 		fldVal = "36105035087092 -|- GREEN -|- STACKS -|- CHECKEDOUT" + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      # 		// DEWEY (no vol)
-      # 		id = "690002";
-      # 		callnum = "159.32 .W211";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.DEWEY, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.DEWEY, !isSerial, id);
-      # 		fldVal = "36105046693508 -|- SAL3 -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.DEWEY;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      # 		// SUDOC (no vol)
-      # 		id = "2557826";
-      # 		callnum = "E 1.28:COO-4274-1";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.SUDOC, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.SUDOC, !isSerial, id);
-      # 		fldVal = "001AMR5851 -|- GREEN -|- FED-DOCS -|- " + SEP + "GOVSTKS" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.SUDOC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      #
-      # 	    testFilePath = testDataParentPath + File.separator + "itemDisplayTests.mrc";
-      #
-      # 		// LCPER
-      # 		id = "460947";
-      # 		callnum = "E184.S75 R47A V.1 1980";
-      # 		lopped = "E184.S75 R47A ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		fldVal = "36105007402873 -|- GREEN -|- ON-ORDER -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		// DEWEYPER (no vol)
-      # 		id = "446688";
-      # 		callnum = "666.27 .F22";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.DEWEY, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.DEWEY, !isSerial, id);
-      # 		fldVal = "36105007402873 -|- GREEN -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP  + SEP + CallNumberType.DEWEY;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		// ALPHANUM-SUSEL (no vol)
-      # 		id = "4578538";
-      # 		callnum = "SUSEL-69048";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.OTHER, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.OTHER, !isSerial, id);
-      # 		fldVal = "36105046377987 -|- SAL3 -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		// ALPHANUM - MFILM ... which is no longer lopped 12-03-09
-      # 		id = "1261173";
-      # 		callnum = "MFILM N.S. 1350 REEL 230 NO. 3741";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.OTHER, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.OTHER, !isSerial, id);
-      # 		fldVal = "001AFX2969 -|- GREEN -|- MEDIA-MTXT -|- " + SEP + "NH-MICR" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		// ALPHANUM - MCD
-      # 		id = "1234673";
-      # 		callnum = "MCD Brendel Plays Beethoven's Eroica variations";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.OTHER, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.OTHER, !isSerial, id);
-      # 		fldVal = "001AFX2969 -|- GREEN -|- MEDIA-MTXT -|- " + SEP + "NH-MICR" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      # 		// multiple items with same call number
-      # 		id = "3941911";
-      # 		callnum = "PS3557 .O5829 K3 1998";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.LC, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.LC, !isSerial, id);
-      # 		fldVal = "36105025373064 -|- GREEN -|- BENDER -|- " + SEP + "NONCIRC" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP +  SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		fldVal = "36105019748495 -|- GREEN -|- BENDER -|- " + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP +  SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		// multiple items with same call number due to vol lopping
-      # 		id = "111";
-      # 		callnum = "PR3724.T3 A2 V.12";
-      # 		lopped = "PR3724.T3 A2 ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, !isSerial, id);
-      # 		fldVal = "36105003934432 -|- GREEN -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		callnum = "PR3724.T3 A2 V.1";
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, !isSerial, id);
-      # 		fldVal = "36105003934424 -|- GREEN -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		callnum = "PR3724.T3 A2 V.2";
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, !isSerial, id);
-      # 		fldVal = "36105048104132 -|- GREEN -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      # 		// multiple items with same call number due to mult buildings
-      # 		id = "222";
-      # 		callnum = "PR3724.T3 V2";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(callnum, CallNumberType.LC, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, callnum, shelfkey, CallNumberType.LC, !isSerial, id);
-      # 		fldVal = "36105003934432 -|- GREEN -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 		fldVal = "36105003934424 -|- SAL -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				callnum + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      #
-      # 		// invalid LC call number
-      # 		id = "4823592";
-      # 		callnum = "Y 4.G 74/7:G 21/10";
-      # 		lopped = CallNumUtils.removeLCVolSuffix(callnum);
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.OTHER, "4823592").toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.OTHER, !isSerial, id);
-      # 		fldVal = "36105063104488 -|- LAW -|- BASEMENT -|- " + SEP + "LAW-STKS" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.OTHER;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 	}
-      #
+    describe 'lopped call numbers' do
+      let(:fixture_name) { 'buildingTests.mrc' }
+
+      it 'has the right data' do
+        pending
+
+        item_display = select_by_id('460947')[field]
+        expect(item_display).to eq [
+          '36105007402873 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000 a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
+        ]
+
+        # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
+        item_display = select_by_id('575946')[field]
+        expect(item_display).to eq [
+          '36105035087092 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.31 -|- lc cb  0003.000000 a0.600000 suppl. v.000031 -|-  -|- LC'
+        ]
+        item_display = select_by_id('690002')[field]
+        expect(item_display).to eq [
+          '36105046693508 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|- ml3l1~yuq}wxzzzzzz~3xyy~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|-  -|- DEWEY'
+        ]
+        item_display = select_by_id('2557826')[field]
+        expect(item_display).to eq [
+          '001AMR5851 -|- GREEN -|- FED-DOCS -|-  -|- GOVSTKS -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|- 75mbn~l~zzzzzy}zzzzxr~nbb~zzvxsv~zzzzzy~~~~~~~~~~~ -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|-  -|- SUDOC'
+        ]
+        item_display = select_by_id('460947')[field]
+        expect(item_display).to eq [
+          '36105007402873 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000 a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
+        ]
+        item_display = select_by_id('446688')[field]
+        expect(item_display).to eq [
+          '36105007402873 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|- ml3l1~ttt}xszzzzzz~kxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|-  -|- DEWEY'
+        ]
+        item_display = select_by_id('4578538')[field]
+        expect(item_display).to eq [
+          '36105046377987 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- SUSEL-69048 -|- other susel-069048 -|- b6il8~757le~ztqzvr~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- SUSEL-69048 -|- other susel-069048 -|-  -|- ALPHANUM'
+        ]
+        item_display = select_by_id('1261173')[field]
+        expect(item_display).to eq [
+          '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|- b6il8~dkhed~c}7}~zzywuz~8lle~zzzxwz~cb}~zzwsvy~~~~ -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|-  -|- ALPHANUM'
+        ]
+        item_display = select_by_id('1234673')[field]
+        expect(item_display).to eq [
+          '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|- b6il8~dnm~o8lcmle~aep17~oll6ib4lc~7~l8bhnp~4p8hp6hbc7 -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|-  -|- ALPHANUM'
+        ]
+
+        item_display = select_by_id('3941911')[field]
+        expect(item_display).to eq [
+          '36105025373064 -|- GREEN -|- BENDER -|-  -|- NONCIRC -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC',
+          '36105019748495 -|- GREEN -|- BENDER -|-  -|- STKS-MONO -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC'
+        ]
+        item_display = select_by_id('111')[field]
+        expect(item_display).to eq [
+          '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000  ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~~}}}~~~~~~~~~~~~~~~~~ -|- PR3724.T3 A2 V.12 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000012 -|-  -|- LC',
+          '36105003934424 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000  ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~~}}}~~~~~~~~~~~~~~~~~ -|- PR3724.T3 A2 V.1 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000001 -|-  -|- LC',
+          '36105048104132 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000  ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~~}}}~~~~~~~~~~~~~~~~~ -|- PR3724.T3 A2 V.2 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000002 -|-  -|- LC'
+        ]
+
+        item_display = select_by_id('222')[field]
+        expect(item_display).to eq [
+          '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~4z}xzzzzz~~~~~~~~~~~~ -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|-  -|- LC',
+          '36105003934424 -|- SAL -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~4z}xzzzzz~~~~~~~~~~~~ -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|-  -|- LC'
+        ]
+
+        item_display = select_by_id('4823592')[field]
+        expect(item_display).to eq [
+          '36105063104488 -|- LAW -|- BASEMENT -|-  -|- LAW-STKS -|- Y 4.G 74/7:G 21/10 -|- other y 000004.g 000074/000007:g 000021/000010 -|- b6il8~1~zzzzzv}j~zzzzsv~zzzzzs~j~zzzzxy~zzzzyz~~~~ -|- Y 4.G 74/7:G 21/10 -|- other y 000004.g 000074/000007:g 000021/000010 -|-  -|- OTHER'
+        ]
+      end
     end
 
     describe 'forward sort key (shelfkey)' do
       let(:fixture_name) { 'buildingTests.mrc' }
 
-      it 'has the correct data' do
+      it 'has the shelfkey for the lopped call number' do
+        pending
 
+        item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
+
+        expect(item_display).to eq [
+          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
+          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000 a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~',
+          'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
+        ]
       end
-      # 	/**
-      # 	 * test if item_display field is populated correctly, focused on forward sorting callnums
-      # 	 *  item_display contains:  (separator is " -|- ")
-      # 	 *    barcode -|- library(short version) -|- location -|-
-      # 	 *     lopped call number (no volume/part info) -|-
-      # 	 *     shelfkey (from lopped call num) -|-
-      # 	 *     reverse_shelfkey (from lopped call num) -|-
-      # 	 *     full callnum -|- callnum sortable for show view
-      # 	 */
-      # @Test
-      # 	public final void testItemDisplayShelfkey()
-      # 			throws ParserConfigurationException, IOException, SAXException
-      # 	{
-      # 		String fldName = "item_display";
-      # 	    String testFilePath = testDataParentPath + File.separator + "buildingTests.mrc";
-      #
-      # 		// are we getting the shelfkey for the lopped call number?
-      # 		String id = "460947";
-      # 		String callnum = "E184.S75 R47A V.1 1980";
-      # 		String lopped = "E184.S75 R47A ...";
-      # 		String shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		String reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		String volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		String fldVal = "36105007402873 -|- SCIENCE -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
     end
 
     describe 'public note' do
@@ -784,35 +667,19 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    skip 'reverse shelfkeys' do
+    describe 'reverse shelfkeys' do
       let(:fixture_name) { 'buildingTests.mrc' }
-      # /**
-      # 	 * test if item_display field is populated correctly, focused on backward sorting callnums
-      # 	 *  item_display contains:  (separator is " -|- ")
-      # 	 *    barcode -|- library(short version) -|- location -|-
-      # 	 *     lopped call number (no volume/part info) -|-
-      # 	 *     shelfkey (from lopped call num) -|-
-      # 	 *     reverse_shelfkey (from lopped call num) -|-
-      # 	 *     full callnum -|- callnum sortable for show view
-      # 	 */
-      # @Test
-      # 	public final void testItemDisplayReverseShelfkey()
-      # 			throws ParserConfigurationException, IOException, SAXException
-      # 	{
-      # 		String fldName = "item_display";
-      # 	    String testFilePath = testDataParentPath + File.separator + "buildingTests.mrc";
-      #
-      # 		// are we getting the reverse shelfkey for the lopped call number?
-      # 		String id = "460947";
-      # 		String callnum = "E184.S75 R47A V.1 1980";
-      # 		String lopped = "E184.S75 R47A ...";
-      # 		String shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.LC, id).toLowerCase();
-      # 		String reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		String volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		String fldVal = "36105007402873 -|- SCIENCE -|- STACKS -|- " + SEP + "STKS-MONO" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort  + SEP + SEP + CallNumberType.LC;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, fldName, fldVal);
-      # 	}
+
+      it 'has the reversed shelfkey for the lopped call number' do
+        pending
+
+        item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
+        expect(item_display).to eq [
+          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
+          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000 a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~',
+          'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
+        ]
+      end
     end
 
     describe 'full call numbers' do
@@ -999,6 +866,7 @@ RSpec.describe 'ItemInfo config' do
           expect(select_by_id('460947')[field].first).to include(
             '-|- E184.S75 R47A V.1 1980 -|-'
           )
+
           # Note that the previous shelfkey had "r0.470000 a" instead of "r0.470000a"
           expect(select_by_id('460947')[field].first).to include(
             '-|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-'
@@ -1035,71 +903,45 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    skip 'shefkey field data is the same as the field in the item_display' do
-      # 	/**
-      # 	 * test if shelfkey field data (for searching) matches shelfkey in
-      # 	 * item_display field
-      # 	 */
-      # @Test
-      # 	public void testShelfkeyMatchesItemDisp()
-      # 			throws ParserConfigurationException, IOException, SAXException
-      # 	{
-      # 	    String testFilePath = testDataParentPath + File.separator + "shelfkeyMatchItemDispTests.mrc";
-      #
-      # 		// shelfkey should be same in item_display and in shelfkey fields
-      # 	    String id = "5788269";
-      # 	    String callnum = "CALIF A125 .A34 2002";
-      # 	    String lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.OTHER, isSerial) + " ...";
-      # 	    String shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.OTHER, id).toLowerCase();
-      # 	    String reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 	    String volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 	    String fldVal = "36105122888543 -|- GREEN -|- CALIF-DOCS" + SEP + SEP + "GOVSTKS" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
-      #
-      # 	    id = "409752";
-      # 		callnum = "CALIF A125 .B9 V.17 1977:NO.3";
-      # 		lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.OTHER, isSerial) + " ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.OTHER, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		fldVal = "36105127370745 -|- GREEN -|- CALIF-DOCS" + SEP + SEP + "GOVSTKS" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
-      # 		callnum = "CALIF A125 .B9 V.7-15 1966-1977:NO.1";
-      # 		lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.OTHER, isSerial) + " ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.OTHER, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		fldVal = "36105127370737 -|- GREEN -|- CALIF-DOCS -|- " + SEP + "GOVSTKS" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.ALPHANUM;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
-      # id = "373245";
-      # callnum = "553.2805 .P187 V.1-2 1916-1918";
-      # lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.DEWEY, isSerial) + " ...";
-      # shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.DEWEY, id).toLowerCase();
-      # reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # fldVal = "36105027549075 -|- SAL3 -|- STACKS -|- " + SEP + "STKS-PERI" + SEP +
-      #   lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.DEWEY;
-      # solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
-      # solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
-      #
-      # 	    id = "373759";
-      # 		callnum = "553.2805 .P494 V.11 1924:JAN.-JUNE";
-      # 		lopped = CallNumUtils.getLoppedCallnum(callnum, CallNumberType.DEWEY, isSerial) + " ...";
-      # 		shelfkey = edu.stanford.CallNumUtils.getShelfKey(lopped, CallNumberType.DEWEY, id).toLowerCase();
-      # 		reversekey = org.solrmarc.tools.CallNumUtils.getReverseShelfKey(shelfkey).toLowerCase();
-      # 		volSort = edu.stanford.CallNumUtils.getVolumeSortCallnum(callnum, lopped, shelfkey, CallNumberType.LC, isSerial, id);
-      # 		fldVal = "36105027313985 -|- SAL3 -|- STACKS -|- " + SEP + "STKS-PERI" + SEP +
-      # 				lopped + SEP + shelfkey + SEP + reversekey + SEP + callnum + SEP + volSort + SEP + SEP + CallNumberType.DEWEY;
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "item_display", fldVal);
-      # 	    solrFldMapTest.assertSolrFldValue(testFilePath, id, "shelfkey", shelfkey);
-      # 	}
-      #
+    describe 'shefkey field data is the same as the field in the item_display' do
+      let(:fixture_name) { 'shelfkeyMatchItemDispTests.mrc' }
+
+      it 'has the same shelfkey in the field as it does in the item_display' do
+        pending
+
+        item_display = select_by_id('5788269')[field].first.split('-|-').map(&:strip)
+        expect(item_display).to eq [
+          '36105122888543', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS',
+          'CALIF A125 .A34 ...', 'other calif a000125 .a000034 ...', 'b6il8~npehk~pzzzyxu~}pzzzzwv~}}}~~~~~~~~~~~~~~~~~~',
+          'CALIF A125 .A34 2002', 'other calif a000125 .a000034 zzxzzx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'ALPHANUM'
+        ]
+        expect(select_by_id('5788269')['shelfkey']).to eq ['other calif a000125 .a000034 ...']
+
+        item_display = select_by_id('409752')[field].first.split('-|-').map(&:strip)
+        expect(item_display).to eq [
+          '36105127370737', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS',
+          'CALIF A125 .B9 ...', 'other calif a000125 .b000009 ...', 'b6il8~npehk~pzzzyxu~}ozzzzzq~}}}~~~~~~~~~~~~~~~~~~',
+          'CALIF A125 .B9 V.7-15 1966-1977:NO.1', 'other calif a000125 .b000009 4}zzzzzs~zzzzyu~zzyqtt~zzyqss~cb}zzzzzy~~~~~~~~~~~', '', 'ALPHANUM'
+        ]
+        expect(select_by_id('409752')['shelfkey']).to eq ['other calif a000125 .b000009 ...']
+
+        item_display = select_by_id('373245')[field].first.split('-|-').map(&:strip)
+        expect(item_display).to eq [
+          '36105027549075', 'SAL3', 'STACKS', '', 'STKS-PERI',
+          '553.2805 .P187 ...', 'dewey 553.28050000 p187 ...', 'ml3l1~uuw}xrzuzzzz~ayrs~}}}~~~~~~~~~~~~~~~~~~~~~~~',
+          '553.2805 .P187 V.1-2 1916-1918', 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~', '', 'DEWEY'
+        ]
+        expect(select_by_id('373245')['shelfkey']).to eq ['dewey 553.28050000 p187 ...']
+
+        item_display = select_by_id('373759')[field].first.split('-|-').map(&:strip)
+        expect(item_display).to eq [
+          '36105027313985', 'SAL3', 'STACKS', '', 'STKS-PERI',
+          '553.2805 .P494 ...', 'dewey 553.28050000 p494 ...', 'b6il8~npehk~pzzzyxu~}pzzzzwv~~~~~~~~~~~~~~~~~~~~~~',
+          '553.2805 .P494 V.11 1924:JAN.-JUNE', 'dewey 553.28050000 p494 4}zzzzyy~zzyqxv~gpc}~g5cl~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'DEWEY'
+        ]
+        expect(select_by_id('373759')['shelfkey']).to eq ['dewey 553.28050000 p494 ...']
+
+      end
     end
 
     context 'when a record has multiple copies' do
