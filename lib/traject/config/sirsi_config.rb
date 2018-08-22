@@ -2104,7 +2104,7 @@ to_field 'item_display' do |record, accumulator, context|
       holding.type,
       lopped_call_number,
       shelfkey,
-      (reverse_shelfkey.ljust(50, '~') unless (reverse_shelfkey || '').empty?),
+      (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty?),
       call_number,
       volume_sort,
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),

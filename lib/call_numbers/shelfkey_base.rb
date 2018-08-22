@@ -31,7 +31,7 @@ module CallNumbers
     end
 
     def to_reverse_shelfkey
-      self.class.reverse(to_shelfkey)
+      self.class.reverse(to_shelfkey).ljust(50, '~')
     end
 
     class << self

@@ -40,7 +40,7 @@ module CallNumbers
     end
 
     def to_reverse_shelfkey
-      CallNumbers::ShelfkeyBase.reverse(to_shelfkey)
+      CallNumbers::ShelfkeyBase.reverse(to_shelfkey).ljust(50, '~')
     end
   end
 end

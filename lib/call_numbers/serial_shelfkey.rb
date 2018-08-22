@@ -21,7 +21,7 @@ module CallNumbers
 
     def rest_with_serial_behavior
       return unless rest
-      self.class.reverse(self.class.pad_all_digits(rest.downcase)).strip
+      self.class.reverse(self.class.pad_all_digits(rest.downcase)).strip.ljust(50, '~')
     end
   end
 end
