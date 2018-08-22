@@ -1219,15 +1219,17 @@ to_field 'format_physical_ssim' do |record, accumulator|
 end
 
 to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}", alternate_script: false) do |record, accumulator|
-  values = accumulator.dup.join("\n")
+  values = accumulator.dup
   accumulator.replace([])
 
-  if values =~ %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,;.])? (c )?(4 3/4|12 c)}
-    accumulator << 'CD' unless values =~ /(DVD|SACD|blu[- ]?ray)/
-  end
+  values.each do |value|
+    if value =~ %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,\;.])? (c )?(4 3/4|12 c)}
+      accumulator << 'CD' unless value =~ /(DVD|SACD|blu[- ]?ray)/
+    end
 
-  if values =~ %r{33(\.3| 1/3) ?rpm}
-    accumulator << 'Vinyl disc' if values =~ /(10|12) ?in/
+    if value =~ %r{33(\.3| 1/3) ?rpm}
+      accumulator << 'Vinyl disc' if value =~ /(10|12) ?in/
+    end
   end
 end
 
