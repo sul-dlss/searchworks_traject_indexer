@@ -2051,7 +2051,7 @@ to_field 'item_display' do |record, accumulator, context|
 
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-    call_number = holding.call_number unless holding.ignored_call_number?
+    call_number = holding.call_number
     call_number_object = call_number_for_holding(record, holding, context)
 
     if call_number_object
@@ -2098,11 +2098,11 @@ to_field 'item_display' do |record, accumulator, context|
       holding.home_location,
       holding.current_location,
       holding.type,
-      lopped_call_number,
+      (lopped_call_number unless holding.ignored_call_number?),
       shelfkey,
       (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty?),
-      call_number,
-      volume_sort,
+      (call_number unless holding.ignored_call_number?),
+      (volume_sort unless holding.ignored_call_number?),
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
       scheme
     ].join(' -|- ')
