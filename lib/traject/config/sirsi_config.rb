@@ -8,6 +8,7 @@ require 'mhld_field'
 require 'utils'
 require 'csv'
 require 'i18n'
+require 'traject/http_rb_http_client'
 
 I18n.available_locales = [:en]
 
@@ -26,6 +27,7 @@ settings do
   provide 'reserves_file', ENV['RESERVES_FILE']
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
+  provide 'solr_json_writer.http_client', Traject::HttpRbHttpClient.new
 end
 
 # Change the XMLNS to match how solrmarc handles this
