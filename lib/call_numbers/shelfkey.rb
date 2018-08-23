@@ -21,7 +21,7 @@ module CallNumbers
 
     def rest_with_serial_behavior
       return unless rest
-      return if rest.empty? && (call_number.scheme == 'LC' || call_number.scheme == 'DEWEY')
+      return if rest.empty? && (call_number.scheme == 'lc' || call_number.scheme == 'dewey')
       return self.class.pad_all_digits(rest) unless serial
 
       self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
