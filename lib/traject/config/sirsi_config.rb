@@ -1771,9 +1771,32 @@ end
 # return the reverse String value, mapping A --> 9, B --> 8, ...
 #   9 --> A and also non-alphanum to sort properly (before or after alphanum)
 to_field 'reverse_shelfkey' do |record, accumulator, context|
-  accumulator.concat(Array(context.output_hash['shelfkey']).map do |shelfkey|
-    CallNumbers::ShelfkeyBase.reverse(shelfkey).ljust(50, '~')
-  end)
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
+
+  record.each_by_tag('999') do |item_999|
+    holding = SirsiHolding.new(
+      call_number: (item_999['a'] || '').strip,
+      current_location: item_999['k'],
+      home_location: item_999['l'],
+      library: item_999['m'],
+      scheme: item_999['w'],
+      type: item_999['t']
+    )
+
+    next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
+    non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
+
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]])
+
+    if stuff_in_the_same_library.length > 1
+      call_number_object = call_number_for_holding(record, holding, context)
+      lopped_shelfkey = call_number_object.to_lopped_reverse_shelfkey
+
+      accumulator << lopped_shelfkey
+    else
+      accumulator << call_number_for_holding(record, holding, context).to_reverse_shelfkey
+    end
+  end
 end
 
 #
