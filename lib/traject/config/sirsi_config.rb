@@ -2123,6 +2123,28 @@ to_field 'item_display' do |record, accumulator, context|
   end
 end
 
+to_field 'item_display' do |record, accumulator, context|
+  next if record['999']
+
+  order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(record)
+  translation_map = Traject::TranslationMap.new('library_on_order_map')
+
+  order_libs.each do |order_lib|
+    accumulator << [
+      '',
+      translation_map[order_lib],
+      'ON-ORDER',
+      'ON-ORDER',
+      '',
+      '',
+      '',
+      '',
+      '',
+      ''
+    ].join(' -|- ')
+  end
+end
+
 ##
 # Skip records for missing `item_display` field
 each_record do |record, context|
@@ -2428,7 +2450,7 @@ to_field 'crez_course_info' do |record, accumulator, context|
 end
 
 each_record do |record, context|
-  context.output_hash.reject { |k, v| k == 'mhld_display' || k =~ /^url_/ || k =~ /^marc/}.transform_values do |v|
+  context.output_hash.reject { |k, v| k == 'mhld_display' || k == 'item_display' || k =~ /^url_/ || k =~ /^marc/}.transform_values do |v|
     v.map! do |x|
       x.respond_to?(:strip) ? x.strip : x
     end
