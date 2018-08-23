@@ -2131,11 +2131,14 @@ to_field 'item_display' do |record, accumulator, context|
       lopped_call_number = holding.call_number.to_s
     end
 
+    current_location = holding.current_location
+    current_location = 'ON-ORDER' if (holding.is_on_order? || holding.is_in_process?) && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
+
     accumulator << [
       item_999['i'],
       holding.library,
       holding.home_location,
-      holding.current_location,
+      current_location,
       holding.type,
       (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (shelfkey unless holding.lost_or_missing?),
