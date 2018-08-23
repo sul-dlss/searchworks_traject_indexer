@@ -1490,12 +1490,13 @@ each_record do |record, context|
 end
 
 def call_number_for_holding(record, holding, context)
+  return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
+
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
   separate_browse_call_num = []
-
-  if (holding.call_number.to_s.empty? || holding.ignored_call_number?) && !(holding.is_in_process? || holding.is_on_order?)
+  if holding.call_number.to_s.empty? || holding.ignored_call_number?
     if record['086']
       last_086 = record.find_all { |f| f.tag == '086' }.last
       separate_browse_call_num << CallNumbers::Other.new(last_086['a'], scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
@@ -1514,7 +1515,6 @@ def call_number_for_holding(record, holding, context)
     to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number.to_s}")
   ) if holding.bad_lc_lane_call_number?
   return OpenStruct.new(scheme: 'OTHER') if holding.e_call_number?
-  return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
 
   case holding.call_number_type
   when 'LC'
