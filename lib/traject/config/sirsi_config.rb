@@ -2075,8 +2075,8 @@ to_field 'item_display' do |record, accumulator, context|
           lopped_call_number = "Shelved by title"
         end
 
-        enumeration = holding.call_number.to_s[call_number_object.lopped.length..-1].strip
 
+        enumeration = holding.call_number.to_s[call_number_object.lopped.length..-1].strip unless holding.ignored_call_number?
         shelfkey = lopped_call_number.downcase
         reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
 
@@ -2115,11 +2115,11 @@ to_field 'item_display' do |record, accumulator, context|
       holding.home_location,
       holding.current_location,
       holding.type,
-      (lopped_call_number unless holding.ignored_call_number?),
+      (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (shelfkey unless holding.lost_or_missing?),
       (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
-      (call_number unless holding.ignored_call_number?),
-      (volume_sort unless holding.ignored_call_number?),
+      (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
+      (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
       scheme
     ].join(' -|- ')
