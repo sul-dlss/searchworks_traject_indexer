@@ -1515,6 +1515,7 @@ def call_number_for_holding(record, holding, context)
     to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number.to_s}")
   ) if holding.bad_lc_lane_call_number?
   return OpenStruct.new(scheme: 'OTHER') if holding.e_call_number?
+  return OpenStruct.new(scheme: holding.call_number_type) if holding.ignored_call_number?
 
   case holding.call_number_type
   when 'LC'
