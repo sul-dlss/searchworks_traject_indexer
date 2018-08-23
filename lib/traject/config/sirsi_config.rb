@@ -1514,7 +1514,7 @@ def call_number_for_holding(record, holding, context)
     call_number: holding.call_number.to_s,
     to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number.to_s}")
   ) if holding.bad_lc_lane_call_number?
-  return OpenStruct.new(scheme: 'OTHER') if holding.e_call_number?
+  return OpenStruct.new(scheme: holding.call_number_type) if holding.e_call_number?
   return OpenStruct.new(scheme: holding.call_number_type) if holding.ignored_call_number?
 
   case holding.call_number_type
@@ -2098,12 +2098,11 @@ to_field 'item_display' do |record, accumulator, context|
           lopped_call_number = "Shelved by title"
         end
 
-
         enumeration = holding.call_number.to_s[call_number_object.lopped.length..-1].strip unless holding.ignored_call_number?
         shelfkey = lopped_call_number.downcase
         reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
 
-        call_number = [lopped_call_number, (enumeration if enumeration)].compact.join(' ')
+        call_number = [lopped_call_number, (enumeration if enumeration)].compact.join(' ') unless holding.e_call_number?
         volume_sort = [lopped_call_number, (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50, '~') if enumeration)].compact.join(' ').downcase
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
       elsif stuff_in_the_same_library.length <= 1
@@ -2141,7 +2140,7 @@ to_field 'item_display' do |record, accumulator, context|
       (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (shelfkey unless holding.lost_or_missing?),
       (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
-      (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
+      (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number?),
       (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
       scheme
