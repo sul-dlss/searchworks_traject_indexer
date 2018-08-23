@@ -1741,10 +1741,14 @@ to_field 'shelfkey' do |record, accumulator, context|
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-    if non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length.to_i > 1
-      lopped_shelfkey = call_number_for_holding(record, holding, context).to_lopped_shelfkey
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]])
 
-      if lopped_shelfkey != call_number_for_holding(record, holding, context).to_shelfkey
+    if stuff_in_the_same_library.length > 1
+      call_number_object = call_number_for_holding(record, holding, context)
+      lopped_shelfkey = call_number_object.to_lopped_shelfkey
+
+      # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
+      if lopped_shelfkey != call_number_object.to_shelfkey || stuff_in_the_same_library.reject { |x| x.call_number.to_s == holding.call_number.to_s }.select { |x| call_number_for_holding(record, x, context).lopped == call_number_object.lopped }.any?
         accumulator << lopped_shelfkey + " ..."
       else
         accumulator << lopped_shelfkey
@@ -2051,6 +2055,7 @@ to_field 'item_display' do |record, accumulator, context|
 
     call_number = holding.call_number
     call_number_object = call_number_for_holding(record, holding, context)
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]])
 
     if call_number_object
       scheme = call_number_object.scheme.upcase
@@ -2070,7 +2075,7 @@ to_field 'item_display' do |record, accumulator, context|
         call_number = [lopped_call_number, (enumeration if enumeration)].compact.join(' ')
         volume_sort = [lopped_call_number, (CallNumbers::ShelfkeyBase.reverse(enumeration) if enumeration)].compact.join(' ').downcase
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
-      elsif (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]]&.length || 0) <= 1
+      elsif stuff_in_the_same_library.length <= 1
         shelfkey = call_number_object.to_shelfkey
         volume_sort = call_number_object.to_volume_sort
         reverse_shelfkey = call_number_object.to_reverse_shelfkey
@@ -2081,6 +2086,12 @@ to_field 'item_display' do |record, accumulator, context|
         volume_sort = call_number_object.to_volume_sort
         reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
         lopped_call_number = call_number_object.lopped == holding.call_number.to_s ? holding.call_number.to_s : "#{call_number_object.lopped} ..."
+
+        # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
+        if call_number_object.lopped == holding.call_number.to_s && stuff_in_the_same_library.reject { |x| x.call_number.to_s == holding.call_number.to_s }.select { |x| call_number_for_holding(record, x, context).lopped ==  call_number_object.lopped }.any?
+          lopped_call_number += " ..."
+          shelfkey += " ..."
+        end
       end
     else
       scheme = ''
