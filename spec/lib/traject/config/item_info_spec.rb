@@ -890,14 +890,14 @@ RSpec.describe 'ItemInfo config' do
             '-|- 553.2805 .P187 V.1-2 1916-1918 -|-'
           )
           expect(select_by_id('373245')[field].first).to include(
-            '-|- dewey 553.28050000 p187 v.000001-000002 001916-001918 -|-'
+            '-|- dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~ -|-'
           )
 
           expect(select_by_id('373245')[field].last).to include(
             '-|- 553.2805 .P187 V.1-2 1919-1920 -|-'
           )
           expect(select_by_id('373245')[field].last).to include(
-            '-|- dewey 553.28050000 p187 v.000001-000002 001919-001920 -|-'
+            '-|- dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~ -|-'
           )
         end
       end
