@@ -264,8 +264,8 @@ end
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
-to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', alternate_script: false)
-to_field 'vern_author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', alternate_script: :only)
+to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', first: true, alternate_script: false)
+to_field 'vern_author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', first: true, alternate_script: :only)
 to_field 'author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu', alternate_script: false)
 to_field 'vern_author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu', alternate_script: :only)
 to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: false)
@@ -282,11 +282,11 @@ to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn',
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 # # Author Display Fields
-to_field 'author_person_display', extract_marc('100abcdq', alternate_script: false) do |record, accumulator|
+to_field 'author_person_display', extract_marc('100abcdq', first: true, alternate_script: false) do |record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
-to_field 'vern_author_person_display', extract_marc('100abcdq', alternate_script: :only) do |record, accumulator|
+to_field 'vern_author_person_display', extract_marc('100abcdq', first: true, alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'author_person_full_display', extract_marc("100#{ALPHABET}", first: true, alternate_script: false)

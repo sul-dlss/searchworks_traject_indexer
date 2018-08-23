@@ -45,6 +45,11 @@ RSpec.describe 'Author config' do
       expect(results).not_to include hash_including(field => ['Beijing Shi fu nü lian he hui.', '北京市妇女联合会.'])
       expect(results).not_to include hash_including(field => ['北京市妇女联合会.'])
     end
+
+    it 'does not include multiple 1XX fields' do
+      result = select_by_id('12737620')[field]
+      expect(result).to eq ['Institute of Foreign Policy Studies (Kolkata, India),']
+    end
   end
 
   describe 'vern_author_1xx_search' do
