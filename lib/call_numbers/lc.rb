@@ -39,15 +39,17 @@ module CallNumbers
     end
 
     def lopped
-      value = case call_number
+      to_match = [doon2, cutter2, cutter3, folio, rest].compact.reject(&:empty?).join(' ')
+
+      value = case to_match
               when VOL_PATTERN
-                call_number.slice(0...call_number.index(VOL_PATTERN)).strip
+                call_number.slice(0...call_number.index(to_match[VOL_PATTERN])).strip
               when VOL_PATTERN_LOOSER
-                call_number.slice(0...call_number.index(VOL_PATTERN_LOOSER)).strip
+                call_number.slice(0...call_number.index(to_match[VOL_PATTERN_LOOSER])).strip
               when VOL_PATTERN_LETTERS
-                call_number.slice(0...call_number.index(VOL_PATTERN_LETTERS)).strip
+                call_number.slice(0...call_number.index(to_match[VOL_PATTERN_LETTERS])).strip
               when ADDL_VOL_PATTERN
-                call_number.slice(0...call_number.index(ADDL_VOL_PATTERN)).strip
+                call_number.slice(0...call_number.index(to_match[ADDL_VOL_PATTERN])).strip
               else
                 call_number
               end
