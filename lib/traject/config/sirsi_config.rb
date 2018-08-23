@@ -1508,7 +1508,11 @@ def call_number_for_holding(record, holding, context)
 
   return separate_browse_call_num.first if separate_browse_call_num.any?
 
-  return OpenStruct.new(scheme: 'OTHER', call_number: holding.call_number.to_s, to_volume_sort: "other #{holding.call_number.to_s}".downcase) if holding.bad_lc_lane_call_number?
+  return OpenStruct.new(
+    scheme: 'OTHER',
+    call_number: holding.call_number.to_s,
+    to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number.to_s}")
+  ) if holding.bad_lc_lane_call_number?
   return OpenStruct.new(scheme: 'OTHER') if holding.e_call_number?
   return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
 
