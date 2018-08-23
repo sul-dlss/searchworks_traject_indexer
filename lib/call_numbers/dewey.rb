@@ -4,17 +4,17 @@ require 'call_numbers/call_number_base'
 module CallNumbers
   class Dewey < CallNumberBase
     attr_reader :call_number, :serial,
-                :klass_number, :klass_decimal, :doon1, :doon2, :cutter1, :cutter2, :cutter3, :folio, :rest
+                :klass_number, :klass_decimal, :doon1, :doon2, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop
     def initialize(call_number, serial: false)
       match_data = /
         (?<klass_number>\d{1,3})(?<klass_decimal>\.?\d+)?\s*
         (?<doon1>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
         (?<cutter1>[\.\/]?[a-zA-Z]+\d+[a-zA-Z]*)?\s*
-        (?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<potential_stuff_to_lop>(?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
         (?<cutter2>[\.\/]?[a-zA-Z]+\d+[a-zA-Z]*)?\s*
         (?<cutter3>[\.\/]?[a-zA-Z]+\d+[a-zA-Z]*)?
         (?<folio>\s?[F]\s?)?
-        (?<rest>.*)
+        (?<rest>.*))
       /x.match(call_number)
 
       @call_number = call_number
@@ -28,6 +28,7 @@ module CallNumbers
       @cutter3 = match_data[:cutter3]
       @folio = match_data[:folio]
       @rest = match_data[:rest]
+      @potential_stuff_to_lop = match_data[:potential_stuff_to_lop]
       @serial = serial
     end
 
@@ -36,16 +37,15 @@ module CallNumbers
     end
 
     def lopped
-      to_match = [doon2, cutter2, cutter3, folio, rest].compact.reject(&:empty?).join(' ')
-      value = case to_match
+      value = case potential_stuff_to_lop
               when VOL_PATTERN
-                call_number.slice(0...call_number.index(to_match[VOL_PATTERN])).strip
+                call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN])).strip
               when VOL_PATTERN_LOOSER
-                call_number.slice(0...call_number.index(to_match[VOL_PATTERN_LOOSER])).strip
+                call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN_LOOSER])).strip
               when VOL_PATTERN_LETTERS
-                call_number.slice(0...call_number.index(to_match[VOL_PATTERN_LETTERS])).strip
+                call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN_LETTERS])).strip
               when ADDL_VOL_PATTERN
-                call_number.slice(0...call_number.index(to_match[ADDL_VOL_PATTERN])).strip
+                call_number.slice(0...call_number.index(potential_stuff_to_lop[ADDL_VOL_PATTERN])).strip
               else
                 call_number
               end
