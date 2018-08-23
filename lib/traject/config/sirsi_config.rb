@@ -1958,8 +1958,11 @@ to_field 'preferred_barcode' do |record, accumulator, context|
     lopped_call_number.length
   end.last if checking_for_ties_holdings.length > 1
 
-  # Prefer items with the shortest call number
-  holding_with_the_most_recent_shelfkey = callnumber_with_the_most_items.max_by { |holding| holding.call_number.to_s }
+  # Prefer items with the first volume sort key
+  holding_with_the_most_recent_shelfkey = callnumber_with_the_most_items.min_by do |holding|
+    call_number_object = call_number_for_holding(record, holding, context)
+    call_number_object.to_volume_sort
+  end
   accumulator << holding_with_the_most_recent_shelfkey.barcode
 end
 
