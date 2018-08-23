@@ -56,16 +56,63 @@ RSpec.describe 'Course reserves config' do
     let(:fixture_name) { '444.marc' }
     let(:field) { 'item_display' }
     it 'updates item_display with crez info' do
-      # TODO: verify me!
-      expect(result[field]).to eq ["36105041844338 -|- MUSIC -|- SCORES -|-  -|- SCORE -|-  -|-  -|-  -|- M1048 .B41 C7 1973 -|-  -|-  -|- LC"]
+      expect(result[field]).to eq ['36105041844338 -|- MUSIC -|- SCORES -|- GREEN-RESV -|- SCORE -|-  -|-  -|-  -|- M1048 .B41 C7 1973 -|-  -|-  -|- LC -|- AMSTUD-214 -|- GREEN-RESV -|- 2-hour loan']
     end
   end
 
   describe 'building_facet' do
-    let(:fixture_name) { '444.marc' }
+    let(:indexer) do
+      Traject::Indexer.new.tap do |i|
+        i.settings('reserves_file' => 'spec/fixtures/files/rezdeskbldg.csv')
+        i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      end
+    end
     let(:field) { 'building_facet' }
-    it 'updates building_facet with crez info' do
-      result
+
+    describe 'uses the Course Reserve rez_desk value instead of the item_display library value' do
+      let(:fixture_name) { '9262146.marc' }
+      it 'updates building_facet with crez info' do
+        expect(result[field].length).to eq 2
+        expect(result[field]).to include(
+          'Engineering (Terman)',
+          'Art & Architecture (Bowes)'
+        )
+      end
+      context 'retain the library loc if only some items with that loc are overridden' do
+        let(:fixture_name) { '8834492.marc' }
+        it do
+          expect(result[field].length).to eq 3
+          expect(result[field]).to include(
+            'Engineering (Terman)',
+            'Green',
+            'SAL3 (off-campus storage)'
+          )
+        end
+      end
+      context 'retain the library if the crez location is for the same library' do
+        let(:fixture_name) { '9423045.marc' }
+        it do
+          expect(result[field].length).to eq 1
+          expect(result[field]).to include(
+            'Green'
+          )
+        end
+      end
+      context 'ignore a crez loc with no translation (use the library from item_display)' do
+        let(:fixture_name) { '888.marc' }
+        it do
+          expect(result[field].length).to eq 1
+          expect(result[field]).to include(
+            'SAL3 (off-campus storage)'
+          )
+        end
+      end
+      context 'no building_facet' do
+        let(:fixture_name) { '9434391.marc' }
+        it do
+          expect(result[field]).to be_nil
+        end
+      end
     end
   end
 end
