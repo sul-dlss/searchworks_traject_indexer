@@ -639,7 +639,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['sudoc2'] }
+      specify { expect(result[field]).to eq ['sudoc1'] }
     end
 
     context 'with alphanum only' do
@@ -676,7 +676,6 @@ RSpec.describe 'All_search config' do
 
 
       specify do
-        pending 'Waiting for some decision about how items should be sorted within a lopped call number set'
         expect(result[field]).to eq ['alpha1']
       end
     end
@@ -800,7 +799,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['sudoc5'] }
+      specify { expect(result[field]).to eq ['sudoc3'] }
     end
 
     context 'with alphanum only' do
@@ -842,7 +841,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['alpha5'] }
+      specify { expect(result[field]).to eq ['alpha3'] }
     end
   end
 
