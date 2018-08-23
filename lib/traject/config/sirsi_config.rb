@@ -1508,7 +1508,7 @@ def call_number_for_holding(record, holding, context)
   end
 
   return separate_browse_call_num.first if separate_browse_call_num.any?
-
+# require 'byebug'; byebug
   return OpenStruct.new(
     scheme: 'OTHER',
     call_number: holding.call_number.to_s,
@@ -1517,7 +1517,22 @@ def call_number_for_holding(record, holding, context)
   return OpenStruct.new(scheme: holding.call_number_type) if holding.e_call_number?
   return OpenStruct.new(scheme: holding.call_number_type) if holding.ignored_call_number?
 
-  case holding.call_number_type
+  calculated_call_number_type = case holding.call_number_type
+                                when 'LC'
+                                  if holding.valid_lc?
+                                    'LC'
+                                  elsif holding.dewey?
+                                    'DEWEY'
+                                  else
+                                    'OTHER'
+                                  end
+                                when 'DEWEY'
+                                  'DEWEY'
+                                else
+                                  'OTHER'
+                                end
+
+  case calculated_call_number_type
   when 'LC'
     CallNumbers::LC.new(holding.call_number.to_s, serial: serial)
   when 'DEWEY'
@@ -1528,7 +1543,7 @@ def call_number_for_holding(record, holding, context)
     CallNumbers::Other.new(
       holding.call_number.to_s,
       longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
-      scheme: holding.call_number_type
+      scheme: holding.call_number_type == 'LC' ? 'OTHER' : holding.call_number_type
     )
   end
 end
