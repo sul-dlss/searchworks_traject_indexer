@@ -59,6 +59,8 @@ GEM
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.8)
+    manticore (0.6.4-java)
+      openssl_pkcs8_pure
     marc (1.0.2)
       scrub_rb (>= 1.0.1, < 2)
       unf
@@ -83,7 +85,8 @@ GEM
       activesupport (>= 3.2.18)
       i18n
       nokogiri
-    public_suffix (3.0.2)
+    openssl_pkcs8_pure (0.0.0.2)
+    public_suffix (3.0.3)
     rake (12.3.1)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
@@ -144,6 +147,7 @@ DEPENDENCIES
   dlss-capistrano
   http
   i18n
+  manticore
   rake
   rspec
   stanford-mods

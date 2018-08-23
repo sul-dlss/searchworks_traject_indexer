@@ -10,6 +10,7 @@ end
 
 gem 'http'
 gem 'i18n'
+gem 'manticore', platform: :jruby
 gem 'rake'
 gem 'stanford-mods'
 
