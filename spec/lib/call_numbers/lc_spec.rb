@@ -58,6 +58,11 @@ describe CallNumbers::LC do
         expect(CallNumbers::LC.new('P123.23.M23.S32').cutter1).to eq '.M23'
         expect(CallNumbers::LC.new('P123.23.M23.S32').cutter2).to eq '.S32'
       end
+
+      pending 'parses cutters with no space or period' do
+        expect(CallNumbers::LC.new('P123M23S32').cutter1).to eq 'M23'
+        expect(CallNumbers::LC.new('P123M23S32').cutter2).to eq 'S32'
+      end
     end
 
     describe 'the rest of the stuff' do

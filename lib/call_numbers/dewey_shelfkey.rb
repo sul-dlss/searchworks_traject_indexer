@@ -18,10 +18,12 @@ module CallNumbers
 
     private
 
+    # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
     def rest_with_serial_behavior
       return unless rest
-      return self.class.pad_all_digits(rest) unless serial
-      self.class.reverse(self.class.pad_all_digits(rest))
+      self.class.pad_all_digits(rest)
+      # return self.class.pad_all_digits(rest) unless serial
+      # self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
     end
 
     def klass_number_and_decimal

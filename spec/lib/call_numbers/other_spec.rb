@@ -12,6 +12,7 @@ describe CallNumbers::Other do
   end
 
   describe '#to_reverse_shelfkey' do
+    before { I18n.config.available_locales = :en } # No idea why this is needed
     let(:reverse_shelfkey) { described_class.new('ZDVD 1234').to_reverse_shelfkey }
 
     it 'uses CallNumbers::Shelfkey.reverse to reverse' do
@@ -22,14 +23,14 @@ describe CallNumbers::Other do
     end
   end
 
-  describe '#scheme' do
+  describe '#shelfkey_scheme' do
     it 'is "sudoc" when "SUDOC" is passed' do
-      expect(described_class.new('ZDVD 1234', scheme: 'SUDOC').scheme).to eq 'sudoc'
+      expect(described_class.new('ZDVD 1234', scheme: 'SUDOC').to_shelfkey).to start_with 'sudoc'
     end
 
     it 'is "other" for any other value or nil' do
-      expect(described_class.new('ZDVD 1234', scheme: 'LITERALLY ANYTHING ELSE').scheme).to eq 'other'
-      expect(described_class.new('ZDVD 1234').scheme).to eq 'other'
+      expect(described_class.new('ZDVD 1234', scheme: 'LITERALLY ANYTHING ELSE').to_shelfkey).to start_with 'other'
+      expect(described_class.new('ZDVD 1234').to_shelfkey).to start_with 'other'
     end
   end
 end
