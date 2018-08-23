@@ -60,6 +60,12 @@ describe CallNumbers::Dewey do
         expect(described_class.new('123.23/M23/S32').cutter1).to eq '/M23'
         expect(described_class.new('123.23/M23/S32').cutter2).to eq '/S32'
       end
+
+      it 'parses cutters with no space or period' do
+        expect(described_class.new('123M23S').cutter1).to eq 'M23S'
+        expect(described_class.new('123M23S32').cutter1).to eq 'M23'
+        expect(described_class.new('123M23S32').cutter2).to eq 'S32'
+      end
     end
 
     describe 'the rest of the stuff' do
