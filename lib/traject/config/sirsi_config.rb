@@ -2147,7 +2147,7 @@ to_field 'item_display' do |record, accumulator, context|
     end
 
     current_location = holding.current_location
-    current_location = 'ON-ORDER' if (holding.is_on_order? || holding.is_in_process?) && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
+    current_location = 'ON-ORDER' if holding.is_on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
 
     accumulator << [
       item_999['i'],
