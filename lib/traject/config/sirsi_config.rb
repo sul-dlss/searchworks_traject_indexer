@@ -2020,14 +2020,14 @@ to_field 'preferred_barcode' do |record, accumulator, context|
       barcode: item_999['i']
     )
 
-    next if holding.skipped? || holding.bad_lc_lane_call_number?
+    next if holding.skipped?
 
     holdings << holding
   end
 
-  preferred_holding = holdings.first do |holding|
-    online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
+  online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
 
+  preferred_holding = holdings.first do |holding|
     ignored_call_number? || online_locs.include?(holding.current_location) || online_locs.include?(holding.home_location)
   end
 
