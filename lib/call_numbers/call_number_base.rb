@@ -32,7 +32,14 @@ module CallNumbers
     end
 
     def to_lopped_reverse_shelfkey
-      self.class.new(lopped, serial: serial).to_reverse_shelfkey
+      if lopped == call_number
+        self.class.new(lopped, serial: serial).to_reverse_shelfkey
+      else
+        # Explicitly passing in the ellipsis (as it needs to be reversed)
+        # and dropping the serial since it has already been lopped
+        self.class.new("#{lopped} ...").to_reverse_shelfkey
+      end
+
     end
 
     def to_volume_sort
