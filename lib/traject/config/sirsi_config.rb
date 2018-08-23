@@ -2078,7 +2078,7 @@ to_field 'item_display' do |record, accumulator, context|
         reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
 
         call_number = [lopped_call_number, (enumeration if enumeration)].compact.join(' ')
-        volume_sort = [lopped_call_number, (CallNumbers::ShelfkeyBase.reverse(enumeration) if enumeration)].compact.join(' ').downcase
+        volume_sort = [lopped_call_number, (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50, '~') if enumeration)].compact.join(' ').downcase
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
       elsif stuff_in_the_same_library.length <= 1
         shelfkey = call_number_object.to_shelfkey
