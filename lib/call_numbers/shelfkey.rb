@@ -20,7 +20,7 @@ module CallNumbers
     private
 
     def rest_with_serial_behavior
-      return unless rest
+      return unless rest && !rest.empty?
       return self.class.pad_all_digits(rest) unless serial
       self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
     end
