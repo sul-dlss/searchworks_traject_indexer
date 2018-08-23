@@ -2140,7 +2140,7 @@ to_field 'item_display' do |record, accumulator, context|
       (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (shelfkey unless holding.lost_or_missing?),
       (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
-      (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number?),
+      (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM),
       (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
       (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
       scheme
