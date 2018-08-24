@@ -478,6 +478,7 @@ end
 
 # # publication dates
 def clean_date_string(value)
+  value = value.strip
   valid_year_regex = /(?:20|19|18|17|16|15|14|13|12|11|10|09|08|07|06|05)[0-9][0-9]/
 
   # some nice regular expressions looking for years embedded in strings
@@ -599,12 +600,12 @@ to_field 'pub_date_sort' do |record, accumulator|
   end
 
   # find a valid year in the 264c with ind2 = 1
-  year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+  year ||= Traject::MarcExtractor.new('264c', alternate_script: false).to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
     next unless field.indicator2 == '1'
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
   end.compact.first
 
-  year ||= Traject::MarcExtractor.new('260c:264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+  year ||= Traject::MarcExtractor.new('260c:264c', alternate_script: false).to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
   end.compact.first
 
@@ -667,7 +668,7 @@ to_field 'pub_year_tisim' do |record, accumulator|
   end
 
   if accumulator.empty?
-    Traject::MarcExtractor.new('260c').collect_matching_lines(record) do |field, spec, extractor|
+    Traject::MarcExtractor.new('260c', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
       accumulator.concat extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }
     end
   end
@@ -844,7 +845,7 @@ to_field 'access_facet' do |record, accumulator, context|
 
     next if holding.skipped?
 
-    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || field['a'] == 'INTERNET RESOURCE'
+    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
       accumulator << 'Online'
     elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && field['l'] != 'INPROCESS' && field['k'] != 'INPROCESS' && field['k'] != 'LAC' && field['l'] != 'LAC' && field['m'] != 'HV-ARCHIVE'))
       accumulator << 'On order'
@@ -1223,15 +1224,17 @@ to_field 'format_physical_ssim' do |record, accumulator|
 end
 
 to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}", alternate_script: false) do |record, accumulator|
-  values = accumulator.dup.join("\n")
+  values = accumulator.dup
   accumulator.replace([])
 
-  if values =~ %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,;.])? (c )?(4 3/4|12 c)}
-    accumulator << 'CD' unless values =~ /(DVD|SACD|blu[- ]?ray)/
-  end
+  values.each do |value|
+    if value =~ %r{(sound|audio) discs? (\((ca. )?\d+.*\))?\D+((digital|CD audio)\D*[,\;.])? (c )?(4 3/4|12 c)}
+      accumulator << 'CD' unless value =~ /(DVD|SACD|blu[- ]?ray)/
+    end
 
-  if values =~ %r{33(\.3| 1/3) ?rpm}
-    accumulator << 'Vinyl disc' if values =~ /(10|12) ?in/
+    if value =~ %r{33(\.3| 1/3) ?rpm}
+      accumulator << 'Vinyl disc' if value =~ /(10|12) ?in/
+    end
   end
 end
 
@@ -1408,8 +1411,19 @@ to_field 'issn_display' do |record, accumulator, context|
   accumulator.concat(marc022z.select { |v| v =~ issn_pattern })
 end
 
-to_field 'lccn', extract_marc('010a:010z', first: true) do |record, accumulator|
+to_field 'lccn', extract_marc('010a', first: true) do |record, accumulator|
   accumulator.map!(&:strip)
+  lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
+  accumulator.select! { |x| x =~ lccn_pattern }
+
+  accumulator.map! do |value|
+    value.gsub(lccn_pattern, '\1')
+  end
+end
+
+to_field 'lccn', extract_marc('010z', first: true) do |record, accumulator, context|
+  accumulator.map!(&:strip)
+  accumulator.replace([]) and next unless context.output_hash['lccn'].nil?
   lccn_pattern = /^(([ a-z]{3}\d{8})|([ a-z]{2}\d{10})) ?|( \/.*)?$/
   accumulator.select! { |x| x =~ lccn_pattern }
 

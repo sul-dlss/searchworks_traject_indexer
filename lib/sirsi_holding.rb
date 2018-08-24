@@ -99,7 +99,7 @@ class SirsiHolding
   class CallNumber
     BEGIN_CUTTER_REGEX = /( +|(\.[A-Z])| *\/)/
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
-    VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d+)?( +([\da-z]\w*)|([A-Z]\D+[\w]*))?) *\.?[A-Z]\d+.*/
+    VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+[\w]*))?) *\.?[A-Z]\d+.*/
 
     attr_reader :call_number
     def initialize(call_number)

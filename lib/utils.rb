@@ -19,7 +19,7 @@ module StringScrubbing
     deletes += close_deletes
 
     new_string = string.dup
-    deletes.each do |i|
+    deletes.reverse.each do |i|
       new_string.slice!(i)
     end
     new_string
