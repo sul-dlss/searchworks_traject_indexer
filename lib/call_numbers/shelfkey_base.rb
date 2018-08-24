@@ -19,7 +19,7 @@ module CallNumbers
     )
 
     extend Forwardable
-    delegate %i[scheme klass klass_number klass_decimal doon1 doon2 cutter1 cutter2 cutter3 folio rest serial] => :call_number
+    delegate %i[scheme klass klass_number klass_decimal doon1 doon2 doon3 cutter1 cutter2 cutter3 folio rest serial] => :call_number
 
     attr_reader :call_number
     def initialize(call_number)

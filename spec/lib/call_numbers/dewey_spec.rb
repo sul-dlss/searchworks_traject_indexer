@@ -22,6 +22,10 @@ describe CallNumbers::Dewey do
         expect(described_class.new('123.23 2012 .M23 2002 .M45 V.1').doon2).to match(/^2002/)
       end
 
+      it 'parses a doon after the 2nd cutter and before other cutters' do
+        expect(described_class.new('436.2 .L3 .E63 1997 .E2').doon3).to match(/^1997/)
+      end
+
       it 'allows for characters after the number in the doon (e.g. 12TH)' do
         expect(described_class.new('123.23 20TH .M45 V.1').doon1).to match(/^20TH/)
       end

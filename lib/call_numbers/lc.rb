@@ -4,7 +4,7 @@ require 'call_numbers/call_number_base'
 module CallNumbers
   class LC < CallNumberBase
     attr_reader :call_number, :serial,
-                :klass, :klass_number, :klass_decimal, :doon1, :doon2, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop
+                :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop
 
     def initialize(call_number, serial: false)
       match_data = /
@@ -14,6 +14,7 @@ module CallNumbers
         (?<cutter1>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
         (?<potential_stuff_to_lop>(?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
         (?<cutter2>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
+        (?<doon3>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
         (?<cutter3>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
         (?<folio>(?<=\s)?F{1,2}(?=(\s|$)))?
         (?<rest>.*))
@@ -28,6 +29,7 @@ module CallNumbers
       @cutter1 = match_data[:cutter1]
       @doon2 = match_data[:doon2]
       @cutter2 = match_data[:cutter2]
+      @doon3 = match_data[:doon3]
       @cutter3 = match_data[:cutter3]
       @folio = match_data[:folio]
       @rest = match_data[:rest]

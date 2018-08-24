@@ -11,6 +11,7 @@ module CallNumbers
         self.class.pad_cutter(cutter1),
         self.class.pad_all_digits(doon2),
         self.class.pad_cutter(cutter2),
+        self.class.pad_all_digits(doon3),
         self.class.pad_cutter(cutter3),
         (folio || '').downcase.strip,
         rest_with_serial_behavior
