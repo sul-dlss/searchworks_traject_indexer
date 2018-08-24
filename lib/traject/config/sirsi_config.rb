@@ -1464,6 +1464,8 @@ end
 #
 # # Call Number Fields
 
+LOCATION_MAP = Traject::TranslationMap.new('location_map')
+
 each_record do |record, context|
   non_skipped_or_ignored_holdings = []
 
@@ -1483,7 +1485,7 @@ each_record do |record, context|
 
   # Group by library, home location, and call numbe type
   result = non_skipped_or_ignored_holdings = non_skipped_or_ignored_holdings.group_by do |holding|
-    [holding.library, holding.home_location, holding.call_number_type]
+    [holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]
   end
 
   context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type] = result
@@ -1495,7 +1497,6 @@ def call_number_for_holding(record, holding, context)
     return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
 
     serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-    non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
     separate_browse_call_num = []
     if holding.call_number.to_s.empty? || holding.ignored_call_number?
@@ -1540,7 +1541,9 @@ def call_number_for_holding(record, holding, context)
     when 'DEWEY'
       CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial)
     else
-      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
+      non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
+
+      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
 
       CallNumbers::Other.new(
         holding.call_number.to_s,
@@ -1764,7 +1767,7 @@ to_field 'shelfkey' do |record, accumulator, context|
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]])
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]])
 
     if stuff_in_the_same_library.length > 1
       call_number_object = call_number_for_holding(record, holding, context)
@@ -1804,7 +1807,7 @@ to_field 'reverse_shelfkey' do |record, accumulator, context|
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]])
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]])
 
     if stuff_in_the_same_library.length > 1
       call_number_object = call_number_for_holding(record, holding, context)
@@ -2104,7 +2107,7 @@ to_field 'item_display' do |record, accumulator, context|
 
     call_number = holding.call_number
     call_number_object = call_number_for_holding(record, holding, context)
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.home_location, holding.call_number_type]])
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]])
 
     if call_number_object
       scheme = call_number_object.scheme.upcase
