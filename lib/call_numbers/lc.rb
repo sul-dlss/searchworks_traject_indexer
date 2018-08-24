@@ -11,10 +11,10 @@ module CallNumbers
         (?<klass>[A-Z]{0,3})\s*
         (?<klass_number>\d+)?(?<klass_decimal>\.?\d+)?\s*
         (?<doon1>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
-        (?<cutter1>\.?[a-zA-Z]+\d+([a-zA-Z](?![0-9]))?)?\s*
+        (?<cutter1>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
         (?<potential_stuff_to_lop>(?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
-        (?<cutter2>\.?[a-zA-Z]+\d+([a-zA-Z](?![0-9]))?)?\s*
-        (?<cutter3>\.?[a-zA-Z]+\d+([a-zA-Z](?![0-9]))?)?\s*
+        (?<cutter2>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
+        (?<cutter3>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
         (?<folio>(?<=\s)?F{1,2}(?=(\s|$)))?
         (?<rest>.*))
       /x.match(call_number)
