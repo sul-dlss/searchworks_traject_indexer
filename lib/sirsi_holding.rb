@@ -103,6 +103,23 @@ class SirsiHolding
     temp_call_number? && (current_location == 'ON-ORDER' || (!current_location.nil? && home_location == 'ON-ORDER'))
   end
 
+  def ==(other)
+    self.class === other and
+      other.call_number == @call_number and
+      other.current_location == @current_location and
+      other.home_location == @home_location and
+      other.library == @library and
+      other.scheme == @scheme and
+      other.type == @type and
+      other.barcode == @barcode
+  end
+
+  alias eql? ==
+
+  def hash
+    @call_number.hash ^ @current_location.hash ^ @home_location.hash ^ @library.hash ^ @scheme.hash ^ @type.hash ^ @barcode.hash
+  end
+
   private
 
   # Call number normalization ported from solrmarc code
