@@ -1,0 +1,28 @@
+# orig:  green, art
+# engineering rez desk overrides green
+ENG-RESV|20111216|CURRENT|9262146|36105217614580  |STACKS|GREEN|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Saldivar, Jose David|
+
+# orig:  education, art, green
+#  was education - now engineering rez
+ENG-RESV|20111216|CURRENT|8707706|36105215224689  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Saldivar, Jose David|
+#  was art - now media rez
+MEDIA-RESV|20111216|CURRENT|8707706|36105215166732  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Saldivar, Jose David|
+
+# overriding building with same crez building
+GREEN-RESV|20111216|CURRENT|9423045|36105213280089  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|
+
+# crez desk loc with no translation - should use the regular location
+FAKE-RESV|20111216|CURRENT|888|36105041848594  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|
+
+# crez desk loc with no translation overriding an item display building with no translation
+FAKE-RESV|20111216|CURRENT|9434391|9434391-1001  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|
+
+# crez desk loc overriding an item display building with no translation
+ENG-RESV|20111216|CURRENT|9518589|9518589-1001  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|
+
+# 3 green locations and a sal3 - overriding 2 green
+ENG-RESV|20111216|CURRENT|8834492|36105211764589  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|
+ENG-RESV|20111216|CURRENT|8834492|36105025917340  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|
+
+# single location; overriding with same building
+GREEN-RESV|20111216|CURRENT|4286782|36105028541949  |STACKS|ENG-RESV|ON_RESERVE|2H|20111216|ACTIVE|COMPLIT-101|course name|FALL|Yoda|

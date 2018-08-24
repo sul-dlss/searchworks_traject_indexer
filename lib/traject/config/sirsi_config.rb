@@ -2119,6 +2119,8 @@ end
 REZ_DESK_2_BLDG_FACET = Traject::TranslationMap.new('rez_desk_2_bldg_facet').freeze
 REZ_DESK_2_REZ_LOC_FACET = Traject::TranslationMap.new('rez_desk_2_rez_loc_facet').freeze
 DEPT_CODE_2_USER_STR = Traject::TranslationMap.new('dept_code_2_user_str').freeze
+LOAN_CODE_2_USER_STR = Traject::TranslationMap.new('loan_code_2_user_str').freeze
+LIB_2_BLDG_FACET = Traject::TranslationMap.new('library_code_translations').freeze
 
 to_field 'crez_instructor_search' do |record, accumulator, context|
   id = context.output_hash['id']&.first
@@ -2185,4 +2187,59 @@ each_record do |record, context|
 
     v.uniq!
   end
+end
+
+# We update item_display once we have crez info
+to_field 'item_display' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  context.output_hash['item_display'].map! do |item_display_value|
+    split_item_display = item_display_value.split('-|-')
+    item_displays = []
+    course_reserves.each do |row|
+      next unless row[:barcode].strip == split_item_display[0].strip
+      rez_desk = row[:rez_desk] || ''
+      loan_period = LOAN_CODE_2_USER_STR[row[:loan_period]] || ''
+      course_id = row[:course_id] || ''
+      suffix = [course_id, rez_desk, loan_period].join(' -|- ')
+      # replace current location in existing item_display field with rez_desk
+      old_val_array = item_display_value.split(' -|- ', -1)
+      old_val_array[3] = rez_desk
+      new_val = old_val_array.join(' -|- ')
+      item_displays << new_val + ' -|- ' + suffix
+    end
+    # Use original item_display field if none matched
+    item_displays << item_display_value if item_displays.empty?
+    item_displays
+  end.flatten!
+end
+
+to_field 'building_facet' do |record, accumulator, context|
+  id = context.output_hash['id']&.first
+  course_reserves = reserves_lookup[id]
+  next unless course_reserves
+  new_building_facet_vals = []
+
+  context.output_hash['item_display'].map do |item_display_value|
+    split_item_display = item_display_value.split("-|-").map(&:strip)
+    course_reserves.each do |row|
+      home_building = LIB_2_BLDG_FACET[split_item_display[1]]
+      rez_building = REZ_DESK_2_BLDG_FACET[row[:rez_desk]]
+      # Building comparison
+      next if home_building == rez_building
+
+      # Barcode comparison
+      if row[:barcode].strip == split_item_display[0].strip
+        if !rez_building.nil?
+          new_building_facet_vals << rez_building
+        else
+          new_building_facet_vals << home_building
+        end
+      else
+         new_building_facet_vals << home_building
+      end
+    end
+  end
+  context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
 end
