@@ -35,7 +35,7 @@ class Traject::PurlFetcherReader
   ##
   # @return [Hash] a parsed JSON hash
   def get(path, params = {})
-    JSON.parse(HTTP.get(settings.fetch('purl_fetcher.api_endpoint', 'https://purl-fetcher-prod.stanford.edu') + path, params: params).body)
+    JSON.parse(HTTP.get(settings.fetch('purl_fetcher.api_endpoint', 'https://purl-fetcher.stanford.edu') + path, params: params).body)
   end
 
   ##
