@@ -7,7 +7,7 @@ set :repo_url, 'https://github.com/sul-dlss/searchworks_traject_indexer.git'
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/opt/app/harvestdor/searchworks_traject_indexer"
+set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
 set :rvm_ruby_version, 'jruby-9.2.0.0'
 
