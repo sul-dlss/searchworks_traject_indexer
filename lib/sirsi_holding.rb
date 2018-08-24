@@ -19,14 +19,19 @@ class SirsiHolding
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :call_number, :current_location, :home_location, :library, :scheme, :type
-  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '')
-    @call_number = CallNumber.new(call_number)
+  attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode
+  def initialize(call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '', barcode: '')
+    @call_number = call_number
     @current_location = current_location
     @home_location = home_location
     @library = library
     @scheme = scheme
     @type = type
+    @barcode = barcode
+  end
+
+  def call_number
+    CallNumber.new(normalize_call_number(@call_number))
   end
 
   def skipped?
@@ -67,7 +72,7 @@ class SirsiHolding
   end
 
   def ignored_call_number?
-    SKIPPED_CALL_NUMS.include?(call_number) ||
+    SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
       e_call_number? ||
       temp_call_number?
   end
@@ -90,7 +95,41 @@ class SirsiHolding
     ([home_location, current_location] & GOV_DOCS_LOCS).any?
   end
 
+  def is_in_process?
+    temp_call_number? && (current_location == 'INPROCESS' || (!current_location.nil? && home_location != 'ON-ORDER'))
+  end
+
+  def is_on_order?
+    temp_call_number? && (current_location == 'ON-ORDER' || (!current_location.nil? && home_location == 'ON-ORDER'))
+  end
+
+  def ==(other)
+    self.class === other and
+      other.call_number == @call_number and
+      other.current_location == @current_location and
+      other.home_location == @home_location and
+      other.library == @library and
+      other.scheme == @scheme and
+      other.type == @type and
+      other.barcode == @barcode
+  end
+
+  alias eql? ==
+
+  def hash
+    @call_number.hash ^ @current_location.hash ^ @home_location.hash ^ @library.hash ^ @scheme.hash ^ @type.hash ^ @barcode.hash
+  end
+
   private
+
+  # Call number normalization ported from solrmarc code
+  def normalize_call_number(call_number = '')
+    return call_number unless %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
+    call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+    call_number = call_number.gsub(/\. \./, ' .') # reduce double periods to a single period
+    call_number = call_number.gsub(/(\d+\.) ([A-Z])/, "\1\2") # remove space after a period if period is after digits and before letters
+    call_number.sub(/\.$/, '') # remove trailing period
+  end
 
   def physics_not_temp?
     library == 'PHYSICS' && ![home_location, current_location].include?('PHYSTEMP')
