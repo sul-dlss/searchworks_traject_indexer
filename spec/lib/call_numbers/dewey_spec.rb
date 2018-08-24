@@ -68,6 +68,24 @@ describe CallNumbers::Dewey do
       end
     end
 
+    describe 'folio' do
+      it 'handles folio' do
+        expect(described_class.new('123M23S32 F 123').folio).to eq 'F'
+      end
+
+      it 'handles a folio at the end of the string' do
+        expect(described_class.new('123M23S32 F').folio).to eq 'F'
+      end
+
+      it 'handles a flat folio at the end of the string' do
+        expect(described_class.new('123M23S32 FF').folio).to eq 'FF'
+      end
+
+      it 'does nothing with tons of Fs' do
+        expect(described_class.new('123M23S32 FFFFF').folio).to eq nil
+      end
+    end
+
     describe 'the rest of the stuff' do
       it 'puts any other content into the rest attribute' do
         expect(described_class.new('123.23 .M23 V.1 2002').rest).to eq 'V.1 2002'
