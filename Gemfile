@@ -11,6 +11,7 @@ end
 gem 'http'
 gem 'i18n'
 gem 'manticore', platform: :jruby
+gem 'memory_profiler'
 gem 'rake'
 gem 'stanford-mods'
 
@@ -21,3 +22,5 @@ group :deployment do
   gem 'capistrano-shared_configs'
   gem 'dlss-capistrano'
 end
+
+gem 'memory_profiler'

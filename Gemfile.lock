@@ -68,6 +68,7 @@ GEM
       marc (~> 1.0)
     marc-marc4j (1.0.0-java)
       marc (~> 1)
+    memory_profiler (0.9.11)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     mods (2.4.0)
@@ -148,6 +149,7 @@ DEPENDENCIES
   http
   i18n
   manticore
+  memory_profiler
   rake
   rspec
   stanford-mods
