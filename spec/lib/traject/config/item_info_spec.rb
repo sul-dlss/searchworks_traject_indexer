@@ -900,6 +900,28 @@ RSpec.describe 'ItemInfo config' do
             '-|- dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~ -|-'
           )
         end
+
+        # The Education library has a collection of call numbers w/ a scheme of DEWEY but begin w/ TX
+        context 'DEWEY Text Book Collection(?) (e.g. DEWEY call numbers that begin with TX)' do
+          let(:record) do
+            MARC::Record.new.tap do |record|
+              record.append(
+                MARC::DataField.new(
+                  '999', ' ', ' ',
+                  MARC::Subfield.new('a', 'TX 443.21 A3'),
+                  MARC::Subfield.new('w', 'DEWEY'),
+                  MARC::Subfield.new('l', 'STACKS'),
+                  MARC::Subfield.new('m', 'CUBBERLY')
+                )
+              )
+            end
+          end
+
+          # this is potentially incidental since we don't fall back for non-valid DEWEY
+          it 'are handled' do
+            expect(result['item_display'].first).to include('-|- dewey 443.21000000 a3 -|-')
+          end
+        end
       end
     end
 
