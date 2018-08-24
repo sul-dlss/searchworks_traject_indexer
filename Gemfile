@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'traject', '~> 3.0a'
-gem 'traject-marc4j_reader', platform: :jruby
+gem 'traject-marc4j_reader', git: 'https://github.com/traject/traject-marc4j_reader', branch: 'master', platform: :jruby
 
 group :development, :test do
   gem 'byebug', platform: :mri

@@ -28,6 +28,8 @@ settings do
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
 
   if defined?(JRUBY_VERSION)
+    require 'traject/marc4j_reader'
+    provide "marc4j_reader.permissive", true
     require 'traject/manticore_http_client'
     provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
   end
