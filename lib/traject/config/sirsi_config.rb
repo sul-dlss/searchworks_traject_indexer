@@ -2260,8 +2260,8 @@ to_field 'mhld_display' do |record, accumulator, context|
       if mhld_field.most_recent863link_num < link_num || (
         mhld_field.most_recent863link_num == link_num && mhld_field.most_recent863seq_num < seq_num
       )
-        mhld_field.most_recent863link_num = link_num
-        mhld_field.most_recent863seq_num = seq_num
+        mhld_field.most_recent863link_num = link_num.to_i
+        mhld_field.most_recent863seq_num = seq_num.to_i
         mhld_field.most_recent863 = field
       end
     when '866'

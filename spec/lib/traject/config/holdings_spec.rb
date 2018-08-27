@@ -47,6 +47,12 @@ RSpec.describe 'Holdings config' do
           ]
         end
       end
+      context do
+        let(:fixture_name) { '7770475.marc' }
+        it do
+          expect{select_by_id('7770475')[field]}.not_to raise_error
+        end
+      end
     end
     describe 'unit tests' do
       describe '863 has unit after year' do
