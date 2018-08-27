@@ -6,7 +6,7 @@ class Traject::ManticoreHttpClient
   end
 
   def post url, body, headers = {}
-    response = @client.post(url, headers: headers, body: body)
+    response = @client.post(url, headers: headers, body: body, socket_timeout: 60)
 
     OpenStruct.new(body: response.body, status: response.code)
   end
