@@ -17,7 +17,12 @@ class Traject::MarcCombiningReader
   attr_reader :settings, :input_stream, :marc_reader
 
   def initialize(input_stream, settings)
-    @marc_reader = Traject::MarcReader.new(input_stream, settings)
+    if defined?(JRUBY_VERSION)
+      require 'traject/marc4j_reader'
+      @marc_reader = Traject::Marc4JReader.new(input_stream, settings)
+    else
+      @marc_reader = Traject::MarcReader.new(input_stream, settings)
+    end
   end
 
   def each
