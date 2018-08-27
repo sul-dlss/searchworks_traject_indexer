@@ -1496,6 +1496,84 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
 end
 
 to_field 'callnum_facet_hsim' do |record, accumulator|
+  record.each_by_tag('999') do |item|
+    holding = SirsiHolding.new(
+      call_number: (item['a'] || '').strip,
+      current_location: item['k'],
+      home_location: item['l'],
+      library: item['m'],
+      scheme: item['w']
+    )
+
+    next if holding.skipped?
+    next unless holding.call_number_type == 'DEWEY' || (holding.call_number_type == 'LC' && holding.call_number.to_s =~ /^\d{1,3}(\.\d+)? *\.?[A-Z]\d{1,3} *[A-Z]*+.*/)
+    next unless holding.dewey?
+    next if holding.ignored_call_number? ||
+            holding.shelved_by_location? ||
+            holding.lost_or_missing?
+
+    cn = holding.call_number.with_leading_zeros
+    first_digit = "#{cn[0, 1]}00s"
+    two_digits = "#{cn[0, 2]}0s"
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    accumulator << [
+      'Dewey Classification',
+      translation_map[first_digit],
+      translation_map[two_digits]
+    ].join('|')
+  end
+
+  accumulator.uniq!
+end
+
+to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, context|
+  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
+
+  accumulator.map! do |cn|
+    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
+
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    next unless first_letter && translation_map[first_letter]
+
+    [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+
+  accumulator.replace([accumulator.compact.first])
+end
+
+to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
+  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
+  accumulator.map! do |cn|
+    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
+
+    first_letter = cn[0, 1].upcase
+    letters = cn.split(/[^A-Z]+/).first
+
+    translation_map = Traject::TranslationMap.new('call_number')
+
+    next unless first_letter && translation_map[first_letter]
+
+    [
+      'LC Classification',
+      translation_map[first_letter],
+      translation_map[letters] || letters
+    ].join('|')
+  end
+
+  accumulator.replace([accumulator.compact.first])
+end
+
+to_field 'callnum_facet_hsim' do |record, accumulator|
   marc_086 = record.fields('086')
   gov_doc_values = []
   record.each_by_tag('999') do |item|
@@ -1543,38 +1621,6 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
   end
 end
 
-to_field 'callnum_facet_hsim' do |record, accumulator|
-  record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(
-      call_number: (item['a'] || '').strip,
-      current_location: item['k'],
-      home_location: item['l'],
-      library: item['m'],
-      scheme: item['w']
-    )
-
-    next if holding.skipped?
-    next unless holding.call_number_type == 'DEWEY' || (holding.call_number_type == 'LC' && holding.call_number.to_s =~ /^\d{1,3}(\.\d+)? *\.?[A-Z]\d{1,3} *[A-Z]*+.*/)
-    next unless holding.dewey?
-    next if holding.ignored_call_number? ||
-            holding.shelved_by_location? ||
-            holding.lost_or_missing?
-
-    cn = holding.call_number.with_leading_zeros
-    first_digit = "#{cn[0, 1]}00s"
-    two_digits = "#{cn[0, 2]}0s"
-
-    translation_map = Traject::TranslationMap.new('call_number')
-
-    accumulator << [
-      'Dewey Classification',
-      translation_map[first_digit],
-      translation_map[two_digits]
-    ].join('|')
-  end
-
-  accumulator.uniq!
-end
 
 to_field 'callnum_search' do |record, accumulator|
   good_call_numbers = []
@@ -1607,51 +1653,6 @@ to_field 'callnum_search' do |record, accumulator|
   end
 
   accumulator.concat(good_call_numbers.uniq)
-end
-
-to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, context|
-  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
-
-  accumulator.map! do |cn|
-    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
-
-    first_letter = cn[0, 1].upcase
-    letters = cn.split(/[^A-Z]+/).first
-
-    translation_map = Traject::TranslationMap.new('call_number')
-
-    next unless first_letter && translation_map[first_letter]
-
-    [
-      'LC Classification',
-      translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
-  end
-
-  accumulator.replace([accumulator.compact.first])
-end
-
-to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
-  accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim']
-  accumulator.map! do |cn|
-    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
-
-    first_letter = cn[0, 1].upcase
-    letters = cn.split(/[^A-Z]+/).first
-
-    translation_map = Traject::TranslationMap.new('call_number')
-
-    next unless first_letter && translation_map[first_letter]
-
-    [
-      'LC Classification',
-      translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
-  end
-
-  accumulator.replace([accumulator.compact.first])
 end
 
 # shelfkey = custom, getShelfkeys
