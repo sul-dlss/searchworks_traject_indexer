@@ -59,31 +59,7 @@ export SIRSI_SERVER=${SIRSI_SERVER}
 # create log directory
 mkdir -p $LOG_DIR
 
-bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
-    -s solr_writer.max_skipped=-1 \
-    -s log.file=$LOG_DIR/$TIMESTAMP.log $LATEST_DATA_DIR/*.marc
+bundle exec ruby script/process_marc_to_kafka.rb $LATEST_DATA_DIR/*.marc > $LOG_DIR/$TIMESTAMP.log
 
 # Index all the nightlies and the incremental
-$SCRIPT_FULL_PATH/index_sirsi_catchup.sh
-
-# gets the numFound for documents last_updated before start of indexing full dump
-# assumes numFound value is 3rd field of colon-separated line in response
-#   "response":{"numFound":664,"start":0,"maxScore":1.0,"docs":[]
-NUM_DOCS_TO_DEL=`curl -s -G "${SOLR_URL}"/select -d "fq=collection:sirsi&fq=last_updated:%5B*%20TO%20$START_TIME%5D&q=*:*&facet=false&rows=0" | grep "numFound" | cut -d":" -f3 | tr -d '[:alpha:]|[:punct:]'`
-
-# create file of ckeys for documents last_updated before start of indexing full dump
-DOCS_TO_DEL=$LATEST_DATA_DIR/ckeys_to_delete
-curl -s -G "${SOLR_URL}"/select -d "fl=id&fq=collection:sirsi&fq=last_updated:%5B*%20TO%20$START_TIME%5D&q=*:*&facet=false&rows=$NUM_DOCS_TO_DEL&wt=csv" | sed '1d' > $DOCS_TO_DEL
-
-# report ckeys that should be deleted
-SOLR_COLLECTION=`echo ${SOLR_URL} | sed 's/http:\/\/sul-solr\.stanford\.edu\/solr\///'`
-MAILTO="sul-unicorn-devs@lists.stanford.edu"
-SUBJECT="Ckeys in ${SOLR_COLLECTION} not updated from indexing full MARC dump"
-
-if [ -e $DOCS_TO_DEL ]; then
-  if [ "$NUM_DOCS_TO_DEL" -gt 1000 ]; then
-    echo "Too many records selected. Review file ${DOCS_TO_DEL}" | mail -s "$SUBJECT" $MAILTO
-  else
-    cat $DOCS_TO_DEL | mail -s "$SUBJECT" $MAILTO
-  fi
-fi
+$SCRIPT_FULL_PATH/load_sirsi_catchup.sh

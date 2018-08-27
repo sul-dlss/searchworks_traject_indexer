@@ -1,6 +1,7 @@
 require 'rspec'
 require 'traject'
 require 'traject/readers/delete_reader'
+require 'traject/readers/kafka_marc_reader'
 require 'traject/readers/marc_combining_reader'
 require 'traject/readers/purl_fetcher_reader'
 require 'traject/readers/purl_fetcher_deletes_reader'

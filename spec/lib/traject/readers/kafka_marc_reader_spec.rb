@@ -1,0 +1,53 @@
+require 'spec_helper'
+
+describe Traject::KafkaMarcReader do
+  subject(:reader) { described_class.new(nil, 'kafka.consumer' => consumer, 'marc_source.type' => 'binary') }
+  let(:consumer) { double }
+
+  before do
+    allow(consumer).to receive(:instance_variable_get).with(:@fetcher).and_return(double(data?: true))
+  end
+
+  describe '#each' do
+    context 'with break messages' do
+      let(:break_message) { double(key: 'break') }
+      before do
+        allow(consumer).to receive(:each_message).and_yield break_message
+      end
+
+      it 'halts processing' do
+        allow(consumer).to receive(:mark_message_as_processed)
+
+        expect(reader.each.to_a).to eq []
+
+        expect(consumer).to have_received(:mark_message_as_processed).with(break_message)
+      end
+    end
+
+    context 'with deletes' do
+      let(:delete_message) { double(key: '123', value: nil) }
+      before do
+        allow(consumer).to receive(:each_message).and_yield delete_message
+      end
+
+      it 'creates a record tagged for deletion' do
+        expect(reader.each.to_a).to eq [{ id: '123', delete: true}]
+      end
+    end
+
+    context 'with marc records' do
+      let(:marc_message) { double(key: '123', value: File.read(file_fixture('444.marc'))) }
+      before do
+        allow(consumer).to receive(:each_message).and_yield marc_message
+      end
+
+      it 'creates a record tagged for deletion' do
+        res = reader.each.to_a
+        expect(res.length).to eq 1
+        expect(res).to include an_instance_of(MARC::Record)
+        expect(res.first['001'].value).to eq 'a444'
+      end
+
+    end
+  end
+end
