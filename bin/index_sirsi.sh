@@ -7,11 +7,12 @@
 # ps aux | grep traject | awk '{print $2}' | xargs kill -9
 
 DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
-for file in $MARC_LOC/*.marc; do
+echo -e "Creating indexing processes based off of size (largest first)"
+for file in `ls -S $MARC_LOC/*.marc`; do
     LOG_DIR=$MARC_LOC/logs/$DATE_WITH_TIME
     mkdir -p $LOG_DIR
     echo -e "\nCreating indexing process for $file"
-    nohup bundle exec traject -c ../lib/traject/config/sirsi_config.rb \
+    nohup bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
         -s solr_writer.max_skipped=-1 \
         -s log.file=$LOG_DIR/$(basename $file).log $file \
         &> $LOG_DIR/$(basename $file).command.log &
