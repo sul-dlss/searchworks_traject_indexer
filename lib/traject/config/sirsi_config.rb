@@ -18,6 +18,10 @@ ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 
+##
+# Instead of allocating each time within a proc, only do it once here
+F600XORVSPEC = (600..699).flat_map { |x| ["#{x}x", "#{x}v"] }.freeze
+
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
@@ -1284,8 +1288,7 @@ end
 
 #  look for conference proceedings in 6xx sub x or v
 to_field 'genre_ssim' do |record, accumulator|
-  f600xorvspec = (600..699).flat_map { |x| ["#{x}x", "#{x}v"] }
-  Traject::MarcExtractor.new(f600xorvspec).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new(F600XORVSPEC).collect_matching_lines(record) do |field, spec, extractor|
     accumulator << 'Conference proceedings' if extractor.collect_subfields(field, spec).any? { |x| x =~ /congresses/i }
   end
 end
