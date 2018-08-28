@@ -589,8 +589,8 @@ RSpec.describe 'Call Number Facet' do
       expect(doc[field]).to eq(
         [
           'LC Classification|Q - Science|QE - Geology',
-          'Government Document|Federal',
-          'Dewey Classification|500s - Science|550s - Earth Sciences'
+          'Dewey Classification|500s - Science|550s - Earth Sciences',
+          'Government Document|Federal'
         ]
       )
     end
