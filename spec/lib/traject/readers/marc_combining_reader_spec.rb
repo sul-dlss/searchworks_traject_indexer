@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Traject::MarcCombiningReader do
-  subject(:reader) { described_class.new(file, {}) }
+  subject(:reader) { described_class.new(File.open(file, 'r'), 'marc_source.type' => 'binary') }
   let(:file) { file_fixture(fixture_name).to_s }
   let(:fixture_name) { 'splitItemsTest.mrc' }
   let(:results) { reader.each.to_a }
