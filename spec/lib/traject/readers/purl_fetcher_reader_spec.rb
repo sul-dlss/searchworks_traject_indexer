@@ -6,7 +6,11 @@ RSpec.describe Traject::PurlFetcherReader do
 
   describe '#each' do
     before do
-      expect(HTTP).to receive(:get).with(%r{/docs/changes}, params: hash_including(target: 'Searchworks')).and_return(double(body: body))
+      if defined? JRUBY_VERSION
+        expect(Manticore).to receive(:get).with(%r{/docs/changes}, query: hash_including(target: 'Searchworks')).and_return(double(body: body))
+      else
+        expect(HTTP).to receive(:get).with(%r{/docs/changes}, params: hash_including(target: 'Searchworks')).and_return(double(body: body))
+      end
     end
 
     let(:body) {

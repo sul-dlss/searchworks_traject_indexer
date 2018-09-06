@@ -6,8 +6,13 @@ RSpec.describe Traject::PurlFetcherDeletesReader do
 
   describe '#each' do
     before do
-      expect(HTTP).to receive(:get).with(%r{/docs/deletes}, params: anything).and_return(double(body: deletes_body))
-      expect(HTTP).to receive(:get).with(%r{/docs/changes}, params: anything).and_return(double(body: changes_body))
+      if defined? JRUBY_VERSION
+        expect(Manticore).to receive(:get).with(%r{/docs/deletes}, query: anything).and_return(double(body: deletes_body))
+        expect(Manticore).to receive(:get).with(%r{/docs/changes}, query: anything).and_return(double(body: changes_body))
+      else
+        expect(HTTP).to receive(:get).with(%r{/docs/deletes}, params: anything).and_return(double(body: deletes_body))
+        expect(HTTP).to receive(:get).with(%r{/docs/changes}, params: anything).and_return(double(body: changes_body))
+      end
     end
 
     let(:deletes_body) {

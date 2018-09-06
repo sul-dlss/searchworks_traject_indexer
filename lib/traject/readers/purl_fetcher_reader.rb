@@ -41,7 +41,15 @@ class Traject::PurlFetcherReader
   ##
   # @return [Hash] a parsed JSON hash
   def get(path, params = {})
-    JSON.parse(HTTP.get(settings.fetch('purl_fetcher.api_endpoint', 'https://purl-fetcher.stanford.edu') + path, params: params).body)
+    JSON.parse(fetch(settings.fetch('purl_fetcher.api_endpoint', 'https://purl-fetcher.stanford.edu') + path, params))
+  end
+
+  def fetch(url, params)
+    if defined?(JRUBY_VERSION)
+      Manticore.get(url, query: params).body
+    else
+      HTTP.get(url, params: params).body
+    end
   end
 
   ##
