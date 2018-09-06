@@ -20,6 +20,14 @@ end
 class PublicXmlRecord
   attr_reader :druid
 
+  def self.fetch(url)
+    if defined?(JRUBY_VERSION)
+      Manticore.get(url).body
+    else
+      HTTP.get(url).body
+    end
+  end
+
   def initialize(druid)
     @druid = druid
   end
@@ -49,7 +57,7 @@ class PublicXmlRecord
   end
 
   def public_xml
-    @public_xml ||= HTTP.get("https://purl.stanford.edu/#{druid}.xml").body
+    @public_xml ||= self.class.fetch("https://purl.stanford.edu/#{druid}.xml")
   end
 
   def public_xml_doc
@@ -60,7 +68,7 @@ class PublicXmlRecord
     @mods ||= if public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').any?
       public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
     else
-      HTTP.get("https://purl.stanford.edu/#{druid}.mods").body
+      self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
     end
   end
 
