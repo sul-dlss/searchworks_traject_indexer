@@ -9,21 +9,21 @@ class Traject::PurlFetcherReader
   def each
     return to_enum(:each) unless block_given?
 
-    send(api, first_modified: first_modified).each do |change|
+    changes(first_modified: first_modified, target: target).each do |change|
+      next unless change['true_targets'] && change['true_targets'].include?(target)
+
       yield PublicXmlRecord.new(change['druid'].sub('druid:', ''))
     end
   end
 
   private
 
-  def api
-    return settings['purl_fetcher.api'] if ['changes', 'deletes'].include? settings['purl_fetcher.api']
-
-    'changes'
-  end
-
   def first_modified
     settings['purl_fetcher.first_modified']
+  end
+
+  def target
+    settings['purl_fetcher.target'] || 'Searchworks'
   end
 
   ##
