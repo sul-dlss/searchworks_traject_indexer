@@ -121,7 +121,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
-    traject (3.0.0.alpha.1)
+    traject (3.0.0.alpha.2)
       concurrent-ruby (>= 0.8.0)
       dot-properties (>= 0.1.1)
       hashie (~> 3.1)
