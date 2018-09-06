@@ -3,12 +3,15 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'stanford-mods'
 require 'sdr_stuff'
+require 'traject/readers/purl_fetcher_reader'
+
+$druid_title_cache = {}
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
-  provide 'reader_class_name', 'SdrReader'
+  provide 'reader_class_name', 'PurlFetcherReader'
 end
 
 def stanford_mods(method, *args, default: nil)
@@ -119,7 +122,7 @@ end
 
 to_field 'collection_with_title' do |record, accumulator|
   accumulator.concat(record.collections.map do |collection|
-    "#{collection.searchworks_id}-|-#{collection.label}"
+    $druid_title_cache[collection.druid] ||= "#{collection.searchworks_id}-|-#{collection.label}"
   end)
 end
 
@@ -129,6 +132,10 @@ end
 
 to_field 'set_with_title' do |record, accumulator|
   accumulator.concat(record.constituents.map do |constituent|
-    "#{constituent.searchworks_id}-|-#{constituent.label}"
+    $druid_title_cache[constituent.druid] ||= "#{constituent.searchworks_id}-|-#{constituent.label}"
   end)
+end
+
+each_record do |record, context|
+  $druid_title_cache[record.druid] = record.label if record.is_collection
 end
