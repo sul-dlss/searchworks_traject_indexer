@@ -6,14 +6,15 @@ RSpec.describe Traject::PurlFetcherReader do
 
   describe '#each' do
     before do
-      expect(HTTP).to receive(:get).with(%r{/docs/changes}, params: anything).and_return(double(body: body))
+      expect(HTTP).to receive(:get).with(%r{/docs/changes}, params: hash_including(target: 'Searchworks')).and_return(double(body: body))
     end
 
     let(:body) {
       {
         changes: [
-          { druid: 'x' },
-          { druid: 'y' },
+          { druid: 'x', true_targets: ['Searchworks'] },
+          { druid: 'y', true_targets: ['Searchworks'] },
+          { druid: 'z', true_targets: ['SomethingElse'] }
         ],
         pages: { }
       }.to_json
@@ -21,31 +22,6 @@ RSpec.describe Traject::PurlFetcherReader do
 
     it 'returns objects from the purl-fetcher api' do
       expect(reader.each.map(&:druid)).to eq ['x', 'y']
-    end
-  end
-
-  context 'for deletes' do
-
-    let(:settings) { { 'purl_fetcher.api' => 'deletes' } }
-
-    describe '#each' do
-      before do
-        expect(HTTP).to receive(:get).with(%r{/docs/deletes}, params: anything).and_return(double(body: body))
-      end
-
-      let(:body) {
-        {
-          deletes: [
-            { druid: 'x' },
-            { druid: 'y' },
-          ],
-          pages: { }
-        }.to_json
-      }
-
-      it 'returns objects from the purl-fetcher api' do
-        expect(reader.each.map(&:druid)).to eq ['x', 'y']
-      end
     end
   end
 end
