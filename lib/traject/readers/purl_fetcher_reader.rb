@@ -1,3 +1,5 @@
+require 'manticore' if defined? JRUBY_VERSION
+
 class Traject::PurlFetcherReader
   attr_reader :input_stream, :settings
 
