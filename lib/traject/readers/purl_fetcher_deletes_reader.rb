@@ -1,4 +1,5 @@
 class Traject::PurlFetcherDeletesReader < Traject::PurlFetcherReader
+  # Enumerate objects that should be deleted.
   def each
     return to_enum(:each) unless block_given?
 
