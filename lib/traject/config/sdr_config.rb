@@ -12,6 +12,7 @@ settings do
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide 'reader_class_name', 'PurlFetcherReader'
+  provide 'skip_if_catkey', !!ENV.fetch('SKIP_IF_CATKEY', true)
 end
 
 def stanford_mods(method, *args, default: nil)
@@ -24,6 +25,12 @@ def stanford_mods(method, *args, default: nil)
 
     accumulator << default if data.empty?
   end
+end
+
+##
+# Skip records that probably have an equivalent MARC record
+each_record do |record, context|
+  context.skip!('Item has a catkey') if context.settings['skip_if_catkey'] && record.catkey
 end
 
 to_field 'id' do |record, accumulator|

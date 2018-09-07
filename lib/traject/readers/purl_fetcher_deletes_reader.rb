@@ -1,4 +1,5 @@
 class Traject::PurlFetcherDeletesReader < Traject::PurlFetcherReader
+  # Enumerate objects that should be deleted.
   def each
     return to_enum(:each) unless block_given?
 
@@ -7,9 +8,11 @@ class Traject::PurlFetcherDeletesReader < Traject::PurlFetcherReader
     end
 
     changes(first_modified: first_modified, target: target).each do |change|
-      next unless change['false_targets'] && change['false_targets'].include?(target)
+      record = PublicXmlRecord.new(change['druid'].sub('druid:', ''))
 
-      yield PublicXmlRecord.new(change['druid'].sub('druid:', ''))
+      next unless (change['false_targets'] && change['false_targets'].include?(target)) || (settings['skip_if_catkey'] && record.catkey)
+
+      yield record
     end
   end
 end

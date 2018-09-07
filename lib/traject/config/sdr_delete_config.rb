@@ -11,6 +11,7 @@ settings do
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide 'reader_class_name', 'Traject::PurlFetcherDeletesReader'
   provide 'writer_class_name', 'Traject::DeleteWriter'
+  provide 'skip_if_catkey', !!ENV.fetch('SKIP_IF_CATKEY', true)
 end
 
 to_field 'id' do |record, accumulator|
