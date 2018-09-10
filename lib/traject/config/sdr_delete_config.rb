@@ -4,6 +4,7 @@ require 'traject'
 require 'traject/readers/purl_fetcher_reader'
 require 'traject/readers/purl_fetcher_deletes_reader'
 require 'traject/writers/delete_writer'
+require 'sdr_stuff'
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
@@ -15,5 +16,5 @@ settings do
 end
 
 to_field 'id' do |record, accumulator|
-  accumulator << record.strip
+  accumulator << record.druid.strip
 end
