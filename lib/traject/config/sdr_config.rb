@@ -46,6 +46,10 @@ to_field 'all_search', stanford_mods(:text) do |record, accumulator|
   accumulator.map! { |x| x.gsub(/\s+/, ' ') }
 end
 
+to_field 'collection_type' do |record, accumulator|
+  accumulator << 'Digital Collection' if record.is_collection
+end
+
 ##
 # Title Fields
 to_field 'title_245a_search', stanford_mods(:sw_short_title, default: '[Untitled]')
