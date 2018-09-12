@@ -3,6 +3,7 @@ set -e
 
 STATE_FILE=tmp/searchworks_traject_indexer_delete_last_run
 CURRENT_DATE=`date --rfc-3339=seconds`
+export NUM_THREADS=8
 
 (
 flock -n 200
