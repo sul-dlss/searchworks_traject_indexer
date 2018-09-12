@@ -13,6 +13,7 @@ gem 'i18n'
 gem 'manticore', platform: :jruby
 gem 'rake'
 gem 'stanford-mods'
+gem 'whenever'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'

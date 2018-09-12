@@ -40,6 +40,7 @@ GEM
       capistrano (~> 3.0)
       sshkit (~> 1.2)
     capistrano-shared_configs (0.2.2)
+    chronic (0.10.2)
     concurrent-ruby (1.0.5)
     concurrent-ruby (1.0.5-java)
     diff-lcs (1.3)
@@ -138,6 +139,8 @@ GEM
       unf_ext
     unf (0.1.4-java)
     unf_ext (0.0.7.5)
+    whenever (0.10.0)
+      chronic (>= 0.6.3)
     yell (2.0.7)
 
 PLATFORMS
@@ -159,6 +162,7 @@ DEPENDENCIES
   stanford-mods
   traject (~> 3.0a)
   traject-marc4j_reader!
+  whenever
 
 BUNDLED WITH
    1.16.3
