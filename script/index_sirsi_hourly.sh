@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 REMOTE_DATA_DIR=/s/SUL/Dataload/SearchWorksPartday/Output
 REMOTE_CREZ_DIR=/s/SUL/Dataload/SearchworksReserves/Data

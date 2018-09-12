@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 SCRIPT_NAME=$0
 SCRIPT_FULL_PATH=$(dirname "$0")
