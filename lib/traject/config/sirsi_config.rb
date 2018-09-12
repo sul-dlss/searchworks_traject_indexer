@@ -1633,7 +1633,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
     next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
-    letters = cn.split(/[^A-Z]+/).first
+    letters = cn[/^[A-Z]+/]
 
     translation_map = Traject::TranslationMap.new('call_number')
 
@@ -1655,7 +1655,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
     next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
-    letters = cn.split(/[^A-Z]+/).first
+    letters = cn[/^[A-Z]+/]
 
     translation_map = Traject::TranslationMap.new('call_number')
 

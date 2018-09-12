@@ -184,7 +184,7 @@ class SirsiHolding
     end
 
     def before_cutter
-      (call_number.split(BEGIN_CUTTER_REGEX).first || '').strip
+      call_number[/^.*(?=#{BEGIN_CUTTER_REGEX})/].to_s.strip
     end
   end
 end
