@@ -13,4 +13,4 @@ export JRUBY_OPTS="-J-Xmx8192m"
 bundle exec traject -c ./lib/traject/config/sdr_delete_config.rb -s purl_fetcher.first_modified="${LAST_DATE}" -s solr_writer.max_skipped=-1 /dev/null
 
 echo $CURRENT_DATE > $STATE_FILE
-) 200>tmp/.lock_searchworks_traject_indexer.lock
+) 200>tmp/.delete_sdr.lock
