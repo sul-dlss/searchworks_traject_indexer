@@ -12,7 +12,6 @@ every :day, at: '4:30am' do
   script 'index_sirsi_nightly.sh'
 end
 
-# TODO: full monthlies
-# every :sunday, at: '4:30am' do
-#   command './bin/index_sirsi_full.sh'
-# end
+every :day, at: '1:00am' do
+  script 'index_sirsi_full.sh'
+end

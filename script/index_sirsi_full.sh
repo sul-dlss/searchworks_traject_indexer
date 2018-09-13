@@ -24,8 +24,17 @@ mkdir -p $LATEST_DATA_DIR
 mkdir -p $LATEST_DATA_DIR
 mkdir -p $LOCAL_CREZ_DIR
 
-# sftp remote marc files to "latest"
-sftp -o 'IdentityFile=~/.ssh/id_rsa' sirsi@bodoni:$REMOTE_DATA_DIR/* $LATEST_DATA_DIR/
+# check if timestamp in previous files_counts is same as in latest files_counts
+# if different, proceed with indexing full dump
+COUNTS_FNAME=files_counts
+scp -p -i ~/.ssh/id_rsa sirsi@bodoni:$REMOTE_DATA_DIR/$COUNTS_FNAME $LOCAL_DATA_DIR
+
+if [ $LATEST_DATA_DIR/$COUNTS_FNAME -nt $LOCAL_DATA_DIR/$COUNTS_FNAME ]
+  exit 0;
+fi
+
+# scp remote marc files to "latest", preserve file timestamps
+scp -p -i ~/.ssh/id_rsa sirsi@bodoni:$REMOTE_DATA_DIR/* $LATEST_DATA_DIR/
 
 # get crez data
 full_remote_file_name=`ssh -i ~/.ssh/id_rsa sirsi@bodoni ls -t $REMOTE_CREZ_DIR/reserves-data.* | head -1`
