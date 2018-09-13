@@ -687,7 +687,7 @@ end
 
 def marc_008_date(byte6values, byte_range, u_replacement)
   lambda do |record, accumulator|
-    Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, spec, extractor|
+    Traject::MarcExtractor.new('008', first: true).collect_matching_lines(record) do |field, spec, extractor|
       if byte6values.include? field.value[6]
         year = field.value[byte_range]
         next unless year =~ /(\d{4}|\d{3}[u-])/
