@@ -1,3 +1,5 @@
+set :output, 'log/cron.log'
+
 # index + delete SDR
 every '*/15 * * * *' do
   script 'index_sdr.sh'
