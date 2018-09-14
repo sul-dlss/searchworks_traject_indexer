@@ -4,6 +4,8 @@ set -e
 SCRIPT_NAME=$0
 SCRIPT_FULL_PATH=$(dirname "$0")
 
+CHECK_NEWNESS=$1
+
 REMOTE_DATA_DIR=/s/SUL/Dataload/SearchWorksDump/Output
 REMOTE_CREZ_DIR=/s/SUL/Dataload/SearchworksReserves/Data
 
@@ -26,11 +28,13 @@ mkdir -p $LOCAL_CREZ_DIR
 
 # check if timestamp in previous files_counts is same as in latest files_counts
 # if different, proceed with indexing full dump
-COUNTS_FNAME=files_counts
-scp -p -i ~/.ssh/id_rsa sirsi@bodoni:$REMOTE_DATA_DIR/$COUNTS_FNAME $LOCAL_DATA_DIR
+if [ $CHECK_NEWNESS ] #checks if CHECK_NEWNESS is defined, else index everything
+  COUNTS_FNAME=files_counts
+  scp -p -i ~/.ssh/id_rsa sirsi@bodoni:$REMOTE_DATA_DIR/$COUNTS_FNAME $LOCAL_DATA_DIR
 
-if [ $LATEST_DATA_DIR/$COUNTS_FNAME -nt $LOCAL_DATA_DIR/$COUNTS_FNAME ]
-  exit 0;
+  if [ $LATEST_DATA_DIR/$COUNTS_FNAME -nt $LOCAL_DATA_DIR/$COUNTS_FNAME ]
+    exit 0;
+  fi
 fi
 
 # scp remote marc files to "latest", preserve file timestamps

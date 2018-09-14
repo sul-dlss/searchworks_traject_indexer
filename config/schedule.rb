@@ -15,5 +15,5 @@ every :day, at: '4:30am' do
 end
 
 every :day, at: '1:00am' do
-  script 'index_sirsi_full.sh'
+  script 'index_sirsi_full.sh new'
 end
