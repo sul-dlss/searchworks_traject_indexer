@@ -72,4 +72,6 @@ done
 # Index the current incremental file
 $SCRIPT_FULL_PATH/index_sirsi_hourly.sh
 
-# TODO: Clean up any records that weren't in the dump
+# delete old sirsi docs
+# trust that SOLR_URL is defined
+curl "${SOLR_URL}"/update/?commit=true -H "Content-Type: text/xml" -d "<delete><query>(collection:\"sirsi\")AND(last_updated: [* TO $START_TIME])</query></delete>"
