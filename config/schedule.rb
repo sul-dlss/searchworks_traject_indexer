@@ -1,5 +1,5 @@
-job_type :honeybadger_wrapped_script,  "cd :path && :environment_variable=:environment bundle exec honeybadger exec -q script/:task :output"
-job_type :honeybadger_wrapped_mri_ruby_script, "cd :path && :environment_variable=:environment /usr/local/rvm/bin/rvm ruby-2.4.4 do  bundle exec honeybadger exec -q script/:task :output"
+job_type :honeybadger_wrapped_script,  "cd :path && :environment_variable=:environment bundle exec script/honeybadger-custom-exec.rb exec -q script/:task :output"
+job_type :honeybadger_wrapped_mri_ruby_script, "cd :path && :environment_variable=:environment /usr/local/rvm/bin/rvm ruby-2.4.4 do  bundle exec script/honeybadger-custom-exec.rb exec -q script/:task :output"
 
 # index + delete SDR
 every '*/15 * * * *' do
