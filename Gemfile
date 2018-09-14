@@ -14,6 +14,7 @@ gem 'manticore', platform: :jruby
 gem 'rake'
 gem 'stanford-mods'
 gem 'whenever'
+gem 'honeybadger'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'

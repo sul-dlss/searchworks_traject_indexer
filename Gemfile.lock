@@ -55,6 +55,7 @@ GEM
     edtf (3.0.4)
       activesupport (>= 3.0, < 6.0)
     hashie (3.6.0)
+    honeybadger (4.0.0)
     http (3.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -154,6 +155,7 @@ DEPENDENCIES
   capistrano-rvm
   capistrano-shared_configs
   dlss-capistrano
+  honeybadger
   http
   i18n
   manticore
