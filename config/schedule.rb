@@ -8,16 +8,16 @@ every '*/15 * * * *' do
 end
 
 every '45 6-23 * * *' do
-  honeybadger_wrapped_script 'SIRSI_SERVER=morison index_sirsi_hourly.sh'
+  honeybadger_wrapped_script 'SIRSI_SERVER=morison SOLR_URL=${MORISON_SOLR_URL} index_sirsi_hourly.sh'
   honeybadger_wrapped_script 'SIRSI_SERVER=bodoni index_sirsi_hourly.sh'
 end
 
 every :day, at: '4:30am' do
-  honeybadger_wrapped_script 'SIRSI_SERVER=morison index_sirsi_nightly.sh'
+  honeybadger_wrapped_script 'SIRSI_SERVER=morison SOLR_URL=${MORISON_SOLR_URL} index_sirsi_nightly.sh'
   honeybadger_wrapped_script 'SIRSI_SERVER=bodoni index_sirsi_nightly.sh'
 end
 
 every :day, at: '1:00am' do
-  honeybadger_wrapped_script 'SIRSI_SERVER=morison index_sirsi_full.sh new'
+  honeybadger_wrapped_script 'SIRSI_SERVER=morison SOLR_URL=${MORISON_SOLR_URL} index_sirsi_full.sh new'
   honeybadger_wrapped_script 'SIRSI_SERVER=bodoni index_sirsi_full.sh new'
 end
