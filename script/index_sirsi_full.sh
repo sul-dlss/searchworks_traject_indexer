@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
+set -e
 
 SCRIPT_NAME=$0
 SCRIPT_FULL_PATH=$(dirname "$0")
 
+CHECK_NEWNESS=$1
+
 REMOTE_DATA_DIR=/s/SUL/Dataload/SearchWorksDump/Output
 REMOTE_CREZ_DIR=/s/SUL/Dataload/SearchworksReserves/Data
 
-LOCAL_DATA_DIR=/data/sirsi
-LOCAL_CREZ_DIR=/data/sirsi/crez
+LOCAL_DATA_DIR=/data/sirsi/${SIRSI_SERVER}
+LOCAL_CREZ_DIR=$LOCAL_DATA_DIR/crez
 PREVIOUS_DATA_DIR=$LOCAL_DATA_DIR/previous
 LATEST_DATA_DIR=$LOCAL_DATA_DIR/latest
 LOG_DIR=$LATEST_DATA_DIR/logs
@@ -23,12 +26,23 @@ mkdir -p $LATEST_DATA_DIR
 mkdir -p $LATEST_DATA_DIR
 mkdir -p $LOCAL_CREZ_DIR
 
-# sftp remote marc files to "latest"
-sftp -o 'IdentityFile=~/.ssh/id_rsa' sirsi@bodoni:$REMOTE_DATA_DIR/* $LATEST_DATA_DIR/
+# check if timestamp in previous files_counts is same as in latest files_counts
+# if different, proceed with indexing full dump
+if [ $CHECK_NEWNESS ]; then #checks if CHECK_NEWNESS is defined, else index everything
+  COUNTS_FNAME=files_counts
+  scp -p sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/$COUNTS_FNAME $LOCAL_DATA_DIR
+
+  if [ $LATEST_DATA_DIR/$COUNTS_FNAME -nt $LOCAL_DATA_DIR/$COUNTS_FNAME ]; then
+    exit 0;
+  fi
+fi
+
+# scp remote marc files to "latest", preserve file timestamps
+scp -p sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/* $LATEST_DATA_DIR/
 
 # get crez data
-full_remote_file_name=`ssh -i ~/.ssh/id_rsa sirsi@bodoni ls -t $REMOTE_CREZ_DIR/reserves-data.* | head -1`
-scp -p -i ~/.ssh/id_rsa sirsi@bodoni:$full_remote_file_name $LOCAL_CREZ_DIR
+full_remote_file_name=`ssh sirsi@${SIRSI_SERVER} ls -t $REMOTE_CREZ_DIR/reserves-data.* | head -1`
+scp -p sirsi@${SIRSI_SERVER}:$full_remote_file_name $LOCAL_CREZ_DIR
 
 # set RESERVES_FILE to crez file
 export RESERVES_FILE=$LOCAL_CREZ_DIR/$(basename $full_remote_file_name)
@@ -36,6 +50,9 @@ export RESERVES_FILE=$LOCAL_CREZ_DIR/$(basename $full_remote_file_name)
 # set JRUBY_OPTS and NUM_THREADS
 export NUM_THREADS=24
 export JRUBY_OPTS="-J-Xmx8192m"
+
+# set SIRSI_SERVER to pass to nightly and hourly script
+export SIRSI_SERVER=${SIRSI_SERVER}
 
 # create log directory
 mkdir -p $LOG_DIR

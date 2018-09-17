@@ -38,3 +38,25 @@ append :linked_dirs, "tmp"
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
+
+set :whenever_roles, [:app]
+
+task :mri_bundle_install do
+  on fetch(:bundle_servers) do
+    within release_path do
+      with fetch(:bundle_env_variables) do
+        options = []
+        options << "--gemfile #{fetch(:bundle_gemfile)}" if fetch(:bundle_gemfile)
+        options << "--path #{fetch(:bundle_path)}" if fetch(:bundle_path)
+        options << "--binstubs #{fetch(:bundle_binstubs)}" if fetch(:bundle_binstubs)
+        options << "--jobs #{fetch(:bundle_jobs)}" if fetch(:bundle_jobs)
+        options << "--without #{fetch(:bundle_without)}" if fetch(:bundle_without)
+        options << "#{fetch(:bundle_flags)}" if fetch(:bundle_flags)
+        execute "#{fetch(:rvm_path)}/bin/rvm", '2.4.4', 'do', :bundle, :install, *options
+      end
+    end
+  end
+end
+
+before 'bundler:install', 'mri_bundle_install'
+before 'bundler:install', 'mri_bundle_install'
