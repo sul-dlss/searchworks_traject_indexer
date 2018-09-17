@@ -2260,6 +2260,7 @@ to_field 'mhld_display' do |record, accumulator, context|
       end.collect(&:value).first.to_s.strip
       next if sub8.empty?
       link_num, seq_num = sub8.split('.').map(&:to_i)
+      next if seq_num.nil?
 
       if mhld_field.most_recent863link_num < link_num || (
         mhld_field.most_recent863link_num == link_num && mhld_field.most_recent863seq_num < seq_num
