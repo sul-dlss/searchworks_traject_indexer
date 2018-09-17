@@ -17,13 +17,13 @@ LOG_FILE=$LOG_DIR/$RECORDS_FNAME"_"$TIMESTAMP".txt"
 mkdir -p $LATEST_DATA_DIR
 mkdir -p $LOCAL_CREZ_DIR
 
-# sftp remote marc files to "latest/updates"
-sftp -o "IdentityFile=~/.ssh/${SIRSI_SERVER}_id_rsa" sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/$DEL_KEYS_FNAME $LATEST_DATA_DIR/
-sftp -o "IdentityFile=~/.ssh/${SIRSI_SERVER}_id_rsa" sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/$RECORDS_FNAME $LATEST_DATA_DIR/
+# copy remote marc files to "latest/updates"
+scp -p sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/$DEL_KEYS_FNAME $LATEST_DATA_DIR/
+scp -p sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/$RECORDS_FNAME $LATEST_DATA_DIR/
 
 # get crez data
-full_remote_file_name=`ssh -i ~/.ssh/${SIRSI_SERVER}_id_rsa sirsi@${SIRSI_SERVER} ls -t $REMOTE_CREZ_DIR/reserves-data.* | head -1`
-scp -p -i ~/.ssh/${SIRSI_SERVER}_id_rsa sirsi@${SIRSI_SERVER}:$full_remote_file_name $LOCAL_CREZ_DIR
+full_remote_file_name=`ssh sirsi@${SIRSI_SERVER} ls -t $REMOTE_CREZ_DIR/reserves-data.* | head -1`
+scp -p sirsi@${SIRSI_SERVER}:$full_remote_file_name $LOCAL_CREZ_DIR
 
 # set RESERVES_FILE to crez file
 export RESERVES_FILE=$LOCAL_CREZ_DIR/$(basename $full_remote_file_name)
