@@ -252,7 +252,7 @@ RSpec.describe 'Holdings config' do
                 MARC::Subfield.new('8', '1'),
                 MARC::Subfield.new('a', 'second')
               ))
-              r.append(MARC::DataField.new('866', '3', '1', 
+              r.append(MARC::DataField.new('866', '3', '1',
                 MARC::Subfield.new('8', '0'),
                 MARC::Subfield.new('a', 'v.188')
               ))
@@ -283,7 +283,7 @@ RSpec.describe 'Holdings config' do
                 MARC::Subfield.new('8', '1'),
                 MARC::Subfield.new('a', 'second')
               ))
-              r.append(MARC::DataField.new('866', '3', '1', 
+              r.append(MARC::DataField.new('866', '3', '1',
                 MARC::Subfield.new('8', '0'),
                 MARC::Subfield.new('a', 'v.188')
               ))
@@ -353,6 +353,32 @@ RSpec.describe 'Holdings config' do
         it do
           expect(result[field].length).to eq 1
           expect(result[field]).to eq ['lib -|- loc -|-  -|- 2003,2006- -|- 2011:pt.2']
+        end
+      end
+      describe 'malformed 863$8' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(MARC::ControlField.new('001', 'malformedsub8'))
+            r.append(MARC::DataField.new('852', ' ', ' ',
+              MARC::Subfield.new('a', 'CSt'),
+              MARC::Subfield.new('b', 'EAST-ASIA'),
+              MARC::Subfield.new('c', 'CHINESE')
+            ))
+            r.append(MARC::DataField.new('866', '3', '1',
+              MARC::Subfield.new('a', 'v.5:no.7/8(1982:June)-v.7:no.9/10(1983:Aug.);v.8:no.1/2(1983:Sept.)-v.13:no.9/10(1988:Oct.),v.13:no.9(1992:Aug.)-v.14:no.9(1993:Oct.); '),
+              MARC::Subfield.new('8', '0')
+            ))
+            r.append(MARC::DataField.new('863', '3', '1',
+              MARC::Subfield.new('a', 'no.182/183(1994:Jan.)-no.191(1994:Oct.),no.193(1994:Dec.)-no.229(1997:Dec.) '),
+              MARC::Subfield.new('8', '0'),
+              MARC::Subfield.new('c', 'No content metadata'),
+              MARC::Subfield.new('d', 'Lucie King Harris Fund')
+            ))
+          end
+        end
+        it do
+          expect(result[field].count).to eq 1
+          expect(result[field]).to include(/^EAST-ASIA/)
         end
       end
     end
