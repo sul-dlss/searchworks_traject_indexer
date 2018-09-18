@@ -10,7 +10,7 @@ class Traject::PurlFetcherDeletesReader < Traject::PurlFetcherReader
     changes(first_modified: first_modified, target: target).each do |change|
       record = PublicXmlRecord.new(change['druid'].sub('druid:', ''))
 
-      next unless (change['false_targets'] && change['false_targets'].include?(target)) || (settings['skip_if_catkey'] && record.catkey)
+      next unless target.nil? || (change['false_targets'] && change['false_targets'].include?(target)) || (settings['skip_if_catkey'] == 'true' && record.catkey)
 
       yield record
     end
