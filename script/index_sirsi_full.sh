@@ -65,8 +65,8 @@ bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
 read -r FULL_DUMP_DATE <$LATEST_DATA_DIR/files_counts
 d="${FULL_DUMP_DATE:0:4}-${FULL_DUMP_DATE:4:2}-${FULL_DUMP_DATE:6:2}"
 while [ "$d" != `date -I` ]; do
-  d=$(date -I -d "$d + 1 day")
   $SCRIPT_FULL_PATH/index_sirsi_nightly.sh `date -d $d +%y%m%d`
+  d=$(date -I -d "$d + 1 day")
 done
 
 # Index the current incremental file
