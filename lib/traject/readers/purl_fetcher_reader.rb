@@ -12,7 +12,7 @@ class Traject::PurlFetcherReader
     return to_enum(:each) unless block_given?
 
     changes(first_modified: first_modified, target: target).each do |change|
-      next unless target.nil? || (change['true_targets'] && change['true_targets'].include?(target))
+      next unless target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
 
       yield PublicXmlRecord.new(change['druid'].sub('druid:', ''))
     end
