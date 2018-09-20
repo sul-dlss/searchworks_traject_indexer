@@ -27,6 +27,10 @@ def stanford_mods(method, *args, default: nil)
   end
 end
 
+each_record do |record, context|
+  context.skip!('This item is in processing or does not exist') unless record.public_xml?
+end
+
 ##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
