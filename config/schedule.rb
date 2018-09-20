@@ -13,7 +13,6 @@ every '*/5 * * * *', roles: [:prod] do
   honeybadger_wrapped_mri_ruby_script 'delete_sdr_preview.sh', solr_url: '${SDR_PREVIEW_SOLR_URL}'
 end
 
-
 every '45 6-23 * * *' do
   honeybadger_wrapped_script 'index_sirsi_hourly.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}'
   honeybadger_wrapped_script 'index_sirsi_hourly.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}'
@@ -27,4 +26,10 @@ end
 every :day, at: '1:00am' do
   honeybadger_wrapped_script 'index_sirsi_full.sh new', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}'
   honeybadger_wrapped_script 'index_sirsi_full.sh new', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}'
+end
+
+
+every '*/15 1-6 * * *' do
+  honeybadger_wrapped_script 'commit.sh', solr_url: '${MORISON_SOLR_URL}'
+  honeybadger_wrapped_script 'commit.sh', solr_url: '${SOLR_URL}'
 end
