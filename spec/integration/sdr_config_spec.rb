@@ -9,15 +9,31 @@ describe 'SDR indexing' do
     end
   end
 
+  context 'with a missing object' do
+    before do
+      without_partial_double_verification do
+        if defined?(JRUBY_VERSION)
+          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(code: 404))
+        else
+          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(status: double(ok?: false)))
+        end
+      end
+    end
+
+    it 'maps the data the same way as it does currently' do
+      expect(result).to be_nil
+    end
+  end
+
   context 'with bk264hq9320' do
     before do
       without_partial_double_verification do
         if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(body: File.read(file_fixture('bk264hq9320.xml').to_s)))
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(body: File.read(file_fixture('nj770kg7809.xml').to_s)))
+          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(code: 200, body: File.read(file_fixture('bk264hq9320.xml').to_s)))
+          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(code: 200, body: File.read(file_fixture('nj770kg7809.xml').to_s)))
         else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(body: File.read(file_fixture('bk264hq9320.xml').to_s)))
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(body: File.read(file_fixture('nj770kg7809.xml').to_s)))
+          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(body: File.read(file_fixture('bk264hq9320.xml').to_s), status: double(ok?: true)))
+          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(body: File.read(file_fixture('nj770kg7809.xml').to_s), status: double(ok?: true)))
         end
       end
     end

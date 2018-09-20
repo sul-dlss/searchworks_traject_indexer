@@ -10,9 +10,20 @@ class Traject::PurlFetcherDeletesReader < Traject::PurlFetcherReader
     changes(first_modified: first_modified, target: target).each do |change|
       record = PublicXmlRecord.new(change['druid'].sub('druid:', ''))
 
-      next unless target.nil? || (change['false_targets'] && change['false_targets'].map(&:upcase).include?(target.upcase)) || (settings['skip_if_catkey'] == 'true' && record.catkey)
-
-      yield record
+      yield record if should_be_deleted?(change, record)
     end
+  end
+
+  private
+
+  def should_be_deleted?(change, record)
+    # Remove records that have the target explicitly set to false
+    return true if target && change['false_targets'] && change['false_targets'].map(&:upcase).include?(target.upcase)
+    # Remove changed records that now have a catkey
+    return true if settings['skip_if_catkey'] == 'true' && record.catkey
+    # Remove withdrawn records that are missing public xml
+    return true if !record.public_xml?
+
+    false
   end
 end

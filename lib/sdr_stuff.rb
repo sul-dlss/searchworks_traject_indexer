@@ -22,9 +22,11 @@ class PublicXmlRecord
 
   def self.fetch(url)
     if defined?(JRUBY_VERSION)
-      Manticore.get(url).body
+      response = Manticore.get(url)
+      response.body if response.code == 200
     else
-      HTTP.get(url).body
+      response = HTTP.get(url)
+      response.body if response.status.ok?
     end
   end
 
@@ -54,6 +56,10 @@ class PublicXmlRecord
     @smods_rec ||= Stanford::Mods::Record.new.tap do |smods_rec|
       smods_rec.from_str(mods.to_s)
     end
+  end
+
+  def public_xml?
+    !!public_xml
   end
 
   def public_xml
