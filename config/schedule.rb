@@ -23,7 +23,7 @@ every :day, at: '4:30am' do
   honeybadger_wrapped_script 'index_sirsi_nightly.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}'
 end
 
-every :day, at: '1:00am' do
+every :day, at: '12:59am' do
   honeybadger_wrapped_script 'index_sirsi_full.sh new', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}'
   honeybadger_wrapped_script 'index_sirsi_full.sh new', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}'
 end
