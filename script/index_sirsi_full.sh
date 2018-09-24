@@ -17,15 +17,6 @@ LOG_DIR=$LATEST_DATA_DIR/logs
 TIMESTAMP=`eval date +%y%m%d_%H%M%S`
 START_TIME=`date +%FT%TZ`
 
-# "Rotate" the sirsi data directories
-rm -rf $PREVIOUS_DATA_DIR
-mv $LATEST_DATA_DIR $PREVIOUS_DATA_DIR
-mkdir -p $LATEST_DATA_DIR
-
-# create directory for data files
-mkdir -p $LATEST_DATA_DIR
-mkdir -p $LOCAL_CREZ_DIR
-
 # check if timestamp in previous files_counts is same as in latest files_counts
 # if different, proceed with indexing full dump
 if [ $CHECK_NEWNESS ]; then #checks if CHECK_NEWNESS is defined, else index everything
@@ -36,6 +27,15 @@ if [ $CHECK_NEWNESS ]; then #checks if CHECK_NEWNESS is defined, else index ever
     exit 0;
   fi
 fi
+
+# "Rotate" the sirsi data directories
+rm -rf $PREVIOUS_DATA_DIR
+mv $LATEST_DATA_DIR $PREVIOUS_DATA_DIR
+mkdir -p $LATEST_DATA_DIR
+
+# create directory for data files
+mkdir -p $LATEST_DATA_DIR
+mkdir -p $LOCAL_CREZ_DIR
 
 # scp remote marc files to "latest", preserve file timestamps
 scp -p sirsi@${SIRSI_SERVER}:$REMOTE_DATA_DIR/* $LATEST_DATA_DIR/
