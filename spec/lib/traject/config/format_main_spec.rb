@@ -1439,7 +1439,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is has no format' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -1454,7 +1454,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is has no format' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -1469,7 +1469,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is has no format' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -1484,7 +1484,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is has no format' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -1904,7 +1904,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -1919,7 +1919,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -1934,7 +1934,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -2092,7 +2092,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -2806,7 +2806,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
   context 'leader/06 k 008/33 w - other' do
@@ -2818,7 +2818,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -2831,7 +2831,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 
@@ -2844,7 +2844,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is an other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq []
     end
   end
 
@@ -3044,7 +3044,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is Nothing so Other' do
-      expect(result[field]).to eq ['Other']
+      expect(result[field]).to eq nil
     end
   end
 end

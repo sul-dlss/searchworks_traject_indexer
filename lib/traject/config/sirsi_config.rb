@@ -1092,7 +1092,9 @@ to_field 'format_main_ssim' do |record, accumulator, context|
 end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
-  accumulator << 'Other' if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].empty?
+  next if context.output_hash['format_main_ssim'].nil?
+
+  context.output_hash['format_main_ssim'].delete('Other') if context.output_hash['format_main_ssim']
 end
 
 # * INDEX-89 - Add video physical formats
@@ -1338,7 +1340,7 @@ to_field 'genre_ssim' do |record, accumulator|
 end
 
 to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
-  if context.output_hash['format_main_ssim'].include? 'Database'
+  if context.output_hash['format_main_ssim'] && context.output_hash['format_main_ssim'].include?('Database')
     translation_map = Traject::TranslationMap.new('db_subjects_map')
     accumulator.replace translation_map.translate_array(accumulator).flatten
   else
@@ -1347,7 +1349,7 @@ to_field 'db_az_subject', extract_marc('099a') do |record, accumulator, context|
 end
 
 to_field 'db_az_subject' do |record, accumulator, context|
-  if context.output_hash['format_main_ssim'].include? 'Database'
+  if context.output_hash['format_main_ssim'] && context.output_hash['format_main_ssim'].include?('Database')
     if record['099'].nil?
       accumulator << 'Uncategorized'
     end
