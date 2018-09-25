@@ -72,4 +72,16 @@ done
 # Index the current incremental file
 $SCRIPT_FULL_PATH/index_sirsi_hourly.sh
 
-# TODO: Clean up any records that weren't in the dump
+# gets the numFound for documents last_updated before start of indexing full dump
+# assumes numFound value is 3rd field of colon-separated line in response
+#   "response":{"numFound":664,"start":0,"maxScore":1.0,"docs":[]
+NUM_DOCS_TO_DEL=`curl -s -G "${SOLR_URL}"/select -d "fq=collection:sirsi&fq=last_updated:%5B*%20TO%20$START_TIME%5D&q=*:*&facet=false&rows=0" | grep "numFound" | cut -d":" -f3 | tr -d '[:alpha:]|[:punct:]'`
+
+if [ "$NUM_DOCS_TO_DEL" -gt 100 ]; then
+  # sends to honeybadger ???
+  echo "Too many documents will be deleted!";
+  exit 1;
+else
+  # delete old sirsi docs
+  curl "${SOLR_URL}"/update/?commit=true -H "Content-Type: text/xml" -d "<delete><query>(collection:\"sirsi\")AND(last_updated: [* TO $START_TIME])</query></delete>"
+fi
