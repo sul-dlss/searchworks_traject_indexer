@@ -10,6 +10,7 @@ settings do
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide 'reader_class_name', 'Traject::DeleteReader'
   provide 'writer_class_name', 'Traject::DeleteWriter'
+  provide 'solr_writer.commit_on_close', true
 end
 
 to_field 'id' do |record, accumulator|

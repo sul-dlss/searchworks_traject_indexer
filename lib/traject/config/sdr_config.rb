@@ -13,6 +13,7 @@ settings do
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide 'reader_class_name', 'PurlFetcherReader'
   provide 'skip_if_catkey', 'true'
+  provide 'solr_writer.commit_on_close', true
 end
 
 def stanford_mods(method, *args, default: nil)

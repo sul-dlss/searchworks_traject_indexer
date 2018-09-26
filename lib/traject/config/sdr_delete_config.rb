@@ -13,6 +13,7 @@ settings do
   provide 'reader_class_name', 'Traject::PurlFetcherDeletesReader'
   provide 'writer_class_name', 'Traject::DeleteWriter'
   provide 'skip_if_catkey', 'true'
+  provide 'solr_writer.commit_on_close', true
 end
 
 to_field 'id' do |record, accumulator|
