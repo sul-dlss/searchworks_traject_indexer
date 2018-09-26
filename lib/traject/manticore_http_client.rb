@@ -17,5 +17,5 @@ class Traject::ManticoreHttpClient
     OpenStruct.new(body: response.body, status: response.code)
   end
 
-  def receive_timeout; end
+  def receive_timeout=; end
 end
