@@ -61,18 +61,5 @@ bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
     -s solr_writer.max_skipped=-1 \
     -s log.file=$LOG_DIR/$TIMESTAMP.log $LATEST_DATA_DIR/*.marc
 
-# Index any nightlies we need to index to catch up
-read -r FULL_DUMP_DATE <$LATEST_DATA_DIR/files_counts
-d="${FULL_DUMP_DATE:0:4}-${FULL_DUMP_DATE:4:2}-${FULL_DUMP_DATE:6:2}"
-while [ "$d" != `date -I` ]; do
-  $SCRIPT_FULL_PATH/index_sirsi_nightly.sh `date -d $d +%y%m%d`
-  d=$(date -I -d "$d + 1 day")
-done
-
-# And index the current nightly
-$SCRIPT_FULL_PATH/index_sirsi_nightly.sh
-
-# Index the current incremental file
-$SCRIPT_FULL_PATH/index_sirsi_hourly.sh
-
-# TODO: Clean up any records that weren't in the dump
+# Index all the nightlies and the incremental
+$SCRIPT_FULL_PATH/index_sirsi_catchup.sh
