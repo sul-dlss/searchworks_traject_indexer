@@ -30,6 +30,7 @@ settings do
   provide 'reserves_file', ENV['RESERVES_FILE']
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
+  provide 'solr_writer.commit_on_close', true
 
   if defined?(JRUBY_VERSION)
     require 'traject/marc4j_reader'
