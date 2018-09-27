@@ -1,6 +1,8 @@
 require 'manticore'
 
 class Traject::ManticoreHttpClient
+  attr_accessor :receive_timeout
+
   def initialize
     @client = Manticore::Client.new
   end
@@ -16,6 +18,4 @@ class Traject::ManticoreHttpClient
 
     OpenStruct.new(body: response.body, status: response.code)
   end
-
-  def receive_timeout=; end
 end
