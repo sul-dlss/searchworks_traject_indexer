@@ -14,8 +14,9 @@ class Traject::ManticoreHttpClient
   end
 
   def get url, params
-    response = @client.get(url, params: params, request_timeout: 60*10, socket_timeout: 60*10)
+    # Fire and forget
+    @client.background.get(url, params: params, request_timeout: 60*10, socket_timeout: 60*10).call
 
-    OpenStruct.new(body: response.body, status: response.code)
+    OpenStruct.new(body: '{}', status: 200)
   end
 end
