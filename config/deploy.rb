@@ -11,6 +11,8 @@ set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
 set :rvm_ruby_version, 'jruby-9.2.0.0'
 
+set :honeybadger_env, "#{fetch(:stage)}"
+
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
