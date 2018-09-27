@@ -1,4 +1,5 @@
 require 'manticore'
+require 'retriable'
 
 class Traject::ManticoreHttpClient
   attr_accessor :receive_timeout
@@ -8,7 +9,11 @@ class Traject::ManticoreHttpClient
   end
 
   def post url, body, headers = {}
-    response = @client.post(url, headers: headers, body: body, socket_timeout: 60)
+    response = Retriable.retriable on: [SocketError, Errno::ECONNREFUSED, StandardError], multiplier: 10 do
+      @client.post(url, headers: headers, body: body, socket_timeout: 60).tap do |resp|
+        raise "Solr error response: #{resp.code}: #{resp.body}" if resp.code != 200
+      end
+    end
 
     OpenStruct.new(body: response.body, status: response.code)
   end
