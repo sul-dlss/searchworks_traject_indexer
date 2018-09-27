@@ -14,6 +14,10 @@ settings do
   provide 'reader_class_name', 'PurlFetcherReader'
   provide 'skip_if_catkey', 'true'
   provide 'solr_writer.commit_on_close', true
+  if defined?(JRUBY_VERSION)
+    require 'traject/manticore_http_client'
+    provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
+  end
 end
 
 def stanford_mods(method, *args, default: nil)

@@ -99,6 +99,7 @@ GEM
     openssl_pkcs8_pure (0.0.0.2)
     public_suffix (3.0.3)
     rake (12.3.1)
+    retriable (3.1.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -160,6 +161,7 @@ DEPENDENCIES
   i18n
   manticore
   rake
+  retriable
   rspec
   stanford-mods
   traject (~> 3.0a)

@@ -11,6 +11,10 @@ settings do
   provide 'reader_class_name', 'Traject::DeleteReader'
   provide 'writer_class_name', 'Traject::DeleteWriter'
   provide 'solr_writer.commit_on_close', true
+  if defined?(JRUBY_VERSION)
+    require 'traject/manticore_http_client'
+    provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
+  end
 end
 
 to_field 'id' do |record, accumulator|

@@ -15,6 +15,7 @@ gem 'rake'
 gem 'stanford-mods'
 gem 'whenever'
 gem 'honeybadger'
+gem 'retriable'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
