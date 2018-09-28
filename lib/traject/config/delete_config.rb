@@ -14,6 +14,8 @@ settings do
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'
     provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
+  else
+    provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   end
 end
 
