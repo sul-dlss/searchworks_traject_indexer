@@ -65,3 +65,19 @@ bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
 
 # Index all the nightlies and the incremental
 $SCRIPT_FULL_PATH/index_sirsi_catchup.sh
+
+# gets the numFound for documents last_updated before start of indexing full dump
+# assumes numFound value is 3rd field of colon-separated line in response
+#   "response":{"numFound":664,"start":0,"maxScore":1.0,"docs":[]
+NUM_DOCS_TO_DEL=`curl -s -G "${SOLR_URL}"/select -d "fq=collection:sirsi&fq=last_updated:%5B*%20TO%20$START_TIME%5D&q=*:*&facet=false&rows=0" | grep "numFound" | cut -d":" -f3 | tr -d '[:alpha:]|[:punct:]'`
+
+# create file of ckeys for documents last_updated before start of indexing full dump
+DOCS_TO_DEL=$LATEST_DATA_DIR/ckeys_to_delete
+curl -s -G "${SOLR_URL}"/select -d "fl=id&fq=collection:sirsi&fq=last_updated:%5B*%20TO%20$START_TIME%5D&q=*:*&facet=false&rows=$NUM_DOCS_TO_DEL&wt=csv" | sed '1d' > $DOCS_TO_DEL
+
+# report ckeys that should be deleted
+if [ -e $DOCS_TO_DEL ]; then
+  MAILTO="sul-unicorn-devs@lists.stanford.edu"
+  SUBJECT="Ckeys in ${SOLR_URL} last updated before indexing full SearchWorks dump"
+  cat $DOCS_TO_DEL | mail -s $SUBJECT $MAILTO
+fi
