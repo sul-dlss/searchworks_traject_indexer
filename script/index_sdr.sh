@@ -3,7 +3,6 @@ set -e
 
 STATE_FILE=tmp/searchworks_traject_indexer_last_run
 CURRENT_DATE=`date --rfc-3339=seconds`
-export NUM_THREADS=8
 LOG_FILE=tmp/index_sdr_log
 
 (
