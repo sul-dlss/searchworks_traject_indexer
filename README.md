@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sul-dlss/searchworks_traject_indexer.svg?branch=master)](https://travis-ci.org/sul-dlss/searchworks_traject_indexer) [![Coverage Status](https://coveralls.io/repos/github/sul-dlss/searchworks_traject_indexer/badge.svg?branch=master)](https://coveralls.io/github/sul-dlss/searchworks_traject_indexer?branch=master)
+
 # SearchworksTrajectIndexer
 
 ## Installation
