@@ -2525,9 +2525,9 @@ to_field 'item_display' do |record, accumulator, context|
   next unless course_reserves
   context.output_hash['item_display'].map! do |item_display_value|
     split_item_display = item_display_value.split('-|-')
-    item_displays = []
-    course_reserves.each do |row|
-      next unless row[:barcode].strip == split_item_display[0].strip
+    row = course_reserves.reverse.find { |r| r[:barcode].strip == split_item_display[0].strip }
+
+    if row
       rez_desk = row[:rez_desk] || ''
       loan_period = LOAN_CODE_2_USER_STR[row[:loan_period]] || ''
       course_id = row[:course_id] || ''
@@ -2536,11 +2536,10 @@ to_field 'item_display' do |record, accumulator, context|
       old_val_array = item_display_value.split(' -|- ', -1)
       old_val_array[3] = rez_desk
       new_val = old_val_array.join(' -|- ')
-      item_displays << new_val + ' -|- ' + suffix
+      new_val + ' -|- ' + suffix
+    else
+      item_display_value
     end
-    # Use original item_display field if none matched
-    item_displays << item_display_value if item_displays.empty?
-    item_displays
   end.flatten!
 end
 
