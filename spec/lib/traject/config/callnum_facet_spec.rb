@@ -196,11 +196,11 @@ RSpec.describe 'Call Number Facet' do
 
     it 'handles single letter LC call numbers' do
       expect(record_with_999(call_number: 'D764.7 .K72 1990', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|D - World History|D - World History']
+        ['LC Classification|D - History (General)|D - History (General)']
       )
 
       expect(record_with_999(call_number: 'F1356 .M464 2005', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|F - History of the Americas (Local)|F - History of the Americas (Local)']
+        ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)|F - United States, British, Dutch, French, Latin America (Local History)']
       )
 
       expect(record_with_999(call_number: ' M2 .C17 L3 2005', scheme: 'LC', indexer: indexer)[field]).to eq(
@@ -208,7 +208,7 @@ RSpec.describe 'Call Number Facet' do
       )
 
       expect(record_with_999(call_number: 'U897 .C87 Z55 2001', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|U - Military Science|U - Military Science']
+        ['LC Classification|U - Military Science (General)|U - Military Science (General)']
       )
 
       expect(record_with_999(call_number: 'Z3871.Z8', scheme: 'LC', indexer: indexer)[field]).to eq(
@@ -218,7 +218,7 @@ RSpec.describe 'Call Number Facet' do
 
     it 'handles two letter LC call numbers' do
       expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|Q - Science|QE - Geology']
+        ['LC Classification|Q - Science (General)|QE - Geology']
       )
 
       expect(record_with_999(call_number: 'BX4659 .E85 W44', scheme: 'LC', indexer: indexer)[field]).to eq(
@@ -226,7 +226,7 @@ RSpec.describe 'Call Number Facet' do
       )
 
       expect(record_with_999(call_number: 'HG6046 .V28 1986', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|H - Social Sciences|HG - Finance']
+        ['LC Classification|H - Social Sciences (General)|HG - Finance']
       )
     end
 
@@ -243,7 +243,7 @@ RSpec.describe 'Call Number Facet' do
 
     it 'includes the classification when it is not available in the map' do
       expect(record_with_999(call_number: 'KFC1050 .C35 2014', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|K - Law|KFC']
+        ['LC Classification|K - Law|KFC - Law of California, Colorado, Connecticut']
       )
     end
 
@@ -284,7 +284,7 @@ RSpec.describe 'Call Number Facet' do
       expect(doc[field]).to eq(
         [
           'LC Classification|M - Music|ML - Literature on Music',
-          'LC Classification|Q - Science|QE - Geology'
+          'LC Classification|Q - Science (General)|QE - Geology'
         ]
       )
     end
@@ -292,7 +292,7 @@ RSpec.describe 'Call Number Facet' do
 
     it 'handles lane LC call numbers' do
       expect(record_with_999(call_number: 'Q603 .H47 1960', library: 'LANE-MED', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['LC Classification|Q - Science|Q - Science']
+        ['LC Classification|Q - Science (General)|Q - Science (General)']
       )
     end
 
@@ -300,15 +300,15 @@ RSpec.describe 'Call Number Facet' do
       skip 'This test was marked as TODO in SolrMarc'
 
       expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['LC Classification|Q - Science|QE - Geology']
+        ['LC Classification|Q - Science (General)|QE - Geology']
       )
 
       expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'ALPHANUM', indexer: indexer)[field]).to eq(
-        ['LC Classification|Q - Science|QE - Geology']
+        ['LC Classification|Q - Science (General)|QE - Geology']
       )
 
       expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'OTHER', indexer: indexer)[field]).to eq(
-        ['LC Classification|Q - Science|QE - Geology']
+        ['LC Classification|Q - Science (General)|QE - Geology']
       )
     end
   end
@@ -390,29 +390,29 @@ RSpec.describe 'Call Number Facet' do
   context 'dewey call numbers' do
     it 'has the correct data' do
       expect(record_with_999(call_number: '159.32 .W211', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|100s - Philosophy & Psychology|150s - Psychology']
+        ['Dewey Classification|100s - Philosophy|150s - Psychology']
       )
 
       expect(record_with_999(call_number: '550.6 .U58P NO.1707', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|500s - Science|550s - Earth Sciences']
+        ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences']
       )
     end
 
     it 'has the correct data for dewey call numbers w/o leading zeros' do
       expect(record_with_999(call_number: '062 .B862 V.193', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Information & General Works|060s - General Organization & Museology']
+        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums']
       )
 
       expect(record_with_999(call_number: '62 .B862 V.193', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Information & General Works|060s - General Organization & Museology']
+        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums']
       )
 
       expect(record_with_999(call_number: '002 U73', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Information & General Works|000s - Computer Science, Information & General Works']
+        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems']
       )
 
       expect(record_with_999(call_number: '2 U73', scheme: 'DEWEY', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Information & General Works|000s - Computer Science, Information & General Works']
+        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems']
       )
     end
 
@@ -420,7 +420,7 @@ RSpec.describe 'Call Number Facet' do
       doc = record_with_999(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer: indexer)
 
       expect(doc[field]).to eq(
-        ['Dewey Classification|300s - Social Sciences|370s - Education']
+        ['Dewey Classification|300s - Social Sciences, Sociology & Anthropology|370s - Education']
       )
 
       doc = record_with_999(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer: indexer) do |marc_record|
@@ -436,7 +436,7 @@ RSpec.describe 'Call Number Facet' do
       end
 
       expect(doc[field]).to eq(
-        ['Dewey Classification|300s - Social Sciences|370s - Education']
+        ['Dewey Classification|300s - Social Sciences, Sociology & Anthropology|370s - Education']
       )
     end
 
@@ -444,7 +444,7 @@ RSpec.describe 'Call Number Facet' do
       doc = record_with_999(call_number: '518 .M161', scheme: 'DEWEY', indexer: indexer)
 
       expect(doc[field]).to eq(
-        ['Dewey Classification|500s - Science|510s - Mathematics']
+        ['Dewey Classification|500s - Natural Sciences & Mathematics|510s - Mathematics']
       )
 
       doc = record_with_999(call_number: '518 .M161', scheme: 'DEWEY', indexer: indexer) do |marc_record|
@@ -461,8 +461,8 @@ RSpec.describe 'Call Number Facet' do
 
       expect(doc[field]).to eq(
         [
-          'Dewey Classification|500s - Science|510s - Mathematics',
-          'Dewey Classification|000s - Computer Science, Information & General Works|060s - General Organization & Museology'
+          'Dewey Classification|500s - Natural Sciences & Mathematics|510s - Mathematics',
+          'Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums'
         ]
       )
     end
@@ -481,8 +481,8 @@ RSpec.describe 'Call Number Facet' do
       end
       expect(doc[field]).to eq(
         [
-          'LC Classification|P - Language & Literature|PR - English Literature',
-          'Dewey Classification|900s - History & Geography|960s - General History of Africa'
+          'LC Classification|P - Philology, Linguistics (General)|PR - English Literature',
+          'Dewey Classification|900s - History & Geography|960s - History of Africa'
         ]
       )
 
@@ -499,29 +499,29 @@ RSpec.describe 'Call Number Facet' do
       end
       expect(doc[field]).to eq(
         [
-          'LC Classification|Q - Science|QE - Geology',
-          'Dewey Classification|500s - Science|550s - Earth Sciences'
+          'LC Classification|Q - Science (General)|QE - Geology',
+          'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences'
         ]
       )
     end
 
     it 'inlcudes items typed as DEWEYPER' do
       expect(record_with_999(call_number: '550.6 .U58O 92-600', scheme: 'DEWEYPER', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|500s - Science|550s - Earth Sciences']
+        ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences']
       )
     end
 
     it 'handles call numbers that dewey but listed as LC' do
       expect(record_with_999(call_number: '180.8 D25 V.1', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|100s - Philosophy & Psychology|180s - Ancient, Medieval, Oriental Philosophy']
+        ['Dewey Classification|100s - Philosophy|180s - Ancient, Medieval & Eastern Philosophy']
       )
 
       expect(record_with_999(call_number: '219.7 K193L V.5', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|200s - Religion|210s - Natural Theology']
+        ['Dewey Classification|200s - Religion|210s - Philosophy & Theory of Religion']
       )
 
       expect(record_with_999(call_number: '3.37 D621', scheme: 'LC', indexer: indexer)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Information & General Works|000s - Computer Science, Information & General Works']
+        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems']
       )
     end
   end
@@ -588,8 +588,8 @@ RSpec.describe 'Call Number Facet' do
 
       expect(doc[field]).to eq(
         [
-          'LC Classification|Q - Science|QE - Geology',
-          'Dewey Classification|500s - Science|550s - Earth Sciences',
+          'LC Classification|Q - Science (General)|QE - Geology',
+          'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
           'Government Document|Federal'
         ]
       )
