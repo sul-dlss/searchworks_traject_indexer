@@ -307,7 +307,7 @@ to_field 'author_meeting_display', extract_marc("111#{ALPHABET}", first: true, a
 to_field 'vern_author_meeting_display', extract_marc("111#{ALPHABET}", first: true, alternate_script: :only)
 # # Author Sort Field
 to_field 'author_sort' do |record, accumulator|
-  accumulator << extract_sortable_author("100#{ALPHABET}:110#{ALPHABET}:111#{ALPHABET}",
+  accumulator << extract_sortable_author("100#{ALPHABET.delete('e')}:110#{ALPHABET.delete('e')}:111#{ALPHABET.delete('j')}",
                                          "240#{ALPHABET}:245#{ALPHABET.delete('c')}",
                                          record)
 end
@@ -318,7 +318,7 @@ end
 # This method differs in that:
 #  245 field returned independent of 240 being present
 #  punctuation actually gets stripped
-#  only alpha subfields used
+#  subfields to use specified in passed parameter
 #  ensures record with no 1xx sorts after records with a 1xx by prepending UTF-8 max code point to title string
 def extract_sortable_author(author_fields, title_fields, record)
   punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'

@@ -546,6 +546,21 @@ RSpec.describe 'Author config' do
         result = select_by_id('245only')[field]
         expect(result).to eq [MAX_CODE_POINT + '245 no 100 or 240']
       end
+
+      it 'no subfield e from 100' do
+        result = select_by_id('7651581')[field]
+        expect(result).to eq ['Coutinho Frederico dos Reys ae']
+      end
+
+      it 'no subfield e from 110' do
+        result = select_by_id('110search')[field]
+        expect(result).to eq ['110a 110b 110c 110d 110f 110g 110k 110n none 110u 110 search subfields']
+      end
+
+      it 'no subfield j from 111' do
+        result = select_by_id('111search')[field]
+        expect(result).to eq ['111a none 111c 111d 111e none 111g 111i 111n 111q 111u 111 search subfields']
+      end
     end
 
     context 'ignores non-filing characters' do
