@@ -171,6 +171,7 @@ to_field 'set_with_title' do |record, accumulator|
 end
 
 to_field 'mods_name_ssm', mods_display(:name)
+to_field 'mods_abstract_ssm', mods_display(:abstract)
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
