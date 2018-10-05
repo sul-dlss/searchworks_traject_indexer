@@ -45,7 +45,9 @@ def mods_display(method, *args, default: nil)
     data = Array(resource.mods_display.public_send(method, *args))
 
     data.each do |v|
-      accumulator << v.values.first.to_s
+      v.values.each do |v2|
+        accumulator << v2.to_s
+      end
     end
 
     accumulator << default if data.empty?
@@ -314,6 +316,20 @@ to_field 'stanford_work_facet_hsim' do |record, accumulator|
     end
   end
 end
+
+to_field 'author_struct' do |record, accumulator|
+  record.mods_display.name.each do |name|
+    name.values.each do |value|
+      accumulator << {
+        link: value.name,
+        search: "\"#{value.name}\"",
+        post_text: ("(#{value.roles.join(', ')})" if value.roles.present?)
+      }
+    end
+  end
+end
+
+to_field 'summary_display', mods_display(:abstract)
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection

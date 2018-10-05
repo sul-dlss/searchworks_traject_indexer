@@ -13,6 +13,16 @@ describe 'SDR indexing' do
     end
   end
 
+  def stub_mods_request(druid, body)
+    without_partial_double_verification do
+      if defined?(JRUBY_VERSION)
+        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(code: 200, body: body))
+      else
+        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(body: body, status: double(ok?: true)))
+      end
+    end
+  end
+
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/sdr_config.rb')
@@ -457,6 +467,32 @@ describe 'SDR indexing' do
       it 'maps the right data' do
         expect(result['pub_country']).to eq ['Antigua and Barbuda']
       end
+    end
+  end
+  context 'with zz400gd3785' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('zz400gd3785')) }
+    before do
+      stub_purl_request('zz400gd3785', File.read(file_fixture('zz400gd3785.xml').to_s))
+      stub_purl_request('sg213ph2100', File.read(file_fixture('sg213ph2100.xml').to_s))
+    end
+    it 'maps the data' do
+      expect(result).to include 'summary_display' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”']
+    end
+  end
+  context 'with df650pk4327' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('df650pk4327')) }
+    before do
+      stub_purl_request('df650pk4327', File.read(file_fixture('df650pk4327.xml').to_s))
+      stub_mods_request('df650pk4327', File.read(file_fixture('df650pk4327.mods')))
+      stub_purl_request('hn730ks3626', File.read(file_fixture('hn730ks3626.xml').to_s))
+    end
+    it 'turns mods author data into a structure' do
+      expect(
+        result['author_struct'].length
+      ).to eq 3
+      expect(
+        result['author_struct'].first
+      ).to include(link: 'Snydman, Stuart', post_text: '(Author)', search: '"Snydman, Stuart"')
     end
   end
 end
