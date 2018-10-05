@@ -40,6 +40,18 @@ def mods_xpath(xpath)
   end
 end
 
+def mods_display(method, *args, default: nil)
+  lambda do |resource, accumulator, _context|
+    data = Array(resource.mods_display.public_send(method, *args))
+
+    data.each do |v|
+      accumulator << v.values.first.to_s
+    end
+
+    accumulator << default if data.empty?
+  end
+end
+
 each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
 end
