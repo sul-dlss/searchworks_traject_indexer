@@ -1,4 +1,5 @@
 require 'http'
+require 'mods_display'
 
 class SdrReader
   attr_reader :input_stream
@@ -19,6 +20,14 @@ end
 
 class PublicXmlRecord
   attr_reader :druid
+  include ModsDisplay::ModelExtension
+  include ModsDisplay::ControllerExtension
+
+  mods_xml_source do |model|
+    model.mods.to_s
+  end
+  configure_mods_display do
+  end
 
   def self.fetch(url)
     if defined?(JRUBY_VERSION)
@@ -56,6 +65,10 @@ class PublicXmlRecord
     @smods_rec ||= Stanford::Mods::Record.new.tap do |smods_rec|
       smods_rec.from_str(mods.to_s)
     end
+  end
+
+  def mods_display
+    @mods_display ||= render_mods_display(self)
   end
 
   def public_xml?
