@@ -22,6 +22,15 @@ ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 
+module Constants
+  EXCLUDE_FIELDS = ['w', '0', '1', '2', '5', '6', '8', '?', '=']
+  NIELSEN_TAGS = { '505' => '905', '520' => '920', '586' => '986' }
+  SOURCES = { 'Nielsen' => '(source: Nielsen Book Data)' }
+
+  HIDE_1ST_IND = %w(760 762 765 767 770 772 773 774 775 776 777 780 785 786 787)
+  HIDE_1ST_IND0 = %w(541 542 561 583 590)
+end
+
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
@@ -1499,6 +1508,103 @@ to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
 to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
+
+# Generate dt/dd pair with an unordered list from the table of contents (IE marc 505s)
+to_field 'toc_struct' do |marc, accumulator|
+  fields = []
+  vern = []
+  unmatched_vern = []
+
+  tag = '905' if marc['905'] && (marc['505'].nil? or (marc['505']["t"].nil? and marc['505']["r"].nil?))
+  tag ||= '505'
+
+  if marc['505'] or marc['905']
+    marc.find_all { |f| tag == f.tag }.each do |field|
+      field.each do |sub_field|
+        if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
+          fields << { link: sub_field.value }
+        elsif sub_field.code == "1"
+          fields << Constants::SOURCES[sub_field.value.strip]
+        elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+          # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
+          if tag == '905'
+            fields << sub_field.value
+          else
+            fields.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+          end
+        end
+      end
+      vernacular = get_marc_vernacular(marc,field)
+      vern.concat regex_split(vernacular, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
+    end
+  end
+
+  unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
+  unless unmatched_vern_fields.nil?
+    unmatched_vern_fields.each do |vern_field|
+      unmatched_vern.concat regex_split(vern_field, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+    end
+  end
+
+  new_vern = vern unless vern.empty?
+  new_fields = fields unless fields.empty?
+  new_unmatched_vern = unmatched_vern unless unmatched_vern.empty?
+  accumulator << {:label=>"Contents",:fields=>new_fields,:vernacular=>new_vern,:unmatched_vernacular=>new_unmatched_vern} unless (new_fields.nil? and new_vern.nil? and new_unmatched_vern.nil?)
+end
+
+# work-around for https://github.com/jruby/jruby/issues/4868
+def regex_split(str, regex)
+  str.split(regex).to_a
+end
+
+to_field 'summary_struct' do |marc, accumulator|
+  tag = marc['920'] ? '920' : '520'
+
+  label = if marc['920']
+            "Publisher's Summary"
+          else
+            'Summary'
+          end
+  fields = []
+
+  if marc['520'] || marc['920']
+    marc.find_all { |f| tag == f.tag }.each do |field|
+      field_text = []
+      field.each do |sub_field|
+        if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
+          field_text << { link: sub_field.value }
+        elsif sub_field.code == "1"
+          field_text << { source: Constants::SOURCES[sub_field.value] }
+        elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+          field_text << sub_field.value unless sub_field.code == 'a' && sub_field.value[0,1] == "%"
+        end
+      end
+      fields << { field: field_text, vernacular: get_marc_vernacular(marc, field) } unless field_text.empty?
+    end
+  else
+    unmatched_vern = get_unmatched_vernacular(marc,tag)
+  end
+
+  accumulator << { label: label, fields: fields, unmatched_vernacular: unmatched_vern } unless fields.empty? && unmatched_vern.nil?
+end
+
+def get_unmatched_vernacular(marc,tag)
+  fields = []
+  if marc['880']
+    marc.find_all { |f| '880' == f.tag }.each do |field|
+      text = ""
+      unless field['6'].nil? or !field["6"].include?("-")
+        if field['6'].split("-")[1].gsub("//r","") == "00" and field['6'].split("-")[0] == tag
+          text << field.reject { |sub_field| Constants::EXCLUDE_FIELDS.include?(sub_field.code) }.join(' ')
+        end
+      end
+      fields << text.strip unless text.empty?
+    end
+  end
+  return fields unless fields.empty?
+end
+
+
 to_field "context_search", extract_marc("518a", alternate_script: false)
 to_field "vern_context_search", extract_marc("518aa", alternate_script: :only)
 to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)

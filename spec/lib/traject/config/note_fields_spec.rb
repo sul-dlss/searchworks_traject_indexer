@@ -56,6 +56,116 @@ RSpec.describe 'Sirsi config' do
     end
   end
 
+  describe 'toc_struct' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'summaryTests.mrc' }
+    let(:field) { 'toc_struct'}
+
+    it 'maps the right fields' do
+      result = select_by_id('505')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+      expect(result).to include hash_including(fields: array_including('505a'), label: 'Contents', unmatched_vernacular: nil, vernacular: array_including(/^vern505a/))
+    end
+
+    context 'with Nielson data' do
+      let(:records) { [record] }
+      let(:record) { nil }
+      let(:result) { results.first }
+      let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+      context 'with a link in a $u' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', 'YUGOSLAV SERIAL 1973'),
+                MARC::Subfield.new('u', 'https://example.com')
+              )
+            )
+          end
+        end
+
+        it 'structures the output' do
+          expect(result_field.first[:fields]).to eq ['YUGOSLAV SERIAL 1973', { link: 'https://example.com' }]
+        end
+      end
+
+      context 'with data in just the 905' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '905', ' ', ' ',
+                MARC::Subfield.new('a', 'YUGOSLAV SERIAL 1973')
+              )
+            )
+          end
+        end
+
+        it 'structures the output' do
+          expect(result_field.first[:fields]).to eq ['YUGOSLAV SERIAL 1973']
+        end
+      end
+
+      context 'with incomplete data in the 505' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', 'missing a $r or $t')
+              )
+            )
+            r.append(
+              MARC::DataField.new(
+                '905', ' ', ' ',
+                MARC::Subfield.new('a', 'YUGOSLAV SERIAL 1973')
+              )
+            )
+          end
+        end
+
+        it 'structures the output' do
+          expect(result_field.first[:fields]).to eq ['YUGOSLAV SERIAL 1973']
+        end
+      end
+
+      context 'with Nielsen-sourced data' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '905', ' ', ' ',
+                MARC::Subfield.new('1', 'Nielsen')
+              )
+            )
+          end
+        end
+
+        it 'structures the output' do
+          expect(result_field.first[:fields]).to eq ['(source: Nielsen Book Data)']
+        end
+      end
+
+      context 'with delimited data' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', 'aaa -- bbb -- ccc')
+              )
+            )
+          end
+        end
+
+        it 'structures the output' do
+          expect(result_field.first[:fields]).to eq ['aaa', 'bbb', 'ccc']
+        end
+      end
+    end
+  end
+
   describe 'context_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
@@ -127,6 +237,67 @@ RSpec.describe 'Sirsi config' do
       expect(results).not_to include hash_including(field => ['nope'])
     end
   end
+
+  describe 'summary_struct' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    let(:fixture_name) { 'summaryTests.mrc' }
+    let(:field) { 'summary_struct'}
+
+    it 'maps the right fields' do
+      result = select_by_id('520')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+      expect(result.first[:label]).to eq 'Summary'
+      expect(result.first[:fields].first[:field]).to include '520a', '520b'
+    end
+
+    context 'with Nielson data' do
+      let(:fixture_name) { 'nielsenTests.mrc' }
+      it 'maps the right fields' do
+        result = select_by_id('920')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+        expect(result.first[:label]).to eq 'Publisher\'s Summary'
+        expect(result.first[:fields].first[:field]).to include '920a', '920b'
+      end
+    end
+
+    context 'with a link in a $u' do
+      subject(:result) { indexer.map_record(record) }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '520', ' ', ' ',
+              MARC::Subfield.new('a', 'YUGOSLAV SERIAL 1973'),
+              MARC::Subfield.new('u', 'https://example.com')
+            )
+          )
+        end
+      end
+      let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+      it 'structures the output' do
+        expect(result_field.first[:fields].first[:field]).to eq ['YUGOSLAV SERIAL 1973', { link: 'https://example.com' }]
+      end
+    end
+
+    context 'with Nielsen-sourced data' do
+      subject(:result) { indexer.map_record(record) }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '920', ' ', ' ',
+              MARC::Subfield.new('1', 'Nielsen')
+            )
+          )
+        end
+      end
+      let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+      it 'structures the output' do
+        expect(result_field.first[:fields].first[:field]).to eq [{ source: '(source: Nielsen Book Data)' }]
+      end
+    end
+  end
+
 
   describe 'award_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
