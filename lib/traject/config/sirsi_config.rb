@@ -1362,6 +1362,29 @@ to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}", alternate_script
   end
 end
 
+to_field 'characteristics_ssim' do |marc, accumulator|
+  {
+    '344' => 'Sound',
+    '345' => 'Projection',
+    '346' => 'Video',
+    '347' => 'Digital'
+  }.each do |tag, label|
+    if marc[tag]
+      characteristics_fields = ''
+      marc.find_all {|f| tag == f.tag }.each do |field|
+        subfields = field.map do |subfield|
+          if ('a'..'z').include?(subfield.code) && !Constants::EXCLUDE_FIELDS.include?(subfield.code)
+            subfield.value
+          end
+        end.compact.join('; ')
+        characteristics_fields << "#{subfields}." unless subfields.empty?
+      end
+
+      accumulator << "#{label}: #{characteristics_fields}" unless characteristics_fields.empty?
+    end
+  end
+end
+
 to_field 'format_physical_ssim', extract_marc('300a', alternate_script: false) do |record, accumulator|
   values = accumulator.dup.join("\n")
   accumulator.replace([])

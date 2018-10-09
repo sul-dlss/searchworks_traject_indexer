@@ -1736,4 +1736,64 @@ RSpec.describe 'Format physical config' do
       expect(result[field]).to eq nil
     end
   end
+
+  describe 'characteristics_ssim' do
+    let(:field) { 'characteristics_ssim' }
+
+    context 'with a 344' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::DataField.new('344', ' ', ' ',
+            MARC::Subfield.new('a', 'analog')
+          ))
+        end
+      end
+
+      it 'has the right data' do
+        expect(result[field]).to eq ['Sound: analog.']
+      end
+    end
+
+    context 'with a 345' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::DataField.new('345', ' ', ' ',
+            MARC::Subfield.new('a', '3D')
+          ))
+        end
+      end
+
+      it 'has the right data' do
+        expect(result[field]).to eq ['Projection: 3D.']
+      end
+    end
+
+    context 'with a 346' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::DataField.new('346', ' ', ' ',
+            MARC::Subfield.new('a', 'Beta')
+          ))
+        end
+      end
+
+      it 'has the right data' do
+        expect(result[field]).to eq ['Video: Beta.']
+      end
+    end
+
+    context 'with a 347' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::DataField.new('347', ' ', ' ',
+            MARC::Subfield.new('a', 'audio file')
+          ))
+        end
+      end
+
+      it 'has the right data' do
+        expect(result[field]).to eq ['Digital: audio file.']
+      end
+    end
+  end
 end
