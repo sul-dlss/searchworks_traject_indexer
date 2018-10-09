@@ -385,6 +385,35 @@ to_field 'author_sort' do |record, accumulator|
                                          record)
 end
 
+to_field 'author_struct' do |record, accumulator|
+  struct = {}
+  struct[:creator] = linked_author_struct(record, '100')
+  struct[:corporate_author] = linked_author_struct(record, '110')
+  struct[:meeting] = linked_author_struct(record, '111')
+  struct.reject! { |_k, v| v.empty? }
+
+  accumulator << struct unless struct.empty?
+end
+
+def linked_author_struct(record, tag)
+  record.fields(tag).map do |field|
+    {
+      link: field.subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
+      search: field.subfields.select { |subfield| linked?(tag, subfield) }.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
+      post_text: field.subfields.reject { |subfield| subfield.code == 'i' }.select { |subfield| %w[e 4].include?(subfield.code) || !linked?(tag, subfield) }.map(&:value).join(' ')
+    }.reject { |k, v| v.empty? }
+  end
+end
+
+def linked?(tag, subfield)
+  case tag
+  when '100', '110'
+    !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
+  when '111'
+    !%w[j 4].include?(subfield.code) # exclude 111 $j $4
+  end
+end
+
 # Custom method cribbed from Traject::Macros::Marc21Semantics.marc_sortable_author
 # https://github.com/traject/traject/blob/0914a396306c2489a7e270f33793ca76665f8f19/lib/traject/macros/marc21_semantics.rb#L51-L88
 # Port from Solrmarc:MarcUtils#getSortableAuthor wasn't accurate

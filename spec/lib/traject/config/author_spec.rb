@@ -649,4 +649,32 @@ RSpec.describe 'Author config' do
       end
     end
   end
+
+  describe 'author_struct' do
+    let(:field) { 'author_struct' }
+    it 'aggregates data from 100 fields' do
+      result = select_by_id('100search')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+      expect(result).to include creator: [{
+        link: '100a 100b 100c 100d none 100g 100j 100q 100u',
+        search: '100a 100b 100c 100d none 100g 100j 100q 100u',
+        post_text: '100e'
+      }]
+    end
+    it 'aggregates data from 110 fields' do
+      result = select_by_id('110search')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+      expect(result).to include corporate_author: [{
+        link: '110a 110b 110c 110d 110f 110g 110k 110n none 110u',
+        search: '110a 110b 110c 110d 110f 110g 110k 110n none 110u',
+        post_text: '110e'
+      }]
+    end
+    it 'aggregates data from 111 fields' do
+      result = select_by_id('111search')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+      expect(result).to include meeting: [{
+        link: '111a none 111c 111d 111e none 111g 111i 111n 111q 111u',
+        search: '111a none 111c 111d 111e none 111g 111i 111n 111q 111u',
+        post_text: '111e 111j'
+      }]
+    end
+  end
 end
