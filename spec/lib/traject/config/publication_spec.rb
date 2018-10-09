@@ -649,6 +649,50 @@ RSpec.describe 'Publication config' do
         expect(result[field]).to eq ['Di 1 ban. 第1版. - Shanghai Shi : Shanghai shu dian chu ban she, 2013. 上海市 : 上海书店出版社, 2013.']
       end
     end
+
+    context 'with a 264' do
+      subject(:result) { indexer.map_record(record) }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::DataField.new('250', ' ', ' ',
+            MARC::Subfield.new('a', '3rd draft /'),
+            MARC::Subfield.new('b', 'edited by Paul Watson.')
+          ))
+          r.append(MARC::DataField.new('260', ' ', ' ',
+            MARC::Subfield.new('a', 'London')
+          ))
+          r.append(MARC::DataField.new('264', ' ', '3',
+            MARC::Subfield.new('a', 'Cambridge'),
+            MARC::Subfield.new('b', 'Kinset Printing Company')
+          ))
+        end
+      end
+
+      it 'displays the right value' do
+        expect(result[field]).to eq ['3rd draft / edited by Paul Watson. - London - Cambridge Kinset Printing Company']
+      end
+    end
+
+    context 'with a 264 that is just a copyright or other date' do
+      subject(:result) { indexer.map_record(record) }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::DataField.new('250', ' ', ' ',
+            MARC::Subfield.new('a', '3rd draft /'),
+            MARC::Subfield.new('b', 'edited by Paul Watson.')
+          ))
+          r.append(MARC::DataField.new('260', ' ', ' ',
+            MARC::Subfield.new('a', 'London')
+          ))
+          r.append(MARC::DataField.new('264', ' ', '4',
+            MARC::Subfield.new('c', '2002')
+          ))
+        end
+      end
+      it 'omits the 264 value' do
+        expect(result[field]).to eq ['3rd draft / edited by Paul Watson. - London']
+      end
+    end
   end
 
 

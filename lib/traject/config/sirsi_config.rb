@@ -830,21 +830,31 @@ to_field 'production_year_isi', marc_008_date(%w[p], 11..14, '9')
 to_field 'original_year_isi', marc_008_date(%w[r], 11..14, '9')
 to_field 'copyright_year_isi', marc_008_date(%w[t], 11..14, '9')
 
-# returns the a value comprised of 250ab and 260a-g, suitable for display
+# returns the a value comprised of 250ab, 260a-g, and some 264 fields, suitable for display
 to_field 'imprint_display' do |record, accumulator|
   edition = Traject::MarcExtractor.new('250ab', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
   vernEdition = Traject::MarcExtractor.new('250ab', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
 
-  imprint = Traject::MarcExtractor.new('260abcefg', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
-  vernImprint = Traject::MarcExtractor.new('260abcefg', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
+  imprint = Traject::MarcExtractor.new('2603abcefg', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
+  vernImprint = Traject::MarcExtractor.new('2603abcefg', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
 
+  all_pub = Traject::MarcExtractor.new('2643abc', alternate_script: false).extract(record).uniq.map(&:strip)
+  all_vernPub = Traject::MarcExtractor.new('2643abc', alternate_script: :only).extract(record).uniq.map(&:strip)
+
+  bad_pub = Traject::MarcExtractor.new('264| 4|3abc:264|24|3abc:264|34|3abc', alternate_script: false).extract(record).uniq.map(&:strip)
+  bad_vernPub = Traject::MarcExtractor.new('264| 4|3abc:264|24|3abc:264|34|3abc', alternate_script: :only).extract(record).uniq.map(&:strip)
+
+  pub = (all_pub - bad_pub).join(' ')
+  vernPub = (all_vernPub - bad_vernPub).join(' ')
   data = [
     [edition, vernEdition].compact.reject(&:empty?).join(' '),
-    [imprint, vernImprint].compact.reject(&:empty?).join(' ')
+    [imprint, vernImprint].compact.reject(&:empty?).join(' '),
+    [pub, vernPub].compact.reject(&:empty?).join(' ')
   ].compact.reject(&:empty?)
 
   accumulator << data.join(' - ') if data.any?
 end
+
 #
 # # Date field for new items feed
 to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
