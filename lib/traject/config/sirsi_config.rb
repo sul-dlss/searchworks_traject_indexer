@@ -201,6 +201,79 @@ to_field 'title_sort' do |record, accumulator|
   accumulator << str unless str.empty?
 end
 
+to_field 'uniform_title_display_struct' do |record, accumulator|
+  next unless record['240'] || record['130']
+
+  uniform_title = record['130'] || record['240']
+  pre_text = []
+  link_text = []
+  extra_text = []
+  end_link = false
+  uniform_title.each do |sub_field|
+    next if Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+    if !end_link && sub_field.value.strip =~ /[\.|;]$/ && sub_field.code != 'h'
+      link_text << sub_field.value
+      end_link = true
+    elsif end_link || sub_field.code == 'h'
+      extra_text << sub_field.value
+    elsif sub_field.code == 'i' # assumes $i is at beginning
+      pre_text << sub_field.value.gsub(/\s*\(.+\)/, '')
+    else
+      link_text << sub_field.value
+    end
+  end
+
+  author = []
+  unless record['730']
+    auth_field = record['100'] || record['110'] || record['111']
+    author = auth_field.map do |sub_field|
+      next if (Constants::EXCLUDE_FIELDS + %w(4 e)).include?(sub_field.code)
+      sub_field.value
+    end.compact if auth_field
+  end
+
+  vern = get_marc_vernacular(record, uniform_title)
+
+  accumulator << {
+    label: 'Uniform Title',
+    unmatched_vernacular: nil,
+    fields: [
+      {
+        uniform_title_tag: uniform_title.tag,
+        field: {
+          pre_text: pre_text.join(' '),
+          link_text: link_text.join(' '),
+          author: author.join(' '),
+          post_text: extra_text.join(' ')
+        },
+        vernacular: {
+          vern: vern
+        }
+      }
+    ]
+  }
+end
+
+def get_marc_vernacular(marc,original_field)
+  return_text = []
+  if original_field['6']
+    match_original = original_field['6'].split("-")[1]
+    marc.find_all { |f| '880' == f.tag }.each do |field|
+      if !field['6'].nil? and field['6'].include?("-")
+        field_880 = field['6'].split("-")[0]
+        match_880 = field['6'].split("-")[1].gsub("//r","")
+        if match_original == match_880 and original_field.tag == field_880
+          field.each do |sub|
+            next if Constants::EXCLUDE_FIELDS.include?(sub.code) || sub.code == '4'
+            return_text << sub.value
+          end
+        end
+      end
+    end
+  end
+  return return_text.join(" ") unless return_text.empty?
+end
+
 ##
 # Originally cribbed from Traject::Marc21Semantics.marc_sortable_title, but by
 # using algorithm from StanfordIndexer#getSortTitle.
@@ -2570,4 +2643,10 @@ to_field 'building_facet' do |record, accumulator, context|
     end
   end
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
+end
+
+each_record do |record, context|
+  context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
+    context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
+  end
 end

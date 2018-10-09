@@ -525,4 +525,50 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('130240')[field]).to eq ['Hoos Foos 130 and 240']
     end
   end
+
+  describe 'uniform_title_display_struct' do
+    subject(:result) { indexer.map_record(record) }
+    let(:field) { 'uniform_title_display_struct' }
+    let(:record) { MARC::XMLReader.new(StringIO.new(marcxml)).to_a.first }
+    let(:parsed_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+    context 'with a $h' do
+      let(:marcxml) do
+        <<-xml
+          <record>
+            <datafield tag="240" ind1=" " ind2=" ">
+              <subfield code="a">Instrumental music</subfield>
+              <subfield code="b">Selections</subfield>
+              <subfield code="h">[print/digital].</subfield>
+            </datafield>
+          </record>
+        xml
+      end
+
+      it 'does not link $h' do
+        expect(parsed_field.first[:fields].length).to eq 1
+        expect(parsed_field.first[:fields].first[:field]).to include link_text: 'Instrumental music Selections',
+                                                                      post_text: '[print/digital].'
+      end
+    end
+
+    context 'with subfields with certain punctuation' do
+      let(:marcxml) do
+        <<-xml
+          <record>
+            <datafield tag="240" ind1=" " ind2=" ">
+              <subfield code="a">Instrumental music.</subfield>
+              <subfield code="b">Selections</subfield>
+            </datafield>
+          </record>
+        xml
+      end
+
+      it 'does not link subfields after a certain punctuation' do
+        expect(parsed_field.first[:fields].length).to eq 1
+        expect(parsed_field.first[:fields].first[:field]).to include link_text: 'Instrumental music.',
+                                                                      post_text: 'Selections'
+      end
+    end
+  end
 end
