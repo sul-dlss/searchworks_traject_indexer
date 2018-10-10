@@ -177,7 +177,7 @@ to_field 'mods_name_struct_ssm' do |record, accumulator|
     accumulator << Marshal.dump(name)
   end
 end
-to_field 'mods_abstract_ssm', mods_display(:abstract)
+to_field 'summary_display', mods_display(:abstract)
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
