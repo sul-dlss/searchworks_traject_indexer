@@ -39,7 +39,9 @@ def mods_display(method, *args, default: nil)
     data = Array(resource.mods_display.public_send(method, *args))
 
     data.each do |v|
-      accumulator << v.values.first.to_s
+      v.values.each do |v2|
+        accumulator << v2.to_s
+      end
     end
 
     accumulator << default if data.empty?
@@ -170,7 +172,11 @@ to_field 'set_with_title' do |record, accumulator|
   end)
 end
 
-to_field 'mods_name_ssm', mods_display(:name)
+to_field 'mods_name_struct_ssm' do |record, accumulator|
+  record.mods_display.name.each do |name|
+    accumulator << Marshal.dump(name)
+  end
+end
 to_field 'mods_abstract_ssm', mods_display(:abstract)
 
 each_record do |record, context|

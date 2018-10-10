@@ -17,7 +17,7 @@ gem 'stanford-mods'
 gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
-gem 'mods_display'
+gem 'mods_display', '~> 0.4.0'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
