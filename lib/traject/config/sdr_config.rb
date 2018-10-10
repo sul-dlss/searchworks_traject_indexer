@@ -174,7 +174,11 @@ end
 
 to_field 'mods_name_struct_ssm' do |record, accumulator|
   record.mods_display.name.each do |name|
-    accumulator << Marshal.dump(name)
+    accumulator << {
+      link: name.name,
+      search: "\"#{name.name}\"",
+      post_text: ("(#{name.roles.join(', ')})" if name.roles.present?)
+    }
   end
 end
 to_field 'summary_display', mods_display(:abstract)
