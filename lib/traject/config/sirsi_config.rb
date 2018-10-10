@@ -9,6 +9,7 @@ require 'call_numbers/other'
 require 'call_numbers/shelfkey'
 require 'sirsi_holding'
 require 'mhld_field'
+require 'marc_links'
 require 'utils'
 require 'csv'
 require 'i18n'
@@ -958,6 +959,13 @@ to_field 'url_restricted' do |record, accumulator|
     else
       accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
     end
+  end
+end
+
+to_field 'marc_links_struct' do |record, accumulator|
+  Traject::MarcExtractor.new('856').collect_matching_lines(record) do |field, spec, extractor|
+    result = MarcLinks::Processor.new(field).as_h
+    accumulator << result if result
   end
 end
 
