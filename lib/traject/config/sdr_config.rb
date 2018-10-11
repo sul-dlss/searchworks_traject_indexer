@@ -158,6 +158,34 @@ to_field 'set_with_title' do |record, accumulator|
   end)
 end
 
+to_field 'schema_dot_org_struct' do |record, accumulator, context|
+  ## Schema.org representation for content type geo objects
+  if record.dor_content_type == 'geo'
+    accumulator << {
+      '@context': 'http://schema.org',
+      '@type': 'Dataset',
+      citation: record.mods.xpath('//mods:note[@displayLabel="Preferred citation"]', mods: 'http://www.loc.gov/mods/v3').text,
+      identifier: context.output_hash['url_fulltext'],
+      license: record.mods.xpath('//mods:accessCondition[@type="license"]', mods: 'http://www.loc.gov/mods/v3').text,
+      name: context.output_hash['title_display'],
+      description: context.output_hash['summary_search'],
+      sameAs: "https://earthworks.stanford.edu/catalog/stanford-#{record.druid}",
+      keywords: context.output_hash['subject_all_search'],
+      includedInDataCatalog: {
+        '@type': 'DataCatalog',
+        'name': 'https://earthworks.stanford.edu'
+      },
+      distribution: [
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/zip',
+          contentUrl: "https://stacks.stanford.edu/file/druid:#{record.druid}/data.zip"
+        }
+      ]
+    }
+  end
+end
+
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end

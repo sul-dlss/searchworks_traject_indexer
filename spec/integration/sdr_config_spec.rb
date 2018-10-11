@@ -82,4 +82,42 @@ describe 'SDR indexing' do
                                     "set", "set_with_title"
     end
   end
+  context 'with vv853br8653' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('vv853br8653')) }
+
+    before do
+      without_partial_double_verification do
+        if defined?(JRUBY_VERSION)
+          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/vv853br8653.xml').and_return(double(code: 200, body: File.read(file_fixture('vv853br8653.xml').to_s)))
+          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/zc193vn8689.xml').and_return(double(code: 200, body: File.read(file_fixture('zc193vn8689.xml').to_s)))
+        else
+          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/vv853br8653.xml').and_return(double(body: File.read(file_fixture('vv853br8653.xml').to_s), status: double(ok?: true)))
+          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/zc193vn8689.xml').and_return(double(body: File.read(file_fixture('zc193vn8689.xml').to_s), status: double(ok?: true)))
+        end
+      end
+    end
+    it 'maps schema.org data for geo content' do
+      expect(result['schema_dot_org_struct'].first).to include '@context': 'http://schema.org',
+                                                                '@type': 'Dataset',
+                                                                citation: /Pinsky/,
+                                                                description: [/This dataset/, /The Conservation/],
+                                                                distribution: [
+                                                                  {
+                                                                    '@type': 'DataDownload',
+                                                                    contentUrl: 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+                                                                    encodingFormat: 'application/zip'
+                                                                  }
+                                                                ],
+                                                                identifier: ['https://purl.stanford.edu/vv853br8653'],
+                                                                includedInDataCatalog: {
+                                                                  '@type': 'DataCatalog',
+                                                                  name: 'https://earthworks.stanford.edu'
+                                                                },
+                                                                keywords: ['Geospatial data', 'cartographic dataset', 'Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+                                                                license: 'CC by-nc: CC BY-NC Attribution-NonCommercial',
+                                                                name: ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
+                                                                sameAs: 'https://earthworks.stanford.edu/catalog/stanford-vv853br8653'
+    end
+
+  end
 end
