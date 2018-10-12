@@ -611,6 +611,7 @@ to_field 'author_struct' do |record, accumulator|
   struct[:creator] = linked_author_struct(record, '100')
   struct[:corporate_author] = linked_author_struct(record, '110')
   struct[:meeting] = linked_author_struct(record, '111')
+  struct[:contributors] = linked_contributors_struct(record)
   struct.reject! { |_k, v| v.empty? }
 
   accumulator << struct unless struct.empty?
@@ -625,6 +626,124 @@ def linked_author_struct(record, tag)
       post_text: subfields.reject { |subfield| subfield.code == 'i' }.select { |subfield| %w[e 4].include?(subfield.code) || !linked?(tag, subfield) }.each { |subfield| subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4' }.map(&:value).join(' ')
     }.reject { |k, v| v.empty? }
   end
+end
+
+def linked_contributors_struct(record)
+  contributors = []
+
+  vern_fields = []
+
+  Traject::MarcExtractor.cached('700:710:711:720', alternate_script: :only).each_matching_line(record) do |f|
+    vern_fields << f
+  end
+
+  Traject::MarcExtractor.cached('700:710:711:720', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+    tag = field.tag
+
+    if field['t'] && !field['t'].empty?
+      next unless field.indicator2 == "2"
+      subt = :none
+      link_text = []
+      extra_text = []
+      before_text = []
+      href_text = []
+      extra_href = []
+      field.each do |subfield|
+        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+
+        subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4'
+
+        # $e $i $4
+        if subfield.code == "t"
+          subt = :now
+        end
+        if subfield.code == "i" and subt == :none # assumes $i at beginning
+          before_text << subfield.value.gsub(/\s*\(.+\)\s*/, '')
+        elsif subt == :none
+          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          link_text << subfield.value
+        elsif subt == :now or (subt == :passed and subfield.value.strip =~ /[\.|;]$/)
+          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          link_text << subfield.value
+          subt = :passed
+          subt = :done if subfield.value.strip =~ /[\.|;]$/
+        elsif subt == :done
+          extra_href << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          extra_text << subfield.value
+        else
+          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          link_text << subfield.value
+        end
+      end
+
+      contributors << {
+        link: link_text.join(' '),
+        search: "\"#{href_text.join(' ')}\"",
+        pre_text: before_text.join(' '),
+        post_text: extra_text.join(' ')
+      }
+    else
+      link_text = ""
+      relator_text = []
+      extra_text = ""
+      field.each do |subfield|
+        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+        if subfield.code == "e"
+          relator_text << subfield.value
+        elsif subfield.code == "4" and relator_text.blank?
+          relator_text << Constants::RELATOR_TERMS[subfield.value]
+        elsif tag == '711' && subfield.code == 'j'
+          extra_text << "#{subfield.value} "
+        elsif subfield.code != "e" and subfield.code != "4"
+          link_text << "#{subfield.value} "
+        end
+      end
+
+      vern_field = vern_fields.find { |f| f['6'] && f['6'].split("-")[1].gsub("//r","") == field['6'].split("-")[1].gsub("//r","") } if field['6']
+
+      contributor = assemble_contributor_data_struct(field)
+      contributor[:vern] = assemble_contributor_data_struct(vern_field) if vern_field
+
+      contributors << contributor
+    end
+  end
+
+  vern_fields.each do |field, spec, extractor|
+    if field['6'] && field['6'].include?("-") && field['6'].split("-")[1].gsub("//r","") == "00"
+      contributors << {
+        vern: assemble_contributor_data_struct(field)
+      }
+    end
+  end
+
+  contributors
+end
+
+def assemble_contributor_data_struct(field)
+  tag = field.tag
+  link_text = []
+  relator_text = []
+  extra_text = []
+  before_text = []
+  field.each do |subfield|
+    next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+    if subfield.code == "e"
+      relator_text << subfield.value
+    elsif subfield.code == "4" and relator_text.blank?
+      relator_text << Constants::RELATOR_TERMS[subfield.value]
+    elsif tag == '711' && subfield.code == 'j'
+      extra_text << subfield.value
+    elsif subfield.code != "e" and subfield.code != "4"
+      link_text << subfield.value
+    end
+  end
+
+  {
+    link: link_text.join(' '),
+    search: "\"#{link_text}\"",
+    pre_text: before_text.join(' '),
+    post_text: relator_text.join(' ') + extra_text.join(' ')
+  }
 end
 
 def linked?(tag, subfield)
