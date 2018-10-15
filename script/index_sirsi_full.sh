@@ -61,6 +61,7 @@ mkdir -p $LOG_DIR
 
 bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
     -s solr_writer.max_skipped=-1 \
+    -s solr_writer.thread_pool=100 \
     -s log.file=$LOG_DIR/$TIMESTAMP.log $LATEST_DATA_DIR/*.marc
 
 # Index all the nightlies and the incremental
