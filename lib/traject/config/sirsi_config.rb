@@ -9,6 +9,7 @@ require 'call_numbers/other'
 require 'call_numbers/shelfkey'
 require 'sirsi_holding'
 require 'mhld_field'
+require 'marc_links'
 require 'utils'
 require 'csv'
 require 'i18n'
@@ -21,6 +22,226 @@ extend Traject::Macros::Marc21Semantics
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
+
+module Constants
+  EXCLUDE_FIELDS = ['w', '0', '1', '2', '5', '6', '8', '?', '=']
+  NIELSEN_TAGS = { '505' => '905', '520' => '920', '586' => '986' }
+  SOURCES = { 'Nielsen' => '(source: Nielsen Book Data)' }
+
+  RELATOR_TERMS = { 'acp' => 'Art copyist',
+                    'act' => 'Actor',
+                    'adp' => 'Adapter',
+                    'aft' => 'Author of afterword, colophon, etc.',
+                    'anl' => 'Analyst',
+                    'anm' => 'Animator',
+                    'ann' => 'Annotator',
+                    'ant' => 'Bibliographic antecedent',
+                    'app' => 'Applicant',
+                    'aqt' => 'Author in quotations or text abstracts',
+                    'arc' => 'Architect',
+                    'ard' => 'Artistic director ',
+                    'arr' => 'Arranger',
+                    'art' => 'Artist',
+                    'asg' => 'Assignee',
+                    'asn' => 'Associated name',
+                    'att' => 'Attributed name',
+                    'auc' => 'Auctioneer',
+                    'aud' => 'Author of dialog',
+                    'aui' => 'Author of introduction',
+                    'aus' => 'Author of screenplay',
+                    'aut' => 'Author',
+                    'bdd' => 'Binding designer',
+                    'bjd' => 'Bookjacket designer',
+                    'bkd' => 'Book designer',
+                    'bkp' => 'Book producer',
+                    'bnd' => 'Binder',
+                    'bpd' => 'Bookplate designer',
+                    'bsl' => 'Bookseller',
+                    'ccp' => 'Conceptor',
+                    'chr' => 'Choreographer',
+                    'clb' => 'Collaborator',
+                    'cli' => 'Client',
+                    'cll' => 'Calligrapher',
+                    'clt' => 'Collotyper',
+                    'cmm' => 'Commentator',
+                    'cmp' => 'Composer',
+                    'cmt' => 'Compositor',
+                    'cng' => 'Cinematographer',
+                    'cnd' => 'Conductor',
+                    'cns' => 'Censor',
+                    'coe' => 'Contestant -appellee',
+                    'col' => 'Collector',
+                    'com' => 'Compiler',
+                    'cos' => 'Contestant',
+                    'cot' => 'Contestant -appellant',
+                    'cov' => 'Cover designer',
+                    'cpc' => 'Copyright claimant',
+                    'cpe' => 'Complainant-appellee',
+                    'cph' => 'Copyright holder',
+                    'cpl' => 'Complainant',
+                    'cpt' => 'Complainant-appellant',
+                    'cre' => 'Creator',
+                    'crp' => 'Correspondent',
+                    'crr' => 'Corrector',
+                    'csl' => 'Consultant',
+                    'csp' => 'Consultant to a project',
+                    'cst' => 'Costume designer',
+                    'ctb' => 'Contributor',
+                    'cte' => 'Contestee-appellee',
+                    'ctg' => 'Cartographer',
+                    'ctr' => 'Contractor',
+                    'cts' => 'Contestee',
+                    'ctt' => 'Contestee-appellant',
+                    'cur' => 'Curator',
+                    'cwt' => 'Commentator for written text',
+                    'dfd' => 'Defendant',
+                    'dfe' => 'Defendant-appellee',
+                    'dft' => 'Defendant-appellant',
+                    'dgg' => 'Degree grantor',
+                    'dis' => 'Dissertant',
+                    'dln' => 'Delineator',
+                    'dnc' => 'Dancer',
+                    'dnr' => 'Donor',
+                    'dpc' => 'Depicted',
+                    'dpt' => 'Depositor',
+                    'drm' => 'Draftsman',
+                    'drt' => 'Director',
+                    'dsr' => 'Designer',
+                    'dst' => 'Distributor',
+                    'dtc' => 'Data contributor ',
+                    'dte' => 'Dedicatee',
+                    'dtm' => 'Data manager ',
+                    'dto' => 'Dedicator',
+                    'dub' => 'Dubious author',
+                    'edt' => 'Editor',
+                    'egr' => 'Engraver',
+                    'elg' => 'Electrician ',
+                    'elt' => 'Electrotyper',
+                    'eng' => 'Engineer',
+                    'etr' => 'Etcher',
+                    'exp' => 'Expert',
+                    'fac' => 'Facsimilist',
+                    'fld' => 'Field director ',
+                    'flm' => 'Film editor',
+                    'fmo' => 'Former owner',
+                    'fpy' => 'First party',
+                    'fnd' => 'Funder',
+                    'frg' => 'Forger',
+                    'gis' => 'Geographic information specialist ',
+                    'grt' => 'Graphic technician',
+                    'hnr' => 'Honoree',
+                    'hst' => 'Host',
+                    'ill' => 'Illustrator',
+                    'ilu' => 'Illuminator',
+                    'ins' => 'Inscriber',
+                    'inv' => 'Inventor',
+                    'itr' => 'Instrumentalist',
+                    'ive' => 'Interviewee',
+                    'ivr' => 'Interviewer',
+                    'lbr' => 'Laboratory ',
+                    'lbt' => 'Librettist',
+                    'ldr' => 'Laboratory director ',
+                    'led' => 'Lead',
+                    'lee' => 'Libelee-appellee',
+                    'lel' => 'Libelee',
+                    'len' => 'Lender',
+                    'let' => 'Libelee-appellant',
+                    'lgd' => 'Lighting designer',
+                    'lie' => 'Libelant-appellee',
+                    'lil' => 'Libelant',
+                    'lit' => 'Libelant-appellant',
+                    'lsa' => 'Landscape architect',
+                    'lse' => 'Licensee',
+                    'lso' => 'Licensor',
+                    'ltg' => 'Lithographer',
+                    'lyr' => 'Lyricist',
+                    'mcp' => 'Music copyist',
+                    'mfr' => 'Manufacturer',
+                    'mdc' => 'Metadata contact',
+                    'mod' => 'Moderator',
+                    'mon' => 'Monitor',
+                    'mrk' => 'Markup editor',
+                    'msd' => 'Musical director',
+                    'mte' => 'Metal-engraver',
+                    'mus' => 'Musician',
+                    'nrt' => 'Narrator',
+                    'opn' => 'Opponent',
+                    'org' => 'Originator',
+                    'orm' => 'Organizer of meeting',
+                    'oth' => 'Other',
+                    'own' => 'Owner',
+                    'pat' => 'Patron',
+                    'pbd' => 'Publishing director',
+                    'pbl' => 'Publisher',
+                    'pdr' => 'Project director',
+                    'pfr' => 'Proofreader',
+                    'pht' => 'Photographer',
+                    'plt' => 'Platemaker',
+                    'pma' => 'Permitting agency',
+                    'pmn' => 'Production manager',
+                    'pop' => 'Printer of plates',
+                    'ppm' => 'Papermaker',
+                    'ppt' => 'Puppeteer',
+                    'prc' => 'Process contact',
+                    'prd' => 'Production personnel',
+                    'prf' => 'Performer',
+                    'prg' => 'Programmer',
+                    'prm' => 'Printmaker',
+                    'pro' => 'Producer',
+                    'prt' => 'Printer',
+                    'pta' => 'Patent applicant',
+                    'pte' => 'Plaintiff -appellee',
+                    'ptf' => 'Plaintiff',
+                    'pth' => 'Patent holder',
+                    'ptt' => 'Plaintiff-appellant',
+                    'rbr' => 'Rubricator',
+                    'rce' => 'Recording engineer',
+                    'rcp' => 'Recipient',
+                    'red' => 'Redactor',
+                    'ren' => 'Renderer',
+                    'res' => 'Researcher',
+                    'rev' => 'Reviewer',
+                    'rps' => 'Repository',
+                    'rpt' => 'Reporter',
+                    'rpy' => 'Responsible party',
+                    'rse' => 'Respondent-appellee',
+                    'rsg' => 'Restager',
+                    'rsp' => 'Respondent',
+                    'rst' => 'Respondent-appellant',
+                    'rth' => 'Research team head',
+                    'rtm' => 'Research team member',
+                    'sad' => 'Scientific advisor',
+                    'sce' => 'Scenarist',
+                    'scl' => 'Sculptor',
+                    'scr' => 'Scribe',
+                    'sds' => 'Sound designer',
+                    'sec' => 'Secretary',
+                    'sgn' => 'Signer',
+                    'sht' => 'Supporting host',
+                    'sng' => 'Singer',
+                    'spk' => 'Speaker',
+                    'spn' => 'Sponsor',
+                    'spy' => 'Second party',
+                    'srv' => 'Surveyor',
+                    'std' => 'Set designer',
+                    'stl' => 'Storyteller',
+                    'stm' => 'Stage manager',
+                    'stn' => 'Standards body',
+                    'str' => 'Stereotyper',
+                    'tcd' => 'Technical director',
+                    'tch' => 'Teacher',
+                    'ths' => 'Thesis advisor',
+                    'trc' => 'Transcriber',
+                    'trl' => 'Translator',
+                    'tyd' => 'Type designer',
+                    'tyg' => 'Typographer',
+                    'vdg' => 'Videographer',
+                    'voc' => 'Vocalist',
+                    'wam' => 'Writer of accompanying material',
+                    'wdc' => 'Woodcutter',
+                    'wde' => 'Wood -engraver',
+                    'wit' => 'Witness' }
+end
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
@@ -201,6 +422,79 @@ to_field 'title_sort' do |record, accumulator|
   accumulator << str unless str.empty?
 end
 
+to_field 'uniform_title_display_struct' do |record, accumulator|
+  next unless record['240'] || record['130']
+
+  uniform_title = record['130'] || record['240']
+  pre_text = []
+  link_text = []
+  extra_text = []
+  end_link = false
+  uniform_title.each do |sub_field|
+    next if Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+    if !end_link && sub_field.value.strip =~ /[\.|;]$/ && sub_field.code != 'h'
+      link_text << sub_field.value
+      end_link = true
+    elsif end_link || sub_field.code == 'h'
+      extra_text << sub_field.value
+    elsif sub_field.code == 'i' # assumes $i is at beginning
+      pre_text << sub_field.value.gsub(/\s*\(.+\)/, '')
+    else
+      link_text << sub_field.value
+    end
+  end
+
+  author = []
+  unless record['730']
+    auth_field = record['100'] || record['110'] || record['111']
+    author = auth_field.map do |sub_field|
+      next if (Constants::EXCLUDE_FIELDS + %w(4 e)).include?(sub_field.code)
+      sub_field.value
+    end.compact if auth_field
+  end
+
+  vern = get_marc_vernacular(record, uniform_title)
+
+  accumulator << {
+    label: 'Uniform Title',
+    unmatched_vernacular: nil,
+    fields: [
+      {
+        uniform_title_tag: uniform_title.tag,
+        field: {
+          pre_text: pre_text.join(' '),
+          link_text: link_text.join(' '),
+          author: author.join(' '),
+          post_text: extra_text.join(' ')
+        },
+        vernacular: {
+          vern: vern
+        }
+      }
+    ]
+  }
+end
+
+def get_marc_vernacular(marc,original_field)
+  return_text = []
+  if original_field['6']
+    match_original = original_field['6'].split("-")[1]
+    marc.find_all { |f| '880' == f.tag }.each do |field|
+      if !field['6'].nil? and field['6'].include?("-")
+        field_880 = field['6'].split("-")[0]
+        match_880 = field['6'].split("-")[1].gsub("//r","")
+        if match_original == match_880 and original_field.tag == field_880
+          field.each do |sub|
+            next if Constants::EXCLUDE_FIELDS.include?(sub.code) || sub.code == '4'
+            return_text << sub.value
+          end
+        end
+      end
+    end
+  end
+  return return_text.join(" ") unless return_text.empty?
+end
+
 ##
 # Originally cribbed from Traject::Marc21Semantics.marc_sortable_title, but by
 # using algorithm from StanfordIndexer#getSortTitle.
@@ -310,6 +604,155 @@ to_field 'author_sort' do |record, accumulator|
   accumulator << extract_sortable_author("100#{ALPHABET.delete('e')}:110#{ALPHABET.delete('e')}:111#{ALPHABET.delete('j')}",
                                          "240#{ALPHABET}:245#{ALPHABET.delete('c')}",
                                          record)
+end
+
+to_field 'author_struct' do |record, accumulator|
+  struct = {}
+  struct[:creator] = linked_author_struct(record, '100')
+  struct[:corporate_author] = linked_author_struct(record, '110')
+  struct[:meeting] = linked_author_struct(record, '111')
+  struct[:contributors] = linked_contributors_struct(record)
+  struct.reject! { |_k, v| v.empty? }
+
+  accumulator << struct unless struct.empty?
+end
+
+def linked_author_struct(record, tag)
+  Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, spec, extractor|
+    subfields = field.subfields.reject { |subfield| Constants::EXCLUDE_FIELDS.include?(subfield.code) }
+    {
+      link: subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
+      search: subfields.select { |subfield| linked?(tag, subfield) }.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
+      post_text: subfields.reject { |subfield| subfield.code == 'i' }.select { |subfield| %w[e 4].include?(subfield.code) || !linked?(tag, subfield) }.each { |subfield| subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4' }.map(&:value).join(' ')
+    }.reject { |k, v| v.empty? }
+  end
+end
+
+def linked_contributors_struct(record)
+  contributors = []
+
+  vern_fields = []
+
+  Traject::MarcExtractor.cached('700:710:711:720', alternate_script: :only).each_matching_line(record) do |f|
+    vern_fields << f
+  end
+
+  Traject::MarcExtractor.cached('700:710:711:720', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+    tag = field.tag
+
+    if field['t'] && !field['t'].empty?
+      next unless field.indicator2 == "2"
+      subt = :none
+      link_text = []
+      extra_text = []
+      before_text = []
+      href_text = []
+      extra_href = []
+      field.each do |subfield|
+        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+
+        subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4'
+
+        # $e $i $4
+        if subfield.code == "t"
+          subt = :now
+        end
+        if subfield.code == "i" and subt == :none # assumes $i at beginning
+          before_text << subfield.value.gsub(/\s*\(.+\)\s*/, '')
+        elsif subt == :none
+          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          link_text << subfield.value
+        elsif subt == :now or (subt == :passed and subfield.value.strip =~ /[\.|;]$/)
+          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          link_text << subfield.value
+          subt = :passed
+          subt = :done if subfield.value.strip =~ /[\.|;]$/
+        elsif subt == :done
+          extra_href << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          extra_text << subfield.value
+        else
+          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
+          link_text << subfield.value
+        end
+      end
+
+      contributors << {
+        link: link_text.join(' '),
+        search: "\"#{href_text.join(' ')}\"",
+        pre_text: before_text.join(' '),
+        post_text: extra_text.join(' ')
+      }
+    else
+      link_text = ""
+      relator_text = []
+      extra_text = ""
+      field.each do |subfield|
+        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+        if subfield.code == "e"
+          relator_text << subfield.value
+        elsif subfield.code == "4" and relator_text.blank?
+          relator_text << Constants::RELATOR_TERMS[subfield.value]
+        elsif tag == '711' && subfield.code == 'j'
+          extra_text << "#{subfield.value} "
+        elsif subfield.code != "e" and subfield.code != "4"
+          link_text << "#{subfield.value} "
+        end
+      end
+
+      vern_field = vern_fields.find { |f| f['6'] && f['6'].split("-")[1].gsub("//r","") == field['6'].split("-")[1].gsub("//r","") } if field['6']
+
+      contributor = assemble_contributor_data_struct(field)
+      contributor[:vern] = assemble_contributor_data_struct(vern_field) if vern_field
+
+      contributors << contributor
+    end
+  end
+
+  vern_fields.each do |field, spec, extractor|
+    if field['6'] && field['6'].include?("-") && field['6'].split("-")[1].gsub("//r","") == "00"
+      contributors << {
+        vern: assemble_contributor_data_struct(field)
+      }
+    end
+  end
+
+  contributors
+end
+
+def assemble_contributor_data_struct(field)
+  tag = field.tag
+  link_text = []
+  relator_text = []
+  extra_text = []
+  before_text = []
+  field.each do |subfield|
+    next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+    if subfield.code == "e"
+      relator_text << subfield.value
+    elsif subfield.code == "4" and relator_text.blank?
+      relator_text << Constants::RELATOR_TERMS[subfield.value]
+    elsif tag == '711' && subfield.code == 'j'
+      extra_text << subfield.value
+    elsif subfield.code != "e" and subfield.code != "4"
+      link_text << subfield.value
+    end
+  end
+
+  {
+    link: link_text.join(' '),
+    search: "\"#{link_text}\"",
+    pre_text: before_text.join(' '),
+    post_text: relator_text.join(' ') + extra_text.join(' ')
+  }
+end
+
+def linked?(tag, subfield)
+  case tag
+  when '100', '110'
+    !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
+  when '111'
+    !%w[j 4].include?(subfield.code) # exclude 111 $j $4
+  end
 end
 
 # Custom method cribbed from Traject::Macros::Marc21Semantics.marc_sortable_author
@@ -728,21 +1171,31 @@ to_field 'production_year_isi', marc_008_date(%w[p], 11..14, '9')
 to_field 'original_year_isi', marc_008_date(%w[r], 11..14, '9')
 to_field 'copyright_year_isi', marc_008_date(%w[t], 11..14, '9')
 
-# returns the a value comprised of 250ab and 260a-g, suitable for display
+# returns the a value comprised of 250ab, 260a-g, and some 264 fields, suitable for display
 to_field 'imprint_display' do |record, accumulator|
   edition = Traject::MarcExtractor.new('250ab', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
   vernEdition = Traject::MarcExtractor.new('250ab', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
 
-  imprint = Traject::MarcExtractor.new('260abcefg', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
-  vernImprint = Traject::MarcExtractor.new('260abcefg', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
+  imprint = Traject::MarcExtractor.new('2603abcefg', alternate_script: false).extract(record).uniq.map(&:strip).join(' ')
+  vernImprint = Traject::MarcExtractor.new('2603abcefg', alternate_script: :only).extract(record).uniq.map(&:strip).join(' ')
 
+  all_pub = Traject::MarcExtractor.new('2643abc', alternate_script: false).extract(record).uniq.map(&:strip)
+  all_vernPub = Traject::MarcExtractor.new('2643abc', alternate_script: :only).extract(record).uniq.map(&:strip)
+
+  bad_pub = Traject::MarcExtractor.new('264| 4|3abc:264|24|3abc:264|34|3abc', alternate_script: false).extract(record).uniq.map(&:strip)
+  bad_vernPub = Traject::MarcExtractor.new('264| 4|3abc:264|24|3abc:264|34|3abc', alternate_script: :only).extract(record).uniq.map(&:strip)
+
+  pub = (all_pub - bad_pub).join(' ')
+  vernPub = (all_vernPub - bad_vernPub).join(' ')
   data = [
     [edition, vernEdition].compact.reject(&:empty?).join(' '),
-    [imprint, vernImprint].compact.reject(&:empty?).join(' ')
+    [imprint, vernImprint].compact.reject(&:empty?).join(' '),
+    [pub, vernPub].compact.reject(&:empty?).join(' ')
   ].compact.reject(&:empty?)
 
   accumulator << data.join(' - ') if data.any?
 end
+
 #
 # # Date field for new items feed
 to_field "date_cataloged", extract_marc("916b") do |record, accumulator|
@@ -837,6 +1290,13 @@ to_field 'url_restricted' do |record, accumulator|
     else
       accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f| f.code == 'z' }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
     end
+  end
+end
+
+to_field 'marc_links_struct' do |record, accumulator|
+  Traject::MarcExtractor.new('856').collect_matching_lines(record) do |field, spec, extractor|
+    result = MarcLinks::Processor.new(field).as_h
+    accumulator << result if result
   end
 end
 
@@ -1250,6 +1710,29 @@ to_field 'format_physical_ssim', extract_marc("300#{ALPHABET}", alternate_script
   end
 end
 
+to_field 'characteristics_ssim' do |marc, accumulator|
+  {
+    '344' => 'Sound',
+    '345' => 'Projection',
+    '346' => 'Video',
+    '347' => 'Digital'
+  }.each do |tag, label|
+    if marc[tag]
+      characteristics_fields = ''
+      marc.find_all {|f| tag == f.tag }.each do |field|
+        subfields = field.map do |subfield|
+          if ('a'..'z').include?(subfield.code) && !Constants::EXCLUDE_FIELDS.include?(subfield.code)
+            subfield.value
+          end
+        end.compact.join('; ')
+        characteristics_fields << "#{subfields}." unless subfields.empty?
+      end
+
+      accumulator << "#{label}: #{characteristics_fields}" unless characteristics_fields.empty?
+    end
+  end
+end
+
 to_field 'format_physical_ssim', extract_marc('300a', alternate_script: false) do |record, accumulator|
   values = accumulator.dup.join("\n")
   accumulator.replace([])
@@ -1364,6 +1847,103 @@ to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
 to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
+
+# Generate dt/dd pair with an unordered list from the table of contents (IE marc 505s)
+to_field 'toc_struct' do |marc, accumulator|
+  fields = []
+  vern = []
+  unmatched_vern = []
+
+  tag = '905' if marc['905'] && (marc['505'].nil? or (marc['505']["t"].nil? and marc['505']["r"].nil?))
+  tag ||= '505'
+
+  if marc['505'] or marc['905']
+    marc.find_all { |f| tag == f.tag }.each do |field|
+      field.each do |sub_field|
+        if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
+          fields << { link: sub_field.value }
+        elsif sub_field.code == "1"
+          fields << Constants::SOURCES[sub_field.value.strip]
+        elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+          # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
+          if tag == '905'
+            fields << sub_field.value
+          else
+            fields.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+          end
+        end
+      end
+      vernacular = get_marc_vernacular(marc,field)
+      vern.concat regex_split(vernacular, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
+    end
+  end
+
+  unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
+  unless unmatched_vern_fields.nil?
+    unmatched_vern_fields.each do |vern_field|
+      unmatched_vern.concat regex_split(vern_field, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+    end
+  end
+
+  new_vern = vern unless vern.empty?
+  new_fields = fields unless fields.empty?
+  new_unmatched_vern = unmatched_vern unless unmatched_vern.empty?
+  accumulator << {:label=>"Contents",:fields=>new_fields,:vernacular=>new_vern,:unmatched_vernacular=>new_unmatched_vern} unless (new_fields.nil? and new_vern.nil? and new_unmatched_vern.nil?)
+end
+
+# work-around for https://github.com/jruby/jruby/issues/4868
+def regex_split(str, regex)
+  str.split(regex).to_a
+end
+
+to_field 'summary_struct' do |marc, accumulator|
+  tag = marc['920'] ? '920' : '520'
+
+  label = if marc['920']
+            "Publisher's Summary"
+          else
+            'Summary'
+          end
+  fields = []
+
+  if marc['520'] || marc['920']
+    marc.find_all { |f| tag == f.tag }.each do |field|
+      field_text = []
+      field.each do |sub_field|
+        if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
+          field_text << { link: sub_field.value }
+        elsif sub_field.code == "1"
+          field_text << { source: Constants::SOURCES[sub_field.value] }
+        elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+          field_text << sub_field.value unless sub_field.code == 'a' && sub_field.value[0,1] == "%"
+        end
+      end
+      fields << { field: field_text, vernacular: get_marc_vernacular(marc, field) } unless field_text.empty?
+    end
+  else
+    unmatched_vern = get_unmatched_vernacular(marc,tag)
+  end
+
+  accumulator << { label: label, fields: fields, unmatched_vernacular: unmatched_vern } unless fields.empty? && unmatched_vern.nil?
+end
+
+def get_unmatched_vernacular(marc,tag)
+  fields = []
+  if marc['880']
+    marc.find_all { |f| '880' == f.tag }.each do |field|
+      text = ""
+      unless field['6'].nil? or !field["6"].include?("-")
+        if field['6'].split("-")[1].gsub("//r","") == "00" and field['6'].split("-")[0] == tag
+          text << field.reject { |sub_field| Constants::EXCLUDE_FIELDS.include?(sub_field.code) }.join(' ')
+        end
+      end
+      fields << text.strip unless text.empty?
+    end
+  end
+  return fields unless fields.empty?
+end
+
+
 to_field "context_search", extract_marc("518a", alternate_script: false)
 to_field "vern_context_search", extract_marc("518aa", alternate_script: :only)
 to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
@@ -2570,4 +3150,10 @@ to_field 'building_facet' do |record, accumulator, context|
     end
   end
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
+end
+
+each_record do |record, context|
+  context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
+    context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
+  end
 end
