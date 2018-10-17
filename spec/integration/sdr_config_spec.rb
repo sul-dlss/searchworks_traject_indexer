@@ -116,7 +116,7 @@ describe 'SDR indexing' do
                                                                 keywords: ['Geospatial data', 'cartographic dataset', 'Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
                                                                 license: 'CC by-nc: CC BY-NC Attribution-NonCommercial',
                                                                 name: ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
-                                                                sameAs: 'https://earthworks.stanford.edu/catalog/stanford-vv853br8653'
+                                                                sameAs: 'https://searchworks.stanford.edu/view/vv853br8653'
     end
 
   end
