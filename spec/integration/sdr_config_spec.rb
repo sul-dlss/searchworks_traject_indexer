@@ -115,4 +115,122 @@ describe 'SDR indexing' do
     end
 
   end
+
+  describe 'stanford_work_facet_hsim' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
+
+    before do
+      stub_purl_request(druid, data)
+      stub_purl_request(collection_druid, collection_data)
+    end
+
+    let(:druid) { 'abc' }
+    let(:collection_druid) { 'abccoll' }
+    let(:collection_label) { '' }
+    let(:data) do
+      <<-XML
+        <publicObject>
+          <mods xmlns="http://www.loc.gov/mods/v3">
+            #{mods_fragment}
+          </mods>
+          <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="info:fedora/druid:#{druid}">
+              <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:#{collection_druid}"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </publicObject>
+      XML
+    end
+    let(:collection_data) do
+      <<-XML
+        <publicObject>
+          <identityMetadata>
+            <objectLabel>#{collection_label}</objectLabel>
+          </identityMetadata>
+        </publicObject>
+      XML
+    end
+
+    context 'with an honors thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Undergraduate Honors Theses, Department of Communication, Stanford University" }
+
+      it 'maps to Thesis/Dissertation > Bachelor\'s > Undergraduate honors thesis' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
+      end
+    end
+
+    context 'with a capstone thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Stanford University Urban Studies Capstone Projects and Theses" }
+
+      it 'maps to Thesis/Dissertation > Bachelor\'s > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Bachelor\'s|Unspecified'
+      end
+
+    end
+
+    context 'with a master\'s thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Masters Theses in Russian, East European and Eurasian Studies" }
+
+      it 'maps to Thesis/Dissertation > Master\'s > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Master\'s|Unspecified'
+
+      end
+
+    end
+
+    context 'with a doctoral thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "PhD Dissertations, Stanford Earth" }
+
+      it 'maps to Thesis/Dissertation > Doctoral > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Doctoral|Unspecified'
+
+      end
+
+    end
+
+    context 'with some other thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Stanford University Libraries Theses" }
+
+      it 'maps to Thesis/Dissertation > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Unspecified'
+      end
+
+    end
+
+    context 'with a student report' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">student project report</genre>
+        XML
+      end
+      it 'maps to Other student work > Student report' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Other student work|Student report'
+      end
+    end
+  end
 end
