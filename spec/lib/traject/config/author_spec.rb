@@ -676,5 +676,17 @@ RSpec.describe 'Author config' do
         post_text: '111e 111j'
       }]
     end
+
+    it 'has aggregates data from 7xx fields' do
+      result = select_by_id('7xxPersonSearch')[field].map { |x| JSON.parse(x, symbolize_names: true) }
+      expect(result).to include contributors: array_including(
+        hash_including(
+          link: '700a 700b 700c 700d none 700g 700j 700q 700u',
+          search: '"700a 700b 700c 700d none 700g 700j 700q 700u"',
+          pre_text: '',
+          post_text: '700e'
+        )
+      )
+    end
   end
 end
