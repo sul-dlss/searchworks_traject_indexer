@@ -3,6 +3,16 @@ require 'spec_helper'
 describe 'SDR indexing' do
   subject(:result) { indexer.map_record(PublicXmlRecord.new('bk264hq9320')) }
 
+  def stub_purl_request(druid, body)
+    without_partial_double_verification do
+      if defined?(JRUBY_VERSION)
+        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(code: 200, body: body))
+      else
+        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body: body, status: double(ok?: true)))
+      end
+    end
+  end
+
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/sdr_config.rb')
@@ -27,15 +37,8 @@ describe 'SDR indexing' do
 
   context 'with bk264hq9320' do
     before do
-      without_partial_double_verification do
-        if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(code: 200, body: File.read(file_fixture('bk264hq9320.xml').to_s)))
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(code: 200, body: File.read(file_fixture('nj770kg7809.xml').to_s)))
-        else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(body: File.read(file_fixture('bk264hq9320.xml').to_s), status: double(ok?: true)))
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(body: File.read(file_fixture('nj770kg7809.xml').to_s), status: double(ok?: true)))
-        end
-      end
+      stub_purl_request('bk264hq9320', File.read(file_fixture('bk264hq9320.xml').to_s))
+      stub_purl_request('nj770kg7809', File.read(file_fixture('nj770kg7809.xml').to_s))
     end
 
     it 'maps the data the same way as it does currently' do
@@ -85,15 +88,8 @@ describe 'SDR indexing' do
     subject(:result) { indexer.map_record(PublicXmlRecord.new('vv853br8653')) }
 
     before do
-      without_partial_double_verification do
-        if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/vv853br8653.xml').and_return(double(code: 200, body: File.read(file_fixture('vv853br8653.xml').to_s)))
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/zc193vn8689.xml').and_return(double(code: 200, body: File.read(file_fixture('zc193vn8689.xml').to_s)))
-        else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/vv853br8653.xml').and_return(double(body: File.read(file_fixture('vv853br8653.xml').to_s), status: double(ok?: true)))
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/zc193vn8689.xml').and_return(double(body: File.read(file_fixture('zc193vn8689.xml').to_s), status: double(ok?: true)))
-        end
-      end
+      stub_purl_request('vv853br8653', File.read(file_fixture('vv853br8653.xml').to_s))
+      stub_purl_request('zc193vn8689', File.read(file_fixture('zc193vn8689.xml').to_s))
     end
     it 'maps schema.org data for geo content' do
       expect(result['schema_dot_org_struct'].first).to include '@context': 'http://schema.org',
