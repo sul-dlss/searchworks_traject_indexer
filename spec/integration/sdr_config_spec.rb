@@ -60,7 +60,6 @@ describe 'SDR indexing' do
                                 "pub_year_tisim" =>[2004],
                                 "creation_year_isi" =>[2004],
                                 "format_main_ssim" =>["Video"],
-                                "format" =>["Video"],
                                 "language" =>["English"],
                                 "physical" =>["1 MiniDV tape"],
                                 "url_suppl" =>[
@@ -113,7 +112,7 @@ describe 'SDR indexing' do
                                                                   '@type': 'DataCatalog',
                                                                   name: 'https://earthworks.stanford.edu'
                                                                 },
-                                                                keywords: ['Geospatial data', 'cartographic dataset', 'Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+                                                                keywords: ['Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
                                                                 license: 'CC by-nc: CC BY-NC Attribution-NonCommercial',
                                                                 name: ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
                                                                 sameAs: 'https://searchworks.stanford.edu/view/vv853br8653'

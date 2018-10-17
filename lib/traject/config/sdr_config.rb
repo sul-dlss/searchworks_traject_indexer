@@ -118,7 +118,6 @@ to_field 'publication_year_isi' do |record, accumulator|
 end
 
 to_field 'format_main_ssim', stanford_mods(:format_main)
-to_field 'format', stanford_mods(:format) # deprecated; for backwards compatibility
 to_field 'genre_ssim', stanford_mods(:sw_genre)
 to_field 'language', stanford_mods(:sw_language_facet)
 to_field 'physical', stanford_mods(:term_values, [:physical_description, :extent])
