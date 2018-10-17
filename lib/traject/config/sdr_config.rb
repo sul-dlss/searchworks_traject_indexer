@@ -118,7 +118,6 @@ to_field 'publication_year_isi' do |record, accumulator|
 end
 
 to_field 'format_main_ssim', stanford_mods(:format_main)
-to_field 'format', stanford_mods(:format) # deprecated; for backwards compatibility
 to_field 'genre_ssim', stanford_mods(:sw_genre)
 to_field 'language', stanford_mods(:sw_language_facet)
 to_field 'physical', stanford_mods(:term_values, [:physical_description, :extent])
@@ -183,6 +182,40 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
         }
       ]
     }
+  end
+end
+
+
+# # Stanford student work facet
+#  it is expected that these values will go to a field analyzed with
+#   solr.PathHierarchyTokenizerFactory  so a value like
+#    "Thesis/Dissertation|Master's|Engineer"
+#  will be indexed as 3 values:
+#    "Thesis/Dissertation|Master's|Engineer"
+#    "Thesis/Dissertation|Master's"
+#    "Thesis/Dissertation"
+to_field 'stanford_work_facet_hsim' do |record, accumulator|
+  genre = record.stanford_mods.sw_genre.to_a
+
+  if genre.include? 'student project report'
+    accumulator << 'Other student work|Student report'
+  elsif genre.include? 'thesis'
+    collections = record.collections
+
+    collections.each do |c|
+      case c.label
+      when /phd/i
+        accumulator << 'Thesis/Dissertation|Doctoral|Unspecified'
+      when /master/i
+        accumulator << 'Thesis/Dissertation|Master\'s|Unspecified'
+      when /honor/i
+        accumulator << 'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
+      when /capstone/i, /undergraduate/i
+        accumulator << 'Thesis/Dissertation|Bachelor\'s|Unspecified'
+      else
+        accumulator << 'Thesis/Dissertation|Unspecified'
+      end
+    end
   end
 end
 

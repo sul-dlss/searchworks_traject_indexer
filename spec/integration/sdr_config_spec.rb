@@ -3,6 +3,16 @@ require 'spec_helper'
 describe 'SDR indexing' do
   subject(:result) { indexer.map_record(PublicXmlRecord.new('bk264hq9320')) }
 
+  def stub_purl_request(druid, body)
+    without_partial_double_verification do
+      if defined?(JRUBY_VERSION)
+        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(code: 200, body: body))
+      else
+        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body: body, status: double(ok?: true)))
+      end
+    end
+  end
+
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/sdr_config.rb')
@@ -27,15 +37,8 @@ describe 'SDR indexing' do
 
   context 'with bk264hq9320' do
     before do
-      without_partial_double_verification do
-        if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(code: 200, body: File.read(file_fixture('bk264hq9320.xml').to_s)))
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(code: 200, body: File.read(file_fixture('nj770kg7809.xml').to_s)))
-        else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(body: File.read(file_fixture('bk264hq9320.xml').to_s), status: double(ok?: true)))
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/nj770kg7809.xml').and_return(double(body: File.read(file_fixture('nj770kg7809.xml').to_s), status: double(ok?: true)))
-        end
-      end
+      stub_purl_request('bk264hq9320', File.read(file_fixture('bk264hq9320.xml').to_s))
+      stub_purl_request('nj770kg7809', File.read(file_fixture('nj770kg7809.xml').to_s))
     end
 
     it 'maps the data the same way as it does currently' do
@@ -60,7 +63,6 @@ describe 'SDR indexing' do
                                 "pub_year_tisim" =>[2004],
                                 "creation_year_isi" =>[2004],
                                 "format_main_ssim" =>["Video"],
-                                "format" =>["Video"],
                                 "language" =>["English"],
                                 "physical" =>["1 MiniDV tape"],
                                 "url_suppl" =>[
@@ -86,15 +88,8 @@ describe 'SDR indexing' do
     subject(:result) { indexer.map_record(PublicXmlRecord.new('vv853br8653')) }
 
     before do
-      without_partial_double_verification do
-        if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/vv853br8653.xml').and_return(double(code: 200, body: File.read(file_fixture('vv853br8653.xml').to_s)))
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/zc193vn8689.xml').and_return(double(code: 200, body: File.read(file_fixture('zc193vn8689.xml').to_s)))
-        else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/vv853br8653.xml').and_return(double(body: File.read(file_fixture('vv853br8653.xml').to_s), status: double(ok?: true)))
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/zc193vn8689.xml').and_return(double(body: File.read(file_fixture('zc193vn8689.xml').to_s), status: double(ok?: true)))
-        end
-      end
+      stub_purl_request('vv853br8653', File.read(file_fixture('vv853br8653.xml').to_s))
+      stub_purl_request('zc193vn8689', File.read(file_fixture('zc193vn8689.xml').to_s))
     end
     it 'maps schema.org data for geo content' do
       expect(result['schema_dot_org_struct'].first).to include '@context': 'http://schema.org',
@@ -113,11 +108,129 @@ describe 'SDR indexing' do
                                                                   '@type': 'DataCatalog',
                                                                   name: 'https://earthworks.stanford.edu'
                                                                 },
-                                                                keywords: ['Geospatial data', 'cartographic dataset', 'Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+                                                                keywords: ['Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
                                                                 license: 'CC by-nc: CC BY-NC Attribution-NonCommercial',
                                                                 name: ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
                                                                 sameAs: 'https://searchworks.stanford.edu/view/vv853br8653'
     end
 
+  end
+
+  describe 'stanford_work_facet_hsim' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
+
+    before do
+      stub_purl_request(druid, data)
+      stub_purl_request(collection_druid, collection_data)
+    end
+
+    let(:druid) { 'abc' }
+    let(:collection_druid) { 'abccoll' }
+    let(:collection_label) { '' }
+    let(:data) do
+      <<-XML
+        <publicObject>
+          <mods xmlns="http://www.loc.gov/mods/v3">
+            #{mods_fragment}
+          </mods>
+          <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="info:fedora/druid:#{druid}">
+              <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:#{collection_druid}"/>
+            </rdf:Description>
+          </rdf:RDF>
+        </publicObject>
+      XML
+    end
+    let(:collection_data) do
+      <<-XML
+        <publicObject>
+          <identityMetadata>
+            <objectLabel>#{collection_label}</objectLabel>
+          </identityMetadata>
+        </publicObject>
+      XML
+    end
+
+    context 'with an honors thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Undergraduate Honors Theses, Department of Communication, Stanford University" }
+
+      it 'maps to Thesis/Dissertation > Bachelor\'s > Undergraduate honors thesis' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
+      end
+    end
+
+    context 'with a capstone thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Stanford University Urban Studies Capstone Projects and Theses" }
+
+      it 'maps to Thesis/Dissertation > Bachelor\'s > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Bachelor\'s|Unspecified'
+      end
+
+    end
+
+    context 'with a master\'s thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Masters Theses in Russian, East European and Eurasian Studies" }
+
+      it 'maps to Thesis/Dissertation > Master\'s > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Master\'s|Unspecified'
+
+      end
+
+    end
+
+    context 'with a doctoral thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "PhD Dissertations, Stanford Earth" }
+
+      it 'maps to Thesis/Dissertation > Doctoral > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Doctoral|Unspecified'
+
+      end
+
+    end
+
+    context 'with some other thesis' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">thesis</genre>
+        XML
+      end
+      let(:collection_label) { "Stanford University Libraries Theses" }
+
+      it 'maps to Thesis/Dissertation > Unspecified' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Thesis/Dissertation|Unspecified'
+      end
+
+    end
+
+    context 'with a student report' do
+      let(:mods_fragment) do
+        <<-XML
+          <genre authority="marcgt">student project report</genre>
+        XML
+      end
+      it 'maps to Other student work > Student report' do
+        expect(result['stanford_work_facet_hsim'].first).to eq 'Other student work|Student report'
+      end
+    end
   end
 end

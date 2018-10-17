@@ -132,7 +132,7 @@ GEM
     sshkit (1.17.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stanford-mods (2.5.1)
+    stanford-mods (2.6.0)
       activesupport
       mods (~> 2.2)
     term-ansicolor (1.6.0)
