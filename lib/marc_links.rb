@@ -99,7 +99,7 @@ module MarcLinks
       resource_labels = ["table of contents", "abstract", "description", "sample text"]
       if field.indicator2 == "2"
         return false
-      elsif field.indicator2 == "0" or field.indicator2 == "1" or field.indicator2.blank?
+      elsif field.indicator2 == "0" or field.indicator2 == "1" or field.indicator2.nil? or field.indicator2.empty?
         resource_labels.each do |resource_label|
           return false if "#{field['3']} #{field['z']}".downcase.include?(resource_label)
         end

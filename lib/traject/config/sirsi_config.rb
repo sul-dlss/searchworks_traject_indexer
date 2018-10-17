@@ -690,7 +690,7 @@ def linked_contributors_struct(record)
         next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
         if subfield.code == "e"
           relator_text << subfield.value
-        elsif subfield.code == "4" and relator_text.blank?
+        elsif subfield.code == "4" and relator_text.empty?
           relator_text << Constants::RELATOR_TERMS[subfield.value]
         elsif tag == '711' && subfield.code == 'j'
           extra_text << "#{subfield.value} "
@@ -729,7 +729,7 @@ def assemble_contributor_data_struct(field)
     next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
     if subfield.code == "e"
       relator_text << subfield.value
-    elsif subfield.code == "4" and relator_text.blank?
+    elsif subfield.code == "4" and relator_text.empty?
       relator_text << Constants::RELATOR_TERMS[subfield.value]
     elsif tag == '711' && subfield.code == 'j'
       extra_text << subfield.value
