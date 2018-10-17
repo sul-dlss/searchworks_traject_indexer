@@ -740,7 +740,7 @@ def assemble_contributor_data_struct(field)
 
   {
     link: link_text.join(' '),
-    search: "\"#{link_text}\"",
+    search: "\"#{link_text.join(' ')}\"",
     pre_text: before_text.join(' '),
     post_text: relator_text.join(' ') + extra_text.join(' ')
   }
