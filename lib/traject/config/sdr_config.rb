@@ -169,7 +169,7 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
       license: record.mods.xpath('//mods:accessCondition[@type="license"]', mods: 'http://www.loc.gov/mods/v3').text,
       name: context.output_hash['title_display'],
       description: context.output_hash['summary_search'],
-      sameAs: "https://earthworks.stanford.edu/catalog/stanford-#{record.druid}",
+      sameAs: "https://searchworks.stanford.edu/view/#{record.druid}",
       keywords: context.output_hash['subject_all_search'],
       includedInDataCatalog: {
         '@type': 'DataCatalog',
