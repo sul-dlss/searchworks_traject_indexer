@@ -34,6 +34,12 @@ def stanford_mods(method, *args, default: nil)
   end
 end
 
+def mods_xpath(xpath)
+  lambda do |resource, accumulator, _context|
+    accumulator << resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3')
+  end
+end
+
 each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
 end
@@ -106,6 +112,43 @@ to_field 'imprint_display', stanford_mods(:imprint_display_str)
 #   can remove after other fields are populated for all indexing data (i.e. solrmarc, crez) and app code is changed
 to_field 'pub_date', stanford_mods(:pub_year_display_str)
 to_field 'pub_year_ss', stanford_mods(:pub_year_display_str)
+
+to_field 'beginning_year_isi', mods_xpath('mods:originInfo[mods:issuance/text()="continuing" or mods:issuance/text()="serial" or mods:issuance/text()="integrating resource"]/mods:dateIssued[@point="start"]'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'ending_year_isi', mods_xpath('mods:originInfo[mods:issuance/text()="continuing" or mods:issuance/text()="serial" or mods:issuance/text()="integrating resource"]/mods:dateIssued[@point="end"]'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'earliest_year_isi', mods_xpath('//mods:mods[mods:typeOfResource[@collection="yes"]]/mods:originInfo/mods:dateCreated[@point="start"]'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'latest_year_isi', mods_xpath('//mods:mods[mods:typeOfResource[@collection="yes"]]/mods:originInfo/mods:dateCreated[@point="end"]'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'earliest_poss_year_isi', mods_xpath('mods:originInfo/mods:dateCreated[@point="start"][@qualifier]|mods:originInfo/mods:dateIssued[@point="start"][@qualifier]'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'latest_poss_year_isi', mods_xpath('mods:originInfo/mods:dateCreated[@point="end"][@qualifier]|mods:originInfo/mods:dateIssued[@point="end"][@qualifier]'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+
+to_field 'release_year_isi', mods_xpath('mods:originInfo[@eventType="distribution"]/mods:dateIssued'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'production_year_isi', mods_xpath('mods:originInfo[@eventType="production"]/mods:dateIssued'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
+
+to_field 'copyright_year_isi', mods_xpath('mods:originInfo/mods:copyrightDate'), first_only do |_record, accumulator|
+  accumulator.map!(&:text)
+end
 
 # TODO: need better implementation for date slider in stanford-mods (e.g. multiple years when warranted)
 to_field 'pub_year_tisim', stanford_mods(:pub_year_int)
