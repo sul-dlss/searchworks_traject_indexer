@@ -417,4 +417,46 @@ describe 'SDR indexing' do
       end
     end
   end
+
+  context 'pub_country' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
+
+    before do
+      stub_purl_request(druid, data)
+    end
+
+    let(:druid) { 'abc' }
+    let(:data) do
+      <<-XML
+        <publicObject>
+          <mods xmlns="http://www.loc.gov/mods/v3">
+            #{mods_fragment}
+          </mods>
+        </publicObject>
+      XML
+    end
+
+    describe 'pub_country' do
+      let(:mods_fragment) do
+        <<-XML
+          <originInfo>
+            <place>
+              <placeTerm type="code" authority="marccountry">
+                aq
+              </placeTerm>
+            </place>
+            <place>
+              <placeTerm type="code" authority="whatever">
+                aa
+              </placeTerm>
+            </place>
+          </originInfo>
+          XML
+      end
+
+      it 'maps the right data' do
+        expect(result['pub_country']).to eq ['Antigua and Barbuda']
+      end
+    end
+  end
 end

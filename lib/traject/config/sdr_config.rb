@@ -107,7 +107,11 @@ to_field 'pub_year_isi', stanford_mods(:pub_year_int) # for sorting
 #   can remove after pub_year_isi is populated for all indexing data (i.e. solrmarc, crez) and app code is changed
 to_field 'pub_date_sort', stanford_mods(:pub_year_sort_str)
 to_field 'imprint_display', stanford_mods(:imprint_display_str)
-
+to_field 'pub_country', mods_xpath('mods:originInfo/mods:place/mods:placeTerm[@type="code"][@authority="marccountry" or @authority="iso3166"]') do |_record, accumulator|
+  accumulator.map!(&:text).map!(&:strip)
+  translation_map = Traject::TranslationMap.new('country_map')
+  accumulator.replace [translation_map.translate_array(accumulator).first]
+end
 # deprecated pub_date Solr field - use pub_year_isi for sort key; pub_year_ss for display field
 #   can remove after other fields are populated for all indexing data (i.e. solrmarc, crez) and app code is changed
 to_field 'pub_date', stanford_mods(:pub_year_display_str)
