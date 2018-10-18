@@ -42,7 +42,7 @@ module MarcLinks
     # Parse a URI object to return the host of the URL in the "url" parameter if it's a proxied resoruce
     def link_host(link)
       return link.host unless link.to_s =~ PROXY_REGEX && link.to_s.include?('url=')
-      proxy = CGI.parse(link.query)
+      proxy = CGI.parse(link.query.force_encoding(Encoding::UTF_8))
       return link.host unless proxy.key?('url')
 
       extracted_url = URI.extract(proxy['url'].first).first

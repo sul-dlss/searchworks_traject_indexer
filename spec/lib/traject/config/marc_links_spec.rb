@@ -273,4 +273,22 @@ RSpec.describe 'marc_links_struct' do
       end
     end
   end
+
+  # this is testing a workaround for a JRuby internal encoding bug that blows up with
+  # invalid byte sequence in US-ASCII trying to parse that url.
+  context 'for a url with utf-8 data in it' do
+    let(:marc) do
+      <<-XML
+        <record>
+          <datafield tag='856' ind1='0' ind2='0'>
+            <subfield code='u'>https://stanford.idm.oclc.org/login?url=http://www.bookrail.co.kr/upload/download/BookRail%20%EB%AA%A8%EB%B0%94%EC%9D%BC%20%EB%A7%A4%EB%89%B4%EC%96%BC_2011.06.pdf</subfield>
+          </datafield>
+        </record>
+      XML
+    end
+
+    it 'handles pulling the proxy host' do
+      expect(result_field.first[:html]).to match(%r{>www.bookrail\.co\.kr</a>})
+    end
+  end
 end
