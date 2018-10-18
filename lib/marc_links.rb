@@ -45,7 +45,7 @@ module MarcLinks
       proxy = CGI.parse(link.query.force_encoding(Encoding::UTF_8))
       return link.host unless proxy.key?('url')
 
-      extracted_url = URI.extract(proxy['url'].first).first
+      extracted_url = URI.extract(proxy['url'].first.force_encoding(Encoding::UTF_8)).first
       return link.host unless extracted_url
       URI.parse(extracted_url).host
     end
