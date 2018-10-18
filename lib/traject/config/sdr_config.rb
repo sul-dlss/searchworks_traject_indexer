@@ -133,6 +133,43 @@ end
 to_field 'access_facet', literal('Online')
 to_field 'building_facet', literal('Stanford Digital Repository')
 
+to_field 'isbn_search', stanford_mods(:identifier) do |record, accumulator|
+  accumulator.compact!
+  accumulator.select! { |identifier| identifier.type_at == 'isbn' }
+  accumulator.map! { |identifier| identifier.text }
+end
+
+to_field 'issn_search', stanford_mods(:identifier) do |record, accumulator|
+  accumulator.compact!
+  accumulator.select! { |identifier| identifier.type_at == 'issn' }
+  accumulator.map! { |identifier| identifier.text }
+end
+
+to_field 'isbn_display', stanford_mods(:identifier) do |record, accumulator|
+  accumulator.compact!
+  accumulator.select! { |identifier| identifier.type_at == 'isbn' }
+  accumulator.map! { |identifier| identifier.text }
+end
+
+to_field 'issn_display', stanford_mods(:identifier) do |record, accumulator|
+  accumulator.compact!
+  accumulator.select! { |identifier| identifier.type_at == 'issn' }
+  accumulator.map! { |identifier| identifier.text }
+end
+
+to_field 'lccn', stanford_mods(:identifier) do |record, accumulator|
+  accumulator.compact!
+  accumulator.select! { |identifier| identifier.type_at == 'lccn' }
+  accumulator.map! { |identifier| identifier.text }
+  accumulator.replace [accumulator.first] if accumulator.first # grab only the first value
+end
+
+to_field 'oclc', stanford_mods(:identifier) do |record, accumulator|
+  accumulator.compact!
+  accumulator.select! { |identifier| identifier.type_at == 'oclc' }
+  accumulator.map! { |identifier| identifier.text }
+end
+
 to_field 'file_id' do |record, accumulator|
   accumulator << record.thumb
 end

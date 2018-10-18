@@ -233,4 +233,39 @@ describe 'SDR indexing' do
       end
     end
   end
+
+  describe 'identifiers' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
+
+    before do
+      stub_purl_request(druid, data)
+    end
+
+    let(:druid) { 'abc' }
+    let(:data) do
+      <<-XML
+        <publicObject>
+          <mods xmlns="http://www.loc.gov/mods/v3">
+            <identifier type="isbn">isbn-id</identifier>
+            <identifier type="issn">issn-id</identifier>
+            <identifier type="oclc">oclc-id</identifier>
+            <identifier type="lccn">lccn-id-1</identifier>
+            <identifier type="lccn">lccn-id-2</identifier>
+            <identifier type="garbage">garbage-id</identifier>
+            <identifier>no-type-id</identifier>
+          </mods>
+        </publicObject>
+      XML
+    end
+
+    it 'maps the appropriate identifier types' do
+      expect(result['isbn_search']).to eq ['isbn-id']
+      expect(result['isbn_display']).to eq ['isbn-id']
+      expect(result['issn_search']).to eq ['issn-id']
+      expect(result['issn_display']).to eq ['issn-id']
+      expect(result['oclc']).to eq ['oclc-id']
+      expect(result['lccn']).to eq ['lccn-id-1']
+    end
+
+  end
 end
