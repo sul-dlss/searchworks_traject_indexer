@@ -87,7 +87,7 @@ class PublicXmlRecord
     @mods ||= if public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').any?
       public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
     else
-      self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
+      Nokogiri::XML self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
     end
   end
 
