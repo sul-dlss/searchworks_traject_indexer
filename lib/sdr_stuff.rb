@@ -1,4 +1,5 @@
 require 'http'
+require 'mods_display'
 
 class SdrReader
   attr_reader :input_stream
@@ -19,6 +20,14 @@ end
 
 class PublicXmlRecord
   attr_reader :druid
+  include ModsDisplay::ModelExtension
+  include ModsDisplay::ControllerExtension
+
+  mods_xml_source do |model|
+    model.mods.to_s
+  end
+  configure_mods_display do
+  end
 
   def self.fetch(url)
     if defined?(JRUBY_VERSION)
@@ -58,6 +67,10 @@ class PublicXmlRecord
     end
   end
 
+  def mods_display
+    @mods_display ||= render_mods_display(self)
+  end
+
   def public_xml?
     !!public_xml
   end
@@ -74,7 +87,7 @@ class PublicXmlRecord
     @mods ||= if public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').any?
       public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
     else
-      self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
+      Nokogiri::XML self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
     end
   end
 
