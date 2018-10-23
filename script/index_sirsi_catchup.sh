@@ -18,5 +18,4 @@ done
 # And index the current nightly
 $SCRIPT_FULL_PATH/index_sirsi_nightly.sh
 
-# Index the current incremental file
-$SCRIPT_FULL_PATH/index_sirsi_hourly.sh
+# Latest hourly file indexed through cron
