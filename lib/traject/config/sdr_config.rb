@@ -323,7 +323,7 @@ to_field 'author_struct' do |record, accumulator|
       accumulator << {
         link: value.name,
         search: "\"#{value.name}\"",
-        post_text: ("(#{value.roles.join(', ')})" if value.roles.present?)
+        post_text: ("(#{name.label.gsub(/:$/, '')})" if name.label.present?)
       }
     end
   end

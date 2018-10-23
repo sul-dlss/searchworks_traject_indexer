@@ -95,7 +95,7 @@ GEM
       iso-639
       nokogiri
       nom-xml (~> 1.0)
-    mods_display (0.4.1)
+    mods_display (0.5.1)
       i18n
       stanford-mods (~> 2.1)
     net-scp (1.2.1)
@@ -181,7 +181,7 @@ DEPENDENCIES
   http
   i18n
   manticore
-  mods_display (~> 0.4.0)
+  mods_display
   rake
   retriable
   rspec
