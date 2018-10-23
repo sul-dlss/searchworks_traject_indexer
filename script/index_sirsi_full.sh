@@ -76,8 +76,14 @@ DOCS_TO_DEL=$LATEST_DATA_DIR/ckeys_to_delete
 curl -s -G "${SOLR_URL}"/select -d "fl=id&fq=collection:sirsi&fq=last_updated:%5B*%20TO%20$START_TIME%5D&q=*:*&facet=false&rows=$NUM_DOCS_TO_DEL&wt=csv" | sed '1d' > $DOCS_TO_DEL
 
 # report ckeys that should be deleted
+SOLR_COLLECTION=`echo ${SOLR_URL} | sed 's/http:\/\/sul-solr\.stanford\.edu\/solr\///'`
+MAILTO="sul-unicorn-devs@lists.stanford.edu"
+SUBJECT="Ckeys in ${SOLR_COLLECTION} not updated from indexing full MARC dump"
+
 if [ -e $DOCS_TO_DEL ]; then
-  MAILTO="sul-unicorn-devs@lists.stanford.edu"
-  SUBJECT="Ckeys in ${SOLR_URL} last updated before indexing full SearchWorks dump"
-  cat $DOCS_TO_DEL | mail -s $SUBJECT $MAILTO
+  if [ "$NUM_DOCS_TO_DEL" -gt 1000 ]; then
+    echo "Too many records selected. Review file ${DOCS_TO_DEL}" | mail -s $SUBJECT $MAILTO
+  else
+    cat $DOCS_TO_DEL | mail -s $SUBJECT $MAILTO
+  fi
 fi
