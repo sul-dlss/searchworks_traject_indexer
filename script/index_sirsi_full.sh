@@ -80,7 +80,7 @@ SOLR_COLLECTION=`echo ${SOLR_URL} | sed 's/http:\/\/sul-solr\.stanford\.edu\/sol
 MAILTO="sul-unicorn-devs@lists.stanford.edu"
 SUBJECT="Ckeys in ${SOLR_COLLECTION} not updated from indexing full MARC dump"
 
-if [ -e $DOCS_TO_DEL ]; then
+if [ -s $DOCS_TO_DEL ]; then
   if [ "$NUM_DOCS_TO_DEL" -gt 1000 ]; then
     echo "Too many records selected. Review file ${DOCS_TO_DEL}" | mail -s "$SUBJECT" $MAILTO
   else
