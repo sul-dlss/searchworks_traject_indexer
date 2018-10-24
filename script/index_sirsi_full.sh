@@ -82,8 +82,8 @@ SUBJECT="Ckeys in ${SOLR_COLLECTION} not updated from indexing full MARC dump"
 
 if [ -e $DOCS_TO_DEL ]; then
   if [ "$NUM_DOCS_TO_DEL" -gt 1000 ]; then
-    echo "Too many records selected. Review file ${DOCS_TO_DEL}" | mail -s $SUBJECT $MAILTO
+    echo "Too many records selected. Review file ${DOCS_TO_DEL}" | mail -s "$SUBJECT" $MAILTO
   else
-    cat $DOCS_TO_DEL | mail -s $SUBJECT $MAILTO
+    cat $DOCS_TO_DEL | mail -s "$SUBJECT" $MAILTO
   fi
 fi
