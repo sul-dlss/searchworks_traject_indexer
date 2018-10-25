@@ -494,5 +494,10 @@ describe 'SDR indexing' do
         result['author_struct'].first
       ).to include(link: 'Snydman, Stuart', post_text: '(Author)', search: '"Snydman, Stuart"')
     end
+    it 'dates not available are nil' do
+      %w[beginning_year_isi ending_year_isi earliest_year_isi latest_year_isi earliest_poss_year_isi latest_poss_year_isi release_year_isi production_year_isi copyright_year_isi].each do |field|
+        expect(result[field]).to be_nil
+      end
+    end
   end
 end
