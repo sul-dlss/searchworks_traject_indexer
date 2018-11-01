@@ -331,6 +331,12 @@ end
 
 to_field 'summary_display', mods_display(:abstract)
 
+to_field 'iiif_manifest_url_ssim' do |record, accumulator|
+  if %w[image manuscript map book].include?(record.dor_content_type)
+    accumulator << "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
+  end
+end
+
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end
