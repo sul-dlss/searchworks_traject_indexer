@@ -301,7 +301,7 @@ describe 'SDR indexing' do
         <<-XML
           <originInfo>
             <issuance>continuing</issuance>
-            <dateIssued point="start">1743</dateIssued>
+            <dateIssued point="start">1743-01</dateIssued>
           </originInfo>
           XML
       end
@@ -316,7 +316,7 @@ describe 'SDR indexing' do
         <<-XML
           <originInfo>
             <issuance>serial</issuance>
-            <dateIssued point="end">1743</dateIssued>
+            <dateIssued point="end">1743-01-01</dateIssued>
           </originInfo>
           XML
       end
