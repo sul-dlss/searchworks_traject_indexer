@@ -80,8 +80,9 @@ module MarcLinks
           title = subz.join(" ")
           additional_text = nil
           if title =~ stanford_affiliated_regex
-            additional_text = "<span class='additional-link-text'>#{title.gsub(stanford_affiliated_regex, '')}</span>"
-            title = "Available to Stanford-affiliated users only"
+            subbed_title = title.gsub(stanford_affiliated_regex, '')
+            additional_text = "<span class='additional-link-text'>#{subbed_title}</span>" unless subbed_title.empty?
+            title = "Available to Stanford-affiliated users only" unless field['x'] && field['x'] =~ /SDR-PURL/
           end
           {:text=>link_text,
            :title=> title,
