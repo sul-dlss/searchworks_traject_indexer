@@ -3024,6 +3024,24 @@ to_field 'file_id' do |record, accumulator|
 end
 
 ##
+# IIIF Manifest field based on the presense of "file", "*.jp2" match in an
+# 856 SDR-PURL entry
+to_field 'iiif_manifest_url_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    subfields = extractor.collect_subfields(field, spec)
+    next unless subfields[0] == 'SDR-PURL' && subfields[1] == 'item'
+
+    accumulator.concat(subfields.slice(2..-1).map do |v|
+      v.split(':')
+    end.select do |(type, file_id)|
+      type == 'file' && /.*\.jp2/.match(file_id)
+    end.map do |(_type, file_id)|
+      "https://purl.stanford.edu/#{file_id.slice(0, 11)}/iiif/manifest"
+    end)
+  end
+end
+
+##
 # Course Reserves Fields
 REZ_DESK_2_BLDG_FACET = Traject::TranslationMap.new('rez_desk_2_bldg_facet').freeze
 REZ_DESK_2_REZ_LOC_FACET = Traject::TranslationMap.new('rez_desk_2_rez_loc_facet').freeze

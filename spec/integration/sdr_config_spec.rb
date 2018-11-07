@@ -476,7 +476,8 @@ describe 'SDR indexing' do
       stub_purl_request('sg213ph2100', File.read(file_fixture('sg213ph2100.xml').to_s))
     end
     it 'maps the data' do
-      expect(result).to include 'summary_display' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”']
+      expect(result).to include 'summary_display' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”'],
+                                'iiif_manifest_url_ssim' => ['https://purl.stanford.edu/zz400gd3785/iiif/manifest']
     end
   end
   context 'with df650pk4327' do
