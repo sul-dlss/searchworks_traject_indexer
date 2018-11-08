@@ -3170,6 +3170,20 @@ to_field 'building_facet' do |record, accumulator, context|
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
 end
 
+to_field 'context_version_ssi' do |_record, accumulator|
+  accumulator << Utils.version
+end
+
+to_field 'context_input_name_ssi' do |_record, accumulator, context|
+  accumulator << context.input_name
+end
+
+to_field 'context_input_modified_dtsi' do |_record, accumulator, context|
+  if context.input_name && File.exist?(context.input_name)
+    accumulator << File.mtime(context.input_name).utc.iso8601
+  end
+end
+
 each_record do |record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
