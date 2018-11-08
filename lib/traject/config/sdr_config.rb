@@ -337,6 +337,10 @@ to_field 'iiif_manifest_url_ssim' do |record, accumulator|
   end
 end
 
+to_field 'context_version_ssi' do |_record, accumulator|
+  accumulator << Utils.version
+end
+
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end

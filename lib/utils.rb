@@ -32,4 +32,11 @@ module Utils
     idx = min.size.times { |i| break i if min[i] != max[i] }
     min[0...idx]
   end
+
+  def self.version
+    @version ||= begin
+      file = File.expand_path('../REVISION', __dir__)
+      File.read(file) if File.exist?(file)
+    end
+  end
 end
