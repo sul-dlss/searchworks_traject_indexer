@@ -1848,7 +1848,11 @@ to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
 to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
 
-# Generate dt/dd pair with an unordered list from the table of contents (IE marc 505s)
+# Generate structured data from the table of contents (IE marc 505 + 905s).
+# There are arrays of values for each TOC entry, and each TOC contains e.g. a chapter title; e.g.:
+#  - fields: [['Vol 1 Chapter 1', 'Vol 1 Chapter 2'], ['Vol 2 Chapter 1']]
+#    vernacular: [['The same, but pulled from the matched vernacular fields']]
+#    unmatched_vernacular: [['The same, but pulled from any unmatched vernacular fields']]
 to_field 'toc_struct' do |marc, accumulator|
   fields = []
   vern = []
@@ -1859,29 +1863,31 @@ to_field 'toc_struct' do |marc, accumulator|
 
   if marc['505'] or marc['905']
     marc.find_all { |f| tag == f.tag }.each do |field|
+      data = []
       field.each do |sub_field|
         if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
-          fields << { link: sub_field.value }
+          data << { link: sub_field.value }
         elsif sub_field.code == "1"
-          fields << Constants::SOURCES[sub_field.value.strip]
+          data << Constants::SOURCES[sub_field.value.strip]
         elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
           # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
           if tag == '905'
-            fields << sub_field.value
+            data << sub_field.value
           else
-            fields.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+            data.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
           end
         end
       end
+      fields << data
       vernacular = get_marc_vernacular(marc,field)
-      vern.concat regex_split(vernacular, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
+      vern << regex_split(vernacular, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
     end
   end
 
   unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
   unless unmatched_vern_fields.nil?
     unmatched_vern_fields.each do |vern_field|
-      unmatched_vern.concat regex_split(vern_field, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+      unmatched_vern << regex_split(vern_field, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
     end
   end
 

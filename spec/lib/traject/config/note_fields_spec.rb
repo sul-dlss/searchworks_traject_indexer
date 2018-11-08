@@ -63,7 +63,7 @@ RSpec.describe 'Sirsi config' do
 
     it 'maps the right fields' do
       result = select_by_id('505')[field].map { |x| JSON.parse(x, symbolize_names: true) }
-      expect(result).to include hash_including(fields: array_including('505a'), label: 'Contents', unmatched_vernacular: nil, vernacular: array_including(/^vern505a/))
+      expect(result).to include hash_including(fields: [array_including('505a')], label: 'Contents', unmatched_vernacular: nil, vernacular: [array_including(/^vern505a/)])
     end
 
     context 'with Nielson data' do
@@ -86,7 +86,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields]).to eq ['YUGOSLAV SERIAL 1973', { link: 'https://example.com' }]
+          expect(result_field.first[:fields].first).to eq ['YUGOSLAV SERIAL 1973', { link: 'https://example.com' }]
         end
       end
 
@@ -103,7 +103,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields]).to eq ['YUGOSLAV SERIAL 1973']
+          expect(result_field.first[:fields].first).to eq ['YUGOSLAV SERIAL 1973']
         end
       end
 
@@ -126,7 +126,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields]).to eq ['YUGOSLAV SERIAL 1973']
+          expect(result_field.first[:fields].first).to eq ['YUGOSLAV SERIAL 1973']
         end
       end
 
@@ -143,7 +143,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields]).to eq ['(source: Nielsen Book Data)']
+          expect(result_field.first[:fields].first).to eq ['(source: Nielsen Book Data)']
         end
       end
 
@@ -160,7 +160,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields]).to eq ['aaa', 'bbb', 'ccc']
+          expect(result_field.first[:fields].first).to eq ['aaa', 'bbb', 'ccc']
         end
       end
     end
