@@ -86,7 +86,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields].first).to eq ['YUGOSLAV SERIAL 1973', { link: 'https://example.com' }]
+          expect(result_field.first[:fields].first).to eq ['YUGOSLAV SERIAL 1973', 'https://example.com']
         end
       end
 
