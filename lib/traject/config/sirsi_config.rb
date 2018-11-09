@@ -1864,20 +1864,28 @@ to_field 'toc_struct' do |marc, accumulator|
   if marc['505'] or marc['905']
     marc.find_all { |f| tag == f.tag }.each do |field|
       data = []
+      buffer = []
       field.each do |sub_field|
-        if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
+        if sub_field.code == 'a'
+          data.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+        elsif sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
           data << { link: sub_field.value }
         elsif sub_field.code == "1"
           data << Constants::SOURCES[sub_field.value.strip]
         elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
           # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
           if tag == '905'
-            data << sub_field.value
+            buffer << sub_field.value
+          elsif sub_field.value =~ /[^\S]--\s*$/
+            buffer << sub_field.value.sub(/[^\S]--\s*$/, '')
+            data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ')
+            buffer = []
           else
-            data.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+            buffer << sub_field.value
           end
         end
       end
+      data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') unless buffer.empty?
       fields << data
       vernacular = get_marc_vernacular(marc,field)
       vern << regex_split(vernacular, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
