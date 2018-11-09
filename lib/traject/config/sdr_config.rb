@@ -4,6 +4,7 @@ require 'traject'
 require 'stanford-mods'
 require 'sdr_stuff'
 require 'traject/readers/purl_fetcher_reader'
+require 'utils'
 
 $druid_title_cache = {}
 
