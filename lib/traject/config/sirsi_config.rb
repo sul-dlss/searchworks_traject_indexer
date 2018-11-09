@@ -1872,7 +1872,7 @@ to_field 'toc_struct' do |marc, accumulator|
           data << { link: sub_field.value }
         elsif sub_field.code == "1"
           data << Constants::SOURCES[sub_field.value.strip]
-        elsif !Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+        elsif !(Constants::EXCLUDE_FIELDS + ['x']).include?(sub_field.code)
           # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
           if tag == '905'
             buffer << sub_field.value
