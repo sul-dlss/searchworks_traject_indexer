@@ -136,13 +136,14 @@ RSpec.describe 'Sirsi config' do
             r.append(
               MARC::DataField.new(
                 '905', ' ', ' ',
-                MARC::Subfield.new('1', 'Nielsen')
+                MARC::Subfield.new('1', 'Nielsen'),
+                MARC::Subfield.new('x', '12345678'),
               )
             )
           end
         end
 
-        it 'structures the output' do
+        it 'structures the output and suppresses $x data' do
           expect(result_field.first[:fields].first).to eq ['(source: Nielsen Book Data)']
         end
       end
