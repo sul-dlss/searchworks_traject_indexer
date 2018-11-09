@@ -1868,8 +1868,6 @@ to_field 'toc_struct' do |marc, accumulator|
       field.each do |sub_field|
         if sub_field.code == 'a'
           data.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
-        elsif sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
-          data << { link: sub_field.value }
         elsif sub_field.code == "1"
           data << Constants::SOURCES[sub_field.value.strip]
         elsif !(Constants::EXCLUDE_FIELDS + ['x']).include?(sub_field.code)
