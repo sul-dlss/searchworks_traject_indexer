@@ -1867,8 +1867,12 @@ to_field 'toc_struct' do |marc, accumulator|
       buffer = []
       field.each do |sub_field|
         if sub_field.code == 'a'
+          data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
+          buffer = []
           data.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
-        elsif sub_field.code == "1"
+        elsif sub_field.code == "1" && !Constants::SOURCES[sub_field.value.strip].nil?
+          data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
+          buffer = []
           data << Constants::SOURCES[sub_field.value.strip]
         elsif !(Constants::EXCLUDE_FIELDS + ['x']).include?(sub_field.code)
           # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
