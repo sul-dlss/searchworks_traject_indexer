@@ -10,7 +10,7 @@ class Traject::ManticoreHttpClient
 
   def post url, body, headers = {}
     response = Retriable.retriable on: [SocketError, Errno::ECONNREFUSED, StandardError], multiplier: 10 do
-      @client.post(url, headers: headers, body: body, socket_timeout: 60).tap do |resp|
+      @client.post(url, headers: headers, body: body, request_timeout: 60*10, socket_timeout: 60*10).tap do |resp|
         raise "Solr error response: #{resp.code}: #{resp.body}" if resp.code != 200
       end
     end
