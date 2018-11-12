@@ -184,6 +184,42 @@ RSpec.describe 'Sirsi config' do
           expect(result_field.first[:fields].first).to eq ['Basics of the law and legal system / Ronald Schouten', 'Civil commitment / Ronald Schouten and Philip J. Candilis']
         end
       end
+
+      context 'with data in separate subfields separated by a $1' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('t', 'first'),
+                MARC::Subfield.new('1', 'Nielsen'),
+                MARC::Subfield.new('r', 'last')
+              )
+            )
+          end
+        end
+
+        it 'outputs the values in the order they appear' do
+          expect(result_field.first[:fields].first).to eq ['first', '(source: Nielsen Book Data)', 'last']
+        end
+      end
+
+      context 'with an unknown $1' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('1', 'garbage value')
+              )
+            )
+          end
+        end
+
+        it 'ignores the data' do
+          expect(result_field.first[:fields].first).to eq []
+        end
+      end
     end
   end
 
