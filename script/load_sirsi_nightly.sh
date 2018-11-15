@@ -44,14 +44,5 @@ export JRUBY_OPTS="-J-Xmx1200m"
 # create log directory
 mkdir -p $LOG_DIR
 
-# index files
-bundle exec traject -c ./lib/traject/config/sirsi_config.rb \
-  -s solr_writer.max_skipped=-1 \
-  -s log.file=$LOG_FILE \
-  $LATEST_DATA_DIR/$RECORDS_FNAME
-
-# delete records
-bundle exec traject -c ./lib/traject/config/delete_config.rb \
-  -s solr_writer.max_skipped=-1 \
-  -s log.file=$LOG_FILE \
-  $LATEST_DATA_DIR/$DEL_KEYS_FNAME
+bundle exec ruby script/process_marc_to_kafka.rb $LATEST_DATA_DIR/$RECORDS_FNAME > $LOG_FILE
+bundle exec ruby script/process_marc_to_kafka.rb $LATEST_DATA_DIR/$DEL_KEYS_FNAME >> $LOG_FILE

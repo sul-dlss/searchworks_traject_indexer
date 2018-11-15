@@ -7,9 +7,7 @@ RSpec.describe 'Delete config' do
       i.load_config_file('./lib/traject/config/delete_config.rb')
     end
   end
-  let(:records) { File.new(file_fixture(fixture_name)).each_line }
-  let(:fixture_name) { 'ckeys_delete.del' }
-  let(:record) { records.first }
+  let(:record) { { id: '463838', delete: true } }
   let(:field) { 'id' }
 
   describe 'id' do

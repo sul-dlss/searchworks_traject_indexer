@@ -7,6 +7,10 @@ class Traject::DeleteReader
   end
 
   def each(*args, &block)
-    input_stream.each(*args, &block)
+    return to_enum(:each) unless block_given?
+
+    input_stream.each do |ckey|
+      yield({ id: ckey, delete: true })
+    end
   end
 end

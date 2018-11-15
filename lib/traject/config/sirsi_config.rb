@@ -3,6 +3,7 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
+require 'traject/readers/kafka_marc_reader'
 require 'call_numbers/lc'
 require 'call_numbers/dewey'
 require 'call_numbers/other'
@@ -247,7 +248,15 @@ settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
-  provide "reader_class_name", "Traject::MarcCombiningReader"
+  if ENV['KAFKA_TOPIC']
+    provide "reader_class_name", "Traject::KafkaMarcReader"
+    kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject'))
+    consumer.subscribe(ENV['KAFKA_TOPIC'])
+    provide 'kafka.consumer', consumer
+  else
+    provide "reader_class_name", "Traject::MarcCombiningReader"
+  end
   provide 'reserves_file', ENV['RESERVES_FILE']
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
@@ -319,6 +328,12 @@ end if settings['reserves_file']
 
 each_record do |record|
   puts record if ENV['q']
+end
+
+##
+# Skip records that have a delete field
+each_record do |record, context|
+  context.skip!('Delete') if record[:delete]
 end
 
 to_field 'id', extract_marc('001') do |_record, accumulator|

@@ -49,6 +49,7 @@ GEM
       thor (~> 0.19.4)
       tins (~> 1.6)
     diff-lcs (1.3)
+    digest-crc (0.4.1)
     dlss-capistrano (3.4.1)
       capistrano (~> 3.0)
       capistrano-bundle_audit (>= 0.1.0)
@@ -124,6 +125,8 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    ruby-kafka (0.7.0)
+      digest-crc
     scrub_rb (1.0.1)
     simplecov (0.16.1)
       docile (~> 1.1)
@@ -184,6 +187,7 @@ DEPENDENCIES
   rake
   retriable
   rspec
+  ruby-kafka
   stanford-mods
   traject (~> 3.0a)
   traject-marc4j_reader!
