@@ -13,8 +13,8 @@ class Traject::KafkaPurlFetcherReader
       if message.key == 'break'
         kafka.mark_message_as_processed(message)
         break
-      elsif include_deletes? && message.value.nil?
-        yield({ id: message.key, delete: true })
+      elsif message.value.nil?
+        yield({ id: message.key, delete: true }) if include_deletes?
       else
         change = JSON.parse(message.value)
         record = PublicXmlRecord.new(change['druid'].sub('druid:', ''))
