@@ -3,7 +3,8 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'stanford-mods'
 require 'sdr_stuff'
-require 'traject/readers/purl_fetcher_reader'
+require 'kafka'
+require 'traject/readers/kafka_purl_fetcher_reader'
 require 'utils'
 
 $druid_title_cache = {}
@@ -12,7 +13,16 @@ settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
-  provide 'reader_class_name', 'PurlFetcherReader'
+  if ENV['KAFKA_TOPIC']
+    provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
+    kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject'))
+    consumer.subscribe(ENV['KAFKA_TOPIC'])
+    provide 'kafka.consumer', consumer
+  end
+
+  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
+  provide 'purl_fetcher.include_deletes', false
   provide 'skip_if_catkey', 'true'
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
@@ -53,6 +63,12 @@ def mods_display(method, *args, default: nil)
 
     accumulator << default if data.empty?
   end
+end
+
+##
+# Skip records that have a delete field
+each_record do |record, context|
+  context.skip!('Delete') if record.is_a?(Hash) && record[:delete]
 end
 
 each_record do |record, context|

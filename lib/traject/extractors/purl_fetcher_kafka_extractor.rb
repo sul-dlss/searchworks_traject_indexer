@@ -1,31 +1,40 @@
+require 'kafka'
 require 'manticore' if defined? JRUBY_VERSION
 
-class Traject::PurlFetcherReader
-  attr_reader :input_stream, :settings
+class Traject::PurlFetcherKafkaExtractor
+  attr_reader :first_modified, :kafka, :topic
 
-  def initialize(input_stream, settings)
-    @settings = Traject::Indexer::Settings.new settings
-    @input_stream = input_stream
+  def initialize(first_modified:, kafka:, topic:)
+    @first_modified = first_modified
+    @kafka = kafka
+    @topic = topic
   end
 
-  def each
-    return to_enum(:each) unless block_given?
-
-    changes(first_modified: first_modified, target: target).each do |change|
-      next unless target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
-
-      yield PublicXmlRecord.new(change['druid'].sub('druid:', ''))
+  def process!
+    changes(first_modified: first_modified).each do |change|
+      producer.produce(change.to_json, key: change['druid'], topic: topic)
     end
+
+    deletes(first_modified: first_modified).each do |change|
+      producer.produce(nil, key: change['druid'], topic: topic)
+    end
+
+    producer.deliver_messages
+    producer.shutdown
+    @producer = nil
   end
 
   private
 
-  def first_modified
-    settings['purl_fetcher.first_modified']
-  end
+  def producer
+    @producer ||= kafka.async_producer(
+      # Trigger a delivery once 10 messages have been buffered.
+      delivery_threshold: 10,
 
-  def target
-    settings['purl_fetcher.target'] || 'Searchworks'
+      # Trigger a delivery every 30 seconds.
+      delivery_interval: 30,
+      max_queue_size: 10000000
+    )
   end
 
   ##
@@ -43,7 +52,7 @@ class Traject::PurlFetcherReader
   ##
   # @return [Hash] a parsed JSON hash
   def get(path, params = {})
-    JSON.parse(fetch(settings.fetch('purl_fetcher.api_endpoint', 'https://purl-fetcher.stanford.edu') + path, params))
+    JSON.parse(fetch('https://purl-fetcher.stanford.edu' + path, params))
   end
 
   def fetch(url, params)
