@@ -3,15 +3,21 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'traject/readers/delete_reader'
 require 'traject/writers/delete_writer'
-require 'traject/readers/kafka_marc_reader'
-require 'kafka'
 
 settings do
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   if ENV['KAFKA_TOPIC']
-    provide "reader_class_name", "Traject::KafkaMarcReader"
+    require 'kafka'
+    if ENV['SOURCE'] == 'sdr'
+      require 'sdr_stuff'
+      require 'traject/readers/kafka_purl_fetcher_reader'
+      provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
+    else
+      require 'traject/readers/kafka_marc_reader'
+      provide "reader_class_name", "Traject::KafkaMarcReader"
+    end
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
     consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject_deletes'))
     consumer.subscribe(ENV['KAFKA_TOPIC'])
@@ -32,7 +38,7 @@ end
 ##
 # Skip records that don't have a delete flag
 each_record do |record, context|
-  context.skip!('') unless record[:delete]
+  context.skip!('') unless record.is_a?(Hash) && record[:delete]
 end
 
 to_field 'id' do |record, accumulator|
