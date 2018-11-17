@@ -361,3 +361,9 @@ end
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end
+
+each_record do |record, context|
+  context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
+    context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
+  end
+end
