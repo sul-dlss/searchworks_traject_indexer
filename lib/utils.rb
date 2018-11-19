@@ -1,3 +1,5 @@
+require 'logger'
+
 module Utils
   def self.balance_parentheses(string)
     open_deletes = []

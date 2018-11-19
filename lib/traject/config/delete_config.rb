@@ -1,5 +1,7 @@
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
+require 'utils'
+
 require 'traject'
 require 'traject/readers/delete_reader'
 require 'traject/writers/delete_writer'
@@ -15,6 +17,7 @@ settings do
       require 'traject/readers/kafka_purl_fetcher_reader'
       provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
     else
+      require 'traject/readers/marc_combining_reader'
       require 'traject/readers/kafka_marc_reader'
       provide "reader_class_name", "Traject::KafkaMarcReader"
     end
