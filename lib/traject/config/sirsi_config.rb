@@ -2210,8 +2210,8 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     accumulator << [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
+      translation_map[letters]
+    ].compact.join('|')
   end
 end
 
@@ -2242,7 +2242,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
       'Dewey Classification',
       translation_map[first_digit],
       translation_map[two_digits]
-    ].join('|')
+    ].compact.join('|')
   end
 
   accumulator.uniq!
@@ -2264,8 +2264,8 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
     [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
+      translation_map[letters]
+    ].compact.join('|')
   end
 
   accumulator.replace([accumulator.compact.first])
@@ -2286,8 +2286,8 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
     [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
+      translation_map[letters]
+    ].compact.join('|')
   end
 
   accumulator.replace([accumulator.compact.first])
