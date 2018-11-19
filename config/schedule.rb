@@ -3,18 +3,18 @@ job_type :honeybadger_wrapped_script,  "cd :path && :environment_variable=:envir
 job_type :honeybadger_wrapped_mri_ruby_script, "cd :path && :environment_variable=:environment PURL_FETCHER_TARGET=:purl_fetcher_target KAFKA_CONSUMER_GROUP_ID=:kafka_consumer_group_id KAFKA_TOPIC=:kafka_topic SOLR_URL=:solr_url /usr/local/rvm/bin/rvm ruby-2.4.4 do  bundle exec honeybadger exec -q script/:task"
 
 # index + delete SDR
-every '*/15 * * * *' do
+every '* * * * *' do
   honeybadger_wrapped_mri_ruby_script 'index_sdr.sh', solr_url: '${SOLR_URL}', kafka_topic: :purl_fetcher, purl_fetcher_target: 'Searchworks', kafka_consumer_group_id: 'traject'
   honeybadger_wrapped_mri_ruby_script 'load_sdr.sh', kafka_topic: :purl_fetcher, solr_url: '${SOLR_URL}'
 end
 
 # index + delete sirsi
-every '*/15 * * * *' do
+every '* * * * *' do
   honeybadger_wrapped_script 'index_sirsi.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}', kafka_topic: :marc_bodoni
   honeybadger_wrapped_script 'index_sirsi.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}', kafka_topic: :marc_morison
 end
 
-every '*/5 * * * *', roles: [:prod] do
+every '* * * * *', roles: [:prod] do
   honeybadger_wrapped_mri_ruby_script 'index_sdr.sh', solr_url: '${SDR_PREVIEW_SOLR_URL}', kafka_topic: :purl_fetcher, purl_fetcher_target: '', kafka_consumer_group_id: 'traject_preview'
 end
 
