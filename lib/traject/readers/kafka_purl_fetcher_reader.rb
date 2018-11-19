@@ -10,6 +10,8 @@ class Traject::KafkaPurlFetcherReader
     return to_enum(:each) unless block_given?
 
     kafka.each_message(max_bytes: 10000000) do |message|
+      Utils.logger.debug("Traject::KafkaPurlFetcherReader#each(#{message.key})")
+
       if message.key == 'break'
         kafka.mark_message_as_processed(message)
         break

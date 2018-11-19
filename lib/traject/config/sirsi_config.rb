@@ -20,6 +20,8 @@ I18n.available_locales = [:en]
 extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 
+Utils.logger = logger
+
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)

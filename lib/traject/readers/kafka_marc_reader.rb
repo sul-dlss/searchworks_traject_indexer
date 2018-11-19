@@ -13,6 +13,8 @@ class Traject::KafkaMarcReader
     return unless kafka.instance_variable_get(:@fetcher).data?
 
     kafka.each_message(max_bytes: 10000000) do |message|
+      Utils.logger.debug("Traject::KafkaMarcReader#each(#{message.key})")
+
       if message.key == 'break'
         kafka.mark_message_as_processed(message)
         break

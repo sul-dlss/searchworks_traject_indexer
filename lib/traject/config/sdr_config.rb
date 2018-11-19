@@ -7,6 +7,8 @@ require 'kafka'
 require 'traject/readers/kafka_purl_fetcher_reader'
 require 'utils'
 
+Utils.logger = logger
+
 $druid_title_cache = {}
 
 settings do

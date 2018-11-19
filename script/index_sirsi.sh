@@ -1,20 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-LOCAL_DATA_DIR=/data/sirsi/${SIRSI_SERVER}
-LATEST_DATA_DIR=$LOCAL_DATA_DIR/latest/updates
-LOG_DIR=$LATEST_DATA_DIR/logs
-TIMESTAMP=`eval date +%y%m%d_%H%M%S`
-
-LOG_FILE=$LOG_DIR/$RECORDS_FNAME"_"$TIMESTAMP".txt"
-
 # set JRUBY_OPTS and NUM_THREADS
 export NUM_THREADS=24
 export JRUBY_OPTS="-J-Xmx8192m"
 
-# create log directory
-mkdir -p $LOG_DIR
-
+LOG_FILE=log/index_sirsi_${SIRSI_SERVER}
 (
 flock -n 200
 # index files

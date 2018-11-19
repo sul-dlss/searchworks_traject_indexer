@@ -35,6 +35,8 @@ settings do
   end
 end
 
+Utils.logger = logger
+
 ##
 # Skip records that don't have a delete flag
 each_record do |record, context|

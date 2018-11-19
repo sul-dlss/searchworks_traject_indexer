@@ -39,4 +39,12 @@ module Utils
       File.read(file) if File.exist?(file)
     end
   end
+
+  def self.logger
+    @logger ||= Logger.new($stderr)
+  end
+
+  def self.logger=(logger)
+    @logger = logger
+  end
 end
