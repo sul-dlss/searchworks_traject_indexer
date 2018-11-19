@@ -16,7 +16,7 @@ settings do
   if ENV['KAFKA_TOPIC']
     provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject'))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"))
     consumer.subscribe(ENV['KAFKA_TOPIC'])
     provide 'kafka.consumer', consumer
   end

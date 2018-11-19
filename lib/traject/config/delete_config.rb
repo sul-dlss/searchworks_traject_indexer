@@ -19,7 +19,7 @@ settings do
       provide "reader_class_name", "Traject::KafkaMarcReader"
     end
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject_deletes'))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_deletes_#{ENV['KAFKA_TOPIC']}"))
     consumer.subscribe(ENV['KAFKA_TOPIC'])
     provide 'kafka.consumer', consumer
   else
