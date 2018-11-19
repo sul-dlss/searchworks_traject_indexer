@@ -125,7 +125,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    ruby-kafka (0.7.0)
+    ruby-kafka (0.7.4)
       digest-crc
     scrub_rb (1.0.1)
     simplecov (0.16.1)
@@ -137,7 +137,7 @@ GEM
     sshkit (1.18.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stanford-mods (2.6.0)
+    stanford-mods (2.6.1)
       activesupport
       mods (~> 2.2)
     term-ansicolor (1.7.0)
@@ -145,7 +145,7 @@ GEM
     thor (0.19.4)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
-    tins (1.19.0)
+    tins (1.20.2)
     traject (3.0.0)
       concurrent-ruby (>= 0.8.0)
       dot-properties (>= 0.1.1)
