@@ -257,7 +257,11 @@ settings do
   else
     provide "reader_class_name", "Traject::MarcCombiningReader"
   end
-  provide 'reserves_file', ENV['RESERVES_FILE']
+
+  crez_dir = "/data/sirsi/#{ENV.fetch('SIRSI_SERVER', 'bodoni')}/crez"
+  crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
+
+  provide 'reserves_file', crez_file
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
   provide 'solr_writer.commit_on_close', true
