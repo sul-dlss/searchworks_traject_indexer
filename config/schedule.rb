@@ -1,6 +1,6 @@
 # and also redirect stderr to stdout to honeybadger doesn't complain
 job_type :honeybadger_wrapped_script,  "cd :path && :environment_variable=:environment KAFKA_TOPIC=:kafka_topic SIRSI_SERVER=:sirsi_server SOLR_URL=:solr_url bundle exec honeybadger exec -q script/:task"
-job_type :honeybadger_wrapped_mri_ruby_script, "cd :path && :environment_variable=:environment PURL_FETCHER_TARGET=:purl_fetcher_target KAFKA_CONSUMER_GROUP_ID=:kafka_consumer_group_id KAFKA_TOPIC=:kafka_topic SOLR_URL=:solr_url /usr/local/rvm/bin/rvm ruby-2.4.4 do  bundle exec honeybadger exec -q script/:task"
+job_type :honeybadger_wrapped_mri_ruby_script, "cd :path && :environment_variable=:environment PURL_FETCHER_TARGET=:purl_fetcher_target KAFKA_CONSUMER_GROUP_ID=:kafka_consumer_group_id KAFKA_TOPIC=:kafka_topic SOLR_URL=:solr_url /usr/local/rvm/bin/rvm ruby-2.5.3 do  bundle exec honeybadger exec -q script/:task"
 
 # index + delete SDR
 every '* * * * *' do
