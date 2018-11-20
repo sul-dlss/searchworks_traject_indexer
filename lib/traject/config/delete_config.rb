@@ -15,6 +15,7 @@ settings do
     if ENV['SOURCE'] == 'sdr'
       require 'sdr_stuff'
       require 'traject/readers/kafka_purl_fetcher_reader'
+      provide 'skip_if_catkey', 'true'
       provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
     else
       require 'traject/readers/marc_combining_reader'
