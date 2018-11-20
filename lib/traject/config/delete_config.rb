@@ -20,6 +20,7 @@ settings do
       require 'traject/readers/marc_combining_reader'
       require 'traject/readers/kafka_marc_reader'
       provide "reader_class_name", "Traject::KafkaMarcReader"
+      provide "marc4j_reader.permissive", true
     end
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
     consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_deletes_#{ENV['KAFKA_TOPIC']}"))
