@@ -4,7 +4,7 @@ set -e
 LOG_FILE=log/index_sdr_log_${KAFKA_CONSUMER_GROUP_ID}
 
 (
-flock -n 200
+flock -n 200 || exit 0
 # index files
 bundle exec traject -c ./lib/traject/config/sdr_config.rb \
   -s solr_writer.max_skipped=-1
