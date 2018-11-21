@@ -19,7 +19,7 @@ gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
 gem 'mods_display'
-gem 'eye'
+gem 'eye', platform: :mri
 gem 'config'
 
 group :deployment do

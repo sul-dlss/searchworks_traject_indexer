@@ -9,7 +9,7 @@ ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
-set :rvm_ruby_version, 'jruby-9.2.4.0'
+set :rvm_ruby_version, 'ruby-2.5.3'
 
 set :honeybadger_env, "#{fetch(:stage)}"
 
@@ -43,7 +43,7 @@ append :linked_dirs, "tmp", "run", "log"
 
 set :whenever_roles, [:app]
 
-task :mri_bundle_install do
+task :jruby_bundle_install do
   on fetch(:bundle_servers) do
     within release_path do
       with fetch(:bundle_env_variables) do
@@ -54,7 +54,7 @@ task :mri_bundle_install do
         options << "--jobs #{fetch(:bundle_jobs)}" if fetch(:bundle_jobs)
         options << "--without #{fetch(:bundle_without)}" if fetch(:bundle_without)
         options << "#{fetch(:bundle_flags)}" if fetch(:bundle_flags)
-        execute "#{fetch(:rvm_path)}/bin/rvm", '2.5.3', 'do', :bundle, :install, *options
+        execute "#{fetch(:rvm_path)}/bin/rvm", 'jruby-9.2.4.0', 'do', :bundle, :install, *options
       end
     end
   end
@@ -62,7 +62,7 @@ end
 
 namespace :deploy do
   desc "stop/start eye, config for monitoring the deployment's traject workers"
-  after :restart, :load_eye_config do
+  before :cleanup, :load_eye_config do
     on roles(:app) do
       within release_path do
         # :delayed_job_workers is set by the env specific cap configs.  it won't
@@ -78,4 +78,4 @@ namespace :deploy do
   end
 end
 
-before 'bundler:install', 'mri_bundle_install'
+before 'bundler:install', 'jruby_bundle_install'
