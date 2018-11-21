@@ -1,5 +1,7 @@
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
+require 'utils'
+
 require 'traject'
 require 'traject/readers/delete_reader'
 require 'traject/writers/delete_writer'
@@ -13,13 +15,16 @@ settings do
     if ENV['SOURCE'] == 'sdr'
       require 'sdr_stuff'
       require 'traject/readers/kafka_purl_fetcher_reader'
+      provide 'skip_if_catkey', 'true'
       provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
     else
+      require 'traject/readers/marc_combining_reader'
       require 'traject/readers/kafka_marc_reader'
       provide "reader_class_name", "Traject::KafkaMarcReader"
+      provide "marc4j_reader.permissive", true
     end
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject_deletes'))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_deletes_#{ENV['KAFKA_TOPIC']}"))
     consumer.subscribe(ENV['KAFKA_TOPIC'])
     provide 'kafka.consumer', consumer
   else
@@ -34,6 +39,8 @@ settings do
     provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   end
 end
+
+Utils.logger = logger
 
 ##
 # Skip records that don't have a delete flag

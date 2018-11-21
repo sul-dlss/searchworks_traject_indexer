@@ -20,6 +20,8 @@ I18n.available_locales = [:en]
 extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 
+Utils.logger = logger
+
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
@@ -251,13 +253,17 @@ settings do
   if ENV['KAFKA_TOPIC']
     provide "reader_class_name", "Traject::KafkaMarcReader"
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject'))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"))
     consumer.subscribe(ENV['KAFKA_TOPIC'])
     provide 'kafka.consumer', consumer
   else
     provide "reader_class_name", "Traject::MarcCombiningReader"
   end
-  provide 'reserves_file', ENV['RESERVES_FILE']
+
+  crez_dir = "/data/sirsi/#{ENV.fetch('SIRSI_SERVER', 'bodoni')}/crez"
+  crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
+
+  provide 'reserves_file', crez_file
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
   provide 'solr_writer.commit_on_close', true
@@ -2204,8 +2210,8 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
     accumulator << [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
+      translation_map[letters]
+    ].compact.join('|')
   end
 end
 
@@ -2236,7 +2242,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
       'Dewey Classification',
       translation_map[first_digit],
       translation_map[two_digits]
-    ].join('|')
+    ].compact.join('|')
   end
 
   accumulator.uniq!
@@ -2258,8 +2264,8 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
     [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
+      translation_map[letters]
+    ].compact.join('|')
   end
 
   accumulator.replace([accumulator.compact.first])
@@ -2280,8 +2286,8 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
     [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters] || letters
-    ].join('|')
+      translation_map[letters]
+    ].compact.join('|')
   end
 
   accumulator.replace([accumulator.compact.first])

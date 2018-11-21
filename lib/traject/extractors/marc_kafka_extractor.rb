@@ -11,7 +11,10 @@ class Traject::MarcKafkaExtractor
 
   def process!
     reader.combinable_records do |records_to_combine|
-      producer.produce(records_to_combine.map { |x| x.to_marc }.join(''), key: records_to_combine.first['001'].value.sub(/^a/, ''), topic: topic)
+      ckey = records_to_combine.first['001'].value.sub(/^a/, '')
+      Utils.logger.debug("Traject::MarcKafkaExtractor#each(#{ckey})")
+
+      producer.produce(records_to_combine.map { |x| x.to_marc }.join(''), key: ckey, topic: topic)
     end
     producer.deliver_messages
     producer.shutdown

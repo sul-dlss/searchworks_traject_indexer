@@ -7,6 +7,8 @@ require 'kafka'
 require 'traject/readers/kafka_purl_fetcher_reader'
 require 'utils'
 
+Utils.logger = logger
+
 $druid_title_cache = {}
 
 settings do
@@ -16,7 +18,7 @@ settings do
   if ENV['KAFKA_TOPIC']
     provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', 'traject'))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"), fetcher_max_queue_size: 15)
     consumer.subscribe(ENV['KAFKA_TOPIC'])
     provide 'kafka.consumer', consumer
   end
@@ -360,4 +362,10 @@ end
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
+end
+
+each_record do |record, context|
+  context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
+    context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
+  end
 end
