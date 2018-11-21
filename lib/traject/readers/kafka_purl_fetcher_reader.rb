@@ -44,7 +44,7 @@ class Traject::KafkaPurlFetcherReader
     # Remove records that have the target explicitly set to false
     return true if target && change['false_targets'] && change['false_targets'].map(&:upcase).include?(target.upcase)
     # Remove changed records that now have a catkey
-    return true if settings['skip_if_catkey'] == 'true' && record.catkey
+    return true if record.catkey
     # Remove withdrawn records that are missing public xml
     return true if !record.public_xml?
 

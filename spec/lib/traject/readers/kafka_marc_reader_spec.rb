@@ -9,21 +9,6 @@ describe Traject::KafkaMarcReader do
   end
 
   describe '#each' do
-    context 'with break messages' do
-      let(:break_message) { double(key: 'break') }
-      before do
-        allow(consumer).to receive(:each_message).and_yield break_message
-      end
-
-      it 'halts processing' do
-        allow(consumer).to receive(:mark_message_as_processed)
-
-        expect(reader.each.to_a).to eq []
-
-        expect(consumer).to have_received(:mark_message_as_processed).with(break_message)
-      end
-    end
-
     context 'with deletes' do
       let(:delete_message) { double(key: '123', value: nil) }
       before do

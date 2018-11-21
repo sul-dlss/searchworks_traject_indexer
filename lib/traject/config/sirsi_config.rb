@@ -4,6 +4,7 @@ require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
 require 'traject/readers/kafka_marc_reader'
+require 'traject/writers/solr_better_json_writer'
 require 'call_numbers/lc'
 require 'call_numbers/dewey'
 require 'call_numbers/other'
@@ -247,6 +248,7 @@ module Constants
 end
 
 settings do
+  provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
@@ -339,7 +341,10 @@ end
 ##
 # Skip records that have a delete field
 each_record do |record, context|
-  context.skip!('Delete') if record[:delete]
+  if record[:delete]
+    context.output_hash[:id] = record[:id]
+    context.skip!('Delete')
+  end
 end
 
 to_field 'id', extract_marc('001') do |_record, accumulator|

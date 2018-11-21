@@ -5,6 +5,7 @@ require 'stanford-mods'
 require 'sdr_stuff'
 require 'kafka'
 require 'traject/readers/kafka_purl_fetcher_reader'
+require 'traject/writers/solr_better_json_writer'
 require 'utils'
 
 Utils.logger = logger
@@ -12,6 +13,7 @@ Utils.logger = logger
 $druid_title_cache = {}
 
 settings do
+  provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
@@ -25,7 +27,6 @@ settings do
 
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
   provide 'purl_fetcher.include_deletes', false
-  provide 'skip_if_catkey', 'true'
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'
@@ -76,6 +77,10 @@ each_record do |record, context|
   end
 end
 
+to_field 'id' do |record, accumulator|
+  accumulator << record.druid
+end
+
 each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
 end
@@ -83,11 +88,7 @@ end
 ##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
-  context.skip!('Item has a catkey') if context.settings['skip_if_catkey'] == 'true' && record.catkey
-end
-
-to_field 'id' do |record, accumulator|
-  accumulator << record.druid
+  context.skip!('Item has a catkey') if record.catkey
 end
 
 to_field 'druid' do |record, accumulator|
