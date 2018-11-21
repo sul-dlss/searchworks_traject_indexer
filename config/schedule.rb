@@ -4,18 +4,7 @@ job_type :honeybadger_wrapped_mri_ruby_script, "cd :path && :environment_variabl
 
 # index + delete SDR
 every '* * * * *' do
-  honeybadger_wrapped_mri_ruby_script 'index_sdr.sh', solr_url: '${SOLR_URL}', kafka_topic: :purl_fetcher, purl_fetcher_target: 'Searchworks', kafka_consumer_group_id: 'traject'
   honeybadger_wrapped_mri_ruby_script 'load_sdr.sh', kafka_topic: :purl_fetcher, solr_url: '${SOLR_URL}'
-end
-
-# index + delete sirsi
-every '* * * * *' do
-  honeybadger_wrapped_script 'index_sirsi.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}', kafka_topic: :marc_bodoni
-  honeybadger_wrapped_script 'index_sirsi.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}', kafka_topic: :marc_morison
-end
-
-every '* * * * *', roles: [:prod] do
-  honeybadger_wrapped_mri_ruby_script 'index_sdr.sh', solr_url: '${SDR_PREVIEW_SOLR_URL}', kafka_topic: :purl_fetcher, purl_fetcher_target: '', kafka_consumer_group_id: 'traject_preview'
 end
 
 # USING BODONI (prod) DATA

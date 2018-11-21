@@ -12,10 +12,7 @@ class Traject::KafkaPurlFetcherReader
     kafka.each_message(max_bytes: 10000000) do |message|
       Utils.logger.debug("Traject::KafkaPurlFetcherReader#each(#{message.key})")
 
-      if message.key == 'break'
-        kafka.mark_message_as_processed(message)
-        break
-      elsif message.value.nil?
+      if message.value.nil?
         yield({ id: message.key, delete: true }) if include_deletes?
       else
         change = JSON.parse(message.value)

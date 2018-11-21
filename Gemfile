@@ -19,6 +19,8 @@ gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
 gem 'mods_display'
+gem 'eye'
+gem 'config'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'

@@ -39,5 +39,3 @@ ARGV.each do |path|
     File.delete(f)
   end
 end
-
-kafka.deliver_message(nil, key: 'break', topic: ENV['KAFKA_TOPIC'])

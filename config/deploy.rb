@@ -9,7 +9,7 @@ ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
-set :rvm_ruby_version, 'jruby-9.2.0.0'
+set :rvm_ruby_version, 'jruby-9.2.4.0'
 
 set :honeybadger_env, "#{fetch(:stage)}"
 
@@ -24,10 +24,10 @@ set :honeybadger_env, "#{fetch(:stage)}"
 # set :pty, true
 
 # Default value for :linked_files is []
-# append :linked_files, "config/database.yml"
+append :linked_files, "config/settings.yml"
 
 # Default value for linked_dirs is []
-append :linked_dirs, "tmp"
+append :linked_dirs, "tmp", "run", "log"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -60,5 +60,22 @@ task :mri_bundle_install do
   end
 end
 
-before 'bundler:install', 'mri_bundle_install'
+namespace :deploy do
+  desc "stop/start eye, config for monitoring the deployment's traject workers"
+  after :restart, :load_eye_config do
+    on roles(:app) do
+      within release_path do
+        # :delayed_job_workers is set by the env specific cap configs.  it won't
+        # yet be set when this task is defined (though it will be by the time it's
+        # executed).
+        # quit first to make sure the new config is loaded
+        execute :bundle, :exec, :eye, :quit
+
+        # avoid spaces in the command name, see http://capistranorb.com/documentation/getting-started/tasks/
+        execute :bundle, :exec, :'eye', :load, :'traject.eye'
+      end
+    end
+  end
+end
+
 before 'bundler:install', 'mri_bundle_install'

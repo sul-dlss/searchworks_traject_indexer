@@ -70,7 +70,10 @@ end
 ##
 # Skip records that have a delete field
 each_record do |record, context|
-  context.skip!('Delete') if record.is_a?(Hash) && record[:delete]
+  if record.is_a?(Hash) && record[:delete]
+    context.output_hash['id'] = record[:id]
+    context.skip!('Delete')
+  end
 end
 
 each_record do |record, context|
