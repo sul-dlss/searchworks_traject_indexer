@@ -31,7 +31,7 @@ class SirsiHolding
   end
 
   def call_number
-    CallNumber.new(normalize_call_number(@call_number))
+    @call_number_obj ||= CallNumber.new(normalize_call_number(@call_number))
   end
 
   def skipped?

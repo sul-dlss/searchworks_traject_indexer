@@ -42,23 +42,28 @@ module CallNumbers
     end
 
     def lopped
-      value = case potential_stuff_to_lop
-              when VOL_PATTERN
-                call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN])).strip
-              when VOL_PATTERN_LOOSER
-                call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN_LOOSER])).strip
-              when VOL_PATTERN_LETTERS
-                call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN_LETTERS])).strip
-              when ADDL_VOL_PATTERN
-                call_number.slice(0...call_number.index(potential_stuff_to_lop[ADDL_VOL_PATTERN])).strip
-              else
-                call_number
-              end
+      @lopped ||= begin
+        value = case potential_stuff_to_lop
+                when VOL_PATTERN
+                  call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN])).strip
+                when VOL_PATTERN_LOOSER
+                  call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN_LOOSER])).strip
+                when VOL_PATTERN_LETTERS
+                  call_number.slice(0...call_number.index(potential_stuff_to_lop[VOL_PATTERN_LETTERS])).strip
+                when ADDL_VOL_PATTERN
+                  call_number.slice(0...call_number.index(potential_stuff_to_lop[ADDL_VOL_PATTERN])).strip
+                else
+                  call_number
+                end
 
-      value = value[0...(value.index(LOOSE_MONTHS_REGEX) || value.length)] # remove loose months
+        value = value[0...(value.index(LOOSE_MONTHS_REGEX) || value.length)] # remove loose months
 
-      return self.class.lop_years(value) if serial
-      value.strip
+        if serial
+          self.class.lop_years(value)
+        else
+          value.strip
+        end
+      end
     end
 
     private
