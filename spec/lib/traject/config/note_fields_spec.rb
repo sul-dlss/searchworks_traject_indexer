@@ -220,6 +220,31 @@ RSpec.describe 'Sirsi config' do
           expect(result_field.first[:fields].first).to eq []
         end
       end
+
+      context 'with some pre-formatted data in the $a' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', 'Part 1: Nasal Surgery 1.0 1. Septoplasty Marcelo Antunes, Sam Becker, Michael Lupa and Dan Becker. Chapter 2: The Theory of Organizations. Chapter 3: The University in America. -- 4. Drugs: Intoxicating Consumption 5. Food: Embodied Consumption      Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK')
+              )
+            )
+          end
+        end
+
+        it 'ignores the data' do
+          expect(result_field.first[:fields].first).to match_array [
+            'Part 1: Nasal Surgery 1.0',
+            '1. Septoplasty Marcelo Antunes, Sam Becker, Michael Lupa and Dan Becker.',
+            'Chapter 2: The Theory of Organizations.',
+            'Chapter 3: The University in America.',
+            '4. Drugs: Intoxicating Consumption',
+            '5. Food: Embodied Consumption',
+            'Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK'
+          ]
+        end
+      end
     end
   end
 

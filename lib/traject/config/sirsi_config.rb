@@ -1868,6 +1868,7 @@ to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
 #    vernacular: [['The same, but pulled from the matched vernacular fields']]
 #    unmatched_vernacular: [['The same, but pulled from any unmatched vernacular fields']]
 to_field 'toc_struct' do |marc, accumulator|
+  formatted_chapter_regex = Regexp.union(/[^\S]--[^\S]/, /      /, /(?=(?:Chapter|Section|Appendix|Part) \d+[:\.-]?\s+)/i,  /(?=(?<!Chapter|Section|Appendix|Part) \d+[:\.-]?\s+)/i, /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i)
   fields = []
   vern = []
   unmatched_vern = []
@@ -1883,16 +1884,14 @@ to_field 'toc_struct' do |marc, accumulator|
         if sub_field.code == 'a'
           data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
           buffer = []
-          data.concat regex_split(sub_field.value, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+          data.concat regex_split(sub_field.value, formatted_chapter_regex).map { |w| w.strip unless w.strip.empty? }.compact
         elsif sub_field.code == "1" && !Constants::SOURCES[sub_field.value.strip].nil?
           data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
           buffer = []
           data << Constants::SOURCES[sub_field.value.strip]
         elsif !(Constants::EXCLUDE_FIELDS + ['x']).include?(sub_field.code)
           # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
-          if tag == '905'
-            buffer << sub_field.value
-          elsif sub_field.value =~ /[^\S]--\s*$/
+          if sub_field.value =~ /[^\S]--\s*$/
             buffer << sub_field.value.sub(/[^\S]--\s*$/, '')
             data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ')
             buffer = []
