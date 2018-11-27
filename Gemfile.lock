@@ -40,14 +40,40 @@ GEM
       capistrano (~> 3.0)
       sshkit (~> 1.2)
     capistrano-shared_configs (0.2.2)
+    celluloid (0.17.3)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-io (0.17.3)
+      celluloid (>= 0.17.2)
+      nio4r (>= 1.1)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.6)
+      timers (>= 4.1.1)
     chronic (0.10.2)
     concurrent-ruby (1.1.3)
+    config (1.7.0)
+      activesupport (>= 3.0)
+      deep_merge (~> 1.2.1)
+      dry-validation (>= 0.10.4)
     coveralls (0.8.22)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
       term-ansicolor (~> 1.3)
       thor (~> 0.19.4)
       tins (~> 1.6)
+    deep_merge (1.2.1)
     diff-lcs (1.3)
     digest-crc (0.4.1)
     dlss-capistrano (3.4.1)
@@ -59,8 +85,41 @@ GEM
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     dot-properties (0.1.3)
+    dry-configurable (0.7.0)
+      concurrent-ruby (~> 1.0)
+    dry-container (0.6.0)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+    dry-core (0.4.7)
+      concurrent-ruby (~> 1.0)
+    dry-equalizer (0.2.1)
+    dry-inflector (0.1.2)
+    dry-logic (0.4.2)
+      dry-container (~> 0.2, >= 0.2.6)
+      dry-core (~> 0.2)
+      dry-equalizer (~> 0.2)
+    dry-types (0.13.2)
+      concurrent-ruby (~> 1.0)
+      dry-container (~> 0.3)
+      dry-core (~> 0.4, >= 0.4.4)
+      dry-equalizer (~> 0.2)
+      dry-inflector (~> 0.1, >= 0.1.2)
+      dry-logic (~> 0.4, >= 0.4.2)
+    dry-validation (0.12.2)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+      dry-core (~> 0.2, >= 0.2.1)
+      dry-equalizer (~> 0.2)
+      dry-logic (~> 0.4, >= 0.4.0)
+      dry-types (~> 0.13.1)
     edtf (3.0.4)
       activesupport (>= 3.0, < 6.0)
+    eye (0.10.0)
+      celluloid (~> 0.17.3)
+      celluloid-io (~> 0.17.0)
+      kostya-sigar (~> 2.0.0)
+      state_machines
+      thor
     hashie (3.6.0)
     honeybadger (4.1.0)
     http (3.3.0)
@@ -79,6 +138,7 @@ GEM
     iso-639 (0.2.8)
     json (2.1.0)
     json (2.1.0-java)
+    kostya-sigar (2.0.4)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
     marc (1.0.2)
@@ -101,6 +161,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
+    nio4r (2.3.1)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     nokogiri (1.8.5-java)
@@ -140,11 +201,13 @@ GEM
     stanford-mods (2.6.1)
       activesupport
       mods (~> 2.2)
+    state_machines (0.5.0)
     term-ansicolor (1.7.0)
       tins (~> 1.0)
     thor (0.19.4)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
+    timers (4.2.0)
     tins (1.20.2)
     traject (3.0.0)
       concurrent-ruby (>= 0.8.0)
@@ -177,8 +240,10 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rvm
   capistrano-shared_configs
+  config
   coveralls
   dlss-capistrano
+  eye
   honeybadger
   http
   i18n

@@ -4,6 +4,7 @@ require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
 require 'traject/readers/kafka_marc_reader'
+require 'traject/writers/solr_better_json_writer'
 require 'call_numbers/lc'
 require 'call_numbers/dewey'
 require 'call_numbers/other'
@@ -247,6 +248,7 @@ module Constants
 end
 
 settings do
+  provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
@@ -260,10 +262,6 @@ settings do
     provide "reader_class_name", "Traject::MarcCombiningReader"
   end
 
-  crez_dir = "/data/sirsi/#{ENV.fetch('SIRSI_SERVER', 'bodoni')}/crez"
-  crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
-
-  provide 'reserves_file', crez_file
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
   provide 'solr_writer.commit_on_close', true
@@ -317,20 +315,40 @@ def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
   end
 end
 
-reserves_lookup = {}
-File.open(settings['reserves_file'], 'r').each do |line|
-  csv_options = {
-    col_sep: '|', headers: 'rez_desk|resctl_exp_date|resctl_status|ckey|barcode|home_loc|curr_loc|item_rez_status|loan_period|rez_expire_date|rez_stage|course_id|course_name|term|instructor_name',
-    header_converters: :symbol, quote_char: "\x00"
-  }
-  CSV.parse(line, csv_options) do |row|
-    if row[:item_rez_status] == 'ON_RESERVE'
-      ckey = row[:ckey]
-      crez_value = reserves_lookup[ckey] || []
-      reserves_lookup[ckey] = crez_value << row
+def reserves_lookup
+  reserves_file = settings['reserves_file']
+  reserves_file ||= begin
+    crez_dir = settings['reserves_path']
+    crez_dir ||= "/data/sirsi/#{ENV.fetch('SIRSI_SERVER', 'bodoni')}/crez"
+    crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
+
+    if settings['latest_reserves_file'] != crez_file
+      settings['reserves_data'] = nil
+      settings['latest_reserves_file'] = crez_file
     end
+    crez_file
   end
-end if settings['reserves_file']
+
+  return {} unless reserves_file
+
+  settings['reserves_data'] ||= begin
+    reserves_data ||= {}
+    File.open(reserves_file, 'r').each do |line|
+      csv_options = {
+        col_sep: '|', headers: 'rez_desk|resctl_exp_date|resctl_status|ckey|barcode|home_loc|curr_loc|item_rez_status|loan_period|rez_expire_date|rez_stage|course_id|course_name|term|instructor_name',
+        header_converters: :symbol, quote_char: "\x00"
+      }
+      CSV.parse(line, csv_options) do |row|
+        if row[:item_rez_status] == 'ON_RESERVE'
+          ckey = row[:ckey]
+          crez_value = reserves_data[ckey] || []
+          reserves_data[ckey] = crez_value << row
+        end
+      end
+    end
+    reserves_data
+  end
+end
 
 each_record do |record|
   puts record if ENV['q']
@@ -339,7 +357,10 @@ end
 ##
 # Skip records that have a delete field
 each_record do |record, context|
-  context.skip!('Delete') if record[:delete]
+  if record[:delete]
+    context.output_hash[:id] = record[:id]
+    context.skip!('Delete')
+  end
 end
 
 to_field 'id', extract_marc('001') do |_record, accumulator|

@@ -31,5 +31,3 @@ File.open(state_file, 'r+') do |f|
     f.puts(reader.last['latest_change'])
   end
 end
-
-kafka.deliver_message(nil, key: 'break', topic: ENV['KAFKA_TOPIC']) if count > 0

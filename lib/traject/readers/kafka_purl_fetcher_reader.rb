@@ -12,10 +12,7 @@ class Traject::KafkaPurlFetcherReader
     kafka.each_message(max_bytes: 10000000) do |message|
       Utils.logger.debug("Traject::KafkaPurlFetcherReader#each(#{message.key})")
 
-      if message.key == 'break'
-        kafka.mark_message_as_processed(message)
-        break
-      elsif message.value.nil?
+      if message.value.nil?
         yield({ id: message.key, delete: true }) if include_deletes?
       else
         change = JSON.parse(message.value)
@@ -47,7 +44,7 @@ class Traject::KafkaPurlFetcherReader
     # Remove records that have the target explicitly set to false
     return true if target && change['false_targets'] && change['false_targets'].map(&:upcase).include?(target.upcase)
     # Remove changed records that now have a catkey
-    return true if settings['skip_if_catkey'] == 'true' && record.catkey
+    return true if record.catkey
     # Remove withdrawn records that are missing public xml
     return true if !record.public_xml?
 
