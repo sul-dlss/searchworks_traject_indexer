@@ -1324,17 +1324,10 @@ end
 #
 to_field 'access_facet' do |record, accumulator, context|
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
-  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
-    holding = SirsiHolding.new(
-      call_number: (field['a'] || '').strip,
-      current_location: field['k'],
-      home_location: field['l'],
-      library: field['m'],
-      scheme: field['w'],
-      type: field['t']
-    )
-
+  holdings(record, context).each do |holding|
     next if holding.skipped?
+
+    field = holding.tag
 
     if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
       accumulator << 'Online'
@@ -2094,15 +2087,7 @@ LOCATION_MAP = Traject::TranslationMap.new('location_map')
 each_record do |record, context|
   non_skipped_or_ignored_holdings = []
 
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t']
-    )
+  holdings(record, context).each do |holding|
     next if holding.skipped? || holding.ignored_call_number?
 
     non_skipped_or_ignored_holdings << holding
@@ -2179,17 +2164,27 @@ def call_number_for_holding(record, holding, context)
   end
 end
 
-to_field 'callnum_facet_hsim' do |record, accumulator|
-  record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(
-      call_number: (item['a'] || '').strip,
-      current_location: item['k'],
-      home_location: item['l'],
-      library: item['m'],
-      scheme: item['w'],
-      type: item['t']
-    )
+def holdings(record, context)
+  context.clipboard[:holdings] ||= begin
+    holdings = []
+    record.each_by_tag('999') do |item|
+      holdings << SirsiHolding.new(
+        call_number: (item['a'] || '').strip,
+        current_location: item['k'],
+        home_location: item['l'],
+        library: item['m'],
+        scheme: item['w'],
+        type: item['t'],
+        barcode: item['i'],
+        tag: item
+      )
+    end
+    holdings
+  end
+end
 
+to_field 'callnum_facet_hsim' do |record, accumulator, context|
+  holdings(record, context).each do |holding|
     next if holding.skipped?
     next unless holding.call_number_type == 'LC'
     next if holding.call_number.to_s.empty? ||
@@ -2215,16 +2210,8 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
   end
 end
 
-to_field 'callnum_facet_hsim' do |record, accumulator|
-  record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(
-      call_number: (item['a'] || '').strip,
-      current_location: item['k'],
-      home_location: item['l'],
-      library: item['m'],
-      scheme: item['w']
-    )
-
+to_field 'callnum_facet_hsim' do |record, accumulator, context|
+  holdings(record, context).each do |holding|
     next if holding.skipped?
     next unless holding.call_number_type == 'DEWEY' || (holding.call_number_type == 'LC' && holding.call_number.to_s =~ /^\d{1,3}(\.\d+)? *\.?[A-Z]\d{1,3} *[A-Z]*+.*/)
     next unless holding.dewey?
@@ -2293,17 +2280,10 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
   accumulator.replace([accumulator.compact.first])
 end
 
-to_field 'callnum_facet_hsim' do |record, accumulator|
+to_field 'callnum_facet_hsim' do |record, accumulator, context|
   marc_086 = record.fields('086')
   gov_doc_values = []
-  record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(
-      call_number: (item['a'] || '').strip,
-      current_location: item['k'],
-      home_location: item['l'],
-      library: item['m'],
-      scheme: item['w']
-    )
+  holdings(record, context).each do |holding|
 
     next if holding.skipped?
     next unless holding.gov_doc_loc? ||
@@ -2342,17 +2322,9 @@ to_field 'callnum_facet_hsim' do |record, accumulator|
 end
 
 
-to_field 'callnum_search' do |record, accumulator|
+to_field 'callnum_search' do |record, accumulator, context|
   good_call_numbers = []
-  record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(
-      call_number: (item['a'] || '').strip,
-      current_location: item['k'],
-      home_location: item['l'],
-      library: item['m'],
-      scheme: item['w']
-    )
-
+  holdings(record, context).each do |holding|
     next if holding.skipped?
     next if holding.call_number.to_s.empty? ||
             holding.shelved_by_location? ||
@@ -2378,18 +2350,7 @@ end
 # shelfkey = custom, getShelfkeys
 
 to_field 'shelfkey' do |record, accumulator, context|
-  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t']
-    )
-
+  holdings(record, context).each do |holding|
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
@@ -2418,18 +2379,7 @@ end
 # return the reverse String value, mapping A --> 9, B --> 8, ...
 #   9 --> A and also non-alphanum to sort properly (before or after alphanum)
 to_field 'reverse_shelfkey' do |record, accumulator, context|
-  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t']
-    )
-
+  holdings(record, context).each do |holding|
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
@@ -2577,32 +2527,22 @@ to_field 'barcode_search', extract_marc('999i')
    # * 2. If no Green shelfkey, use the above algorithm libraries (raw codes in 999) in alpha order.
    # *
 to_field 'preferred_barcode' do |record, accumulator, context|
-  holdings = []
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t'],
-      barcode: item_999['i']
-    )
-
+  non_skipped_holdings = []
+  holdings(record, context).each do |holding|
     next if holding.skipped? || holding.bad_lc_lane_call_number? || holding.ignored_call_number?
 
-    holdings << holding
+    non_skipped_holdings << holding
   end
 
-  next if holdings.length == 0
+  next if non_skipped_holdings.length == 0
 
-  if holdings.length == 1
-    accumulator << holdings.first.barcode
+  if non_skipped_holdings.length == 1
+    accumulator << non_skipped_holdings.first.barcode
     next
   end
 
   # Prefer GREEN home library, and then any other location prioritized by library code
-  holdings_by_library = holdings.group_by { |x| x.library }
+  holdings_by_library = non_skipped_holdings.group_by { |x| x.library }
   chosen_holdings = holdings_by_library['GREEN'] || holdings_by_library[holdings_by_library.keys.sort.first]
 
   # Prefer LC over Dewey over SUDOC over Alphanum over Other call number types
@@ -2640,26 +2580,16 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   next if context.output_hash['preferred_barcode']
   next unless record['050'] || record['090'] || record['086']
 
-  holdings = []
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t'],
-      barcode: item_999['i']
-    )
-
+  non_skipped_holdings = []
+  holdings(record, context).each do |holding|
     next if holding.skipped?
 
-    holdings << holding
+    non_skipped_holdings << holding
   end
 
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
 
-  preferred_holding = holdings.first do |holding|
+  preferred_holding = non_skipped_holdings.first do |holding|
     ignored_call_number? || online_locs.include?(holding.current_location) || online_locs.include?(holding.home_location)
   end
 
@@ -2669,17 +2599,9 @@ end
 library_map = Traject::TranslationMap.new('library_map')
 resv_locs = Traject::TranslationMap.new('locations_reserves_list')
 
-to_field 'building_facet' do |record, accumulator|
-  record.each_by_tag('999') do |item|
-    holding = SirsiHolding.new(
-      call_number: (item['a'] || '').strip,
-      current_location: item['k'],
-      home_location: item['l'],
-      library: item['m'],
-      scheme: item['w'],
-      type: item['t']
-    )
-
+to_field 'building_facet' do |record, accumulator, context|
+  holdings(record, context).each do |holding|
+    item = holding.tag
     next if holding.skipped?
 
     curr_loc = item['k']
@@ -2717,16 +2639,7 @@ to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_ord
 end
 
 to_field 'item_display' do |record, accumulator, context|
-  record.each_by_tag('999') do |item_999|
-    holding = SirsiHolding.new(
-      call_number: (item_999['a'] || '').strip,
-      current_location: item_999['k'],
-      home_location: item_999['l'],
-      library: item_999['m'],
-      scheme: item_999['w'],
-      type: item_999['t']
-    )
-
+  holdings(record, context).each do |holding|
     next if holding.skipped?
 
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
@@ -2765,7 +2678,7 @@ to_field 'item_display' do |record, accumulator, context|
         lopped_call_number = call_number_object.lopped == holding.call_number.to_s ? holding.call_number.to_s : "#{call_number_object.lopped} ..."
 
         # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
-        if call_number_object.lopped == holding.call_number.to_s && stuff_in_the_same_library.reject { |x| x.call_number.to_s == holding.call_number.to_s }.select { |x| call_number_for_holding(record, x, context).lopped ==  call_number_object.lopped }.any?
+        if call_number_object.lopped == holding.call_number.to_s && stuff_in_the_same_library.reject { |x| x.call_number.to_s == holding.call_number.to_s }.select { |x| call_number_for_holding(record, x, context).lopped == call_number_object.lopped }.any?
           lopped_call_number += " ..."
           shelfkey += " ..."
         end
@@ -2782,7 +2695,7 @@ to_field 'item_display' do |record, accumulator, context|
     current_location = 'ON-ORDER' if holding.is_on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
 
     accumulator << [
-      item_999['i'],
+      holding.tag['i'],
       holding.library,
       holding.home_location,
       current_location,
@@ -2792,7 +2705,7 @@ to_field 'item_display' do |record, accumulator, context|
       (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
       (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number),
       (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      (item_999['o'] if item_999['o'] && item_999['o'].upcase.start_with?('.PUBLIC.')),
+      (holding.tag['o'] if holding.tag['o'] && holding.tag['o'].upcase.start_with?('.PUBLIC.')),
       scheme
     ].join(' -|- ')
   end
