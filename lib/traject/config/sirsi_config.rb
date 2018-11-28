@@ -352,6 +352,10 @@ def reserves_lookup
   end
 end
 
+each_record do |record, context|
+  context.clipboard[:benchmark_start_time] = Time.now
+end
+
 each_record do |record|
   puts record if ENV['q']
 end
@@ -3160,4 +3164,11 @@ each_record do |record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
   end
+end
+
+each_record do |record, context|
+  t0 = context.clipboard[:benchmark_start_time]
+  t1 = Time.now
+
+  logger.debug('sirsi_config.rb') { "Processed #{context.source_record_id} (#{t1 - t0}s)" }
 end
