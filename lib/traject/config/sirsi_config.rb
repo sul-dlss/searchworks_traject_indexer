@@ -323,6 +323,7 @@ def reserves_lookup
     crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
 
     if settings['latest_reserves_file'] != crez_file
+      logger.info("Found new crez file: #{crez_file}")
       settings['reserves_data'] = nil
       settings['latest_reserves_file'] = crez_file
     end
@@ -332,6 +333,7 @@ def reserves_lookup
   return {} unless reserves_file
 
   settings['reserves_data'] ||= begin
+    logger.info("Loading new crez data from #{reserves_file}")
     reserves_data ||= {}
     File.open(reserves_file, 'r').each do |line|
       csv_options = {
