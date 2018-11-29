@@ -376,7 +376,7 @@ end
 # Skip records that have a delete field
 each_record do |record, context|
   if record[:delete]
-    context.output_hash[:id] = record[:id]
+    context.output_hash['id'] = record[:id]
     context.skip!('Delete')
   end
 end
