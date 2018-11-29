@@ -316,18 +316,29 @@ def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
 end
 
 def reserves_lookup
+  settings['reserves_path_mtime'] ||= Time.at(0)
+
   reserves_file = settings['reserves_file']
   reserves_file ||= begin
     crez_dir = settings['reserves_path']
     crez_dir ||= "/data/sirsi/#{ENV.fetch('SIRSI_SERVER', 'bodoni')}/crez"
-    crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
 
-    if settings['latest_reserves_file'] != crez_file
-      logger.info("Found new crez file: #{crez_file}")
-      settings['reserves_data'] = nil
-      settings['latest_reserves_file'] = crez_file
+    if File.exist? crez_dir
+      reserves_path_mtime = File.mtime(crez_dir)
+
+      if reserves_path_mtime > settings['reserves_path_mtime']
+        logger.info("#{crez_dir} changed (#{reserves_path_mtime})")
+        settings['reserves_path_mtime'] = reserves_path_mtime
+        crez_file = Dir.glob(File.expand_path('*', crez_dir)).max_by { |f| File.mtime(f) }
+
+        if settings['latest_reserves_file'] != crez_file
+          logger.info("Found new crez file: #{crez_file}")
+          settings['reserves_data'] = nil
+          settings['latest_reserves_file'] = crez_file
+        end
+      end
+      settings['latest_reserves_file']
     end
-    crez_file
   end
 
   return {} unless reserves_file
@@ -3170,5 +3181,5 @@ each_record do |record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
-  logger.debug('sirsi_config.rb') { "Processed #{context.source_record_id} (#{t1 - t0}s)" }
+  logger.debug('sirsi_config.rb') { "Processed #{context.source_record_id} (#{(t1 - t0).round(3)}s)" }
 end
