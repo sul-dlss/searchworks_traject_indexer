@@ -26,7 +26,6 @@ settings do
   end
 
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
-  provide 'purl_fetcher.include_deletes', false
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'
