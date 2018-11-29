@@ -8,12 +8,17 @@ every '* * * * *' do
 end
 
 # USING BODONI (prod) DATA
+every '40 6-23 * * *' do
+  honeybadger_wrapped_jruby_script 'load_crez.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}', kafka_topic: :marc_bodoni
+end
+
 every '45 6-23 * * *' do
   honeybadger_wrapped_jruby_script 'load_sirsi_hourly.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}', kafka_topic: :marc_bodoni
 end
 
 every :day, at: '4:30am' do
   honeybadger_wrapped_jruby_script 'load_sirsi_nightly.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}', kafka_topic: :marc_bodoni
+  honeybadger_wrapped_jruby_script 'load_crez.sh', sirsi_server: 'bodoni', solr_url: '${SOLR_URL}', kafka_topic: :marc_bodoni
 end
 
 every :day, at: '12:59am' do
@@ -21,12 +26,17 @@ every :day, at: '12:59am' do
 end
 
 # USING MORISON (dev) DATA
+every '10 6-23 * * *' do
+  honeybadger_wrapped_jruby_script 'load_crez.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}', kafka_topic: :marc_morison
+end
+
 every '15 6-23 * * *' do
   honeybadger_wrapped_jruby_script 'load_sirsi_hourly.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}', kafka_topic: :marc_morison
 end
 
 every :day, at: '06:00am' do
   honeybadger_wrapped_jruby_script 'load_sirsi_nightly.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}', kafka_topic: :marc_morison
+  honeybadger_wrapped_jruby_script 'load_crez.sh', sirsi_server: 'morison', solr_url: '${MORISON_SOLR_URL}', kafka_topic: :marc_morison
 end
 
 every :day, at: '09:00pm' do
