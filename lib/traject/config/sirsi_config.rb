@@ -20,6 +20,7 @@ I18n.available_locales = [:en]
 
 extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
+extend Traject::SolrBetterJsonWriter::IndexerPatch
 
 Utils.logger = logger
 

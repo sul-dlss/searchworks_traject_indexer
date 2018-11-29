@@ -9,6 +9,11 @@ require 'traject/writers/solr_better_json_writer'
 require 'utils'
 
 Utils.logger = logger
+extend Traject::SolrBetterJsonWriter::IndexerPatch
+
+def log_skip(context)
+  writer.put(context)
+end
 
 $druid_title_cache = {}
 
