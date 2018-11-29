@@ -386,5 +386,5 @@ each_record do |record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
-  logger.debug('sirsi_config.rb') { "Processed #{context.source_record_id} (#{t1 - t0}s)" }
+  logger.debug('sdr_config.rb') { "Processed #{context.output_hash['id']} (#{t1 - t0}s)" }
 end
