@@ -37,18 +37,22 @@ Setting | Description | Default
 
 ## Sirsi
 
-This strategy uses a data source consisting of MARC binary data and course reserves content to build an index for SearchWorks. MARC files can be individual records, but are most likely large dumps of records (~500,000 each) from library systems. Course reserves files are pipe `|` separated values (PSV) files which are read in during the indexing process and used to enhance MARC records during the transform process.
+MARC binary data is dumped into files (each containing ~500k records) on the Symphony servers. These dumps happen hourly (containing every changed MARC record during that calendar day), nightly (containing every record changed the previous day), and monthly (containing every exportable MARC record in Symphony). Hourly and nightly dumps also include a `del` file, containing a catkey-per-line of records that have been deleted or retracted.
 
-An example of a traject command used for indexing:
+Additional data comes from a course reserves data dump, also on the Symphony servers. Course reserves files are pipe `|` separated values (PSV) files which are read in during the indexing process and used to enhance MARC records during the transform process.
 
-```sh
-$ SOLR_URL=http://www.example.com/solr/collection-name NUM_THREADS=4 RESERVES_FILE=/path/reserves-data.current -c lib/traject/config/sirsi_config.rb /path/uni_00000000_00499999.marc
-```
+The indexing machines have scheduled cron tasks (see `./config/schedule.rb`) that retrieve this data from the Symphony servers and process the data into a kafka topic. Messages in the topic are key-value pairs; the key is the catkey of the record, and the value is either blank (representing a delete) or containing one or more binary MARC records for the catkey. The topics are regularly compacted by Kafka to remove duplicate data.
 
-## Sirsi Deletes
+There are daemon processes managed by eye (see `./traject.eye` locally, and `./config/settings.yml` on the deployed servers) that continously consume the kafka topics and run the traject indexing configuration on the data.
 
-Library systems can also provide a "deletes" file of records that should be deleted from the index. This deletes file is just a text file where each line is a ckey identifier of an item to be deleted. Deletes can be run like so:
+Traject can also index one or more MARC record directly. An example of a traject command used for indexing:
 
 ```sh
-$ SOLR_URL=http://www.example.com/solr/collection-name -c lib/traject/config/delete_config.rb /path/ckeys_delete.del
+$ SOLR_URL=http://www.example.com/solr/collection-name NUM_THREADS=4 bundle exec traject -c lib/traject/config/sirsi_config.rb /path/uni_00000000_00499999.marc
 ```
+
+## SDR
+
+The indexing machines also have schedule cron tasks (again, see `./config/schedule.rb`) for loading data from purl-fetcher into a kafka topic. This task records a state file (in `./tmp`) that contains the timestamp of the most recent entry from purl-fetcher that was processed. Every minute, the cron task runs, retrieves the purl-fetcher changes since that most recent timestamp, and adds the message to a kafka topic.
+
+A daemon process managed by eye continuously consumes the kafka topic to run the traject indexing configuration on the data.
