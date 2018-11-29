@@ -1,4 +1,14 @@
 class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
+
+  module IndexerPatch
+    def log_skip(context)
+      if writer_class == Traject::SolrBetterJsonWriter
+        writer.put(context)
+      else
+        logger.debug "Skipped record #{context.record_inspect}: #{context.skipmessage}"
+      end
+    end
+  end
   # Send the given batch of contexts. If something goes wrong, send
   # them one at a time.
   # @param [Array<Traject::Indexer::Context>] an array of contexts
