@@ -10,12 +10,20 @@ class Traject::CrezMarcKafkaExtractor
     @topic = topic
   end
 
+  # Scan through the Kafka topic and re-send any messages for records with CREZ data
   def process!
     t0 = Time.now
+    h = {}
     kafka.each_message(max_bytes: 10000000, topic: topic) do |message|
       break if message.create_time > t0
       next unless reserved?(message.key)
-      producer.produce(message.value, key: message.key, topic: topic)
+
+      # Store only the latest version of the record
+      h[message.key] = message.value
+    end
+
+    h.each do |key, value|
+      producer.produce(value, key: key, topic: topic)
     end
 
     producer.deliver_messages
