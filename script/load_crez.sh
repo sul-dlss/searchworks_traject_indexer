@@ -7,6 +7,9 @@ LOG_DIR=$LATEST_DATA_DIR/logs
 REMOTE_CREZ_DIR=/s/SUL/Dataload/SearchworksReserves/Data
 TIMESTAMP=`eval date +%y%m%d_%H%M%S`
 
+(
+flock -n 200 || exit 0
+
 mkdir -p $LOCAL_CREZ_DIR
 
 # get crez data
@@ -17,3 +20,4 @@ RESERVES_FILE=$LOCAL_CREZ_DIR/$(basename $full_remote_file_name)
 LOG_FILE=$LOG_DIR/$(basename $full_remote_file_name)"_"$TIMESTAMP".txt"
 
 bundle exec ruby script/process_crez_marc_to_kafka.rb $RESERVES_FILE > $LOG_FILE
+) 200>tmp/.load_crez.lock
