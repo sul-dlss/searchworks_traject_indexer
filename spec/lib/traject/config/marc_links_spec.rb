@@ -145,6 +145,8 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='u'>https://library.stanford.edu</subfield>
             <subfield code='x'>SDR-PURL</subfield>
             <subfield code='x'>file:abc123</subfield>
+            <subfield code='x'>label:some label</subfield>
+            <subfield code='x'>sort:123</subfield>
             <subfield code='y'>Link text 2</subfield>
           </datafield>
         </record>
@@ -158,6 +160,33 @@ RSpec.describe 'marc_links_struct' do
 
     it 'should return the file_id (without "file:")' do
       expect(result_field.first[:file_id]).to eq 'abc123'
+    end
+
+    it 'should return the sort (without "sort:")' do
+      expect(result_field.first[:sort]).to eq '123'
+    end
+
+    it 'should return the label (without "label:")' do
+      expect(result_field.first[:text]).to eq 'some label'
+    end
+
+    context 'when stanford affiliated' do
+      let(:marc) do
+        <<-xml
+          <record>
+            <datafield tag='856' ind1='0' ind2='0'>
+              <subfield code='u'>https://library.stanford.edu</subfield>
+              <subfield code='x'>SDR-PURL</subfield>
+              <subfield code='x'>file:abc123</subfield>
+              <subfield code='z'>Available to stanford affiliated users at</subfield>
+            </datafield>
+          </record>
+        xml
+      end
+
+      it 'does not include empty html from the additional_text that cannot be displayed' do
+        expect(result_field.first[:text]).to be_blank
+      end
     end
   end
 

@@ -19,7 +19,8 @@ module MarcLinks
           finding_aid: link_is_finding_aid?(link_field),
           managed_purl: link_is_managed_purl?(link),
           file_id: file_id(link_field),
-          druid: druid(link)
+          druid: druid(link),
+          sort: link[:sort]
         }
       end
     end
@@ -75,6 +76,27 @@ module MarcLinks
            :casalini_toc => true,
            :managed_purl => (field["u"] && field['x'] =~ /SDR-PURL/)
           }
+        elsif field['x'] && field['x'] =~ /SDR-PURL/
+          subxes = field.subfields.select { |subfield| subfield.code == 'x' }.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
+
+          link_text = subxes['label'] if subxes['label'].present?
+          sort = subxes['sort']
+
+          title = subz.join(' ') if subz.present?
+          if title =~ stanford_affiliated_regex && (subbed_title = title.gsub(stanford_affiliated_regex, '')).present?
+            additional_text = "<span class='additional-link-text'>#{subbed_title}</span>".html_safe
+          end
+
+          {
+            text: link_text,
+            title: title,
+            href: field['u'],
+            casalini_toc: false,
+            additional_text: additional_text,
+            sort: sort,
+            managed_purl: true,
+            file_id: subxes['file']
+          }
         else
           link_text = (!suby && !sub3) ? link_host(url) : [sub3, suby].compact.join(' ')
           title = subz.join(" ")
@@ -88,8 +110,7 @@ module MarcLinks
            :title=> title,
            :href=>field["u"],
            :casalini_toc => false,
-           :additional_text => additional_text,
-           :managed_purl => (field["u"] && field['x'] =~ /SDR-PURL/)
+           :additional_text => additional_text
           }
         end
       end
