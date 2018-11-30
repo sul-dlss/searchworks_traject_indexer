@@ -80,7 +80,7 @@ end
 # Skip records that have a delete field
 each_record do |record, context|
   if record.is_a?(Hash) && record[:delete]
-    context.output_hash['id'] = record[:id].sub('druid:', '')
+    context.output_hash['id'] = [record[:id].sub('druid:', '')]
     context.skip!('Delete')
   end
 end
