@@ -2,6 +2,10 @@ require 'config'
 
 Config.load_and_set_settings(Config.setting_files(File.expand_path('config', File.join(File.dirname(__FILE__))), ENV['TRAJECT_ENV']))
 
+Eye.config do
+  logger File.expand_path('log/eye.log', File.join(File.dirname(__FILE__)))
+end
+
 Eye.application 'traject' do
   working_dir File.expand_path(File.join(File.dirname(__FILE__)))
   stop_on_delete true
