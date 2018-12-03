@@ -79,11 +79,11 @@ module MarcLinks
         elsif field['x'] && field['x'] =~ /SDR-PURL/
           subxes = field.subfields.select { |subfield| subfield.code == 'x' }.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
 
-          link_text = subxes['label'] if subxes['label'].present?
+          link_text = subxes['label'] unless subxes['label'].nil?
           sort = subxes['sort']
 
-          title = subz.join(' ') if subz.present?
-          if title =~ stanford_affiliated_regex && (subbed_title = title.gsub(stanford_affiliated_regex, '')).present?
+          title = subz.join(' ') unless subz.empty?
+          if title =~ stanford_affiliated_regex && !(subbed_title = title.gsub(stanford_affiliated_regex, '')).empty?
             additional_text = "<span class='additional-link-text'>#{subbed_title}</span>".html_safe
           end
 
