@@ -7,6 +7,7 @@ require 'kafka'
 require 'traject/readers/kafka_purl_fetcher_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'utils'
+require 'honeybadger'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
@@ -38,6 +39,12 @@ settings do
   else
     provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   end
+
+  provide 'mapping_rescue', (lambda do |context, e|
+    Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
+
+    default_mapping_rescue(context, e)
+  end)
 end
 
 def stanford_mods(method, *args, default: nil)
