@@ -10,7 +10,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.1.1)
+    activesupport (5.2.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -172,7 +172,7 @@ GEM
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
     public_suffix (3.0.3)
-    rake (12.3.1)
+    rake (12.3.2)
     retriable (3.1.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
