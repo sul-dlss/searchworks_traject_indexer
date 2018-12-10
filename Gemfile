@@ -6,7 +6,7 @@ gem 'traject-marc4j_reader', git: 'https://github.com/traject/traject-marc4j_rea
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec'
-  gem 'coveralls', require: false
+  gem 'simplecov', require: false
 end
 
 gem 'http'
