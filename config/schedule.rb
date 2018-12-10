@@ -4,7 +4,7 @@ job_type :honeybadger_wrapped_jruby_script, "cd :path && :environment_variable=:
 
 # index + delete SDR
 every '* * * * *' do
-  honeybadger_wrapped_script 'load_sdr.sh', kafka_topic: :purl_fetcher, solr_url: '${SOLR_URL}'
+  honeybadger_wrapped_script 'load_sdr.sh', kafka_topic: :purl_fetcher_prod, solr_url: '${SOLR_URL}'
 end
 
 # USING BODONI (prod) DATA
