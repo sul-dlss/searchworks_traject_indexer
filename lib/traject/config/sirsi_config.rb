@@ -29,6 +29,8 @@ ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 
+indexer = self
+
 module Constants
   EXCLUDE_FIELDS = ['w', '0', '1', '2', '5', '6', '8', '?', '=']
   NIELSEN_TAGS = { '505' => '905', '520' => '920', '586' => '986' }
@@ -270,7 +272,7 @@ settings do
   provide 'mapping_rescue', (lambda do |context, e|
     Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
 
-    default_mapping_rescue(context, e)
+    indexer.send(:default_mapping_rescue).call(context, e)
   end)
 
   if defined?(JRUBY_VERSION)
