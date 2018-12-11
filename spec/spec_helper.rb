@@ -6,8 +6,9 @@ require 'traject/readers/marc_combining_reader'
 require 'traject/readers/purl_fetcher_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'sdr_stuff'
-require 'coveralls'
-Coveralls.wear!
+
+require 'simplecov'
+SimpleCov.start
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

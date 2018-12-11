@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sul-dlss/searchworks_traject_indexer.svg?branch=master)](https://travis-ci.org/sul-dlss/searchworks_traject_indexer) [![Coverage Status](https://coveralls.io/repos/github/sul-dlss/searchworks_traject_indexer/badge.svg?branch=master)](https://coveralls.io/github/sul-dlss/searchworks_traject_indexer?branch=master)
+[![Build Status](https://travis-ci.org/sul-dlss/searchworks_traject_indexer.svg?branch=master)](https://travis-ci.org/sul-dlss/searchworks_traject_indexer) [![Code Climate Test Coverage](https://codeclimate.com/github/sul-dlss/searchworks_traject_indexer/badges/coverage.svg)](https://codeclimate.com/github/sul-dlss/searchworks_traject_indexer/coverage)
 
 # SearchworksTrajectIndexer
 
