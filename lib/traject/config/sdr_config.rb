@@ -18,6 +18,8 @@ end
 
 $druid_title_cache = {}
 
+indexer = self
+
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
@@ -43,7 +45,7 @@ settings do
   provide 'mapping_rescue', (lambda do |context, e|
     Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
 
-    default_mapping_rescue(context, e)
+    indexer.send(:default_mapping_rescue).call(context, e)
   end)
 end
 
