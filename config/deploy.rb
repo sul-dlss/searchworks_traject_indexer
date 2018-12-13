@@ -65,10 +65,7 @@ namespace :deploy do
   before :cleanup, :load_eye_config do
     on roles(:app) do
       within release_path do
-        # :delayed_job_workers is set by the env specific cap configs.  it won't
-        # yet be set when this task is defined (though it will be by the time it's
-        # executed).
-        # quit first to make sure the new config is loaded
+        execute :bundle, :exec, :eye, :stop, :traject
         execute :bundle, :exec, :eye, :quit
 
         # avoid spaces in the command name, see http://capistranorb.com/documentation/getting-started/tasks/
