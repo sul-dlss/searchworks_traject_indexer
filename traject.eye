@@ -29,6 +29,7 @@ Eye.application 'traject' do
 
           pid_file "run/#{config.name}_#{i}.pid"
           daemonize true
+          use_leaf_child true
           stdall "log/#{config.name}.log"
 
           config.config.each do |k, v|
