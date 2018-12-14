@@ -355,19 +355,19 @@ def reserves_lookup
   settings['reserves_data'] ||= begin
     logger.info("Loading new crez data from #{reserves_file}")
     reserves_data ||= {}
-    File.open(reserves_file, 'r').each do |line|
-      csv_options = {
-        col_sep: '|', headers: 'rez_desk|resctl_exp_date|resctl_status|ckey|barcode|home_loc|curr_loc|item_rez_status|loan_period|rez_expire_date|rez_stage|course_id|course_name|term|instructor_name',
-        header_converters: :symbol, quote_char: "\x00"
-      }
-      CSV.parse(line, csv_options) do |row|
-        if row[:item_rez_status] == 'ON_RESERVE'
-          ckey = row[:ckey]
-          crez_value = reserves_data[ckey] || []
-          reserves_data[ckey] = crez_value << row
-        end
+    csv_options = {
+      col_sep: '|', headers: 'rez_desk|resctl_exp_date|resctl_status|ckey|barcode|home_loc|curr_loc|item_rez_status|loan_period|rez_expire_date|rez_stage|course_id|course_name|term|instructor_name',
+      header_converters: :symbol, quote_char: "\x00"
+    }
+
+    CSV.foreach(reserves_file, csv_options) do |row|
+      if row[:item_rez_status] == 'ON_RESERVE'
+        ckey = row[:ckey]
+        crez_value = reserves_data[ckey] || []
+        reserves_data[ckey] = crez_value << row
       end
     end
+
     reserves_data
   end
 end
