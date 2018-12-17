@@ -16,4 +16,25 @@ describe 'Skips records' do
     expect(results.count).to eq 41
     expect(records.count).to eq 45
   end
+
+  context 'with a **REQUIRED FILE** title' do
+    let(:records) do
+      [
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '245',
+              '1',
+              '0',
+              MARC::Subfield.new('a', '**REQUIRED FIELD**')
+            )
+          )
+        end
+      ]
+    end
+
+    it 'should be skipped' do
+      expect(results.count).to eq 0
+    end
+  end
 end
