@@ -389,6 +389,10 @@ each_record do |record, context|
   end
 end
 
+each_record do |record, context|
+  context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
+end
+
 to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
     v.sub(/^a/, '')
