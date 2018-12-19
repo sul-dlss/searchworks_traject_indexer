@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'traject', '~> 3.0a'
-gem 'traject-marc4j_reader', git: 'https://github.com/traject/traject-marc4j_reader', branch: 'master', platform: :jruby
+gem 'traject', '~> 3.0'
+gem 'traject-marc4j_reader', platform: :jruby
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -29,3 +29,5 @@ group :deployment do
   gem 'capistrano-shared_configs'
   gem 'dlss-capistrano'
 end
+
+gem 'nokogiri', '1.9.0.rc1'

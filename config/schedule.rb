@@ -1,10 +1,9 @@
 # and also redirect stderr to stdout to honeybadger doesn't complain
-job_type :honeybadger_wrapped_script,  "cd :path && :environment_variable=:environment SIRSI_SERVER=:sirsi_server PURL_FETCHER_TARGET=:purl_fetcher_target KAFKA_CONSUMER_GROUP_ID=:kafka_consumer_group_id KAFKA_TOPIC=:kafka_topic SOLR_URL=:solr_url bundle exec honeybadger exec -q script/:task"
 job_type :honeybadger_wrapped_jruby_script, "cd :path && :environment_variable=:environment SIRSI_SERVER=:sirsi_server PURL_FETCHER_TARGET=:purl_fetcher_target KAFKA_CONSUMER_GROUP_ID=:kafka_consumer_group_id KAFKA_TOPIC=:kafka_topic SOLR_URL=:solr_url /usr/local/rvm/bin/rvm jruby-9.2.4.0 do  bundle exec honeybadger exec -q script/:task"
 
 # index + delete SDR
 every '* * * * *' do
-  honeybadger_wrapped_script 'load_sdr.sh', kafka_topic: :purl_fetcher_prod, solr_url: '${SOLR_URL}'
+  honeybadger_wrapped_jruby_script 'load_sdr.sh', kafka_topic: :purl_fetcher_prod, solr_url: '${SOLR_URL}'
 end
 
 # USING BODONI (prod) DATA
