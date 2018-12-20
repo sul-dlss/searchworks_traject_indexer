@@ -227,7 +227,7 @@ RSpec.describe 'Sirsi config' do
             r.append(
               MARC::DataField.new(
                 '505', ' ', ' ',
-                MARC::Subfield.new('a', 'Part 1: Nasal Surgery 1.0 1. Septoplasty Marcelo Antunes, Sam Becker, Michael Lupa and Dan Becker. Chapter 2: The Theory of Organizations. Chapter 3: The University in America. -- 4. Drugs: Intoxicating Consumption 5. Food: Embodied Consumption      Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK')
+                MARC::Subfield.new('a', 'Part 1: Nasal Surgery 1.0 1. Septoplasty Marcelo Antunes, Sam Becker, Michael Lupa and Dan Becker. Chapter 2: The Theory of Organizations. Chapter 3: The University in America. -- 4. Drugs: Intoxicating Consumption 5. Food: Embodied Consumption      Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK v. 4. 1852-1863.')
               )
             )
           end
@@ -241,7 +241,8 @@ RSpec.describe 'Sirsi config' do
             'Chapter 3: The University in America.',
             '4. Drugs: Intoxicating Consumption',
             '5. Food: Embodied Consumption',
-            'Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK'
+            'Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK',
+            'v. 4. 1852-1863.'
           ]
         end
       end
