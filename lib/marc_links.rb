@@ -105,6 +105,8 @@ module MarcLinks
             subbed_title = title.gsub(stanford_affiliated_regex, '')
             additional_text = "<span class='additional-link-text'>#{subbed_title}</span>" unless subbed_title.empty?
             title = "Available to Stanford-affiliated users only" unless field['x'] && field['x'] =~ /SDR-PURL/
+          elsif title =~ stanford_law_affiliated_regex
+            additional_text = "<span class='additional-link-text'>#{title}</span>"
           end
           {:text=>link_text,
            :title=> title,
@@ -150,6 +152,10 @@ module MarcLinks
 
     def stanford_affiliated_regex
       Regexp.new(/available[ -]?to[ -]?stanford[ -]?affiliated[ -]?users[ -]?a?t?[:;.]?/i)
+    end
+
+    def stanford_law_affiliated_regex
+      /Available to Stanford Law School/i
     end
   end
 end
