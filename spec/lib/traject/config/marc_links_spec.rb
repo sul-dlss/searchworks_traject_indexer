@@ -112,6 +112,27 @@ RSpec.describe 'marc_links_struct' do
     end
   end
 
+  context "Stanford law only" do
+    let(:marc) do
+      <<-xml
+        <record>
+          <datafield tag='856' ind1='0' ind2='0'>
+            <subfield code='u'>https://library.stanford.edu</subfield>
+            <subfield code='y'>Link text</subfield>
+            <subfield code='z'>Available to stanford law school community</subfield>
+          </datafield>
+        </record>
+      xml
+    end
+
+    it "should show availability text" do
+      expect(result_field).to be_present
+      expect(result_field.first[:text]).to match(/additional-link-text/)
+      expect(result_field.first[:text]).to include 'Available to stanford law school community'
+    end
+
+  end
+
   context "fulltext" do
     let(:marc) do
       <<-xml
