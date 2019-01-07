@@ -29,5 +29,3 @@ group :deployment do
   gem 'capistrano-shared_configs'
   gem 'dlss-capistrano'
 end
-
-gem 'nokogiri', '1.9.0.rc1'
