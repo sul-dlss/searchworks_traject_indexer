@@ -1,4 +1,5 @@
 require 'kafka'
+require 'kafka/statsd'
 
 class Traject::MarcKafkaExtractor
   attr_reader :reader, :kafka, :topic
