@@ -1,5 +1,6 @@
 require 'csv'
 require 'kafka'
+require 'kafka/statsd'
 
 class Traject::CrezMarcKafkaExtractor
   attr_reader :reserves_file, :kafka, :topic
