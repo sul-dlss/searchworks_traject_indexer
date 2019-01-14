@@ -118,7 +118,7 @@ GEM
     http_parser.rb (0.6.0)
     http_parser.rb (0.6.0-java)
     httpclient (2.8.3)
-    i18n (1.5.1)
+    i18n (1.5.2)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.8)
     json (2.1.0)
@@ -147,9 +147,9 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (5.1.0)
     nio4r (2.3.1)
-    nokogiri (1.10.0)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.0-java)
+    nokogiri (1.10.1-java)
     nom-xml (1.1.0)
       activesupport (>= 3.2.18)
       i18n
@@ -246,4 +246,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
