@@ -122,8 +122,8 @@ GEM
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.8)
-    json (2.1.0)
-    json (2.1.0-java)
+    json (2.2.0)
+    json (2.2.0-java)
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
