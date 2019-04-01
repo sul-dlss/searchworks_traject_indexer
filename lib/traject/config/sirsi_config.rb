@@ -1396,6 +1396,12 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator.uniq!
 end
 
+##
+# Lane Medical Library relies on the underlying logic of "format_main_ssim" 
+# data (next ~200+ lines) to accurately represent SUL records in 
+# http://lane.stanford.edu. Please consider notifying Ryan Steinberg 
+# (ryanmax at stanford dot edu) in the event of changes to this logic.
+#
 # # old format field, left for continuity in UI URLs for old formats
 # format = custom, getOldFormats
 to_field 'format_main_ssim' do |record, accumulator|
