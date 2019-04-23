@@ -688,5 +688,63 @@ RSpec.describe 'Author config' do
         )
       )
     end
+
+    context 'with subfield 0 + 1 data' do
+      let(:records) { [record] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '00988nas a2200193z  4500'
+          r.append(MARC::DataField.new('100', ' ', ' ',
+            MARC::Subfield.new('0', 'http://example.com/authority_100'),
+            MARC::Subfield.new('1', 'http://example.com/rwo_100'),
+            MARC::Subfield.new('a', '100a')
+          ))
+          r.append(MARC::DataField.new('110', ' ', ' ',
+            MARC::Subfield.new('0', 'http://example.com/authority_110'),
+            MARC::Subfield.new('1', 'http://example.com/rwo_110'),
+            MARC::Subfield.new('a', '110a')
+          ))
+          r.append(MARC::DataField.new('111', ' ', ' ',
+            MARC::Subfield.new('0', 'http://example.com/authority_111'),
+            MARC::Subfield.new('1', 'http://example.com/rwo_111'),
+            MARC::Subfield.new('a', '111a')
+          ))
+          r.append(MARC::DataField.new('700', ' ', ' ',
+            MARC::Subfield.new('0', 'http://example.com/authority_700'),
+            MARC::Subfield.new('1', 'http://example.com/rwo_700'),
+            MARC::Subfield.new('a', '700a')
+          ))
+        end
+      end
+      let(:result) { results.first }
+
+      it 'has identifiers' do
+        struct = result[field].map { |x| JSON.parse(x, symbolize_names: true) }.first
+        expect(struct).to include creator: [{
+          link: '100a',
+          search: '100a',
+          authorities: ['http://example.com/authority_100'],
+          rwo: ['http://example.com/rwo_100'],
+        }]
+        expect(struct).to include corporate_author: [{
+          link: '110a',
+          search: '110a',
+          authorities: ['http://example.com/authority_110'],
+          rwo: ['http://example.com/rwo_110'],
+        }]
+        expect(struct).to include meeting: [{
+          link: '111a',
+          search: '111a',
+          authorities: ['http://example.com/authority_111'],
+          rwo: ['http://example.com/rwo_111'],
+        }]
+        expect(struct).to include contributors: [
+          hash_including(
+            authorities: ['http://example.com/authority_700'],
+            rwo: ['http://example.com/rwo_700'],
+          )
+        ]
+      end
+    end
   end
 end

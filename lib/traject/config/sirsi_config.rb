@@ -695,7 +695,9 @@ def linked_author_struct(record, tag)
     {
       link: subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
       search: subfields.select { |subfield| linked?(tag, subfield) }.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
-      post_text: subfields.reject { |subfield| subfield.code == 'i' }.select { |subfield| %w[e 4].include?(subfield.code) || !linked?(tag, subfield) }.each { |subfield| subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4' }.map(&:value).join(' ')
+      post_text: subfields.reject { |subfield| subfield.code == 'i' }.select { |subfield| %w[e 4].include?(subfield.code) || !linked?(tag, subfield) }.each { |subfield| subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4' }.map(&:value).join(' '),
+      authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
+      rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
     }.reject { |k, v| v.empty? }
   end
 end
@@ -752,7 +754,9 @@ def linked_contributors_struct(record)
         link: link_text.join(' '),
         search: "\"#{href_text.join(' ')}\"",
         pre_text: before_text.join(' '),
-        post_text: extra_text.join(' ')
+        post_text: extra_text.join(' '),
+        authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
+        rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
       }
     else
       link_text = ""
@@ -814,7 +818,9 @@ def assemble_contributor_data_struct(field)
     link: link_text.join(' '),
     search: "\"#{link_text.join(' ')}\"",
     pre_text: before_text.join(' '),
-    post_text: relator_text.join(' ') + extra_text.join(' ')
+    post_text: relator_text.join(' ') + extra_text.join(' '),
+    authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
+    rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
   }
 end
 
