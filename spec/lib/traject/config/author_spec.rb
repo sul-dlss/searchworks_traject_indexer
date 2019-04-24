@@ -744,6 +744,13 @@ RSpec.describe 'Author config' do
             rwo: ['http://example.com/rwo_700'],
           )
         ]
+
+        expect(result['author_authorities_ssim']).to eq [
+          'http://example.com/rwo_100', 'http://example.com/authority_100',
+          'http://example.com/authority_110', 'http://example.com/rwo_110',
+          'http://example.com/authority_111', 'http://example.com/rwo_111',
+          'http://example.com/authority_700', 'http://example.com/rwo_700'
+        ]
       end
     end
   end
