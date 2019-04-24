@@ -702,6 +702,8 @@ def linked_author_struct(record, tag)
   end
 end
 
+to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:7000:7001:7100:7101:7110:7111:7200:7201')
+
 def linked_contributors_struct(record)
   contributors = []
 
