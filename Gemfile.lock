@@ -107,7 +107,7 @@ GEM
       state_machines
       thor
     hashie (3.6.0)
-    honeybadger (4.2.1)
+    honeybadger (4.2.2)
     http (3.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -148,9 +148,9 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     nio4r (2.3.1)
-    nokogiri (1.10.2)
+    nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.2-java)
+    nokogiri (1.10.3-java)
     nom-xml (1.1.0)
       activesupport (>= 3.2.18)
       i18n
@@ -193,7 +193,7 @@ GEM
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
     timers (4.3.0)
-    traject (3.0.0)
+    traject (3.1.0)
       concurrent-ruby (>= 0.8.0)
       dot-properties (>= 0.1.1)
       hashie (~> 3.1)
@@ -201,7 +201,7 @@ GEM
       httpclient (~> 2.5)
       marc (~> 1.0)
       marc-fastxmlwriter (~> 1.0)
-      nokogiri (~> 1.0)
+      nokogiri (~> 1.9)
       slop (>= 3.4.5, < 4.0)
       yell
     traject-marc4j_reader (1.1.0-java)
@@ -213,7 +213,7 @@ GEM
       unf_ext
     unf (0.1.4-java)
     unf_ext (0.0.7.6)
-    whenever (0.10.0)
+    whenever (0.11.0)
       chronic (>= 0.6.3)
     yell (2.1.0)
 
