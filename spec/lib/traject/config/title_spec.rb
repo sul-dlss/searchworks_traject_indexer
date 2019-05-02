@@ -570,5 +570,42 @@ RSpec.describe 'Title spec' do
                                                                       post_text: 'Selections'
       end
     end
+
+    context 'with subfield 0 + 1 data' do
+      subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+      let(:records) { [record] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '00988nas a2200193z  4500'
+          r.append(MARC::DataField.new('130', ' ', ' ',
+            MARC::Subfield.new('0', 'http://example.com/authority_130'),
+            MARC::Subfield.new('1', 'http://example.com/rwo_130'),
+            MARC::Subfield.new('a', '130a')
+          ))
+          r.append(MARC::DataField.new('240', ' ', ' ',
+            MARC::Subfield.new('0', 'http://example.com/authority_240'),
+            MARC::Subfield.new('1', 'http://example.com/rwo_240'),
+            MARC::Subfield.new('a', '240a')
+          ))
+        end
+      end
+      let(:result) { results.first }
+      let(:field) { 'uniform_title_display_struct' }
+
+      it 'has identifiers' do
+        struct = result[field].map { |x| JSON.parse(x, symbolize_names: true) }.first
+        expect(struct).to include fields: [
+          hash_including(
+            authorities: ['http://example.com/authority_130'],
+            rwo: ['http://example.com/rwo_130'],
+          )
+        ]
+
+        expect(result['uniform_title_authorities_ssim']).to eq [
+          'http://example.com/authority_130', 'http://example.com/rwo_130',
+          'http://example.com/authority_240', 'http://example.com/rwo_240'
+        ]
+      end
+    end
   end
 end

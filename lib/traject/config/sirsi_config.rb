@@ -541,11 +541,15 @@ to_field 'uniform_title_display_struct' do |record, accumulator|
         },
         vernacular: {
           vern: vern
-        }
+        },
+        authorities: uniform_title.subfields.select { |x| x.code == '0' }.map(&:value),
+        rwo: uniform_title.subfields.select { |x| x.code == '1' }.map(&:value)
       }
     ]
   }
 end
+
+to_field 'uniform_title_authorities_ssim', extract_marc('1300:1301:2400:2401')
 
 def get_marc_vernacular(marc,original_field)
   return_text = []
