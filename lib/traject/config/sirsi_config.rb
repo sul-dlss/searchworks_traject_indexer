@@ -693,6 +693,52 @@ to_field 'author_struct' do |record, accumulator|
   accumulator << struct unless struct.empty?
 end
 
+to_field 'works_struct' do |record, accumulator|
+  struct = {
+    included: works_struct(record, '700:710:711:730:740', indicator2: '2'),
+    related: works_struct(record, '700:710:711:730:740', indicator2: nil),
+  }
+
+  accumulator << struct unless struct.empty?
+end
+
+def works_struct(record, tags, indicator2: nil, link_codes: %w[a d f k l m n o p r s t].freeze, text_codes: %w[h i x 3].freeze)
+
+  Traject::MarcExtractor.cached(tags).collect_matching_lines(record) do |field, spec, extractor|
+    next if ['700', '710', '711'].include?(field.tag) && (!field['t'] || field['t'].empty?)
+
+    result = {
+      before: [],
+      inside: [],
+      after: []
+    }
+
+    subfields_before = field.subfields.take_while { |subfield| !link_codes.include?(subfield.code) }
+    subfields_after = field.subfields.reverse.take_while { |subfield| !link_codes.include?(subfield.code) }.reverse
+
+    result[:before] = subfields_before.select do |subfield|
+      text_codes.include?(subfield.code)
+    end
+
+    result[:inside] = field.subfields.slice(subfields_before.length..(-1 * (subfields_after.length + 1)))
+
+    result[:after] = subfields_after.select do |subfield|
+      text_codes.include?(subfield.code)
+    end
+
+    {
+      link: result[:inside].map(&:value).join(' '),
+      search: result[:inside].reject { |subfield| text_codes.include?(subfield.code) }.map(&:value).join(' '),
+      pre_text: result[:before].map(&:value).join(' '),
+      post_text: result[:after].map(&:value).join(' '),
+      authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
+      rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
+    }
+  end
+end
+
+to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:7000:7001:7100:7101:7110:7111:7200:7201:7300:7301:7400:7401')
+
 def linked_author_struct(record, tag)
   Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, spec, extractor|
     subfields = field.subfields.reject { |subfield| Constants::EXCLUDE_FIELDS.include?(subfield.code) }
@@ -706,81 +752,16 @@ def linked_author_struct(record, tag)
   end
 end
 
-to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:7000:7001:7100:7101:7110:7111:7200:7201')
-
 def linked_contributors_struct(record)
   contributors = []
-
   vern_fields = []
 
   Traject::MarcExtractor.cached('700:710:711:720', alternate_script: :only).each_matching_line(record) do |f|
-    vern_fields << f
+    vern_fields << f if !f['t'] || f['t'].empty?
   end
 
   Traject::MarcExtractor.cached('700:710:711:720', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    tag = field.tag
-
-    if field['t'] && !field['t'].empty?
-      next unless field.indicator2 == "2"
-      subt = :none
-      link_text = []
-      extra_text = []
-      before_text = []
-      href_text = []
-      extra_href = []
-      field.each do |subfield|
-        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
-
-        subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4'
-
-        # $e $i $4
-        if subfield.code == "t"
-          subt = :now
-        end
-        if subfield.code == "i" and subt == :none # assumes $i at beginning
-          before_text << subfield.value.gsub(/\s*\(.+\)\s*/, '')
-        elsif subt == :none
-          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
-          link_text << subfield.value
-        elsif subt == :now or (subt == :passed and subfield.value.strip =~ /[\.|;]$/)
-          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
-          link_text << subfield.value
-          subt = :passed
-          subt = :done if subfield.value.strip =~ /[\.|;]$/
-        elsif subt == :done
-          extra_href << subfield.value unless ["e","i","j","4"].include?(subfield.code)
-          extra_text << subfield.value
-        else
-          href_text << subfield.value unless ["e","i","j","4"].include?(subfield.code)
-          link_text << subfield.value
-        end
-      end
-
-      contributors << {
-        link: link_text.join(' '),
-        search: "\"#{href_text.join(' ')}\"",
-        pre_text: before_text.join(' '),
-        post_text: extra_text.join(' '),
-        authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
-        rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
-      }
-    else
-      link_text = ""
-      relator_text = []
-      extra_text = ""
-      field.each do |subfield|
-        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
-        if subfield.code == "e"
-          relator_text << subfield.value
-        elsif subfield.code == "4" and relator_text.empty?
-          relator_text << Constants::RELATOR_TERMS[subfield.value]
-        elsif tag == '711' && subfield.code == 'j'
-          extra_text << "#{subfield.value} "
-        elsif subfield.code != "e" and subfield.code != "4"
-          link_text << "#{subfield.value} "
-        end
-      end
-
+    if !field['t'] || field['t'].empty?
       vern_field = vern_fields.find { |f| f['6'] && f['6'].split("-")[1].gsub("//r","") == field['6'].split("-")[1].gsub("//r","") } if field['6']
 
       contributor = assemble_contributor_data_struct(field)
@@ -802,7 +783,6 @@ def linked_contributors_struct(record)
 end
 
 def assemble_contributor_data_struct(field)
-  tag = field.tag
   link_text = []
   relator_text = []
   extra_text = []
@@ -813,7 +793,7 @@ def assemble_contributor_data_struct(field)
       relator_text << subfield.value
     elsif subfield.code == "4" and relator_text.empty?
       relator_text << Constants::RELATOR_TERMS[subfield.value]
-    elsif tag == '711' && subfield.code == 'j'
+    elsif field.tag == '711' && subfield.code == 'j'
       extra_text << subfield.value
     elsif subfield.code != "e" and subfield.code != "4"
       link_text << subfield.value
