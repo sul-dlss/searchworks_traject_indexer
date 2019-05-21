@@ -67,7 +67,8 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
     batch.each do |c|
       if c.skip?
-        arr << "delete: #{JSON.generate(id: Array(c.output_hash['id']).first)}"
+        id = Array(c.output_hash['id']).first
+        arr << "delete: #{JSON.generate(id: id)}" if id
       else
         arr << "add: #{JSON.generate(doc: c.output_hash)}"
       end

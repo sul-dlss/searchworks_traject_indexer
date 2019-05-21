@@ -5,6 +5,7 @@ describe Traject::SolrBetterJsonWriter do
   let(:http_client) { double(post: double(status: 200)) }
   let(:doc) { Traject::Indexer::Context.new.tap { |doc| doc.output_hash['id'] = [1] }}
   let(:skipped_doc) { Traject::Indexer::Context.new.tap { |doc| doc.output_hash['id'] = [2]; doc.skip! } }
+  let(:bad_doc) { Traject::Indexer::Context.new.tap { |doc| doc.skip! } }
 
   describe '#send_batch' do
     it 'adds documents to solr' do
@@ -15,6 +16,11 @@ describe Traject::SolrBetterJsonWriter do
     it 'deletes documents from solr' do
       writer.send_batch([skipped_doc])
       expect(http_client).to have_received(:post).with('http://localhost/solr', '{delete: {"id":2}}', 'Content-type' => 'application/json')
+    end
+
+    it 'skips writing documents that have no id' do
+      writer.send_batch([bad_doc])
+      expect(http_client).to have_received(:post).with('http://localhost/solr', '{}', 'Content-type' => 'application/json')
     end
 
     it 'sends the request as a batch' do
