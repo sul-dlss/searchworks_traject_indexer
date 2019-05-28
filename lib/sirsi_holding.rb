@@ -128,7 +128,7 @@ class SirsiHolding
     return call_number unless %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
     call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     call_number = call_number.gsub(/\. \./, ' .') # reduce double periods to a single period
-    call_number = call_number.gsub(/(\d+\.) ([A-Z])/, "\1\2") # remove space after a period if period is after digits and before letters
+    call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
     call_number.sub(/\.$/, '') # remove trailing period
   end
 

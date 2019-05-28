@@ -17,6 +17,9 @@ RSpec.describe SirsiHolding do
       it { expect(described_class.new('KF123.34 .M123')).to be_valid_lc }
       it { expect(described_class.new('KFC123.34 .M123')).to be_valid_lc }
       it { expect(described_class.new('012.12 .W123')).not_to be_valid_lc }
+
+      # will get normalized
+      it { expect(described_class.new('TA1505. P76 V.4746:PT.2')).to be_valid_lc }
     end
 
     describe '#before_cutter' do
