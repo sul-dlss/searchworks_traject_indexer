@@ -12,7 +12,7 @@ class Traject::PurlFetcherKafkaExtractor
   end
 
   def process!
-    reader.each do |change|
+    reader.each do |change, meta|
       Utils.logger.debug("Traject::PurlFetcherKafkaExtractor#each(#{change['druid']})")
       if change[:delete]
         producer.produce(nil, key: change['druid'], topic: topic)

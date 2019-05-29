@@ -1,6 +1,7 @@
 require 'manticore' if defined? JRUBY_VERSION
 
 class Traject::PurlFetcherReader
+  include Enumerable
   attr_reader :settings
 
   def initialize(_input_stream, settings)
@@ -10,12 +11,12 @@ class Traject::PurlFetcherReader
   def each
     return to_enum(:each) unless block_given?
 
-    changes(first_modified: first_modified).each do |change|
-      yield change
+    changes(first_modified: first_modified).each do |change, meta|
+      yield change, meta
     end
 
-    deletes(first_modified: first_modified).each do |change|
-      yield change.merge(delete: true)
+    deletes(first_modified: first_modified).each do |change, meta|
+      yield change.merge(delete: true), meta
     end
   end
 
@@ -75,7 +76,7 @@ class Traject::PurlFetcherReader
         total += data[accessor].length
 
         data[accessor].each do |element|
-          yielder.yield element
+          yielder.yield element, { 'range' => data['range'] || {} }
         end
 
         page = data['pages']['next_page']
