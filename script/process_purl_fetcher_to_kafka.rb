@@ -26,7 +26,7 @@ File.open(state_file, 'r+') do |f|
 
     count += reader.length
 
-    max_date = reader.map { |x| Time.parse(reader.last['latest_change']) }.max
+    max_date = reader.map { |x| Time.parse(reader.last['updated_at']) }.max
     if max_date > last_date
       f.rewind
       f.truncate(0)
