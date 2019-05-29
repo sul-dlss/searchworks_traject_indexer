@@ -20,6 +20,7 @@ File.open(state_file, 'r+') do |f|
   f.flock(File::LOCK_EX|File::LOCK_NB)
 
   last_date = Time.parse(f.read.strip)
+  Utils.logger.info "Found last_date in #{state_file}: #{last_date}"
 
   Traject::PurlFetcherReader.new(nil, 'purl_fetcher.first_modified': last_date.to_s).each.each_slice(1000) do |reader|
     Traject::PurlFetcherKafkaExtractor.new(reader: reader, kafka: kafka, topic: ENV['KAFKA_TOPIC']).process!
@@ -27,11 +28,13 @@ File.open(state_file, 'r+') do |f|
     count += reader.length
 
     max_date = reader.map { |x| Time.parse(reader.last['updated_at']) }.max
+    Utils.logger.info "Found max_date: #{max_date} (previous: #{last_date})"
     if max_date > last_date
       f.rewind
       f.truncate(0)
       last_date = max_date
       f.puts(max_date)
+      Utils.logger.info "Wrote new last date: #{max_date}"
     end
   end
 end
