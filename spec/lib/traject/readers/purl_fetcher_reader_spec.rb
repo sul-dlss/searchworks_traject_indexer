@@ -27,7 +27,7 @@ RSpec.describe Traject::PurlFetcherReader do
     }
 
     it 'returns objects from the purl-fetcher api' do
-      expect(reader.each.map { |x| x['druid'] }).to eq ['x', 'y', 'z']
+      expect(reader.map { |x, meta| x['druid'] }).to eq ['x', 'y', 'z']
     end
   end
 end

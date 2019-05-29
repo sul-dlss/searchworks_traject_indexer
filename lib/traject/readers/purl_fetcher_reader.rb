@@ -1,6 +1,7 @@
 require 'manticore' if defined? JRUBY_VERSION
 
 class Traject::PurlFetcherReader
+  include Enumerable
   attr_reader :settings
 
   def initialize(_input_stream, settings)
@@ -75,7 +76,7 @@ class Traject::PurlFetcherReader
         total += data[accessor].length
 
         data[accessor].each do |element|
-          yielder.yield element, { 'range' => data['range'], 'pages' => data['pages'] }
+          yielder.yield element, { 'range' => data['range'] || {} }
         end
 
         page = data['pages']['next_page']
