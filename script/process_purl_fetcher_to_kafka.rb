@@ -27,8 +27,8 @@ File.open(state_file, 'r+') do |f|
 
     count += reader.length
 
-    max_date = reader.map { |x| Time.parse(reader.last['updated_at']) }.max
-    Utils.logger.info "Found max_date: #{max_date} (previous: #{last_date})"
+    max_date = reader.map { |change, meta| Time.parse(meta['range']['last_modified']) }.max
+    Utils.logger.info "Found max last_modified: #{max_date} (previous: #{last_date})"
     if max_date > last_date
       f.rewind
       f.truncate(0)
