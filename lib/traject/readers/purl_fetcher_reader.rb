@@ -65,7 +65,7 @@ class Traject::PurlFetcherReader
   def paginated_get(path, accessor, options = {})
     Enumerator.new do |yielder|
       params   = options.dup
-      per_page = params.delete(:per_page) { 100 }
+      per_page = params.delete(:per_page) { 1000 }
       page     = params.delete(:page) { 1 }
       max      = params.delete(:max) { 1_000_000 }
       total    = 0
