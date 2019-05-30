@@ -2,10 +2,11 @@ require 'manticore' if defined? JRUBY_VERSION
 
 class Traject::PurlFetcherReader
   include Enumerable
-  attr_reader :settings
+  attr_reader :settings, :range
 
   def initialize(_input_stream, settings)
     @settings = Traject::Indexer::Settings.new settings
+    @range = {}
   end
 
   def each
@@ -72,12 +73,14 @@ class Traject::PurlFetcherReader
 
       loop do
         data = get(path, { per_page: per_page, page: page }.merge(params))
+        @range = data['range']
 
         total += data[accessor].length
 
         data[accessor].each do |element|
-          yielder.yield element, { 'range' => data['range'] || {} }
+          yielder.yield element, self
         end
+
 
         page = data['pages']['next_page']
 
