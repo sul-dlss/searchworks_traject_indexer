@@ -22,6 +22,7 @@ gem 'mods_display'
 gem 'eye', platform: :mri
 gem 'config'
 gem 'statsd-ruby'
+gem 'debouncer'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
