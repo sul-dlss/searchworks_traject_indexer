@@ -41,6 +41,7 @@ settings do
   else
     provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   end
+  provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 
   provide 'mapping_rescue', (lambda do |context, e|
     Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
