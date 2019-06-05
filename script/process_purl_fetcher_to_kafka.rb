@@ -40,7 +40,7 @@ File.open(state_file, 'r+') do |f|
     end
   end
 
-  max_date = Time.parse(reader.range['last_updated']) if reader.range['last_updated']
+  max_date = Time.parse(reader.range['last_modified']) if reader.range['last_modified']
   Utils.logger.info "Found max_date: #{max_date} (previous: #{last_date})"
   if max_date > last_date
     f.rewind
