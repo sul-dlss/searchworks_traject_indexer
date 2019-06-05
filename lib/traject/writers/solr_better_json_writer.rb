@@ -1,3 +1,5 @@
+require 'debouncer'
+
 class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
   module IndexerPatch
@@ -9,6 +11,28 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       end
     end
   end
+
+  def initialize(*args)
+    super
+
+    @debouncer = Debouncer.new(@settings["solr_better_json_writer.debounce_timeout"] || 60, &method(:drain_queue))
+  end
+
+  # Add a single context to the queue, ready to be sent to solr
+  def put(context)
+    @thread_pool.raise_collected_exception!
+
+    @batched_queue << context
+
+    @debouncer.group(:put).call
+    @debouncer.group(:put).flush if @batched_queue.size >= @batch_size
+  end
+
+  def drain_queue
+    batch = Traject::Util.drain_queue(@batched_queue)
+    @thread_pool.maybe_in_thread_pool(batch) { |batch_arg| send_batch(batch_arg) }
+  end
+
   # Send the given batch of contexts. If something goes wrong, send
   # them one at a time.
   # @param [Array<Traject::Indexer::Context>] an array of contexts

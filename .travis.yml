@@ -1,7 +1,7 @@
 language: ruby
 rvm:
   - 2.6.3
-  - jruby-9.2.4.0
+  - jruby-9.2.7.0
 env:
   global:
     - CC_TEST_REPORTER_ID=620ccc237826a7e38f89dcde46a9f014fc5848700ebe3b976296b5324e4f3f22
