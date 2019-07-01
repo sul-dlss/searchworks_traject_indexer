@@ -130,7 +130,7 @@ GEM
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
-    marc (1.0.3)
+    marc (1.0.4)
       scrub_rb (>= 1.0.1, < 2)
       unf
     marc-fastxmlwriter (1.0.0)
@@ -159,14 +159,14 @@ GEM
       i18n
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
-    public_suffix (3.1.0)
+    public_suffix (3.1.1)
     rake (12.3.2)
     retriable (3.1.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
-    rspec-core (3.8.1)
+    rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -184,7 +184,7 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
     slop (3.6.0)
-    sshkit (1.18.2)
+    sshkit (1.19.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     stanford-mods (2.6.1)
