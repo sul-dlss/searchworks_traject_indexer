@@ -160,7 +160,7 @@ GEM
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
     public_suffix (3.1.1)
-    rake (12.3.2)
+    rake (12.3.3)
     retriable (3.1.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
@@ -175,7 +175,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.2)
-    ruby-kafka (0.7.8)
+    ruby-kafka (0.7.9)
       digest-crc
     scrub_rb (1.0.1)
     simplecov (0.17.0)
