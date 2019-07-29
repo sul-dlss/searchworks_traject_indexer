@@ -94,7 +94,7 @@ GEM
       dry-initializer (~> 3.0)
       dry-logic (~> 1.0)
       dry-types (~> 1.0)
-    dry-types (1.1.0)
+    dry-types (1.1.1)
       concurrent-ruby (~> 1.0)
       dry-container (~> 0.3)
       dry-core (~> 0.4, >= 0.4.4)
@@ -110,7 +110,7 @@ GEM
       state_machines
       thor
     hashie (3.6.0)
-    honeybadger (4.3.1)
+    honeybadger (4.4.0)
     http (3.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
