@@ -26,6 +26,7 @@ settings do
   provide 'solr.version', ENV['SOLR_VERSION']
   provide 'purl_fetcher.skip_catkey', false
   provide 'processing_thread_pool', ENV['NUM_THREADS']
+  provide 'solr_better_json_writer.debounce_timeout', 5
   if ENV['KAFKA_TOPIC']
     provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
     kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
