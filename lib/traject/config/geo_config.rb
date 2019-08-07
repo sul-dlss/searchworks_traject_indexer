@@ -24,6 +24,7 @@ settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
   provide 'solr.version', ENV['SOLR_VERSION']
+  provide 'purl_fetcher.skip_catkey', false
   provide 'processing_thread_pool', ENV['NUM_THREADS']
   if ENV['KAFKA_TOPIC']
     provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
