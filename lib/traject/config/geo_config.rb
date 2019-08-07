@@ -131,7 +131,7 @@ to_field 'dct_references_s' do |record, accumulator|
   }
 end
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
-
+to_field 'layer_slug_s', literal('foo')
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
