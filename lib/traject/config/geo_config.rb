@@ -118,11 +118,11 @@ to_field 'dc_rights_s' do |record, accumulator|
   end
 end
 to_field 'layer_geom_type_s', literal('Image')
-to_field 'dc_format_s', literal('JPEG 2000')
-to_field 'dc_language_s', stanford_mods(:sw_language_facet)
+to_field 'dc_format_s', literal('JPEG 2000'), first_only
+to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
 to_field 'dc_subject_sm', stanford_mods(:subject_all_search)
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)
-to_field 'dc_publisher_s', stanford_mods(:term_values, %I[origin_info publisher])
+to_field 'dc_publisher_s', stanford_mods(:term_values, %I[origin_info publisher]), first_only
 to_field 'geoblacklight_version', literal('1.0')
 to_field 'dct_references_s' do |record, accumulator|
   accumulator << {
@@ -131,7 +131,7 @@ to_field 'dct_references_s' do |record, accumulator|
   }
 end
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
-to_field 'layer_slug_s', literal('foo')
+to_field 'layer_slug_s', literal('foo'), first_only
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
