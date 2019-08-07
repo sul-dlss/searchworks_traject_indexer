@@ -8,6 +8,7 @@ require 'traject/readers/kafka_purl_fetcher_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
+require 'byebug'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
@@ -99,23 +100,25 @@ to_field 'dc_identifier_s' do |record, accumulator|
   accumulator << "http://purl.stanford.edu/#{record.druid}"
 end
 
-##
-# TODOs
-# - Bail if content_type = geo (we index this stuff differently right now)
-# - Bail if we can't get an ENVELOPE (currently we require this)
-# - Actually parse the rights
-# - Actually parse the format
-# - Add IIIF stuff in the dct_references_s
-
 each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
+  context.skip!(
+    "This content type: #{record.dor_content_type} is not supported"
+  ) unless %w[image map book].include?(record.dor_content_type)
+  context.skip!('No ENVELOPE available') unless record.stanford_mods.geo_extensions_as_envelope.present?
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
 to_field 'dc_description_s', mods_display(:abstract)
-to_field 'dc_rights_s', literal('Public')
+to_field 'dc_rights_s' do |record, accumulator|
+  if record.public?
+    accumulator << 'Public'
+  elsif record.stanford_only?
+    accumulator << 'Restricted'
+  end
+end
 to_field 'layer_geom_type_s', literal('Image')
-to_field 'dc_format_s', literal('JPEG')
+to_field 'dc_format_s', literal('JPEG 2000')
 to_field 'dc_language_s', stanford_mods(:sw_language_facet)
 to_field 'dc_subject_sm', stanford_mods(:subject_all_search)
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)

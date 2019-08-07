@@ -23,6 +23,7 @@ gem 'eye', platform: :mri
 gem 'config'
 gem 'statsd-ruby'
 gem 'debouncer'
+gem 'dor-rights-auth'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
