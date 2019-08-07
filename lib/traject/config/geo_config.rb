@@ -8,7 +8,6 @@ require 'traject/readers/kafka_purl_fetcher_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
-require 'byebug'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
