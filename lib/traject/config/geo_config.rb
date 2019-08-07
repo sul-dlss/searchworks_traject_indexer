@@ -129,7 +129,7 @@ to_field 'dct_references_s' do |record, accumulator|
   accumulator << {
     'http://schema.org/url' => "https://purl.stanford.edu/#{record.druid}",
     'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}"
-  }
+  }.to_json
 end
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
 to_field 'layer_slug_s' do |record, accumulator|
