@@ -123,12 +123,15 @@ to_field 'dc_format_s', literal('JPEG 2000')
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
 to_field 'dc_subject_sm', stanford_mods(:subject_all_search)
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)
-to_field 'dc_publisher_s', stanford_mods(:term_values, %I[origin_info publisher]), first_only
+to_field 'dc_publisher_s',
+         stanford_mods(:term_values, %I[origin_info publisher]),
+         first_only
 to_field 'geoblacklight_version', literal('1.0')
 to_field 'dct_references_s' do |record, accumulator|
   accumulator << {
     'http://schema.org/url' => "https://purl.stanford.edu/#{record.druid}",
-    'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}"
+    'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",
+    'http://iiif.io/api/presentation#manifest' => "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
   }.to_json
 end
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
@@ -136,6 +139,9 @@ to_field 'layer_slug_s' do |record, accumulator|
   accumulator << "stanford-#{record.druid}"
 end
 to_field 'dct_provenance_s', literal('Stanford')
+to_field 'stanford_rights_metadata_s' do |record, accumulator|
+  accumulator << record.rights_xml
+end
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection

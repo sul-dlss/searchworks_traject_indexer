@@ -30,7 +30,7 @@ describe 'EarthWorks indexing' do
     end
   end
 
-  context 'does something' do
+  context 'when image, map, or book content' do
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
@@ -39,6 +39,16 @@ describe 'EarthWorks indexing' do
                                 'dc_title_s' => ['Jōshū Kusatsu Onsenzu'],
                                 'dc_rights_s' => ['Public'],
                                 'layer_geom_type_s' => ['Image']
+    end
+    it 'contains references' do
+      expect(JSON.parse(result['dct_references_s'].first)).to include 'http://schema.org/url' => 'https://purl.stanford.edu/dc482zx1528',
+                                                                'https://oembed.com' => 'https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/dc482zx1528'
+    end
+    it 'contains an envelope' do
+      expect(result['solr_geom']).to eq ['ENVELOPE(138.523426, 138.630362, 036.656354, 036.597519)']
+    end
+    it 'contains rights metadata' do
+      expect(result['stanford_rights_metadata_s']).to include(/<rightsMetadata>/)
     end
   end
   context 'for geo content' do
