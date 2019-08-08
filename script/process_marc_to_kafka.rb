@@ -7,7 +7,7 @@ require 'traject'
 require 'traject/extractors/marc_kafka_extractor'
 require 'traject/readers/marc_combining_reader'
 
-log_file = File.expand_path("../log/process_marc_to_kafka_#{ENV['KAFKA_TOPIC']}", __dir__)
+log_file = File.expand_path("../log/process_marc_to_kafka_#{ENV['KAFKA_TOPIC']}.log", __dir__)
 Utils.logger = Logger.new(log_file)
 kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','), logger: Utils.logger)
 

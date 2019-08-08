@@ -7,7 +7,7 @@ require 'traject'
 require 'traject/readers/purl_fetcher_reader'
 require 'traject/extractors/purl_fetcher_kafka_extractor'
 
-log_file = File.expand_path("../log/process_purl_fetcher_to_kafka_#{ENV['KAFKA_TOPIC']}", __dir__)
+log_file = File.expand_path("../log/process_purl_fetcher_to_kafka_#{ENV['KAFKA_TOPIC']}.log", __dir__)
 Utils.logger = Logger.new(log_file)
 kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','), logger: Utils.logger)
 state_file = ENV['STATE_FILE'] || File.expand_path("../tmp/searchworks_traject_indexer_last_run_#{ENV['KAFKA_TOPIC']}", __dir__)
