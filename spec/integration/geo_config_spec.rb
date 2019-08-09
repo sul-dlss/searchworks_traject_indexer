@@ -50,6 +50,12 @@ describe 'EarthWorks indexing' do
     it 'contains rights metadata' do
       expect(result['stanford_rights_metadata_s']).to include(/<rightsMetadata>/)
     end
+    it 'contains description with abstract and notes' do
+      expect(result['dc_description_s'].first).to eq 'Publication date estimat'\
+      'e from dealer description. Shows views of tourist attractions. Includes'\
+      ' distance chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 bound'\
+      ' with G7964 .K2368 E635 1912Z .I2. Gunma prefecture'
+    end
   end
   context 'for geo content' do
     let(:druid) { 'vv853br8653' }

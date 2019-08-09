@@ -110,7 +110,16 @@ each_record do |record, context|
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
-to_field 'dc_description_s', mods_display(:abstract)
+to_field 'dc_description_s' do |record, accumulator|
+  description = []
+  record.mods_display.abstract.map do |abstract|
+    description << abstract.value
+  end
+  record.mods_display.note.map do |note|
+    description << note.values
+  end
+  accumulator << description.join(' ')
+end
 to_field 'dc_rights_s' do |record, accumulator|
   if record.public?
     accumulator << 'Public'
@@ -119,6 +128,7 @@ to_field 'dc_rights_s' do |record, accumulator|
   end
 end
 to_field 'layer_geom_type_s', literal('Image')
+to_field 'dc_type_s', literal('Image')
 to_field 'dc_format_s', literal('JPEG 2000')
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
 to_field 'dc_subject_sm', stanford_mods(:subject_all_search)
