@@ -50,6 +50,12 @@ describe 'EarthWorks indexing' do
     it 'contains rights metadata' do
       expect(result['stanford_rights_metadata_s']).to include(/<rightsMetadata>/)
     end
+    it 'contains creator metadata' do
+      expect(result['dc_creator_sm']).to include('Kikyōya Genkichi', '桔梗屋源吉')
+    end
+    it 'contains subject metadata' do
+      expect(result['dc_subject_sm']).to include('Hot springs')
+    end
     it 'contains description with abstract and notes' do
       expect(result['dc_description_s'].first).to eq 'Publication date estimat'\
       'e from dealer description. Shows views of tourist attractions. Includes'\

@@ -131,11 +131,20 @@ to_field 'layer_geom_type_s', literal('Image')
 to_field 'dc_type_s', literal('Image')
 to_field 'dc_format_s', literal('JPEG 2000')
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
-to_field 'dc_subject_sm', stanford_mods(:subject_all_search)
+to_field 'dc_subject_sm', stanford_mods(:topic_facet)
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)
 to_field 'dc_publisher_s',
          stanford_mods(:term_values, %I[origin_info publisher]),
          first_only
+to_field 'dc_creator_sm' do |record, accumulator|
+  record.stanford_mods.sw_person_authors.map do |author|
+    accumulator << author.gsub(/\.$/, '')
+  end
+  record.stanford_mods.sw_corporate_authors.map do |author|
+    accumulator << author.gsub(/\.$/, '')
+  end
+end
+to_field 'layer_availability_score_f', literal(1.0)
 to_field 'geoblacklight_version', literal('1.0')
 to_field 'dct_references_s' do |record, accumulator|
   accumulator << {
