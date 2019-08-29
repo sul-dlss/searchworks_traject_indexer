@@ -223,7 +223,7 @@ to_field 'format_main_ssim', stanford_mods(:format_main)
 to_field 'genre_ssim', stanford_mods(:sw_genre)
 to_field 'language', stanford_mods(:sw_language_facet)
 to_field 'physical', stanford_mods(:term_values, [:physical_description, :extent])
-to_field 'summary_search', stanford_mods(:term_values, :abstract)
+to_field 'summary_search', mods_display(:abstract)
 to_field 'toc_search', stanford_mods(:term_values, :tableOfContents)
 to_field 'url_suppl', stanford_mods(:term_values, [:related_item, :location, :url])
 
@@ -369,8 +369,6 @@ to_field 'author_struct' do |record, accumulator|
     end
   end
 end
-
-to_field 'summary_display', mods_display(:abstract)
 
 to_field 'iiif_manifest_url_ssim' do |record, accumulator|
   if %w[image manuscript map book].include?(record.dor_content_type)
