@@ -1,5 +1,6 @@
 require 'http'
 require 'mods_display'
+require 'dor/rights_auth'
 
 class SdrReader
   attr_reader :input_stream
@@ -89,6 +90,22 @@ class PublicXmlRecord
     else
       Nokogiri::XML self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
     end
+  end
+
+  def rights
+    @rights ||= ::Dor::RightsAuth.parse(rights_xml)
+  end
+
+  def public?
+    rights.world_unrestricted?
+  end
+
+  def stanford_only?
+    rights.stanford_only_unrestricted
+  end
+
+  def rights_xml
+    @rights_xml ||= public_xml_doc.xpath('//rightsMetadata').to_s
   end
 
   # @return true if the identityMetadata has <objectType>collection</objectType>, false otherwise
