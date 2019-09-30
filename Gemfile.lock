@@ -15,7 +15,7 @@ GEM
       bundler (>= 1.2.0, < 3)
       thor (~> 0.18)
     byebug (11.0.1)
-    capistrano (3.11.1)
+    capistrano (3.11.2)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -141,7 +141,7 @@ GEM
     marc-marc4j (1.0.0-java)
       marc (~> 1)
     mini_portile2 (2.4.0)
-    minitest (5.12.0)
+    minitest (5.12.2)
     mods (2.4.1)
       edtf
       iso-639
@@ -153,7 +153,7 @@ GEM
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
-    nio4r (2.5.1)
+    nio4r (2.5.2)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.4-java)
@@ -163,7 +163,7 @@ GEM
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
     public_suffix (4.0.1)
-    rake (12.3.3)
+    rake (13.0.0)
     retriable (3.1.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
