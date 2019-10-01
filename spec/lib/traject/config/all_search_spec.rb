@@ -2,6 +2,10 @@ RSpec.describe 'All_search config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
 
+  before do
+    ENV['BIB_SEARCH'] = 'true'
+  end
+
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/sirsi_config.rb')
@@ -11,9 +15,10 @@ RSpec.describe 'All_search config' do
   let(:fixture_name) { 'allfieldsTests.mrc' }
   let(:record) { records.first }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-  let(:field) { 'all_search' }
 
   describe 'all_search' do
+    let(:field) { 'all_search' }
+
     it do
       expect(select_by_id('allfields1')[field]).to include(/should/)
       # 0xx fields are not included except 024, 027, 028
@@ -36,6 +41,15 @@ RSpec.describe 'All_search config' do
       # Except for 905, 920 and 986 (SW-814)
       # SKIP: No test with actual mrc data, only using contrived
       # all_search should include 033a
+    end
+  end
+
+  describe 'bib_search' do
+    let(:field) { 'bib_search' }
+    it do
+      expect(select_by_id('allfields1')[field]).to include(/Dharma Kumar/)
+      expect(select_by_id('allfields1')[field]).to include(/allfields should skip 00x/)
+      expect(select_by_id('allfields1')[field]).to include(%r{Journal/Periodical})
     end
   end
 end

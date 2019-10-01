@@ -3175,6 +3175,59 @@ to_field 'context_input_name_ssi' do |_record, accumulator, context|
   accumulator << context.input_name
 end
 
+if ENV['BIB_SEARCH']
+  to_field 'bib_search' do |record, accumulator, context|
+    # authors, titles, series, publisher
+    keep_fields = %w[
+      100 110 111 130 210 222 242 243 245 246 247 260 264 440 490 700 710 711 800 810 811
+    ]
+
+    result = []
+    record.each do |field|
+      next unless keep_fields.include?(field.tag)
+
+      subfield_values = field.subfields
+                             .reject { |sf| Constants::EXCLUDE_FIELDS.include?(sf.code) }
+                             .collect(&:value)
+
+      next unless subfield_values.length > 0
+
+      result << subfield_values.join(' ')
+    end
+
+    result += Array(context.output_hash['format_main_ssim'])
+
+    accumulator << result.join(' ') if result.any?
+  end
+
+  to_field 'vern_bib_search' do |record, accumulator, context|
+    # authors, titles, series, publisher
+    keep_fields = %w[
+      100 110 111 130 210 222 242 243 245 246 247 260 264 440 490 700 710 711 800 810 811
+    ]
+
+    result = []
+    record.each do |field|
+      next unless field.tag == '880'
+      next if (
+        field['6'].nil? ||
+        !field['6'].include?('-') ||
+        !keep_fields.include?(field['6'].split('-')[0])
+      )
+
+      subfield_values = field.subfields
+                             .reject { |sf| Constants::EXCLUDE_FIELDS.include?(sf.code) }
+                             .collect(&:value)
+
+      next unless subfield_values.length > 0
+
+      result << subfield_values.join(' ')
+    end
+
+    accumulator << result.join(' ') if result.any?
+  end
+end
+
 to_field 'context_input_modified_dtsi' do |_record, accumulator, context|
   if context.input_name && File.exist?(context.input_name)
     accumulator << File.mtime(context.input_name).utc.iso8601
