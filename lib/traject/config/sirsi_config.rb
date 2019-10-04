@@ -604,7 +604,28 @@ end
 to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
 to_field 'series_exact_search', extract_marc('830a', alternate_script: false)
 
-# # Author Title Search Fields
+if ENV['BIB_FIELDS']
+  # # Author Title Search Fields
+  to_field 'author_title_245ac_search', extract_marc('245ac', alternate_script: false)
+  to_field 'vern_author_title_245ac_search', extract_marc('245ac', alternate_script: :only)
+
+  to_field 'author_title_1xx_search' do |record, accumulator|
+    onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcq:110abn:111aeq', alternate_script: false).extract(record).first)
+    twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first)
+    twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: false).extract(record).first
+
+    accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
+  end
+
+  to_field 'vern_author_title_1xx_search' do |record, accumulator|
+    onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcq:110abn:111aeq', alternate_script: :only).extract(record).first)
+    twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first)
+    twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
+
+    accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
+  end
+end
+
 to_field 'author_title_search' do |record, accumulator|
   onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first)
 
@@ -640,6 +661,8 @@ to_field 'author_title_search' do |record, accumulator|
   twoxx = Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
+
+to_field 'author_title_search', extract_marc('245' + ALPHABET)
 
 to_field 'author_title_search' do |record, accumulator|
   Traject::MarcExtractor.cached('700abcdfghjklmnopqrstuvwyz:710abcdfghjklmnopqrstuvwyz:711abcdefghjklmnopqrstuvwyz', alternate_script: false).collect_matching_lines(record)  do |field, spec, extractor|
