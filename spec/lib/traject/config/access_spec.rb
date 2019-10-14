@@ -84,6 +84,8 @@ RSpec.describe 'Access config' do
       expect(select_by_id('2214009')[field]).to eq ['At the Library']
       # SAL-NEWARK
       expect(select_by_id('804724')[field]).to eq ['At the Library']
+      # SPEC-INPRO item
+      expect(select_by_id('12265160')[field]).to eq ['At the Library']
     end
   end
 

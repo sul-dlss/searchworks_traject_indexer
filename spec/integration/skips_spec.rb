@@ -13,8 +13,8 @@ describe 'Skips records' do
   let(:results) { indexer.process_with(records, Traject::ArrayWriter.new).values }
   let(:fixture_name) { 'buildingTests.mrc' }
   it 'without an item_display field' do
-    expect(results.count).to eq 41
-    expect(records.count).to eq 45
+    expect(results.count).to eq 42
+    expect(records.count).to eq 46
   end
 
   context 'with a **REQUIRED FILE** title' do
