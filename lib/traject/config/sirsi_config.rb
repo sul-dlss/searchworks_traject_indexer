@@ -1374,7 +1374,7 @@ to_field 'access_facet' do |record, accumulator, context|
 
     if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
       accumulator << 'Online'
-    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && field['l'] != 'INPROCESS' && field['k'] != 'INPROCESS' && field['k'] != 'LAC' && field['l'] != 'LAC' && field['m'] != 'HV-ARCHIVE'))
+    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && field['l'] != 'INPROCESS' && field['k'] != 'INPROCESS' && field['k'] != 'LAC' && field['l'] != 'LAC' && field['m'] != 'HV-ARCHIVE' && field['k'] != 'SPEC-INPRO'))
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
@@ -1389,10 +1389,10 @@ to_field 'access_facet' do |record, accumulator, context|
 end
 
 ##
-# Lane Medical Library relies on the underlying logic of "format_main_ssim" 
-# data (next ~200+ lines) to accurately represent SUL records in 
-# http://lane.stanford.edu. Please consider notifying Ryan Steinberg 
-# (ryanmax at stanford dot edu) or LaneAskUs@stanford.edu in the event of 
+# Lane Medical Library relies on the underlying logic of "format_main_ssim"
+# data (next ~200+ lines) to accurately represent SUL records in
+# http://lane.stanford.edu. Please consider notifying Ryan Steinberg
+# (ryanmax at stanford dot edu) or LaneAskUs@stanford.edu in the event of
 # changes to this logic.
 #
 # # old format field, left for continuity in UI URLs for old formats
