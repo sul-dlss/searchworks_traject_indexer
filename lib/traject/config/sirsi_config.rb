@@ -1918,7 +1918,13 @@ to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
 #    vernacular: [['The same, but pulled from the matched vernacular fields']]
 #    unmatched_vernacular: [['The same, but pulled from any unmatched vernacular fields']]
 to_field 'toc_struct' do |marc, accumulator|
-  formatted_chapter_regex = Regexp.union(/[^\S]--[^\S]/, /      /, /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i,  /(?=(?<!Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i)
+  formatted_chapter_regex = Regexp.union(
+    /[^\S]--[^\S]/,
+    /      /,
+    /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i,
+    /(?=(?<!Chapter|Section|Appendix|Part|v\.) \d+[:\.-]\s+)/i,
+    /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i
+  )
   fields = []
   vern = []
   unmatched_vern = []

@@ -165,6 +165,23 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
+      context 'with numbers that should not be split on in the data' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', 'aaa -- Word 10 Another Word -- ccc')
+              )
+            )
+          end
+        end
+
+        it 'does not split on a number that is not intended to be the beginning of a new chapter/line' do
+          expect(result_field.first[:fields].first).to eq ['aaa', 'Word 10 Another Word', 'ccc']
+        end
+      end
+
       context 'with data in separate subfields' do
         let(:record) do
           MARC::Record.new.tap do |r|
