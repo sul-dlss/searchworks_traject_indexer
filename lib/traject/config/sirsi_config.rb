@@ -1923,6 +1923,7 @@ to_field 'toc_struct' do |marc, accumulator|
     /      /,
     /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i,
     /(?=(?<!Chapter|Section|Appendix|Part|v\.) \d+[:\.-]\s+)/i,
+    /(?=(?<!Chapter|Section|Appendix|Part|v\.)\s{2,}\d+[:\.-]?\s+)/i,
     /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i
   )
   fields = []
