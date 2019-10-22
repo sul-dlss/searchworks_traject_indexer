@@ -81,4 +81,16 @@ describe 'EarthWorks indexing' do
       expect(result).to be_nil
     end
   end
+
+  context 'with an abstract' do
+    let(:druid) { 'bk359yt4418' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'builds a description' do
+      expect(result['dc_description_s']).to include('Oversize Digitized by Stanford University Libraries.')
+    end
+  end
 end
