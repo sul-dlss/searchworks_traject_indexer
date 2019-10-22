@@ -113,7 +113,7 @@ to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
 to_field 'dc_description_s' do |record, accumulator|
   description = []
   record.mods_display.abstract.map do |abstract|
-    description << abstract.value
+    description << abstract.values
   end
   record.mods_display.note.map do |note|
     description << note.values

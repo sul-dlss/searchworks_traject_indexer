@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:bk359yt4418" published="2019-10-21T22:09:54Z" publishVersion="dor-services/8.1.1">
+  <identityMetadata>
+    <sourceId source="sul">sc1049_m725_os_0001</sourceId>
+    <objectId>druid:bk359yt4418</objectId>
+    <objectCreator>DOR</objectCreator>
+    <objectLabel>Street numbers Leland Stanford Junior University. Prepared by the Stanford University Planning Office.</objectLabel>
+    <objectType>item</objectType>
+    <otherId name="label"/>
+    <otherId name="uuid">c18f6860-1bbe-11e7-9758-005056a7ed61</otherId>
+    <tag>Process : Content Type : Image</tag>
+    <tag>Project : UA Architectural Drawings and Maps</tag>
+    <tag>DPG : UA Architectural Drawings and Maps : SC1049 : SC1049_single : SC1049_m725_os</tag>
+    <tag>DPG : UA Architectural Drawings and Maps : Oversize</tag>
+    <tag>Registered By : llam813</tag>
+  </identityMetadata>
+  <contentMetadata objectId="bk359yt4418" type="image">
+    <resource id="bk359yt4418_1" sequence="1" type="image">
+      <label>Image 1</label>
+      <file id="bk359yt4418_00_0001.jp2" mimetype="image/jp2" size="155296873">
+        <imageData width="32887" height="25042"/>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">Property rights reside with the repository. Literary rights reside with  the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian of the Dept. of Special Collections (http://library.stanford.edu/spc).</human>
+    </use>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:bk359yt4418">
+      <fedora:isMemberOf rdf:resource="info:fedora/druid:fh138mm2023"/>
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:fh138mm2023"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Street numbers Leland Stanford Junior University. Prepared by the Stanford University Planning Office.</dc:title>
+    <dc:contributor>Stanford University. Planning Office (artArtist)</dc:contributor>
+    <dc:type>Maps</dc:type>
+    <dc:date>1968-11</dc:date>
+    <dc:language>engEnglish</dc:language>
+    <dc:format>1 sheet</dc:format>
+    <dc:format>print</dc:format>
+    <dc:format>image/jpeg</dc:format>
+    <dc:description>Oversize</dc:description>
+    <dc:description>Digitized by Stanford University Libraries.</dc:description>
+    <dc:coverage>Stanford (Calif.)</dc:coverage>
+    <dc:subject>Stanford University Campus</dc:subject>
+    <dc:subject>Stanford University Campus--Maps</dc:subject>
+    <dc:coverage>(W 122°10'27"--W 122°09'53"/N 37°25'48"--N 37°25'29")</dc:coverage>
+    <dc:identifier>sc1049_m725_os_0001</dc:identifier>
+    <dc:identifier>2007035</dc:identifier>
+    <dc:relation type="repository">Stanford University. Libraries. Department of Special Collections and University ArchivesSeries: Campus official mapsSC1049, Rolled Oversize, Map number M725 oshttp://purl.stanford.edu/bk359yt4418</dc:relation>
+    <dc:relation type="collection">Stanford University map collection, 1853-1997</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.loc.gov/mods/v3" version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+    <titleInfo>
+      <title>Street numbers Leland Stanford Junior University. Prepared by the Stanford University Planning Office.</title>
+    </titleInfo>
+    <name type="corporate" usage="primary" authority="naf" authorityURI="http://id.loc.gov/authorities/names" valueURI="http://id.loc.gov/authorities/names/n87123519">
+      <namePart>Stanford University. Planning Office</namePart>
+      <role>
+        <roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/art">art</roleTerm>
+        <roleTerm type="text" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/art">Artist</roleTerm>
+      </role>
+    </name>
+    <typeOfResource>cartographic</typeOfResource>
+    <genre authority="lcgft" authorityURI="http://id.loc.gov/authorities/genreForms" valueURI="http://id.loc.gov/authorities/genreForms/gf2011026387">Maps</genre>
+    <originInfo>
+      <place>
+        <placeTerm type="text" authorityURI="http://id.loc.gov/authorities/names" valueURI="http://id.loc.gov/authorities/names/n50046557">Stanford (Calif.)</placeTerm>
+      </place>
+      <dateCreated keyDate="yes" encoding="w3cdtf">1968-11</dateCreated>
+    </originInfo>
+    <language>
+      <languageTerm authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" type="code">eng</languageTerm>
+      <languageTerm authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" type="text">English</languageTerm>
+    </language>
+    <physicalDescription>
+      <form>print</form>
+      <extent>1 sheet</extent>
+      <digitalOrigin>reformatted digital</digitalOrigin>
+      <internetMediaType>image/jpeg</internetMediaType>
+    </physicalDescription>
+    <abstract>Oversize</abstract>
+    <note>Digitized by Stanford University Libraries.</note>
+    <subject>
+      <geographic authority="naf" authorityURI="http://id.loc.gov/authorities/names" valueURI="http://id.loc.gov/authorities/names/n50046557">Stanford (Calif.)</geographic>
+    </subject>
+    <subject authority="local">
+      <topic>Stanford University Campus</topic>
+      <genre>Maps</genre>
+    </subject>
+    <subject>
+      <cartographics>
+        <coordinates>(W 122°10'27"--W 122°09'53"/N 37°25'48"--N 37°25'29")</coordinates>
+      </cartographics>
+    </subject>
+    <identifier type="local" displayLabel="Source ID">sc1049_m725_os_0001</identifier>
+    <identifier type="local" displayLabel="Accession number">2007035</identifier>
+    <location>
+      <physicalLocation type="repository" authority="naf" valueURI="http://id.loc.gov/authorities/names/no2014019980">Stanford University. Libraries. Department of Special Collections and University Archives</physicalLocation>
+      <physicalLocation type="series">Series: Campus official maps</physicalLocation>
+      <shelfLocator>SC1049, Rolled Oversize, Map number M725 os</shelfLocator>
+      <url usage="primary display">http://purl.stanford.edu/bk359yt4418</url>
+    </location>
+    <relatedItem displayLabel="Series" type="host">
+      <titleInfo>
+        <title>Campus official maps</title>
+      </titleInfo>
+    </relatedItem>
+    <extension displayLabel="geo">
+      <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <rdf:Description rdf:about="http://purl.stanford.edu/bk359yt4418">
+          <dc:format>image/jpeg</dc:format>
+          <dc:type>Image</dc:type>
+          <gml:boundedBy>
+            <gml:Envelope>
+              <gml:lowerCorner>-122.191292 37.406339</gml:lowerCorner>
+              <gml:upperCorner>-122.149475 37.443537</gml:upperCorner>
+            </gml:Envelope>
+          </gml:boundedBy>
+        </rdf:Description>
+      </rdf:RDF>
+    </extension>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm type="text" authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng">English</languageTerm>
+        <languageTerm type="code" authority="iso639-2b" authorityURI="http://id.loc.gov/vocabulary/iso639-2" valueURI="http://id.loc.gov/vocabulary/iso639-2/eng">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource authority="marcorg" authorityURI="http://id.loc.gov/vocabulary/organizations" valueURI="http://id.loc.gov/vocabulary/organizations/cst">CSt</recordContentSource>
+    </recordInfo>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Stanford University map collection, 1853-1997</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/fh138mm2023</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">Property rights reside with the repository. Literary rights reside with  the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian of the Dept. of Special Collections (http://library.stanford.edu/spc).</accessCondition>
+  </mods>
+  <releaseData>
+    <release to="Searchworks">true</release>
+    <release to="Earthworks">true</release>
+  </releaseData>
+  <thumb>bk359yt4418/bk359yt4418_00_0001.jp2</thumb>
+</publicObject>
