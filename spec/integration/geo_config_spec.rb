@@ -62,6 +62,10 @@ describe 'EarthWorks indexing' do
       ' distance chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 bound'\
       ' with G7964 .K2368 E635 1912Z .I2. Gunma prefecture'
     end
+
+    it 'contains date' do
+      expect(result['solr_year_i']).to eq [1603]
+    end
   end
   context 'for geo content' do
     let(:druid) { 'vv853br8653' }
@@ -103,6 +107,10 @@ describe 'EarthWorks indexing' do
 
     it 'builds a solr_geom from coordinate parsing' do
       expect(result['solr_geom']).to eq 'ENVELOPE(-18.0, 51.0, 37.0, -35.0)'
+    end
+
+    it 'date' do
+      expect(result['solr_year_i']).to eq [1880]
     end
   end
 end

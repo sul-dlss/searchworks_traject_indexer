@@ -162,6 +162,8 @@ to_field 'stanford_rights_metadata_s' do |record, accumulator|
   accumulator << record.rights_xml
 end
 
+to_field 'solr_year_i', stanford_mods(:pub_year_int), first_only
+
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end
