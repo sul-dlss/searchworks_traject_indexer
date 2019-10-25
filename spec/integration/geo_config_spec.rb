@@ -45,7 +45,7 @@ describe 'EarthWorks indexing' do
                                                                 'https://oembed.com' => 'https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/dc482zx1528'
     end
     it 'contains an envelope' do
-      expect(result['solr_geom']).to eq ['ENVELOPE(138.523426, 138.630362, 036.656354, 036.597519)']
+      expect(result['solr_geom']).to eq 'ENVELOPE(138.523426, 138.630362, 036.656354, 036.597519)'
     end
     it 'contains rights metadata' do
       expect(result['stanford_rights_metadata_s']).to include(/<rightsMetadata>/)
@@ -61,6 +61,10 @@ describe 'EarthWorks indexing' do
       'e from dealer description. Shows views of tourist attractions. Includes'\
       ' distance chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 bound'\
       ' with G7964 .K2368 E635 1912Z .I2. Gunma prefecture'
+    end
+
+    it 'contains date' do
+      expect(result['solr_year_i']).to eq [1603]
     end
   end
   context 'for geo content' do
@@ -91,6 +95,22 @@ describe 'EarthWorks indexing' do
 
     it 'builds a description' do
       expect(result['dc_description_s']).to include('Oversize Digitized by Stanford University Libraries.')
+    end
+  end
+
+  context 'coordinate envelopes are supported' do
+    let(:druid) { 'qy240vt8937' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'builds a solr_geom from coordinate parsing' do
+      expect(result['solr_geom']).to eq 'ENVELOPE(-18.0, 51.0, 37.0, -35.0)'
+    end
+
+    it 'date' do
+      expect(result['solr_year_i']).to eq [1880]
     end
   end
 end
