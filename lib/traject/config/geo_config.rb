@@ -106,7 +106,6 @@ each_record do |record, context|
   context.skip!(
     "This content type: #{record.dor_content_type} is not supported"
   ) unless %w[image map book].include?(record.dor_content_type)
-  context.skip!('No ENVELOPE available') unless record.stanford_mods.geo_extensions_as_envelope.present?
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
@@ -154,6 +153,7 @@ to_field 'dct_references_s' do |record, accumulator|
   }.to_json
 end
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
+to_field 'solr_geom', stanford_mods(:coordinates_as_envelope)
 to_field 'layer_slug_s' do |record, accumulator|
   accumulator << "stanford-#{record.druid}"
 end
@@ -170,6 +170,15 @@ each_record do |record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
   end
+end
+
+each_record do |_record, context|
+  context.skip!(
+    "No ENVELOPE available for #{context.output_hash['id']}"
+  ) unless context.output_hash['solr_geom'].present?
+  # Make sure that this field is single valued. GeoBlacklight at the moment only
+  # supports single valued srpt
+  context.output_hash['solr_geom'] = context.output_hash['solr_geom'].first
 end
 
 each_record do |record, context|
