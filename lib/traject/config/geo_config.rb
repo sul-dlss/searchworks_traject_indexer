@@ -175,12 +175,15 @@ each_record do |record, context|
 end
 
 each_record do |_record, context|
-  context.skip!(
-    "No ENVELOPE available for #{context.output_hash['id']}"
-  ) unless context.output_hash['solr_geom'].present?
   # Make sure that this field is single valued. GeoBlacklight at the moment only
   # supports single valued srpt
-  context.output_hash['solr_geom'] = context.output_hash['solr_geom'].first
+  if context.output_hash['solr_geom'].present?
+    context.output_hash['solr_geom'] = context.output_hash['solr_geom'].first
+  else
+    context.skip!(
+      "No ENVELOPE available for #{context.output_hash['id']}"
+    )
+  end
 end
 
 each_record do |record, context|
