@@ -136,10 +136,10 @@ to_field 'dc_publisher_s',
          stanford_mods(:term_values, %I[origin_info publisher]),
          first_only
 to_field 'dc_creator_sm' do |record, accumulator|
-  record.stanford_mods.sw_person_authors.map do |author|
+  record.stanford_mods.sw_person_authors.compact.map do |author|
     accumulator << author.gsub(/\.$/, '')
   end
-  record.stanford_mods.sw_corporate_authors.map do |author|
+  record.stanford_mods.sw_corporate_authors.compact.map do |author|
     accumulator << author.gsub(/\.$/, '')
   end
 end
