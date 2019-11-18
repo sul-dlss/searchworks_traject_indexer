@@ -163,7 +163,7 @@ GEM
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
     public_suffix (4.0.1)
-    rake (13.0.0)
+    rake (13.0.1)
     retriable (3.1.2)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
