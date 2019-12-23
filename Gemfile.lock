@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.1)
+    activesupport (6.0.2.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -89,7 +89,7 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.2)
       dry-equalizer (~> 0.2)
-    dry-schema (1.4.1)
+    dry-schema (1.4.2)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.8, >= 0.8.3)
       dry-core (~> 0.4)
@@ -97,11 +97,11 @@ GEM
       dry-initializer (~> 3.0)
       dry-logic (~> 1.0)
       dry-types (~> 1.2)
-    dry-types (1.2.1)
+    dry-types (1.2.2)
       concurrent-ruby (~> 1.0)
       dry-container (~> 0.3)
       dry-core (~> 0.4, >= 0.4.4)
-      dry-equalizer (~> 0.2, >= 0.2.2)
+      dry-equalizer (~> 0.3)
       dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 1.0, >= 1.0.2)
     edtf (3.0.5)
@@ -118,7 +118,7 @@ GEM
       ffi (>= 1.0.0)
       rake
     hashie (4.0.0)
-    honeybadger (4.5.2)
+    honeybadger (4.5.4)
     http (4.2.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -133,8 +133,8 @@ GEM
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.8)
-    json (2.2.0)
-    json (2.2.0-java)
+    json (2.3.0)
+    json (2.3.0-java)
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
