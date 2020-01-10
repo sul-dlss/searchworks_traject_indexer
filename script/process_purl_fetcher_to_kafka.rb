@@ -22,7 +22,7 @@ File.open(state_file, 'r+') do |f|
   last_date = Time.parse(f.read.strip)
   Utils.logger.info "Found last_date in #{state_file}: #{last_date}"
 
-  reader = Traject::PurlFetcherReader.new(nil, 'purl_fetcher.first_modified': last_date.to_s)
+  reader = Traject::PurlFetcherReader.new(nil, 'purl_fetcher.first_modified': last_date.to_s, 'purl_fetcher.url': ENV['PURL_FETCHER_URL'])
 
   reader.each_slice(1000) do |batch|
     Traject::PurlFetcherKafkaExtractor.new(reader: batch, kafka: kafka, topic: ENV['KAFKA_TOPIC']).process!
