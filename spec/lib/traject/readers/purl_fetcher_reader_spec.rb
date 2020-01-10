@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Traject::PurlFetcherReader do
   subject(:reader) { described_class.new('', settings) }
-  let(:settings) { {} }
+  let(:settings) { { 'purl_fetcher.url' => 'http://example.com' } }
 
   describe '#each' do
     before do
