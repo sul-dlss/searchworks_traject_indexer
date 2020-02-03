@@ -118,12 +118,11 @@ GEM
       kostya-sigar (~> 2.0.0)
       state_machines
       thor
-    ffi (1.12.1)
-    ffi (1.12.1-java)
+    ffi (1.12.2)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    hashie (4.0.0)
+    hashie (4.1.0)
     honeybadger (4.5.6)
     http (4.3.0)
       addressable (~> 2.3)
@@ -139,8 +138,6 @@ GEM
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.8)
-    json (2.3.0)
-    json (2.3.0-java)
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
@@ -192,11 +189,10 @@ GEM
     ruby-kafka (0.7.10)
       digest-crc
     scrub_rb (1.0.1)
-    simplecov (0.17.1)
+    simplecov (0.18.1)
       docile (~> 1.1)
-      json (>= 1.8, < 3)
-      simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.2)
+      simplecov-html (~> 0.11.0)
+    simplecov-html (0.11.0)
     slop (3.6.0)
     sshkit (1.20.0)
       net-scp (>= 1.1.2)
