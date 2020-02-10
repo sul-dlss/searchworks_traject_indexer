@@ -119,6 +119,7 @@ GEM
       state_machines
       thor
     ffi (1.12.2)
+    ffi (1.12.2-java)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
