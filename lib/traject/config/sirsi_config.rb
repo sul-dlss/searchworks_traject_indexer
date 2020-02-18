@@ -762,7 +762,7 @@ def linked_contributors_struct(record)
 
   Traject::MarcExtractor.cached('700:710:711:720', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     if !field['t'] || field['t'].empty?
-      vern_field = vern_fields.find { |f| f['6'] && f['6'].split("-")[1].gsub("//r","") == field['6'].split("-")[1].gsub("//r","") } if field['6']
+      vern_field = vern_fields.find { |f| f['6'] && f['6'].split("-")[1].gsub("//r","").gsub("/$1","") == field['6'].split("-")[1].gsub("//r","").gsub("/$1","") } if field['6']
 
       contributor = assemble_contributor_data_struct(field)
       contributor[:vern] = assemble_contributor_data_struct(vern_field) if vern_field
@@ -772,7 +772,7 @@ def linked_contributors_struct(record)
   end
 
   vern_fields.each do |field, spec, extractor|
-    if field['6'] && field['6'].include?("-") && field['6'].split("-")[1].gsub("//r","") == "00"
+    if field['6'] && field['6'].include?("-") && field['6'].split("-")[1].gsub("//r","").gsub("/$1","") == "00"
       contributors << {
         vern: assemble_contributor_data_struct(field)
       }
