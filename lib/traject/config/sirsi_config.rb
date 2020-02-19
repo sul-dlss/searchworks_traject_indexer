@@ -2022,13 +2022,16 @@ def get_unmatched_vernacular(marc,tag)
   fields = []
   if marc['880']
     marc.find_all { |f| '880' == f.tag }.each do |field|
-      text = ""
+      text = []
       unless field['6'].nil? or !field["6"].include?("-")
         if field['6'].split("-")[1].gsub("//r","") == "00" and field['6'].split("-")[0] == tag
-          text << field.reject { |sub_field| Constants::EXCLUDE_FIELDS.include?(sub_field.code) }.join(' ')
+          field.each do |sub|
+            next if Constants::EXCLUDE_FIELDS.include?(sub.code)
+            text << sub.value
+          end
         end
       end
-      fields << text.strip unless text.empty?
+      fields << text.join(' ') unless text.empty?
     end
   end
   return fields unless fields.empty?
