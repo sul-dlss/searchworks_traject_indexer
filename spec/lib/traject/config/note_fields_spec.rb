@@ -264,6 +264,34 @@ RSpec.describe 'Sirsi config' do
         end
       end
     end
+
+    context 'with unmatched vernacular' do
+      let(:records) { [record] }
+      let(:record) { nil }
+      let(:result) { results.first }
+      let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '880', '0', '0',
+              MARC::Subfield.new('6', '505-00'),
+              MARC::Subfield.new('g', '001-026.'),
+              MARC::Subfield.new('t', '水浒传(全26册) --'),
+              MARC::Subfield.new('g', '027-041.'),
+              MARC::Subfield.new('t', '岳飞传(全15册) --'),
+              MARC::Subfield.new('g', '042-046.'),
+              MARC::Subfield.new('t', '杨家将(全5册) --')
+            )
+          )
+        end
+      end
+
+      it 'maps the right fields' do
+        expect(result_field.first[:unmatched_vernacular].first).to eq ['001-026. 水浒传(全26册)', '027-041. 岳飞传(全15册)', '042-046. 杨家将(全5册) --']
+      end
+    end
   end
 
   describe 'context_search' do
@@ -347,6 +375,29 @@ RSpec.describe 'Sirsi config' do
       result = select_by_id('520')[field].map { |x| JSON.parse(x, symbolize_names: true) }
       expect(result.first[:label]).to eq 'Summary'
       expect(result.first[:fields].first[:field]).to include '520a', '520b'
+    end
+
+    context 'with unmatched vernacular' do
+      let(:records) { [record] }
+      let(:record) { nil }
+      let(:result) { results.first }
+      let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '880', '0', '0',
+              MARC::Subfield.new('6', '520-00'),
+              MARC::Subfield.new('a', '本书在综合考察绘画,文人,禅学这三者相互关联的基础上.')
+            )
+          )
+        end
+      end
+
+      it 'maps the right fields' do
+        expect(result_field.first[:unmatched_vernacular]).to eq ['本书在综合考察绘画,文人,禅学这三者相互关联的基础上.']
+      end
     end
 
     context 'with Nielson data' do
