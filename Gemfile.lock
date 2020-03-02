@@ -139,7 +139,7 @@ GEM
     httpclient (2.8.3)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
-    iso-639 (0.3.1)
+    iso-639 (0.2.10)
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
@@ -251,6 +251,7 @@ DEPENDENCIES
   honeybadger
   http
   i18n
+  iso-639 (< 0.3)
   manticore
   mods_display
   rake
