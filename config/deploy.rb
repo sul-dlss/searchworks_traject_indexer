@@ -54,7 +54,7 @@ task :jruby_bundle_install do
         options << "--jobs #{fetch(:bundle_jobs)}" if fetch(:bundle_jobs)
         options << "--without #{fetch(:bundle_without)}" if fetch(:bundle_without)
         options << "#{fetch(:bundle_flags)}" if fetch(:bundle_flags)
-        execute "#{fetch(:rvm_path)}/bin/rvm", 'jruby-9.2.7.0', 'do', :bundle, :install, *options
+        execute "#{fetch(:rvm_path)}/bin/rvm", 'jruby-9.2.11.0', 'do', :bundle, :install, *options
       end
     end
   end
