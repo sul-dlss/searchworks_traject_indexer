@@ -745,6 +745,17 @@ RSpec.describe 'Publication config' do
       expect(select_by_id('z2009')[field]).to eq ['2009']
       expect(select_by_id('zpubDate2010')[field]).to eq ['2010']
     end
+
+    context 'with garbage in the 008' do
+      subject(:result) { indexer.map_record(record) }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(MARC::ControlField.new('008', '800124d1uuu99uuru'))
+        end
+      end
+
+      specify { expect(result[field]).to eq nil }
+    end
   end
 
 end
