@@ -50,7 +50,7 @@ class PublicXmlRecord
 
   # @return catkey value from the DOR identity_metadata, or nil if there is no catkey
   def catkey
-    get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='catkey']"))
+    get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='catkey']")).presence
   end
 
   # @return objectLabel value from the DOR identity_metadata, or nil if there is no barcode
