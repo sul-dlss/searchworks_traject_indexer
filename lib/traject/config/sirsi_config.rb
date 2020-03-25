@@ -1128,13 +1128,13 @@ to_field 'pub_date_sort' do |record, accumulator|
 
   # hyphens sort before 0, so the lexical sorting will be correct. I think.
   year ||= if f008_bytes7to10 =~ /\d\d[u-][u-]/
-    "#{record['008'].value[7..8]}--"
+    "#{record['008'].value[7..8]}--" if record['008'].value[7..8] <= Time.now.year.to_s[0..1]
   end
 
   # colons sort after 9, so the lexical sorting will be correct. I think.
   # NOTE: the solrmarc code has this comment, and yet still uses hyphens below; maybe a bug?
   year ||= if f008_bytes11to14 =~ /\d\d[u-][u-]/
-    "#{record['008'].value[11..12]}--"
+    "#{record['008'].value[11..12]}--" if record['008'].value[11..12] <= Time.now.year.to_s[0..1]
   end
 
   accumulator << year.to_s if year
