@@ -172,7 +172,7 @@ GEM
       i18n
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
-    public_suffix (4.0.3)
+    public_suffix (4.0.4)
     rake (13.0.1)
     retriable (3.1.2)
     rspec (3.9.0)
@@ -222,7 +222,7 @@ GEM
     traject-marc4j_reader (1.1.0-java)
       marc (~> 1.0)
       marc-marc4j (~> 1.0)
-    tzinfo (1.2.6)
+    tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
