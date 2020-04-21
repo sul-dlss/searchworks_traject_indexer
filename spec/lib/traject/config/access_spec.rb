@@ -132,4 +132,81 @@ RSpec.describe 'Access config' do
 
     end
   end
+
+  describe 'On order' do
+    context 'when an XX call number has a current location of ON-ORDER' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '999', ' ', ' ',
+              MARC::Subfield.new('a', 'XXwhatever'),
+              MARC::Subfield.new('k', 'ON-ORDER')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).to eq ['On order'] }
+    end
+
+    context 'when an XX call number is not ON-ORDER (and is not in a blacklisted location)' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '999', ' ', ' ',
+              MARC::Subfield.new('a', 'XXwhatever'),
+              MARC::Subfield.new('k', 'SOMEWHERE-ELSE')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).to eq ['On order'] }
+    end
+
+    context 'when an XX call number is not ON-ORDER (but is in HV-ARCHIVE)' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '999', ' ', ' ',
+              MARC::Subfield.new('a', 'XXwhatever'),
+              MARC::Subfield.new('k', 'SOMEWHERE-ELSE'),
+              MARC::Subfield.new('m', 'HV-ARCHIVE')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).not_to include 'On order' }
+    end
+
+    context 'when an XX call number is not ON-ORDER (but it is in a blacklisted location)' do
+      let(:test_locations) { %w[LAC INPROCESS] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          test_locations.each do |loc|
+            r.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', 'XXwhatever'),
+                MARC::Subfield.new('k', loc)
+              )
+            )
+            r.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', 'XXwhatever'),
+                MARC::Subfield.new('l', loc)
+              )
+            )
+          end
+        end
+      end
+
+      it { expect(result[field]).not_to include 'On order' }
+    end
+  end
 end
