@@ -1367,6 +1367,7 @@ end
 #
 to_field 'access_facet' do |record, accumulator, context|
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
+  on_order_ignore_locs = %w[INPROCESS LAC]
   holdings(record, context).each do |holding|
     next if holding.skipped?
 
@@ -1374,7 +1375,7 @@ to_field 'access_facet' do |record, accumulator, context|
 
     if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
       accumulator << 'Online'
-    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && field['l'] != 'INPROCESS' && field['k'] != 'INPROCESS' && field['k'] != 'LAC' && field['l'] != 'LAC' && field['m'] != 'HV-ARCHIVE' && field['k'] != 'SPEC-INPRO'))
+    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && (on_order_ignore_locs & [field['k'], field['l']]).empty? && field['m'] != 'HV-ARCHIVE' && field['k'] != 'SPEC-INPRO'))
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
