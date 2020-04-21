@@ -1367,7 +1367,7 @@ end
 #
 to_field 'access_facet' do |record, accumulator, context|
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
-  on_order_ignore_locs = %w[INPROCESS LAC SPEC-INPRO]
+  on_order_ignore_locs = %w[ENDPROCESS INPROCESS LAC SPEC-INPRO]
   holdings(record, context).each do |holding|
     next if holding.skipped?
 

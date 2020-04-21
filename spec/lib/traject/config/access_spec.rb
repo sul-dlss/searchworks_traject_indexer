@@ -134,6 +134,8 @@ RSpec.describe 'Access config' do
   end
 
   describe 'On order' do
+    let(:on_order_ignore_locs) { %w[ENDPROCESS LAC INPROCESS SPEC-INPRO] }
+
     context 'when an XX call number has a current location of ON-ORDER' do
       let(:record) do
         MARC::Record.new.tap do |r|
@@ -184,10 +186,9 @@ RSpec.describe 'Access config' do
     end
 
     context 'when an XX call number is not ON-ORDER (but it is in a blacklisted home location)' do
-      let(:test_locations) { %w[LAC INPROCESS SPEC-INPRO] }
       let(:record) do
         MARC::Record.new.tap do |r|
-          test_locations.each do |loc|
+          on_order_ignore_locs.each do |loc|
             r.append(
               MARC::DataField.new(
                 '999', ' ', ' ',
@@ -204,10 +205,9 @@ RSpec.describe 'Access config' do
     end
 
     context 'when an XX call number is not ON-ORDER (but it is in a blacklisted current location)' do
-      let(:test_locations) { %w[LAC INPROCESS SPEC-INPRO] }
       let(:record) do
         MARC::Record.new.tap do |r|
-          test_locations.each do |loc|
+          on_order_ignore_locs.each do |loc|
             r.append(
               MARC::DataField.new(
                 '999', ' ', ' ',
