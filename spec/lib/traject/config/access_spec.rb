@@ -183,8 +183,28 @@ RSpec.describe 'Access config' do
       it { expect(result[field]).not_to include 'On order' }
     end
 
-    context 'when an XX call number is not ON-ORDER (but it is in a blacklisted location)' do
-      let(:test_locations) { %w[LAC INPROCESS] }
+    context 'when an XX call number is not ON-ORDER (but it is in a blacklisted home location)' do
+      let(:test_locations) { %w[LAC INPROCESS SPEC-INPRO] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          test_locations.each do |loc|
+            r.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', 'XXwhatever'),
+                MARC::Subfield.new('k', 'ANYTHING'),
+                MARC::Subfield.new('l', loc)
+              )
+            )
+          end
+        end
+      end
+
+      it { expect(result[field]).not_to include 'On order' }
+    end
+
+    context 'when an XX call number is not ON-ORDER (but it is in a blacklisted current location)' do
+      let(:test_locations) { %w[LAC INPROCESS SPEC-INPRO] }
       let(:record) do
         MARC::Record.new.tap do |r|
           test_locations.each do |loc|
@@ -193,13 +213,6 @@ RSpec.describe 'Access config' do
                 '999', ' ', ' ',
                 MARC::Subfield.new('a', 'XXwhatever'),
                 MARC::Subfield.new('k', loc)
-              )
-            )
-            r.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'XXwhatever'),
-                MARC::Subfield.new('l', loc)
               )
             )
           end
