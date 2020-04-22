@@ -132,4 +132,94 @@ RSpec.describe 'Access config' do
 
     end
   end
+
+  describe 'On order' do
+    let(:on_order_ignore_locs) { %w[ENDPROCESS LAC INPROCESS SPEC-INPRO] }
+
+    context 'when an XX call number has a current location of ON-ORDER' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '999', ' ', ' ',
+              MARC::Subfield.new('a', 'XXwhatever'),
+              MARC::Subfield.new('k', 'ON-ORDER')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).to eq ['On order'] }
+    end
+
+    context 'when an XX call number is not ON-ORDER (and is not in a blacklisted location)' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '999', ' ', ' ',
+              MARC::Subfield.new('a', 'XXwhatever'),
+              MARC::Subfield.new('k', 'SOMEWHERE-ELSE')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).to eq ['On order'] }
+    end
+
+    context 'when an XX call number is not ON-ORDER (but is in HV-ARCHIVE)' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '999', ' ', ' ',
+              MARC::Subfield.new('a', 'XXwhatever'),
+              MARC::Subfield.new('k', 'SOMEWHERE-ELSE'),
+              MARC::Subfield.new('m', 'HV-ARCHIVE')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).not_to include 'On order' }
+    end
+
+    context 'when an XX call number is not ON-ORDER (but it is in a blacklisted home location)' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          on_order_ignore_locs.each do |loc|
+            r.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', 'XXwhatever'),
+                MARC::Subfield.new('k', 'ANYTHING'),
+                MARC::Subfield.new('l', loc)
+              )
+            )
+          end
+        end
+      end
+
+      it { expect(result[field]).not_to include 'On order' }
+    end
+
+    context 'when an XX call number is not ON-ORDER (but it is in a blacklisted current location)' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          on_order_ignore_locs.each do |loc|
+            r.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', 'XXwhatever'),
+                MARC::Subfield.new('k', loc)
+              )
+            )
+          end
+        end
+      end
+
+      it { expect(result[field]).not_to include 'On order' }
+    end
+  end
 end
