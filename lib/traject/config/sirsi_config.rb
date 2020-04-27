@@ -17,6 +17,12 @@ require 'csv'
 require 'i18n'
 require 'honeybadger'
 require 'digest/md5'
+require 'sequel'
+if RUBY_ENGINE == 'jruby'
+  require 'jdbc/mysql'
+else
+  require 'mysql2'
+end
 
 I18n.available_locales = [:en]
 
@@ -270,6 +276,7 @@ settings do
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
   provide 'solr_writer.commit_on_close', true
+  provide 'hathitrust_lookup_db', nil
   provide 'mapping_rescue', (lambda do |context, e|
     Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
 
@@ -3190,6 +3197,37 @@ to_field 'building_facet' do |record, accumulator, context|
     end
   end
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
+end
+
+to_field 'hathitrust_info_struct' do |_record, accumulator, context|
+  id = context.output_hash['id']
+  oclc_nums = context.output_hash['oclc']
+  next unless oclc_nums&.any?
+
+  db = Sequel.connect(settings[:hathitrust_lookup_db]) if settings[:hathitrust_lookup_db]
+  next unless db
+
+  data = db.from('stdnums').join(:overlap, oclc: :value).join('hathifiles', htid: Sequel[:stdnums][:htid]).where(type: 'oclc', local_id: id).select_all(:hathifiles)
+
+  accumulator.concat data.map { |x| x.slice(:htid, :ht_bib_key, :content_provider_code, :access, :rights, :description, :oclc_num) }.uniq { |x| x[:htid] }
+end
+
+to_field 'ht_access_sim' do |_record, accumulator, context|
+  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
+  accumulator.concat hathitrust_info_struct.map { |x| x[:access] }.uniq
+  accumulator.concat hathitrust_info_struct.map { |x| [x[:access], x[:rights]].join(':') }.uniq
+end
+
+to_field 'ht_bib_key_ssim' do |_record, accumulator, context|
+  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
+  accumulator.concat hathitrust_info_struct.map { |x| x[:ht_bib_key] }.uniq
+end
+
+to_field 'ht_htid_ssim' do |_record, accumulator, context|
+  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
+  next if hathitrust_info_struct.length > 1
+
+  accumulator << hathitrust_info_struct.map { |x| x[:htid] }.first
 end
 
 to_field 'context_version_ssi' do |_record, accumulator|

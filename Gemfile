@@ -15,7 +15,7 @@ gem 'manticore', platform: :jruby
 gem 'rake'
 gem 'ruby-kafka'
 gem 'stanford-mods'
-gem 'iso-639', '< 0.3' # v0.3+ requires ruby 2.6+ (and out jruby is at 2.5) 
+gem 'iso-639', '< 0.3' # v0.3+ requires ruby 2.6+ (and out jruby is at 2.5)
 gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
@@ -25,6 +25,9 @@ gem 'config'
 gem 'statsd-ruby'
 gem 'debouncer'
 gem 'dor-rights-auth'
+gem 'sequel'
+gem 'mysql2', '< 0.5.3', platform: :mri
+gem 'jdbc-mysql', platform: :jruby
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
