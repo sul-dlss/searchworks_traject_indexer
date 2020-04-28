@@ -24,6 +24,14 @@ RSpec.describe 'Sirsi config' do
       expect(results).not_to include hash_including('id' => ['001and004nosub'])
     end
   end
+
+  describe 'hashed_id_ssi' do
+    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    it do
+      expect(results).to include hash_including('id' => ['001suba'], 'hashed_id_ssi' => ['f00f2f3999440420ee1cb0fbfaf6dd25'])
+    end
+  end
+
   describe 'marcxml' do
     let(:fixture_name) { 'fieldOrdering.mrc' }
     it do

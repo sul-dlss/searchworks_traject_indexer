@@ -8,6 +8,7 @@ require 'traject/readers/kafka_purl_fetcher_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
+require 'digest/md5'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
@@ -157,6 +158,13 @@ to_field 'solr_geom', stanford_mods(:coordinates_as_envelope)
 to_field 'layer_slug_s' do |record, accumulator|
   accumulator << "stanford-#{record.druid}"
 end
+
+to_field 'hashed_id_ssi' do |_record, accumulator, context|
+  next unless context.output_hash['layer_slug_s']
+
+  accumulator << Digest::MD5.hexdigest(context.output_hash['layer_slug_s'].first)
+end
+
 to_field 'dct_provenance_s', literal('Stanford')
 to_field 'stanford_rights_metadata_s' do |record, accumulator|
   accumulator << record.rights_xml

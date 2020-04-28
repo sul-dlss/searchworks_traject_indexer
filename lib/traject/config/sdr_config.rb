@@ -9,6 +9,7 @@ require 'traject/readers/druid_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
+require 'digest/md5'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
@@ -100,6 +101,12 @@ end
 
 to_field 'id' do |record, accumulator|
   accumulator << record.druid
+end
+
+to_field 'hashed_id_ssi' do |_record, accumulator, context|
+  next unless context.output_hash['id']
+
+  accumulator << Digest::MD5.hexdigest(context.output_hash['id'].first)
 end
 
 each_record do |record, context|
