@@ -16,6 +16,7 @@ require 'utils'
 require 'csv'
 require 'i18n'
 require 'honeybadger'
+require 'digest/md5'
 
 I18n.available_locales = [:en]
 
@@ -397,6 +398,12 @@ to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
     v.sub(/^a/, '')
   end
+end
+
+to_field 'hashed_id_ssi' do |_record, accumulator, context|
+  next unless context.output_hash['id']
+
+  accumulator << Digest::MD5.hexdigest(context.output_hash['id'].first)
 end
 
 to_field 'marcxml' do |record, accumulator|

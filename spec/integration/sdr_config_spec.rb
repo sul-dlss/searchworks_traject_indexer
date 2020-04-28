@@ -53,6 +53,7 @@ describe 'SDR indexing' do
 
     it 'maps the data the same way as it does currently' do
       expect(result).to include "id" => ["bk264hq9320"],
+                                "hashed_id_ssi" => ["6f9a6cccb27e922d48ee5803d9433648"],
                                 "druid" => ["bk264hq9320"],
                                 "title_245a_search" => ["Trustees Demo reel"],
                                 "title_245_search" => ["Trustees Demo reel."],

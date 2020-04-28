@@ -38,7 +38,9 @@ describe 'EarthWorks indexing' do
       expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/dc482zx1528'],
                                 'dc_title_s' => ['Jōshū Kusatsu Onsenzu'],
                                 'dc_rights_s' => ['Public'],
-                                'layer_geom_type_s' => ['Image']
+                                'layer_geom_type_s' => ['Image'],
+                                'layer_slug_s' => ['stanford-dc482zx1528'],
+                                'hashed_id_ssi' => ['8e76f95ed3e70f047cd812b33b50ed3e']
     end
     it 'contains references' do
       expect(JSON.parse(result['dct_references_s'].first)).to include 'http://schema.org/url' => 'https://purl.stanford.edu/dc482zx1528',
