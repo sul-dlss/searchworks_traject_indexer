@@ -1,3 +1,4 @@
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -140,6 +141,7 @@ GEM
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.10)
+    jdbc-mysql (8.0.17)
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
@@ -160,6 +162,7 @@ GEM
     mods_display (0.7.1)
       i18n
       stanford-mods (~> 2.1)
+    mysql2 (0.5.2)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.0.2)
@@ -191,6 +194,7 @@ GEM
     ruby-kafka (1.0.0)
       digest-crc
     scrub_rb (1.0.1)
+    sequel (5.30.0)
     simplecov (0.18.5)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -252,12 +256,15 @@ DEPENDENCIES
   http
   i18n
   iso-639 (< 0.3)
+  jdbc-mysql
   manticore
   mods_display
+  mysql2 (< 0.5.3)
   rake
   retriable
   rspec
   ruby-kafka
+  sequel
   simplecov
   stanford-mods
   statsd-ruby
