@@ -140,7 +140,7 @@ GEM
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.10)
-    jdbc-mysql (8.0.17)
+    jdbc-mysql (5.1.47)
     kostya-sigar (2.0.6)
     manticore (0.6.4-java)
       openssl_pkcs8_pure
@@ -255,7 +255,7 @@ DEPENDENCIES
   http
   i18n
   iso-639 (< 0.3)
-  jdbc-mysql
+  jdbc-mysql (~> 5.1.0)
   manticore
   mods_display
   mysql2 (< 0.5.3)
