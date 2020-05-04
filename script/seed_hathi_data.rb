@@ -17,7 +17,7 @@ data.paged_each.slice_when { |before, after| before[:local_id] != after[:local_i
       set: Array(hathitrust_info).map { |x| JSON.generate(x) }
     },
     ht_access_sim: {
-      set: rows.map { |x| x[:access] }.uniq
+      set: rows.map { |x| x[:access] }.uniq + rows.map { |x| [x[:access], x[:rights]].join(':') }.uniq
     },
     ht_bib_key_ssim: {
       set: rows.map { |x| x[:ht_bib_key] }.uniq
