@@ -27,7 +27,7 @@ gem 'debouncer'
 gem 'dor-rights-auth'
 gem 'sequel'
 gem 'mysql2', '< 0.5.3', platform: :mri
-gem 'jdbc-mysql', platform: :jruby
+gem 'jdbc-mysql', '~> 5.1.0', platform: :jruby
 
 group :deployment do
   gem 'capistrano', '~> 3.0'

@@ -380,6 +380,10 @@ def reserves_lookup
   end
 end
 
+def hathitrust_lookup_db
+  settings['hathitrust_lookup_db_ref'] ||= Sequel.connect(settings[:hathitrust_lookup_db]) if settings[:hathitrust_lookup_db]
+end
+
 each_record do |record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
@@ -3204,10 +3208,9 @@ to_field 'hathitrust_info_struct' do |_record, accumulator, context|
   oclc_nums = context.output_hash['oclc']
   next unless oclc_nums&.any?
 
-  db = Sequel.connect(settings[:hathitrust_lookup_db]) if settings[:hathitrust_lookup_db]
-  next unless db
+  next unless hathitrust_lookup_db
 
-  data = db.from('stdnums').join(:overlap, oclc: :value).join('hathifiles', htid: Sequel[:stdnums][:htid]).where(type: 'oclc', local_id: id).select_all(:hathifiles)
+  data = hathitrust_lookup_db.from('stdnums').join(:overlap, oclc: :value).join('hathifiles', htid: Sequel[:stdnums][:htid]).where(type: 'oclc', local_id: id).select_all(:hathifiles)
 
   accumulator.concat data.map { |x| x.slice(:htid, :ht_bib_key, :content_provider_code, :access, :rights, :description, :oclc_num) }.uniq { |x| x[:htid] }
 end
