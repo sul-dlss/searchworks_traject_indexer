@@ -10,7 +10,7 @@ ARGF.each_line do |id|
 
   doc = {
    id_field => id.to_s,
-   hashed_id_ssi: Digest::MD5.hexdigest(id)
+   hashed_id_ssi: { set: Digest::MD5.hexdigest(id) }
  }
 
   client.post ENV['SOLR_URL'], [doc].to_json, 'Content-Type' => 'application/json'
