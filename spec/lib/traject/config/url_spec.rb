@@ -34,7 +34,8 @@ RSpec.describe 'Access config' do
       expect(select_by_id('856ind2is0')[field]).to eq ["http://www.netLibrary.com/urlapi.asp?action=summary&v=1&bookid=122436"]
       expect(select_by_id('856ind2is0Again')[field]).to eq ["http://www.url856.com/fulltext/ind2_0"]
       expect(select_by_id('856ind2is1NotToc')[field]).to eq ["http://www.url856.com/fulltext/ind2_1/not_toc"]
-      expect(select_by_id('856ind2isBlankFulltext')[field]).to eq ["http://www.url856.com/fulltext/ind2_blank/not_toc"]
+      # empty/blank ind2 is most likely not fulltext
+      expect(select_by_id('856ind2isBlankFulltext')[field]).to be_blank
       expect(select_by_id('956BlankIndicators')[field]).to eq ["http://www.url956.com/fulltext/blankIndicators"]
       expect(select_by_id('956ind2is0')[field]).to eq ["http://www.url956.com/fulltext/ind2_is_0"]
       expect(select_by_id('956and856TOC')[field]).to eq ["http://www.url956.com/fulltext/ind2_is_blank"]
@@ -58,6 +59,27 @@ RSpec.describe 'Access config' do
     it 'omits url_fulltext fields for docs with jackson forms for off-site paging requests' do
       expect(select_by_id('123http')[field]).to be_nil
       expect(select_by_id('124http')[field]).to be_nil
+    end
+
+    describe 'Blank 2nd indicators' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                nil,
+                MARC::Subfield.new('u', 'http://example.com/')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are not considered full text' do
+        expect(results.first[field]).to be_blank
+      end
     end
   end
 
