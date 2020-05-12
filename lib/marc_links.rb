@@ -119,19 +119,18 @@ module MarcLinks
       rescue URI::InvalidURIError
         return nil
     end
+
     def link_is_fulltext?(field)
       resource_labels = ["table of contents", "abstract", "description", "sample text"]
-      if field.indicator2 == "2"
-        return false
-      elsif field.indicator2 == "0" or field.indicator2 == "1" or field.indicator2.nil? or field.indicator2.empty?
-        resource_labels.each do |resource_label|
-          return false if "#{field['3']} #{field['z']}".downcase.include?(resource_label)
-        end
-        return true
-      else
-        # this should catch bad indicators
-        return nil
+      return false unless %w[0 1].include?(field.indicator2)
+
+      # Similar logic exists in the mapping for the url_fulltext field in sirsi traject config.
+      # They need to remain the same (or should be refactored to use the same code in the future)
+      resource_labels.each do |resource_label|
+        return false if "#{field['3']} #{field['z']}".downcase.include?(resource_label)
       end
+
+      true
     end
 
     def link_is_finding_aid?(field)

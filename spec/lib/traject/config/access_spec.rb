@@ -18,7 +18,6 @@ RSpec.describe 'Access config' do
       expect(select_by_id('856ind2is0')[field]).to include 'Online'
       expect(select_by_id('856ind2is0Again')[field]).to include 'Online'
       expect(select_by_id('856ind2is1NotToc')[field]).to include 'Online'
-      expect(select_by_id('856ind2isBlankFulltext')[field]).to include 'Online'
       expect(select_by_id('956BlankIndicators')[field]).to include 'Online'
       expect(select_by_id('956ind2is0')[field]).to include 'Online'
       expect(select_by_id('956and856TOC')[field]).to include 'Online'
@@ -26,6 +25,8 @@ RSpec.describe 'Access config' do
       expect(select_by_id('956and856TOCand856suppl')[field]).to include 'Online'
       expect(select_by_id('7117119')[field]).to include 'Online'
       expect(select_by_id('newSfx')[field]).to include 'Online'
+      # blank ind2 is most likely not fulltext
+      expect(select_by_id('856ind2isBlankFulltext')[field]).not_to include 'Online'
     end
   end
 

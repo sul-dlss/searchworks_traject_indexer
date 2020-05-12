@@ -145,10 +145,6 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='u'>https://library.stanford.edu</subfield>
             <subfield code='y'>Link text</subfield>
           </datafield>
-          <datafield tag='856' ind1='0' ind2=''>
-            <subfield code='u'>https://library.stanford.edu</subfield>
-            <subfield code='y'>Link text</subfield>
-          </datafield>
         </record>
       xml
     end
@@ -245,6 +241,10 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='u'>https://library.stanford.edu</subfield>
             <subfield code='y'>Link text</subfield>
             <subfield code='z'>this is the description</subfield>
+          </datafield>
+          <datafield tag='856' ind1='0' ind2=''>
+            <subfield code='u'>https://library.stanford.edu</subfield>
+            <subfield code='y'>Link text</subfield>
           </datafield>
         </record>
       xml
