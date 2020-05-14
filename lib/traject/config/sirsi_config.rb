@@ -1456,6 +1456,10 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator << 'On order' if accumulator.empty?
   accumulator << 'Online' if context.output_hash['url_fulltext']
   accumulator << 'Online' if context.output_hash['url_sfx']
+  # There is similar logic in the SearchWorks HathiTrustLinks class
+  if context.output_hash['ht_access_sim'].present? && context.output_hash['ht_access_sim']&.none? { |v| v == 'deny' || %w[allow:icus allow:pdus].include?(v) }
+    accumulator << 'Online'
+  end
 
   accumulator.uniq!
 end
