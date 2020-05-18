@@ -152,7 +152,7 @@ GEM
     marc-marc4j (1.0.0-java)
       marc (~> 1)
     mini_portile2 (2.4.0)
-    minitest (5.14.0)
+    minitest (5.14.1)
     mods (2.4.1)
       edtf
       iso-639
