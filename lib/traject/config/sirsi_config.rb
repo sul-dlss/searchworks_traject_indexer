@@ -1379,6 +1379,62 @@ to_field 'marc_links_struct' do |record, accumulator|
   end
 end
 
+# Not using traject's oclcnum here because we have more complicated logic
+to_field 'oclc' do |record, accumulator|
+  marc035_with_m_suffix = []
+  marc035_without_m_suffix = []
+  Traject::MarcExtractor.new('035a', separator: nil).extract(record).map do |data|
+    if data.start_with?('(OCoLC-M)')
+      marc035_with_m_suffix << data.sub(/^\(OCoLC-M\)\s*/, '')
+    elsif data.start_with?('(OCoLC)')
+      marc035_without_m_suffix << data.sub(/^\(OCoLC\)\s*/, '')
+    end
+  end.flatten.compact.uniq
+
+  marc079 = Traject::MarcExtractor.new('079a', separator: nil).extract(record).map do |data|
+    next unless regex_to_extract_data_from_a_string(data, /\A(?:ocm)|(?:ocn)|(?:on)/)
+    data.sub(/\A(?:ocm)|(?:ocn)|(?:on)/, '')
+  end.flatten.compact.uniq
+
+  if marc035_with_m_suffix.any?
+    accumulator.concat marc035_with_m_suffix
+  elsif marc079.any?
+    accumulator.concat marc079
+  elsif marc035_without_m_suffix.any?
+    accumulator.concat marc035_without_m_suffix
+  end
+end
+
+to_field 'hathitrust_info_struct' do |_record, accumulator, context|
+  id = context.output_hash['id']
+  oclc_nums = context.output_hash['oclc']
+  next unless oclc_nums&.any?
+
+  next unless hathitrust_lookup_db
+
+  data = hathitrust_lookup_db.from('stdnums').join(:overlap, oclc: :value).join('hathifiles', htid: Sequel[:stdnums][:htid]).where(type: 'oclc', local_id: id).select_all(:hathifiles)
+
+  accumulator.concat data.map { |x| x.slice(:htid, :ht_bib_key, :content_provider_code, :access, :rights, :description, :oclc_num) }.uniq { |x| x[:htid] }
+end
+
+to_field 'ht_access_sim' do |_record, accumulator, context|
+  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
+  accumulator.concat hathitrust_info_struct.map { |x| x[:access] }.uniq
+  accumulator.concat hathitrust_info_struct.map { |x| [x[:access], x[:rights]].join(':') }.uniq
+end
+
+to_field 'ht_bib_key_ssim' do |_record, accumulator, context|
+  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
+  accumulator.concat hathitrust_info_struct.map { |x| x[:ht_bib_key] }.uniq
+end
+
+to_field 'ht_htid_ssim' do |_record, accumulator, context|
+  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
+  next if hathitrust_info_struct.length > 1
+
+  accumulator << hathitrust_info_struct.map { |x| x[:htid] }.first
+end
+
 #
 to_field 'access_facet' do |record, accumulator, context|
   online_locs = ['E-RECVD', 'E-RESV', 'ELECTR-LOC', 'INTERNET', 'KIOST', 'ONLINE-TXT', 'RESV-URL', 'WORKSTATN']
@@ -1400,6 +1456,10 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator << 'On order' if accumulator.empty?
   accumulator << 'Online' if context.output_hash['url_fulltext']
   accumulator << 'Online' if context.output_hash['url_sfx']
+  # There is similar logic in the SearchWorks HathiTrustLinks class
+  if context.output_hash['ht_access_sim'].present? && context.output_hash['ht_access_sim']&.none? { |v| v == 'deny' || %w[allow:icus allow:pdus].include?(v) }
+    accumulator << 'Online'
+  end
 
   accumulator.uniq!
 end
@@ -2134,31 +2194,6 @@ to_field 'lccn', extract_marc('010z', first: true) do |record, accumulator, cont
   end
 end
 
-# Not using traject's oclcnum here because we have more complicated logic
-to_field 'oclc' do |record, accumulator|
-  marc035_with_m_suffix = []
-  marc035_without_m_suffix = []
-  Traject::MarcExtractor.new('035a', separator: nil).extract(record).map do |data|
-    if data.start_with?('(OCoLC-M)')
-      marc035_with_m_suffix << data.sub(/^\(OCoLC-M\)\s*/, '')
-    elsif data.start_with?('(OCoLC)')
-      marc035_without_m_suffix << data.sub(/^\(OCoLC\)\s*/, '')
-    end
-  end.flatten.compact.uniq
-
-  marc079 = Traject::MarcExtractor.new('079a', separator: nil).extract(record).map do |data|
-    next unless regex_to_extract_data_from_a_string(data, /\A(?:ocm)|(?:ocn)|(?:on)/)
-    data.sub(/\A(?:ocm)|(?:ocn)|(?:on)/, '')
-  end.flatten.compact.uniq
-
-  if marc035_with_m_suffix.any?
-    accumulator.concat marc035_with_m_suffix
-  elsif marc079.any?
-    accumulator.concat marc079
-  elsif marc035_without_m_suffix.any?
-    accumulator.concat marc035_without_m_suffix
-  end
-end
 #
 # # Call Number Fields
 
@@ -3198,36 +3233,6 @@ to_field 'building_facet' do |record, accumulator, context|
     end
   end
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
-end
-
-to_field 'hathitrust_info_struct' do |_record, accumulator, context|
-  id = context.output_hash['id']
-  oclc_nums = context.output_hash['oclc']
-  next unless oclc_nums&.any?
-
-  next unless hathitrust_lookup_db
-
-  data = hathitrust_lookup_db.from('stdnums').join(:overlap, oclc: :value).join('hathifiles', htid: Sequel[:stdnums][:htid]).where(type: 'oclc', local_id: id).select_all(:hathifiles)
-
-  accumulator.concat data.map { |x| x.slice(:htid, :ht_bib_key, :content_provider_code, :access, :rights, :description, :oclc_num) }.uniq { |x| x[:htid] }
-end
-
-to_field 'ht_access_sim' do |_record, accumulator, context|
-  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
-  accumulator.concat hathitrust_info_struct.map { |x| x[:access] }.uniq
-  accumulator.concat hathitrust_info_struct.map { |x| [x[:access], x[:rights]].join(':') }.uniq
-end
-
-to_field 'ht_bib_key_ssim' do |_record, accumulator, context|
-  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
-  accumulator.concat hathitrust_info_struct.map { |x| x[:ht_bib_key] }.uniq
-end
-
-to_field 'ht_htid_ssim' do |_record, accumulator, context|
-  hathitrust_info_struct = context.output_hash['hathitrust_info_struct'] || []
-  next if hathitrust_info_struct.length > 1
-
-  accumulator << hathitrust_info_struct.map { |x| x[:htid] }.first
 end
 
 to_field 'context_version_ssi' do |_record, accumulator|
