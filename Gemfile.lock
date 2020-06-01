@@ -119,8 +119,8 @@ GEM
       kostya-sigar (~> 2.0.0)
       state_machines
       thor
-    ffi (1.12.2)
-    ffi (1.12.2-java)
+    ffi (1.13.0)
+    ffi (1.13.0-java)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
