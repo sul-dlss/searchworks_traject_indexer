@@ -69,13 +69,28 @@ describe 'EarthWorks indexing' do
       expect(result['solr_year_i']).to eq [1603]
     end
   end
+  context 'image map book content without dc:type' do
+    let(:druid) { 'ny179kk3075' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+    it 'includes the layer_geom_type_s' do
+      expect(result).to include 'layer_geom_type_s' => ['Image']
+    end
+
+  end
   context 'for geo content' do
     let(:druid) { 'vv853br8653' }
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
-    it 'skips record' do
-      expect(result).to be_nil
+    it 'maps the metadata' do
+      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/vv853br8653'],
+                                'dc_title_s' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
+                                'dc_rights_s' => ['Public'],
+                                'layer_geom_type_s' => ['Polygon'],
+                                'layer_slug_s' => ['stanford-vv853br8653'],
+                                'hashed_id_ssi' => ['2322030c6a14ad9ca0724974314364a6']
     end
   end
   context 'when no envelope is present' do
