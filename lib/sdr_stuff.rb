@@ -14,7 +14,7 @@ class SdrReader
 
   def each(*args, &block)
     input_stream.each_line do |druid|
-      yield PublicXmlRecord.new(druid)
+      yield PublicXmlRecord.new(druid, purl_url: @settings['purl.url'])
     end
   end
 end
@@ -40,8 +40,11 @@ class PublicXmlRecord
     end
   end
 
-  def initialize(druid)
+  attr_reader :purl_url
+
+  def initialize(druid, purl_url: 'https://purl.stanford.edu')
     @druid = druid
+    @purl_url = purl_url
   end
 
   def searchworks_id
@@ -77,7 +80,7 @@ class PublicXmlRecord
   end
 
   def public_xml
-    @public_xml ||= self.class.fetch("https://purl.stanford.edu/#{druid}.xml")
+    @public_xml ||= self.class.fetch("#{purl_url}/#{druid}.xml")
   end
 
   def public_xml_doc
@@ -88,7 +91,7 @@ class PublicXmlRecord
     @mods ||= if public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').any?
       public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
     else
-      Nokogiri::XML self.class.fetch("https://purl.stanford.edu/#{druid}.mods")
+      Nokogiri::XML self.class.fetch("#{purl_url}/#{druid}.mods")
     end
   end
 
@@ -161,13 +164,13 @@ class PublicXmlRecord
 
    def collections
      @collections ||= predicate_druids('isMemberOfCollection').map do |druid|
-       PublicXmlRecord.new(druid)
+       PublicXmlRecord.new(druid, purl_url: purl_url)
      end
    end
 
    def constituents
      @constituents ||= predicate_druids('isConstituentOf').map do |druid|
-       PublicXmlRecord.new(druid)
+       PublicXmlRecord.new(druid, purl_url: purl_url)
      end
    end
 

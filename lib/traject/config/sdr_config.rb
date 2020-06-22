@@ -37,6 +37,7 @@ settings do
     provide "reader_class_name", "Traject::DruidReader"
   end
 
+  provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
@@ -239,7 +240,7 @@ to_field 'url_suppl', stanford_mods(:term_values, [:related_item, :location, :ur
 
 
 to_field 'url_fulltext' do |record, accumulator|
-  accumulator << "https://purl.stanford.edu/#{record.druid}"
+  accumulator << "#{settings['purl.url']}/#{record.druid}"
 end
 
 to_field 'access_facet', literal('Online')
@@ -382,7 +383,7 @@ end
 
 to_field 'iiif_manifest_url_ssim' do |record, accumulator|
   if %w[image manuscript map book].include?(record.dor_content_type)
-    accumulator << "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
+    accumulator << "#{settings['purl.url']}/#{record.druid}/iiif/manifest"
   end
 end
 

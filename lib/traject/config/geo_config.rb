@@ -37,6 +37,7 @@ settings do
   end
 
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Earthworks')
+  provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'

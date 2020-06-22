@@ -4,7 +4,7 @@ require 'utils'
 RSpec.describe Traject::KafkaPurlFetcherReader do
   subject(:reader) { described_class.new('', settings) }
   let(:consumer) { double }
-  let(:settings) { { 'kafka.consumer' => consumer } }
+  let(:settings) { { 'kafka.consumer' => consumer, 'purl.url' => 'https://example.com' } }
 
   describe '#each' do
     before do
@@ -15,6 +15,10 @@ RSpec.describe Traject::KafkaPurlFetcherReader do
 
 
       allow(PublicXmlRecord).to receive(:fetch).and_return('<publicObject />')
+    end
+
+    it 'passes the purl url through' do
+      expect(reader.each.select { |x| x.is_a? PublicXmlRecord }.first.purl_url).to eq 'https://example.com'
     end
 
     it 'returns objects from the purl-fetcher api' do
