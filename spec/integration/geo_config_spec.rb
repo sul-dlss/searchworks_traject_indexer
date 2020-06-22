@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'EarthWorks indexing' do
   let(:druid) { 'dc482zx1528' }
-  subject(:result) { indexer.map_record(PublicXmlRecord.new(druid)) }
+  subject(:result) { indexer.map_record(PublicXmlRecord.new(druid, purl_url: 'https://purl.stanford.edu')) }
 
   def stub_purl_request(druid, body)
     without_partial_double_verification do

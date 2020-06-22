@@ -19,7 +19,7 @@ class Traject::KafkaPurlFetcherReader
         yield({ id: message.key, delete: true })
       else
         change = JSON.parse(message.value)
-        record = PublicXmlRecord.new(change['druid'].sub('druid:', ''))
+        record = PublicXmlRecord.new(change['druid'].sub('druid:', ''), purl_url: @settings['purl.url'])
         if should_be_deleted?(change, record)
           yield({ id: message.key, delete: true })
         elsif target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
