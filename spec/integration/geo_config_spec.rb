@@ -112,14 +112,16 @@ describe 'EarthWorks indexing' do
       expect(result).to include 'dc_description_s' => ['This dataset is a visualization of abundance estimates for six species of Pacific salmon (Oncorhynchus spp.): Chinook, Chum, Pink, Steelhead, Sockeye, and Coho in catchment areas of the Northern Pacific Ocean, including Canada, China, Japan, Russia, and the United States. Catchment polygons included in this layer range in dates from 1978 to 2008. Sources dating from 1950 to 2005, including published literature and agency reports were consulted in order to create these data. In addition to abundance estimates, the PCSA database includes information on distribution, diversity, run-timings, land cover/land-use, dams, hatcheries, data sources, drainages, and administrative categories and provides a consistent format for comparing watersheds across the range of wild Pacific salmon.The Conservation Science team at the Wild Salmon Center has created a geographic database, the Pacific Salmon Conservation Assessment (PSCA) that covers the whole range of wild Pacific Salmon. By providing estimations of salmon abundance and diversity, these data can provide opportunities to conduct range-wide analysis for conservation planning, prioritizing, and assessments.  The primary goal in developing the PSCA database is to guide proactive international salmon conservation.']
     end
     it 'contains the correct dct_references_s' do
-      pending('yet to be implemented')
       expect(JSON.parse(result['dct_references_s'].first)).to include 'http://schema.org/url' => 'https://purl.stanford.edu/vv853br8653',
-                                                                'http://schema.org/downloadUrl' => 'http://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
-                                                                'http://www.loc.gov/mods/v3' => 'http://purl.stanford.edu/vv853br8653.mods',
-                                                                'http://www.isotc211.org/schemas/2005/gmd/' => 'https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/vv/853/br/8653/iso19139.xml',
+                                                                'http://schema.org/downloadUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+                                                                'http://www.loc.gov/mods/v3' => 'https://purl.stanford.edu/vv853br8653.mods',
                                                                 'http://www.opengis.net/def/serviceType/ogc/wfs' => 'https://geowebservices.stanford.edu/geoserver/wfs',
                                                                 'http://www.opengis.net/def/serviceType/ogc/wms'=>'https://geowebservices.stanford.edu/geoserver/wms'
 
+    end
+    it 'contains the linked ISO19139' do
+      pending('pending until we figure out where / how to migrate our OpenGeoMetadata pushing')
+      expect(JSON.parse(result['dct_references_s'].first)).to include 'http://www.isotc211.org/schemas/2005/gmd/' => 'https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/vv/853/br/8653/iso19139.xml'
     end
   end
   context 'when no envelope is present' do
