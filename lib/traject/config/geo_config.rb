@@ -68,7 +68,7 @@ end
 
 def mods_xpath(xpath)
   lambda do |resource, accumulator, _context|
-    accumulator << resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3')
+    accumulator << resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3', dc: 'http://purl.org/dc/elements/1.1/')
   end
 end
 
@@ -107,7 +107,7 @@ each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
   context.skip!(
     "This content type: #{record.dor_content_type} is not supported"
-  ) unless %w[image map book].include?(record.dor_content_type)
+  ) unless %w[image map book geo].include?(record.dor_content_type)
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
@@ -128,7 +128,15 @@ to_field 'dc_rights_s' do |record, accumulator|
     accumulator << 'Restricted'
   end
 end
-to_field 'layer_geom_type_s', literal('Image')
+
+to_field 'layer_geom_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type'), first_only do |record, accumulator|
+  accumulator.flatten!.map!(&:text).map! { |v| v.gsub('Dataset#', '') }
+end
+to_field 'layer_geom_type_s' do |record, accumulator, context|
+  next if context.output_hash['layer_geom_type_s']
+  accumulator << 'Image' if %w[image map book].include?(record.dor_content_type)
+end
+
 to_field 'dc_type_s', literal('Image')
 to_field 'dc_format_s', literal('JPEG 2000')
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only

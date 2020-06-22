@@ -69,13 +69,57 @@ describe 'EarthWorks indexing' do
       expect(result['solr_year_i']).to eq [1603]
     end
   end
+  context 'image map book content without dc:type' do
+    let(:druid) { 'ny179kk3075' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+    it 'includes the layer_geom_type_s' do
+      expect(result).to include 'layer_geom_type_s' => ['Image']
+    end
+
+  end
   context 'for geo content' do
     let(:druid) { 'vv853br8653' }
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
-    it 'skips record' do
-      expect(result).to be_nil
+    it 'maps the metadata' do
+      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/vv853br8653'],
+                                'dc_title_s' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
+                                'dc_rights_s' => ['Public'],
+                                'dct_provenance_s' => ['Stanford'],
+                                'layer_geom_type_s' => ['Polygon'],
+                                'layer_slug_s' => ['stanford-vv853br8653'],
+                                'dc_rights_s' => ['Public'],
+                                'dc_subject_sm' => ['Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters'],
+                                'hashed_id_ssi' => ['2322030c6a14ad9ca0724974314364a6']
+    end
+    it 'contains the correct solr_year_i' do
+      pending('yet to be implemented')
+      expect(result).to include 'solr_year_i' => [1978]
+    end
+    it 'contains the correct format' do
+      pending('yet to be implemented')
+      expect(result).to include 'dc_format_s' => ['Shapefile']
+    end
+    it 'contains the correct creators' do
+      pending('yet to be implemented')
+      expect(result).to include 'dc_creator_sm' => ['Pinsky, Malin L.','Springmeyer, Dane B.','Goslin, Matthew N.','Augerot, Xanthippe']
+    end
+    it 'contains the correct description' do
+      pending('yet to be implemented')
+      expect(result).to include 'dc_description_s' => ['This dataset is a visualization of abundance estimates for six species of Pacific salmon (Oncorhynchus spp.): Chinook, Chum, Pink, Steelhead, Sockeye, and Coho in catchment areas of the Northern Pacific Ocean, including Canada, China, Japan, Russia, and the United States. Catchment polygons included in this layer range in dates from 1978 to 2008. Sources dating from 1950 to 2005, including published literature and agency reports were consulted in order to create these data. In addition to abundance estimates, the PCSA database includes information on distribution, diversity, run-timings, land cover/land-use, dams, hatcheries, data sources, drainages, and administrative categories and provides a consistent format for comparing watersheds across the range of wild Pacific salmon.The Conservation Science team at the Wild Salmon Center has created a geographic database, the Pacific Salmon Conservation Assessment (PSCA) that covers the whole range of wild Pacific Salmon. By providing estimations of salmon abundance and diversity, these data can provide opportunities to conduct range-wide analysis for conservation planning, prioritizing, and assessments.  The primary goal in developing the PSCA database is to guide proactive international salmon conservation.']
+    end
+    it 'contains the correct dct_references_s' do
+      pending('yet to be implemented')
+      expect(JSON.parse(result['dct_references_s'].first)).to include 'http://schema.org/url' => 'https://purl.stanford.edu/vv853br8653',
+                                                                'http://schema.org/downloadUrl' => 'http://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+                                                                'http://www.loc.gov/mods/v3' => 'http://purl.stanford.edu/vv853br8653.mods',
+                                                                'http://www.isotc211.org/schemas/2005/gmd/' => 'https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/vv/853/br/8653/iso19139.xml',
+                                                                'http://www.opengis.net/def/serviceType/ogc/wfs' => 'https://geowebservices.stanford.edu/geoserver/wfs',
+                                                                'http://www.opengis.net/def/serviceType/ogc/wms'=>'https://geowebservices.stanford.edu/geoserver/wms'
+
     end
   end
   context 'when no envelope is present' do
