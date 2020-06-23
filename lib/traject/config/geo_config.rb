@@ -86,6 +86,13 @@ def mods_display(method, *args, default: nil)
   end
 end
 
+module Constants
+  GEOWEBSERVICES = {
+    'Public': 'https://geowebservices.stanford.edu/geoserver',
+    'Restricted': 'https://geowebservices-restricted.stanford.edu/geoserver'
+  }
+end
+
 each_record do |record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
@@ -155,12 +162,25 @@ to_field 'dc_creator_sm' do |record, accumulator|
 end
 to_field 'layer_availability_score_f', literal(1.0)
 to_field 'geoblacklight_version', literal('1.0')
-to_field 'dct_references_s' do |record, accumulator|
-  accumulator << {
+to_field 'dct_references_s' do |record, accumulator, context|
+  references = {
     'http://schema.org/url' => "https://purl.stanford.edu/#{record.druid}",
-    'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",
-    'http://iiif.io/api/presentation#manifest' => "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
-  }.to_json
+    'http://www.loc.gov/mods/v3' => "https://purl.stanford.edu/#{record.druid}.mods",
+  }
+  case record.dor_content_type
+  when 'image', 'map', 'book'
+    references.merge!({
+      'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",
+      'http://iiif.io/api/presentation#manifest' => "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
+    })
+  when 'geo'
+    references.merge!({
+      'http://schema.org/downloadUrl' =>  "https://stacks.stanford.edu/file/druid:#{record.druid}/data.zip",
+      'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wfs",
+      'http://www.opengis.net/def/serviceType/ogc/wms' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wms"
+    })
+  end
+  accumulator << references.to_json
 end
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
 to_field 'solr_geom', stanford_mods(:coordinates_as_envelope)
