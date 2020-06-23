@@ -194,4 +194,8 @@ class PublicXmlRecord
       n.value.split('druid:').last
     end
   end
+
+  def druid_tree
+    druid.match(/(..)(...)(..)(....)/).captures.join('/')
+  end
 end
