@@ -10,6 +10,46 @@ require 'utils'
 require 'honeybadger'
 require 'digest/md5'
 
+class GeoAuthorities
+  def self.formats
+    {
+      'application/x-esri-shapefile' => 'Shapefile'
+    }
+  end
+
+  def self.subjects
+    {
+      'farming' => 'Farming',
+      'biota' => 'Biology and Ecology',
+      'climatologyMeteorologyAtmosphere' => 'Climatology, Meteorology and Atmosphere',
+      'boundaries' => 'Boundaries',
+      'elevation' => 'Elevation',
+      'environment' => 'Environment',
+      'geoscientificInformation' => 'Geoscientific Information',
+      'health' => 'Health',
+      'imageryBaseMapsEarthCover' => 'Imagery and Base Maps',
+      'intelligenceMilitary' => 'Military',
+      'inlandWaters' => 'Inland Waters',
+      'location' => 'Location',
+      'oceans' => 'Oceans',
+      'planningCadastre' => 'Planning and Cadastral',
+      'structure' => 'Structure',
+      'transportation' => 'Transportation',
+      'utilitiesCommunication' => 'Utilities and Communication',
+      'society' => 'Society',
+      'economy' => 'Economy'
+    }
+  end
+
+  def self.geometry_types
+    {
+      'esriGeometryPoint' => 'Point',
+      'esriGeometryPolygon' => 'Polygon',
+      'esriGeometryPolyline' => 'Line'
+    }
+  end
+end
+
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
 
@@ -136,30 +176,75 @@ to_field 'dc_rights_s' do |record, accumulator|
   end
 end
 
-to_field 'layer_geom_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type'), first_only do |record, accumulator|
-  accumulator.flatten!.map!(&:text).map! { |v| v.gsub('Dataset#', '') }
+to_field 'layer_geom_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type') do |record, accumulator|
+  data = accumulator.flatten.select { |v| v.text =~ /#/ }.map { |v| v.text.split('#', 2).last }.slice(0..0)
+  data.map! { |v| GeoAuthorities.geometry_types.fetch(v, v) }
+  accumulator.replace(data)
 end
+
 to_field 'layer_geom_type_s' do |record, accumulator, context|
-  next if context.output_hash['layer_geom_type_s']
+  next if context.output_hash['layer_geom_type_s'] && !context.output_hash['layer_geom_type_s'].empty?
+
   accumulator << 'Image' if %w[image map book].include?(record.dor_content_type)
 end
 
-to_field 'dc_type_s', literal('Image')
-to_field 'dc_format_s', literal('JPEG 2000')
+to_field 'layer_modified_dt' do |record, accumulator|
+  accumulator << record.public_xml_doc.root.attr('published')
+end
+
+to_field 'dct_issued_s', mods_xpath('mods:originInfo/mods:dateIssued') do |record, accumulator|
+  data = accumulator.flatten.map(&:text).slice(0..0)
+  accumulator.replace(data)
+end
+
+to_field 'dc_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type')  do |record, accumulator|
+  data = accumulator.flatten.map(&:text).map { |v| v.split('#', 2).first }.slice(0..0)
+  accumulator.replace(data)
+end
+
+to_field 'dc_type_s' do |record, accumulator, context|
+  next if context.output_hash['dc_type_s'] && !context.output_hash['dc_type_s'].empty?
+
+  accumulator << 'Image' if %w[image map book].include?(record.dor_content_type)
+end
+
+to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:format') do |record, accumulator|
+  data = accumulator.flatten.map(&:text).select { |v| v =~ /format=/ }.map { |v| v.split('format=', 2).last }.slice(0..0)
+  accumulator.replace(data.map { |v| GeoAuthorities.formats.fetch(v, v) })
+end
+
+to_field 'dc_format_s' do |record, accumulator, context|
+  next if context.output_hash['dc_format_s'] && !context.output_hash['dc_format_s'].empty?
+
+  accumulator << 'JPEG 2000' if %w[image map book].include?(record.dor_content_type)
+end
+
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
-to_field 'dc_subject_sm', stanford_mods(:topic_facet)
+to_field 'dc_subject_sm', stanford_mods(:subject_other_search) do |record, accumulator|
+  accumulator.map! { |val| val.sub(/[\\,;]$/, '').strip if val }
+end
+to_field 'dc_subject_sm', mods_xpath('mods:subject/mods:topic') do |record, accumulator|
+  accumulator.flatten!.map! do |val|
+    if val.attr('authority') =~ /ISO19115topicCategory/i
+      GeoAuthorities.subjects[val.attr('valueURI')] || val.text || val.attr('valueURI')
+    else
+      val.text
+    end
+  end.compact!
+end
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)
+to_field 'dct_temporal_sm', stanford_mods(:era_facet)
 to_field 'dc_publisher_s',
          stanford_mods(:term_values, %I[origin_info publisher]),
          first_only
-to_field 'dc_creator_sm' do |record, accumulator|
-  record.stanford_mods.sw_person_authors.compact.map do |author|
-    accumulator << author.gsub(/\.$/, '')
-  end
-  record.stanford_mods.sw_corporate_authors.compact.map do |author|
-    accumulator << author.gsub(/\.$/, '')
-  end
+to_field 'dc_creator_sm', stanford_mods(:sw_person_authors) do |_record, accumulator|
+  accumulator.map! { |str| trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(str) }
 end
+
+to_field 'dc_creator_sm', stanford_mods(:sw_corporate_authors) do |_record, accumulator|
+  accumulator.map! { |str| trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(str) }
+end
+
 to_field 'layer_availability_score_f', literal(1.0)
 to_field 'geoblacklight_version', literal('1.0')
 to_field 'dct_references_s' do |record, accumulator, context|
@@ -174,11 +259,31 @@ to_field 'dct_references_s' do |record, accumulator, context|
       'http://iiif.io/api/presentation#manifest' => "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
     })
   when 'geo'
+    formats = context.output_hash['dc_format_s'] || []
+
     references.merge!({
       'http://schema.org/downloadUrl' =>  "https://stacks.stanford.edu/file/druid:#{record.druid}/data.zip",
-      'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wfs",
-      'http://www.opengis.net/def/serviceType/ogc/wms' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wms"
+      'http://www.opengis.net/def/serviceType/ogc/wms' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wms",
+      'http://www.isotc211.org/schemas/2005/gmd/' => "https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/#{record.druid_tree}/iso19139.xml",
     })
+
+    if formats.include?('Shapefile')
+      references.merge!({
+        'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wfs",
+      })
+    elsif formats.include?('GeoTIFF') || formats.include?('ArcGRID')
+      references.merge!({
+        'http://www.opengis.net/def/serviceType/ogc/wcs' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wcs",
+      })
+    end
+
+    index_map = record.public_xml_doc.xpath('//file[@id="index_map.json"]').length > 0
+
+    if index_map
+      references.merge!({
+        'https://openindexmaps.org' => "https://stacks.stanford.edu/file/druid:#{druid}/index_map.json"
+      })
+    end
   end
   accumulator << references.to_json
 end
@@ -186,6 +291,9 @@ to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
 to_field 'solr_geom', stanford_mods(:coordinates_as_envelope)
 to_field 'layer_slug_s' do |record, accumulator|
   accumulator << "stanford-#{record.druid}"
+end
+to_field 'layer_id_s' do |record, accumulator|
+  accumulator << "druid:#{record.druid}"
 end
 
 to_field 'hashed_id_ssi' do |_record, accumulator, context|
@@ -199,7 +307,16 @@ to_field 'stanford_rights_metadata_s' do |record, accumulator|
   accumulator << record.rights_xml
 end
 
-to_field 'solr_year_i', stanford_mods(:pub_year_int), first_only
+to_field 'solr_year_i' do |record, accumulator|
+  subject_year = record.stanford_mods.year_int(record.stanford_mods.subject.temporal)
+
+  accumulator << subject_year if subject_year
+  accumulator << record.stanford_mods.pub_year_int if accumulator.empty?
+end
+
+to_field 'dct_isPartOf_sm', mods_xpath('mods:relatedItem[@type="host"]/mods:titleInfo/mods:title') do |record, accumulator|
+  accumulator.flatten!.map!(&:text)
+end
 
 each_record do |record, context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
@@ -228,4 +345,28 @@ each_record do |record, context|
   t1 = Time.now
 
   logger.debug('geo_config.rb') { "Processed #{context.output_hash['id']} (#{t1 - t0}s)" }
+end
+
+
+def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(str)
+  previous_str = nil
+  until str == previous_str
+    previous_str = str
+
+    str = str.strip.gsub(/ *([,\/;:])$/, '')
+                   .sub(/(\w\w)\.$/, '\1')
+                   .sub(/(\p{L}\p{L})\.$/, '\1')
+                   .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/, '\1')
+
+
+    # single square bracket characters if they are the start and/or end
+    #   chars and there are no internal square brackets.
+    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
+    str = str.sub(/\A\[/, '') if str.index(']').nil? # no closing bracket
+    str = str.sub(/\]\Z/, '') if str.index('[').nil? # no opening bracket
+
+    str
+  end
+
+  str
 end
