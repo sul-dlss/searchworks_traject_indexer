@@ -9,14 +9,45 @@ require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
 require 'digest/md5'
-require 'geo_combine/subjects'
-require 'geo_combine/formats'
-require 'geo_combine/geometry_types'
 
 class GeoAuthorities
-  extend GeoCombine::Formats
-  extend GeoCombine::Subjects
-  extend GeoCombine::GeometryTypes
+  def self.formats
+    {
+      'application/x-esri-shapefile' => 'Shapefile'
+    }
+  end
+
+  def self.subjects
+    {
+      'farming' => 'Farming',
+      'biota' => 'Biology and Ecology',
+      'climatologyMeteorologyAtmosphere' => 'Climatology, Meteorology and Atmosphere',
+      'boundaries' => 'Boundaries',
+      'elevation' => 'Elevation',
+      'environment' => 'Environment',
+      'geoscientificInformation' => 'Geoscientific Information',
+      'health' => 'Health',
+      'imageryBaseMapsEarthCover' => 'Imagery and Base Maps',
+      'intelligenceMilitary' => 'Military',
+      'inlandWaters' => 'Inland Waters',
+      'location' => 'Location',
+      'oceans' => 'Oceans',
+      'planningCadastre' => 'Planning and Cadastral',
+      'structure' => 'Structure',
+      'transportation' => 'Transportation',
+      'utilitiesCommunication' => 'Utilities and Communication',
+      'society' => 'Society',
+      'economy' => 'Economy'
+    }
+  end
+
+  def self.geometry_types
+    {
+      'esriGeometryPoint' => 'Point',
+      'esriGeometryPolygon' => 'Polygon',
+      'esriGeometryPolyline' => 'Line'
+    }
+  end
 end
 
 Utils.logger = logger
