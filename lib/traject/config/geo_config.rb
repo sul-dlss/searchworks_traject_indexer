@@ -9,7 +9,7 @@ require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
 require 'digest/md5'
-
+require 'byebug'
 class GeoAuthorities
   def self.formats
     {
@@ -154,7 +154,7 @@ each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
   context.skip!(
     "This content type: #{record.dor_content_type} is not supported"
-  ) unless %w[image map book geo].include?(record.dor_content_type)
+  ) unless (%w[image map book geo].include?(record.dor_content_type) || record.is_collection)
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
@@ -186,6 +186,7 @@ to_field 'layer_geom_type_s' do |record, accumulator, context|
   next if context.output_hash['layer_geom_type_s'] && !context.output_hash['layer_geom_type_s'].empty?
 
   accumulator << 'Image' if %w[image map book].include?(record.dor_content_type)
+  accumulator << 'Collection' if record.is_collection
 end
 
 to_field 'layer_modified_dt' do |record, accumulator|
@@ -293,7 +294,7 @@ to_field 'layer_slug_s' do |record, accumulator|
   accumulator << "stanford-#{record.druid}"
 end
 to_field 'layer_id_s' do |record, accumulator|
-  accumulator << "druid:#{record.druid}"
+  accumulator << "druid:#{record.druid}" unless record.is_collection
 end
 
 to_field 'hashed_id_ssi' do |_record, accumulator, context|

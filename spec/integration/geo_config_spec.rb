@@ -58,7 +58,7 @@ describe 'EarthWorks indexing' do
     it 'contains subject metadata' do
       expect(result['dc_subject_sm']).to include('Hot springs')
     end
-    it 'contains description with abstract and notes' do
+    it 'contains description with abstract and es' do
       expect(result['dc_description_s'].first).to eq 'Publication date estimat'\
       'e from dealer description. Shows views of tourist attractions. Includes'\
       ' distance chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 bound'\
@@ -187,6 +187,22 @@ describe 'EarthWorks indexing' do
 
     it 'builds a description' do
       expect(result['dc_description_s']).to include('Oversize Digitized by Stanford University Libraries.')
+    end
+  end
+  
+  context 'a collection' do
+    let(:druid) { 'bq589tv8583' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'has expected fields' do
+      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/bq589tv8583'],
+                                'layer_geom_type_s' => ['Collection']
+    end
+    it 'does not include a layer_id_s' do
+      expect(result).not_to include 'layer_id_s'
     end
   end
 
