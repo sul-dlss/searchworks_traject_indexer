@@ -58,7 +58,7 @@ describe 'EarthWorks indexing' do
     it 'contains subject metadata' do
       expect(result['dc_subject_sm']).to include('Hot springs')
     end
-    it 'contains description with abstract and es' do
+    it 'contains description with abstract and notes' do
       expect(result['dc_description_s'].first).to eq 'Publication date estimat'\
       'e from dealer description. Shows views of tourist attractions. Includes'\
       ' distance chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 bound'\
