@@ -12,7 +12,8 @@ require 'digest/md5'
 class GeoAuthorities
   def self.formats
     {
-      'application/x-esri-shapefile' => 'Shapefile'
+      'application/x-esri-shapefile' => 'Shapefile',
+      'Geodatabase' => 'Geodatabase'
     }
   end
 
@@ -153,7 +154,7 @@ each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
   context.skip!(
     "This content type: #{record.dor_content_type} is not supported"
-  ) unless (%w[image map book geo].include?(record.dor_content_type) || record.is_collection)
+  ) unless (%w[image map book geo file].include?(record.dor_content_type) || record.is_collection)
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
@@ -210,7 +211,11 @@ end
 
 to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:format') do |record, accumulator|
   data = accumulator.flatten.map(&:text).select { |v| v =~ /format=/ }.map { |v| v.split('format=', 2).last }.slice(0..0)
-  accumulator.replace(data.map { |v| GeoAuthorities.formats.fetch(v, v) })
+  if (data.present?)
+    accumulator.replace(data.map { |v| GeoAuthorities.formats.fetch(v, v) })
+  else
+    accumulator.flatten!.map!(&:text)
+  end
 end
 
 to_field 'dc_format_s' do |record, accumulator, context|
@@ -253,6 +258,10 @@ to_field 'dct_references_s' do |record, accumulator, context|
     'http://www.loc.gov/mods/v3' => "https://purl.stanford.edu/#{record.druid}.mods",
   }
   case record.dor_content_type
+  when 'file'
+    references.merge!({
+      'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",
+    })
   when 'image', 'map', 'book'
     references.merge!({
       'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",

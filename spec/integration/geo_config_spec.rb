@@ -214,6 +214,22 @@ describe 'EarthWorks indexing' do
     end
   end
 
+  context 'content-type file (file geodatabase)' do
+    let(:druid) { 'pq479rm6462' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'has expected fields' do
+      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/pq479rm6462'],
+                                'dc_format_s' => ['Geodatabase'],
+                                'layer_geom_type_s' => ['Mixed']
+    end
+    it 'contains the linked oembed' do
+      expect(JSON.parse(result['dct_references_s'].first)).to include 'https://oembed.com' => 'https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/pq479rm6462'
+    end
+  end
+
   context 'coordinate envelopes are supported' do
     let(:druid) { 'qy240vt8937' }
     before do
