@@ -167,6 +167,14 @@ describe 'EarthWorks indexing' do
     it 'contains solr_geom' do
       expect(result).to include 'solr_geom' => 'ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)'
     end
+
+    describe 'objects in collections' do
+      let(:druid) { 'mc977kq8162' }
+
+      it 'contains dc_source_sm' do
+        expect(result).to include 'dc_source_sm' => ['stanford-bq589tv8583']
+      end
+    end
   end
   context 'when no envelope is present' do
     let(:druid) { 'bk264hq9320' }

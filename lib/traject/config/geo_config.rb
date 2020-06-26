@@ -314,6 +314,15 @@ to_field 'solr_year_i' do |record, accumulator|
   accumulator << record.stanford_mods.pub_year_int if accumulator.empty?
 end
 
+to_field 'dc_source_sm' do |record, accumulator|
+  next unless record.dor_content_type == 'geo'
+  next unless record.collections && record.collections.any?
+
+  record.collections.each do |collection|
+    accumulator << "stanford-#{collection.druid}"
+  end
+end
+
 to_field 'dct_isPartOf_sm', mods_xpath('mods:relatedItem[@type="host"]/mods:titleInfo/mods:title') do |record, accumulator|
   accumulator.flatten!.map!(&:text)
 end
