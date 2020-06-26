@@ -104,7 +104,7 @@ class PublicXmlRecord
   end
 
   def stanford_only?
-    rights.stanford_only_unrestricted
+    rights.stanford_only_unrestricted?
   end
 
   def rights_xml
