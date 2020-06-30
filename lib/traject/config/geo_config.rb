@@ -214,7 +214,8 @@ to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:form
   if (data.present?)
     accumulator.replace(data.map { |v| GeoAuthorities.formats.fetch(v, v) })
   else
-    accumulator.flatten!.map!(&:text)
+    accumulator.flatten!
+    accumulator.map!(&:text)
   end
 end
 
@@ -229,14 +230,17 @@ to_field 'dc_subject_sm', stanford_mods(:subject_other_search) do |record, accum
   accumulator.map! { |val| val.sub(/[\\,;]$/, '').strip if val }
 end
 to_field 'dc_subject_sm', mods_xpath('mods:subject/mods:topic') do |record, accumulator|
-  accumulator.flatten!.map! do |val|
+  accumulator.flatten!
+  accumulator.map! do |val|
     if val.attr('authority') =~ /ISO19115topicCategory/i
       GeoAuthorities.subjects[val.attr('valueURI')] || val.text || val.attr('valueURI')
     else
       val.text
     end
-  end.compact!
+  end
+  accumulator.compact!
 end
+
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)
 to_field 'dct_temporal_sm', stanford_mods(:era_facet)
 to_field 'dc_publisher_s',
@@ -333,7 +337,8 @@ to_field 'dc_source_sm' do |record, accumulator|
 end
 
 to_field 'dct_isPartOf_sm', mods_xpath('mods:relatedItem[@type="host"]/mods:titleInfo/mods:title') do |record, accumulator|
-  accumulator.flatten!.map!(&:text)
+  accumulator.flatten!
+  accumulator.map!(&:text)
 end
 
 each_record do |record, context|
