@@ -199,7 +199,7 @@ to_field 'dct_issued_s', mods_xpath('mods:originInfo/mods:dateIssued') do |recor
 end
 
 to_field 'dc_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type')  do |record, accumulator|
-  data = accumulator.flatten.map(&:text).map { |v| v.split('#', 2).first }.slice(0..0)
+  data = accumulator.flatten.map(&:text).uniq.map { |v| v.split('#', 2).first }.slice(0..0)
   accumulator.replace(data)
 end
 
@@ -212,8 +212,9 @@ end
 to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:format') do |record, accumulator|
   data = accumulator.flatten.map(&:text).select { |v| v =~ /format=/ }.map { |v| v.split('format=', 2).last }.slice(0..0)
   if (data.present?)
-    accumulator.replace(data.map { |v| GeoAuthorities.formats.fetch(v, v) })
+    accumulator.replace(data.uniq.map { |v| GeoAuthorities.formats.fetch(v, v) })
   else
+    accumulator.uniq!
     accumulator.flatten!
     accumulator.map!(&:text)
   end
@@ -238,11 +239,15 @@ to_field 'dc_subject_sm', mods_xpath('mods:subject/mods:topic') do |record, accu
       val.text
     end
   end
+  accumulator.uniq!
   accumulator.compact!
 end
 
 to_field 'dct_spatial_sm', stanford_mods(:geographic_facet)
-to_field 'dct_temporal_sm', stanford_mods(:era_facet)
+to_field 'dct_temporal_sm', stanford_mods(:era_facet) do |_record, accumulator|
+  accumulator.uniq!
+end
+
 to_field 'dc_publisher_s',
          stanford_mods(:term_values, %I[origin_info publisher]),
          first_only
@@ -331,7 +336,7 @@ to_field 'dc_source_sm' do |record, accumulator|
   next unless record.dor_content_type == 'geo'
   next unless record.collections && record.collections.any?
 
-  record.collections.each do |collection|
+  record.collections.uniq.each do |collection|
     accumulator << "stanford-#{collection.druid}"
   end
 end
@@ -339,6 +344,7 @@ end
 to_field 'dct_isPartOf_sm', mods_xpath('mods:relatedItem[@type="host"]/mods:titleInfo/mods:title') do |record, accumulator|
   accumulator.flatten!
   accumulator.map!(&:text)
+  accumulator.uniq!
 end
 
 each_record do |record, context|
