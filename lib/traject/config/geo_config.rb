@@ -45,7 +45,8 @@ class GeoAuthorities
     {
       'esriGeometryPoint' => 'Point',
       'esriGeometryPolygon' => 'Polygon',
-      'esriGeometryPolyline' => 'Line'
+      'esriGeometryPolyline' => 'Line',
+      'LineString' => 'Line'
     }
   end
 end

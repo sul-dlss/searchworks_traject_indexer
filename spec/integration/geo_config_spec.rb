@@ -245,4 +245,17 @@ describe 'EarthWorks indexing' do
       expect(result['solr_year_i']).to eq [1880]
     end
   end
+  
+  context 'linestrings should be represented as Line' do
+    let(:druid) { 'mc977kq8162' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'builds a solr_geom from coordinate parsing' do
+      expect(result['layer_geom_type_s']).to eq ['Line']
+    end
+  end
+
 end
