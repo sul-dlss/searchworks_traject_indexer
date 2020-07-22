@@ -1,8 +1,8 @@
 dist: xenial
 language: ruby
 rvm:
-  - 2.7.0
-  - jruby-9.2.11.0
+  - 2.7.1
+  - jruby-9.2.12.0
 env:
   global:
     - CC_TEST_REPORTER_ID=620ccc237826a7e38f89dcde46a9f014fc5848700ebe3b976296b5324e4f3f22
