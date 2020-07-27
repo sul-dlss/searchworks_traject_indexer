@@ -138,7 +138,7 @@ GEM
     http-parser (1.2.1)
       ffi-compiler (>= 1.0, < 2.0)
     httpclient (2.8.3)
-    i18n (1.8.4)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.10)
     jdbc-mysql (5.1.47)
@@ -203,7 +203,7 @@ GEM
     sshkit (1.21.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stanford-mods (2.6.1)
+    stanford-mods (2.6.2)
       activesupport
       mods (~> 2.2)
     state_machines (0.5.0)
