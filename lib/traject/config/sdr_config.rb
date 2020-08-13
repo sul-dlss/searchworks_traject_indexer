@@ -39,6 +39,7 @@ settings do
 
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
+  provide 'purl_fetcher.skip_catkey', ENV.fetch('PURL_FETCHER_SKIP_CATKEY', true) != 'false'
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'
