@@ -126,7 +126,7 @@ GEM
       ffi (>= 1.0.0)
       rake
     hashie (4.1.0)
-    honeybadger (4.7.1)
+    honeybadger (4.7.2)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
