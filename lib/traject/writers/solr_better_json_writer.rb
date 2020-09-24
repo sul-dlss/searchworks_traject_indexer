@@ -16,6 +16,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     super
 
     @debouncer = Debouncer.new(@settings["solr_better_json_writer.debounce_timeout"] || 60, &method(:drain_queue))
+    @retry_count = 0
   end
 
   # Add a single context to the queue, ready to be sent to solr
@@ -51,9 +52,18 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
       logger.error "Error in Solr batch add. Will retry documents individually at performance penalty: #{error_message}"
 
+      @retry_count += 1
+
       batch.each do |c|
-        send_single(c)
+        sleep rand(0..max_sleep_seconds)
+        if send_single(c)
+          @retry_count = [0, @retry_count - 0.1].min
+        else
+          @retry_count += 0.1
+        end
       end
+    else
+      @retry_count = 0
     end
   end
 
@@ -83,7 +93,15 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       if @max_skipped and skipped_record_count > @max_skipped
         raise MaxSkippedRecordsExceeded.new("#{self.class.name}: Exceeded maximum number of skipped records (#{@max_skipped}): aborting")
       end
+
+      return false
     end
+
+    return true
+  end
+
+  def max_sleep_seconds
+    Float(2 ** @retry_count)
   end
 
   def generate_json(batch)
