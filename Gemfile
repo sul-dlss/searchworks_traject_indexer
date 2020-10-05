@@ -28,6 +28,7 @@ gem 'dor-rights-auth'
 gem 'sequel'
 gem 'mysql2', '< 0.5.3', platform: :mri
 gem 'jdbc-mysql', '~> 5.1.0', platform: :jruby
+gem 'kostya-sigar', '~> 2.0.8'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
