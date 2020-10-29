@@ -63,7 +63,7 @@ GEM
     diff-lcs (1.4.4)
     digest-crc (0.6.1)
       rake (~> 13.0)
-    dlss-capistrano (3.9.0)
+    dlss-capistrano (3.10.1)
       capistrano (~> 3.0)
       capistrano-bundle_audit (>= 0.3.0)
       capistrano-one_time_key
