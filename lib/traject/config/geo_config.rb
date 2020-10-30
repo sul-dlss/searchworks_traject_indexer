@@ -300,7 +300,7 @@ to_field 'dct_references_s' do |record, accumulator, context|
 
     if index_map
       references.merge!({
-        'https://openindexmaps.org' => "https://stacks.stanford.edu/file/druid:#{druid}/index_map.json"
+        'https://openindexmaps.org' => "https://stacks.stanford.edu/file/druid:#{record.druid}/index_map.json"
       })
     end
   end
