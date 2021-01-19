@@ -206,7 +206,7 @@ GEM
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
     slop (4.8.2)
-    sshkit (1.21.1)
+    sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     stanford-mods (2.6.2)
@@ -278,4 +278,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.2.5
+   2.2.6
