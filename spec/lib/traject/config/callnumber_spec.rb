@@ -14,6 +14,31 @@ RSpec.describe 'Call Numbers' do
 
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
 
+  describe 'lc_assigned_callnum_ssim' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = '15069nam a2200409 a 4500'
+        r.append(MARC::ControlField.new('008', '091123s2014    si a    sb    101 0 eng d'))
+        r.append(MARC::DataField.new('050', ' ', '0',
+          MARC::Subfield.new('a', 'F1356'),
+          MARC::Subfield.new('b', '.M464 2005'),
+        ))
+        r.append(MARC::DataField.new('090', ' ', '0',
+          MARC::Subfield.new('a', 'F090'),
+          MARC::Subfield.new('b', '.Z1'),
+        ))
+      end
+    end
+
+    it 'extracts data from the 050ab field' do
+      expect(result['lc_assigned_callnum_ssim']).to include 'F1356 .M464 2005'
+    end
+
+    it 'extracts data from the 090ab field' do
+      expect(result['lc_assigned_callnum_ssim']).to include 'F090 .Z1'
+    end
+  end
+
 
   # /**
   #  * junit4 tests for Stanford University call number fields

@@ -2462,6 +2462,10 @@ to_field 'callnum_search' do |record, accumulator, context|
   accumulator.concat(good_call_numbers.uniq)
 end
 
+to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, accumulator, _context|
+  accumulator.select! { |cn|  cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX }
+end
+
 # shelfkey = custom, getShelfkeys
 
 to_field 'shelfkey' do |record, accumulator, context|
