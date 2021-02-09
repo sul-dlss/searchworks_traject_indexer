@@ -20,14 +20,13 @@ gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
 gem 'mods_display'
-gem 'eye', platform: :mri
-gem 'config'
 gem 'statsd-ruby'
 gem 'debouncer'
 gem 'dor-rights-auth'
 gem 'sequel'
 gem 'mysql2', '< 0.5.3', platform: :mri
 gem 'jdbc-mysql', '~> 5.1.0', platform: :jruby
+gem 'rexml' # required for ruby 3
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
