@@ -65,11 +65,11 @@ namespace :deploy do
   before :cleanup, :load_eye_config do
     on roles(:app) do
       within release_path do
-        execute :bundle, :exec, :eye, :stop, :traject
-        execute :bundle, :exec, :eye, :quit
+        execute :eye, :stop, :traject
+        execute :eye, :quit
 
         # avoid spaces in the command name, see http://capistranorb.com/documentation/getting-started/tasks/
-        execute :bundle, :exec, :'eye', :load, :'traject.eye'
+        execute :'eye', :load, :'traject.eye'
       end
     end
   end
