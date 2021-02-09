@@ -181,7 +181,7 @@ class PublicXmlRecord
     return unless thumb
     thumb_druid=thumb.split('/').first # the druid (before the first slash)
     thumb_filename=thumb.split(/[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}[0-9]{4}[\/]/).last # everything after the druid
-    "#{thumb_druid}%2F#{URI.escape(thumb_filename)}"
+    "#{thumb_druid}%2F#{ERB::Util.url_encode(thumb_filename)}"
   end
 
   # get the druids from predicate relationships in rels-ext from public_xml
