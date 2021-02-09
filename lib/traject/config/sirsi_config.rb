@@ -368,7 +368,7 @@ def reserves_lookup
       header_converters: :symbol, quote_char: "\x00"
     }
 
-    CSV.foreach(reserves_file, csv_options) do |row|
+    CSV.foreach(reserves_file, **csv_options) do |row|
       if row[:item_rez_status] == 'ON_RESERVE'
         ckey = row[:ckey]
         crez_value = reserves_data[ckey] || []
