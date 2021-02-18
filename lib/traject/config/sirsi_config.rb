@@ -422,19 +422,6 @@ to_field 'marcxml' do |record, accumulator|
   accumulator << (SolrMarcStyleFastXMLWriter.single_record_document(record, include_namespace: true) + "\n")
 end
 
-to_field 'marcbib_xml' do |record, accumulator|
-  skip_fields = %w[852 853 854 855 863 864 865 866 867 868 999]
-  filtered_fields = MARC::FieldMap.new
-  record.each do |field|
-    next if skip_fields.include?(field.tag)
-    filtered_fields.push(field)
-  end
-  new_record = MARC::Record.new
-  new_record.leader = record.leader
-  filtered_fields.map { |f| new_record.append(f) }
-  accumulator << (SolrMarcStyleFastXMLWriter.single_record_document(new_record, include_namespace: true) + "\n")
-end
-
 to_field 'all_search' do |record, accumulator|
   keep_fields = %w[024 027 028 033 905 908 920 986 979]
   result = []
