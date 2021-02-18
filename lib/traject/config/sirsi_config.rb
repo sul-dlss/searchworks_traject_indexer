@@ -3252,6 +3252,8 @@ to_field 'building_facet' do |record, accumulator, context|
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
 end
 
+to_field 'context_source_ssi', literal('sirsi')
+
 to_field 'context_version_ssi' do |_record, accumulator|
   accumulator << Utils.version
 end
