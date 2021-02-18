@@ -46,13 +46,30 @@ RSpec.describe 'Sirsi config' do
   describe 'vern_toc_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'vern_toc_search'}
+    let(:field) { 'vern_toc_search' }
 
     it 'maps the right fields' do
       result = select_by_id('505')[field]
       expect(result).to eq ['vern505a vern505r vern505t']
 
       expect(results).not_to include hash_including(field => ['nope'])
+    end
+
+    context 'with vernacular in the 505' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '505', '0', '0',
+              MARC::Subfield.new('a', '本书在综合考察绘画,文人,禅学这三者相互关联的基础上.')
+            )
+          )
+        end
+      end
+
+      it 'maps the data' do
+        expect(result).to include field => ['本书在综合考察绘画,文人,禅学这三者相互关联的基础上.']
+      end
     end
   end
 
@@ -356,13 +373,30 @@ RSpec.describe 'Sirsi config' do
   describe 'vern_summary_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'vern_summary_search'}
+    let(:field) { 'vern_summary_search' }
 
     it 'maps the right fields' do
       result = select_by_id('520')[field]
       expect(result).to eq ['vern520a vern520b']
 
       expect(results).not_to include hash_including(field => ['nope'])
+    end
+
+    context 'with vernacular in the 520' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '520', '0', '0',
+              MARC::Subfield.new('a', '本书在综合考察绘画,文人,禅学这三者相互关联的基础上.')
+            )
+          )
+        end
+      end
+
+      it 'maps the data' do
+        expect(result).to include field => ['本书在综合考察绘画,文人,禅学这三者相互关联的基础上.']
+      end
     end
   end
 

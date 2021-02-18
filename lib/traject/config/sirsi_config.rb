@@ -35,6 +35,7 @@ Utils.logger = logger
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
 MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
+CJK_RANGE = /(\p{Han}|\p{Hangul}|\p{Hiragana}|\p{Katakana})/.freeze
 
 indexer = self
 
@@ -1988,6 +1989,14 @@ to_field "vern_physical", extract_marc("300abcefg", alternate_script: :only)
 to_field "toc_search", extract_marc("905art:505art", alternate_script: false)
 to_field "vern_toc_search", extract_marc("505art", alternate_script: :only)
 
+# sometimes we find vernacular script in the 505 anyway :shrug:
+to_field 'vern_toc_search' do |_record, accumulator, context|
+  next unless context.output_hash['toc_search']
+
+  accumulator.replace(context.output_hash['toc_search'].select { |value| value.match?(CJK_RANGE) } )
+end
+
+
 # Generate structured data from the table of contents (IE marc 505 + 905s).
 # There are arrays of values for each TOC entry, and each TOC contains e.g. a chapter title; e.g.:
 #  - fields: [['Vol 1 Chapter 1', 'Vol 1 Chapter 2'], ['Vol 2 Chapter 1']]
@@ -2118,6 +2127,14 @@ to_field "context_search", extract_marc("518a", alternate_script: false)
 to_field "vern_context_search", extract_marc("518aa", alternate_script: :only)
 to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
 to_field "vern_summary_search", extract_marc("520ab", alternate_script: :only)
+
+# sometimes we find vernacular script in the 520 anyway :shrug:
+to_field 'vern_summary_search' do |_record, accumulator, context|
+  next unless context.output_hash['summary_search']
+
+  accumulator.replace(context.output_hash['summary_search'].select { |value| value.match?(CJK_RANGE) } )
+end
+
 to_field "award_search", extract_marc("986a:586a", alternate_script: false)
 
 # # Standard Number Fields
