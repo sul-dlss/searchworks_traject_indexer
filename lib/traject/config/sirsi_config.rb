@@ -559,21 +559,16 @@ to_field 'uniform_title_authorities_ssim', extract_marc('1300:1301:2400:2401')
 
 def get_marc_vernacular(marc,original_field)
   return_text = []
-  if original_field['6']
-    match_original = original_field['6'].split("-")[1]
-    marc.find_all { |f| '880' == f.tag }.each do |field|
-      if !field['6'].nil? and field['6'].include?("-")
-        field_880 = field['6'].split("-")[0]
-        match_880 = field['6'].split("-")[1].gsub("//r","")
-        if match_original == match_880 and original_field.tag == field_880
-          field.each do |sub|
-            next if Constants::EXCLUDE_FIELDS.include?(sub.code) || sub.code == '4'
-            return_text << sub.value
-          end
-        end
-      end
+  link = parse_linkage(original_field)
+  return unless link[:number]
+
+  marc.select { |f| link[:tag] == f.tag && parse_linkage(f)[:number] == link[:number] }.each do |field|
+    field.each do |sub|
+      next if Constants::EXCLUDE_FIELDS.include?(sub.code) || sub.code == '4'
+      return_text << sub.value
     end
   end
+
   return return_text.join(" ") unless return_text.empty?
 end
 
@@ -768,7 +763,8 @@ def linked_contributors_struct(record)
 
   Traject::MarcExtractor.cached('700:710:711:720', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     if !field['t'] || field['t'].empty?
-      vern_field = vern_fields.find { |f| f['6'] && f['6'].split("-")[1].gsub("//r","") == field['6'].split("-")[1].gsub("//r","") } if field['6']
+      link = parse_linkage(field)
+      vern_field = vern_fields.find { |f| parse_linkage(f)[:number] == link[:number] } if field['6']
 
       contributor = assemble_contributor_data_struct(field)
       contributor[:vern] = assemble_contributor_data_struct(vern_field) if vern_field
@@ -777,15 +773,26 @@ def linked_contributors_struct(record)
     end
   end
 
-  vern_fields.each do |field, spec, extractor|
-    if field['6'] && field['6'].include?("-") && field['6'].split("-")[1].gsub("//r","") == "00"
-      contributors << {
-        vern: assemble_contributor_data_struct(field)
-      }
-    end
+  vern_fields.each do |field, _spec, _extractor|
+    link = parse_linkage(field)
+    next unless link[:number] == '00'
+
+    contributors << {
+      vern: assemble_contributor_data_struct(field)
+    }
   end
 
   contributors
+end
+
+def parse_linkage(field)
+  return {} unless field && field['6']
+
+  tag_and_number, script_id, field_orientation = field['6'].split('/')
+
+  tag, number = tag_and_number.split('-', 2)
+
+  { tag: tag, number: number, script_id: script_id, field_orientation: field_orientation }
 end
 
 def assemble_contributor_data_struct(field)
@@ -2091,21 +2098,23 @@ to_field 'summary_struct' do |marc, accumulator|
 end
 
 def get_unmatched_vernacular(marc,tag)
+  return [] unless marc['880']
+
   fields = []
-  if marc['880']
-    marc.find_all { |f| '880' == f.tag }.each do |field|
-      text = []
-      unless field['6'].nil? or !field["6"].include?("-")
-        if field['6'].split("-")[1].gsub("//r","") == "00" and field['6'].split("-")[0] == tag
-          field.each do |sub|
-            next if Constants::EXCLUDE_FIELDS.include?(sub.code)
-            text << sub.value
-          end
-        end
-      end
-      fields << text.join(' ') unless text.empty?
+
+  marc.select { |f| f.tag == '880' }.each do |field|
+    text = []
+    link = parse_linkage(field)
+
+    next unless link[:number] == '00' && link[:tag] == tag
+    field.each do |sub|
+      next if Constants::EXCLUDE_FIELDS.include?(sub.code)
+      text << sub.value
     end
+
+    fields << text.join(' ') unless text.empty?
   end
+
   return fields unless fields.empty?
 end
 
