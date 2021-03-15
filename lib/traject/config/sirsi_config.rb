@@ -2770,6 +2770,13 @@ to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_ord
   accumulator.replace library_map.translate_array(accumulator)
 end
 
+to_field 'building_location_facet' do |record, accumulator, context|
+  holdings(record, context).each do |holding|
+    next if holding.skipped?
+    accumulator << [holding.library, holding.home_location].join('/')
+  end
+end
+
 to_field 'item_display' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
