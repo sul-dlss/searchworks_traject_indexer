@@ -107,6 +107,17 @@ RSpec.describe 'ItemInfo config' do
     end
   end
 
+  describe 'building_location_facet' do
+    let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
+    let(:fixture_name) { 'buildingTests.xml' }
+    let(:field) { 'building_location_facet' }
+
+    it 'has data' do
+      expect(select_by_id('229800')[field]).to eq ['ARS/STACKS']
+      expect(select_by_id('575946')[field]).to eq ['GREEN/STACKS']
+    end
+  end
+
   describe 'item_display' do
     let(:field) { 'item_display' }
 
