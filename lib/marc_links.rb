@@ -20,12 +20,17 @@ module MarcLinks
           managed_purl: link_is_managed_purl?(link),
           file_id: file_id(link_field),
           druid: druid(link),
-          sort: link[:sort]
+          sort: link[:sort],
+          sfx: link_is_sfx?(link_field)
         }
       end
     end
 
     private
+
+    def link_is_sfx?(link_field)
+      link_field['u']&.match? Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+})
+    end
 
     def file_id(link_field)
       return unless link_field['x']
@@ -121,6 +126,8 @@ module MarcLinks
     end
 
     def link_is_fulltext?(field)
+      return !link_is_sfx?(field) if field.tag == '956'
+
       resource_labels = ["table of contents", "abstract", "description", "sample text"]
       return false unless %w[0 1].include?(field.indicator2)
 
