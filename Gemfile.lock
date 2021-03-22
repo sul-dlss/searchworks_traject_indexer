@@ -57,7 +57,7 @@ GEM
       ffi (>= 1.0.0)
       rake
     hashie (4.1.0)
-    honeybadger (4.7.3)
+    honeybadger (4.8.0)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -208,4 +208,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.2.14
+   2.2.15
