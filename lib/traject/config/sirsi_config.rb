@@ -3275,6 +3275,18 @@ to_field 'context_input_modified_dtsi' do |_record, accumulator, context|
   end
 end
 
+# Index the list of field tags from the record
+to_field 'context_marc_fields_ssim' do |record, accumulator|
+  accumulator.concat(record.tags)
+end
+
+# Index the list of subfield codes for each field
+to_field 'context_marc_fields_ssim' do |record, accumulator|
+  accumulator.concat(record.select { |f| f.is_a?(MARC::DataField) }.map do |field|
+    [field.tag, field.subfields.map(&:code)].flatten.join
+  end)
+end
+
 each_record do |record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
