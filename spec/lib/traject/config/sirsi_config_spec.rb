@@ -40,4 +40,16 @@ RSpec.describe 'Sirsi config' do
       expect(ix650 < ix600).to be true
     end
   end
+
+  describe 'context_marc_fields_ssim' do
+    subject(:result) { records.map { |rec| indexer.map_record(rec) }.to_a.first }
+
+    it 'indexes field counts' do
+      expect(result['context_marc_fields_ssim']).to include '008', '245'
+    end
+
+    it 'index subfield counts' do
+      expect(result['context_marc_fields_ssim']).to include '245a'
+    end
+  end
 end
