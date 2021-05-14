@@ -10,6 +10,53 @@ RSpec.describe 'Date config' do
   let(:fixture_name) { 'idTests.mrc' }
   subject(:result) { indexer.map_record(record) }
 
+  describe 'pub_year_ss' do
+    let(:field) { 'pub_year_ss' }
+
+    [
+      { value_of_008: '      e19439999', expected: '1943' },
+      { value_of_008: '      e196u9999', expected: '1960' },
+      { value_of_008: '      e19uu9999', expected: nil },
+      { value_of_008: '      euuuuuuuu', expected: nil },
+      { value_of_008: '      s19432007', expected: '1943' },
+      { value_of_008: '      s196u2007', expected: '1960' },
+      { value_of_008: '      s19uu2007', expected: nil },
+      { value_of_008: '      suuuuuuuu', expected: nil },
+      { value_of_008: '      t19432007', expected: '2007' },
+      { value_of_008: '      t196u2007', expected: '2007' },
+      { value_of_008: '      t196u----', expected: '1960' },
+      { value_of_008: '      tuuuuuuuu', expected: nil },
+      { value_of_008: '      b19439999', expected: nil },
+      { value_of_008: '      c19439999', expected: '1943 -' },
+      { value_of_008: '      d19439999', expected: '1943 -' },
+      { value_of_008: '      d19431983', expected: '1943 - 1983' },
+      { value_of_008: '      duuuu1983', expected: '- 1983' },
+      { value_of_008: '      i19439999', expected: '1943 -' },
+      { value_of_008: '      k19439999', expected: '1943 -' },
+      { value_of_008: '      m19439999', expected: '1943 -' },
+      { value_of_008: '      n19439999', expected: nil },
+      { value_of_008: '      p19439999', expected: '1943' },
+      { value_of_008: '      q19439999', expected: '1943 ...' },
+      { value_of_008: '      r19439999', expected: '1943' },
+      { value_of_008: '      u19439999', expected: '1943 -' },
+      { value_of_008: '      |19439999', expected: nil },
+    ].each do |row|
+      context "with a record with 008 field #{row[:value_of_008]}" do
+        let(:record) do
+          MARC::Record.new.tap { |r| r.append(MARC::ControlField.new('008', row[:value_of_008])) }
+        end
+
+        it "maps to #{row[:expected]}" do
+          if row[:expected].nil?
+            expect(result[field]).to be_nil
+          else
+            expect(result[field]).to eq [row[:expected]]
+          end
+        end
+      end
+    end
+  end
+
   describe 'publication_year_isi' do
     let(:field) { 'publication_year_isi' }
     [
