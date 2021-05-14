@@ -1374,6 +1374,13 @@ to_field 'marc_links_struct' do |record, accumulator|
   end
 end
 
+to_field 'marc_links_struct' do |record, accumulator|
+  Traject::MarcExtractor.new('956').collect_matching_lines(record) do |field, spec, extractor|
+    result = MarcLinks::Processor.new(field).as_h
+    accumulator << result if result
+  end
+end
+
 # Not using traject's oclcnum here because we have more complicated logic
 to_field 'oclc' do |record, accumulator|
   marc035_with_m_suffix = []
