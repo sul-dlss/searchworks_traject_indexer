@@ -713,7 +713,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       it do
-        expect(result[field]).to eq ['hd360gv1231']
+        expect(result[field]).to eq ['BENDERRM', 'hd360gv1231']
       end
     end
     describe 'multiple 979' do
@@ -741,8 +741,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       it do
-        expect(result[field].count).to eq 2
-        expect(result[field]).to eq ['tf882hn2198', 'hd360gv1231']
+        expect(result[field]).to eq ['BAILEYT', 'tf882hn2198', 'BENDERRM', 'hd360gv1231']
       end
     end
   end

@@ -3022,6 +3022,7 @@ to_field 'fund_facet' do |record, accumulator|
     file = field['c']
     next if file =~ /no content metadata/i
     druid = field['b'].split(':')
+    accumulator << field['f']
     accumulator << druid[1]
   end
 end
