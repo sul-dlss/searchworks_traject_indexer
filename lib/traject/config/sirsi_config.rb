@@ -1208,19 +1208,49 @@ to_field 'pub_year_tisim' do |record, accumulator|
   accumulator.map!(&:to_s)
 end
 
+def clean_marc_008_date(year, u_replacement: '0')
+  return unless year =~ /(\d{4}|\d{3}[u-])/
+  year = year.gsub(/[u-]$/, u_replacement)
+  return unless (500..(Time.now.year + 10)).include? year.to_i
+
+  return year.to_i.to_s
+end
+
 def marc_008_date(byte6values, byte_range, u_replacement)
   lambda do |record, accumulator|
     Traject::MarcExtractor.new('008', first: true).collect_matching_lines(record) do |field, spec, extractor|
       if byte6values.include? field.value[6]
-        year = field.value[byte_range]
-        next unless year =~ /(\d{4}|\d{3}[u-])/
-        year.gsub!(/[u-]$/, u_replacement)
-        next unless (500..(Time.now.year + 10)).include? year.to_i
-        accumulator << year.to_i.to_s
+        year = clean_marc_008_date(field.value[byte_range], u_replacement: u_replacement)
+        accumulator << year if year
       end
     end
   end
 end
+
+# Year/range to show with the title
+to_field 'pub_year_ss' do |record, accumulator|
+  next unless record['008']
+
+  date_type = record['008'].value[6]
+  next unless %w[c d e i k m p q r s t u].include? date_type
+
+  date1 = clean_marc_008_date(record['008'].value[7..10], u_replacement: '0')
+  date2 = clean_marc_008_date(record['008'].value[11..14], u_replacement: '9')
+
+  next if (date1.nil? || date1.empty?) && (date2.nil? || date2.empty?)
+
+  accumulator << case date_type
+                 when 'e', 's'
+                   date1
+                 when 'p', 'r', 't'
+                   date2 || date1
+                 when 'c', 'd', 'm', 'u', 'i', 'k'
+                   "#{date1} - #{date2}"
+                 when 'q'
+                   "#{date1} ... #{date2}"
+                 end
+end
+
 # # from 008 date 1
 to_field 'publication_year_isi', marc_008_date(%w[e s t], 7..10, '0')
 to_field 'beginning_year_isi', marc_008_date(%w[c d m u], 7..10, '0')
