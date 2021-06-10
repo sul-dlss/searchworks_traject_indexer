@@ -77,8 +77,21 @@ describe 'EarthWorks indexing' do
     it 'includes the layer_geom_type_s' do
       expect(result).to include 'layer_geom_type_s' => ['Image']
     end
-
   end
+
+  context 'an item with rights information in the MODS' do
+    let(:druid) { 'ny179kk3075' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'parses out the rights information into fields' do
+      expect(result).to include 'stanford_license_s' => include(/This work is in the public domain/),
+                                'stanford_use_and_reproduction_s' => include(/Image from the Map Collections courtesy Stanford University/),
+                                'stanford_copyright_s' => include(/This work has been identified as being/)
+    end
+  end
+
   context 'for geo content' do
     let(:druid) { 'vv853br8653' }
     before do
