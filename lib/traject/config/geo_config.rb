@@ -326,6 +326,41 @@ to_field 'stanford_rights_metadata_s' do |record, accumulator|
   accumulator << record.rights_xml
 end
 
+to_field 'stanford_license_s' do |record, accumulator|
+  field = record.mods_display.accessCondition.find { |x| x.label == 'License:' }
+
+  if field
+    accumulator << field.values.first.to_s
+  else
+    statement = record.public_xml_doc.xpath(
+      '//rightsMetadata/use/human[@type="creativeCommons" or @type="openDataCommons"]'
+    ).first
+    accumulator << statement.content if statement
+  end
+end
+
+to_field 'stanford_use_and_reproduction_s' do |record, accumulator|
+  field = record.mods_display.accessCondition.find { |x| x.label == 'Use and reproduction:' }
+
+  if field
+    accumulator << field.values.first.to_s
+  else
+    statement = record.public_xml_doc.xpath('//rightsMetadata/use/human[@type="useAndReproduction"]').first
+    accumulator << statement.content if statement
+  end
+end
+
+to_field 'stanford_copyright_s' do |record, accumulator|
+  field = record.mods_display.accessCondition.find { |x| x.label == 'Copyright:' }
+
+  if field
+    accumulator << field.values.first.to_s
+  else
+    statement = record.public_xml_doc.xpath('//rightsMetadata/copyright').first
+    accumulator << statement.content if statement
+  end
+end
+
 to_field 'solr_year_i' do |record, accumulator|
   subject_year = record.stanford_mods.year_int(record.stanford_mods.subject.temporal)
 
