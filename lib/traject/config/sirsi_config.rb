@@ -2034,14 +2034,15 @@ end
 #    vernacular: [['The same, but pulled from the matched vernacular fields']]
 #    unmatched_vernacular: [['The same, but pulled from any unmatched vernacular fields']]
 to_field 'toc_struct' do |marc, accumulator|
-  formatted_chapter_regex = Regexp.union(
-    /[^\S]--[^\S]/,
-    /      /,
-    /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i,
-    /(?=(?<!Chapter|Section|Appendix|Part|v\.) \d+[:\.-]\s+)/i,
-    /(?=(?<!Chapter|Section|Appendix|Part|v\.)\s{2,}\d+[:\.-]?\s+)/i,
-    /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i
-  )
+  formatted_chapter_regexes = [
+    /[^\S]--[^\S]/, # this is the normal, expected MARC delimiter
+    /      /, # but a bunch of eResources like to use whitespace
+    /[^\S]\.-[^\S]/, # or a .-
+    /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
+    /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
+    /(?=(\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
+    /(?=(\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
+  ]
   fields = []
   vern = []
   unmatched_vern = []
@@ -2057,7 +2058,18 @@ to_field 'toc_struct' do |marc, accumulator|
         if sub_field.code == 'a'
           data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
           buffer = []
-          data.concat regex_split(sub_field.value, formatted_chapter_regex).map { |w| w.strip unless w.strip.empty? }.compact
+          found = false
+          formatted_chapter_regexes.each do |regex|
+            chapters = regex_split(sub_field.value, regex).map { |w| w.strip unless w.strip.empty? }.compact
+
+            if chapters.length > 1
+              found = true
+              data.concat(chapters)
+              break
+            end
+          end
+
+          data.concat([sub_field.value]) unless found
         elsif sub_field.code == "1" && !Constants::SOURCES[sub_field.value.strip].nil?
           data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
           buffer = []

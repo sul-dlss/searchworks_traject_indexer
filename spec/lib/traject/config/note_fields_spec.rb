@@ -255,29 +255,45 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
-      context 'with some pre-formatted data in the $a' do
+      context 'with a CD liner' do
         let(:record) do
           MARC::Record.new.tap do |r|
             r.append(
               MARC::DataField.new(
                 '505', ' ', ' ',
-                MARC::Subfield.new('a', 'Part 1: Nasal Surgery 1.0 1. Septoplasty Marcelo Antunes, Sam Becker, Michael Lupa and Dan Becker. Chapter 2: The Theory of Organizations. Chapter 3: The University in America. -- 4. Drugs: Intoxicating Consumption 5. Food: Embodied Consumption      Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK v. 4. 1852-1863.')
+                MARC::Subfield.new('a', <<-EOTOC
+                  Op. 12, book 1. No. 1, Arietta (1:20) ; No. 2, Waltz (2:03) ; No. 6, Norwegian melody (0:52) ; No. 5, Folk melody (1:30) -- Op. 38, book 2. No. 8, Canon (4:57) ; No. 6, Elegy (2:18) ; No. 7, Waltz (1:05) -- Op. 47, book 4. No. 3, Melody (3:06) -- Op. 54, book 5. No. 3, March of the trolls (2:57) ; No. 4, Notturno (4:17) -- Op. 57, book 6. No. 2, Gade (2:59) ; No. 3, Illusion (3:37) ; No. 6, Homesickness (4:58) -- Op. 62, book 7. No. 6, Homeward (2:48) ; No. 4, The brook (1:26) ; No. 5, Phantom (2:30) ; No. 1, Sylph (1:22) -- Op. 68, book 9. No. 5, Cradle song (3:02) -- Op. 65, book 8. No. 6, Wedding day at Troldhaugen (6:25) -- Op. 68, book 9. No. 4, Evening in the mountains (3:52) ; No. 3, At your feet (3:24) -- Op. 71, book 10. No. 2, Summer evening (2:34) ; No. 6, Gone (2:48) ; No. 7, Remembrances (2:00).
+                EOTOC
+                )
               )
             )
           end
         end
 
-        it 'ignores the data' do
-          expect(result_field.first[:fields].first).to match_array [
-            'Part 1: Nasal Surgery 1.0',
-            '1. Septoplasty Marcelo Antunes, Sam Becker, Michael Lupa and Dan Becker.',
-            'Chapter 2: The Theory of Organizations.',
-            'Chapter 3: The University in America.',
-            '4. Drugs: Intoxicating Consumption',
-            '5. Food: Embodied Consumption',
-            'Whole Lotta Shakin Goin On: The Politics of Youth in 1950s Fiction Nick Bentley, University of Keele, UK',
-            'v. 4. 1852-1863.'
-          ]
+        it 'splits only on the --' do
+          expect(result_field.first[:fields].first).to include 'Op. 12, book 1. No. 1, Arietta (1:20) ; No. 2, Waltz (2:03) ; No. 6, Norwegian melody (0:52) ; No. 5, Folk melody (1:30)',
+                                                               'Op. 38, book 2. No. 8, Canon (4:57) ; No. 6, Elegy (2:18) ; No. 7, Waltz (1:05)'
+        end
+      end
+
+      context 'with an eresource' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', toc)
+              )
+            )
+          end
+        end
+
+        let(:toc) do
+          '1 Introduction 9      1.1 Human Body - Kinematic Perspective 10      1.2 Musculoskeletal Injuries and Neurological Movement Disorders 11      1.2.1 Musculoskeletal injuries 11      '
+        end
+
+        it 'splits on chapter numbers' do
+          expect(result_field.first[:fields].first).to include '1 Introduction 9', '1.1 Human Body - Kinematic Perspective 10'
         end
       end
     end
