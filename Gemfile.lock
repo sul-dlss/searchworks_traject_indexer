@@ -75,7 +75,7 @@ GEM
     jdbc-mysql (5.1.47)
     manticore (0.7.0-java)
       openssl_pkcs8_pure
-    marc (1.1.0)
+    marc (1.1.1)
       rexml
       scrub_rb (>= 1.0.1, < 2)
       unf
