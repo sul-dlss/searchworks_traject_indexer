@@ -42,7 +42,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'context_marc_fields_ssim' do
-    subject(:result) { records.map { |rec| indexer.map_record(rec) }.to_a.first }
+    subject(:result) { indexer.map_record(record) }
 
     it 'indexes field counts' do
       expect(result['context_marc_fields_ssim']).to include '008', '245'
@@ -50,6 +50,24 @@ RSpec.describe 'Sirsi config' do
 
     it 'index subfield counts' do
       expect(result['context_marc_fields_ssim']).to include '245a'
+    end
+
+    context 'for a record with multiple subfields' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01952cas  2200457Ia 4500'
+          r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
+          r.append(MARC::DataField.new('999', ' ', ' ',
+            MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
+            MARC::Subfield.new('w', 'LC'),
+            MARC::Subfield.new('i', 'LCbarcode'),
+            MARC::Subfield.new('m', 'GREEN')
+          ))
+        end
+      end
+      it 'indexes individual subfields' do
+        expect(result['context_marc_fields_ssim']).to include '?999a', '?999w', '?999i', '?999m'
+      end
     end
   end
 end
