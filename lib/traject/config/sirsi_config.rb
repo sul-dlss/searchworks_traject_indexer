@@ -3325,6 +3325,15 @@ to_field 'context_marc_fields_ssim' do |record, accumulator|
   end)
 end
 
+# Index the list of subfield codes for each field
+to_field 'context_marc_fields_ssim' do |record, accumulator|
+  accumulator.concat(record.select { |f| f.is_a?(MARC::DataField) }.map do |field|
+    field.subfields.map(&:code).map do |code|
+      ['?', field.tag, code].flatten.join
+    end
+  end.flatten.uniq)
+end
+
 each_record do |record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
