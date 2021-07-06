@@ -11,7 +11,7 @@
   # CPM => Obsolete
   'EARTH-SCI' => 'Earth Sciences (Branner)',
   'EAST-ASIA' => 'East Asia',
-  'EDUCATION' => 'Education (Cubberley)',
+  'EDUCATION' => 'Education (at SAL1&2)',
   'ENG' => 'Engineering (Terman)',
   'GOV-DOCS' => 'Green',
   'GREEN' => 'Green',

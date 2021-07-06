@@ -38,7 +38,7 @@ RSpec.describe 'ItemInfo config' do
       expect(select_by_id('804724')[field]).to eq ['SAL Newark (off-campus storage)']
       expect(select_by_id('1147269')[field]).to eq ['Classics']
       expect(select_by_id('1505065')[field]).to eq ['Earth Sciences (Branner)']
-      expect(select_by_id('1618836')[field]).to eq ['Education (Cubberley)']
+      expect(select_by_id('1618836')[field]).to eq ['Education (at SAL1&2)']
       expect(select_by_id('1849258')[field]).to eq ['Engineering (Terman)']
       expect(select_by_id('2678655')[field]).to eq ['Business']
       expect(select_by_id('3027805')[field]).to eq ['Marine Biology (Miller)']
