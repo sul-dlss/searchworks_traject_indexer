@@ -296,6 +296,28 @@ RSpec.describe 'Sirsi config' do
           expect(result_field.first[:fields].first).to include '1 Introduction 9', '1.1 Human Body - Kinematic Perspective 10'
         end
       end
+
+      context 'with chapters with colons' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '905', ' ', ' ',
+                MARC::Subfield.new('a', toc)
+              )
+            )
+          end
+        end
+
+        let(:toc) do
+          'Preface  Part I: Fundamentals  1: Energy in Thermal Physics  2: The Second Law  3: Interactions and Implications  Part II: Thermodynamics  4: Engines and Refrigerators  5: Free Energy and Chemical Thermodynamics  Part III: Statistical Mechanics  6: Boltzmann Statistics  7: Quantum Statistics  8: Systems of Interacting Particles  Appendix A: Elements of Quantum Mechanics  Appendix B: Mathematical Results  Suggested Reading  Reference Data  Index.'
+        end
+
+        it 'splits on chapter numbers' do
+          expect(result_field.first[:fields].first).not_to include '1:'
+          expect(result_field.first[:fields].first).to include '1: Energy in Thermal Physics'
+        end
+      end
     end
 
     context 'with unmatched vernacular' do
