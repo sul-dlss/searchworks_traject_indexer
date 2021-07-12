@@ -91,7 +91,7 @@ GEM
       iso-639
       nokogiri (>= 1.6.6)
       nom-xml (~> 1.0)
-    mods_display (0.10.0)
+    mods_display (0.10.1)
       i18n
       stanford-mods (~> 2.1)
     mysql2 (0.5.2)
@@ -113,7 +113,7 @@ GEM
     public_suffix (4.0.6)
     racc (1.5.2)
     racc (1.5.2-java)
-    rake (13.0.3)
+    rake (13.0.6)
     retriable (3.1.2)
     rexml (3.2.5)
     rspec (3.10.0)
