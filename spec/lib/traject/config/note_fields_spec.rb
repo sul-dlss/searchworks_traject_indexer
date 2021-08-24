@@ -318,6 +318,27 @@ RSpec.describe 'Sirsi config' do
           expect(result_field.first[:fields].first).to include '1: Energy in Thermal Physics'
         end
       end
+
+      context 'with double-digit chapter numbers' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', toc)
+              )
+            )
+          end
+        end
+
+        let(:toc) do
+          '9. Global Nonlinear Techniques 10. Closed Orbits and Limit Sets 11. Applications in Biology'
+        end
+
+        it 'splits on chapter numbers' do
+          expect(result_field.first[:fields].first).to include '9. Global Nonlinear Techniques', '10. Closed Orbits and Limit Sets', '11. Applications in Biology'
+        end
+      end
     end
 
     context 'with unmatched vernacular' do
