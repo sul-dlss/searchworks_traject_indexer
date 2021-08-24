@@ -319,6 +319,28 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
+      context 'with a -- delimiter without a preceding whitespace character' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' ',
+                MARC::Subfield.new('a', toc)
+              )
+            )
+          end
+        end
+
+        let(:toc) do
+          '7. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: The church of the Holy Sepulchre in Jerusalem-- 8. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: Jerusalem and the Latin Kingdom:'
+        end
+
+        it 'splits on chapter numbers' do
+          expect(result_field.first[:fields].first).to include '7. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: The church of the Holy Sepulchre in Jerusalem', '8. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: Jerusalem and the Latin Kingdom:'
+        end
+
+      end
+
       context 'with double-digit chapter numbers' do
         let(:record) do
           MARC::Record.new.tap do |r|
