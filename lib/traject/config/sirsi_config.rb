@@ -2037,10 +2037,11 @@ to_field 'toc_struct' do |marc, accumulator|
   formatted_chapter_regexes = [
     /[^\S]--[^\S]/, # this is the normal, expected MARC delimiter
     /      /, # but a bunch of eResources like to use whitespace
+    /--[^\S]/, # or omit the leading whitespace
     /[^\S]\.-[^\S]/, # or a .-
     /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
     /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
-    /(?=(?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
+    /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
     /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
   ]
   fields = []
