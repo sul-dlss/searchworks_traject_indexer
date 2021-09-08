@@ -113,8 +113,8 @@ RSpec.describe 'ItemInfo config' do
     let(:field) { 'building_location_facet_ssim' }
 
     it 'has data' do
-      expect(select_by_id('229800')[field]).to eq ['ARS/STACKS']
-      expect(select_by_id('575946')[field]).to eq ['GREEN/STACKS']
+      expect(select_by_id('229800')[field]).to include 'ARS/STACKS', 'ARS/STACKS/type/STKS-MONO', 'ARS/*/type/STKS-MONO'
+      expect(select_by_id('575946')[field]).to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO', 'GREEN/*/type/STKS-MONO'
     end
   end
 

@@ -2823,7 +2823,16 @@ end
 to_field 'building_location_facet_ssim' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
+
+    accumulator << [holding.library, '*'].join('/')
     accumulator << [holding.library, holding.home_location].join('/')
+    accumulator << [holding.library, '*', 'type', holding.type].join('/')
+    accumulator << [holding.library, holding.home_location, 'type', holding.type].join('/')
+    if holding.current_location
+      accumulator << [holding.library, '*', 'type', holding.type, 'curr', holding.current_location].join('/')
+      accumulator << [holding.library, '*', 'type', '*', 'curr', holding.current_location].join('/')
+      accumulator << [holding.library, holding.home_location, 'type', '*', 'curr', holding.current_location].join('/')
+    end
   end
 end
 
