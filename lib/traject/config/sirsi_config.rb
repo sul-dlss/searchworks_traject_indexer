@@ -2832,6 +2832,7 @@ to_field 'building_location_facet_ssim' do |record, accumulator, context|
       accumulator << [holding.library, '*', 'type', holding.type, 'curr', holding.current_location].join('/')
       accumulator << [holding.library, '*', 'type', '*', 'curr', holding.current_location].join('/')
       accumulator << [holding.library, holding.home_location, 'type', '*', 'curr', holding.current_location].join('/')
+      accumulator << [holding.library, holding.home_location, 'type', holding.type, 'curr', holding.current_location].join('/')
     end
   end
 end
