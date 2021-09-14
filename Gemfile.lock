@@ -70,7 +70,6 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     iso-639 (0.2.10)
-    jdbc-mysql (5.1.47)
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
@@ -94,7 +93,6 @@ GEM
     mods_display (0.10.1)
       i18n
       stanford-mods (~> 2.1)
-    mysql2 (0.5.2)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
@@ -132,7 +130,6 @@ GEM
     ruby-kafka (1.4.0)
       digest-crc
     scrub_rb (1.0.1)
-    sequel (5.48.0)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -192,16 +189,13 @@ DEPENDENCIES
   http
   i18n
   iso-639 (< 0.3)
-  jdbc-mysql (~> 5.1.0)
   manticore
   mods_display
-  mysql2 (< 0.5.3)
   rake
   retriable
   rexml
   rspec
   ruby-kafka
-  sequel
   simplecov
   stanford-mods
   statsd-ruby

@@ -52,36 +52,6 @@ RSpec.describe 'Access config' do
     specify { expect(result[field]).to eq ['Online'] }
   end
 
-
-
-  describe 'items available in HathiTrust' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.append(
-          MARC::DataField.new('035', '', '', MARC::Subfield.new('a', '(OCoLC) 12345'))
-        )
-      end
-    end
-    let(:fake_db) { double('FakeDB') }
-
-    before do
-      allow(fake_db).to receive_messages(from: fake_db, join: fake_db, where: fake_db, select_all: hathi_data)
-      allow(indexer).to receive(:hathitrust_lookup_db).and_return(fake_db)
-    end
-
-    context 'when publicly available' do
-      let(:hathi_data) { [{ access: 'allow', rights: 'pd' }] }
-
-      it { puts result.keys.inspect; expect(result[field]).to include 'Online' }
-    end
-
-    context 'when not publicly available' do
-      let(:hathi_data) { [{ access: 'deny', rights: 'icus' }] }
-
-      it { expect(result[field]).not_to include 'Online' }
-    end
-  end
-
   describe 'when the url is that of a GSB request' do
     it 'is considered at the library' do
       expect(select_by_id('123http')[field]).to eq ['At the Library']
