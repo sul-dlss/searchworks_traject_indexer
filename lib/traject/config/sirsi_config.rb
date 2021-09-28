@@ -3196,7 +3196,6 @@ REZ_DESK_2_BLDG_FACET = Traject::TranslationMap.new('rez_desk_2_bldg_facet').fre
 REZ_DESK_2_REZ_LOC_FACET = Traject::TranslationMap.new('rez_desk_2_rez_loc_facet').freeze
 DEPT_CODE_2_USER_STR = Traject::TranslationMap.new('dept_code_2_user_str').freeze
 LOAN_CODE_2_USER_STR = Traject::TranslationMap.new('loan_code_2_user_str').freeze
-LIB_2_BLDG_FACET = Traject::TranslationMap.new('library_code_translations').freeze
 
 to_field 'crez_instructor_search' do |record, accumulator, context|
   id = context.output_hash['id']&.first
@@ -3300,10 +3299,13 @@ to_field 'building_facet' do |_record, _accumulator, context|
     barcode = split_item_display[0].strip
     reserves_for_item = course_reserves.select { |row| row[:barcode].strip == barcode }.first
 
-    if reserves_for_item
-      REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]] || LIB_2_BLDG_FACET[split_item_display[1]]
+    if reserves_for_item && REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
+      REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
     else
-      LIB_2_BLDG_FACET[split_item_display[1]]
+      # This is not dissimilar to the original building_facet mapping:
+      # Try the current location first, in case it has an overridden library, and then
+      # fall back on the library code.
+      library_map[split_item_display[3]] || library_map[split_item_display[1]]
     end
   end
 
