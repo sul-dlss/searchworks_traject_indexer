@@ -804,7 +804,7 @@ def assemble_contributor_data_struct(field)
 
   {
     link: link_text.join(' '),
-    search: "\"#{link_text.join(' ')}\"",
+    search: link_text.join(' '),
     pre_text: before_text.join(' '),
     post_text: relator_text.join(' ') + extra_text.join(' '),
     authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),

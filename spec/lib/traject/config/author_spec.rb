@@ -682,7 +682,7 @@ RSpec.describe 'Author config' do
       expect(result).to include contributors: array_including(
         hash_including(
           link: '700a 700b 700c 700d none 700g 700j 700q 700u',
-          search: '"700a 700b 700c 700d none 700g 700j 700q 700u"',
+          search: '700a 700b 700c 700d none 700g 700j 700q 700u',
           pre_text: '',
           post_text: '700e'
         )
