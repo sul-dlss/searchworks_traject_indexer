@@ -3152,7 +3152,6 @@ REZ_DESK_2_BLDG_FACET = Traject::TranslationMap.new('rez_desk_2_bldg_facet').fre
 REZ_DESK_2_REZ_LOC_FACET = Traject::TranslationMap.new('rez_desk_2_rez_loc_facet').freeze
 DEPT_CODE_2_USER_STR = Traject::TranslationMap.new('dept_code_2_user_str').freeze
 LOAN_CODE_2_USER_STR = Traject::TranslationMap.new('loan_code_2_user_str').freeze
-LIB_2_BLDG_FACET = Traject::TranslationMap.new('library_code_translations').freeze
 
 to_field 'crez_instructor_search' do |record, accumulator, context|
   id = context.output_hash['id']&.first
@@ -3246,32 +3245,26 @@ to_field 'item_display' do |record, accumulator, context|
   end.flatten!
 end
 
-to_field 'building_facet' do |record, accumulator, context|
+to_field 'building_facet' do |_record, _accumulator, context|
   id = context.output_hash['id']&.first
   course_reserves = reserves_lookup[id]
   next unless course_reserves
-  new_building_facet_vals = []
 
-  context.output_hash['item_display'].map do |item_display_value|
-    split_item_display = item_display_value.split("-|-").map(&:strip)
-    course_reserves.each do |row|
-      home_building = LIB_2_BLDG_FACET[split_item_display[1]]
-      rez_building = REZ_DESK_2_BLDG_FACET[row[:rez_desk]]
-      # Building comparison
-      next if home_building == rez_building
+  new_building_facet_vals = context.output_hash['item_display'].map do |item_display_value|
+    split_item_display = item_display_value.split('-|-').map(&:strip)
+    barcode = split_item_display[0].strip
+    reserves_for_item = course_reserves.select { |row| row[:barcode].strip == barcode }.first
 
-      # Barcode comparison
-      if row[:barcode].strip == split_item_display[0].strip
-        if !rez_building.nil?
-          new_building_facet_vals << rez_building
-        else
-          new_building_facet_vals << home_building
-        end
-      else
-         new_building_facet_vals << home_building
-      end
+    if reserves_for_item && REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
+      REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
+    else
+      # This is not dissimilar to the original building_facet mapping:
+      # Try the current location first, in case it has an overridden library, and then
+      # fall back on the library code.
+      library_map[split_item_display[3]] || library_map[split_item_display[1]]
     end
   end
+
   context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
 end
 
