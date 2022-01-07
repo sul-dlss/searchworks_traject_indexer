@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:nn217br6628" published="2022-01-06T15:03:31Z" publishVersion="dor-services/9.6.2">
+  <identityMetadata>
+    <sourceId source="branner">NolliMap.tif</sourceId>
+    <objectId>druid:nn217br6628</objectId>
+    <objectCreator>DOR</objectCreator>
+    <objectType>item</objectType>
+    <objectLabel>La Pianta Grande di Roma (Raster Image)</objectLabel>
+  </identityMetadata>
+  <contentMetadata objectId="druid:nn217br6628" type="geo">
+    <resource id="cocina-fileSet-5925b0a8-fa41-4fb8-94e2-704fce68caf9" sequence="1" type="object">
+      <label>Data</label>
+      <file id="data.zip" mimetype="application/zip" size="172098005" role="master">
+
+
+    </file>
+      <file id="data_EPSG_4326.zip" mimetype="application/zip" size="146314425" role="derivative">
+
+
+    </file>
+    </resource>
+    <resource id="cocina-fileSet-569954ba-6239-4222-88a4-2f8d584bfc42" sequence="2" type="preview">
+      <label>Preview</label>
+      <file id="preview.jpg" mimetype="image/jpeg" size="16749" role="master">
+        <imageData height="200" width="300"/>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <use>
+      <human type="useAndReproduction">You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</human>
+      <license>https://creativecommons.org/licenses/by/3.0/legalcode</license>
+    </use>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world rule="no-download"/>
+      </machine>
+    </access>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:fedora-model="info:fedora/fedora-system:def/model#" xmlns:hydra="http://projecthydra.org/ns/relations#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:nn217br6628">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:ch870zh6792"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>La Pianta Grande di Roma (Raster Image)</dc:title>
+    <dc:creator>Nolli, Giambattista, approximately 1692-1756</dc:creator>
+    <dc:type>Geospatial data</dc:type>
+    <dc:type>cartographic dataset</dc:type>
+    <dc:date>2021</dc:date>
+    <dc:publisher>Stanford University. Center for Spatial and Textual Analysis</dc:publisher>
+    <dc:language>eng</dc:language>
+    <dc:format>4.636</dc:format>
+    <dc:format>GeoTIFF</dc:format>
+    <dc:coverage>Scale not given.</dc:coverage>
+    <dc:coverage>Custom projection</dc:coverage>
+    <dc:coverage>(E 12°26ʹ27ʺ--E 12°31ʹ39ʺ/N 41°55ʹ13ʺ--N 41°51ʹ43ʺ)</dc:coverage>
+    <dc:description displayLabel="Abstract"> The Nolli map consists of twelve exquisitely engraved copper plates that measure approximately six feet high and seven feet wide when combined (176 cm by 208 cm). The map includes almost eight square miles of the densely-built 18th century city as well as the surrounding terrain. It also identifies 1,320 numbered sites clearly marked on the map and linked to a separate legend printed by Nolli to accompany the map. Several hundred additional sites and textual notes describe palazzi, ville, gardens and other built and landscape features resulting in nearly two thousand sites of cultural significance. Nolli’s map is an extraordinary technical achievement that represents a milestone in the art and science of cartography.The version of the map provided here is a digital remastering of the original 12 plates with the seams joining each plate carefully removed. The re-mastered version was created originally in 2004 by James Tice, Erik Steiner and Mark Brenneman with the assistance of Allan Ceen who provided detailed annotations for all 1320 sites noted by Nolli in its legend. The map was geo-referenced—brought into real geographic space—in 2014 by Erik Steiner, Giovanni Svevo and James Tice making it commensurate with state-of-the-art GIS protocols. The Pianta Grande has been used by our team and others as a base for delineating other historic maps of Rome which have become part of its enduring legacy. These include, especially, our ongoing effort to digitally remaster the enormous Forma Urbis Romaeby Rodolfo Lanciani of 1901, a layered map of Rome which features an in-depth archeological account of the city using Nolli's map as a foundational layer.  </dc:description>
+    <dc:description displayLabel="Preferred citation">Nolli, G. (2021). La Pianta Grande di Roma (Raster Image). Stanford University. Center for Spatial and Textual Analysis. Available at: https://purl.stanford.edu/nn217br6628</dc:description>
+    <dc:subject>Gardens</dc:subject>
+    <dc:subject>Buildings</dc:subject>
+    <dc:subject>Land use</dc:subject>
+    <dc:coverage>Rome (Italy)</dc:coverage>
+    <dc:coverage>1935</dc:coverage>
+    <dc:subject>Imagery and Base Maps</dc:subject>
+    <dc:identifier>https://purl.stanford.edu/nn217br6628</dc:identifier>
+    <dc:rights>You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. https://creativecommons.org/licenses/by/3.0/legalcode</dc:rights>
+    <dc:coverage>Scale not given.</dc:coverage>
+    <dc:coverage>EPSG::4326</dc:coverage>
+    <dc:coverage>E 12°26ʹ26ʺ--E 12°31ʹ39ʺ/N 41°55ʹ15ʺ--N 41°51ʹ46ʺ</dc:coverage>
+    <dc:description displayLabel="WGS84 Cartographics">This layer is presented in the WGS84 coordinate system for web display purposes. Downloadable data are provided in native coordinate system or projection.</dc:description>
+    <dc:relation type="collection">Mapping Rome</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+    <titleInfo>
+      <title>La Pianta Grande di Roma (Raster Image)</title>
+    </titleInfo>
+    <name type="corporate">
+      <namePart>Nolli, Giambattista, approximately 1692-1756</namePart>
+      <role>
+        <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+      </role>
+    </name>
+    <typeOfResource>cartographic</typeOfResource>
+    <typeOfResource>software, multimedia</typeOfResource>
+    <genre authority="lcgft" valueURI="http://id.loc.gov/authorities/genreForms/gf2011026297">Geospatial data</genre>
+    <genre authority="rdacontent" valueURI="http://rdvocab.info/termList/RDAContentType/1001">cartographic dataset</genre>
+    <originInfo>
+      <publisher>Stanford University. Center for Spatial and Textual Analysis</publisher>
+      <dateIssued encoding="w3cdtf" keyDate="yes">2021</dateIssued>
+    </originInfo>
+    <language>
+      <languageTerm type="code" authority="iso639-2b">eng</languageTerm>
+    </language>
+    <physicalDescription>
+      <form>GeoTIFF</form>
+      <extent>4.636</extent>
+      <digitalOrigin>born digital</digitalOrigin>
+    </physicalDescription>
+    <subject>
+      <cartographics>
+        <scale>Scale not given.</scale>
+        <projection>Custom projection</projection>
+        <coordinates>(E 12°26ʹ27ʺ--E 12°31ʹ39ʺ/N 41°55ʹ13ʺ--N 41°51ʹ43ʺ)</coordinates>
+      </cartographics>
+    </subject>
+    <abstract displayLabel="Abstract" lang="eng"> The Nolli map consists of twelve exquisitely engraved copper plates that measure approximately six feet high and seven feet wide when combined (176 cm by 208 cm). The map includes almost eight square miles of the densely-built 18th century city as well as the surrounding terrain. It also identifies 1,320 numbered sites clearly marked on the map and linked to a separate legend printed by Nolli to accompany the map. Several hundred additional sites and textual notes describe palazzi, ville, gardens and other built and landscape features resulting in nearly two thousand sites of cultural significance. Nolli’s map is an extraordinary technical achievement that represents a milestone in the art and science of cartography.The version of the map provided here is a digital remastering of the original 12 plates with the seams joining each plate carefully removed. The re-mastered version was created originally in 2004 by James Tice, Erik Steiner and Mark Brenneman with the assistance of Allan Ceen who provided detailed annotations for all 1320 sites noted by Nolli in its legend. The map was geo-referenced—brought into real geographic space—in 2014 by Erik Steiner, Giovanni Svevo and James Tice making it commensurate with state-of-the-art GIS protocols. The Pianta Grande has been used by our team and others as a base for delineating other historic maps of Rome which have become part of its enduring legacy. These include, especially, our ongoing effort to digitally remaster the enormous Forma Urbis Romaeby Rodolfo Lanciani of 1901, a layered map of Rome which features an in-depth archeological account of the city using Nolli's map as a foundational layer.  </abstract>
+    <note displayLabel="Preferred citation" lang="eng">Nolli, G. (2021). La Pianta Grande di Roma (Raster Image). Stanford University. Center for Spatial and Textual Analysis. Available at: https://purl.stanford.edu/nn217br6628</note>
+    <subject>
+      <topic authority="lcsh" lang="eng">Gardens</topic>
+    </subject>
+    <subject>
+      <topic authority="lcsh" lang="eng">Buildings</topic>
+    </subject>
+    <subject>
+      <topic authority="lcsh" lang="eng">Land use</topic>
+    </subject>
+    <subject>
+      <geographic lang="eng">Rome (Italy)</geographic>
+    </subject>
+    <subject>
+      <temporal encoding="w3cdtf">1935</temporal>
+    </subject>
+    <subject>
+      <topic authority="ISO19115TopicCategory" authorityURI="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode" valueURI="imageryBaseMapsEarthCover">Imagery and Base Maps</topic>
+    </subject>
+    <location>
+      <url>https://purl.stanford.edu/nn217br6628</url>
+    </location>
+    <recordInfo>
+      <recordContentSource>Stanford</recordContentSource>
+      <recordIdentifier>edu.stanford.purl:nn217br6628</recordIdentifier>
+      <recordOrigin>This record was translated from ISO 19139 to MODS v.3 using an xsl transformation.</recordOrigin>
+      <languageOfCataloging>
+        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+      </languageOfCataloging>
+    </recordInfo>
+    <extension displayLabel="geo">
+      <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <rdf:Description rdf:about="https://purl.stanford.edu/nn217br6628">
+          <dc:format>image/tiff; format=GeoTIFF</dc:format>
+          <dc:type>Dataset#Raster</dc:type>
+          <gml:boundedBy>
+            <gml:Envelope gml:srsName="EPSG:4326">
+              <gml:lowerCorner>12.4406636 41.8626669</gml:lowerCorner>
+              <gml:upperCorner>12.5273655 41.9208261</gml:upperCorner>
+            </gml:Envelope>
+          </gml:boundedBy>
+          <dc:coverage rdf:resource="" dc:language="eng" dc:title="Rome (Italy)"/>
+        </rdf:Description>
+      </rdf:RDF>
+    </extension>
+    <subject authority="EPSG" valueURI="http://opengis.net/def/crs/EPSG/0/4326" displayLabel="WGS84">
+      <cartographics>
+        <scale>Scale not given.</scale>
+        <projection>EPSG::4326</projection>
+        <coordinates>E 12°26ʹ26ʺ--E 12°31ʹ39ʺ/N 41°55ʹ15ʺ--N 41°51ʹ46ʺ</coordinates>
+      </cartographics>
+    </subject>
+    <note displayLabel="WGS84 Cartographics">This layer is presented in the WGS84 coordinate system for web display purposes. Downloadable data are provided in native coordinate system or projection.</note>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Mapping Rome</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/ch870zh6792</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</accessCondition>
+    <accessCondition type="license" xlink:href="https://creativecommons.org/licenses/by/3.0/legalcode">This work is licensed under a Creative Commons Attribution 3.0 Unported license (CC BY).</accessCondition>
+  </mods>
+  <releaseData>
+    <release to="Earthworks">true</release>
+  </releaseData>
+</publicObject>
