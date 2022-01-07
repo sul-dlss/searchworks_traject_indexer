@@ -100,11 +100,11 @@ class PublicXmlRecord
   end
 
   def public?
-    rights.world_unrestricted?
+    rights.world_rights.first
   end
 
   def stanford_only?
-    rights.stanford_only_unrestricted?
+    rights.stanford_only_rights.first
   end
 
   def rights_xml

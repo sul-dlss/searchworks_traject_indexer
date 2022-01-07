@@ -79,6 +79,18 @@ describe 'EarthWorks indexing' do
     end
   end
 
+  context 'item with world access and a download restriction' do
+    let(:druid) { 'nn217br6628' }
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    it 'has a public rights statement' do
+      expect(result).to include 'dc_rights_s' => ["Public"]
+    end
+
+  end
+
   context 'an item with rights information in the MODS' do
     let(:druid) { 'ny179kk3075' }
     before do
@@ -210,7 +222,7 @@ describe 'EarthWorks indexing' do
       expect(result['dc_description_s']).to include('Oversize Digitized by Stanford University Libraries.')
     end
   end
-  
+
   context 'a collection' do
     let(:druid) { 'bq589tv8583' }
     before do
@@ -258,7 +270,7 @@ describe 'EarthWorks indexing' do
       expect(result['solr_year_i']).to eq [1880]
     end
   end
-  
+
   context 'linestrings should be represented as Line' do
     let(:druid) { 'mc977kq8162' }
     before do
