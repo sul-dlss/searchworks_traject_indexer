@@ -34,3 +34,4 @@ group :deployment do
 end
 
 gem 'activesupport', '~> 6.0' # 7.x requires ruby 2.7+ (and our jruby is at 2.5)
+gem 'nokogiri', '< 1.13' # 1.13 requires ruby 2.6+ (and our jruby is at 2.5)
