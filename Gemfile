@@ -15,7 +15,7 @@ gem 'manticore', platform: :jruby
 gem 'rake'
 gem 'ruby-kafka'
 gem 'stanford-mods'
-gem 'iso-639', '< 0.3' # v0.3+ requires ruby 2.6+ (and out jruby is at 2.5)
+gem 'iso-639'
 gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
@@ -34,4 +34,3 @@ group :deployment do
 end
 
 gem 'activesupport', '~> 6.0' # 7.x requires ruby 2.7+ (and our jruby is at 2.5)
-gem 'nokogiri', '< 1.13' # 1.13 requires ruby 2.6+ (and our jruby is at 2.5)
