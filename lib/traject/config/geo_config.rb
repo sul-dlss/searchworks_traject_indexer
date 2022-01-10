@@ -5,6 +5,7 @@ require 'stanford-mods'
 require 'sdr_stuff'
 require 'kafka'
 require 'traject/readers/kafka_purl_fetcher_reader'
+require 'traject/readers/druid_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
@@ -75,6 +76,8 @@ settings do
     consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"), fetcher_max_queue_size: 15)
     consumer.subscribe(ENV['KAFKA_TOPIC'])
     provide 'kafka.consumer', consumer
+  else
+    provide "reader_class_name", "Traject::DruidReader"
   end
 
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Earthworks')
