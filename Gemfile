@@ -19,7 +19,7 @@ gem 'iso-639', '< 0.3' # v0.3+ requires ruby 2.6+ (and out jruby is at 2.5)
 gem 'whenever'
 gem 'honeybadger'
 gem 'retriable'
-gem 'mods_display'
+gem 'mods_display', '~> 1.0.0.alpha1'
 gem 'statsd-ruby'
 gem 'debouncer'
 gem 'dor-rights-auth'
