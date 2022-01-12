@@ -37,6 +37,7 @@ RSpec.configure do |config|
   end
 
   config.include ResultHelpers
+  config.include Indexers
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
