@@ -23,11 +23,7 @@ describe 'SDR indexing' do
     end
   end
 
-  let(:indexer) do
-    Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sdr_config.rb')
-    end
-  end
+  let(:indexer) { cached_indexer('./lib/traject/config/sdr_config.rb') }
 
   context 'with a missing object' do
     before do

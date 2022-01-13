@@ -2,11 +2,7 @@ RSpec.describe 'Sirsi config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
 
-  let(:indexer) do
-    Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
-    end
-  end
+  let(:indexer) { cached_indexer('./lib/traject/config/sirsi_config.rb') }
   let(:record) { records.first }
   let(:field) { 'db_az_subject' }
 

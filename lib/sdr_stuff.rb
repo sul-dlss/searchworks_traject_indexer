@@ -1,4 +1,5 @@
 require 'http'
+require 'active_support' # some transitive dependencies don't require this first, as they must in Rails 7
 require 'mods_display'
 require 'dor/rights_auth'
 

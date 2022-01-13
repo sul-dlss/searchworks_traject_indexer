@@ -2,12 +2,7 @@ RSpec.describe 'Author config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
 
-  let(:indexer) do
-    Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
-    end
-  end
-
+  let(:indexer) { cached_indexer('./lib/traject/config/sirsi_config.rb') }
   let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { 'linked_related_works_fixture.xml' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }

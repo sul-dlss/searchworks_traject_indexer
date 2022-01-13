@@ -1,9 +1,5 @@
 RSpec.describe 'marc_links_struct' do
-  let(:indexer) do
-    Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
-    end
-  end
+  let(:indexer) { cached_indexer('./lib/traject/config/sirsi_config.rb') }
   subject(:result) { indexer.map_record(record) }
   let(:record) { MARC::XMLReader.new(StringIO.new(marc)).to_a.first }
   let(:field) { 'marc_links_struct' }
