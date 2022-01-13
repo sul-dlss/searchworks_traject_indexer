@@ -9,7 +9,7 @@ ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call unless ENV['D
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
-set :rvm_ruby_version, 'ruby-3.0.0'
+set :rvm_ruby_version, 'ruby-3.0.3'
 
 set :honeybadger_env, "#{fetch(:stage)}"
 
@@ -54,7 +54,7 @@ task :jruby_bundle_install do
         options << "--jobs #{fetch(:bundle_jobs)}" if fetch(:bundle_jobs)
         options << "--without #{fetch(:bundle_without)}" if fetch(:bundle_without)
         options << "#{fetch(:bundle_flags)}" if fetch(:bundle_flags)
-        execute "#{fetch(:rvm_path)}/bin/rvm", 'jruby-9.2.17.0', 'do', :bundle, :install, *options
+        execute "#{fetch(:rvm_path)}/bin/rvm", 'jruby-9.3.2.0', 'do', :bundle, :install, *options
       end
     end
   end

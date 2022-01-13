@@ -46,7 +46,7 @@ processes:
       SOLR_URL: http://sul-solr.stanford.edu/solr/searchworks-prod
       KAFKA_CONSUMER_GROUP_ID: traject_marc_bodoni_prod
     config:
-      start_command: '/usr/local/rvm/bin/rvm jruby-9.2.12.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/sirsi_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
+      start_command: '/usr/local/rvm/bin/rvm jruby-9.3.2.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/sirsi_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
 ```
 
 As of September 2019, the `config/settings.yml` are not managed in sul-dlss/shared_configs (for better or worse).
