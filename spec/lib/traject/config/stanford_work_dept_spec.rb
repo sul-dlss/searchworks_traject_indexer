@@ -1,7 +1,11 @@
 RSpec.describe 'Stanford work and department config' do
   extend ResultHelpers
 
-  let(:indexer) { cached_indexer('./lib/traject/config/sirsi_config.rb') }
+  let(:indexer) do
+    Traject::Indexer.new.tap do |i|
+      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+    end
+  end
   subject(:result) { indexer.map_record(record) }
   let(:work_field) { 'stanford_work_facet_hsim' }
   let(:dept_field) { 'stanford_dept_sim' }

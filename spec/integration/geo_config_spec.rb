@@ -24,7 +24,11 @@ describe 'EarthWorks indexing' do
     end
   end
 
-  let(:indexer) { cached_indexer('./lib/traject/config/geo_config.rb') }
+  let(:indexer) do
+    Traject::Indexer.new.tap do |i|
+      i.load_config_file('./lib/traject/config/geo_config.rb')
+    end
+  end
 
   context 'when image, map, or book content' do
     before do
