@@ -22,14 +22,6 @@ end
 
 class PublicXmlRecord
   attr_reader :druid
-  include ModsDisplay::ModelExtension
-  include ModsDisplay::ControllerExtension
-
-  mods_xml_source do |model|
-    model.mods.to_s
-  end
-  configure_mods_display do
-  end
 
   def self.fetch(url)
     if defined?(JRUBY_VERSION)
@@ -73,7 +65,7 @@ class PublicXmlRecord
   end
 
   def mods_display
-    @mods_display ||= render_mods_display(self)
+    @mods_display ||= ModsDisplay::HTML.new(stanford_mods)
   end
 
   def public_xml?
