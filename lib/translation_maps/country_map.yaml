@@ -1,7 +1,7 @@
 # Map 3 letter Country/Location Code (in 008, bytes 15-17) to User Friendly Name
 # includes discontinued codes, because they're probably in our data
 
-#Two-character codes are left justified and the unused position contains a blank 
+#Two-character codes are left justified and the unused position contains a blank
 
 aa: Albania
 abc: Alberta, Canada
