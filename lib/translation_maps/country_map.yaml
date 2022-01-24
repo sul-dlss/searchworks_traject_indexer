@@ -1,7 +1,7 @@
 # Map 3 letter Country/Location Code (in 008, bytes 15-17) to User Friendly Name
 # includes discontinued codes, because they're probably in our data
 
-#Two-character codes are left justified and the unused position contains a blank 
+#Two-character codes are left justified and the unused position contains a blank
 
 aa: Albania
 abc: Alberta, Canada
@@ -10,9 +10,8 @@ aca: Australian Capital Territory
 ae: Algeria
 af: Afghanistan
 ag: Argentina
-ai: Anguilla
 ai: Armenia (Republic)
-air: Armenia (Republic)
+air: Armenian S.S.R.
 aj: Azerbaijan
 ajr: Azerbaijan
 aku: Alaska, United States
@@ -39,7 +38,7 @@ bh: Belize
 bi: British Indian Ocean Territory
 bl: Brazil
 bm: Bermuda Islands
-bn: Bosnia and Hercegovina
+bn: Bosnia and Herzegovina
 bo: Bolivia
 bp: Solomon Islands
 br: Burma
@@ -50,6 +49,7 @@ bv: Bouvet Island
 bw: Belarus
 bwr: Belarus
 bx: Brunei
+ca: Caribbean Netherlands
 cau: California, United States
 cb: Cambodia
 cc: China
@@ -64,6 +64,7 @@ ck: Colombia
 cl: Chile
 cm: Cameroon
 cn: Canada
+co: Curaçao
 cou: Colorado, United States
 cp: Canton and Enderbury Islands
 cq: Comoros
@@ -71,7 +72,7 @@ cr: Costa Rica
 cs: Czechoslovakia
 ctu: Connecticut, United States
 cu: Cuba
-cv: Cape Verde
+cv: Cabo Verde
 cw: Cook Islands
 cx: Central African Republic
 cy: Cyprus
@@ -85,7 +86,7 @@ dr: Dominican Republic
 ea: Eritrea
 ec: Ecuador
 eg: Equatorial Guinea
-em: East Timor
+em: Timor-Leste
 enk: England, United Kingdom
 er: Estonia
 err: Estonia
@@ -106,6 +107,7 @@ gau: Georgia, United States
 gb: Kiribati
 gd: Grenada
 ge: Germany (East)
+gg: Guernsey
 gh: Ghana
 gi: Gibraltar
 gl: Greenland
@@ -134,6 +136,7 @@ idu: Idaho, United States
 ie: Ireland
 ii: India
 ilu: Illinois, United States
+im: Isle of Man
 inu: Indiana, United States
 io: Indonesia
 iq: Iraq
@@ -145,6 +148,7 @@ iv: Côte d'Ivoire
 iw: Israel-Jordan Demilitarized Zones
 iy: Iraq-Saudi Arabia Neutral Zone
 ja: Japan
+je: Jersey
 ji: Johnston Atoll
 jm: Jamaica
 jn: Jan Mayen
@@ -264,7 +268,9 @@ rw: Rwanda
 ry: Ryukyu Islands, Southern
 sa: South Africa
 sb: Svalbard
+sc: Saint-Barthélemy
 scu: South Carolina, United States
+sd: South Sudan
 sdu: South Dakota, United States
 se: Seychelles
 sf: Sao Tome and Principe
@@ -275,12 +281,14 @@ sj: Sudan
 sk: Sikkim
 sl: Sierra Leone
 sm: San Marino
+sn: Sint Maarten
 snc: Saskatchewan, Canada
 so: Somalia
 sp: Spain
-sq: Swaziland
+sq: Eswatini
 sr: Surinam
 ss: Western Sahara
+st: Saint-Martin
 stk: Scotland, United Kingdom
 su: Saudi Arabia
 sv: Swan Islands
@@ -358,7 +366,7 @@ xj: Saint Helena
 xk: Saint Lucia
 xl: Saint Pierre and Miquelon
 xm: Saint Vincent and the Grenadines
-xn: Macedonia
+xn: North Macedonia
 xna: New South Wales, Australia
 xo: Slovakia
 xoa: Northern Territory, Australia
