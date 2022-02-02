@@ -225,10 +225,10 @@ end
 to_field 'pub_year_tisim', stanford_mods(:pub_year_int)
 
 to_field 'creation_year_isi' do |record, accumulator|
-  accumulator << record.stanford_mods.year_int(record.stanford_mods.date_created_elements)
+  accumulator << record.stanford_mods.pub_year_int([:dateCreated])
 end
 to_field 'publication_year_isi' do |record, accumulator|
-  accumulator << record.stanford_mods.year_int(record.stanford_mods.date_issued_elements)
+  accumulator << record.stanford_mods.pub_year_int([:dateIssued])
 end
 
 to_field 'format_main_ssim', stanford_mods(:format_main)
