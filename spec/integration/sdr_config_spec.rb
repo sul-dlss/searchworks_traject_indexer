@@ -64,7 +64,7 @@ describe 'SDR indexing' do
                                 "pub_search" =>["cau", "Stanford (Calif.)"],
                                 "pub_year_isi" =>[2004],
                                 "pub_date_sort" => ["2004"],
-                                "imprint_display" => ["Stanford (Calif.), February 9, 2004"],
+                                "imprint_display" => ["Stanford (Calif.), February  9, 2004"],
                                 "pub_date" => ["2004"],
                                 "pub_year_ss" => ["2004"],
                                 "pub_year_tisim" =>[2004],
