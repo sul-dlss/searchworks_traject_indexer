@@ -365,7 +365,8 @@ to_field 'stanford_copyright_s' do |record, accumulator|
 end
 
 to_field 'solr_year_i' do |record, accumulator|
-  subject_year = record.stanford_mods.year_int(record.stanford_mods.subject.temporal)
+  subject_dates = record.stanford_mods.subject.temporal.map { |t| Mods::Date.from_element(t) }
+  subject_year = subject_dates.map { |x| x&.as_range&.first&.year }.compact.min
 
   accumulator << subject_year if subject_year
   accumulator << record.stanford_mods.pub_year_int if accumulator.empty?

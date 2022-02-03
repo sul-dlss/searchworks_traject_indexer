@@ -14,7 +14,7 @@ gem 'i18n'
 gem 'manticore', platform: :jruby
 gem 'rake'
 gem 'ruby-kafka'
-gem 'stanford-mods'
+gem 'stanford-mods', '~> 3.0'
 gem 'iso-639'
 gem 'whenever'
 gem 'honeybadger'
