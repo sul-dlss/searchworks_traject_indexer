@@ -19,7 +19,7 @@ RSpec.describe 'Sirsi config' do
       expect(result).to eq ['271 p. : ill. ; 21 cm. + answer book.']
 
       result = select_by_id('300333')[field]
-      expect(result).to eq ['1 box 2 x 4 x 3 1/2 ft.']
+      expect(result).to eq ['records 1 box 2 x 4 x 3 1/2 ft.']
 
       result = select_by_id('300444')[field]
       expect(result).to eq ['diary 1 volume (463 pages) ; 17 cm. x 34.5 cm.']
@@ -30,9 +30,9 @@ RSpec.describe 'Sirsi config' do
 
       it 'has the correct physical descriptions' do
   	    expect(select_by_id('3001')[field]).to eq ['1 sound disc (20 min.); analog, 33 1/3 rpm, stereo. ; 12 in.']
-  	    expect(select_by_id('3002')[field]).to eq ['1 box 2 x 4 x 3 1/2 ft.']
+  	    expect(select_by_id('3002')[field]).to eq ['records 1 box 2 x 4 x 3 1/2 ft.']
   	    expect(select_by_id('3003')[field]).to eq ['17 boxes (7 linear ft.)']
-  	    expect(select_by_id('3004')[field]).to eq ['1 page ; 108 cm. x 34.5 cm.']
+  	    expect(select_by_id('3004')[field]).to eq ['poems 1 page ; 108 cm. x 34.5 cm.']
   	    expect(select_by_id('3005')[field]).to eq [
           '65 prints : relief process ; 29 x 22 cm.',
           '8 albums (550 photoprints) ; 51 x 46 cm. or smaller.'
