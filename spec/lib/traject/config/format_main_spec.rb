@@ -371,6 +371,46 @@ RSpec.describe 'Format main config' do
     end
   end
 
+  context '655a' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = ''
+        r.append(MARC::DataField.new('655', ' ', ' ', MARC::Subfield.new('a', 'Data sets')))
+      end
+    end
+
+    it 'is a dataset' do
+      expect(result[field]).to eq ['Dataset']
+    end
+  end
+
+  context '336a' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = ''
+        r.append(MARC::DataField.new('336', ' ', ' ', MARC::Subfield.new('a', 'computer dataset')))
+      end
+    end
+
+    it 'is a dataset' do
+      expect(result[field]).to eq ['Dataset']
+    end
+  end
+
+
+  context '336a cartographic' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = ''
+        r.append(MARC::DataField.new('336', ' ', ' ', MARC::Subfield.new('a', 'cartographic dataset')))
+      end
+    end
+
+    it 'is a dataset' do
+      expect(result[field]).to eq ['Dataset']
+    end
+  end
+
   context 'leader/06 m 008/26 a' do
     let(:record) do
       MARC::Record.new.tap do |r|
