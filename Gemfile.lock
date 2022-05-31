@@ -24,7 +24,7 @@ GEM
       bundler-audit (~> 0.5)
       capistrano (~> 3.0)
       capistrano-bundler (>= 1.4)
-    capistrano-bundler (2.0.1)
+    capistrano-bundler (2.1.0)
       capistrano (~> 3.1)
     capistrano-one_time_key (0.1.0)
       capistrano (~> 3.0)
@@ -38,7 +38,7 @@ GEM
     diff-lcs (1.5.0)
     digest-crc (0.6.4)
       rake (>= 12.0.0, < 14.0.0)
-    dlss-capistrano (4.1.1)
+    dlss-capistrano (4.1.2)
       capistrano (~> 3.0)
       capistrano-bundle_audit (>= 0.3.0)
       capistrano-one_time_key
@@ -63,7 +63,7 @@ GEM
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
       llhttp-ffi (~> 0.4.0)
-    http-cookie (1.0.4)
+    http-cookie (1.0.5)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     httpclient (2.8.3)
@@ -128,7 +128,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
-    ruby-kafka (1.4.0)
+    ruby-kafka (1.5.0)
       digest-crc
     scrub_rb (1.0.1)
     simplecov (0.21.2)
@@ -141,7 +141,7 @@ GEM
     sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stanford-mods (3.0.0)
+    stanford-mods (3.1.0)
       activesupport
       mods (~> 3.0, >= 3.0.1)
     statsd-ruby (1.5.0)
@@ -165,7 +165,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf (0.1.4-java)
-    unf_ext (0.0.8.1)
+    unf_ext (0.0.8.2)
     view_component (2.55.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
