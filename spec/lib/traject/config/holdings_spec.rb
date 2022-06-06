@@ -2,7 +2,11 @@ RSpec.describe 'Holdings config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
 
-  let(:indexer) { cached_indexer('./lib/traject/config/sirsi_config.rb') }
+  let(:indexer) do
+    Traject::Indexer.new.tap do |i|
+      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+    end
+  end
   ##
   # Custom jRuby setup needed here to create the Traject::MarcCombiningReader
   # with the needed settings and argument type (IO / String:IO)
@@ -465,9 +469,9 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'no longer skipped 866' do
-        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are
+        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are 
         #  NOT skipped: display 866 regardless of second indicator value or presence of 852 sub =
-        # previously:
+        # previously: 
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
         #  is skipped if 866 has ind2 of 0 and 852 has a sub =
         let(:fixture_name) { 'mhldDisplay86x.mrc' }
@@ -501,11 +505,11 @@ RSpec.describe 'Holdings config' do
       end
       describe 'no longer skipped 867' do
         ##
-        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are
+        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are 
         #  NOT skipped: display 867 regardless of second indicator value or presence of 852 sub =
-        # previously:
+        # previously: 
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
-        #  is skipped if 867 has ind2 of 0 and 852 has a sub =
+        #  is skipped if 867 has ind2 of 0 and 852 has a sub = 
         let(:fixture_name) { 'mhldDisplay867.mrc' }
         it do
           start = 'GREEN -|- STACKS -|-  -|- Supplement: '
@@ -535,11 +539,11 @@ RSpec.describe 'Holdings config' do
       end
       describe 'no longer skipped 868' do
         ##
-        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are
+        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are 
         #  NOT skipped: display 868 regardless of second indicator value or presence of 852 sub =
-        # previously:
+        # previously: 
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
-        #  is skipped if 868 has ind2 of 0 and 852 has a sub =
+        #  is skipped if 868 has ind2 of 0 and 852 has a sub = 
         let(:fixture_name) { 'mhldDisplay868.mrc' }
         it do
           start = 'GREEN -|- CURRENTPER -|- skip 868 -|- Index: '
@@ -579,7 +583,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'no 866' do
-        # if there is no 866, then
+        # if there is no 866, then 
         # if the 852 has a sub = , then display the most recent 863
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
@@ -612,7 +616,7 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- 2009- -|- 2011:Summer'
           expect(select_by_id('358041')[field]).to include 'SAL3 -|- STACKS -|-  -|- v.151(1972)-v.152(1972) -|- '
           expect(select_by_id('358041')[field]).to include 'SAL -|- STACKS -|-  -|- 1953; v.143(1968)-v.144(1968),v.153(1973)-v.154(1973),v.164(1978),v.166(1979),v.175(1984),v.178(1985),v.182(1988)-v.183(1989),v.194(2000)- -|- '
-          # 867 ind 0  previous 852 has sub =  - now used per email by Naomi Dushay on October 14, 2011
+          # 867 ind 0  previous 852 has sub =  - now used per email by Naomi Dushay on October 14, 2011 	
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- Supplement: COUNTRY LIFE ABROAD (WIN 2001), (JUL 14, 2005) -|- v.205:no.22 (2011:June 1)'
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE TRAVEL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- 2010/2011:Winter'
         end

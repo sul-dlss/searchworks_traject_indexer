@@ -23,7 +23,11 @@ end
 RSpec.describe 'Call Number Facet' do
   subject(:result) { indexer.map_record(record) }
 
-  let(:indexer) { cached_indexer('./lib/traject/config/sirsi_config.rb') }
+  let(:indexer) do
+    Traject::Indexer.new.tap do |i|
+      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+    end
+  end
 
   let(:field) { 'callnum_facet_hsim' }
   let(:record) { record_with_999(call_number: call_number, scheme: scheme) }
