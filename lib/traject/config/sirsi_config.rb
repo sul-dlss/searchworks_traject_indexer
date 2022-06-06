@@ -1566,6 +1566,18 @@ to_field 'format_main_ssim' do |record, accumulator, context|
   end
 end
 
+# SW-4108
+to_field 'format_main_ssim' do |record, accumulator, context|
+  Traject::MarcExtractor.new('655a').collect_matching_lines(record) do |field, spec, extractor|
+    accumulator << 'Dataset' if extractor.collect_subfields(field, spec).include? 'Data sets'
+  end
+
+  Traject::MarcExtractor.new('336a').collect_matching_lines(record) do |field, spec, extractor|
+    if ['computer dataset', 'cartographic dataset'].any? { |v| extractor.collect_subfields(field, spec).include?(v) }
+      accumulator << 'Dataset'
+    end
+  end
+end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
   Traject::MarcExtractor.new('999t').collect_matching_lines(record) do |field, spec, extractor|
