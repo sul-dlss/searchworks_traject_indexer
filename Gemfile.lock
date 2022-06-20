@@ -58,7 +58,7 @@ GEM
       rake
     hashie (5.0.0)
     honeybadger (4.12.1)
-    http (5.0.4)
+    http (5.1.0)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
@@ -73,7 +73,7 @@ GEM
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    manticore (0.9.0-java)
+    manticore (0.9.1-java)
       openssl_pkcs8_pure
     marc (1.1.1)
       rexml
@@ -85,7 +85,7 @@ GEM
       marc (~> 1)
     method_source (1.0.0)
     mini_portile2 (2.8.0)
-    minitest (5.15.0)
+    minitest (5.16.0)
     mods (3.0.2)
       edtf (~> 3.0)
       iso-639
@@ -166,13 +166,13 @@ GEM
       unf_ext
     unf (0.1.4-java)
     unf_ext (0.0.8.2)
-    view_component (2.57.0)
+    view_component (2.57.1)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     whenever (1.0.0)
       chronic (>= 0.6.3)
     yell (2.2.2)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.0)
 
 PLATFORMS
   java
