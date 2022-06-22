@@ -9,7 +9,7 @@ ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call unless ENV['D
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
-set :rvm_ruby_version, 'ruby-3.0.3'
+set :rvm_ruby_version, 'ruby-3.1.2'
 
 set :honeybadger_env, "#{fetch(:stage)}"
 
