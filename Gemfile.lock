@@ -38,7 +38,7 @@ GEM
     diff-lcs (1.5.0)
     digest-crc (0.6.4)
       rake (>= 12.0.0, < 14.0.0)
-    dlss-capistrano (4.1.2)
+    dlss-capistrano (4.2.0)
       capistrano (~> 3.0)
       capistrano-bundle_audit (>= 0.3.0)
       capistrano-one_time_key
@@ -85,7 +85,7 @@ GEM
       marc (~> 1)
     method_source (1.0.0)
     mini_portile2 (2.8.0)
-    minitest (5.16.0)
+    minitest (5.16.1)
     mods (3.0.2)
       edtf (~> 3.0)
       iso-639
