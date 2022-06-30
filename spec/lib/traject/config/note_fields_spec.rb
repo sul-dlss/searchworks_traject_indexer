@@ -519,7 +519,7 @@ RSpec.describe 'Sirsi config' do
       let(:fixture_name) { 'nielsenTests.mrc' }
       it 'maps the right fields' do
         result = select_by_id('920')[field].map { |x| JSON.parse(x, symbolize_names: true) }
-        expect(result.first[:label]).to eq 'Publisher\'s Summary'
+        expect(result.first[:label]).to eq 'Publisher\'s summary'
         expect(result.first[:fields].first[:field]).to include '920a', '920b'
       end
     end

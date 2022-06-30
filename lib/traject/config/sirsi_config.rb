@@ -2087,7 +2087,7 @@ to_field 'summary_struct' do |marc, accumulator|
   tag = marc['920'] ? '920' : '520'
 
   label = if marc['920']
-            "Publisher's Summary"
+            "Publisher's summary"
           else
             'Summary'
           end
