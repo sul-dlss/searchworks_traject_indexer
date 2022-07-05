@@ -454,21 +454,18 @@ to_field 'title_related_search', extract_marc('505t:700fgklmnoprst:710dfgklmnopr
 to_field 'vern_title_related_search', extract_marc('505tt:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only)
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', first: true, alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_245a_display', extract_marc('245aa', first: true, alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_245c_display', extract_marc('245c', first: true, alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_245c_display', extract_marc('245cc', first: true, alternate_script: :only) do |record, accumulator|
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', first: true, alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_title_display', extract_marc('245abdefghijklmnopqrstuvwxyz', first: true, alternate_script: :only) do |record, accumulator|
