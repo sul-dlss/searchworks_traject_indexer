@@ -650,7 +650,6 @@ to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn',
 end
 # # Author Display Fields
 to_field 'author_person_display', extract_marc('100abcdq', first: true, alternate_script: false) do |record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map!(&method(:trim_punctuation_custom))
 end
 to_field 'vern_author_person_display', extract_marc('100abcdq', first: true, alternate_script: :only) do |record, accumulator|
