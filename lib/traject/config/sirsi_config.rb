@@ -2070,17 +2070,12 @@ def split_toc_chapters(value)
     /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
     /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
   ]
-  chapters = []
-  match = false
   formatted_chapter_regexes.each do |regex|
-    chapters = regex_split(value, regex).map { |w| w.strip unless w.strip.empty? }.compact
-    # if the regex_split found a match and actually split the string, we are done
-    if chapters.length > 1
-      match = true
-      break
-    end
+    chapters = value.split(regex).map { |w| w.strip unless w.strip.empty? }.compact
+    # if the split found a match and actually split the string, we are done
+    return chapters if chapters.length > 1
   end
-  chapters
+  [value]
 end
 
 # work-around for https://github.com/jruby/jruby/issues/4868
