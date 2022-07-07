@@ -2049,7 +2049,7 @@ to_field 'toc_struct' do |marc, accumulator|
   unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
   unless unmatched_vern_fields.nil?
     unmatched_vern_fields.each do |vern_field|
-      unmatched_vern << regex_split(vern_field, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+      unmatched_vern << vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
     end
   end
 
@@ -2076,11 +2076,6 @@ def split_toc_chapters(value)
     return chapters if chapters.length > 1
   end
   [value]
-end
-
-# work-around for https://github.com/jruby/jruby/issues/4868
-def regex_split(str, regex)
-  str.split(regex).to_a
 end
 
 # work-around for https://github.com/jruby/jruby/issues/4868
