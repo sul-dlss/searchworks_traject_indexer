@@ -519,7 +519,7 @@ RSpec.describe 'Sirsi config' do
       let(:fixture_name) { 'nielsenTests.mrc' }
       it 'maps the right fields' do
         result = select_by_id('920')[field].map { |x| JSON.parse(x, symbolize_names: true) }
-        expect(result.first[:label]).to eq 'Publisher\'s Summary'
+        expect(result.first[:label]).to eq 'Publisher\'s summary'
         expect(result.first[:fields].first[:field]).to include '920a', '920b'
       end
     end
@@ -560,6 +560,30 @@ RSpec.describe 'Sirsi config' do
 
       it 'structures the output' do
         expect(result_field.first[:fields].first[:field]).to eq [{ source: '(source: Nielsen Book Data)' }]
+      end
+    end
+
+    context 'with content advice' do
+      subject(:result) { indexer.map_record(record) }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '520', '4', ' ',
+              MARC::Subfield.new('a', 'Content warning: Contains horrible things')
+            )
+          )
+        end
+      end
+      let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
+
+
+      it 'maps the right field values' do
+        expect(result_field.last[:fields].first[:field]).to eq ['Content warning: Contains horrible things']
+      end
+
+      it 'sets the right label' do
+        expect(result_field.last[:label]).to eq 'Content advice'
       end
     end
   end

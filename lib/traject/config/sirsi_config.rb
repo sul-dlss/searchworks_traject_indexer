@@ -2084,17 +2084,43 @@ def regex_to_extract_data_from_a_string(str, regex)
 end
 
 to_field 'summary_struct' do |marc, accumulator|
-  tag = marc['920'] ? '920' : '520'
+  summary(marc, accumulator)
+  content_advice(marc, accumulator)
+end
 
+def summary(marc, accumulator)
+  tag = marc['920'] ? '920' : '520'
   label = if marc['920']
-            "Publisher's Summary"
+            "Publisher's summary"
           else
             'Summary'
           end
-  fields = []
+  matching_fields = marc.find_all do |f|
+    if tag == '520'
+      f.tag == tag && f.indicator1 != '4'
+    else
+      f.tag == tag
+    end
+  end
 
-  if marc['520'] || marc['920']
-    marc.find_all { |f| tag == f.tag }.each do |field|
+  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+end
+
+def content_advice(marc, accumulator)
+  tag = '520'
+  label = 'Content advice'
+  matching_fields = marc.find_all do |f|
+    f.tag == tag && f.indicator1 == '4'
+  end
+
+  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+end
+
+def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  fields = []
+  if matching_fields.any?
+    matching_fields.each do |field|
+
       field_text = []
       field.each do |sub_field|
         if sub_field.code == "u" and sub_field.value.strip =~ /^https*:\/\//
