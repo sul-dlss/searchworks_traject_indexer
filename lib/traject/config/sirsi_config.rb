@@ -1413,8 +1413,9 @@ to_field 'oclc' do |record, accumulator|
   end.flatten.compact.uniq
 
   marc079 = Traject::MarcExtractor.new('079a', separator: nil).extract(record).map do |data|
-    next unless regex_to_extract_data_from_a_string(data, /\A(?:ocm)|(?:ocn)|(?:on)/)
-    data.sub(/\A(?:ocm)|(?:ocn)|(?:on)/, '')
+    regex = /\A(?:ocm)|(?:ocn)|(?:on)/
+    next unless data[regex]
+    data.sub(regex, '')
   end.flatten.compact.uniq
 
   if marc035_with_m_suffix.any?
@@ -2049,7 +2050,7 @@ to_field 'toc_struct' do |marc, accumulator|
   unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
   unless unmatched_vern_fields.nil?
     unmatched_vern_fields.each do |vern_field|
-      unmatched_vern << regex_split(vern_field, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+      unmatched_vern << vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
     end
   end
 
@@ -2076,16 +2077,6 @@ def split_toc_chapters(value)
     return chapters if chapters.length > 1
   end
   [value]
-end
-
-# work-around for https://github.com/jruby/jruby/issues/4868
-def regex_split(str, regex)
-  str.split(regex).to_a
-end
-
-# work-around for https://github.com/jruby/jruby/issues/4868
-def regex_to_extract_data_from_a_string(str, regex)
-  str[regex]
 end
 
 to_field 'summary_struct' do |marc, accumulator|
@@ -2374,7 +2365,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
     next unless SirsiHolding::CallNumber.new(cn).valid_lc?
 
     first_letter = cn[0, 1].upcase
-    letters = regex_to_extract_data_from_a_string(cn, /^[A-Z]+/)
+    letters = extract_uppercase_letters(cn)
 
     next unless first_letter && translation_map[first_letter]
 
@@ -2384,6 +2375,10 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
       translation_map[letters]
     ].compact.join('|')
   end
+end
+
+def extract_uppercase_letters(str)
+  str[/^[A-Z]+/]
 end
 
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
@@ -2418,7 +2413,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
     next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
-    letters = regex_to_extract_data_from_a_string(cn, /^[A-Z]+/)
+    letters = extract_uppercase_letters(cn)
 
     translation_map = Traject::TranslationMap.new('call_number')
 
@@ -2440,7 +2435,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
     next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
-    letters = regex_to_extract_data_from_a_string(cn, /^[A-Z]+/)
+    letters = extract_uppercase_letters(cn)
 
     translation_map = Traject::TranslationMap.new('call_number')
 
