@@ -57,27 +57,48 @@ RSpec.describe 'marc_links_struct' do
     let(:marc) do
       <<-xml
         <record>
-          <datafield tag='856' ind1='0' ind2='0'>
+          <datafield tag='856' ind1='4' ind2='1'>
             <subfield code='3'>Link text</subfield>
+            <subfield code='z'>Available to Stanford-affiliated users at:</subfield>
             <subfield code='u'>https://library.stanford.edu</subfield>
             <subfield code='x'>CasaliniTOC</subfield>
             <subfield code='y'>Link text</subfield>
-            <subfield code='z'>Title text1</subfield>
-            <subfield code='z'>Title text2</subfield>
+            <subfield code='z'>(source: Casalini)</subfield>
+          </datafield>
+          <datafield tag='856' ind1='4' ind2='1'>
+            <subfield code='3'>Link text</subfield>
+            <subfield code='z'>Available to Stanford-affiliated users at:</subfield>
+            <subfield code='u'>https://library.stanford.edu</subfield>
+            <subfield code='y'>Link text</subfield>
+            <subfield code='z'>(source: Casalini)</subfield>
+          </datafield>
+          <datafield tag='856' ind1='4' ind2='1'>
+            <subfield code='3'>Link text</subfield>
+            <subfield code='z'>Available to Stanford-affiliated users at:</subfield>
+            <subfield code='u'>https://library.stanford.edu</subfield>
+            <subfield code='x'>CasaliniTOC</subfield>
+            <subfield code='y'>Link text</subfield>
           </datafield>
         </record>
       xml
     end
-    it "should not have any text before the link" do
+    it "does not have any text before the link" do
       expect(result_field.first[:html]).to match /^<a /
     end
-    it "should place $3 as the link text" do
+    it "places $3 as the link text" do
       expect(result_field.first[:html]).to match /<a.*>Link text<\/a>/
     end
-    it "should place '(source: Casalini)' after the link" do
+    it "places '(source: Casalini)' after the link" do
       expect(result_field.first[:html]).to match /<\/a> \(source: Casalini\)/
     end
+    it "does not place '(source: Casalini)' twice after the link" do
+      expect(result_field.first[:html]).not_to match /<\/a> \(source: Casalini\).*\(source: Casalini\)/
+    end
+    it "identifies the link as a Casalini link from value of $x or $z" do
+      expect(result_field.all? { |x| x[:casalini] }).to be_truthy
+    end
   end
+
   context "stanford_only" do
     let(:marc) do
       <<-xml

@@ -43,7 +43,8 @@ module MarcLinks
     private
 
     def link_is_casalini?
-      field["x"] and field["x"] == "CasaliniTOC"
+      (field["x"] && field["x"] == "CasaliniTOC") ||
+        (field.subfields.find { |sf| sf.code == "z" && sf.value.match?(casalini_subz_regex) })
     end
 
     def link_is_sfx?
@@ -104,6 +105,8 @@ module MarcLinks
       return unless stanford_only?
 
       subbed_title = subzs.gsub(stanford_affiliated_regex, '')
+                          .gsub(casalini_subz_regex, '')
+                          .strip
       subbed_title unless subbed_title.empty?
     end
 
@@ -148,6 +151,10 @@ module MarcLinks
 
     def stanford_affiliated_regex
       Regexp.new(/available[ -]?to[ -]?stanford[ -]?affiliated[ -]?users[ -]?a?t?[:;.]?/i)
+    end
+
+    def casalini_subz_regex
+      Regexp.new(/\(?source:?\s?casalini\)?/i)
     end
 
     def stanford_law_affiliated_regex
