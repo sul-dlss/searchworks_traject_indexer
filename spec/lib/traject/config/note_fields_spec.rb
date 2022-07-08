@@ -182,6 +182,28 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
+      context 'with vernacular toc data' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(MARC::DataField.new(
+              '505', ' ', ' ',
+              MARC::Subfield.new('a', 'aaa -- bbb -- ccc'),
+              MARC::Subfield.new('6', '880-04')
+            ))
+            r.append(MARC::DataField.new(
+              '880', ' ', ' ',
+              MARC::Subfield.new('a', 'v. 1. 土偶--v. 2. 仏像--v. 3. 銅器, 玉器.'),
+              MARC::Subfield.new('6', '505-04')
+            ))
+          end
+        end
+
+        it 'structures the output' do
+          expect(result_field.first[:fields].first).to eq ['aaa', 'bbb', 'ccc']
+          expect(result_field.first[:vernacular].first).to eq ['v. 1. 土偶--', 'v. 2. 仏像--', 'v. 3. 銅器, 玉器.']
+        end
+      end
+
       context 'with numbers that should not be split on in the data' do
         let(:record) do
           MARC::Record.new.tap do |r|

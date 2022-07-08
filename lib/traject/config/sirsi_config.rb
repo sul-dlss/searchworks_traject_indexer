@@ -2001,16 +2001,6 @@ end
 #    vernacular: [['The same, but pulled from the matched vernacular fields']]
 #    unmatched_vernacular: [['The same, but pulled from any unmatched vernacular fields']]
 to_field 'toc_struct' do |marc, accumulator|
-  formatted_chapter_regexes = [
-    /[^\S]--[^\S]/, # this is the normal, expected MARC delimiter
-    /      /, # but a bunch of eResources like to use whitespace
-    /--[^\S]/, # or omit the leading whitespace
-    /[^\S]\.-[^\S]/, # or a .-
-    /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
-    /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
-    /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
-    /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
-  ]
   fields = []
   vern = []
   unmatched_vern = []
@@ -2026,18 +2016,12 @@ to_field 'toc_struct' do |marc, accumulator|
         if sub_field.code == 'a'
           data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
           buffer = []
-          found = false
-          formatted_chapter_regexes.each do |regex|
-            chapters = regex_split(sub_field.value, regex).map { |w| w.strip unless w.strip.empty? }.compact
-
-            if chapters.length > 1
-              found = true
-              data.concat(chapters)
-              break
-            end
+          chapters = split_toc_chapters(sub_field.value)
+          if chapters.length > 1
+            data.concat(chapters)
+          else
+            data.concat([sub_field.value])
           end
-
-          data.concat([sub_field.value]) unless found
         elsif sub_field.code == "1" && !Constants::SOURCES[sub_field.value.strip].nil?
           data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
           buffer = []
@@ -2053,10 +2037,12 @@ to_field 'toc_struct' do |marc, accumulator|
           end
         end
       end
+
       data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') unless buffer.empty?
       fields << data
+
       vernacular = get_marc_vernacular(marc,field)
-      vern << regex_split(vernacular, /[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
+      vern << split_toc_chapters(vernacular).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
     end
   end
 
@@ -2071,6 +2057,25 @@ to_field 'toc_struct' do |marc, accumulator|
   new_fields = fields unless fields.empty?
   new_unmatched_vern = unmatched_vern unless unmatched_vern.empty?
   accumulator << {:label=>"Contents",:fields=>new_fields,:vernacular=>new_vern,:unmatched_vernacular=>new_unmatched_vern} unless (new_fields.nil? and new_vern.nil? and new_unmatched_vern.nil?)
+end
+
+def split_toc_chapters(value)
+  formatted_chapter_regexes = [
+    /[^\S]--[^\S]/, # this is the normal, expected MARC delimiter
+    /      /, # but a bunch of eResources like to use whitespace
+    /--[^\S]/, # or omit the leading whitespace
+    /[^\S]\.-[^\S]/, # or a .-
+    /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
+    /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
+    /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
+    /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
+  ]
+  formatted_chapter_regexes.each do |regex|
+    chapters = value.split(regex).map { |w| w.strip unless w.strip.empty? }.compact
+    # if the split found a match and actually split the string, we are done
+    return chapters if chapters.length > 1
+  end
+  [value]
 end
 
 # work-around for https://github.com/jruby/jruby/issues/4868
