@@ -127,6 +127,31 @@ class PublicXmlRecord
     public_xml_doc.xpath('//contentMetadata/@type').text
   end
 
+  # the values of the type attribute for a DOR object's contentMetadata/resource elements
+  # @return [Array<String>]
+  def dor_resource_content_type
+    public_xml_doc.xpath('//contentMetadata/resource/@type').map(&:text)
+  end
+
+  # the values of the mimetype attribute for a DOR object's contentMetadata/resource/* elements
+  # @return [Array<String>]
+  def dor_file_mimetype
+    public_xml_doc.xpath('//contentMetadata/resource/*/@mimetype').map(&:text)
+  end
+
+  # the count of a DOR object's contentMetadata/resource elements
+  # @return [Integer]
+  def dor_resource_count
+    public_xml_doc.xpath('//contentMetadata/resource').count
+  end
+
+  # the element names for a DOR object's rightsMetadata/access/machine/*
+  # where the access type is "read"
+  # @return [Array<String>]
+  def dor_read_rights
+    public_xml_doc.xpath('//rightsMetadata/access[@type="read"]/machine/*').map(&:name)
+  end
+
   # the thumbnail in publicXML, falling back to the first image if no thumb node is found
    # @return [String] thumb filename with druid prepended, e.g. oo000oo0001/filename withspace.jp2
    def parse_thumb

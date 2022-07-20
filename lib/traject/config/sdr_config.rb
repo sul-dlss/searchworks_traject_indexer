@@ -388,6 +388,32 @@ to_field 'iiif_manifest_url_ssim' do |record, accumulator|
   end
 end
 
+to_field 'dor_content_type_ssi' do |record, accumulator|
+  accumulator << record.dor_content_type if record.dor_content_type.present?
+end
+
+to_field 'dor_resource_content_type_ssim' do |record, accumulator|
+  record.dor_resource_content_type.uniq.each do |type|
+    accumulator << type
+  end
+end
+
+to_field 'dor_file_mimetype_ssim' do |record, accumulator|
+  record.dor_file_mimetype.uniq.each do |mimetype|
+    accumulator << mimetype
+  end
+end
+
+to_field 'dor_resource_count_isi' do |record, accumulator|
+  accumulator << record.dor_resource_count
+end
+
+to_field 'dor_read_rights_ssim' do |record, accumulator|
+  record.dor_read_rights.uniq.each do |right|
+    accumulator << right
+  end
+end
+
 to_field 'context_source_ssi', literal('sdr')
 
 to_field 'context_version_ssi' do |_record, accumulator|

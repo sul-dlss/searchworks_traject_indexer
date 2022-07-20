@@ -279,6 +279,79 @@ describe 'SDR indexing' do
     end
   end
 
+  context 'content metadata' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
+
+    before do
+      stub_purl_request(druid, data)
+    end
+
+    let(:druid) { 'abc' }
+    let(:data) do
+      <<-XML
+        <publicObject>
+          <contentMetadata type="image">
+            <resource id="cocina-fileSet-5925b0a8-fa41-4fb8-94e2-704fce68caf9" sequence="1" type="object">
+              <label>Data</label>
+              <file id="data.zip" mimetype="application/zip" size="172098005" role="master"></file>
+              <file id="data_EPSG_4326.zip" mimetype="application/zip" size="146314425" role="derivative"></file>
+            </resource>
+            <resource id="cocina-fileSet-569954ba-6239-4222-88a4-2f8d584bfc42" sequence="2" type="preview">
+              <label>Preview</label>
+              <file id="preview.jpg" mimetype="image/jpeg" size="16749" role="master">
+                <imageData height="200" width="300"/>
+              </file>
+            </resource>
+          </contentMetadata>
+          <mods xmlns="http://www.loc.gov/mods/v3"></mods>
+        </publicObject>
+      XML
+    end
+
+    it 'maps the right data' do
+      expect(result['dor_content_type_ssi']).to eq ['image']
+      expect(result['dor_resource_content_type_ssim']).to eq ['object', 'preview']
+      expect(result['dor_file_mimetype_ssim']).to eq ['application/zip', 'image/jpeg']
+      expect(result['dor_resource_count_isi']).to eq [2]
+    end
+  end
+
+  context 'rights metadata' do
+    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
+
+    before do
+      stub_purl_request(druid, data)
+    end
+
+    let(:druid) { 'abc' }
+    let(:data) do
+      <<-XML
+        <publicObject>
+          <rightsMetadata>
+            <access type="discover">
+              <machine>
+                <world/>
+              </machine>
+            </access>
+            <access type="read">
+              <machine>
+                <world/>
+              </machine>
+            </access>
+            <use>
+              <human type="useAndReproduction">Property rights reside with the repository.</human>
+            </use>
+          </rightsMetadata>
+          <mods xmlns="http://www.loc.gov/mods/v3"></mods>
+        </publicObject>
+      XML
+    end
+
+    it 'maps the right data' do
+      expect(result['dor_read_rights_ssim']).to eq ['world']
+    end
+  end
+
   context 'dates' do
     subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
 
