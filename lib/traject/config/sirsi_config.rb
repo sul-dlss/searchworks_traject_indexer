@@ -861,7 +861,7 @@ end
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
 to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: false) do |record, accumulator|
-  accumulator.reject! { |v| v == 'nomesh' }
+  accumulator.reject! { |v| v.start_with?('nomesh') }
   if record['999'] && record['999']['m'] == 'LANE-MED'
     arr = []
     extract_marc('655a').call(record, arr, nil)
@@ -878,7 +878,7 @@ to_field "geographic_subz_search", extract_marc("600z:610z:630z:647z:650z:651z:6
 
 to_field "vern_geographic_subz_search", extract_marc("600zz:610zz:630zz:647zz:650zz:651zz:654zz:655zz:656zz:657zz:690zz:691zz:696zz:697zz:698zz:699zz", alternate_script: :only)
 to_field "subject_other_search", extract_marc(%w(600 610 611 630 647 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: false) do |record, accumulator|
-  accumulator.reject! { |v| v == 'nomesh' }
+  accumulator.reject! { |v| v.start_with?('nomesh') }
   if record['999'] && record['999']['m'] == 'LANE-MED'
     arr = []
     extract_marc('655a').call(record, arr, nil)
@@ -895,7 +895,7 @@ to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 647 648 650 
 to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false) do |record, accumulator|
   accumulator.map! { |v| trim_punctuation_custom(v, /([\p{L}\p{N}]{4}|[A-Za-z]{3}|[\)])\. *\Z/) }
   accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.reject! { |v| v == 'nomesh' }
+  accumulator.reject! { |v| v.start_with?('nomesh') }
 end
 
 to_field "geographic_facet", extract_marc('651a', alternate_script: false) do |record, accumulator|
