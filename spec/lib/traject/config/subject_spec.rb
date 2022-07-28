@@ -739,7 +739,7 @@ RSpec.describe 'Subject config' do
   describe 'Lane Blacklists' do
     let(:fixture_name) { 'subjectLaneBlacklistTests.mrc' }
 
-    it 'removes 650a nomesh from topic_search and topic_facet' do
+    it 'removes 650a/655a "nomesh", "nomesh." and "nomeshx" from topic_search and topic_facet' do
       expect(results).not_to include hash_including('topic_search' => include(/nomesh/))
       expect(results).not_to include hash_including('topic_facet' => include(/nomesh/))
 
