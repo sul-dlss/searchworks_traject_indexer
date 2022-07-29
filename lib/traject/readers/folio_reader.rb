@@ -11,7 +11,7 @@ module Traject
     def each(&block)
       return to_enum(:each) unless block_given?
 
-      response = client.get('/source-storage/stream/records?limit=2147483647')
+      response = client.get('/source-storage/stream/source-records?limit=2147483647')
       buffer = ""
 
       while data = response.readpartial
