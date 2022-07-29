@@ -1,5 +1,10 @@
 module Traject
   module MarcUtils
+    ALPHABET = [*'a'..'z'].join('')
+    A_X = ALPHABET.slice(0, 24)
+    MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
+    CJK_RANGE = /(\p{Han}|\p{Hangul}|\p{Hiragana}|\p{Katakana})/
+    
     def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
       lambda do |record, accumulator, context|
         extract_marc(spec, options.merge(alternate_script: false)).call(record, accumulator, context)
