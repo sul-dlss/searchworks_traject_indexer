@@ -57,7 +57,7 @@ module Traject
 
         @items ||= begin
           query = holdings.map { |h| "holdingsRecordId==\"#{h['id']}\"" }.join(' OR ')
-          client.get_json("/item-storage/items", params: { limit: 2147483647, query: query }).dig('items')
+          client.get_json("/item-storage-dereferenced/items", params: { limit: 2147483647, query: query }).dig('dereferencedItems')
         end
       end
     end
