@@ -56,6 +56,10 @@ module Traject
         record.dig('externalIdsHolder', 'instanceId')
       end
 
+      def call_number_type(call_number_uuid)
+        client.call_number_types[call_number_uuid] || call_number_uuid
+      end
+
       def items
         return [] unless holdings.any?
 
