@@ -1,3 +1,4 @@
+require 'active_support/core_ext/module/delegation'
 require_relative '../../folio_client.rb'
 
 module Traject
@@ -32,14 +33,11 @@ module Traject
 
     class FolioRecord
       attr_reader :record, :client
+      delegate :fields, :each, to: :marc_record
 
       def initialize(record, client)
         @record = record
         @client = client
-      end
-
-      def fields(...)
-        marc_record.fields(...)
       end
 
       def marc_record
