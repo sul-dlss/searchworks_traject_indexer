@@ -268,7 +268,7 @@ module Traject
         subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
       end.first
 
-      onexx ||= MAX_CODE_POINT
+      onexx ||= Constants::MAX_CODE_POINT
 
       titles = []
       title_fields.split(':').each do |title_spec|
