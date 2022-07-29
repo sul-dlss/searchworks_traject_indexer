@@ -27,6 +27,12 @@ class FolioClient
     JSON.parse(response)
   end
 
+  def call_number_types
+    @call_number_types ||= get_json('/call-number-types', params: { limit: 2147483647 }).dig('callNumberTypes').each_with_object({}) do |type, hash|
+      hash[type['id']] = type
+    end
+  end
+
   def session_token
     @session_token ||= begin
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
