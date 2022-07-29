@@ -5,6 +5,7 @@ require 'traject/macros/marc21_semantics'
 require 'traject/readers/folio_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'traject/common/marc_utils'
+require 'traject/common/constants'
 require 'call_numbers/lc'
 require 'call_numbers/dewey'
 require 'call_numbers/other'
@@ -189,6 +190,173 @@ to_field 'title_sort' do |record, accumulator|
   str = result.join(' ').strip
   accumulator << str unless str.empty?
 end
+
+to_field 'uniform_title_display_struct' do |record, accumulator|
+  next unless record['240'] || record['130']
+
+  uniform_title = record['130'] || record['240']
+  pre_text = []
+  link_text = []
+  extra_text = []
+  end_link = false
+  uniform_title.each do |sub_field|
+    next if Constants::EXCLUDE_FIELDS.include?(sub_field.code)
+    if !end_link && sub_field.value.strip =~ /[\.|;]$/ && sub_field.code != 'h'
+      link_text << sub_field.value
+      end_link = true
+    elsif end_link || sub_field.code == 'h'
+      extra_text << sub_field.value
+    elsif sub_field.code == 'i' # assumes $i is at beginning
+      pre_text << sub_field.value.gsub(/\s*\(.+\)/, '')
+    else
+      link_text << sub_field.value
+    end
+  end
+
+  author = []
+  unless record['730']
+    auth_field = record['100'] || record['110'] || record['111']
+    author = auth_field.map do |sub_field|
+      next if (Constants::EXCLUDE_FIELDS + %w(4 e)).include?(sub_field.code)
+      sub_field.value
+    end.compact if auth_field
+  end
+
+  vern = get_marc_vernacular(record, uniform_title)
+
+  accumulator << {
+    label: 'Uniform Title',
+    unmatched_vernacular: nil,
+    fields: [
+      {
+        uniform_title_tag: uniform_title.tag,
+        field: {
+          pre_text: pre_text.join(' '),
+          link_text: link_text.join(' '),
+          author: author.join(' '),
+          post_text: extra_text.join(' ')
+        },
+        vernacular: {
+          vern: vern
+        },
+        authorities: uniform_title.subfields.select { |x| x.code == '0' }.map(&:value),
+        rwo: uniform_title.subfields.select { |x| x.code == '1' }.map(&:value)
+      }
+    ]
+  }
+end
+
+to_field 'uniform_title_authorities_ssim', extract_marc('1300:1301:2400:2401')
+
+# Series Search Fields
+to_field 'series_search', extract_marc("440anpv:490av", alternate_script: false)
+
+to_field 'series_search', extract_marc("800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff))
+end
+
+to_field 'vern_series_search', extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
+to_field 'series_exact_search', extract_marc('830a', alternate_script: false)
+
+# # Author Title Search Fields
+to_field 'author_title_search' do |record, accumulator|
+  onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: false).extract(record).first)
+
+  twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first) if record['240']
+  twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: false).extract(record).first if record['245']
+  twoxx ||= 'null'
+
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: :only).extract(record).first
+
+  twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first
+  twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  Traject::MarcExtractor.cached('700abcdfghjklmnopqrstuvwyz:710abcdfghjklmnopqrstuvwyz:711abcdefghjklmnopqrstuvwyz', alternate_script: false).collect_matching_lines(record)  do |field, spec, extractor|
+    accumulator.concat extractor.collect_subfields(field, spec) if field['t']
+  end
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  Traject::MarcExtractor.cached('700abcdfghjklmnopqrstuvwyz:710abcdfghjklmnopqrstuvwyz:711abcdefghjklmnopqrstuvwyz', alternate_script: :only).collect_matching_lines(record)  do |field, spec, extractor|
+    accumulator.concat extractor.collect_subfields(field, spec) if field['t']
+  end
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  Traject::MarcExtractor.cached('800abcdfghijklmnopqrstuyz:810abcdfghijklmnopqrstuyz:811abcdfghijklmnopqrstuyz').collect_matching_lines(record)  do |field, spec, extractor|
+    accumulator.concat extractor.collect_subfields(field, spec) if field['t']
+  end
+end
+
+# # Author Search Fields
+# # IFF relevancy of author search needs improvement, unstemmed flavors for author search
+# #   (keep using stemmed version for everything search to match stemmed query)
+to_field 'author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', first: true, alternate_script: false)
+to_field 'vern_author_1xx_search', extract_marc('100abcdgjqu:110abcdgnu:111acdegjnqu', first: true, alternate_script: :only)
+to_field 'author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdejngqu:798acdegjnqu', alternate_script: false)
+to_field 'vern_author_7xx_search', extract_marc('700abcdgjqu:720ae:796abcdgjqu:710abcdgnu:797abcdgnu:711acdegjnqu:798acdegjnqu', alternate_script: :only)
+to_field 'author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: false)
+to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acdegjnqu', alternate_script: :only)
+# # Author Facet Fields
+to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |record, accumulator|
+  accumulator.map! { |v| v.gsub(/([\)-])[\\,;:]\.?$/, '\1')}
+  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map!(&method(:trim_punctuation_custom))
+end
+to_field 'author_other_facet', extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |record, accumulator|
+  accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1')}
+  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map!(&method(:trim_punctuation_custom))
+end
+# # Author Display Fields
+to_field 'author_person_display', extract_marc('100abcdq', first: true, alternate_script: false) do |record, accumulator|
+  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map!(&method(:trim_punctuation_custom))
+end
+to_field 'vern_author_person_display', extract_marc('100abcdq', first: true, alternate_script: :only) do |record, accumulator|
+  accumulator.map!(&method(:trim_punctuation_custom))
+end
+to_field 'author_person_full_display', extract_marc("100#{ALPHABET}", first: true, alternate_script: false)
+to_field 'vern_author_person_full_display', extract_marc("100#{ALPHABET}", first: true, alternate_script: :only)
+to_field 'author_corp_display', extract_marc("110#{ALPHABET}", first: true, alternate_script: false)
+to_field 'vern_author_corp_display', extract_marc("110#{ALPHABET}", first: true, alternate_script: :only)
+to_field 'author_meeting_display', extract_marc("111#{ALPHABET}", first: true, alternate_script: false)
+to_field 'vern_author_meeting_display', extract_marc("111#{ALPHABET}", first: true, alternate_script: :only)
+# # Author Sort Field
+to_field 'author_sort' do |record, accumulator|
+  accumulator << extract_sortable_author("100#{ALPHABET.delete('e')}:110#{ALPHABET.delete('e')}:111#{ALPHABET.delete('j')}",
+                                         "240#{ALPHABET}:245#{ALPHABET.delete('c')}",
+                                         record)
+end
+
+to_field 'author_struct' do |record, accumulator|
+  struct = {}
+  struct[:creator] = linked_author_struct(record, '100')
+  struct[:corporate_author] = linked_author_struct(record, '110')
+  struct[:meeting] = linked_author_struct(record, '111')
+  struct[:contributors] = linked_contributors_struct(record)
+  struct.reject! { |_k, v| v.empty? }
+
+  accumulator << struct unless struct.empty?
+end
+
+to_field 'works_struct' do |record, accumulator|
+  struct = {
+    included: works_struct(record, '700:710:711:730:740', indicator2: '2'),
+    related: works_struct(record, '700:710:711:730:740', indicator2: nil),
+  }
+
+  accumulator << struct unless struct.empty?
+end
+
+to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:7000:7001:7100:7101:7110:7111:7200:7201:7300:7301:7400:7401')
 
 def library_for_code(code)
   { 'ARS' => 'ARS', 'ART' => 'ART', 'BUS' => 'BUSINESS', 'CLA' => 'CLASSICS', 'EAR' => 'EARTH-SCI', 'EAL' => 'EAST-ASIA', 'EDU' => 'EDUCATION', 'ENG' => 'ENG', 'GRE' => 'GREEN', 'HILA' => 'HOOVER', 'MAR' => 'HOPKINS', 'LANE' => 'LANE', 'LAW' => 'LAW', 'MEDIA' => 'MEDIA-MTXT', 'MUS' => 'MUSIC', 'RUM' => 'RUMSEYMAP', 'SAL' => 'SAL', 'SCI' => 'SCIENCE', 'SPEC' => 'SPEC-COLL', 'TAN' => 'TANNER' }.fetch(
@@ -419,17 +587,25 @@ to_field 'uuid_ssi' do |record, accumulator|
 end
 
 to_field 'marc_json_struct' do |record, accumulator|
-  accumulator << record.marc_record.to_json
+  accumulator << record.marc_record
 end
 
 to_field 'folio_json_struct' do |record, accumulator|
-  accumulator << record.record.to_json
+  accumulator << record.record
 end
 
 to_field 'holdings_json_struct' do |record, accumulator|
-  accumulator << record.holdings.to_json
+  accumulator << record.holdings
 end
 
 to_field 'items_json_struct' do |record, accumulator|
-  accumulator << record.items.to_json
+  accumulator << record.items
+end
+
+
+## JSONify the entire record as a postprocessing step
+each_record do |record, context|
+  context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
+    context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
+  end
 end
