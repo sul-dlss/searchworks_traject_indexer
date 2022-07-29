@@ -16,7 +16,11 @@ class FolioClient
   end
 
   def get(path)
-    parse(authenticated_request(path))
+    authenticated_request(path)
+  end
+
+  def get_json(path)
+    parse(get(path))
   end
 
   def parse(response)
