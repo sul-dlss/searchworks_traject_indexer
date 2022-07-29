@@ -14,15 +14,17 @@ RSpec.describe 'Author-title config' do
   let(:field) { 'author_title_search' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
 
-  describe 'maps search field values from 100, 110, 111 with data from the 240 or 245' do
+  describe 'maps search field values from 100, 110, 111, 130 with data from the 240 or 245' do
     it 'maps the right data' do
       expect(select_by_id('100240')[field]).to eq ['100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
       expect(select_by_id('110240')[field]).to eq ['110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
       expect(select_by_id('111240')[field]).to eq ['111a 111c 111d 111e 111f 111g 111j 111k 111l 111n 111p 111q 111t 111u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
+      expect(select_by_id('130240')[field]).to eq ['130a 130d 130f 130g 130k 130l 130m 130n 130o 130p 130r 130s 130t 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
 
       expect(select_by_id('100no240')[field]).to eq ['100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 245a']
       expect(select_by_id('110no240')[field]).to eq ['110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 245a']
       expect(select_by_id('111no240')[field]).to eq ['111a 111c 111d 111e 111f 111g 111j 111k 111l 111n 111p 111q 111t 111u 245a']
+      expect(select_by_id('130no240')[field]).to eq ['130a 130d 130f 130g 130k 130l 130m 130n 130o 130p 130r 130s 130t 245a']
     end
   end
 
@@ -54,7 +56,7 @@ RSpec.describe 'Author-title config' do
     end
   end
 
-  describe 'maps search field values from vernacular 100, 110, 111 with data from the 240 or 245' do
+  describe 'maps search field values from vernacular 100, 110, 111, 130 with data from the 240 or 245' do
     it 'maps the right data' do
       expect(select_by_id('vern100vern240')[field]).to include 'vern100a vern100b vern100c vern100d vern100f vern100g vern100j vern100k vern100l vern100n vern100p vern100q vern100t vern100u vern240a vern240d vern240f vern240g vern240h vern240k vern240l vern240m vern240n vern240o vern240p vern240r vern240s'
       expect(select_by_id('vern100vern245')[field]).to include 'vern100a vern100b vern100c vern100d vern100f vern100g vern100j vern100k vern100l vern100n vern100p vern100q vern100t vern100u vern245a'
@@ -66,12 +68,15 @@ RSpec.describe 'Author-title config' do
 
       expect(select_by_id('vern110vern240')[field]).to include 'vern110a vern110b vern110c vern110d vern110f vern110g vern110k vern110l vern110n vern110p vern110t vern110u vern240a vern240d vern240f vern240g vern240h vern240k vern240l vern240m vern240n vern240o vern240p vern240r vern240s'
       expect(select_by_id('vern110vern245')[field]).to include 'vern110a vern110b vern110c vern110d vern110f vern110g vern110k vern110l vern110n vern110p vern110t vern110u vern245a'
-
       expect(select_by_id('vern110no240')[field]).to eq ['110a 245a']
 
       expect(select_by_id('vern111vern240')[field]).to include 'vern111a vern111c vern111d vern111e vern111f vern111g vern111j vern111k vern111l vern111n vern111p vern111q vern111t vern111u vern240a vern240d vern240f vern240g vern240h vern240k vern240l vern240m vern240n vern240o vern240p vern240r vern240s'
       expect(select_by_id('vern111vern245')[field]).to include 'vern111a vern111c vern111d vern111e vern111f vern111g vern111j vern111k vern111l vern111n vern111p vern111q vern111t vern111u vern245a'
       expect(select_by_id('vern111no240')[field]).to eq ['111a 245a']
+
+      expect(select_by_id('vern130vern240')[field]).to include 'vern130a vern130d vern130f vern130g vern130k vern130l vern130m vern130n vern130o vern130p vern130r vern130s vern130t vern240a vern240d vern240f vern240g vern240h vern240k vern240l vern240m vern240n vern240o vern240p vern240r vern240s'
+      expect(select_by_id('vern130vern245')[field]).to include 'vern130a vern130d vern130f vern130g vern130k vern130l vern130m vern130n vern130o vern130p vern130r vern130s vern130t vern245a'
+      expect(select_by_id('vern130no240')[field]).to eq ['130a 245a']
     end
   end
 
