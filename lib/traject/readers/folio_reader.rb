@@ -11,7 +11,7 @@ module Traject
     def each(&block)
       return to_enum(:each) unless block_given?
 
-      response = client.get('/source-storage/stream/source-records?limit=2147483647')
+      response = client.get('/source-storage/stream/source-records', params: { limit: settings.fetch('source-records-limit', 2147483647).to_i })
       buffer = ""
 
       while data = response.readpartial
@@ -20,7 +20,7 @@ module Traject
 
         buffer.each_line do |line|
           if line.end_with?("\n")
-            yield FolioRecord.new(JSON.parse(line))
+            yield FolioRecord.new(JSON.parse(line), client)
           else
             newbuffer += line
           end
@@ -31,10 +31,11 @@ module Traject
     end
 
     class FolioRecord
-      attr_reader :record
+      attr_reader :record, :client
 
-      def initialize(record)
+      def initialize(record, client)
         @record = record
+        @client = client
       end
 
       def fields(...)
@@ -43,6 +44,23 @@ module Traject
 
       def marc_record
         @marc_record ||= MARC::Record.new_from_hash(record.dig('parsedRecord', 'content'))
+      end
+
+      def holdings
+        @holdings ||= client.get_json("/holdings-storage/holdings", params: { limit: 2147483647, query: "instanceId==\"#{instance_id}\"" }).dig('holdingsRecords')
+      end
+
+      def instance_id
+        record.dig('externalIdsHolder', 'instanceId')
+      end
+
+      def items
+        return [] unless holdings.any?
+
+        @items ||= begin
+          query = holdings.map { |h| "holdingsRecordId==\"#{h['id']}\"" }.join(' OR ')
+          client.get_json("/item-storage/items", params: { limit: 2147483647, query: query }).dig('items')
+        end
       end
     end
 

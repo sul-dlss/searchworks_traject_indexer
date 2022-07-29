@@ -38,3 +38,15 @@ to_field 'id', extract_marc('001') do |_record, accumulator|
     v.sub(/^a/, '')
   end
 end
+
+to_field 'folio_json_struct' do |record, accumulator|
+  accumulator << record.record.to_json
+end
+
+to_field 'holdings_json_struct' do |record, accumulator|
+  accumulator << record.holdings.to_json
+end
+
+to_field 'items_json_struct' do |record, accumulator|
+  accumulator << record.items.to_json
+end

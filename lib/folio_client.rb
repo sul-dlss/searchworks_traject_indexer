@@ -15,12 +15,12 @@ class FolioClient
     @tenant = tenant
   end
 
-  def get(path)
-    authenticated_request(path)
+  def get(path, **kwargs)
+    authenticated_request(path, method: :get, **kwargs)
   end
 
-  def get_json(path)
-    parse(get(path))
+  def get_json(path, **kwargs)
+    parse(get(path, **kwargs))
   end
 
   def parse(response)
