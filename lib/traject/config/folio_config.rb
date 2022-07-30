@@ -12,6 +12,7 @@ require 'call_numbers/other'
 require 'call_numbers/shelfkey'
 require 'sirsi_holding'
 require 'mhld_field'
+require 'marc_links'
 require 'i18n'
 require 'honeybadger'
 require 'utils'
@@ -38,6 +39,7 @@ settings do
   provide 'reader_class_name', 'Traject::FolioReader'
 
   provide 'allow_duplicate_values', false
+  provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
   provide 'solr_writer.commit_on_close', true
   provide 'mapping_rescue', (lambda do |context, e|
     Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
