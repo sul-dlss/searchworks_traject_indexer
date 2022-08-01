@@ -5,6 +5,8 @@ require 'traject/macros/marc21_semantics'
 require 'traject/readers/marc_combining_reader'
 require 'traject/readers/kafka_marc_reader'
 require 'traject/writers/solr_better_json_writer'
+require 'traject/common/marc_utils'
+require 'traject/common/constants'
 require 'call_numbers/lc'
 require 'call_numbers/dewey'
 require 'call_numbers/other'
@@ -23,235 +25,15 @@ I18n.available_locales = [:en]
 extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 extend Traject::SolrBetterJsonWriter::IndexerPatch
+extend Traject::MarcUtils
 
 Utils.logger = logger
 
 ALPHABET = [*'a'..'z'].join('')
 A_X = ALPHABET.slice(0, 24)
-MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 CJK_RANGE = /(\p{Han}|\p{Hangul}|\p{Hiragana}|\p{Katakana})/.freeze
 
 indexer = self
-
-module Constants
-  EXCLUDE_FIELDS = ['w', '0', '1', '2', '5', '6', '8', '?', '=']
-  NIELSEN_TAGS = { '505' => '905', '520' => '920', '586' => '986' }
-  SOURCES = { 'Nielsen' => '(source: Nielsen Book Data)' }
-
-  RELATOR_TERMS = { 'acp' => 'Art copyist',
-                    'act' => 'Actor',
-                    'adp' => 'Adapter',
-                    'aft' => 'Author of afterword, colophon, etc.',
-                    'anl' => 'Analyst',
-                    'anm' => 'Animator',
-                    'ann' => 'Annotator',
-                    'ant' => 'Bibliographic antecedent',
-                    'app' => 'Applicant',
-                    'aqt' => 'Author in quotations or text abstracts',
-                    'arc' => 'Architect',
-                    'ard' => 'Artistic director ',
-                    'arr' => 'Arranger',
-                    'art' => 'Artist',
-                    'asg' => 'Assignee',
-                    'asn' => 'Associated name',
-                    'att' => 'Attributed name',
-                    'auc' => 'Auctioneer',
-                    'aud' => 'Author of dialog',
-                    'aui' => 'Author of introduction',
-                    'aus' => 'Author of screenplay',
-                    'aut' => 'Author',
-                    'bdd' => 'Binding designer',
-                    'bjd' => 'Bookjacket designer',
-                    'bkd' => 'Book designer',
-                    'bkp' => 'Book producer',
-                    'bnd' => 'Binder',
-                    'bpd' => 'Bookplate designer',
-                    'bsl' => 'Bookseller',
-                    'ccp' => 'Conceptor',
-                    'chr' => 'Choreographer',
-                    'clb' => 'Collaborator',
-                    'cli' => 'Client',
-                    'cll' => 'Calligrapher',
-                    'clt' => 'Collotyper',
-                    'cmm' => 'Commentator',
-                    'cmp' => 'Composer',
-                    'cmt' => 'Compositor',
-                    'cng' => 'Cinematographer',
-                    'cnd' => 'Conductor',
-                    'cns' => 'Censor',
-                    'coe' => 'Contestant -appellee',
-                    'col' => 'Collector',
-                    'com' => 'Compiler',
-                    'cos' => 'Contestant',
-                    'cot' => 'Contestant -appellant',
-                    'cov' => 'Cover designer',
-                    'cpc' => 'Copyright claimant',
-                    'cpe' => 'Complainant-appellee',
-                    'cph' => 'Copyright holder',
-                    'cpl' => 'Complainant',
-                    'cpt' => 'Complainant-appellant',
-                    'cre' => 'Creator',
-                    'crp' => 'Correspondent',
-                    'crr' => 'Corrector',
-                    'csl' => 'Consultant',
-                    'csp' => 'Consultant to a project',
-                    'cst' => 'Costume designer',
-                    'ctb' => 'Contributor',
-                    'cte' => 'Contestee-appellee',
-                    'ctg' => 'Cartographer',
-                    'ctr' => 'Contractor',
-                    'cts' => 'Contestee',
-                    'ctt' => 'Contestee-appellant',
-                    'cur' => 'Curator',
-                    'cwt' => 'Commentator for written text',
-                    'dfd' => 'Defendant',
-                    'dfe' => 'Defendant-appellee',
-                    'dft' => 'Defendant-appellant',
-                    'dgg' => 'Degree grantor',
-                    'dis' => 'Dissertant',
-                    'dln' => 'Delineator',
-                    'dnc' => 'Dancer',
-                    'dnr' => 'Donor',
-                    'dpc' => 'Depicted',
-                    'dpt' => 'Depositor',
-                    'drm' => 'Draftsman',
-                    'drt' => 'Director',
-                    'dsr' => 'Designer',
-                    'dst' => 'Distributor',
-                    'dtc' => 'Data contributor ',
-                    'dte' => 'Dedicatee',
-                    'dtm' => 'Data manager ',
-                    'dto' => 'Dedicator',
-                    'dub' => 'Dubious author',
-                    'edt' => 'Editor',
-                    'egr' => 'Engraver',
-                    'elg' => 'Electrician ',
-                    'elt' => 'Electrotyper',
-                    'eng' => 'Engineer',
-                    'etr' => 'Etcher',
-                    'exp' => 'Expert',
-                    'fac' => 'Facsimilist',
-                    'fld' => 'Field director ',
-                    'flm' => 'Film editor',
-                    'fmo' => 'Former owner',
-                    'fpy' => 'First party',
-                    'fnd' => 'Funder',
-                    'frg' => 'Forger',
-                    'gis' => 'Geographic information specialist ',
-                    'grt' => 'Graphic technician',
-                    'hnr' => 'Honoree',
-                    'hst' => 'Host',
-                    'ill' => 'Illustrator',
-                    'ilu' => 'Illuminator',
-                    'ins' => 'Inscriber',
-                    'inv' => 'Inventor',
-                    'itr' => 'Instrumentalist',
-                    'ive' => 'Interviewee',
-                    'ivr' => 'Interviewer',
-                    'lbr' => 'Laboratory ',
-                    'lbt' => 'Librettist',
-                    'ldr' => 'Laboratory director ',
-                    'led' => 'Lead',
-                    'lee' => 'Libelee-appellee',
-                    'lel' => 'Libelee',
-                    'len' => 'Lender',
-                    'let' => 'Libelee-appellant',
-                    'lgd' => 'Lighting designer',
-                    'lie' => 'Libelant-appellee',
-                    'lil' => 'Libelant',
-                    'lit' => 'Libelant-appellant',
-                    'lsa' => 'Landscape architect',
-                    'lse' => 'Licensee',
-                    'lso' => 'Licensor',
-                    'ltg' => 'Lithographer',
-                    'lyr' => 'Lyricist',
-                    'mcp' => 'Music copyist',
-                    'mfr' => 'Manufacturer',
-                    'mdc' => 'Metadata contact',
-                    'mod' => 'Moderator',
-                    'mon' => 'Monitor',
-                    'mrk' => 'Markup editor',
-                    'msd' => 'Musical director',
-                    'mte' => 'Metal-engraver',
-                    'mus' => 'Musician',
-                    'nrt' => 'Narrator',
-                    'opn' => 'Opponent',
-                    'org' => 'Originator',
-                    'orm' => 'Organizer of meeting',
-                    'oth' => 'Other',
-                    'own' => 'Owner',
-                    'pat' => 'Patron',
-                    'pbd' => 'Publishing director',
-                    'pbl' => 'Publisher',
-                    'pdr' => 'Project director',
-                    'pfr' => 'Proofreader',
-                    'pht' => 'Photographer',
-                    'plt' => 'Platemaker',
-                    'pma' => 'Permitting agency',
-                    'pmn' => 'Production manager',
-                    'pop' => 'Printer of plates',
-                    'ppm' => 'Papermaker',
-                    'ppt' => 'Puppeteer',
-                    'prc' => 'Process contact',
-                    'prd' => 'Production personnel',
-                    'prf' => 'Performer',
-                    'prg' => 'Programmer',
-                    'prm' => 'Printmaker',
-                    'pro' => 'Producer',
-                    'prt' => 'Printer',
-                    'pta' => 'Patent applicant',
-                    'pte' => 'Plaintiff -appellee',
-                    'ptf' => 'Plaintiff',
-                    'pth' => 'Patent holder',
-                    'ptt' => 'Plaintiff-appellant',
-                    'rbr' => 'Rubricator',
-                    'rce' => 'Recording engineer',
-                    'rcp' => 'Recipient',
-                    'red' => 'Redactor',
-                    'ren' => 'Renderer',
-                    'res' => 'Researcher',
-                    'rev' => 'Reviewer',
-                    'rps' => 'Repository',
-                    'rpt' => 'Reporter',
-                    'rpy' => 'Responsible party',
-                    'rse' => 'Respondent-appellee',
-                    'rsg' => 'Restager',
-                    'rsp' => 'Respondent',
-                    'rst' => 'Respondent-appellant',
-                    'rth' => 'Research team head',
-                    'rtm' => 'Research team member',
-                    'sad' => 'Scientific advisor',
-                    'sce' => 'Scenarist',
-                    'scl' => 'Sculptor',
-                    'scr' => 'Scribe',
-                    'sds' => 'Sound designer',
-                    'sec' => 'Secretary',
-                    'sgn' => 'Signer',
-                    'sht' => 'Supporting host',
-                    'sng' => 'Singer',
-                    'spk' => 'Speaker',
-                    'spn' => 'Sponsor',
-                    'spy' => 'Second party',
-                    'srv' => 'Surveyor',
-                    'std' => 'Set designer',
-                    'stl' => 'Storyteller',
-                    'stm' => 'Stage manager',
-                    'stn' => 'Standards body',
-                    'str' => 'Stereotyper',
-                    'tcd' => 'Technical director',
-                    'tch' => 'Teacher',
-                    'ths' => 'Thesis advisor',
-                    'trc' => 'Transcriber',
-                    'trl' => 'Translator',
-                    'tyd' => 'Type designer',
-                    'tyg' => 'Typographer',
-                    'vdg' => 'Videographer',
-                    'voc' => 'Vocalist',
-                    'wam' => 'Writer of accompanying material',
-                    'wdc' => 'Woodcutter',
-                    'wde' => 'Wood -engraver',
-                    'wit' => 'Witness' }
-end
 
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
@@ -316,13 +98,6 @@ class Traject::MarcExtractor
       end
 
       return subfields
-  end
-end
-
-def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
-  lambda do |record, accumulator, context|
-    extract_marc(spec, options.merge(alternate_script: false)).call(record, accumulator, context)
-    extract_marc(spec, options.merge(alternate_script: :only)).call(record, accumulator, context) if accumulator.empty?
   end
 end
 
@@ -546,44 +321,6 @@ end
 
 to_field 'uniform_title_authorities_ssim', extract_marc('1300:1301:2400:2401')
 
-def get_marc_vernacular(marc,original_field)
-  return_text = []
-  link = parse_linkage(original_field)
-  return unless link[:number]
-
-  marc.select { |f| link[:tag] == f.tag && parse_linkage(f)[:number] == link[:number] }.each do |field|
-    field.each do |sub|
-      next if Constants::EXCLUDE_FIELDS.include?(sub.code) || sub.code == '4'
-      return_text << sub.value
-    end
-  end
-
-  return return_text.join(" ") unless return_text.empty?
-end
-
-##
-# Originally cribbed from Traject::Marc21Semantics.marc_sortable_title, but by
-# using algorithm from StanfordIndexer#getSortTitle.
-def extract_sortable_title(fields, record)
-  java7_punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
-  Traject::MarcExtractor.new(fields, separator: false, alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    subfields = extractor.collect_subfields(field, spec).compact
-
-    if subfields.empty? && field['k']
-      # maybe an APPM archival record with only a 'k'
-      subfields = [field['k']]
-    end
-    if subfields.empty?
-      # still? All we can do is bail, I guess
-      return nil
-    end
-
-    non_filing = field.indicator2.to_i
-    subfields[0] = subfields[0].slice(non_filing..-1) if non_filing < subfields[0].length - 1
-    subfields.map { |x| x.delete(java7_punct) }.map(&:strip).join(' ')
-  end.first
-end
-
 # Series Search Fields
 to_field 'series_search', extract_marc("440anpv:490av", alternate_script: false)
 
@@ -692,171 +429,8 @@ to_field 'works_struct' do |record, accumulator|
   accumulator << struct unless struct.empty?
 end
 
-def works_struct(record, tags, indicator2: nil, link_codes: %w[a d f k l m n o p r s t].freeze, text_codes: %w[h i x 3].freeze)
-
-  Traject::MarcExtractor.cached(tags).collect_matching_lines(record) do |field, spec, extractor|
-    next if ['700', '710', '711'].include?(field.tag) && (!field['t'] || field['t'].empty?)
-
-    result = {
-      before: [],
-      inside: [],
-      after: []
-    }
-
-    subfields_before = field.subfields.take_while { |subfield| !link_codes.include?(subfield.code) }
-    subfields_after = field.subfields.reverse.take_while { |subfield| !link_codes.include?(subfield.code) }.reverse
-
-    result[:before] = subfields_before.select do |subfield|
-      text_codes.include?(subfield.code)
-    end
-
-    result[:inside] = field.subfields.slice(subfields_before.length..(-1 * (subfields_after.length + 1)))
-
-    result[:after] = subfields_after.select do |subfield|
-      text_codes.include?(subfield.code)
-    end
-
-    {
-      link: result[:inside].map(&:value).join(' '),
-      search: result[:inside].reject { |subfield| text_codes.include?(subfield.code) }.map(&:value).join(' '),
-      pre_text: result[:before].map(&:value).join(' '),
-      post_text: result[:after].map(&:value).join(' '),
-      authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
-      rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
-    }
-  end
-end
-
 to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:7000:7001:7100:7101:7110:7111:7200:7201:7300:7301:7400:7401')
 
-def linked_author_struct(record, tag)
-  Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, spec, extractor|
-    subfields = field.subfields.reject { |subfield| Constants::EXCLUDE_FIELDS.include?(subfield.code) }
-    {
-      link: subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
-      search: subfields.select { |subfield| linked?(tag, subfield) }.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
-      post_text: subfields.reject { |subfield| subfield.code == 'i' }.select { |subfield| %w[e 4].include?(subfield.code) || !linked?(tag, subfield) }.each { |subfield| subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value if subfield.code == '4' }.map(&:value).join(' '),
-      authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
-      rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
-    }.reject { |k, v| v.empty? }
-  end
-end
-
-def linked_contributors_struct(record)
-  contributors = []
-  vern_fields = []
-
-  Traject::MarcExtractor.cached('700:710:711:720', alternate_script: :only).each_matching_line(record) do |f|
-    vern_fields << f if !f['t'] || f['t'].empty?
-  end
-
-  Traject::MarcExtractor.cached('700:710:711:720', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    if !field['t'] || field['t'].empty?
-      link = parse_linkage(field)
-      vern_field = vern_fields.find { |f| parse_linkage(f)[:number] == link[:number] } if field['6']
-
-      contributor = assemble_contributor_data_struct(field)
-      contributor[:vern] = assemble_contributor_data_struct(vern_field) if vern_field
-
-      contributors << contributor
-    end
-  end
-
-  vern_fields.each do |field, _spec, _extractor|
-    link = parse_linkage(field)
-    next unless link[:number] == '00'
-
-    contributors << {
-      vern: assemble_contributor_data_struct(field)
-    }
-  end
-
-  contributors
-end
-
-def parse_linkage(field)
-  return {} unless field && field['6']
-
-  tag_and_number, script_id, field_orientation = field['6'].split('/')
-
-  tag, number = tag_and_number.split('-', 2)
-
-  { tag: tag, number: number, script_id: script_id, field_orientation: field_orientation }
-end
-
-def assemble_contributor_data_struct(field)
-  link_text = []
-  relator_text = []
-  extra_text = []
-  before_text = []
-  field.each do |subfield|
-    next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
-    if subfield.code == "e"
-      relator_text << subfield.value
-    elsif subfield.code == "4"
-      relator_text << Constants::RELATOR_TERMS[subfield.value] || subfield.value
-    elsif field.tag == '711' && subfield.code == 'j'
-      extra_text << subfield.value
-    elsif subfield.code != "e" and subfield.code != "4"
-      link_text << subfield.value
-    end
-  end
-
-  {
-    link: link_text.join(' '),
-    search: link_text.join(' '),
-    pre_text: before_text.join(' '),
-    post_text: relator_text.join(' ') + extra_text.join(' '),
-    authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
-    rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
-  }
-end
-
-def linked?(tag, subfield)
-  case tag
-  when '100', '110'
-    !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
-  when '111'
-    !%w[j 4].include?(subfield.code) # exclude 111 $j $4
-  end
-end
-
-# Custom method cribbed from Traject::Macros::Marc21Semantics.marc_sortable_author
-# https://github.com/traject/traject/blob/0914a396306c2489a7e270f33793ca76665f8f19/lib/traject/macros/marc21_semantics.rb#L51-L88
-# Port from Solrmarc:MarcUtils#getSortableAuthor wasn't accurate
-# This method differs in that:
-#  245 field returned independent of 240 being present
-#  punctuation actually gets stripped
-#  subfields to use specified in passed parameter
-#  ensures record with no 1xx sorts after records with a 1xx by prepending UTF-8 max code point to title string
-def extract_sortable_author(author_fields, title_fields, record)
-  punct = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~\\'
-  onexx = Traject::MarcExtractor.cached(author_fields, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
-    non_filing = field.indicator2.to_i
-    subfields = extractor.collect_subfields(field, spec).compact
-    next if subfields.empty?
-    subfields[0] = subfields[0].slice(non_filing..-1) if non_filing < subfields[0].length - 1
-    subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
-  end.first
-
-  onexx ||= MAX_CODE_POINT
-
-  titles = []
-  title_fields.split(':').each do |title_spec|
-    titles << Traject::MarcExtractor.cached(title_spec, alternate_script: false, separator: false).collect_matching_lines(record) do |field, spec, extractor|
-      non_filing = field.indicator2.to_i
-      subfields = extractor.collect_subfields(field, spec).compact
-      next if subfields.empty?
-      subfields[0] = subfields[0].slice(non_filing..-1) if non_filing < subfields[0].length - 1
-      subfields.map { |x| x.delete(punct) }.map(&:strip).join(' ')
-    end.first
-  end
-
-  title = titles.compact.join(' ')
-  title = title.delete(punct).strip if title
-
-  return [onexx, title].compact.reject(&:empty?).join(' ')
-end
 #
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
@@ -916,64 +490,6 @@ to_field "era_facet", extract_marc("650y:651y", alternate_script: false) do |rec
   accumulator.map! { |v| trim_punctuation_custom(v, /([A-Za-z0-9]{2})\. *\Z/) }
 end
 
-def clean_facet_punctuation(value)
-  new_value = value.gsub(/^[%\*]/, ''). # begins with percent sign or asterisk
-                    gsub(/\({2,}+/, '('). # two or more open parentheses
-                    gsub(/\){2,}+/, ')'). # two or more close parentheses
-                    gsub(/!{2,}+/, '!'). #  two or more exlamation points
-                    gsub(/\s+/, ' ') # one or more spaces
-
-  Utils.balance_parentheses(new_value)
-end
-
-# Custom method for traject's trim_punctuation
-# https://github.com/traject/traject/blob/5754e3c0c207d461ca3a98728f7e1e7cf4ebbece/lib/traject/macros/marc21.rb#L227-L246
-# Does the same except removes trailing period when preceded by at
-# least four letters instead of three.
-def trim_punctuation_custom(str, trailing_period_regex = nil)
-  return str unless str
-  trailing_period_regex ||= /( *[A-Za-z]{4,}|[0-9]{3}|\)|,)\. *\Z/
-
-  previous_str = nil
-  until str == previous_str
-    previous_str = str
-    # If something went wrong and we got a nil, just return it
-    # trailing: comma, slash, semicolon, colon (possibly preceded and followed by whitespace)
-    str = str.sub(/ *[ \\,\/;:] *\Z/, '')
-
-    # trailing period if it is preceded by at least four letters (possibly preceded and followed by whitespace)
-    str = str.gsub(trailing_period_regex, '\1')
-
-    # trim any leading or trailing whitespace
-    str.strip!
-  end
-
-  return str
-end
-
-def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(str)
-  previous_str = nil
-  until str == previous_str
-    previous_str = str
-
-    str = str.strip.gsub(/ *([,\/;:])$/, '')
-                   .sub(/(\w\w)\.$/, '\1')
-                   .sub(/(\p{L}\p{L})\.$/, '\1')
-                   .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/, '\1')
-
-
-    # single square bracket characters if they are the start and/or end
-    #   chars and there are no internal square brackets.
-    str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
-    str = str.sub(/\A\[/, '') if str.index(']').nil? # no closing bracket
-    str = str.sub(/\]\Z/, '') if str.index('[').nil? # no opening bracket
-
-    str
-  end
-
-  str
-end
-
 # # Publication Fields
 
 # 260ab and 264ab, without s.l in 260a and without s.n. in 260b
@@ -993,47 +509,6 @@ to_field 'pub_country', extract_marc('008') do |record, accumulator|
   two_char_country_codes = accumulator.flat_map { |v| v[15..16] }
   translation_map = Traject::TranslationMap.new('country_map')
   accumulator.replace [translation_map.translate_array(three_char_country_codes + two_char_country_codes).first]
-end
-
-# # publication dates
-def clean_date_string(value)
-  value = value.strip
-  valid_year_regex = /(?:20|19|18|17|16|15|14|13|12|11|10|09|08|07|06|05)[0-9][0-9]/
-
-  # some nice regular expressions looking for years embedded in strings
-  matches = [
-    /^(#{valid_year_regex})\D{0,2}$/,
-    /\[(#{valid_year_regex})\]/,
-    /^\[?[©Ⓟcp](#{valid_year_regex})\D?$/,
-    /i\. ?e\. ?(#{valid_year_regex})\D?/,
-    /\[(#{valid_year_regex})\D.*\]/,
-  ].map { |r| r.match(value)&.captures&.first }
-
-  best_match = matches.compact.first if matches
-
-  # reject BC dates altogether.
-  return if value =~ /[0-9]+ B\.?C\.?/i
-
-  # else if (bracesAround19Matcher.find())
-  #   cleanDate = bracesAround19Matcher.group().replaceAll("\\[", "").replaceAll("\\]", "");
-  # else if (unclearLastDigitMatcher.find())
-  #   cleanDate = unclearLastDigitMatcher.group().replaceAll("[-?]", "0");
-
-  # if a year starts with an l instead of a 1
-  best_match ||= if value =~ /l((?:9|8|7|6|5)\d{2,2})\D?/
-    "1#{$1}"
-  end
-  # brackets around the century, e.g. [19]56
-  best_match ||= if value =~ /\[19\](\d\d)\D?/
-    "19#{$1}"
-  end
-  # uncertain last digit
-  best_match ||= if value =~ /((?:20|19|18|17|16|15)[0-9])[-?]/
-    "#{$1}0"
-  end
-
-  # is the date no more than 1 year in the future?
-  best_match.to_i.to_s if best_match.to_i >= 500 && best_match.to_i <= Time.now.year + 1
 end
 
 # # deprecated
@@ -1195,25 +670,6 @@ to_field 'pub_year_tisim' do |record, accumulator|
   accumulator.compact!
   accumulator.map!(&:to_i)
   accumulator.map!(&:to_s)
-end
-
-def clean_marc_008_date(year, u_replacement: '0')
-  return unless year =~ /(\d{4}|\d{3}[u-])/
-  year = year.gsub(/[u-]$/, u_replacement)
-  return unless (500..(Time.now.year + 10)).include? year.to_i
-
-  return year.to_i.to_s
-end
-
-def marc_008_date(byte6values, byte_range, u_replacement)
-  lambda do |record, accumulator|
-    Traject::MarcExtractor.new('008', first: true).collect_matching_lines(record) do |field, spec, extractor|
-      if byte6values.include? field.value[6]
-        year = clean_marc_008_date(field.value[byte_range], u_replacement: u_replacement)
-        accumulator << year if year
-      end
-    end
-  end
 end
 
 # Year/range to show with the title
@@ -2060,25 +1516,6 @@ to_field 'toc_struct' do |marc, accumulator|
   accumulator << {:label=>"Contents",:fields=>new_fields,:vernacular=>new_vern,:unmatched_vernacular=>new_unmatched_vern} unless (new_fields.nil? and new_vern.nil? and new_unmatched_vern.nil?)
 end
 
-def split_toc_chapters(value)
-  formatted_chapter_regexes = [
-    /[^\S]--[^\S]/, # this is the normal, expected MARC delimiter
-    /      /, # but a bunch of eResources like to use whitespace
-    /--[^\S]/, # or omit the leading whitespace
-    /[^\S]\.-[^\S]/, # or a .-
-    /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
-    /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
-    /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
-    /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
-  ]
-  formatted_chapter_regexes.each do |regex|
-    chapters = value.split(regex).map { |w| w.strip unless w.strip.empty? }.compact
-    # if the split found a match and actually split the string, we are done
-    return chapters if chapters.length > 1
-  end
-  [value]
-end
-
 to_field 'summary_struct' do |marc, accumulator|
   summary(marc, accumulator)
   content_advice(marc, accumulator)
@@ -2136,28 +1573,6 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
   accumulator << { label: label, fields: fields, unmatched_vernacular: unmatched_vern } unless fields.empty? && unmatched_vern.nil?
 end
 
-def get_unmatched_vernacular(marc,tag)
-  return [] unless marc['880']
-
-  fields = []
-
-  marc.select { |f| f.tag == '880' }.each do |field|
-    text = []
-    link = parse_linkage(field)
-
-    next unless link[:number] == '00' && link[:tag] == tag
-    field.each do |sub|
-      next if Constants::EXCLUDE_FIELDS.include?(sub.code)
-      text << sub.value
-    end
-
-    fields << text.join(' ') unless text.empty?
-  end
-
-  return fields unless fields.empty?
-end
-
-
 to_field "context_search", extract_marc("518a", alternate_script: false)
 to_field "vern_context_search", extract_marc("518aa", alternate_script: :only)
 to_field "summary_search", extract_marc("920ab:520ab", alternate_script: false)
@@ -2181,25 +1596,6 @@ end
 to_field 'issn_search', extract_marc('022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x', alternate_script: false) do |_record, accumulator|
   accumulator.map!(&:strip)
   accumulator.select! { |v| v =~ issn_pattern }
-end
-
-# INDEX-142 NOTE: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
-# so need to account for it in the pattern match below
-def issn_pattern
-  /^\d{4}-\d{3}[X\d]\D*$/
-end
-
-def extract_isbn(value)
-  value = value.strip
-  isbn10_pattern = /^\d{9}[\dX].*/
-  isbn13_pattern = /^(978|979)\d{9}[\dX].*/
-  isbn13_any = /^\d{12}[\dX].*/
-
-  if value =~ isbn13_pattern
-    value[0, 13]
-  elsif value =~ isbn10_pattern && value !~ isbn13_any
-    value[0, 10]
-  end
 end
 
 to_field 'isbn_display', extract_marc('020a', alternate_script: false) do |_record, accumulator|
@@ -2365,7 +1761,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
     next unless SirsiHolding::CallNumber.new(cn).valid_lc?
 
     first_letter = cn[0, 1].upcase
-    letters = extract_uppercase_letters(cn)
+    letters = cn[/^[A-Z]+/]
 
     next unless first_letter && translation_map[first_letter]
 
@@ -2375,10 +1771,6 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
       translation_map[letters]
     ].compact.join('|')
   end
-end
-
-def extract_uppercase_letters(str)
-  str[/^[A-Z]+/]
 end
 
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
@@ -2413,7 +1805,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
     next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
-    letters = extract_uppercase_letters(cn)
+    letters = cn[/^[A-Z]+/]
 
     translation_map = Traject::TranslationMap.new('call_number')
 
@@ -2435,7 +1827,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
     next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
-    letters = extract_uppercase_letters(cn)
+    letters = cn[/^[A-Z]+/]
 
     translation_map = Traject::TranslationMap.new('call_number')
 
