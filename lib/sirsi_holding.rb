@@ -19,8 +19,8 @@ class SirsiHolding
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode, :tag
-  def initialize(tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '', barcode: '')
+  attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag
+  def initialize(tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '', barcode: '', public_note: '')
     @call_number = call_number
     @current_location = current_location
     @home_location = home_location
@@ -29,6 +29,7 @@ class SirsiHolding
     @type = type
     @barcode = barcode
     @tag = tag
+    @public_note = public_note
   end
 
   def call_number

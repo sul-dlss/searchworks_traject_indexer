@@ -115,6 +115,7 @@ def holdings(record, context)
       scheme: call_number_type_map(record.call_number_type(item.dig('effectiveCallNumberComponents', 'typeId')).dig('name')),
       type: item.dig('materialType', 'name'),
       barcode: item['barcode'],
+      # TODO: not implementing public note (was 999 subfield o) currently
       tag: item
     )
   end
