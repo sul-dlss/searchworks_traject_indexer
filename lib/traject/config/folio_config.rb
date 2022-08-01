@@ -25,7 +25,15 @@ settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
   provide 'processing_thread_pool', ENV['NUM_THREADS']
-  provide 'reader_class_name', 'Traject::FolioReader'
+  if ENV['KAFKA_TOPIC']
+    provide "reader_class_name", "Traject::KafkaFolioReader"
+    kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
+    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"), fetcher_max_queue_size: 15)
+    consumer.subscribe(ENV['KAFKA_TOPIC'])
+    provide 'kafka.consumer', consumer
+  else
+    provide "reader_class_name", "Traject::FolioReader"
+  end
 
   provide 'allow_duplicate_values', false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
