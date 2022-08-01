@@ -175,6 +175,14 @@ to_field 'barcode_search' do |record, accumulator, context|
   end
 end
 
+to_field 'date_cataloged' do |record, accumulator|
+  # solr needs datetimes in UTC, so we parse and reformat them from FOLIO
+  # TODO: is this the right place to get this from? use instanceRecord or holdingsRecord instead?
+  # when are these timestamps updated in FOLIO?
+  timestamp = record.record.dig('metadata', 'createdDate')
+  accumulator << Time.iso8601(timestamp).utc.iso8601 if timestamp
+end
+
 ## FOLIO specific fields
 
 ## QUESTIONS / ISSUES
