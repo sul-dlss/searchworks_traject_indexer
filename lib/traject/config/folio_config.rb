@@ -168,6 +168,8 @@ to_field 'location_facet' do |record, accumulator, context|
 end
 
 to_field 'barcode_search' do |record, accumulator, context|
+  context.output_hash['barcode_search'] = []
+
   holdings(record, context).each do |holding|
     accumulator << holding.barcode
   end
