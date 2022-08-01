@@ -41,6 +41,19 @@ RSpec.describe 'Sirsi config' do
     end
   end
 
+  describe 'marc_json_struct' do
+    let(:fixture_name) { 'fieldOrdering.mrc' }
+    it do
+      ix650 = result['marc_json_struct'].first.index '650first'
+      ix600 = result['marc_json_struct'].first.index '600second'
+      expect(ix650 < ix600).to be true
+    end
+
+    it 'has the MARC leader' do
+      expect(JSON.parse(result['marc_json_struct'].first)['leader']).to eq record.leader
+    end
+  end
+
   describe 'context_marc_fields_ssim' do
     subject(:result) { indexer.map_record(record) }
 
