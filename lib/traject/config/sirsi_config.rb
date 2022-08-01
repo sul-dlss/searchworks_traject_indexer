@@ -434,9 +434,9 @@ to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:
 #
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
-to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: false) do |record, accumulator|
+to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: false) do |record, accumulator, context|
   accumulator.reject! { |v| v.start_with?('nomesh') }
-  if record['999'] && record['999']['m'] == 'LANE-MED'
+  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
     arr = []
     extract_marc('655a').call(record, arr, nil)
     accumulator.reject! { |v| arr.include? v }
@@ -451,9 +451,9 @@ to_field "vern_geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691ab
 to_field "geographic_subz_search", extract_marc("600z:610z:630z:647z:650z:651z:654z:655z:656z:657z:690z:691z:696z:697z:698z:699z", alternate_script: false)
 
 to_field "vern_geographic_subz_search", extract_marc("600zz:610zz:630zz:647zz:650zz:651zz:654zz:655zz:656zz:657zz:690zz:691zz:696zz:697zz:698zz:699zz", alternate_script: :only)
-to_field "subject_other_search", extract_marc(%w(600 610 611 630 647 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: false) do |record, accumulator|
+to_field "subject_other_search", extract_marc(%w(600 610 611 630 647 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: false) do |record, accumulator, context|
   accumulator.reject! { |v| v.start_with?('nomesh') }
-  if record['999'] && record['999']['m'] == 'LANE-MED'
+  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
     arr = []
     extract_marc('655a').call(record, arr, nil)
     accumulator.reject! { |v| arr.include? v }
@@ -1037,8 +1037,8 @@ to_field 'format_main_ssim' do |record, accumulator, context|
 end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
-  Traject::MarcExtractor.new('999t').collect_matching_lines(record) do |field, spec, extractor|
-    accumulator << 'Database' if extractor.collect_subfields(field, spec).include? 'DATABASE'
+  if holdings(record, context).any? { |holding| holding.type == 'DATABASE' }
+    accumulator << 'Database'
   end
 end
 
@@ -1057,34 +1057,27 @@ end
 #   A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
 #   the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
 #  */
-to_field 'format_main_ssim' do |record, accumulator|
-  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
-    if field['m'] == 'SPEC-COLL' && field['w'] == 'ALPHANUM' && field['a'] =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|D|M]|V\d)/i
-      accumulator << 'Archive/Manuscript'
-    end
+to_field 'format_main_ssim' do |record, accumulator, context|
+  if holdings(record, context).any? { |holding| holding.library == 'SPEC-COLL' && holding.scheme == 'ALPHANUM' && holding.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|D|M]|V\d)/i }
+    accumulator << 'Archive/Manuscript'
   end
 end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
-  Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
-    if extractor.collect_subfields(field, spec).join(' ') =~ /manuscript/
-
-      Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
-        if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
-          accumulator << 'Book'
-        end
-      end
-    end
-  end
-end
-
-to_field 'format_main_ssim' do |record, accumulator, context|
-  if (record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd')
-    Traject::MarcExtractor.new('999m').collect_matching_lines(record) do |m_field, m_spec, m_extractor|
-      if m_extractor.collect_subfields(m_field, m_spec).any? { |x| x == 'LANE-MED' }
-        context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
+  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
+    Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
+      if extractor.collect_subfields(field, spec).join(' ') =~ /manuscript/
         accumulator << 'Book'
       end
+    end
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
+  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
+    if (record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd')
+      context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
+      accumulator << 'Book'
     end
   end
 end
@@ -1279,15 +1272,12 @@ to_field 'format_physical_ssim', extract_marc('300a:338a', alternate_script: fal
   end)
 end
 
-to_field 'format_physical_ssim' do |record, accumulator|
-  Traject::MarcExtractor.new('999').collect_matching_lines(record) do |field, spec, extractor|
-    next unless field['a']
-
-    if field['a'].start_with? 'MFICHE'
-      accumulator << 'Microfiche'
-    elsif field['a'].start_with? 'MFILM'
-      accumulator << 'Microfilm'
-    end
+to_field 'format_physical_ssim' do |record, accumulator, context|
+  if holdings(record, context).any? { |holding| holding.call_number.to_s.start_with? 'MFICHE' }
+    accumulator << 'Microfiche'
+  end
+  if holdings(record, context).any? { |holding| holding.call_number.to_s.start_with? 'MFILM' }
+    accumulator << 'Microfilm'
   end
 end
 
@@ -2168,23 +2158,18 @@ resv_locs = Traject::TranslationMap.new('locations_reserves_list')
 
 to_field 'building_facet' do |record, accumulator, context|
   holdings(record, context).each do |holding|
-    item = holding.tag
     next if holding.skipped?
 
-    curr_loc = item['k']
-    home_loc = item['l']
-    library = item['m']
-
-    if resv_locs.hash.key?(curr_loc)
-      accumulator << curr_loc
+    if resv_locs.hash.key?(holding.current_location)
+      accumulator << holding.current_location
     else
-      accumulator << library
+      accumulator << holding.library
       # https://github.com/sul-dlss/solrmarc-sw/issues/101
       # Per Peter Blank - items with library = SAL3 and home location = PAGE-AR
       # should be given two library facet values:
       # SAL3 (off-campus storage) <- they are currently getting this
       # and Art & Architecture (Bowes) <- new requirement
-      if (library == 'SAL3') && (home_loc == 'PAGE-AR')
+      if (holding.library == 'SAL3') && (holding.home_location == 'PAGE-AR')
         accumulator << 'ART'
       end
     end
@@ -2199,8 +2184,8 @@ to_field 'building_facet' do |record, accumulator|
 end
 
 
-to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_order_map') do |record, accumulator|
-  accumulator.replace([]) if record['999']
+to_field 'building_facet', extract_marc('596a', translation_map: 'library_on_order_map') do |record, accumulator, context|
+  accumulator.replace([]) if holdings(record, context).any?
 
   accumulator.replace library_map.translate_array(accumulator)
 end
@@ -2279,7 +2264,7 @@ to_field 'item_display' do |record, accumulator, context|
     current_location = 'ON-ORDER' if holding.is_on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
 
     accumulator << [
-      holding.tag['i'],
+      holding.barcode,
       holding.library,
       holding.home_location,
       current_location,
@@ -2296,7 +2281,7 @@ to_field 'item_display' do |record, accumulator, context|
 end
 
 to_field 'item_display' do |record, accumulator, context|
-  next if record['999']
+  next if holdings(record, context).any?
 
   order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(record)
   translation_map = Traject::TranslationMap.new('library_on_order_map')
