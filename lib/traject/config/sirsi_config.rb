@@ -1737,6 +1737,7 @@ def holdings(record, context)
         scheme: item['w'],
         type: item['t'],
         barcode: item['i'],
+        public_note: (item['o'] if item['o']&.start_with?(/\.PUBLIC\./i)),
         tag: item
       )
     end
@@ -2282,7 +2283,7 @@ to_field 'item_display' do |record, accumulator, context|
       (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
       (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number),
       (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      (holding.tag['o'] if holding.tag['o'] && holding.tag['o'].upcase.start_with?('.PUBLIC.')),
+      holding.public_note,
       scheme
     ].join(' -|- ')
   end
