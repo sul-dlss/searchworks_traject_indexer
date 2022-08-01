@@ -385,5 +385,24 @@ module Traject
         value[0, 10]
       end
     end
+
+    def split_toc_chapters(value)
+      formatted_chapter_regexes = [
+        /[^\S]--[^\S]/, # this is the normal, expected MARC delimiter
+        /      /, # but a bunch of eResources like to use whitespace
+        /--[^\S]/, # or omit the leading whitespace
+        /[^\S]\.-[^\S]/, # or a .-
+        /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
+        /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
+        /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
+        /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
+      ]
+      formatted_chapter_regexes.each do |regex|
+        chapters = value.split(regex).map { |w| w.strip unless w.strip.empty? }.compact
+        # if the split found a match and actually split the string, we are done
+        return chapters if chapters.length > 1
+      end
+      [value]
+    end
   end
 end
