@@ -3,6 +3,7 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/folio_reader'
+require 'traject/readers/kafka_folio_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'traject/common/marc_utils'
 require 'traject/common/constants'
