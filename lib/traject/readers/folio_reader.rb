@@ -36,7 +36,7 @@ module Traject
     private
 
     def client
-      @client ||= FolioClient.new
+      @client ||= settings['folio.client'] || FolioClient.new
     end
   end
 end

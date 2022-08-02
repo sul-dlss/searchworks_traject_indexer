@@ -9,10 +9,19 @@ class FolioClient
 
   attr_reader :base_url
 
-  def initialize(url: ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'], tenant: 'sul')
+  def initialize(url:, username: nil, password: nil, tenant: 'sul')
+    uri = URI.parse(url)
+
     @base_url = url
     @username = username
     @password = password
+
+    if uri.user
+      @username ||= uri.user
+      @password ||= uri.password
+      @base_url = uri.dup.tap { |u| u.user = nil; u.password = nil }.to_s
+    end
+
     @tenant = tenant
   end
 

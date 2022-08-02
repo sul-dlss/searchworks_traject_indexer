@@ -46,6 +46,7 @@ settings do
 
   provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
+  provide 'folio.client', FolioClient.new(url: ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
 end
 
 def call_number_for_holding(record, holding, context)
