@@ -8,7 +8,7 @@ class Traject::KafkaFolioReader
 
   def initialize(input_stream, settings)
     @settings = Traject::Indexer::Settings.new settings
-    @client = FolioClient.new
+    @client = settings['folio.client'] || FolioClient.new
   end
 
   def each
