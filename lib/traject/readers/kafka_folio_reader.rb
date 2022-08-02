@@ -17,7 +17,7 @@ class Traject::KafkaFolioReader
     kafka.each_message(max_bytes: 10000000) do |message|
       Utils.logger.debug("Traject::KafkaFolioReader#each(#{message.key})")
       record = JSON.parse(message.value)
-      yield FolioRecord.new(record, client: @client)
+      yield FolioRecord.new(record, @client)
     end
   end
 
