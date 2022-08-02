@@ -186,6 +186,10 @@ to_field 'marcxml' do |record, accumulator|
   accumulator << (SolrMarcStyleFastXMLWriter.single_record_document(record, include_namespace: true) + "\n")
 end
 
+to_field 'marc_json_struct' do |record, accumulator|
+  accumulator << record.to_hash
+end
+
 to_field 'all_search' do |record, accumulator|
   keep_fields = %w[024 027 028 033 905 908 920 986 979]
   result = []
