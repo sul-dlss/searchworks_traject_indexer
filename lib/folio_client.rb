@@ -1,4 +1,5 @@
 require 'http'
+require_relative 'folio_record'
 
 class FolioClient
   DEFAULT_HEADERS = {
@@ -21,6 +22,10 @@ class FolioClient
 
   def get_json(path, **kwargs)
     parse(get(path, **kwargs))
+  end
+
+  def source_record(**kwargs)
+    FolioRecord.new(get_json("/source-storage/source-records", params: kwargs).dig('sourceRecords', 0), self)
   end
 
   def parse(response)

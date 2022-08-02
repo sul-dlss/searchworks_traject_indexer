@@ -4,10 +4,6 @@ class FolioRecord
   attr_reader :record, :client
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, to: :marc_record
 
-  def self.fetch(id, client: FolioClient.new)
-    FolioRecord.new(client.get_json("/source-storage/source-records", params: { instanceHrid: "a#{id}" }).dig('sourceRecords', 0), client)
-  end
-
   def initialize(record, client)
     @record = record
     @client = client
