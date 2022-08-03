@@ -9,8 +9,6 @@ ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call unless ENV['D
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
 
-set :rvm_ruby_version, 'ruby-3.1.2'
-
 set :honeybadger_env, "#{fetch(:stage)}"
 
 # Default value for :format is :airbrussh.
@@ -64,12 +62,12 @@ namespace :deploy do
   desc "stop/start eye, config for monitoring the deployment's traject workers"
   before :cleanup, :load_eye_config do
     on roles(:app) do
-      within release_path do
-        execute '/usr/local/rvm/bin/rvm-exec default eye info'
-        execute '/usr/local/rvm/bin/rvm-exec default eye stop traject'
-        execute '/usr/local/rvm/bin/rvm-exec default eye quit'
-        execute '/usr/local/rvm/bin/rvm-exec default eye load /opt/app/indexer/searchworks_traject_indexer/current/traject.eye'
-      end
+      execute '/usr/local/rvm/bin/rvm-exec default eye info'
+      execute '/usr/local/rvm/bin/rvm-exec default eye stop traject'
+      execute '/usr/local/rvm/bin/rvm-exec default eye quit'
+      execute '/usr/local/rvm/bin/rvm-exec default eye load /opt/app/indexer/searchworks_traject_indexer/current/traject.eye &> /dev/null'
+      sleep 1
+      execute '/usr/local/rvm/bin/rvm-exec default eye info'
     end
   end
 end
