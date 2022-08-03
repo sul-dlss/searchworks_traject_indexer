@@ -24,6 +24,7 @@ gem 'statsd-ruby'
 gem 'debouncer'
 gem 'dor-rights-auth'
 gem 'rexml' # required for ruby 3
+gem 'config'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
@@ -34,3 +35,10 @@ group :deployment do
 end
 
 gem 'activesupport', '~> 6.0' # 7.x requires ruby 2.7+ (and our jruby is at 2.5)
+gem 'dry-core', '< 0.8' # 0.8 requires ruby 2.7+
+gem 'dry-container', '< 0.10' # 0.10 requires ruby 2.7+
+gem 'dry-validation', '< 1.8' # 1.8 requires ruby 2.7+
+gem 'dry-configurable', '< 0.14' # 0.14 requires ruby 2.7+
+gem 'dry-initializer', '< 3.1' # 3.1 requires ruby 2.7+
+gem 'dry-schema', '< 1.9' # 1.9 requires ruby 2.7+
+gem 'dry-inflector', '< 0.3' # 0.3 requires ruby 2.7+
