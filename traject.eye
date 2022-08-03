@@ -22,7 +22,7 @@ Eye.application 'traject' do
     Settings.processes.each do |config|
       (config.num_processes || 1).times do |i|
         process "#{config.name}_#{i}" do
-          config.env.each do |k, v|
+          config.env&.each do |k, v|
             env k => v
           end
           stop_command 'kill -9 {PID}'
