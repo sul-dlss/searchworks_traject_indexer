@@ -38,20 +38,24 @@ indexer = self
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
-  provide 'solr.version', ENV['SOLR_VERSION']
-  provide 'processing_thread_pool', ENV['NUM_THREADS']
-  if ENV['KAFKA_TOPIC']
+
+  # These parameters are expected on the command line if you want to connect to a kafka topic:
+  # provide 'kafka.topic'
+  # provide 'kafka.consumer_group_id'
+  if self['kafka.topic']
     provide "reader_class_name", "Traject::KafkaMarcReader"
-    kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"))
-    consumer.subscribe(ENV['KAFKA_TOPIC'])
+
+    consumer = Utils.kafka.consumer(group_id: self['kafka.consumer_group_id'] || 'traject')
+    consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   else
     provide "reader_class_name", "Traject::MarcCombiningReader"
   end
 
   provide 'allow_duplicate_values',  false
-  provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
+  provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY']
+  self['skip_empty_item_display'] = self['skip_empty_item_display'].to_i if self['skip_empty_item_display']
+
   provide 'solr_writer.commit_on_close', true
   provide 'mapping_rescue', (lambda do |context, e|
     Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })

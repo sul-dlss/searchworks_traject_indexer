@@ -4,6 +4,7 @@ set -e
 REMOTE_DATA_DIR=/s/SUL/Dataload/SearchWorksPartday/Output
 REMOTE_CREZ_DIR=/s/SUL/Dataload/SearchworksReserves/Data
 
+SIRSI_SERVER=$TRAJECT_ENV
 LOCAL_DATA_DIR=/data/sirsi/${SIRSI_SERVER}
 LOCAL_CREZ_DIR=$LOCAL_DATA_DIR/crez
 LATEST_DATA_DIR=$LOCAL_DATA_DIR/latest/updates

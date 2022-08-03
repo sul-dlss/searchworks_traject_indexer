@@ -1,16 +1,13 @@
-$LOAD_PATH << File.expand_path('../lib', __dir__)
-
-require 'utils'
-require 'logger'
+require_relative '../config/boot'
 
 require 'traject'
 require 'traject/readers/purl_fetcher_reader'
 require 'traject/extractors/purl_fetcher_kafka_extractor'
 
-log_file = File.expand_path("../log/process_purl_fetcher_to_kafka_#{ENV['KAFKA_TOPIC']}.log", __dir__)
-Utils.logger = Logger.new(log_file)
-kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','), logger: Utils.logger)
-state_file = ENV['STATE_FILE'] || File.expand_path("../tmp/searchworks_traject_indexer_last_run_#{ENV['KAFKA_TOPIC']}", __dir__)
+log_file = File.expand_path("../log/process_purl_fetcher_to_kafka_#{Utils.env_config.kafka_topic}.log", __dir__)
+Utils.set_log_file(log_file)
+
+state_file = ENV['STATE_FILE'] || File.expand_path("../tmp/searchworks_traject_indexer_last_run_#{Utils.env_config.kafka_topic}", __dir__)
 
 File.open(state_file, 'w') { |f| f.puts Time.parse('1970-01-01T00:00:00Z') } unless File.exist? state_file
 
@@ -22,10 +19,10 @@ File.open(state_file, 'r+') do |f|
   last_date = Time.parse(f.read.strip)
   Utils.logger.info "Found last_date in #{state_file}: #{last_date}"
 
-  reader = Traject::PurlFetcherReader.new(nil, 'purl_fetcher.first_modified': last_date.to_s, 'purl_fetcher.url': ENV['PURL_FETCHER_URL'])
+  reader = Traject::PurlFetcherReader.new(nil, 'purl_fetcher.first_modified': last_date.to_s, 'purl_fetcher.url': Utils.env_config.purl_fetcher_url)
 
   reader.each_slice(1000) do |batch|
-    Traject::PurlFetcherKafkaExtractor.new(reader: batch, kafka: kafka, topic: ENV['KAFKA_TOPIC']).process!
+    Traject::PurlFetcherKafkaExtractor.new(reader: batch, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
 
     count += batch.length
 

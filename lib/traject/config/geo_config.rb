@@ -66,15 +66,12 @@ indexer = self
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
-  provide 'solr.version', ENV['SOLR_VERSION']
   provide 'purl_fetcher.skip_catkey', false
-  provide 'processing_thread_pool', ENV['NUM_THREADS']
   provide 'solr_better_json_writer.debounce_timeout', 5
-  if ENV['KAFKA_TOPIC']
+  if self['kafka.topic']
     provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
-    kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"), fetcher_max_queue_size: 15)
-    consumer.subscribe(ENV['KAFKA_TOPIC'])
+    consumer = Utils.kafka.consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 15)
+    consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   else
     provide "reader_class_name", "Traject::DruidReader"

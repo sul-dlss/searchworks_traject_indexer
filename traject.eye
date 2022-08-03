@@ -32,9 +32,8 @@ Eye.application 'traject' do
           use_leaf_child true
           stdall "log/#{config.name}.log"
 
-          config.config.each do |k, v|
-            public_send(k, v)
-          end
+          traject_settings = config.traject_settings.map { |x| "-s #{x}" }.join(' ')
+          start_command "/usr/local/rvm/bin/rvm #{config.rvm_ruby || 'default' } do bundle exec traject -c #{config.config_file} -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_#{config.name}.log #{traject_settings}"
         end
       end
     end
