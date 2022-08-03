@@ -1,4 +1,5 @@
 require 'logger'
+require_relative '../config/boot'
 
 module Utils
   def self.balance_parentheses(string)
@@ -48,5 +49,17 @@ module Utils
 
   def self.logger=(logger)
     @logger = logger
+  end
+
+  def self.set_log_file(file)
+    @logger = Logger.new(file)
+  end
+
+  def self.kafka
+    @kafka ||= Kafka.new(Settings.kafka.hosts, logger: Utils.logger)
+  end
+
+  def self.env_config
+    Settings.environments[ENV['TRAJECT_ENV']]
   end
 end
