@@ -65,11 +65,10 @@ namespace :deploy do
   before :cleanup, :load_eye_config do
     on roles(:app) do
       within release_path do
-        execute :eye, :stop, :traject
-        execute :eye, :quit
-
-        # avoid spaces in the command name, see http://capistranorb.com/documentation/getting-started/tasks/
-        execute :'eye', :load, :'traject.eye'
+        execute '/usr/local/rvm/bin/rvm-exec default eye info'
+        execute '/usr/local/rvm/bin/rvm-exec default eye stop traject'
+        execute '/usr/local/rvm/bin/rvm-exec default eye quit'
+        execute '/usr/local/rvm/bin/rvm-exec default eye load /opt/app/indexer/searchworks_traject_indexer/current/traject.eye'
       end
     end
   end
