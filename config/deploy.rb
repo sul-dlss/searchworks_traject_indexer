@@ -62,9 +62,13 @@ namespace :deploy do
   desc "stop/start eye, config for monitoring the deployment's traject workers"
   before :cleanup, :load_eye_config do
     on roles(:app) do
+      execute '/usr/local/rvm/bin/rvm-exec default gem list -i -e eye --silent || /usr/local/rvm/bin/rvm-exec default gem install eye'
+      execute '/usr/local/rvm/bin/rvm-exec default gem list -i -e config --silent || /usr/local/rvm/bin/rvm-exec default gem install config'
+
       execute '/usr/local/rvm/bin/rvm-exec default eye info'
       execute '/usr/local/rvm/bin/rvm-exec default eye stop traject'
       execute '/usr/local/rvm/bin/rvm-exec default eye quit'
+      sleep 1
       execute '/usr/local/rvm/bin/rvm-exec default eye load /opt/app/indexer/searchworks_traject_indexer/current/traject.eye &> /dev/null'
       sleep 1
       execute '/usr/local/rvm/bin/rvm-exec default eye info'
