@@ -100,13 +100,13 @@ end
 
 def holdings(record, context)
   context.clipboard[:holdings] ||= record.items.map do |item|
-    library_code, home_location_code = item.dig('permanentLocation', 'code').split('-', 2)
-    current_location = item.dig('effectiveLocation', 'code').split('-', 2).last
+    library_code, home_location_code = item.dig('permanentLocation', 'code')&.split('-', 2)
+    current_location = item.dig('effectiveLocation', 'code')&.split('-', 2)&.last
     SirsiHolding.new(
       call_number: [item.dig('effectiveCallNumberComponents', 'callNumber'), item['volume']].compact.join(' '),
       current_location: (current_location unless current_location == home_location_code),
       home_location: home_location_code,
-      library: library_for_code(item.dig('permanentLocation', 'code').split('-', 2).first),
+      library: library_for_code(library_code),
       scheme: call_number_type_map(record.call_number_type(item.dig('effectiveCallNumberComponents', 'typeId')).dig('name')),
       type: item.dig('materialType', 'name'),
       barcode: item['barcode'],
