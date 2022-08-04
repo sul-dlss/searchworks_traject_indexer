@@ -32,7 +32,7 @@ settings do
     self['reader_class_name'] = provided_reader_class_name || 'Traject::FolioReader'
   end
 
-  provide 'folio.client', FolioClient.new(url: ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
+  provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
 end
 
 def call_number_for_holding(record, holding, context)
