@@ -54,7 +54,7 @@ settings do
 
   provide 'allow_duplicate_values',  false
   provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY']
-  self['skip_empty_item_display'] = self['skip_empty_item_display'].to_i if self['skip_empty_item_display']
+  self['skip_empty_item_display'] = self['skip_empty_item_display'].to_i
 
   provide 'solr_writer.commit_on_close', true
   provide 'mapping_rescue', (lambda do |context, e|
