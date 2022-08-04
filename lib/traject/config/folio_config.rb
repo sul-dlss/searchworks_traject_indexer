@@ -201,10 +201,6 @@ to_field 'uuid_ssi' do |record, accumulator|
   accumulator << record.instance_id
 end
 
-to_field 'marc_json_struct' do |record, accumulator|
-  accumulator << JSON.generate(record.marc_record)
-end
-
 to_field 'folio_json_struct' do |record, accumulator|
   accumulator << JSON.generate(record.record)
 end

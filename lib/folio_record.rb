@@ -2,7 +2,7 @@ require 'active_support/core_ext/module/delegation'
 
 class FolioRecord
   attr_reader :record, :client
-  delegate :fields, :each, :[], :leader, :tags, :select, :find_all, to: :marc_record
+  delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
 
   def initialize(record, client)
     @record = record
