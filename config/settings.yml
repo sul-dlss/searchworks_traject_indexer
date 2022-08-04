@@ -12,3 +12,6 @@ environments:
     kafka_topic: marc_bodoni
   morison:
     kafka_topic: marc_morison
+  folio_dev:
+    kafka_topic: marc_folio
+    okapi_url: 'https://okapi-dev.stanford.edu'
