@@ -20,33 +20,18 @@ require 'utils'
 
 I18n.available_locales = [:en]
 
+provided_reader_class_name = settings['reader_class_name']
+
 instance_eval(IO.read(File.expand_path('../sirsi_config.rb', __FILE__)))
 
 settings do
-  provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
-  provide 'solr.url', ENV['SOLR_URL']
-  provide 'processing_thread_pool', ENV['NUM_THREADS']
-  if ENV['KAFKA_TOPIC']
-    provide "reader_class_name", "Traject::KafkaFolioReader"
-    kafka = Kafka.new(ENV.fetch('KAFKA', 'localhost:9092').split(','))
-    consumer = kafka.consumer(group_id: ENV.fetch('KAFKA_CONSUMER_GROUP_ID', "traject_#{ENV['KAFKA_TOPIC']}"), fetcher_max_queue_size: 15)
-    consumer.subscribe(ENV['KAFKA_TOPIC'])
-    provide 'kafka.consumer', consumer
+  # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
+  if self['kafka.topic']
+    self['reader_class_name'] = provided_reader_class_name || 'Traject::KafkaFolioReader'
   else
-    provide "reader_class_name", "Traject::FolioReader"
+    self['reader_class_name'] = provided_reader_class_name || 'Traject::FolioReader'
   end
 
-  provide 'allow_duplicate_values', false
-  provide 'skip_empty_item_display', ENV['SKIP_EMPTY_ITEM_DISPLAY'].to_i
-  provide 'solr_writer.commit_on_close', true
-  provide 'mapping_rescue', (lambda do |context, e|
-    Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
-
-    indexer.send(:default_mapping_rescue).call(context, e)
-  end)
-
-  provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
-  provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
   provide 'folio.client', FolioClient.new(url: ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
 end
 
