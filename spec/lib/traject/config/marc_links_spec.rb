@@ -28,7 +28,7 @@ RSpec.describe 'marc_links_struct' do
       expect(result_field.first[:html]).to match /<a.*>Link text 1 Link text 2<\/a>/
     end
     it "should place the $z as the link title attribute" do
-      expect(result_field.first[:html]).to match /<a.*title='Title text1 Title text2'.*>/
+      expect(result_field.first[:html]).to match /<a.*title="Title text1 Title text2".*>/
     end
     it 'should include the plain text version' do
       expect(result_field.first[:text]).to eq "Link text 1 Link text 2"

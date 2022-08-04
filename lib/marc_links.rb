@@ -18,7 +18,7 @@ module MarcLinks
       {
         version: '0.1',
 
-        html: ["<a title='#{link_title}' href='#{link_field["u"]}'>#{link_text}</a>", "#{'(source: Casalini)' if link_is_casalini?}", (" <span class='additional-link-text'>#{additional_text}</span>" if additional_text)].compact.join(' '),
+        html: [%Q(<a title="#{link_title}" href="#{link_field['u']}">#{link_text}</a>), "#{'(source: Casalini)' if link_is_casalini?}", (%Q( <span class="additional-link-text">#{additional_text}</span>) if additional_text)].compact.join(' '),
         text: [link_text, "#{'(source: Casalini)' if link_is_casalini?}", (" <span class='additional-link-text'>#{additional_text}</span>" if additional_text)].compact.join(' ').strip,
 
         stanford_only: stanford_only?,
