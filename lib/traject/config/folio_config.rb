@@ -99,42 +99,7 @@ def call_number_for_holding(record, holding, context)
 end
 
 def holdings(record, context)
-  context.clipboard[:holdings] ||= record.items.map do |item|
-    library_code, home_location_code = item.dig('location', 'permanentLocation', 'code')&.split('-', 2)
-    current_location = item.dig('location', 'location', 'code')&.split('-', 2)&.last
-    SirsiHolding.new(
-      call_number: [item.dig('callNumber', 'callNumber'), item['volume']].compact.join(' '),
-      current_location: (current_location unless current_location == home_location_code),
-      home_location: home_location_code,
-      library: library_for_code(library_code),
-      scheme: call_number_type_map(item.dig('callNumber', 'typeName')),
-      type: item['materialType'],
-      barcode: item['barcode'],
-      # TODO: not implementing public note (was 999 subfield o) currently
-      tag: item
-    )
-  end
-end
-
-def library_for_code(code)
-  { 'ARS' => 'ARS', 'ART' => 'ART', 'BUS' => 'BUSINESS', 'CLA' => 'CLASSICS', 'EAR' => 'EARTH-SCI', 'EAL' => 'EAST-ASIA', 'EDU' => 'EDUCATION', 'ENG' => 'ENG', 'GRE' => 'GREEN', 'HILA' => 'HOOVER', 'MAR' => 'HOPKINS', 'LANE' => 'LANE', 'LAW' => 'LAW', 'MEDIA' => 'MEDIA-MTXT', 'MUS' => 'MUSIC', 'RUM' => 'RUMSEYMAP', 'SAL' => 'SAL', 'SCI' => 'SCIENCE', 'SPEC' => 'SPEC-COLL', 'TAN' => 'TANNER' }.fetch(
-    code, code
-  )
-end
-
-def call_number_type_map(name)
-  case name
-  when /dewey/i
-    'DEWEY'
-  when /congress/i, /LC/i
-    'LC'
-  when /superintendent/i
-    'SUDOC'
-  when /title/i, /shelving/i
-    'ALPHANUM'
-  else
-    'OTHER'
-  end
+  context.clipboard[:holdings] ||= record.sirsi_holdings
 end
 
 ## FOLIO diverging implementations
