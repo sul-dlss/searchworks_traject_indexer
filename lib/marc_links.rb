@@ -18,8 +18,11 @@ module MarcLinks
       {
         version: '0.1',
 
-        html: ["<a title='#{link_title}' href='#{link_field["u"]}'>#{link_text}</a>", "#{'(source: Casalini)' if link_is_casalini?}", (" <span class='additional-link-text'>#{additional_text}</span>" if additional_text)].compact.join(' '),
-        text: [link_text, "#{'(source: Casalini)' if link_is_casalini?}", (" <span class='additional-link-text'>#{additional_text}</span>" if additional_text)].compact.join(' ').strip,
+        html: [%Q(<a title="#{link_title_html_escaped}" href="#{link_field_html_escaped}">#{link_text_html_escaped}</a>),
+               "#{'(source: Casalini)' if link_is_casalini?}",
+               (%Q( <span class="additional-link-text">#{additional_text_html_escaped}</span>) if additional_text)].compact.join(' '),
+        text: [link_text_html_escaped, "#{'(source: Casalini)' if link_is_casalini?}",
+               (" <span class='additional-link-text'>#{additional_text_html_escaped}</span>" if additional_text)].compact.join(' ').strip,
 
         stanford_only: stanford_only?,
         stanford_law_only: stanford_law_only?,
@@ -41,6 +44,22 @@ module MarcLinks
     end
 
     private
+
+    def link_title_html_escaped
+      CGI::escapeHTML(link_title.to_s)
+    end
+
+    def link_field_html_escaped
+      CGI::escapeHTML(link_field['u'].to_s)
+    end
+
+    def link_text_html_escaped
+      CGI::escapeHTML(link_text.to_s)
+    end
+
+    def additional_text_html_escaped
+      CGI::escapeHTML(additional_text.to_s)
+    end
 
     def link_is_casalini?
       (field["x"] && field["x"] == "CasaliniTOC") ||
