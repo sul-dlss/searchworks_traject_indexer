@@ -12,3 +12,6 @@ environments:
     kafka_topic: marc_bodoni
   morison:
     kafka_topic: marc_morison
+  folio_test:
+    kafka_topic: marc_folio_test
+    okapi_url: 'https://okapi-test.stanford.edu'
