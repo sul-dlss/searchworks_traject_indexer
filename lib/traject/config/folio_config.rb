@@ -100,15 +100,15 @@ end
 
 def holdings(record, context)
   context.clipboard[:holdings] ||= record.items.map do |item|
-    library_code, home_location_code = item.dig('permanentLocation', 'code')&.split('-', 2)
-    current_location = item.dig('effectiveLocation', 'code')&.split('-', 2)&.last
+    library_code, home_location_code = item.dig('location', 'permanentLocation', 'code')&.split('-', 2)
+    current_location = item.dig('location', 'location', 'code')&.split('-', 2)&.last
     SirsiHolding.new(
-      call_number: [item.dig('effectiveCallNumberComponents', 'callNumber'), item['volume']].compact.join(' '),
+      call_number: [item.dig('callNumber', 'callNumber'), item['volume']].compact.join(' '),
       current_location: (current_location unless current_location == home_location_code),
       home_location: home_location_code,
       library: library_for_code(library_code),
-      scheme: call_number_type_map(record.call_number_type(item.dig('effectiveCallNumberComponents', 'typeId')).dig('name')),
-      type: item.dig('materialType', 'name'),
+      scheme: call_number_type_map(item.dig('callNumber', 'typeName')),
+      type: item['materialType'],
       barcode: item['barcode'],
       # TODO: not implementing public note (was 999 subfield o) currently
       tag: item
@@ -206,9 +206,5 @@ to_field 'folio_json_struct' do |record, accumulator|
 end
 
 to_field 'holdings_json_struct' do |record, accumulator|
-  accumulator << JSON.generate(record.holdings)
-end
-
-to_field 'items_json_struct' do |record, accumulator|
-  accumulator << JSON.generate(record.items)
+  accumulator << JSON.generate(record.items_and_holdings)
 end

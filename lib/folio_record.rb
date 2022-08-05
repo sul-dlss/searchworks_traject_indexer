@@ -13,24 +13,21 @@ class FolioRecord
     @marc_record ||= MARC::Record.new_from_hash(record.dig('parsedRecord', 'content'))
   end
 
-  def holdings
-    @holdings ||= client.get_json("/holdings-storage/holdings", params: { limit: 2147483647, query: "instanceId==\"#{instance_id}\"" }).dig('holdingsRecords')
-  end
-
   def instance_id
     record.dig('externalIdsHolder', 'instanceId')
   end
 
-  def call_number_type(call_number_uuid)
-    client.call_number_types[call_number_uuid] || call_number_uuid
+  def items
+    items_and_holdings&.dig('items') || []
   end
 
-  def items
-    return [] unless holdings.any?
-
-    @items ||= begin
-      query = holdings.map { |h| "holdingsRecordId==\"#{h['id']}\"" }.join(' OR ')
-      client.get_json("/item-storage-dereferenced/items", params: { limit: 2147483647, query: query }).dig('dereferencedItems')
+  def items_and_holdings
+    @items_and_holdings ||= begin
+      body = {
+        instanceIds: [instance_id],
+        skipSuppressedFromDiscoveryRecords: false
+      }
+      client.get_json("/inventory-hierarchy/items-and-holdings", method: :post, body: body.to_json)
     end
   end
 end
