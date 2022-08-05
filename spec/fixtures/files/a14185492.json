@@ -1,0 +1,595 @@
+{
+  "recordId": "65377118-081d-5816-94a9-a9ad9f76ac3c",
+  "snapshotId": "00d4d302-36c9-4387-9a1b-59206995250f",
+  "recordType": "MARC_BIB",
+  "parsedRecord": {
+    "id": "65377118-081d-5816-94a9-a9ad9f76ac3c",
+    "content": {
+      "fields": [
+        {
+          "001": "a14185492"
+        },
+        {
+          "003": "SIRSI"
+        },
+        {
+          "005": "20220402011805.0"
+        },
+        {
+          "008": "220331t20212021xxk  le        n    zxx d"
+        },
+        {
+          "024": {
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "9790900299611"
+              }
+            ]
+          }
+        },
+        {
+          "040": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "STF"
+              },
+              {
+                "b": "eng"
+              },
+              {
+                "e": "rda"
+              },
+              {
+                "c": "STF"
+              },
+              {
+                "d": "UtOrBLW"
+              }
+            ]
+          }
+        },
+        {
+          "049": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "STFA"
+              }
+            ]
+          }
+        },
+        {
+          "050": {
+            "ind1": " ",
+            "ind2": "4",
+            "subfields": [
+              {
+                "a": "M1040.B751"
+              },
+              {
+                "b": "D9 2021"
+              }
+            ]
+          }
+        },
+        {
+          "100": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Bottesini, Giovanni,"
+              },
+              {
+                "d": "1821-1889,"
+              },
+              {
+                "e": "composer."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/n80108933"
+              }
+            ]
+          }
+        },
+        {
+          "240": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Duo concertant sur les thèmes des Puritains"
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/n90617108"
+              }
+            ]
+          }
+        },
+        {
+          "245": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Fantasia sopra motivi dell'opera I Puritani (Bellini) :"
+              },
+              {
+                "b": "duetto per violoncello e contrabbasso /"
+              },
+              {
+                "c": "Giovanni Bottesini ; Alfredo Piatti ; Vincenzo Bellini ; Urtext edition by Stephen Street in consultation with Adrian Bradbury and Chris West"
+              }
+            ]
+          }
+        },
+        {
+          "264": {
+            "ind1": " ",
+            "ind2": "1",
+            "subfields": [
+              {
+                "a": "[UK] :"
+              },
+              {
+                "b": "Bottesini Urtext :"
+              },
+              {
+                "a": "Stephen Street,"
+              },
+              {
+                "c": "[2021]"
+              }
+            ]
+          }
+        },
+        {
+          "264": {
+            "ind1": " ",
+            "ind2": "4",
+            "subfields": [
+              {
+                "c": "©2021"
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "1 score (13 unnumbered pages, 153 pages) ;"
+              },
+              {
+                "c": "42 cm"
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "1 score (17 unnumbered pages, 62 pages) ;"
+              },
+              {
+                "c": "30 cm"
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "18 parts ;"
+              },
+              {
+                "c": "30 cm"
+              }
+            ]
+          }
+        },
+        {
+          "336": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "notated music"
+              },
+              {
+                "b": "ntm"
+              },
+              {
+                "2": "rdacontent"
+              }
+            ]
+          }
+        },
+        {
+          "337": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "unmediated"
+              },
+              {
+                "b": "n"
+              },
+              {
+                "2": "rdamedia"
+              }
+            ]
+          }
+        },
+        {
+          "338": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "volume"
+              },
+              {
+                "b": "nc"
+              },
+              {
+                "2": "rdacarrier"
+              }
+            ]
+          }
+        },
+        {
+          "348": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "score"
+              },
+              {
+                "a": "part"
+              },
+              {
+                "2": "rdafnm"
+              }
+            ]
+          }
+        },
+        {
+          "382": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "b": "cello"
+              },
+              {
+                "n": "1"
+              },
+              {
+                "b": "double bass"
+              },
+              {
+                "n": "1"
+              },
+              {
+                "a": "orchestra"
+              },
+              {
+                "e": "1"
+              },
+              {
+                "r": "2"
+              },
+              {
+                "t": "1"
+              },
+              {
+                "2": "lcmpt"
+              }
+            ]
+          }
+        },
+        {
+          "500": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Issued as set: full score, orchestral parts, and piano reduction (with soloists)"
+              }
+            ]
+          }
+        },
+        {
+          "500": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Score based on autograph manuscript score held by Stanford Libraries, Department of Special Collections"
+              }
+            ]
+          }
+        },
+        {
+          "546": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "b": "Staff notation"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Cello and double bass with orchestra"
+              },
+              {
+                "v": "Scores and parts."
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Cello and double bass with orchestra"
+              },
+              {
+                "v": "Solos with piano."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/subjects/sh85143664"
+              }
+            ]
+          }
+        },
+        {
+          "655": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "Fantasias (Music)"
+              },
+              {
+                "2": "lcgft"
+              },
+              {
+                "0": "http://id.loc.gov/authorities/genreForms/gf2018026018"
+              }
+            ]
+          }
+        },
+        {
+          "700": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "i": "Based on (work):"
+              },
+              {
+                "a": "Bellini, Vincenzo,"
+              },
+              {
+                "d": "1801-1835."
+              },
+              {
+                "t": "Puritani."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/n81150158"
+              }
+            ]
+          }
+        },
+        {
+          "700": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Piatti, Alfredo C."
+              },
+              {
+                "q": "(Alfredo Carlo),"
+              },
+              {
+                "d": "1822-1901,"
+              },
+              {
+                "e": "composer."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/n88090401"
+              }
+            ]
+          }
+        },
+        {
+          "700": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Street, Stephen"
+              },
+              {
+                "c": "(Double bassist),"
+              },
+              {
+                "e": "editor."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/nb2021013632"
+              }
+            ]
+          }
+        },
+        {
+          "700": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Bradbury, Adrian"
+              },
+              {
+                "c": "(Cellist),"
+              },
+              {
+                "e": "editor."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/no2019098015"
+              }
+            ]
+          }
+        },
+        {
+          "700": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "West, Chris,"
+              },
+              {
+                "d": "1966-"
+              },
+              {
+                "e": "editor."
+              },
+              {
+                "0": "http://id.loc.gov/authorities/names/nb2008021631"
+              }
+            ]
+          }
+        },
+        {
+          "994": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "C0"
+              },
+              {
+                "b": "STF"
+              }
+            ]
+          }
+        },
+        {
+          "856": {
+            "ind1": "4",
+            "ind2": "2",
+            "subfields": [
+              {
+                "u": "https://purl.stanford.edu/kb764qx7930"
+              }
+            ]
+          }
+        },
+        {
+          "596": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "18"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-M)1306634414"
+              }
+            ]
+          }
+        },
+        {
+          "918": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "14185492"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "on1306634414"
+              }
+            ]
+          }
+        },
+        {
+          "999": {
+            "ind1": "f",
+            "ind2": "f",
+            "subfields": [
+              {
+                "i": "b2fe7336-33d1-5553-86cb-a15af14c7348"
+              },
+              {
+                "s": "65377118-081d-5816-94a9-a9ad9f76ac3c"
+              }
+            ]
+          }
+        }
+      ],
+      "leader": "02515ncm a2200481 i 4500"
+    }
+  },
+  "deleted": false,
+  "externalIdsHolder": {
+    "instanceId": "b2fe7336-33d1-5553-86cb-a15af14c7348",
+    "instanceHrid": "a14185492"
+  },
+  "additionalInfo": {
+    "suppressDiscovery": false
+  },
+  "metadata": {
+    "createdDate": "2022-07-27T00:00:14.195+0000",
+    "createdByUserId": "ffee972c-1c22-4ad8-95be-3436162f7b16",
+    "updatedDate": "2022-07-27T00:00:14.281+0000",
+    "updatedByUserId": "ffee972c-1c22-4ad8-95be-3436162f7b16"
+  }
+}
