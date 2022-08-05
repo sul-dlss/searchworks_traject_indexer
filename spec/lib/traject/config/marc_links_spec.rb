@@ -344,6 +344,22 @@ RSpec.describe 'marc_links_struct' do
         expect(result_field.first[:html]).to match(%r{>library\.stanford\.edu</a>})
       end
     end
+
+    context 'with characters that need to be HTML escaped' do
+      let(:marc) do
+        <<-xml
+          <record>
+            <datafield tag='856' ind1='0' ind2='0'>
+              <subfield code='u'>https://somelink/with'singlequote.pdf</subfield>
+            </datafield>
+          </record>
+        xml
+      end
+
+      it 'HTML escapes the single quote' do
+        expect(result_field.first[:html]).to match(%r{with&#39;singlequote\.pdf})
+      end
+    end
   end
 
   # this is testing a workaround for a JRuby internal encoding bug that blows up with
