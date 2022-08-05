@@ -7,6 +7,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec'
   gem 'simplecov', require: false
+  gem 'webmock'
 end
 
 gem 'http'
