@@ -206,5 +206,5 @@ to_field 'folio_json_struct' do |record, accumulator|
 end
 
 to_field 'holdings_json_struct' do |record, accumulator|
-  accumulator << JSON.generate(record.items_and_holdings)
+  accumulator << JSON.generate(record.items_and_holdings) if record.items_and_holdings
 end

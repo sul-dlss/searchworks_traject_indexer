@@ -38,7 +38,9 @@ class FolioClient
   end
 
   def parse(response)
-    JSON.parse(response)
+    return nil if response.body.empty?
+
+    JSON.parse(response.body)
   end
 
   def call_number_types
