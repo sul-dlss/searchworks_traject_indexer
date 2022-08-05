@@ -29,7 +29,7 @@ ARGV.each do |path|
       producer.shutdown
     else
       reader = Traject::MarcCombiningReader.new(f, 'marc_source.type' => 'binary', 'marc4j_reader.permissive' => true)
-      Traject::MarcKafkaExtractor.new(reader: reader, kafka: kafka, topic: Utils.env_config.kafka_topic).process!
+      Traject::MarcKafkaExtractor.new(reader: reader, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
     end
 
     File.delete(f)
