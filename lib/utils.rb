@@ -60,6 +60,6 @@ module Utils
   end
 
   def self.env_config
-    Settings.environments[ENV['TRAJECT_ENV']]
+    Settings.environments[ENV['TRAJECT_ENV']] || OpenStruct.new
   end
 end
