@@ -20,20 +20,18 @@ require 'utils'
 
 I18n.available_locales = [:en]
 
-provided_reader_class_name = settings['reader_class_name']
-
-instance_eval(IO.read(File.expand_path('../sirsi_config.rb', __FILE__)))
-
 settings do
   # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
-    self['reader_class_name'] = provided_reader_class_name || 'Traject::KafkaFolioReader'
+    provide 'reader_class_name', 'Traject::KafkaFolioReader'
   else
-    self['reader_class_name'] = provided_reader_class_name || 'Traject::FolioReader'
+    provide 'reader_class_name', 'Traject::FolioReader'
   end
 
   provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
 end
+
+load_config_file(File.expand_path('../sirsi_config.rb', __FILE__))
 
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
