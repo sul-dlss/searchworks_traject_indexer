@@ -2189,7 +2189,6 @@ to_field 'item_display' do |record, accumulator, context|
 
         enumeration = holding.call_number.to_s[call_number_object.lopped.length..-1].strip unless holding.ignored_call_number?
         shelfkey = lopped_call_number.downcase
-        reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
 
         call_number = [lopped_call_number, (enumeration if enumeration)].compact.join(' ') unless holding.e_call_number?
         volume_sort = [lopped_call_number, (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50, '~') if enumeration)].compact.join(' ').downcase
@@ -2197,13 +2196,11 @@ to_field 'item_display' do |record, accumulator, context|
       elsif stuff_in_the_same_library.length <= 1
         shelfkey = call_number_object.to_shelfkey
         volume_sort = call_number_object.to_volume_sort
-        reverse_shelfkey = call_number_object.to_reverse_shelfkey
         lopped_call_number = call_number_object.call_number
       else
         # there's more than one item in the library/home_location/call_number_type, so we lop
         shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
         volume_sort = call_number_object.to_volume_sort
-        reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
         lopped_call_number = call_number_object.lopped == holding.call_number.to_s ? holding.call_number.to_s : "#{call_number_object.lopped} ..."
 
         # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
@@ -2216,9 +2213,11 @@ to_field 'item_display' do |record, accumulator, context|
       scheme = ''
       shelfkey = ''
       volume_sort = ''
-      reverse_shelfkey = ''
       lopped_call_number = holding.call_number.to_s
     end
+
+    shelfkey = '' if holding.lost_or_missing?
+    shelfkey ||= ''
 
     current_location = holding.current_location
     current_location = 'ON-ORDER' if holding.is_on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
@@ -2230,8 +2229,8 @@ to_field 'item_display' do |record, accumulator, context|
       current_location,
       holding.type,
       (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      (shelfkey unless holding.lost_or_missing?),
-      (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
+      shelfkey,
+      (CallNumbers::ShelfkeyBase.reverse(shelfkey).ljust(50, '~') unless shelfkey.empty?),
       (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number),
       (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
       holding.public_note,
