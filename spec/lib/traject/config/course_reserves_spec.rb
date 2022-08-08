@@ -56,7 +56,23 @@ RSpec.describe 'Course reserves config' do
     let(:fixture_name) { '444.marc' }
     let(:field) { 'item_display' }
     it 'updates item_display with crez info' do
-      expect(result[field]).to eq ['36105041844338 -|- MUSIC -|- SCORES -|- GREEN-RESV -|- SCORE -|- M1048 .B41 C7 1973 -|- lc m   1048.000000 b0.410000 c0.700000 001973 -|- en~d~~~yzvr}zzzzzz~oz}vyzzzz~nz}szzzzz~zzyqsw~~~~~ -|- M1048 .B41 C7 1973 -|- lc m   1048.000000 b0.410000 c0.700000 001973 -|-  -|- LC -|- AMSTUD-214 -|- GREEN-RESV -|- 2-hour loan']
+      expect(result[field].first.split(' -|- ')).to contain_exactly(
+        '36105041844338',
+        'MUSIC',
+        'SCORES',
+        'GREEN-RESV',
+        'SCORE',
+        'M1048 .B41 C7 1973',
+        start_with('lc'),
+        start_with('en'),
+        'M1048 .B41 C7 1973',
+        start_with('lc'),
+        '',
+        'LC',
+        'AMSTUD-214',
+        'GREEN-RESV',
+        '2-hour loan'
+      )
     end
   end
 

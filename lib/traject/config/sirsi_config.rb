@@ -2168,6 +2168,7 @@ to_field 'building_location_facet_ssim' do |record, accumulator, context|
 end
 
 to_field 'item_display' do |record, accumulator, context|
+  shelfkey_global_sort = "#{(context.output_hash['title_sort']&.first || '')[0..6].ljust(6, '~')}/#{(context.output_hash['pub_date_sort']&.first || '').ljust(6, '~')}/#{context.output_hash['id']}"
   holdings(record, context).each do |holding|
     next if holding.skipped?
 
@@ -2218,6 +2219,8 @@ to_field 'item_display' do |record, accumulator, context|
 
     shelfkey = '' if holding.lost_or_missing?
     shelfkey ||= ''
+
+    shelfkey = "#{shelfkey}/#{shelfkey_global_sort}" unless shelfkey.empty?
 
     current_location = holding.current_location
     current_location = 'ON-ORDER' if holding.is_on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
