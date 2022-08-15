@@ -1,4 +1,5 @@
 require 'active_support/core_ext/module/delegation'
+require_relative 'traject/common/constants'
 
 class FolioRecord
   attr_reader :record, :client
@@ -10,7 +11,7 @@ class FolioRecord
   end
 
   def marc_record
-    @marc_record ||= MARC::Record.new_from_hash(record.dig('parsedRecord', 'content'))
+    @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json)
   end
 
   def instance_id
@@ -79,6 +80,14 @@ class FolioRecord
         skipSuppressedFromDiscoveryRecords: false
       }
       client.get_json("/inventory-hierarchy/items-and-holdings", method: :post, body: body.to_json)
+    end
+  end
+
+  private
+
+  def stripped_marc_json
+    record.dig('parsedRecord', 'content').tap do |record|
+      record['fields'] = record['fields'].reject { |field| Constants::JUNK_TAGS.include?(field.keys.first)  }
     end
   end
 end
