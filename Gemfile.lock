@@ -11,6 +11,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
+    ast (2.4.2)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
@@ -110,6 +111,7 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     iso-639 (0.3.5)
+    json (2.6.2)
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
@@ -149,10 +151,15 @@ GEM
       i18n
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
+    parallel (1.22.1)
+    parser (3.1.2.1)
+      ast (~> 2.4.1)
     public_suffix (4.0.7)
     racc (1.6.0)
     racc (1.6.0-java)
+    rainbow (3.1.1)
     rake (13.0.6)
+    regexp_parser (2.5.0)
     retriable (3.1.2)
     rexml (3.2.5)
     rspec (3.11.0)
@@ -168,8 +175,21 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
+    rubocop (1.35.0)
+      json (~> 2.3)
+      parallel (~> 1.10)
+      parser (>= 3.1.2.1)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.20.1, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 3.0)
+    rubocop-ast (1.20.1)
+      parser (>= 3.1.1.0)
     ruby-kafka (1.5.0)
       digest-crc
+    ruby-progressbar (1.11.0)
     scrub_rb (1.0.1)
     simplecov (0.21.2)
       docile (~> 1.1)
@@ -206,6 +226,7 @@ GEM
       unf_ext
     unf (0.1.4-java)
     unf_ext (0.0.8.2)
+    unicode-display_width (2.2.0)
     view_component (2.66.0)
       activesupport (>= 5.0.0, < 8.0)
       concurrent-ruby (~> 1.0)
@@ -254,6 +275,7 @@ DEPENDENCIES
   retriable
   rexml
   rspec
+  rubocop
   ruby-kafka
   simplecov
   stanford-mods (~> 3.0)
@@ -264,4 +286,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.3.19
+   2.3.18
