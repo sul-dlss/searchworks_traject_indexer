@@ -2291,7 +2291,8 @@ to_field 'item_display' do |record, accumulator, context|
       (call_number unless holding.ignored_call_number? && !holding.shelved_by_location?) || (call_number if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number),
       (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
       holding.public_note,
-      scheme
+      scheme,
+      *holding.crez_info
     ].join(' -|- ')
   end
 end
