@@ -19,6 +19,7 @@ require 'csv'
 require 'i18n'
 require 'honeybadger'
 require 'digest/md5'
+require 'activesupport/lib/active_support/core_ext/enumerable'
 
 I18n.available_locales = [:en]
 
@@ -178,6 +179,11 @@ to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
     v.sub(/^a/, '')
   end
+end
+
+each_record do |record, context|
+  id = context.output_hash['id']&.first
+  context.clipboard[:crez_data] = reserves_lookup[id] || []
 end
 
 to_field 'hashed_id_ssi' do |_record, accumulator, context|
@@ -2579,60 +2585,35 @@ DEPT_CODE_2_USER_STR = Traject::TranslationMap.new('dept_code_2_user_str').freez
 LOAN_CODE_2_USER_STR = Traject::TranslationMap.new('loan_code_2_user_str').freeze
 
 to_field 'crez_instructor_search' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
-  course_reserves.each do |row|
-    accumulator << row[:instructor_name]
-  end
+  accumulator.concat context.clipboard[:crez_data].pluck(:instructor_name)
 end
 
 to_field 'crez_course_name_search' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
-  course_reserves.each do |row|
-    accumulator << row[:course_name]
-  end
+  accumulator.concat context.clipboard[:crez_data].pluck(:course_name)
 end
 
 to_field 'crez_course_id_search' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
-  course_reserves.each do |row|
-    accumulator << row[:course_id]
-  end
+  accumulator.concat context.clipboard[:crez_data].pluck(:course_id)
 end
 
 to_field 'crez_desk_facet' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
-  course_reserves.each do |row|
-    accumulator << REZ_DESK_2_REZ_LOC_FACET[row[:rez_desk]]
-  end
+  accumulator.concat(context.clipboard[:crez_data].pluck(:rez_desk).map do |rez_desk|
+    REZ_DESK_2_REZ_LOC_FACET[rez_desk]
+  end)
 end
 
 to_field 'crez_dept_facet' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
-  course_reserves.each do |row|
-    dept = row[:course_id].split('-')[0].split(' ')[0]
-    accumulator << DEPT_CODE_2_USER_STR[dept]
-  end
+  course_ids = context.clipboard[:crez_data].pluck(:course_id)
+
+  accumulator.concat(course_ids.map do |course_id|
+    DEPT_CODE_2_USER_STR[course_id.split('-')[0].split(' ')[0]]
+  end)
 end
 
 to_field 'crez_course_info' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
-  course_reserves.each do |row|
-    accumulator << %i[course_id course_name instructor_name].map do |sym|
-      row[sym]
-    end.join(' -|- ')
-  end
+  accumulator.concat(context.clipboard[:crez_data].map do |row|
+    "#{row[:course_id]} -|- #{row[:course_name]} -|- #{row[:instructor_name]}"
+  end)
 end
 
 each_record do |record, context|
@@ -2647,9 +2628,9 @@ end
 
 # We update item_display once we have crez info
 to_field 'item_display' do |record, accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
+  course_reserves = context.clipboard[:crez_data]
+  next if course_reserves.empty?
+
   context.output_hash['item_display'].map! do |item_display_value|
     split_item_display = item_display_value.split('-|-')
     row = course_reserves.reverse.find { |r| r[:barcode].strip == split_item_display[0].strip }
@@ -2671,9 +2652,8 @@ to_field 'item_display' do |record, accumulator, context|
 end
 
 to_field 'building_facet' do |_record, _accumulator, context|
-  id = context.output_hash['id']&.first
-  course_reserves = reserves_lookup[id]
-  next unless course_reserves
+  course_reserves = context.clipboard[:crez_data]
+  next if course_reserves.empty?
 
   new_building_facet_vals = context.output_hash['item_display'].map do |item_display_value|
     split_item_display = item_display_value.split('-|-').map(&:strip)
