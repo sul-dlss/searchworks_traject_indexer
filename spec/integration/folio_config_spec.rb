@@ -24,6 +24,7 @@ describe 'SDR indexing' do
 
   before do
     allow(folio_record).to receive(:items_and_holdings).and_return({})
+    allow(folio_record).to receive(:reserves).and_return([])
   end
 
   it 'maps the record with sirsi fields' do

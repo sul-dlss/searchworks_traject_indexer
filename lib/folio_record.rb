@@ -1,4 +1,5 @@
 require 'active_support/core_ext/module/delegation'
+require 'active_support/core_ext/enumerable'
 require_relative 'traject/common/constants'
 
 class FolioRecord
@@ -41,6 +42,14 @@ class FolioRecord
       library_code, home_location_code = self.class.folio_sirsi_locations_map[item_location_code]
       _current_library, current_location = self.class.folio_sirsi_locations_map[item.dig('location', 'location', 'code')]
 
+      item_course = reserves.select { |r| item['barcode'] == reserves.dig('copiedItem', 'barcode') }.map { |reserve| courses.find { |c| reserves['courseListingId'] == c['courseListingId'] } }.uniq.compact.first
+      # current_location = ????
+      course_id = item_course['courseNumber'] || ''
+      rez_desk = item_course.dig('courseListingObject', 'locationObject', 'code') || ''
+      loan_period = item['temporaryLoanType']&.sub(/ type$/, '') || ''
+
+      crez_info = [course_id, rez_desk, loan_period]
+
       SirsiHolding.new(
         call_number: [item.dig('callNumber', 'callNumber'), item['volume']].compact.join(' '),
         current_location: (current_location unless current_location == home_location_code),
@@ -50,7 +59,8 @@ class FolioRecord
         type: item['materialType'],
         barcode: item['barcode'],
         # TODO: not implementing public note (was 999 subfield o) currently
-        tag: item
+        tag: item,
+        crez_info: crez_info
       )
     end
   end
@@ -80,8 +90,20 @@ class FolioRecord
     end
   end
 
+  def courses
+    @courses ||= begin
+      if record['items']
+        record['items'].flat_map { |x| x['crez'].map { |cr| cr['course'] } }.uniq { |cr| cr['id'] }
+      else
+        reserves.pluck('courseListingId').uniq.flat_map do |course_id|
+          client.get_json("/coursereserves/courses", params: { query: "courseListingId==#{course_id}" })['courses']
+        end
+      end
+    end
+  end
+
   def items
-    (record['items'] || items_and_holdings&.dig('items') || []).reject { |item| item['suppressFromDiscovery'] }
+    (record['items'] || items_and_holdings&.dig('items')&.map { |i| i.merge(reserve_data_for_item(i['id'])) } || []).reject { |item| item['suppressFromDiscovery'] }
   end
 
   def holdings
@@ -101,6 +123,22 @@ class FolioRecord
         skipSuppressedFromDiscoveryRecords: false
       }
       client.get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
+    end
+  end
+
+  def reserve_data_for_item(item_uuid)
+    reserves.select { |reserve| reserve['item_id'] == item_uuid }.map do |r|
+      {
+        'reserve' => r,
+        'courselisting' => { 'id' => r['courseListingId'] },
+        'course' => courses.find { |c| c['courseListingId'] == r['courseListingId'] }
+      }
+    end
+  end
+
+  def reserves
+    @reserves ||= begin
+      client.get_json("/coursereserves/reserves", params: { query: "copiedItem.instanceId==#{instance_id}" })['reserves']
     end
   end
 

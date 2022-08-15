@@ -43,8 +43,12 @@ each_record do |record, context|
   end
 end
 
-load_config_file(File.expand_path('../sirsi_config.rb', __FILE__))
+# Disable SIRSI-style reserves lookups
+def reserves_lookup
+  {}
+end
 
+load_config_file(File.expand_path('../sirsi_config.rb', __FILE__))
 
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
@@ -161,7 +165,6 @@ to_field 'date_cataloged' do |record, accumulator|
   end
 end
 
-
 # add folio to the collection list; searchworks has some dependencies on this value,
 # so for now, we're just appending 'folio' to the list.
 to_field 'collection', literal('folio')
@@ -169,6 +172,38 @@ to_field 'collection', literal('folio')
 # sirsi_config sets this to 'sirsi'; we need to remove that and set our own value:
 to_field 'context_source_ssi' do |record, accumulator, context|
   context.output_hash['context_source_ssi'] = ['folio']
+end
+
+to_field 'crez_instructor_search' do |record, accumulator, context|
+  accumulator.concat record.courses.flat_map { |x| x['instructorObjects']&.pluck('name') }
+end
+
+to_field 'crez_course_name_search' do |record, accumulator, context|
+  accumulator.concat record.courses.pluck('name')
+end
+
+to_field 'crez_course_id_search' do |record, accumulator, context|
+  accumulator.concat record.courses.pluck('courseNumber')
+end
+
+# Unused:
+# to_field 'crez_desk_facet' do |record, accumulator, context|
+#   accumulator.concat(context.clipboard[:crez_data].pluck(:rez_desk).map do |rez_desk|
+#     REZ_DESK_2_REZ_LOC_FACET[rez_desk]
+#   end)
+# end
+
+# Unused:
+# to_field 'crez_dept_facet' do |record, accumulator, context|
+#   accumulator.concat record.courses.map { |x| x.dig('departmentObject', 'name').split(' - ', 2).last }
+# end
+
+to_field 'crez_course_info' do |record, accumulator, context|
+  accumulator.concat(record.courses.flat_map do |course|
+    (course['instructorObjects']&.pluck('name') || ['']).map do |instructor_name|
+      "#{course['courseNumber']} -|- #{course['name']} -|- #{instructor_name}"
+    end
+  end)
 end
 
 ## FOLIO specific fields
