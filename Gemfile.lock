@@ -206,11 +206,11 @@ GEM
       unf_ext
     unf (0.1.4-java)
     unf_ext (0.0.8.2)
-    view_component (2.64.0)
+    view_component (2.66.0)
       activesupport (>= 5.0.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
-    webmock (3.17.0)
+    webmock (3.17.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
