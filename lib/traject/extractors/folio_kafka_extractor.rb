@@ -13,7 +13,11 @@ class Traject::FolioKafkaExtractor
   def process!
     reader.each do |record|
       Utils.logger.debug("Traject::FolioKafkaExtractor#each(#{record.instance_id})")
-      producer.produce(record.record.to_json, key: record.instance_id, topic: topic) unless record.instance_id&.empty?
+
+      # sometimes folio source records don't have an associated instance record
+      next if record.instance_id.nil? || record.instance_id.empty?
+
+      producer.produce(record.record.to_json, key: record.instance_id, topic: topic)
     end
 
     producer.deliver_messages
