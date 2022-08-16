@@ -43,3 +43,7 @@ end
 every :hour, roles: [:stage] do
   honeybadger_wrapped_ruby_script 'load_folio.sh', traject_env: 'folio_test'
 end
+
+every :minute, roles: [:stage] do
+  honeybadger_wrapped_ruby_script 'load_folio_items.sh', traject_env: 'folio_test'
+end

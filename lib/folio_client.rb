@@ -37,6 +37,10 @@ class FolioClient
     FolioRecord.new(get_json("/source-storage/source-records", params: kwargs).dig('sourceRecords', 0), self)
   end
 
+  def holdings_record(**kwargs)
+    get_json("/holdings-storage/holdings", params: kwargs).dig('holdingsRecords', 0)
+  end
+
   private
 
   def parse(response)
