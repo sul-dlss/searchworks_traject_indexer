@@ -171,15 +171,3 @@ end
 to_field 'holdings_json_struct' do |record, accumulator|
   accumulator << JSON.generate(record.items_and_holdings) if record.items_and_holdings
 end
-
-
-## Postprocessing
-# https://consul.stanford.edu/display/SYSTEMS/Data+Feed+to+SearchWorks
-
-# Remove "junk tags"
-each_record do |record, context|
-end
-
-# Add date accessed (from client) to marc 005
-each_record do |record, context|
-end
