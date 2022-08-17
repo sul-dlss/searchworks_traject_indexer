@@ -2,12 +2,13 @@
 [![CI status](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml/badge.svg)](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml)
 [![Current release](https://img.shields.io/github/v/release/sul-dlss/searchworks_traject_indexer)](https://github.com/sul-dlss/searchwork_traject_indexer/releases)
 ![tested on ruby 3.1](https://img.shields.io/badge/ruby-v3.1-red)
+![tested on jruby 9.3](https://img.shields.io/badge/jruby-v9.3-red)
 
 <p align="center">indexing MARC, MODS, and more for <a href="https://github.com/sul-dlss/SearchWorks">SearchWorks</a>.</p>
 <img src="preview.png" align="center" alt="solr index fields displayed overlaid on SearchWorks catalog preview for a book">
 
 ## local development
-searchworks_traject_indexer is built on the [traject](https://github.com/traject/traject) transformation library, which requires ruby. we test the application using ruby 3.1; support for other versions is not guaranteed.
+searchworks_traject_indexer is built on the [traject](https://github.com/traject/traject) transformation library, which requires ruby. we test the application using ruby 3.1 and jruby v9.3; support for other versions is not guaranteed.
 
 after cloning the repository, install dependencies:
 ```sh
