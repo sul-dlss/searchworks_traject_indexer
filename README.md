@@ -106,7 +106,15 @@ processes:
 ```
 in local development, you can invoke traject on the command line and override these settings by passing environment variables:
 ```sh
-SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/sirsi_config.rb my_marc_file.marc
+SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb my_marc_file.marc
+```
+you can also specify a different writer class for traject to use with the `-w` flag, which is helpful when debugging. for example, to get debug output:
+```sh
+SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb -w Traject::DebugWriter my_marc_file.marc
+```
+another option is to use the `JsonWriter` to pipe output directly to somewhere else, so you can see what traject is indexing. an example that strips honeybadger output and uses the `jq` utility to inspect a particular field in the json:
+```sh
+SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb -w Traject::JsonWriter my_marc_file.marc | tail -n +2 | jq '.pub_country'
 ```
 ## environments
 ### Symphony ILS (Sirsi)
