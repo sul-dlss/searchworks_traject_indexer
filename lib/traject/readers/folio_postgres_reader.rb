@@ -6,6 +6,7 @@ require_relative '../../folio_record'
 
 module Traject
   class FolioPostgresReader
+    include Enumerable
     attr_reader :settings, :last_response_date
 
     def initialize(input_stream, settings)
@@ -13,6 +14,7 @@ module Traject
       @connection = PG.connect(settings['postgres.url'])
       @page_size = settings['postgres.page_size'] || 100
       @updated_after = settings['folio.updated_after'] || Time.at(0).utc.iso8601
+      @sql_filters = settings['postgres.sql_filters'] || 'TRUE'
     end
 
     def each
@@ -21,6 +23,9 @@ module Traject
       @connection.transaction do
         # check postgres's clock time
         @last_response_date = Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
+
+        # set search path to avoid namespacing problems with folio functions
+        @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
         @connection.exec("DECLARE folio CURSOR FOR #{sql_query}")
@@ -190,9 +195,11 @@ module Traject
         ON rs.external_id = vi.id
       JOIN sul_mod_source_record_storage.marc_records_lb mr
         ON mr.id = rs.id
-      WHERE sul_mod_inventory_storage.strtotimestamp((vi.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
+      WHERE (sul_mod_inventory_storage.strtotimestamp((vi.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
             sul_mod_inventory_storage.strtotimestamp((hr.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
-            sul_mod_inventory_storage.strtotimestamp((item.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'
+            sul_mod_inventory_storage.strtotimestamp((item.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}')
+      -- Optional additional filtering as raw SQL
+      AND #{@sql_filters}
       GROUP BY vi.id
       SQL
     end
