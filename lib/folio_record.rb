@@ -5,11 +5,6 @@ class FolioRecord
   attr_reader :record, :client
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
 
-  def initialize(record, client)
-    @record = record
-    @client = client
-  end
-
   def self.new_from_source_record(record, client)
     FolioRecord.new({
       'source_record' => [
@@ -21,12 +16,17 @@ class FolioRecord
     }, client)
   end
 
+  def initialize(record, client = nil)
+    @record = record
+    @client = client
+  end
+
   def marc_record
     @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json)
   end
 
   def instance_id
-    record.dig('externalIdsHolder', 'instanceId')
+    record.dig('instance', 'id')
   end
 
   def sirsi_holdings
@@ -77,12 +77,21 @@ class FolioRecord
   end
 
   def items
-    items_and_holdings&.dig('items') || []
+    record['items'] || items_and_holdings&.dig('items') || []
   end
 
   def holdings
-    items_and_holdings&.dig('holdings') || []
+    record['holdings'] || items_and_holdings&.dig('holdings') || []
   end
+
+  def as_json
+    json = record.except('source_record')
+    json['items'] ||= items
+    json['holdings'] ||= holdings
+    json
+  end
+
+  private
 
   def items_and_holdings
     @items_and_holdings ||= begin
@@ -90,15 +99,13 @@ class FolioRecord
         instanceIds: [instance_id],
         skipSuppressedFromDiscoveryRecords: false
       }
-      client.get_json("/inventory-hierarchy/items-and-holdings", method: :post, body: body.to_json)
+      client.get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
     end
   end
 
-  private
-
   def stripped_marc_json
-    record.dig('parsedRecord', 'content').tap do |record|
-      record['fields'] = record['fields'].reject { |field| Constants::JUNK_TAGS.include?(field.keys.first)  }
+    record.dig('source_record', 0).tap do |record|
+      record['fields'] = record['fields'].reject { |field| Constants::JUNK_TAGS.include?(field.keys.first) }
     end
   end
 end

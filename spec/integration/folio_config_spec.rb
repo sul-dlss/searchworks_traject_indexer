@@ -13,7 +13,7 @@ describe 'SDR indexing' do
   end
 
   let(:folio_record) do
-    FolioRecord.new(source_record_json, client)
+    FolioRecord.new_from_source_record(source_record_json, client)
   end
 
   let(:source_record_json) do
