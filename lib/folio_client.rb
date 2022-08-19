@@ -34,7 +34,7 @@ class FolioClient
   end
 
   def source_record(**kwargs)
-    FolioRecord.new(get_json("/source-storage/source-records", params: kwargs).dig('sourceRecords', 0), self)
+    FolioRecord.new_from_source_record(get_json("/source-storage/source-records", params: kwargs).dig('sourceRecords', 0), self)
   end
 
   private

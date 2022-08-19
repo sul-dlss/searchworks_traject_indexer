@@ -10,6 +10,17 @@ class FolioRecord
     @client = client
   end
 
+  def self.new_from_source_record(record, client)
+    FolioRecord.new({
+      'source_record' => [
+        record.dig('parsedRecord', 'content')
+      ],
+      'instance' => {
+        'id' => record.dig('externalIdsHolder', 'instanceId')
+      }
+    }, client)
+  end
+
   def marc_record
     @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json)
   end
