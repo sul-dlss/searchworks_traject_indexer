@@ -25,6 +25,8 @@ settings do
   # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
+  elsif self['postgres.url']
+    provide 'reader_class_name', 'Traject::FolioPostgresReader'
   else
     provide 'reader_class_name', 'Traject::FolioReader'
   end
