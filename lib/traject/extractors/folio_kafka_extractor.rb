@@ -17,7 +17,7 @@ class Traject::FolioKafkaExtractor
       # sometimes folio source records don't have an associated instance record
       next if record.instance_id.nil? || record.instance_id.empty?
 
-      producer.produce(record.record.to_json, key: record.instance_id, topic: topic)
+      producer.produce(record.as_json(include_items: false), key: record.instance_id, topic: topic)
     end
 
     producer.deliver_messages
