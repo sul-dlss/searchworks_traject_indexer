@@ -165,9 +165,12 @@ to_field 'uuid_ssi' do |record, accumulator|
 end
 
 to_field 'folio_json_struct' do |record, accumulator|
-  accumulator << JSON.generate(record.record.except('parsedRecord'))
+  accumulator << JSON.generate(record.as_json)
 end
 
 to_field 'holdings_json_struct' do |record, accumulator|
-  accumulator << JSON.generate(record.items_and_holdings) if record.items_and_holdings
+  accumulator << JSON.generate({
+    holdings: record.holdings,
+    items: record.items
+  })
 end
