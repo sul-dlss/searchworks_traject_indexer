@@ -148,6 +148,16 @@ to_field 'date_cataloged' do |record, accumulator|
   end
 end
 
+
+# add folio to the collection list; searchworks has some dependencies on this value,
+# so for now, we're just appending 'folio' to the list.
+to_field 'collection', literal('folio')
+
+# sirsi_config sets this to 'sirsi'; we need to remove that and set our own value:
+to_field 'context_source_ssi' do |record, accumulator, context|
+  context.output_hash['context_source_ssi'] = ['folio']
+end
+
 ## FOLIO specific fields
 
 ## QUESTIONS / ISSUES
