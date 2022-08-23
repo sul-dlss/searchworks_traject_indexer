@@ -146,21 +146,11 @@ to_field 'barcode_search' do |record, accumulator, context|
   end
 end
 
-# TODO: is this the right place to get this from? use instanceRecord or holdingsRecord instead?
-# when are these timestamps updated in FOLIO?
+# guard against dates with 'u' coming out of MARC 008 fields
 to_field 'date_cataloged' do |record, accumulator|
-  timestamp = record.record.dig('metadata', 'createdDate')
-
-  # when requesting via /source-storage/stream/source-records, you get a unix epoch (e.g. 1658265346880)
-  # but when requesting via /source-storage/source-records, you get an ISO8601 string (e.g. "2020-01-01T00:00:00Z")
-  # we also need to always convert it to UTC for solr
-  if timestamp.is_a?(Numeric)
-    accumulator << Time.at(timestamp).utc.iso8601
-  elsif timestamp
-    accumulator << Time.iso8601(timestamp).utc.iso8601
-  end
+  timestamp = record.instance['catalogedDate']
+  accumulator << Date.parse(timestamp).to_time.utc.at_beginning_of_day.iso8601 if timestamp && !timestamp.include?('u')
 end
-
 
 # add folio to the collection list; searchworks has some dependencies on this value,
 # so for now, we're just appending 'folio' to the list.
