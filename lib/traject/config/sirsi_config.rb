@@ -836,9 +836,10 @@ end
 # returns the URLs for restricted full text of a resource described
 #  by the 856u.  Restricted is determined by matching a string against
 #  the 856z.  ("available to stanford-affiliated users at:")
+# or "Access restricted to Stanford community" for Lane.
 to_field 'url_restricted' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record)  do |field, spec, extractor|
-    next unless field.subfields.select { |f| f.code == 'z' }.map(&:value).any? { |z| z =~ /available to stanford-affiliated users at:/i }
+    next unless field.subfields.select { |f| f.code == 'z' }.map(&:value).any? { |z| z =~ Regexp.union(/available to stanford-affiliated users at:/i, /Access restricted to Stanford community/i) }
     case field.indicator2
     when '0'
       accumulator.concat extractor.collect_subfields(field, spec)
