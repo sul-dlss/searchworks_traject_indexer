@@ -3,7 +3,6 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 require 'traject'
 require 'traject/macros/marc21_semantics'
 require 'traject/readers/folio_reader'
-require 'traject/readers/kafka_folio_reader'
 require 'traject/writers/solr_better_json_writer'
 require 'traject/common/marc_utils'
 require 'traject/common/constants'
@@ -23,7 +22,11 @@ I18n.available_locales = [:en]
 settings do
   # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
+    require 'traject/readers/kafka_folio_reader'
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
+  elsif self['postgres.url']
+    require 'traject/readers/folio_postgres_reader'
+    provide 'reader_class_name', 'Traject::FolioPostgresReader'
   else
     provide 'reader_class_name', 'Traject::FolioReader'
   end

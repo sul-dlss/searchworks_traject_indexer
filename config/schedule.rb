@@ -41,5 +41,5 @@ end
 
 # USING FOLIO DATA
 every :hour, roles: [:stage] do
-  honeybadger_wrapped_ruby_script 'load_folio.sh', traject_env: 'folio_test'
+  honeybadger_wrapped_ruby_script 'load_folio_postgres.sh', traject_env: 'folio_test'
 end
