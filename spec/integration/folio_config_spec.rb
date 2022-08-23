@@ -30,6 +30,11 @@ describe 'SDR indexing' do
     expect(result).to include 'title_display' => [start_with('Fantasia sopra motivi')]
   end
 
+  it 'overwrites sirsi-specific fields' do
+    expect(result).to include 'context_source_ssi' => ['folio'],
+                              'collection' => %w[sirsi folio]
+  end
+
   it 'includes folio-specific fields' do
     expect(result).to include 'uuid_ssi' => ['b2fe7336-33d1-5553-86cb-a15af14c7348'],
                               'folio_json_struct' => [start_with('{')],
