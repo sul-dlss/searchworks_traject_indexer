@@ -2,10 +2,10 @@ require 'active_support/core_ext/module/delegation'
 require_relative 'traject/common/constants'
 
 class FolioRecord
-  attr_reader :record, :client
+  attr_reader :record
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
 
-  def self.new_from_source_record(record, client)
+  def self.new_from_source_record(record)
     FolioRecord.new({
       'source_record' => [
         record.dig('parsedRecord', 'content')
@@ -13,12 +13,11 @@ class FolioRecord
       'instance' => {
         'id' => record.dig('externalIdsHolder', 'instanceId')
       }
-    }, client)
+    })
   end
 
-  def initialize(record, client = nil)
+  def initialize(record)
     @record = record
-    @client = client
   end
 
   def marc_record
@@ -77,11 +76,11 @@ class FolioRecord
   end
 
   def items
-    record['items'] || items_and_holdings&.dig('items') || []
+    record['items'] || []
   end
 
   def holdings
-    record['holdings'] || items_and_holdings&.dig('holdings') || []
+    record['holdings'] || []
   end
 
   def as_json(include_items: false)
@@ -96,16 +95,6 @@ class FolioRecord
   end
 
   private
-
-  def items_and_holdings
-    @items_and_holdings ||= begin
-      body = {
-        instanceIds: [instance_id],
-        skipSuppressedFromDiscoveryRecords: false
-      }
-      client.get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
-    end
-  end
 
   def stripped_marc_json
     record.dig('source_record', 0).tap do |record|

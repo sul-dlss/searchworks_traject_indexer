@@ -1,6 +1,5 @@
 require 'kafka'
 require 'kafka/statsd'
-require_relative '../../folio_client'
 require_relative '../../folio_record'
 
 class Traject::KafkaFolioReader
@@ -8,7 +7,6 @@ class Traject::KafkaFolioReader
 
   def initialize(input_stream, settings)
     @settings = Traject::Indexer::Settings.new settings
-    @client = settings['folio.client'] || FolioClient.new
   end
 
   def each
@@ -19,9 +17,9 @@ class Traject::KafkaFolioReader
       record = JSON.parse(message.value)
 
       if record.key? 'source_record'
-        yield FolioRecord.new_from_source_record(record['source_record'], @client)
+        yield FolioRecord.new_from_source_record(record['source_record'])
       else
-        yield FolioRecord.new(record, @client)
+        yield FolioRecord.new(record)
       end
     end
   end

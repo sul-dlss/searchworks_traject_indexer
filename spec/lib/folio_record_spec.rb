@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'folio_client'
 require 'folio_record'
 
 RSpec.describe FolioRecord do
-  subject(:folio_record) { described_class.new_from_source_record(record, client) }
-  let(:client) { instance_double(FolioClient) }
+  subject(:folio_record) { described_class.new_from_source_record(record) }
   let(:record) do
     {
       'parsedRecord' => {

@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-require 'folio_client'
 require 'folio_record'
 
 describe 'SDR indexing' do
@@ -13,17 +12,11 @@ describe 'SDR indexing' do
   end
 
   let(:folio_record) do
-    FolioRecord.new_from_source_record(source_record_json, client)
+    FolioRecord.new_from_source_record(source_record_json)
   end
 
   let(:source_record_json) do
     JSON.parse(File.read(file_fixture('a14185492.json')))
-  end
-
-  let(:client) { instance_double(FolioClient) }
-
-  before do
-    allow(folio_record).to receive(:items_and_holdings).and_return({})
   end
 
   it 'maps the record with sirsi fields' do
