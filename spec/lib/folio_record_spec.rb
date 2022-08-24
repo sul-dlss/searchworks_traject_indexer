@@ -33,4 +33,65 @@ RSpec.describe FolioRecord do
       expect(folio_record.marc_record['001']).to have_attributes(tag: '001', value: 'a14154194')
     end
   end
+
+  describe '#deleted?' do
+    subject(:folio_record) { described_class.new(record, client) }
+
+    context 'when not suppressed or deleted' do
+      let(:record) do
+        {
+          'source_record' => [{
+            'fields' => [],
+            'leader' => '00000cam a2200000 a 4500'
+          }],
+          'deleted' => false,
+          'additionalInfo' => { 'suppressDiscovery' => false }
+        }
+      end
+      it 'is false' do
+        expect(folio_record.deleted?).to be false
+      end
+    end
+
+    context 'when the record is suppressed from discovery in folio' do
+      let(:record) do
+        {
+          'source_record' => [{ 'fields' => [] }],
+          'additionalInfo' => { 'suppressDiscovery' => true }
+        }
+      end
+
+      it 'is true' do
+        expect(folio_record.deleted?).to be true
+      end
+    end
+
+    context 'when the record is marked as deleted in folio' do
+      let(:record) do
+        {
+          'source_record' => [{ 'fields' => [] }],
+          'deleted' => true
+        }
+      end
+
+      it 'is true' do
+        expect(folio_record.deleted?).to be true
+      end
+    end
+
+    context 'when the MARC leader 05 is set to mark a deletion' do
+      let(:record) do
+        {
+          'source_record' => [{
+            'fields' => [],
+            'leader' => '00000dam a2200000 a 4500'
+          }]
+        }
+      end
+
+      it 'is true' do
+        expect(folio_record.deleted?).to be true
+      end
+    end
+  end
 end

@@ -92,6 +92,18 @@ class FolioRecord
     record
   end
 
+  # conditions that indicate deletion (any of these is sufficient):
+  # 1. record is suppressed from discovery in folio
+  # 2. record is marked as deleted in folio
+  # 3. MARC leader 005 is set to "d", "s" or "x"
+  def deleted?
+    return true if record.dig('additionalInfo', 'suppressDiscovery')
+    return true if record['deleted']
+    return true if leader && %w[d s x].include?(leader[5])
+
+    false
+  end
+
   private
 
   def items_and_holdings
