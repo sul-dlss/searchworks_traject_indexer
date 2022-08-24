@@ -18,10 +18,16 @@ class Traject::KafkaFolioReader
       Utils.logger.debug("Traject::KafkaFolioReader#each(#{message.key})")
       record = JSON.parse(message.value)
 
-      if record.key? 'parsedRecord'
-        yield FolioRecord.new_from_source_record(record, @client)
+      folio_record = if record.key? 'source_record'
+                       FolioRecord.new_from_source_record(record, @client)
+                     else
+                       FolioRecord.new(record, @client)
+                     end
+
+      if folio_record.deleted?
+        yield({ id: message.key, delete: true })
       else
-        yield FolioRecord.new(record, @client)
+        yield folio_record
       end
     end
   end
