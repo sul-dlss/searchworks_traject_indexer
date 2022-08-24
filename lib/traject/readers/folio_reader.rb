@@ -13,31 +13,33 @@ module Traject
     def each(&block)
       return to_enum(:each) unless block_given?
 
-      response = client.get('/source-storage/stream/source-records', params: { limit: settings.fetch('source-records-limit', 2147483647).to_i, updatedAfter: settings.fetch('folio.updated_after', Time.at(0).utc.iso8601) })
-      buffer = ""
+      response = client.get('/source-storage/source-records', params: { limit: settings.fetch('source-records-limit', 2147483647).to_i, updatedAfter: settings.fetch('folio.updated_after', Time.at(0).utc.iso8601) })
       @last_response_date = Time.httpdate(response.headers['Date'])
+      parsed_response = JSON.parse(response.body)
+      instance_ids = parsed_response['sourceRecords'].map { |source_record| source_record.dig('externalIdsHolder', 'instanceId') }.compact.uniq
 
-      while data = response.readpartial
-        buffer += data
-        newbuffer = ''
+      # fetch items and holdings for all the source records that aren't suppressed
+      body = {
+        instanceIds: instance_ids,
+        skipSuppressedFromDiscoveryRecords: true
+      }
+      items_and_holdings = client.get_jsonl('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
 
-        buffer.each_line do |line|
-          if line.end_with?("\n")
-            record = JSON.parse(line)
-            yield FolioRecord.new({
-              'source_record' => [
-                record.dig('parsedRecord', 'content')
-              ],
-              'instance' => {
-                'id' => record.dig('externalIdsHolder', 'instanceId')
-              }
-            }, client)
-          else
-            newbuffer += line
-          end
-        end
+      # join items/holdings with source record into a single struct
+      record_structs = parsed_response['sourceRecords'].map do |source_record|
+        instance_id = source_record.dig('externalIdsHolder', 'instanceId')
 
-        buffer = newbuffer
+        {
+          'source_record' => [source_record.dig('parsedRecord', 'content')],
+          'instance' => { 'id' => instance_id },
+          'items' => items_and_holdings.select { |rec| rec['instanceId'] == instance_id },
+          'holdings' => items_and_holdings.select { |rec| rec['instanceId'] == instance_id }
+        }
+      end
+
+      # yield one FolioRecord for each struct
+      record_structs.each do |record_struct|
+        yield FolioRecord.new(record_struct, client)
       end
     end
 

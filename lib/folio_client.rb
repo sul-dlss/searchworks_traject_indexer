@@ -33,6 +33,13 @@ class FolioClient
     parse(get(path, **kwargs))
   end
 
+  def get_jsonl(path, **kwargs)
+    response = get(path, **kwargs)
+    return nil if response.body.empty?
+
+    response.body.to_s.gsub('}{', '}\n{').split('\n').map { |line| JSON.parse(line) }
+  end
+
   def source_record(**kwargs)
     response = get_json('/source-storage/source-records', params: kwargs)
     FolioRecord.new_from_source_record(response['sourceRecords'].first)
