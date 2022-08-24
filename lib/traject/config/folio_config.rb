@@ -34,7 +34,17 @@ settings do
   provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
 end
 
+##
+# Skip records that have a suppressFromDiscovery field
+each_record do |record, context|
+  if record.record.dig('instance', 'suppressFromDiscovery')
+    context.output_hash['id'] = [record.hrid.sub(/^a/, '')]
+    context.skip!('Delete')
+  end
+end
+
 load_config_file(File.expand_path('../sirsi_config.rb', __FILE__))
+
 
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
