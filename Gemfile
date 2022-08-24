@@ -28,6 +28,7 @@ gem 'dor-rights-auth'
 gem 'rexml' # required for ruby 3
 gem 'config'
 gem 'pg', platform: :mri
+gem 'parallel'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'

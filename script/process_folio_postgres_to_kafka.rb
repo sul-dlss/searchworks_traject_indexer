@@ -4,7 +4,7 @@ require 'folio_client'
 require 'traject'
 require 'traject/readers/folio_postgres_reader'
 require 'traject/extractors/folio_kafka_extractor'
-
+require 'parallel'
 
 log_file = File.expand_path("../log/process_folio_postgres_to_kafka_#{Utils.env_config.kafka_topic}.log", __dir__)
 Utils.set_log_file(log_file)
@@ -22,16 +22,20 @@ File.open(state_file, 'r+') do |f|
   last_date = Time.iso8601(f.read.strip)
   Utils.logger.info "Found last_date in #{state_file}: #{last_date}"
 
-  reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date.utc.iso8601, 'postgres.url': Utils.env_config.postgres_url || ENV['POSTGRES_URL'])
+  last_response_date = Traject::FolioPostgresReader.new(nil, 'postgres.url': ENV['POSTGRES_URL'] || Utils.env_config.postgres_url).last_response_date
 
-  Traject::FolioKafkaExtractor.new(reader: reader, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
+  shards = Utils.env_config.processes ? ((0..9).to_a + ('a'..'f').to_a).map { |k| "vi.id::text LIKE '#{k}%'" } : ['TRUE']
+  Parallel.map(shards, in_processes: Utils.env_config.processes.to_i) do |sql_filter|
+    reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date.utc.iso8601, 'postgres.url': ENV['POSTGRES_URL'] || Utils.env_config.postgres_url, 'postgres.sql_filters': sql_filter)
+    Traject::FolioKafkaExtractor.new(reader: reader, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
+  end
 
-  Utils.logger.info "Response generated at: #{reader.last_response_date} (previous: #{last_date})"
+  Utils.logger.info "Response generated at: #{last_response_date} (previous: #{last_date})"
 
-  if reader.last_response_date > last_date
+  if last_response_date > last_date
     f.rewind
     f.truncate(0)
-    f.puts(reader.last_response_date.iso8601)
-    Utils.logger.info "Wrote new last date: #{reader.last_response_date}"
+    f.puts(last_response_date.iso8601)
+    Utils.logger.info "Wrote new last date: #{last_response_date}"
   end
 end
