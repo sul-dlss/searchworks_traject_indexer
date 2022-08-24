@@ -17,6 +17,7 @@ class Traject::MarcKafkaExtractor
 
       producer.produce(records_to_combine.map { |x| x.to_marc }.join(''), key: ckey, topic: topic)
     end
+  ensure
     producer.deliver_messages
     producer.shutdown
     @producer = nil
