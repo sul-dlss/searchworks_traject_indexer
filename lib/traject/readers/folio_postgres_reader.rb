@@ -11,10 +11,10 @@ module Traject
 
     def initialize(input_stream, settings)
       @settings = Traject::Indexer::Settings.new settings
-      @connection = PG.connect(settings['postgres.url'])
-      @page_size = settings['postgres.page_size'] || 100
-      @updated_after = settings['folio.updated_after'] || Time.at(0).utc.iso8601
-      @sql_filters = settings['postgres.sql_filters'] || 'TRUE'
+      @connection = PG.connect(@settings['postgres.url'])
+      @page_size = @settings['postgres.page_size'] || 100
+      @updated_after = @settings['folio.updated_after'] || Time.at(0).utc.iso8601
+      @sql_filters = @settings['postgres.sql_filters'] || 'TRUE'
     end
 
     def each

@@ -88,15 +88,8 @@ class FolioRecord
     (record['holdings'] || items_and_holdings&.dig('holdings') || []).reject { |holding| holding['suppressFromDiscovery'] }
   end
 
-  def as_json(include_items: false)
-    json = record.except('source_record', 'items', 'holdings')
-
-    if include_items
-      json['items'] ||= items
-      json['holdings'] ||= holdings
-    end
-
-    json
+  def as_json
+    record
   end
 
   private
