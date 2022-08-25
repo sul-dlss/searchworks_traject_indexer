@@ -30,7 +30,7 @@ class Traject::FolioKafkaExtractor
   def producer
     @producer ||= kafka.async_producer(
       # Trigger a delivery once 10 messages have been buffered.
-      delivery_threshold: 10,
+      delivery_threshold: 100,
 
       # Trigger a delivery every 30 seconds.
       delivery_interval: 30,
