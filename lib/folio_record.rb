@@ -29,6 +29,10 @@ class FolioRecord
     record.dig('instance', 'id')
   end
 
+  def hrid
+    record.dig('instance', 'hrid')
+  end
+
   def sirsi_holdings
     @sirsi_holdings ||= items.map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
@@ -77,11 +81,11 @@ class FolioRecord
   end
 
   def items
-    record['items'] || items_and_holdings&.dig('items') || []
+    (record['items'] || items_and_holdings&.dig('items') || []).reject { |item| item['suppressFromDiscovery'] }
   end
 
   def holdings
-    record['holdings'] || items_and_holdings&.dig('holdings') || []
+    (record['holdings'] || items_and_holdings&.dig('holdings') || []).reject { |holding| holding['suppressFromDiscovery'] }
   end
 
   def as_json

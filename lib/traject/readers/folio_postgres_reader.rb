@@ -75,13 +75,21 @@ module Traject
         vi.id,
           jsonb_build_object(
             'instance',
-              vi.jsonb,
+              vi.jsonb || jsonb_build_object(
+                'suppressFromDiscovery', COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false))
+              ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
               COALESCE(
                 jsonb_agg(
                   DISTINCT item.jsonb || jsonb_build_object(
                     'crez', COALESCE(cr.jsonb, '[]'::jsonb),
+                    'suppressFromDiscovery',
+                    CASE WHEN item.id IS NOT NULL THEN
+                      COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false) OR
+                      COALESCE((hr.jsonb ->> 'discoverySuppress')::bool, false) OR
+                      COALESCE((item.jsonb ->> 'discoverySuppress')::bool, false)
+                    ELSE NULL END::bool,
                     'callNumberType', cnt.jsonb,
                     'itemDamagedStatus', itemDmgStat.jsonb ->> 'name',
                     'materialType', mt.jsonb ->> 'name',
@@ -118,6 +126,11 @@ module Traject
                   DISTINCT
                     hr.jsonb ||
                       jsonb_build_object(
+                        'suppressFromDiscovery',
+                        CASE WHEN hr.id IS NOT NULL THEN
+                          COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false) OR
+                          COALESCE((hr.jsonb ->> 'discoverySuppress')::bool, false)
+                        ELSE NULL END::bool,
                         'holdingsType', ht.jsonb,
                         'callNumberType', hrcnt.jsonb,
                         'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(hr.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),

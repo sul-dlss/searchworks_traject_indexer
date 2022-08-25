@@ -40,4 +40,14 @@ describe 'SDR indexing' do
                               'folio_json_struct' => [start_with('{')],
                               'holdings_json_struct' => [start_with('{')]
   end
+
+  context 'suppressed record' do
+    let(:folio_record) do
+      FolioRecord.new({ 'instance' => {'hrid' => 'blah', 'suppressFromDiscovery' => true } })
+    end
+
+    it 'is skipped' do
+      expect(result).to be_nil
+    end
+  end
 end
