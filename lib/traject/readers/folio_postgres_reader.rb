@@ -22,7 +22,7 @@ module Traject
 
       @connection.transaction do
         # check postgres's clock time
-        @last_response_date = Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
+        @last_response_date = last_response_date
 
         # set search path to avoid namespacing problems with folio functions
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
@@ -40,6 +40,10 @@ module Traject
           end
         end
       end
+    end
+
+    def last_response_date
+      Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
     end
 
     def sql_query

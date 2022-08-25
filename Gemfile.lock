@@ -142,6 +142,8 @@ GEM
     net-ssh (7.0.1)
     nokogiri (1.13.8-java)
       racc (~> 1.4)
+    nokogiri (1.13.8-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     nom-xml (1.2.0)
@@ -242,6 +244,7 @@ PLATFORMS
   java
   universal-java-15
   universal-java-18
+  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES
@@ -268,6 +271,7 @@ DEPENDENCIES
   iso-639
   manticore
   mods_display (~> 1.0)
+  parallel
   pg
   rake
   retriable

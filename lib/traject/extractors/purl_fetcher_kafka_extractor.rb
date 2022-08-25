@@ -20,7 +20,7 @@ class Traject::PurlFetcherKafkaExtractor
         producer.produce(change.to_json, key: change['druid'], topic: topic)
       end
     end
-
+  ensure
     producer.deliver_messages
     producer.shutdown
     @producer = nil

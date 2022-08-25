@@ -19,7 +19,7 @@ class Traject::FolioKafkaExtractor
 
       producer.produce(JSON.fast_generate(record.as_json), key: record.instance_id, topic: topic)
     end
-
+  ensure
     producer.deliver_messages
     producer.shutdown
     @producer = nil

@@ -13,5 +13,6 @@ environments:
   morison:
     kafka_topic: marc_morison
   folio_test:
+    processes: 8
     kafka_topic: marc_folio_test
     okapi_url: 'https://okapi-test.stanford.edu'
