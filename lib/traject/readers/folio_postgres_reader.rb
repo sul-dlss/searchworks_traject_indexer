@@ -80,7 +80,7 @@ module Traject
           jsonb_build_object(
             'instance',
               vi.jsonb || jsonb_build_object(
-                'suppressFromDiscovery', COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false))
+                'suppressFromDiscovery', COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false)
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
