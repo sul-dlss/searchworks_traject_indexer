@@ -34,7 +34,12 @@ class Traject::FolioKafkaExtractor
 
       # Trigger a delivery every 30 seconds.
       delivery_interval: 30,
-      max_queue_size: 10000000
+      max_queue_size: 10000000,
+
+      compression_codec: :gzip,
+      max_retries: 5,
+      retry_backoff: 5,
+      max_buffer_bytesize: 100_000_000
     )
   end
 end
