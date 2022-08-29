@@ -50,10 +50,10 @@ module Traject
       <<-SQL
       WITH viewLocations(locId, locJsonb, locCampJsonb, locLibJsonb, locInstJsonb) AS (
         SELECT loc.id AS locId,
-               loc.jsonb AS locJsonb,
-               locCamp.jsonb AS locCampJsonb,
-               locLib.jsonb AS locLibJsonb,
-               locInst.jsonb AS locInstJsonb
+               jsonb_build_object('id', loc.id, 'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'), 'code', loc.jsonb ->> 'code', 'details', loc.jsonb -> 'details') AS locJsonb,
+               jsonb_build_object('id', locCamp.id, 'name', COALESCE(locCamp.jsonb ->> 'discoveryDisplayName', locCamp.jsonb ->> 'name'), 'code', locCamp.jsonb ->> 'code') AS locCampJsonb,
+               jsonb_build_object('id', locLib.id, 'name', COALESCE(locLib.jsonb ->> 'discoveryDisplayName', locLib.jsonb ->> 'name'), 'code', locLib.jsonb ->> 'code') AS locLibJsonb,
+               jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
         FROM sul_mod_inventory_storage.location loc
            LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
                 ON (loc.jsonb ->> 'institutionId')::uuid = locInst.id
@@ -94,7 +94,7 @@ module Traject
                       COALESCE((hr.jsonb ->> 'discoverySuppress')::bool, false) OR
                       COALESCE((item.jsonb ->> 'discoverySuppress')::bool, false)
                     ELSE NULL END::bool,
-                    'callNumberType', cnt.jsonb,
+                    'callNumberType', cnt.jsonb - 'metadata',
                     'itemDamagedStatus', itemDmgStat.jsonb ->> 'name',
                     'materialType', mt.jsonb ->> 'name',
                     'permanentLoanType', plt.jsonb ->> 'name',
@@ -135,11 +135,11 @@ module Traject
                           COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false) OR
                           COALESCE((hr.jsonb ->> 'discoverySuppress')::bool, false)
                         ELSE NULL END::bool,
-                        'holdingsType', ht.jsonb,
-                        'callNumberType', hrcnt.jsonb,
+                        'holdingsType', ht.jsonb - 'metadata',
+                        'callNumberType', hrcnt.jsonb - 'metadata',
                         'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(hr.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
                         'notes', COALESCE(sul_mod_inventory_storage.getHoldingNoteTypeName(hr.jsonb -> 'notes'), '[]'::jsonb),
-                        'illPolicy', ilp.jsonb,
+                        'illPolicy', ilp.jsonb - 'metadata',
                         'location', jsonb_build_object('permanentLocation',
                                                           holdPermLoc.locJsonb || jsonb_build_object(
                                                                     'campus', holdPermLoc.locCampJsonb,
