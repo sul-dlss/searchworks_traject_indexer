@@ -30,10 +30,6 @@ module CallNumbers
       raise NotImplementedError
     end
 
-    def to_reverse_shelfkey
-      self.class.reverse(to_shelfkey).ljust(50, '~')
-    end
-
     class << self
       def reverse(value)
         value.chars.map do |char|
