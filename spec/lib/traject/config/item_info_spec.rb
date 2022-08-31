@@ -988,23 +988,25 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'shefkey field data is the same as the field in the item_display' do
+    describe 'shefkey and reverse_shelfkey field data is the same as the field in the item_display' do
       let(:fixture_name) { 'shelfkeyMatchItemDispTests.mrc' }
 
       it 'has the same shelfkey in the field as it does in the item_display' do
         item_display = select_by_id('5788269')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
           '36105122888543', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS', 'CALIF A125 .A34 ...', 'other calif a000125 .a000034 ...',
-          'b6il8~npehk~pzzzyxu~}pzzzzwv~~~~~~~~~~~~~~~~~~~~~~', 'CALIF A125 .A34 2002', 'other calif a000125 .a000034 002002', '', 'ALPHANUM'
+          'b6il8~npehk~pzzzyxu~}pzzzzwv~}}}~~~~~~~~~~~~~~~~~~', 'CALIF A125 .A34 2002', 'other calif a000125 .a000034 002002', '', 'ALPHANUM'
         ]
         expect(select_by_id('5788269')['shelfkey']).to eq ['other calif a000125 .a000034 ...']
+        expect(select_by_id('5788269')['reverse_shelfkey']).to eq ['b6il8~npehk~pzzzyxu~}pzzzzwv~}}}~~~~~~~~~~~~~~~~~~']
 
         item_display = select_by_id('409752')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
           '409752-2001', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS', 'CALIF A125 .B9 ...', 'other calif a000125 .b000009 ...',
-          'b6il8~npehk~pzzzyxu~}ozzzzzq~~~~~~~~~~~~~~~~~~~~~~', 'CALIF A125 .B9', 'other calif a000125 .b000009', '', 'ALPHANUM'
+          'b6il8~npehk~pzzzyxu~}ozzzzzq~}}}~~~~~~~~~~~~~~~~~~', 'CALIF A125 .B9', 'other calif a000125 .b000009', '', 'ALPHANUM'
         ]
         expect(select_by_id('409752')['shelfkey']).to eq ['other calif a000125 .b000009 ...']
+        expect(select_by_id('409752')['reverse_shelfkey']).to eq ['b6il8~npehk~pzzzyxu~}ozzzzzq~}}}~~~~~~~~~~~~~~~~~~']
 
         item_display = select_by_id('373245')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
@@ -1013,6 +1015,7 @@ RSpec.describe 'ItemInfo config' do
           '553.2805 .P187 V.1-2 1916-1918', 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~', '', 'DEWEY'
         ]
         expect(select_by_id('373245')['shelfkey']).to eq ['dewey 553.28050000 p187 ...']
+        expect(select_by_id('373245')['reverse_shelfkey']).to eq ['ml3l1~uuw}xrzuzzzz~ayrs~}}}~~~~~~~~~~~~~~~~~~~~~~~']
 
         item_display = select_by_id('373759')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
@@ -1021,6 +1024,7 @@ RSpec.describe 'ItemInfo config' do
           'dewey 553.28050000 p494 4}zzzzyy~zzyqxv~gpc}~g5cl~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'DEWEY'
         ]
         expect(select_by_id('373759')['shelfkey']).to eq ['dewey 553.28050000 p494 ...']
+        expect(select_by_id('373759')['reverse_shelfkey']).to eq ['ml3l1~uuw}xrzuzzzz~avqv~}}}~~~~~~~~~~~~~~~~~~~~~~~']
       end
     end
 

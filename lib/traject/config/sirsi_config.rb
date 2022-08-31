@@ -14,6 +14,7 @@ extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 extend Traject::SolrBetterJsonWriter::IndexerPatch
 extend Traject::MarcUtils
+extend HoldingCallNumber
 
 Utils.logger = logger
 
@@ -1734,72 +1735,6 @@ each_record do |record, context|
   context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type] = result
 end
 
-def call_number_for_holding(record, holding, context)
-  context.clipboard[:call_number_for_holding] ||= {}
-  context.clipboard[:call_number_for_holding][holding] ||= begin
-    return OpenStruct.new(scheme: holding.call_number_type) if holding.on_order? || holding.in_process?
-
-    serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
-    separate_browse_call_num = []
-    if holding.call_number.to_s.empty? || holding.ignored_call_number?
-      if record['086']
-        last_086 = record.find_all { |f| f.tag == '086' }.last
-        separate_browse_call_num << CallNumbers::Other.new(last_086['a'],
-                                                           scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
-      end
-
-      Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
-        separate_browse_call_num << CallNumbers::LC.new(item_050,
-                                                        serial:) if SirsiHolding::CallNumber.new(item_050).valid_lc?
-      end
-    end
-
-    return separate_browse_call_num.first if separate_browse_call_num.any?
-
-    return OpenStruct.new(
-      scheme: 'OTHER',
-      call_number: holding.call_number.to_s,
-      to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number}")
-    ) if holding.bad_lc_lane_call_number?
-    return OpenStruct.new(scheme: holding.call_number_type) if holding.e_call_number?
-    return OpenStruct.new(scheme: holding.call_number_type) if holding.ignored_call_number?
-
-    calculated_call_number_type = case holding.call_number_type
-                                  when 'LC'
-                                    if holding.valid_lc?
-                                      'LC'
-                                    elsif holding.dewey?
-                                      'DEWEY'
-                                    else
-                                      'OTHER'
-                                    end
-                                  when 'DEWEY'
-                                    'DEWEY'
-                                  else
-                                    'OTHER'
-                                  end
-
-    case calculated_call_number_type
-    when 'LC'
-      CallNumbers::LC.new(holding.call_number.to_s, serial:)
-    when 'DEWEY'
-      CallNumbers::Dewey.new(holding.call_number.to_s, serial:)
-    else
-      non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
-
-      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library,
-                                                                   LOCATION_MAP[holding.home_location], holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
-
-      CallNumbers::Other.new(
-        holding.call_number.to_s,
-        longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
-        scheme: holding.call_number_type == 'LC' ? 'OTHER' : holding.call_number_type
-      )
-    end
-  end
-end
-
 def holdings(record, context)
   context.clipboard[:holdings] ||= begin
     holdings = []
@@ -1993,31 +1928,11 @@ end
 
 to_field 'shelfkey' do |record, accumulator, context|
   holdings(record, context).each do |holding|
+    item_display = ItemDisplay.new(record, holding, context)
+
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
 
-    non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
-
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library,
-                                                                       LOCATION_MAP[holding.home_location], holding.call_number_type]])
-
-    if stuff_in_the_same_library.length > 1
-      call_number_object = call_number_for_holding(record, holding, context)
-      lopped_shelfkey = call_number_object.to_lopped_shelfkey
-
-      # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
-      accumulator << if lopped_shelfkey != call_number_object.to_shelfkey || stuff_in_the_same_library.reject do |x|
-                                                                               x.call_number.to_s == holding.call_number.to_s
-                                                                             end.select do |x|
-                          call_number_for_holding(record, x,
-                                                  context).lopped == call_number_object.lopped
-                        end.any?
-                       lopped_shelfkey + ' ...'
-                     else
-                       lopped_shelfkey
-                     end
-    else
-      accumulator << call_number_for_holding(record, holding, context).to_shelfkey
-    end
+    accumulator << item_display.shelfkey if item_display.shelfkey && !item_display.shelfkey.empty?
   end
 end
 
@@ -2029,21 +1944,11 @@ end
 #   9 --> A and also non-alphanum to sort properly (before or after alphanum)
 to_field 'reverse_shelfkey' do |record, accumulator, context|
   holdings(record, context).each do |holding|
+    item_display = ItemDisplay.new(record, holding, context)
+
     next if holding.skipped? || holding.shelved_by_location? || holding.lost_or_missing?
 
-    non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
-
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library,
-                                                                       LOCATION_MAP[holding.home_location], holding.call_number_type]])
-
-    if stuff_in_the_same_library.length > 1
-      call_number_object = call_number_for_holding(record, holding, context)
-      lopped_shelfkey = call_number_object.to_lopped_reverse_shelfkey
-
-      accumulator << lopped_shelfkey
-    else
-      accumulator << call_number_for_holding(record, holding, context).to_reverse_shelfkey
-    end
+    accumulator << item_display.reverse_shelfkey if item_display.reverse_shelfkey && !item_display.reverse_shelfkey.empty?
   end
 end
 
@@ -2304,90 +2209,22 @@ end
 
 to_field 'item_display' do |record, accumulator, context|
   holdings(record, context).each do |holding|
+    item_display = ItemDisplay.new(record, holding, context)
     next if holding.skipped?
-
-    non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
-
-    call_number = holding.call_number
-    call_number_object = call_number_for_holding(record, holding, context)
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library,
-                                                                       LOCATION_MAP[holding.home_location], holding.call_number_type]])
-
-    if call_number_object
-      scheme = call_number_object.scheme.upcase
-      # if it's a shelved-by location, use a totally different way to get the callnumber
-      if holding.shelved_by_location?
-        lopped_call_number = if [holding.home_location, holding.current_location].include? 'SHELBYSER'
-                               'Shelved by Series title'
-                             else
-                               'Shelved by title'
-                             end
-
-        unless holding.ignored_call_number?
-          enumeration = holding.call_number.to_s[call_number_object.lopped.length..-1].strip
-        end
-        shelfkey = lopped_call_number.downcase
-        reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
-
-        call_number = [lopped_call_number, enumeration].compact.join(' ') unless holding.e_call_number?
-        volume_sort = [lopped_call_number,
-                       (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50,
-                                                                                                                       '~') if enumeration)].compact.join(' ').downcase
-      # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
-      elsif stuff_in_the_same_library.length <= 1
-        shelfkey = call_number_object.to_shelfkey
-        volume_sort = call_number_object.to_volume_sort
-        reverse_shelfkey = call_number_object.to_reverse_shelfkey
-        lopped_call_number = call_number_object.call_number
-      else
-        # there's more than one item in the library/home_location/call_number_type, so we lop
-        shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
-        volume_sort = call_number_object.to_volume_sort
-        reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
-        lopped_call_number = call_number_object.lopped == holding.call_number.to_s ? holding.call_number.to_s : "#{call_number_object.lopped} ..."
-
-        # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
-        if call_number_object.lopped == holding.call_number.to_s && stuff_in_the_same_library.reject do |x|
-                                                                      x.call_number.to_s == holding.call_number.to_s
-                                                                    end.select do |x|
-             call_number_for_holding(record, x,
-                                     context).lopped == call_number_object.lopped
-           end.any?
-          lopped_call_number += ' ...'
-          shelfkey += ' ...'
-        end
-      end
-    else
-      scheme = ''
-      shelfkey = ''
-      volume_sort = ''
-      reverse_shelfkey = ''
-      lopped_call_number = holding.call_number.to_s
-    end
-
-    # item is on order if holding is on order
-    current_location = holding.current_location
-    if holding.on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
-      current_location = 'ON-ORDER'
-    end
 
     accumulator << [
       holding.barcode,
       holding.library,
       holding.home_location,
-      current_location,
+      item_display.current_location,
       holding.type,
-      (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      (shelfkey unless holding.lost_or_missing?),
-      (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
-      (unless holding.ignored_call_number? && !holding.shelved_by_location?
-         call_number
-       end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
-                  call_number
-                end),
-      (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
+      item_display.lopped_call_number,
+      item_display.shelfkey,
+      item_display.reverse_shelfkey,
+      item_display.call_number,
+      item_display.volume_sort,
       holding.public_note,
-      scheme
+      item_display.scheme
     ].join(' -|- ')
   end
 end

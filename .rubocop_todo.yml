@@ -351,6 +351,7 @@ Style/OpenStructUse:
     - 'lib/traject/config/sirsi_config.rb'
     - 'lib/traject/manticore_http_client.rb'
     - 'lib/utils.rb'
+    - 'lib/holding_call_number.rb'
 
 # Offense count: 5
 # This cop supports unsafe autocorrection (--autocorrect-all).
