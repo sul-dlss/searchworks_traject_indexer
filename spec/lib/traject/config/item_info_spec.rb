@@ -477,45 +477,53 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'lopped call numbers' do
-      let(:fixture_name) { 'buildingTests.mrc' }
+      let(:fixture_name) { 'itemDisplayTests.mrc' }
 
       it 'has the right data' do
-        pending
-
-        item_display = select_by_id('460947')[field]
+        item_display = select_by_id('460947000')[field]
         expect(item_display).to eq [
-          '36105007402873 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000 a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
+          '36105007402873 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC',
+          '36105007402874 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.2 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
         ]
 
         # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
         item_display = select_by_id('575946')[field]
         expect(item_display).to eq [
-          '36105035087092 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.31 -|- lc cb  0003.000000 a0.600000 suppl. v.000031 -|-  -|- LC'
+          '36105035087092 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.31 -|- lc cb  0003.000000 a0.600000 suppl. v.000031 -|-  -|- LC',
+          '36105035087093 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.32 -|- lc cb  0003.000000 a0.600000 suppl. v.000032 -|-  -|- LC'
         ]
-        item_display = select_by_id('690002')[field]
+
+        item_display = select_by_id('690002000')[field]
         expect(item_display).to eq [
           '36105046693508 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|- ml3l1~yuq}wxzzzzzz~3xyy~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|-  -|- DEWEY'
         ]
+
         item_display = select_by_id('2557826')[field]
         expect(item_display).to eq [
           '001AMR5851 -|- GREEN -|- FED-DOCS -|-  -|- GOVSTKS -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|- 75mbn~l~zzzzzy}zzzzxr~nbb~zzvxsv~zzzzzy~~~~~~~~~~~ -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|-  -|- SUDOC'
         ]
+
         item_display = select_by_id('460947')[field]
         expect(item_display).to eq [
-          '36105007402873 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000 a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
+          '36105007402873 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC',
+          '36105007402872 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.2 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
         ]
+
         item_display = select_by_id('446688')[field]
         expect(item_display).to eq [
           '36105007402873 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|- ml3l1~ttt}xszzzzzz~kxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|-  -|- DEWEY'
         ]
+
         item_display = select_by_id('4578538')[field]
         expect(item_display).to eq [
           '36105046377987 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- SUSEL-69048 -|- other susel-069048 -|- b6il8~757le~ztqzvr~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- SUSEL-69048 -|- other susel-069048 -|-  -|- ALPHANUM'
         ]
+
         item_display = select_by_id('1261173')[field]
         expect(item_display).to eq [
           '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|- b6il8~dkhed~c}7}~zzywuz~8lle~zzzxwz~cb}~zzwsvy~~~~ -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|-  -|- ALPHANUM'
         ]
+
         item_display = select_by_id('1234673')[field]
         expect(item_display).to eq [
           '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|- b6il8~dnm~o8lcmle~aep17~oll6ib4lc~7~l8bhnp~4p8hp6hbc7 -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|-  -|- ALPHANUM'
@@ -526,11 +534,12 @@ RSpec.describe 'ItemInfo config' do
           '36105025373064 -|- GREEN -|- BENDER -|-  -|- NONCIRC -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC',
           '36105019748495 -|- GREEN -|- BENDER -|-  -|- STKS-MONO -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC'
         ]
+
         item_display = select_by_id('111')[field]
         expect(item_display).to eq [
-          '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000  ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~~}}}~~~~~~~~~~~~~~~~~ -|- PR3724.T3 A2 V.12 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000012 -|-  -|- LC',
-          '36105003934424 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000  ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~~}}}~~~~~~~~~~~~~~~~~ -|- PR3724.T3 A2 V.1 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000001 -|-  -|- LC',
-          '36105048104132 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000  ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~~}}}~~~~~~~~~~~~~~~~~ -|- PR3724.T3 A2 V.2 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000002 -|-  -|- LC'
+          '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.12 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000012 -|-  -|- LC',
+          '36105003934424 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.1 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000001 -|-  -|- LC',
+          '36105048104132 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.2 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000002 -|-  -|- LC'
         ]
 
         item_display = select_by_id('222')[field]
@@ -550,14 +559,10 @@ RSpec.describe 'ItemInfo config' do
       let(:fixture_name) { 'buildingTests.mrc' }
 
       it 'has the shelfkey for the lopped call number' do
-        pending
 
         item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
-
         expect(item_display).to eq [
-          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
-          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000 a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~',
-          'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
+          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO', 'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~', 'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
         ]
       end
     end
@@ -682,13 +687,11 @@ RSpec.describe 'ItemInfo config' do
       let(:fixture_name) { 'buildingTests.mrc' }
 
       it 'has the reversed shelfkey for the lopped call number' do
-        pending
-
         item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
           '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
-          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000 a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzz~p~}}}~~~~~~',
-          'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000 a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
+          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
+          'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
         ]
       end
     end
@@ -940,21 +943,17 @@ RSpec.describe 'ItemInfo config' do
       let(:fixture_name) { 'shelfkeyMatchItemDispTests.mrc' }
 
       it 'has the same shelfkey in the field as it does in the item_display' do
-        pending
-
         item_display = select_by_id('5788269')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
-          '36105122888543', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS',
-          'CALIF A125 .A34 ...', 'other calif a000125 .a000034 ...', 'b6il8~npehk~pzzzyxu~}pzzzzwv~}}}~~~~~~~~~~~~~~~~~~',
-          'CALIF A125 .A34 2002', 'other calif a000125 .a000034 zzxzzx~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'ALPHANUM'
+          '36105122888543', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS', 'CALIF A125 .A34 ...', 'other calif a000125 .a000034 ...',
+          'b6il8~npehk~pzzzyxu~}pzzzzwv~~~~~~~~~~~~~~~~~~~~~~', 'CALIF A125 .A34 2002', 'other calif a000125 .a000034 002002', '', 'ALPHANUM'
         ]
         expect(select_by_id('5788269')['shelfkey']).to eq ['other calif a000125 .a000034 ...']
 
         item_display = select_by_id('409752')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
-          '36105127370737', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS',
-          'CALIF A125 .B9 ...', 'other calif a000125 .b000009 ...', 'b6il8~npehk~pzzzyxu~}ozzzzzq~}}}~~~~~~~~~~~~~~~~~~',
-          'CALIF A125 .B9 V.7-15 1966-1977:NO.1', 'other calif a000125 .b000009 4}zzzzzs~zzzzyu~zzyqtt~zzyqss~cb}zzzzzy~~~~~~~~~~~', '', 'ALPHANUM'
+          '409752-2001', 'GREEN', 'CALIF-DOCS', '', 'GOVSTKS', 'CALIF A125 .B9 ...', 'other calif a000125 .b000009 ...',
+          'b6il8~npehk~pzzzyxu~}ozzzzzq~~~~~~~~~~~~~~~~~~~~~~', 'CALIF A125 .B9', 'other calif a000125 .b000009', '', 'ALPHANUM'
         ]
         expect(select_by_id('409752')['shelfkey']).to eq ['other calif a000125 .b000009 ...']
 
@@ -968,12 +967,11 @@ RSpec.describe 'ItemInfo config' do
 
         item_display = select_by_id('373759')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
-          '36105027313985', 'SAL3', 'STACKS', '', 'STKS-PERI',
-          '553.2805 .P494 ...', 'dewey 553.28050000 p494 ...', 'b6il8~npehk~pzzzyxu~}pzzzzwv~~~~~~~~~~~~~~~~~~~~~~',
-          '553.2805 .P494 V.11 1924:JAN.-JUNE', 'dewey 553.28050000 p494 4}zzzzyy~zzyqxv~gpc}~g5cl~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'DEWEY'
+          '36105027313985', 'SAL3', 'STACKS', '', 'STKS-PERI', '553.2805 .P494 ...', 'dewey 553.28050000 p494 ...',
+          'ml3l1~uuw}xrzuzzzz~avqv~}}}~~~~~~~~~~~~~~~~~~~~~~~', '553.2805 .P494 V.11 1924:JAN.-JUNE',
+          'dewey 553.28050000 p494 4}zzzzyy~zzyqxv~gpc}~g5cl~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'DEWEY'
         ]
         expect(select_by_id('373759')['shelfkey']).to eq ['dewey 553.28050000 p494 ...']
-
       end
     end
 
