@@ -22,7 +22,7 @@ class FolioRecord
   end
 
   def marc_record
-    @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json)
+    @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
   end
 
   def instance_id
@@ -81,11 +81,11 @@ class FolioRecord
   end
 
   def items
-    (record['items'] || items_and_holdings&.dig('items') || []).reject { |item| item['suppressFromDiscovery'] }
+    (record['items'] || items_and_holdings&.dig('items') || []).compact.reject { |item| item['suppressFromDiscovery'] }
   end
 
   def holdings
-    (record['holdings'] || items_and_holdings&.dig('holdings') || []).reject { |holding| holding['suppressFromDiscovery'] }
+    (record['holdings'] || items_and_holdings&.dig('holdings') || []).compact.reject { |holding| holding['suppressFromDiscovery'] }
   end
 
   def as_json
@@ -105,8 +105,70 @@ class FolioRecord
   end
 
   def stripped_marc_json
+    return unless record.dig('source_record', 0)
+
     record.dig('source_record', 0).tap do |record|
       record['fields'] = record['fields'].reject { |field| Constants::JUNK_TAGS.include?(field.keys.first) }
     end
+  end
+
+  def instance_derived_marc_record
+    MARC::Record.new.tap do |marc|
+      marc.append(MARC::ControlField.new('001', record.dig('instance', 'hrid')))
+      # mode of issuance
+      # identifiers
+      record.dig('instance', 'languages').each do |l|
+        marc.append(MARC::DataField.new('041', ' ', ' ', ['a', l]))
+      end
+
+      record.dig('instance', 'contributors').each do |contrib|
+        # personal name: 100/700
+        field = MARC::DataField.new(contrib['primary'] ? '100' : '700', '1', '')
+        # corp. name: 110/710, ind1: 2
+        # meeting name: 111/711, ind1: 2
+        field.append(MARC::Subfield.new('a', contrib['name']))
+
+        marc.append(field)
+      end
+
+      marc.append(MARC::DataField.new('245', '0', '0', ['a', record.dig('instance', 'title')]))
+
+      # alt titles
+      record.dig('instance', 'editions').each do |edition|
+        marc.append(MARC::DataField.new('250', '0', '', ['a', edition]))
+      end
+      #instanceTypeId
+      record.dig('instance', 'publication').each do |pub|
+        field = MARC::DataField.new('264', '0', '0')
+        field.append(MARC::Subfield.new('a', pub['place'])) if pub['place']
+        field.append(MARC::Subfield.new('b', pub['publisher'])) if pub['publisher']
+        field.append(MARC::Subfield.new('c', pub['dateOfPublication'])) if pub['dateOfPublication']
+        marc.append(field)
+      end
+      record.dig('instance', 'physicalDescriptions').each do |desc|
+        marc.append(MARC::DataField.new('300', '0', '0', ['a', desc]))
+      end
+      record.dig('instance', 'publicationFrequency').each do |freq|
+        marc.append(MARC::DataField.new('310', '0', '0', ['a', freq]))
+      end
+      record.dig('instance', 'publicationRange').each do |range|
+        marc.append(MARC::DataField.new('362', '0', '', ['a', range]))
+      end
+      record.dig('instance', 'notes').each do |note|
+        marc.append(MARC::DataField.new('500', '0', '', ['a', note['note']]))
+      end
+      record.dig('instance', 'series').each do |series|
+        marc.append(MARC::DataField.new('490', '0', '', ['a', series]))
+      end
+      # 856 stuff
+
+      record.dig('instance', 'subjects').each do |subject|
+        marc.append(MARC::DataField.new('653', '', '', ['a', subject]))
+      end
+      # nature of content
+      marc.append(MARC::DataField.new('999', '', '', ['i', record.dig('instance', 'id')]))
+      # date creaetd
+      #date updated
+    end.to_hash
   end
 end
