@@ -161,8 +161,8 @@ module Traject
               )
             )
       FROM sul_mod_inventory_storage.instance vi
-        JOIN sul_mod_inventory_storage.holdings_record hr
-          ON hr.instanceid = vi.id
+      LEFT JOIN sul_mod_inventory_storage.holdings_record hr
+         ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
          ON item.holdingsrecordid = hr.id
       LEFT JOIN courseReserves cr
@@ -208,9 +208,9 @@ module Traject
       -- Holdings Ill policy relation
       LEFT JOIN sul_mod_inventory_storage.ill_policy ilp
             ON hr.illpolicyid = ilp.id
-      JOIN sul_mod_source_record_storage.records_lb rs
+      LEFT JOIN sul_mod_source_record_storage.records_lb rs
         ON rs.external_id = vi.id
-      JOIN sul_mod_source_record_storage.marc_records_lb mr
+      LEFT JOIN sul_mod_source_record_storage.marc_records_lb mr
         ON mr.id = rs.id
       WHERE (sul_mod_inventory_storage.strtotimestamp((vi.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
             sul_mod_inventory_storage.strtotimestamp((hr.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
