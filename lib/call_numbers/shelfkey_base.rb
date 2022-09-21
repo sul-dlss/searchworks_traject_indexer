@@ -34,10 +34,6 @@ module CallNumbers
       raise NotImplementedError
     end
 
-    def to_reverse_shelfkey
-      self.class.reverse(to_shelfkey).ljust(50, '~')
-    end
-
     delegate :pad, :pad_all_digits, :pad_cutter, to: :class
 
     class << self

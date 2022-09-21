@@ -19,7 +19,7 @@ module CallNumbers
     LOOSE_MONTHS_REGEX = %r{([.:/(])? *#{MONTHS}}i
 
     extend Forwardable
-    delegate %i[to_shelfkey to_reverse_shelfkey] => :shelfkey
+    delegate to_shelfkey: :shelfkey
 
     def scheme
       raise NotImplementedError
@@ -31,16 +31,6 @@ module CallNumbers
 
     def to_lopped_shelfkey
       self.class.new(lopped, serial:).to_shelfkey
-    end
-
-    def to_lopped_reverse_shelfkey
-      if lopped == call_number
-        self.class.new(lopped, serial:).to_reverse_shelfkey
-      else
-        # Explicitly passing in the ellipsis (as it needs to be reversed)
-        # and dropping the serial since it has already been lopped
-        self.class.new("#{lopped} ...").to_reverse_shelfkey
-      end
     end
 
     def to_volume_sort

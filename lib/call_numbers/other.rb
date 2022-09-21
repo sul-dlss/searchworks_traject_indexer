@@ -22,10 +22,6 @@ module CallNumbers
       self.class.new(lopped, serial:, scheme:).to_shelfkey
     end
 
-    def to_lopped_reverse_shelfkey
-      self.class.new(lopped, serial:, scheme:).to_reverse_shelfkey
-    end
-
     def lopped
       return call_number if longest_common_prefix.empty? || longest_common_prefix =~ /^(mcd|mdvd|zdvd|mfilm|mfiche)$/i
 
@@ -45,10 +41,6 @@ module CallNumbers
     # shortcutting a shelfkey class as we just need the normalization/reverse methods
     def to_shelfkey
       [shelfkey_scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number)].join(' ')
-    end
-
-    def to_reverse_shelfkey
-      CallNumbers::ShelfkeyBase.reverse(to_shelfkey).ljust(50, '~')
     end
 
     private
