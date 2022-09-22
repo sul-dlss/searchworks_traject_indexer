@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require 'folio_client'
 require 'folio_record'
 
-describe 'SDR indexing' do
+describe 'FOLIO indexing' do
   subject(:result) { indexer.map_record(folio_record) }
 
   let(:indexer) do
@@ -43,11 +45,43 @@ describe 'SDR indexing' do
 
   context 'suppressed record' do
     let(:folio_record) do
-      FolioRecord.new({ 'instance' => {'hrid' => 'blah', 'suppressFromDiscovery' => true } })
+      FolioRecord.new({ 'instance' => { 'hrid' => 'blah', 'suppressFromDiscovery' => true } })
     end
 
     it 'is skipped' do
       expect(result).to be_nil
+    end
+  end
+
+  context 'cataloged dates' do
+    context 'missing date' do
+      before do
+        folio_record.instance['catalogedDate'] = nil
+      end
+
+      it 'is not indexed' do
+        expect(result).not_to include 'date_cataloged'
+      end
+    end
+
+    context 'bad date from MARC' do
+      before do
+        folio_record.instance['catalogedDate'] = '19uu-uu-uu'
+      end
+
+      it 'is not indexed' do
+        expect(result).not_to include 'date_cataloged'
+      end
+    end
+
+    context 'normal date' do
+      before do
+        folio_record.instance['catalogedDate'] = '2007-05-11'
+      end
+
+      it 'is an ISO8601 timestamp in UTC' do
+        expect(result['date_cataloged']).to eq ['2007-05-11T00:00:00Z']
+      end
     end
   end
 end

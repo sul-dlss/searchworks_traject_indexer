@@ -26,11 +26,11 @@ class FolioRecord
   end
 
   def instance_id
-    record.dig('instance', 'id')
+    instance['id']
   end
 
   def hrid
-    record.dig('instance', 'hrid')
+    instance['hrid']
   end
 
   def sirsi_holdings
@@ -86,6 +86,10 @@ class FolioRecord
 
   def holdings
     (record['holdings'] || items_and_holdings&.dig('holdings') || []).compact.reject { |holding| holding['suppressFromDiscovery'] }
+  end
+
+  def instance
+    record['instance'] || {}
   end
 
   def as_json
