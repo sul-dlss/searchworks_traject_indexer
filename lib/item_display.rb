@@ -18,14 +18,6 @@ class ItemDisplay
     @context = context
   end
 
-  def current_location
-    return 'ON-ORDER' if @holding.is_on_order? &&
-                         @holding.current_location && !@holding.current_location.empty? &&
-                         @holding.home_location != 'ON-ORDER' && @holding.home_location != 'INPROCESS'
-
-    @holding.current_location
-  end
-
   def call_number
     return if (@holding.ignored_call_number? && !@holding.shelved_by_location?) &&
               (!@holding.e_call_number? || call_number_with_enumeration.to_s == SirsiHolding::ECALLNUM ||
