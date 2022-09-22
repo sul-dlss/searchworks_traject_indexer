@@ -2216,7 +2216,7 @@ to_field 'item_display' do |record, accumulator, context|
       holding.barcode,
       holding.library,
       holding.home_location,
-      item_display.current_location,
+      holding.current_location,
       holding.type,
       item_display.lopped_call_number,
       item_display.shelfkey,
