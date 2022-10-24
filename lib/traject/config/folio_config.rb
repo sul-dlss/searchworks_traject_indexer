@@ -15,6 +15,7 @@ require 'mhld_field'
 require 'marc_links'
 require 'i18n'
 require 'honeybadger'
+require 'active_support/core_ext/time'
 require 'utils'
 
 I18n.available_locales = [:en]
