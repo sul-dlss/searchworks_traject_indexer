@@ -19,6 +19,7 @@ require 'csv'
 require 'i18n'
 require 'honeybadger'
 require 'digest/md5'
+require 'active_support'
 
 I18n.available_locales = [:en]
 

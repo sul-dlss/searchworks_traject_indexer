@@ -10,6 +10,7 @@ require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
 require 'digest/md5'
+require 'active_support'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch

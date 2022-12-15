@@ -10,6 +10,8 @@ require 'traject/writers/solr_better_json_writer'
 require 'utils'
 require 'honeybadger'
 require 'digest/md5'
+require 'active_support'
+
 class GeoAuthorities
   def self.formats
     {
