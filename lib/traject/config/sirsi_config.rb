@@ -782,7 +782,8 @@ to_field 'language', extract_marc('041a') do |record, accumulator|
   accumulator.map!(&:strip)
   translation_map = Traject::TranslationMap.new("marc_languages")
   accumulator.select! { |value|  (value.length % 3) == 0 }
-  codes = accumulator.flat_map { |value| value.length == 3 ? value : value.chars.each_slice(3).map(&:join) }
+  # using explicit block form to work around jruby bug: https://github.com/jruby/jruby/issues/7505
+  codes = accumulator.flat_map { |value| value.length == 3 ? value : value.chars.each_slice(3).map { |x| x.join }}
 
   codes = codes.uniq
   translation_map.translate_array!(codes)
