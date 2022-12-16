@@ -1,5 +1,6 @@
 require 'kafka'
 require 'kafka/statsd'
+require 'active_support'
 
 class Traject::FolioKafkaExtractor
   attr_reader :reader, :kafka, :topic

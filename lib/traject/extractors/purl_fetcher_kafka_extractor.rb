@@ -1,5 +1,6 @@
 require 'kafka'
 require 'kafka/statsd'
+require 'active_support'
 require 'manticore' if defined? JRUBY_VERSION
 
 class Traject::PurlFetcherKafkaExtractor

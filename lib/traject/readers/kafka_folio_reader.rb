@@ -1,5 +1,6 @@
 require 'kafka'
 require 'kafka/statsd'
+require 'active_support'
 require_relative '../../folio_client'
 require_relative '../../folio_record'
 

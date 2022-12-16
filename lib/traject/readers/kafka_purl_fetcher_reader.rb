@@ -1,5 +1,6 @@
 require 'kafka'
 require 'kafka/statsd'
+require 'active_support'
 
 class Traject::KafkaPurlFetcherReader
   attr_reader :input_stream, :settings
