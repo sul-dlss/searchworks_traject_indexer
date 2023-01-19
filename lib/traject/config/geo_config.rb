@@ -79,8 +79,13 @@ settings do
     provide "reader_class_name", "Traject::DruidReader"
   end
 
-  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Earthworks')
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
+  provide 'stacks.url', ENV.fetch('STACKS_URL', 'https://stacks.stanford.edu')
+  provide 'geoserver.pub_url', ENV.fetch('GEOSERVER_PUB_URL', 'https://geowebservices.stanford.edu/geoserver')
+  provide 'geoserver.stan_url', ENV.fetch('GEOSERVER_STAN_URL', 'https://geowebservices-restricted.stanford.edu/geoserver')
+
+  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Earthworks')
+  provide 'purl_fetcher.skip_catkey', ENV['PURL_FETCHER_SKIP_CATKEY']
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'
@@ -129,11 +134,11 @@ def mods_display(method, *args, default: nil)
   end
 end
 
-module Constants
-  GEOWEBSERVICES = {
-    'Public': 'https://geowebservices.stanford.edu/geoserver',
-    'Restricted': 'https://geowebservices-restricted.stanford.edu/geoserver'
-  }
+# Get the right geoserver url for a record given its access rights
+def geoserver_url(record)
+  return settings['geoserver.stan_url'] if record.stanford_only?
+
+  settings['geoserver.pub_url']
 end
 
 each_record do |record, context|
@@ -150,7 +155,7 @@ each_record do |record, context|
 end
 
 to_field 'dc_identifier_s' do |record, accumulator|
-  accumulator << "http://purl.stanford.edu/#{record.druid}"
+  accumulator << "#{settings['purl.url']}/#{record.druid}"
 end
 
 each_record do |record, context|
@@ -266,44 +271,56 @@ to_field 'layer_availability_score_f', literal(1.0)
 to_field 'geoblacklight_version', literal('1.0')
 to_field 'dct_references_s' do |record, accumulator, context|
   references = {
-    'http://schema.org/url' => "https://purl.stanford.edu/#{record.druid}",
-    'http://www.loc.gov/mods/v3' => "https://purl.stanford.edu/#{record.druid}.mods",
+    'http://schema.org/url' => "#{settings['purl.url']}/#{record.druid}",
+    'http://www.loc.gov/mods/v3' => "#{settings['purl.url']}/#{record.druid}.mods"
   }
   case record.dor_content_type
   when 'file'
-    references.merge!({
-      'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",
-    })
+    references.merge!(
+      {
+        'https://oembed.com' => "#{settings['purl.url']}/embed.json?&hide_title=true&url=#{settings['purl.url']}/#{record.druid}"
+      }
+    )
   when 'image', 'map', 'book'
-    references.merge!({
-      'https://oembed.com' => "https://purl.stanford.edu/embed.json?&hide_title=true&url=https://purl.stanford.edu/#{record.druid}",
-      'http://iiif.io/api/presentation#manifest' => "https://purl.stanford.edu/#{record.druid}/iiif/manifest"
-    })
+    references.merge!(
+      {
+        'https://oembed.com' => "#{settings['purl.url']}/embed.json?&hide_title=true&url=#{settings['purl.url']}/#{record.druid}",
+        'http://iiif.io/api/presentation#manifest' => "#{settings['purl.url']}/#{record.druid}/iiif/manifest"
+      }
+    )
   when 'geo'
     formats = context.output_hash['dc_format_s'] || []
 
-    references.merge!({
-      'http://schema.org/downloadUrl' =>  "https://stacks.stanford.edu/file/druid:#{record.druid}/data.zip",
-      'http://www.opengis.net/def/serviceType/ogc/wms' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wms",
-      'http://www.isotc211.org/schemas/2005/gmd/' => "https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/#{record.druid_tree}/iso19139.xml",
-    })
+    references.merge!(
+      {
+        'http://schema.org/downloadUrl' => "#{settings['stacks.url']}/file/druid:#{record.druid}/data.zip",
+        'http://www.opengis.net/def/serviceType/ogc/wms' => "#{geoserver_url(record)}/wms",
+        'http://www.isotc211.org/schemas/2005/gmd/' => "https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/#{record.druid_tree}/iso19139.xml"
+      }
+    )
 
     if formats.include?('Shapefile')
-      references.merge!({
-        'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wfs",
-      })
+      references.merge!(
+        {
+          'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{geoserver_url(record)}/wfs"
+        }
+      )
     elsif formats.include?('GeoTIFF') || formats.include?('ArcGRID')
-      references.merge!({
-        'http://www.opengis.net/def/serviceType/ogc/wcs' => "#{Constants::GEOWEBSERVICES[context.output_hash['dc_rights_s'][0].to_sym]}/wcs",
-      })
+      references.merge!(
+        {
+          'http://www.opengis.net/def/serviceType/ogc/wcs' => "#{geoserver_url(record)}/wcs"
+        }
+      )
     end
 
-    index_map = record.public_xml_doc.xpath('//file[@id="index_map.json"]').length > 0
+    index_map = !record.public_xml_doc.xpath('//file[@id="index_map.json"]').empty?
 
     if index_map
-      references.merge!({
-        'https://openindexmaps.org' => "https://stacks.stanford.edu/file/druid:#{record.druid}/index_map.json"
-      })
+      references.merge!(
+        {
+          'https://openindexmaps.org' => "#{settings['stacks.url']}/file/druid:#{record.druid}/index_map.json"
+        }
+      )
     end
   end
   accumulator << references.to_json

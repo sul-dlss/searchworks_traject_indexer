@@ -35,7 +35,7 @@ describe 'EarthWorks indexing' do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
     it 'maps things to the right places' do
-      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/dc482zx1528'],
+      expect(result).to include 'dc_identifier_s' => ['https://purl.stanford.edu/dc482zx1528'],
                                 'dc_title_s' => ['Jōshū Kusatsu Onsenzu'],
                                 'dc_rights_s' => ['Public'],
                                 'layer_geom_type_s' => ['Image'],
@@ -110,7 +110,7 @@ describe 'EarthWorks indexing' do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
     it 'maps the metadata' do
-      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/vv853br8653'],
+      expect(result).to include 'dc_identifier_s' => ['https://purl.stanford.edu/vv853br8653'],
                                 'dc_title_s' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
                                 'dct_provenance_s' => ['Stanford'],
                                 'layer_geom_type_s' => ['Polygon'],
@@ -231,7 +231,7 @@ describe 'EarthWorks indexing' do
     end
 
     it 'has expected fields' do
-      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/bq589tv8583'],
+      expect(result).to include 'dc_identifier_s' => ['https://purl.stanford.edu/bq589tv8583'],
                                 'layer_geom_type_s' => ['Collection']
     end
     it 'does not include a layer_id_s' do
@@ -246,7 +246,7 @@ describe 'EarthWorks indexing' do
     end
 
     it 'has expected fields' do
-      expect(result).to include 'dc_identifier_s' => ['http://purl.stanford.edu/pq479rm6462'],
+      expect(result).to include 'dc_identifier_s' => ['https://purl.stanford.edu/pq479rm6462'],
                                 'dc_format_s' => ['Geodatabase'],
                                 'layer_geom_type_s' => ['Mixed']
     end
