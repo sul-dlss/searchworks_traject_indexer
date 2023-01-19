@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/GlobalVars
+# rubocop:disable Style/CombinableLoops
+
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
 require 'traject'
@@ -12,6 +17,7 @@ require 'honeybadger'
 require 'digest/md5'
 require 'active_support'
 
+# Mappings for Dublin Core field values
 class GeoAuthorities
   def self.formats
     {
@@ -20,6 +26,7 @@ class GeoAuthorities
     }
   end
 
+  # rubocop:disable Metrics/MethodLength
   def self.subjects
     {
       'farming' => 'Farming',
@@ -43,6 +50,7 @@ class GeoAuthorities
       'economy' => 'Economy'
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   def self.geometry_types
     {
@@ -55,7 +63,10 @@ class GeoAuthorities
 end
 
 Utils.logger = logger
+
+# rubocop:disable Style/MixinUsage
 extend Traject::SolrBetterJsonWriter::IndexerPatch
+# rubocop:enable Style/MixinUsage
 
 def log_skip(context)
   writer.put(context)
@@ -65,18 +76,22 @@ $druid_title_cache = {}
 
 indexer = self
 
+# rubocop:disable Metrics/BlockLength
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV['SOLR_URL']
-  provide 'purl_fetcher.skip_catkey', false
   provide 'solr_better_json_writer.debounce_timeout', 5
+
+  # These parameters are expected on the command line if you want to connect to a kafka topic:
+  # provide 'kafka.topic'
+  # provide 'kafka.consumer_group_id'
   if self['kafka.topic']
-    provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
+    provide 'reader_class_name', 'Traject::KafkaPurlFetcherReader'
     consumer = Utils.kafka.consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 15)
     consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   else
-    provide "reader_class_name", "Traject::DruidReader"
+    provide 'reader_class_name', 'Traject::DruidReader'
   end
 
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
@@ -86,12 +101,14 @@ settings do
 
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Earthworks')
   provide 'purl_fetcher.skip_catkey', ENV['PURL_FETCHER_SKIP_CATKEY']
+  self['purl_fetcher.skip_catkey'] = self['purl_fetcher.skip_catkey'] != 'false'
+
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
     require 'traject/manticore_http_client'
     provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
   else
-    provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
+    provide 'solr_json_writer.http_client', (HTTPClient.new.tap { |x| x.receive_timeout = 600 })
   end
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 
@@ -101,6 +118,7 @@ settings do
     indexer.send(:default_mapping_rescue).call(context, e)
   end)
 end
+# rubocop:enable Metrics/BlockLength
 
 def stanford_mods(method, *args, default: nil)
   lambda do |resource, accumulator, _context|
@@ -125,7 +143,7 @@ def mods_display(method, *args, default: nil)
     data = Array(resource.mods_display.public_send(method, *args))
 
     data.each do |v|
-      v.values.each do |v2|
+      v.each_value do |v2|
         accumulator << v2.to_s
       end
     end
@@ -141,7 +159,7 @@ def geoserver_url(record)
   settings['geoserver.pub_url']
 end
 
-each_record do |record, context|
+each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
 
@@ -160,9 +178,11 @@ end
 
 each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
+  next if %w[image map book geo file].include?(record.dor_content_type) || record.is_collection
+
   context.skip!(
     "This content type: #{record.dor_content_type} is not supported"
-  ) unless (%w[image map book geo file].include?(record.dor_content_type) || record.is_collection)
+  )
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
@@ -184,7 +204,7 @@ to_field 'dc_rights_s' do |record, accumulator|
   end
 end
 
-to_field 'layer_geom_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type') do |record, accumulator|
+to_field 'layer_geom_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type') do |_record, accumulator|
   data = accumulator.flatten.select { |v| v.text =~ /#/ }.map { |v| v.text.split('#', 2).last }.slice(0..0)
   data.map! { |v| GeoAuthorities.geometry_types.fetch(v, v) }
   accumulator.replace(data)
@@ -201,12 +221,12 @@ to_field 'layer_modified_dt' do |record, accumulator|
   accumulator << record.public_xml_doc.root.attr('published')
 end
 
-to_field 'dct_issued_s', mods_xpath('mods:originInfo/mods:dateIssued') do |record, accumulator|
+to_field 'dct_issued_s', mods_xpath('mods:originInfo/mods:dateIssued') do |_record, accumulator|
   data = accumulator.flatten.map(&:text).slice(0..0)
   accumulator.replace(data)
 end
 
-to_field 'dc_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type')  do |record, accumulator|
+to_field 'dc_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type') do |_record, accumulator|
   data = accumulator.flatten.map(&:text).uniq.map { |v| v.split('#', 2).first }.slice(0..0)
   accumulator.replace(data)
 end
@@ -217,9 +237,11 @@ to_field 'dc_type_s' do |record, accumulator, context|
   accumulator << 'Image' if %w[image map book].include?(record.dor_content_type)
 end
 
-to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:format') do |record, accumulator|
-  data = accumulator.flatten.map(&:text).select { |v| v =~ /format=/ }.map { |v| v.split('format=', 2).last }.slice(0..0)
-  if (data.present?)
+to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:format') do |_record, accumulator|
+  data = accumulator.flatten.map(&:text)
+                    .select { |v| v =~ /format=/ }
+                    .map { |v| v.split('format=', 2).last }.slice(0..0)
+  if data.present?
     accumulator.replace(data.uniq.map { |v| GeoAuthorities.formats.fetch(v, v) })
   else
     accumulator.uniq!
@@ -235,10 +257,10 @@ to_field 'dc_format_s' do |record, accumulator, context|
 end
 
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
-to_field 'dc_subject_sm', stanford_mods(:subject_other_search) do |record, accumulator|
-  accumulator.map! { |val| val.sub(/[\\,;]$/, '').strip if val }
+to_field 'dc_subject_sm', stanford_mods(:subject_other_search) do |_record, accumulator|
+  accumulator.map! { |val| val&.sub(/[\\,;]$/, '')&.strip }
 end
-to_field 'dc_subject_sm', mods_xpath('mods:subject/mods:topic') do |record, accumulator|
+to_field 'dc_subject_sm', mods_xpath('mods:subject/mods:topic') do |_record, accumulator|
   accumulator.flatten!
   accumulator.map! do |val|
     if val.attr('authority') =~ /ISO19115topicCategory/i
@@ -269,6 +291,9 @@ end
 
 to_field 'layer_availability_score_f', literal(1.0)
 to_field 'geoblacklight_version', literal('1.0')
+
+# rubocop:disable Metrics/BlockLength
+# rubocop:disable Layout/LineLength
 to_field 'dct_references_s' do |record, accumulator, context|
   references = {
     'http://schema.org/url' => "#{settings['purl.url']}/#{record.druid}",
@@ -325,6 +350,9 @@ to_field 'dct_references_s' do |record, accumulator, context|
   end
   accumulator << references.to_json
 end
+# rubocop:enable Metrics/BlockLength
+# rubocop:enable Layout/LineLength
+
 to_field 'solr_geom', stanford_mods(:geo_extensions_as_envelope)
 to_field 'solr_geom', stanford_mods(:coordinates_as_envelope)
 to_field 'layer_slug_s' do |record, accumulator|
@@ -390,24 +418,25 @@ end
 
 to_field 'dc_source_sm' do |record, accumulator|
   next unless record.dor_content_type == 'geo'
-  next unless record.collections && record.collections.any?
+  next unless record.collections&.any?
 
   record.collections.uniq.each do |collection|
     accumulator << "stanford-#{collection.druid}"
   end
 end
 
-to_field 'dct_isPartOf_sm', mods_xpath('mods:relatedItem[@type="host"]/mods:titleInfo/mods:title') do |record, accumulator|
+to_field 'dct_isPartOf_sm',
+         mods_xpath('mods:relatedItem[@type="host"]/mods:titleInfo/mods:title') do |_record, accumulator|
   accumulator.flatten!
   accumulator.map!(&:text)
   accumulator.uniq!
 end
 
-each_record do |record, context|
+each_record do |record, _context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end
 
-each_record do |record, context|
+each_record do |_record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
   end
@@ -425,24 +454,23 @@ each_record do |_record, context|
   end
 end
 
-each_record do |record, context|
+each_record do |_record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
   logger.debug('geo_config.rb') { "Processed #{context.output_hash['id']} (#{t1 - t0}s)" }
 end
 
-
+# rubocop:disable Metrics/MethodLength
 def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(str)
   previous_str = nil
   until str == previous_str
     previous_str = str
 
-    str = str.strip.gsub(/ *([,\/;:])$/, '')
-                   .sub(/(\w\w)\.$/, '\1')
-                   .sub(/(\p{L}\p{L})\.$/, '\1')
-                   .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/, '\1')
-
+    str = str.strip.gsub(%r{ *([,/;:])$}, '')
+             .sub(/(\w\w)\.$/, '\1')
+             .sub(/(\p{L}\p{L})\.$/u, '\1')
+             .sub(/(\w\p{InCombiningDiacriticalMarks}?\w\p{InCombiningDiacriticalMarks}?)\.$/u, '\1')
 
     # single square bracket characters if they are the start and/or end
     #   chars and there are no internal square brackets.
@@ -455,3 +483,7 @@ def trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(st
 
   str
 end
+# rubocop:enable Metrics/MethodLength
+
+# rubocop:enable Style/GlobalVars
+# rubocop:enable Style/CombinableLoops
