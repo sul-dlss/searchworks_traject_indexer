@@ -2471,6 +2471,56 @@ to_field 'managed_purl_urls' do |record, accumulator|
   end
 end
 
+to_field 'collection_struct' do |record, accumulator|
+  vern_fields = []
+
+  Traject::MarcExtractor.cached('795ap', alternate_script: :only).each_matching_line(record) do |f|
+    vern_fields << f
+  end
+
+  Traject::MarcExtractor.new('795ap', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+    struct = {
+      title: extractor.collect_subfields(field, spec).join(' '),
+      source: 'sirsi'
+    }
+
+    if field['6']
+      link = parse_linkage(field)
+      vern_field = vern_fields.find { |f| parse_linkage(f)[:number] == link[:number] }
+
+      struct[:vernacular] = extractor.collect_subfields(vern_field, spec).join(' ') if vernacular.present?
+    end
+
+    accumulator << struct
+  end
+
+  vern_fields.select { |f| parse_linkage(f)[:number] == '00' }.each do |f|
+    accumulator << {
+      source: 'sirsi',
+      vernacular: f.select { |sub| sub.code == 'a' || sub.code == 'p' }.map(&:value).join(' ')
+    }
+  end
+end
+
+to_field 'collection_struct' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    source, item_type, type, druid, id, title  = extractor.collect_subfields(field, spec)
+    next unless source == 'SDR-PURL' && item_type == 'item'
+
+    accumulator << {
+      source: source,
+      item_type: item_type,
+      type: type,
+      druid: druid,
+      id: id,
+      title: title
+    }
+  end
+end
+
+to_field 'marc_collection_title_ssim', extract_marc('795ap', alternate_script: false)
+to_field 'vern_marc_collection_title_ssim', extract_marc('795ap', alternate_script: :only)
+
 to_field 'collection', literal('sirsi')
 to_field 'collection' do |record, accumulator|
   Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
