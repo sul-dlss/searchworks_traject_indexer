@@ -796,7 +796,7 @@ end
 # get full text urls from 856, then reject gsb forms
 to_field 'url_fulltext' do |record, accumulator|
   Traject::MarcExtractor.new('856u', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    if %w[0 1].include?(field.indicator2)
+    if %w[0 1 3 4].include?(field.indicator2)
       # Similar logic exists in the link_is_fulltext? method in the MarcLinks class.
       # They need to remain the same (or should be refactored to use the same code in the future)
       accumulator.concat extractor.collect_subfields(field, spec) unless field.subfields.select { |f| f.code == 'z' || f.code == '3' }.map(&:value).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i}
@@ -821,7 +821,7 @@ end
 to_field 'url_suppl' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
     case field.indicator2
-    when '0'
+    when '0', '3'
       # no-op
     when '2'
       accumulator.concat extractor.collect_subfields(field, spec)
@@ -843,7 +843,7 @@ to_field 'url_restricted' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record)  do |field, spec, extractor|
     next unless field.subfields.select { |f| f.code == 'z' }.map(&:value).any? { |z| z =~ Regexp.union(/available to stanford-affiliated users at:/i, /Access restricted to Stanford community/i) }
     case field.indicator2
-    when '0'
+    when '0', '3'
       accumulator.concat extractor.collect_subfields(field, spec)
     when '2'
       # no-op
