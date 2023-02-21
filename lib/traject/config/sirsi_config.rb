@@ -2112,7 +2112,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
 
   # Prefer GREEN home library, and then any other location prioritized by library code
   holdings_by_library = non_skipped_holdings.group_by { |x| x.library }
-  chosen_holdings = holdings_by_library['GREEN'] || holdings_by_library[holdings_by_library.keys.sort.first]
+  chosen_holdings = holdings_by_library['GREEN'] || holdings_by_library[holdings_by_library.keys.compact.sort.first]
 
   # Prefer LC over Dewey over SUDOC over Alphanum over Other call number types
   chosen_holdings_by_callnumber_type = chosen_holdings.group_by(&:call_number_type)
