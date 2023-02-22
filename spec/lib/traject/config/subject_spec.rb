@@ -1026,4 +1026,45 @@ RSpec.describe 'Subject config' do
       expect(result).to eq ['vern699a vern699b vern699c vern699d vern699e vern699f vern699g vern699h vern699j vern699k vern699l vern699m vern699n vern699o vern699p vern699q vern699r vern699s vern699t vern699u vern699v vern699x vern699y vern699z']
     end
   end
+
+  describe 'marc_collection_title_ssim' do
+    let(:field) { 'marc_collection_title_ssim' }
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.append(MARC::DataField.new('795', ' ', ' ', MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
+      end
+    end
+
+    it 'includes the title and subtitle from the 795' do
+      expect(result[field]).to eq ['Main title A subtitle']
+    end
+  end
+
+  describe 'vern_marc_collection_title_ssim' do
+    let(:field) { 'vern_marc_collection_title_ssim' }
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.append(MARC::DataField.new('880', ' ', ' ', MARC::Subfield.new('6', '795-00'), MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
+      end
+    end
+
+    it 'includes the title and subtitle from the 795' do
+      expect(result[field]).to eq ['Main title A subtitle']
+    end
+  end
+
+  describe 'collection_struct' do
+    let(:field) { 'collection_struct' }
+
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.append(MARC::DataField.new('795', ' ', ' ', MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
+        r.append(MARC::DataField.new('880', ' ', ' ', MARC::Subfield.new('6', '795-00'), MARC::Subfield.new('a', 'Vernacular title')))
+      end
+    end
+
+    it 'includes the collection title and subtitle' do
+      expect(result[field]).to eq [{ title: 'Main title A subtitle', source: 'sirsi' }, { source: 'sirsi', vernacular: 'Vernacular title' }].map(&:to_json)
+    end
+  end
 end

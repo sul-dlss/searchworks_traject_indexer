@@ -443,7 +443,7 @@ to_field 'author_authorities_ssim', extract_marc('1001:1000:1100:1101:1110:1111:
 #
 # # Subject Search Fields
 # #  should these be split into more separate fields?  Could change relevancy if match is in field with fewer terms
-to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: false) do |record, accumulator, context|
+to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw:795ap", alternate_script: false) do |record, accumulator, context|
   accumulator.reject! { |v| v.start_with?('nomesh') }
   if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
     arr = []
@@ -452,7 +452,7 @@ to_field "topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijkl
   end
 end
 
-to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw", alternate_script: :only)
+to_field "vern_topic_search", extract_marc("650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw:795ap", alternate_script: :only)
 to_field "topic_subx_search", extract_marc("600x:610x:611x:630x:647x:650x:651x:655x:656x:657x:690x:691x:696x:697x:698x:699x", alternate_script: false)
 to_field "vern_topic_subx_search", extract_marc("600xx:610xx:611xx:630xx:647xx:650xx:651xx:655xx:656xx:657xx:690xx:691xx:696xx:697xx:698xx:699xx", alternate_script: :only)
 to_field "geographic_search", extract_marc("651abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw:691abcdefghijklmnopqrstuw", alternate_script: false)
@@ -471,8 +471,8 @@ end
 to_field "vern_subject_other_search", extract_marc(%w(600 610 611 630 647 655 656 657 658 696 697 698 699).map { |c| "#{c}abcdefghijklmnopqrstuw"}.join(':'), alternate_script: :only)
 to_field "subject_other_subvy_search", extract_marc(%w(600 610 611 630 647 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: false)
 to_field "vern_subject_other_subvy_search", extract_marc(%w(600 610 611 630 647 650 651 654 655 656 657 658 690 691 696 697 698 699).map { |c| "#{c}vy"}.join(':'), alternate_script: :only)
-to_field "subject_all_search", extract_marc(%w(600 610 611 630 647 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}" }.join(':'), alternate_script: false)
-to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 647 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699).map { |c| "#{c}#{ALPHABET}"}.join(':'), alternate_script: :only)
+to_field "subject_all_search", extract_marc(%w(600 610 611 630 647 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699 795).map { |c| "#{c}#{ALPHABET}" }.join(':'), alternate_script: false)
+to_field "vern_subject_all_search", extract_marc(%w(600 610 611 630 647 648 650 651 652 653 654 655 656 657 658 662 690 691 696 697 698 699 795).map { |c| "#{c}#{ALPHABET}"}.join(':'), alternate_script: :only)
 
 # Subject Facet Fields
 to_field "topic_facet", extract_marc("600abcdq:600t:610ab:610t:630a:630t:650a", alternate_script: false) do |record, accumulator|
@@ -2470,6 +2470,56 @@ to_field 'managed_purl_urls' do |record, accumulator|
     end
   end
 end
+
+to_field 'collection_struct' do |record, accumulator|
+  vern_fields = []
+
+  Traject::MarcExtractor.cached('795ap', alternate_script: :only).each_matching_line(record) do |f|
+    vern_fields << f
+  end
+
+  Traject::MarcExtractor.new('795ap', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+    struct = {
+      title: extractor.collect_subfields(field, spec).join(' '),
+      source: 'sirsi'
+    }
+
+    if field['6']
+      link = parse_linkage(field)
+      vern_field = vern_fields.find { |f| parse_linkage(f)[:number] == link[:number] }
+
+      struct[:vernacular] = extractor.collect_subfields(vern_field, spec).join(' ') if vernacular.present?
+    end
+
+    accumulator << struct
+  end
+
+  vern_fields.select { |f| parse_linkage(f)[:number] == '00' }.each do |f|
+    accumulator << {
+      source: 'sirsi',
+      vernacular: f.select { |sub| sub.code == 'a' || sub.code == 'p' }.map(&:value).join(' ')
+    }
+  end
+end
+
+to_field 'collection_struct' do |record, accumulator|
+  Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
+    source, item_type, type, druid, id, title  = extractor.collect_subfields(field, spec)
+    next unless source == 'SDR-PURL' && item_type == 'item'
+
+    accumulator << {
+      source: source,
+      item_type: item_type,
+      type: type,
+      druid: druid,
+      id: id,
+      title: title
+    }
+  end
+end
+
+to_field 'marc_collection_title_ssim', extract_marc('795ap', alternate_script: false)
+to_field 'vern_marc_collection_title_ssim', extract_marc('795ap', alternate_script: :only)
 
 to_field 'collection', literal('sirsi')
 to_field 'collection' do |record, accumulator|
