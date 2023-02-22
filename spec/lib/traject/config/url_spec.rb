@@ -81,6 +81,48 @@ RSpec.describe 'Access config' do
         expect(results.first[field]).to be_blank
       end
     end
+
+    describe '2nd indicators of 3' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                '3',
+                MARC::Subfield.new('u', 'http://example.com/')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are considered full text' do
+        expect(results.first[field]).to eq ['http://example.com/']
+      end
+    end
+
+    describe '2nd indicators of 4' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                '4',
+                MARC::Subfield.new('u', 'http://example.com/')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are considered full text' do
+        expect(results.first[field]).to eq ['http://example.com/']
+      end
+    end
   end
 
   describe 'url_fulltext' do
@@ -108,6 +150,27 @@ RSpec.describe 'Access config' do
       expect(select_by_id('956BlankIndicators')[field]).to be_nil
       expect(select_by_id('956ind2is0')[field]).to be_nil
       expect(select_by_id('mult856and956')[field]).to be_nil
+    end
+
+    describe '2nd indicators of 3' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                nil,
+                MARC::Subfield.new('u', 'http://example.com/')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are not considered full text' do
+        expect(results.first[field]).to be_blank
+      end
     end
   end
 
@@ -141,6 +204,27 @@ RSpec.describe 'Access config' do
       expect(select_by_id('supplAndRestricted1')['url_suppl']).to eq ["http://www.suppl.com"]
       expect(select_by_id('supplAndRestricted2')['url_suppl']).to eq ["http://www.suppl.com"]
       expect(select_by_id('restrictedFullTextAndSuppl')['url_suppl']).to eq ["http://www.suppl.com/restricted"]
+    end
+
+    describe '2nd indicators of 3' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                nil,
+                MARC::Subfield.new('u', 'http://example.com/')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are not considered full text' do
+        expect(results.first[field]).to be_blank
+      end
     end
   end
 

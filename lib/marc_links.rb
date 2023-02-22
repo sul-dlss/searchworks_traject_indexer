@@ -139,7 +139,7 @@ module MarcLinks
       return !link_is_sfx? if field.tag == '956'
 
       resource_labels = ["table of contents", "abstract", "description", "sample text"]
-      return false unless %w[0 1].include?(field.indicator2)
+      return false unless %w[0 1 3 4].include?(field.indicator2)
 
       # Similar logic exists in the mapping for the url_fulltext field in sirsi traject config.
       # They need to remain the same (or should be refactored to use the same code in the future)

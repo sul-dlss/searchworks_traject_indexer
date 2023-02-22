@@ -244,6 +244,7 @@ PLATFORMS
   universal-java-15
   universal-java-18
   x86_64-darwin-20
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
