@@ -2488,7 +2488,7 @@ to_field 'collection_struct' do |record, accumulator|
       link = parse_linkage(field)
       vern_field = vern_fields.find { |f| parse_linkage(f)[:number] == link[:number] }
 
-      struct[:vernacular] = extractor.collect_subfields(vern_field, spec).join(' ') if vernacular.present?
+      struct[:vernacular] = extractor.collect_subfields(vern_field, spec).join(' ') if vern_field.present?
     end
 
     accumulator << struct
