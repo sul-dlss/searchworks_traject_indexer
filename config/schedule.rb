@@ -3,16 +3,6 @@ job_type :honeybadger_wrapped_jruby_script, "cd :path && :environment_variable=:
 
 job_type :honeybadger_wrapped_ruby_script, "cd :path && :environment_variable=:environment TRAJECT_ENV=:traject_env /usr/local/rvm/bin/rvm ruby-3.1.2 do bundle exec honeybadger exec -e :environment::traject_env -q script/:task"
 
-# index + delete SDR
-every '* * * * *' do
-  honeybadger_wrapped_jruby_script 'load_sdr.sh', traject_env: 'sdr'
-end
-
-# index + delete SDR
-every '* * * * *' do
-  honeybadger_wrapped_jruby_script 'load_sdr.sh', traject_env: 'sdr_stage'
-end
-
 # USING BODONI (prod) DATA
 every '45 6-23 * * *' do
   honeybadger_wrapped_jruby_script 'load_sirsi_hourly.sh', traject_env: 'bodoni'
