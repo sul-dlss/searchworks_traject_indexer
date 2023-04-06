@@ -2,12 +2,6 @@ kafka:
   hosts: localhost:9092
 
 environments:
-  sdr:
-    kafka_topic: purl_fetcher_prod
-    purl_fetcher_url: https://purl-fetcher.stanford.edu
-  sdr_stage:
-    kafka_topic: purl_fetcher_stage
-    purl_fetcher_url: https://purl-fetcher-stage.stanford.edu
   bodoni:
     kafka_topic: marc_bodoni
   morison:
