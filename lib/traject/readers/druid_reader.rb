@@ -1,3 +1,5 @@
+require 'public_xml_record'
+
 module Traject
   class DruidReader
     attr_reader :input_stream, :settings
