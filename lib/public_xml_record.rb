@@ -4,23 +4,6 @@ require 'active_support/core_ext/module/delegation'
 require 'mods_display'
 require 'dor/rights_auth'
 
-class SdrReader
-  attr_reader :input_stream
-
-  # @param input_stream [File|IO]
-  # @param settings [Traject::Indexer::Settings]
-  def initialize(input_stream, settings)
-    @settings = Traject::Indexer::Settings.new settings
-    @input_stream = input_stream
-  end
-
-  def each(*args, &block)
-    input_stream.each_line do |druid|
-      yield PublicXmlRecord.new(druid, purl_url: @settings['purl.url'])
-    end
-  end
-end
-
 class PublicXmlRecord
   attr_reader :druid
 

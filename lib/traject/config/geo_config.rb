@@ -7,7 +7,6 @@ $LOAD_PATH << File.expand_path('../..', __dir__)
 
 require 'traject'
 require 'stanford-mods'
-require 'sdr_stuff'
 require 'kafka'
 require 'traject/readers/kafka_purl_fetcher_reader'
 require 'traject/readers/druid_reader'
