@@ -99,8 +99,7 @@ settings do
   provide 'geoserver.stan_url', ENV.fetch('GEOSERVER_STAN_URL', 'https://geowebservices-restricted.stanford.edu/geoserver')
 
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Earthworks')
-  provide 'purl_fetcher.skip_catkey', ENV['PURL_FETCHER_SKIP_CATKEY']
-  self['purl_fetcher.skip_catkey'] = self['purl_fetcher.skip_catkey'] != 'false'
+  provide 'purl_fetcher.skip_catkey', false
 
   provide 'solr_writer.commit_on_close', true
   if defined?(JRUBY_VERSION)
