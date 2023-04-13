@@ -439,6 +439,44 @@ RSpec.describe 'ItemInfo config' do
             'LC')
         end
       end
+
+      context 'volume includes an O.S. (old series) designation' do
+        let(:record) do
+          MARC::Record.new.tap do |record|
+            record.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', '551.46 .I55 O.S:V.1 1909/1910'),
+                MARC::Subfield.new('w', 'DEWEYPER'),
+                MARC::Subfield.new('l', 'SHELBYTITL')
+              )
+            )
+          end
+        end
+
+        it 'retains the O.S. designation before the volume number' do
+          expect(result[field].first.split(' -|- ')[8]).to include('O.S:V.1 1909/1910')
+        end
+      end
+
+      context 'volume includes an N.S. (new series) designation' do
+        let(:record) do
+          MARC::Record.new.tap do |record|
+            record.append(
+              MARC::DataField.new(
+                '999', ' ', ' ',
+                MARC::Subfield.new('a', '551.46 .I55 N.S:V.1 1909/1910'),
+                MARC::Subfield.new('w', 'DEWEYPER'),
+                MARC::Subfield.new('l', 'SHELBYTITL')
+              )
+            )
+          end
+        end
+
+        it 'retains the N.S. designation before the volume number' do
+          expect(result[field].first.split(' -|- ')[8]).to include('N.S:V.1 1909/1910')
+        end
+      end
     end
 
     describe 'locations should not be displayed' do
