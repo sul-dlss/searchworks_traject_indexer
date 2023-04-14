@@ -1555,6 +1555,7 @@ to_field 'toc_struct' do |marc, accumulator|
   fields = []
   vern = []
   unmatched_vern = []
+  label = 'Contents'
 
   tag = '905' if marc['905'] && (marc['505'].nil? or (marc['505']['t'].nil? and marc['505']['r'].nil?))
   tag ||= '505'
@@ -1589,6 +1590,8 @@ to_field 'toc_struct' do |marc, accumulator|
         end
       end
 
+      label = 'Partial contents' if field.indicator1 == '1' || field.indicator1 == '2'
+
       data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') unless buffer.empty?
       fields << data
 
@@ -1607,7 +1610,7 @@ to_field 'toc_struct' do |marc, accumulator|
   new_vern = vern unless vern.empty?
   new_fields = fields unless fields.empty?
   new_unmatched_vern = unmatched_vern unless unmatched_vern.empty?
-  accumulator << { label: 'Contents', fields: new_fields, vernacular: new_vern,
+  accumulator << { label:, fields: new_fields, vernacular: new_vern,
                    unmatched_vernacular: new_unmatched_vern } unless new_fields.nil? and new_vern.nil? and new_unmatched_vern.nil?
 end
 

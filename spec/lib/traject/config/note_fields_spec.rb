@@ -150,6 +150,54 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
+      context 'with a partial indicator in the 505' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', '2', ' '
+              )
+            )
+          end
+        end
+
+        it 'uses the label Partial contents' do
+          expect(result_field.first[:label]).to eq 'Partial contents'
+        end
+      end
+
+      context 'with an incomplete indicator in the 505' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', '1', ' '
+              )
+            )
+          end
+        end
+
+        it 'uses the label Partial contents' do
+          expect(result_field.first[:label]).to eq 'Partial contents'
+        end
+      end
+
+      context 'with no indicator in the 505' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '505', ' ', ' '
+              )
+            )
+          end
+        end
+
+        it 'uses the label Contents' do
+          expect(result_field.first[:label]).to eq 'Contents'
+        end
+      end
+
       context 'with Nielsen-sourced data' do
         let(:record) do
           MARC::Record.new.tap do |r|
