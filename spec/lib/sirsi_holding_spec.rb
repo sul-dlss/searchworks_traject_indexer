@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sirsi_holding'
 
 RSpec.describe SirsiHolding do

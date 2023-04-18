@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 # config valid for current version and patch releases of Capistrano
 
-set :application, "searchworks_traject_indexer"
+set :application, 'searchworks_traject_indexer'
 set :repo_url, 'https://github.com/sul-dlss/searchworks_traject_indexer.git'
 
 # Default branch is :master
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call unless ENV['DEPLOY']
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/opt/app/indexer/searchworks_traject_indexer"
+set :deploy_to, '/opt/app/indexer/searchworks_traject_indexer'
 
 set :honeybadger_env, "#{fetch(:stage)}"
 
@@ -25,7 +27,7 @@ set :honeybadger_env, "#{fetch(:stage)}"
 append :linked_files, 'config/settings.local.yml'
 
 # Default value for linked_dirs is []
-append :linked_dirs, "tmp", "run", "log", "config/settings"
+append :linked_dirs, 'tmp', 'run', 'log', 'config/settings'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

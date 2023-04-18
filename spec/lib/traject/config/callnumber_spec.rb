@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Call Numbers' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -20,13 +22,11 @@ RSpec.describe 'Call Numbers' do
         r.leader = '15069nam a2200409 a 4500'
         r.append(MARC::ControlField.new('008', '091123s2014    si a    sb    101 0 eng d'))
         r.append(MARC::DataField.new('050', ' ', '0',
-          MARC::Subfield.new('a', 'F1356'),
-          MARC::Subfield.new('b', '.M464 2005'),
-        ))
+                                     MARC::Subfield.new('a', 'F1356'),
+                                     MARC::Subfield.new('b', '.M464 2005')))
         r.append(MARC::DataField.new('090', ' ', '0',
-          MARC::Subfield.new('a', 'F090'),
-          MARC::Subfield.new('b', '.Z1'),
-        ))
+                                     MARC::Subfield.new('a', 'F090'),
+                                     MARC::Subfield.new('b', '.Z1')))
       end
     end
 
@@ -38,7 +38,6 @@ RSpec.describe 'Call Numbers' do
       expect(result['lc_assigned_callnum_ssim']).to include 'F090 .Z1'
     end
   end
-
 
   # /**
   #  * junit4 tests for Stanford University call number fields
@@ -823,5 +822,4 @@ RSpec.describe 'Call Numbers' do
   # 	}
   #
   # }
-
 end

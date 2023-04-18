@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ResultHelpers
   def select_by_id(id)
     results.select { |r| r['id'] == [id] }.first

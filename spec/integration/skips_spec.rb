@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe 'Skips records' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|

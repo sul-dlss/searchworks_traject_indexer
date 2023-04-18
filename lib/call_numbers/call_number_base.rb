@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CallNumbers
   require 'forwardable'
   class CallNumberBase
@@ -9,12 +11,12 @@ module CallNumbers
       'map folder', 'mfilm', 'mfiche', 'os box', 'os folder', 'pl', 'reel',
       'sheet', 'small folder', 'small map folder', 'suppl', 'tube', 'series'
     ].freeze
-    ADDL_VOL_PATTERN = /[\:\/]?(#{ADDL_VOL_PARTS.join('|')}).*/i
-    VOL_PATTERN         = /([\.:\/\(])?([no]\.s\.?\,? ?)?[\:\/]?(#{VOL_PARTS}|#{MONTHS})[\. -\/]?\d+([\/-]\d+)?( \d{4}([\/-]\d{4})?)?( ?suppl\.?)?/i
-    VOL_PATTERN_LOOSER  = /([\.:\/\(])?([no]\.s\.?\,? ?)?[\:\/]?(#{VOL_PARTS}|#{MONTHS})[\. -]?\d+.*/i
-    VOL_PATTERN_LETTERS = /([\.:\/\(])?([no]\.s\.?\,? ?)?[\:\/]?(#{VOL_PARTS}|#{MONTHS})[\/\. -]?[A-Z]?([\/-][A-Z]+)?.*/i
+    ADDL_VOL_PATTERN = %r{[:/]?(#{ADDL_VOL_PARTS.join('|')}).*}i
+    VOL_PATTERN         = %r{([.:/(])?([no]\.s\.?,? ?)?[:/]?(#{VOL_PARTS}|#{MONTHS})[. -/]?\d+([/-]\d+)?( \d{4}([/-]\d{4})?)?( ?suppl\.?)?}i
+    VOL_PATTERN_LOOSER  = %r{([.:/(])?([no]\.s\.?,? ?)?[:/]?(#{VOL_PARTS}|#{MONTHS})[. -]?\d+.*}i
+    VOL_PATTERN_LETTERS = %r{([.:/(])?([no]\.s\.?,? ?)?[:/]?(#{VOL_PARTS}|#{MONTHS})[/. -]?[A-Z]?([/-][A-Z]+)?.*}i
     FOUR_DIGIT_YEAR_REGEX = /\W *(20|19|18|17|16|15|14)\d{2}\D?$?/
-    LOOSE_MONTHS_REGEX = /([\.:\/\(])? *#{MONTHS}/i
+    LOOSE_MONTHS_REGEX = %r{([.:/(])? *#{MONTHS}}i
 
     extend Forwardable
     delegate %i[to_shelfkey to_reverse_shelfkey] => :shelfkey
@@ -28,18 +30,17 @@ module CallNumbers
     end
 
     def to_lopped_shelfkey
-      self.class.new(lopped, serial: serial).to_shelfkey
+      self.class.new(lopped, serial:).to_shelfkey
     end
 
     def to_lopped_reverse_shelfkey
       if lopped == call_number
-        self.class.new(lopped, serial: serial).to_reverse_shelfkey
+        self.class.new(lopped, serial:).to_reverse_shelfkey
       else
         # Explicitly passing in the ellipsis (as it needs to be reversed)
         # and dropping the serial since it has already been lopped
         self.class.new("#{lopped} ...").to_reverse_shelfkey
       end
-
     end
 
     def to_volume_sort
@@ -52,6 +53,7 @@ module CallNumbers
         year_b4_month = value[0...(value.index(FOUR_DIGIT_YEAR_REGEX) || value.length)]
         shortest_lopped = [month_b4_year, year_b4_month].min_by(&:length)
         return value if shortest_lopped.length < 4
+
         shortest_lopped
       end
     end

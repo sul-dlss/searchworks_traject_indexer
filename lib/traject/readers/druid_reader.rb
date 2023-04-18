@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'public_xml_record'
 
 module Traject

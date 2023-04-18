@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Access config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -11,7 +13,7 @@ RSpec.describe 'Access config' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { 'onlineFormat.mrc' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-  let(:field) { 'access_facet'}
+  let(:field) { 'access_facet' }
 
   describe 'with fulltext URLs in bib' do
     it 'is considered online' do
@@ -30,22 +32,19 @@ RSpec.describe 'Access config' do
     end
   end
 
-
   describe 'with sfx URLs in bib' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '00988nas a2200193z  4500'
         r.append(MARC::ControlField.new('008', '071214uuuuuuuuuxx uu |ss    u|    |||| d'))
         r.append(MARC::DataField.new('956', '4', '0',
-          MARC::Subfield.new('u', 'http://caslon.stanford.edu:3210/sfxlcl3?url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;ctx_enc=info:ofi/enc:UTF-8&amp;rfr_id=info:sid/sfxit.com:opac_856&amp;url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&amp;sfx.ignore_date_threshold=1&amp;rft.object_id=110978984448763&amp;svc_val_fmt=info:ofi/fmt:kev:mtx:sch_svc&amp;')
-        ))
+                                     MARC::Subfield.new('u', 'http://caslon.stanford.edu:3210/sfxlcl3?url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;ctx_enc=info:ofi/enc:UTF-8&amp;rfr_id=info:sid/sfxit.com:opac_856&amp;url_ctx_fmt=info:ofi/fmt:kev:mtx:ctx&amp;sfx.ignore_date_threshold=1&amp;rft.object_id=110978984448763&amp;svc_val_fmt=info:ofi/fmt:kev:mtx:sch_svc&amp;')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '2475606-5001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
@@ -99,12 +98,11 @@ RSpec.describe 'Access config' do
           r.leader = '01426cas a2200385Ia 4500'
           r.append(MARC::ControlField.new('007', '110912c20119999mnuar l       0    0eng  '))
           r.append(MARC::DataField.new('999', ' ', ' ',
-            MARC::Subfield.new('a', 'F152 .A28'),
-            MARC::Subfield.new('w', 'LC'),
-            MARC::Subfield.new('i', '36105018746623'),
-            MARC::Subfield.new('l', 'HAS-DIGIT'),
-            MARC::Subfield.new('m', 'GREEN')
-          ))
+                                       MARC::Subfield.new('a', 'F152 .A28'),
+                                       MARC::Subfield.new('w', 'LC'),
+                                       MARC::Subfield.new('i', '36105018746623'),
+                                       MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                       MARC::Subfield.new('m', 'GREEN')))
         end
       end
 
@@ -118,19 +116,17 @@ RSpec.describe 'Access config' do
           r.leader = '01426cas a2200385Ia 4500'
           r.append(MARC::ControlField.new('007', '110912c20119999mnuar l       0    0eng  '))
           r.append(MARC::DataField.new('999', ' ', ' ',
-            MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-            MARC::Subfield.new('w', 'ASIS'),
-            MARC::Subfield.new('i', '2475606-5001'),
-            MARC::Subfield.new('l', 'INTERNET'),
-            MARC::Subfield.new('m', 'SUL')
-          ))
+                                       MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                       MARC::Subfield.new('w', 'ASIS'),
+                                       MARC::Subfield.new('i', '2475606-5001'),
+                                       MARC::Subfield.new('l', 'INTERNET'),
+                                       MARC::Subfield.new('m', 'SUL')))
         end
       end
 
       it 'is online' do
         expect(result[field]).to eq ['Online']
       end
-
     end
   end
 

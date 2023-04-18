@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Subject config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -80,7 +82,7 @@ RSpec.describe 'Subject config' do
         expect(result).to eq ['Standing army']
 
         result = select_by_id('4698973')[field]
-        expect(result).to eq ["Missions", "Multiculturalism", "Flyby missions.", "Christianity and culture."]
+        expect(result).to eq ['Missions', 'Multiculturalism', 'Flyby missions.', 'Christianity and culture.']
 
         result = select_by_id('919006')[field]
         expect(result).to eq ['Literature, Comparative.']
@@ -142,22 +144,22 @@ RSpec.describe 'Subject config' do
 
     it 'has subfield x from all subject fields' do
       expect(results).to include hash_including('id' => ['600search'], field => ['600x']),
-                                 hash_including('id' => ["610search"], field => ["610x"]),
-                                 hash_including('id' => ["611search"], field => ["611x"]),
-                                 hash_including('id' => ["630search"], field => ["630x"]),
-                                 hash_including('id' => ["650search"], field => ["650x"]),
-                                 hash_including('id' => ["651search"], field => ["651x"]),
+                                 hash_including('id' => ['610search'], field => ['610x']),
+                                 hash_including('id' => ['611search'], field => ['611x']),
+                                 hash_including('id' => ['630search'], field => ['630x']),
+                                 hash_including('id' => ['650search'], field => ['650x']),
+                                 hash_including('id' => ['651search'], field => ['651x']),
                                  # no sub x in 654, 654
-                                 hash_including('id' => ["655search"], field => ["655x"]),
-                                 hash_including('id' => ["656search"], field => ["656x"]),
-                                 hash_including('id' => ["657search"], field => ["657x"]),
+                                 hash_including('id' => ['655search'], field => ['655x']),
+                                 hash_including('id' => ['656search'], field => ['656x']),
+                                 hash_including('id' => ['657search'], field => ['657x']),
                                  # no sub x in 658
-                                 hash_including('id' => ["690search"], field => ["690x"]),
-                                 hash_including('id' => ["691search"], field => ["691x"]),
-                                 hash_including('id' => ["696search"], field => ["696x"]),
-                                 hash_including('id' => ["697search"], field => ["697x"]),
-                                 hash_including('id' => ["698search"], field => ["698x"]),
-                                 hash_including('id' => ["699search"], field => ["699x"])
+                                 hash_including('id' => ['690search'], field => ['690x']),
+                                 hash_including('id' => ['691search'], field => ['691x']),
+                                 hash_including('id' => ['696search'], field => ['696x']),
+                                 hash_including('id' => ['697search'], field => ['697x']),
+                                 hash_including('id' => ['698search'], field => ['698x']),
+                                 hash_including('id' => ['699search'], field => ['699x'])
 
       expect(results).not_to include hash_including(field => /a$/)
     end
@@ -168,22 +170,22 @@ RSpec.describe 'Subject config' do
 
     it 'has subfield x from all subject fields' do
       expect(results).to include hash_including('id' => ['Vern600search'], field => ['vern600x']),
-                                 hash_including('id' => ["Vern610search"], field => ["vern610x"]),
-                                 hash_including('id' => ["Vern611search"], field => ["vern611x"]),
-                                 hash_including('id' => ["Vern630search"], field => ["vern630x"]),
-                                 hash_including('id' => ["Vern650search"], field => ["vern650x"]),
-                                 hash_including('id' => ["Vern651search"], field => ["vern651x"]),
+                                 hash_including('id' => ['Vern610search'], field => ['vern610x']),
+                                 hash_including('id' => ['Vern611search'], field => ['vern611x']),
+                                 hash_including('id' => ['Vern630search'], field => ['vern630x']),
+                                 hash_including('id' => ['Vern650search'], field => ['vern650x']),
+                                 hash_including('id' => ['Vern651search'], field => ['vern651x']),
                                  # no sub x in 654, 654
-                                 hash_including('id' => ["Vern655search"], field => ["vern655x"]),
-                                 hash_including('id' => ["Vern656search"], field => ["vern656x"]),
-                                 hash_including('id' => ["Vern657search"], field => ["vern657x"]),
+                                 hash_including('id' => ['Vern655search'], field => ['vern655x']),
+                                 hash_including('id' => ['Vern656search'], field => ['vern656x']),
+                                 hash_including('id' => ['Vern657search'], field => ['vern657x']),
                                  # no sub x in 658
-                                 hash_including('id' => ["Vern690search"], field => ["vern690x"]),
-                                 hash_including('id' => ["Vern691search"], field => ["vern691x"]),
-                                 hash_including('id' => ["Vern696search"], field => ["vern696x"]),
-                                 hash_including('id' => ["Vern697search"], field => ["vern697x"]),
-                                 hash_including('id' => ["Vern698search"], field => ["vern698x"]),
-                                 hash_including('id' => ["Vern699search"], field => ["vern699x"])
+                                 hash_including('id' => ['Vern690search'], field => ['vern690x']),
+                                 hash_including('id' => ['Vern691search'], field => ['vern691x']),
+                                 hash_including('id' => ['Vern696search'], field => ['vern696x']),
+                                 hash_including('id' => ['Vern697search'], field => ['vern697x']),
+                                 hash_including('id' => ['Vern698search'], field => ['vern698x']),
+                                 hash_including('id' => ['Vern699search'], field => ['vern699x'])
 
       expect(results).not_to include hash_including(field => /a$/)
     end
@@ -237,7 +239,7 @@ RSpec.describe 'Subject config' do
         expect(result).to eq ['Siberia (Russia).']
         # 651a
         result = select_by_id('6280316')[field]
-        expect(result).to match_array ['Tennessee', 'Arkansas']
+        expect(result).to match_array %w[Tennessee Arkansas]
       end
     end
   end
@@ -270,21 +272,21 @@ RSpec.describe 'Subject config' do
 
     it 'has subfield z from all subject fields' do
       expect(results).to include hash_including('id' => ['600search'], field => ['600z']),
-                                 hash_including('id' => ["610search"], field => ["610z"]),
-                                 hash_including('id' => ["630search"], field => ["630z"]),
-                                 hash_including('id' => ["650search"], field => ["650z"]),
-                                 hash_including('id' => ["651search"], field => ["651z"]),
-                                 hash_including('id' => ["654search"], field => ["654z"]),
-                                 hash_including('id' => ["655search"], field => ["655z"]),
-                                 hash_including('id' => ["656search"], field => ["656z"]),
-                                 hash_including('id' => ["657search"], field => ["657z"]),
+                                 hash_including('id' => ['610search'], field => ['610z']),
+                                 hash_including('id' => ['630search'], field => ['630z']),
+                                 hash_including('id' => ['650search'], field => ['650z']),
+                                 hash_including('id' => ['651search'], field => ['651z']),
+                                 hash_including('id' => ['654search'], field => ['654z']),
+                                 hash_including('id' => ['655search'], field => ['655z']),
+                                 hash_including('id' => ['656search'], field => ['656z']),
+                                 hash_including('id' => ['657search'], field => ['657z']),
                                  # no sub z in 658
-                                 hash_including('id' => ["690search"], field => ["690z"]),
-                                 hash_including('id' => ["691search"], field => ["691z"]),
-                                 hash_including('id' => ["696search"], field => ["696z"]),
-                                 hash_including('id' => ["697search"], field => ["697z"]),
-                                 hash_including('id' => ["698search"], field => ["698z"]),
-                                 hash_including('id' => ["699search"], field => ["699z"])
+                                 hash_including('id' => ['690search'], field => ['690z']),
+                                 hash_including('id' => ['691search'], field => ['691z']),
+                                 hash_including('id' => ['696search'], field => ['696z']),
+                                 hash_including('id' => ['697search'], field => ['697z']),
+                                 hash_including('id' => ['698search'], field => ['698z']),
+                                 hash_including('id' => ['699search'], field => ['699z'])
 
       expect(results).not_to include hash_including(field => /a$/)
     end
@@ -295,21 +297,21 @@ RSpec.describe 'Subject config' do
 
     it 'has subfield z from all subject fields' do
       expect(results).to include hash_including('id' => ['Vern600search'], field => ['vern600z']),
-                                 hash_including('id' => ["Vern610search"], field => ["vern610z"]),
-                                 hash_including('id' => ["Vern630search"], field => ["vern630z"]),
-                                 hash_including('id' => ["Vern650search"], field => ["vern650z"]),
-                                 hash_including('id' => ["Vern651search"], field => ["vern651z"]),
-                                 hash_including('id' => ["Vern654search"], field => ["vern654z"]),
-                                 hash_including('id' => ["Vern655search"], field => ["vern655z"]),
-                                 hash_including('id' => ["Vern656search"], field => ["vern656z"]),
-                                 hash_including('id' => ["Vern657search"], field => ["vern657z"]),
+                                 hash_including('id' => ['Vern610search'], field => ['vern610z']),
+                                 hash_including('id' => ['Vern630search'], field => ['vern630z']),
+                                 hash_including('id' => ['Vern650search'], field => ['vern650z']),
+                                 hash_including('id' => ['Vern651search'], field => ['vern651z']),
+                                 hash_including('id' => ['Vern654search'], field => ['vern654z']),
+                                 hash_including('id' => ['Vern655search'], field => ['vern655z']),
+                                 hash_including('id' => ['Vern656search'], field => ['vern656z']),
+                                 hash_including('id' => ['Vern657search'], field => ['vern657z']),
                                  # no sub z in 658
-                                 hash_including('id' => ["Vern690search"], field => ["vern690z"]),
-                                 hash_including('id' => ["Vern691search"], field => ["vern691z"]),
-                                 hash_including('id' => ["Vern696search"], field => ["vern696z"]),
-                                 hash_including('id' => ["Vern697search"], field => ["vern697z"]),
-                                 hash_including('id' => ["Vern698search"], field => ["vern698z"]),
-                                 hash_including('id' => ["Vern699search"], field => ["vern699z"])
+                                 hash_including('id' => ['Vern690search'], field => ['vern690z']),
+                                 hash_including('id' => ['Vern691search'], field => ['vern691z']),
+                                 hash_including('id' => ['Vern696search'], field => ['vern696z']),
+                                 hash_including('id' => ['Vern697search'], field => ['vern697z']),
+                                 hash_including('id' => ['Vern698search'], field => ['vern698z']),
+                                 hash_including('id' => ['Vern699search'], field => ['vern699z'])
 
       expect(results).not_to include hash_including(field => /a$/)
     end
@@ -494,25 +496,27 @@ RSpec.describe 'Subject config' do
         expect(result).to eq ['García Lorca, Federico, 1898-1936.']
 
         result = select_by_id('7233951')[field]
-        expect(result).to eq ["Internet Resource", "Lectures"]
+        expect(result).to eq ['Internet Resource', 'Lectures']
 
         result = select_by_id('919006')[field]
         expect(result).to eq ['Heliodorus, of Emesa.']
 
         result = select_by_id('115472')[field]
-        expect(result).to eq ["European Economic Community", "European Economic Community."]
+        expect(result).to eq ['European Economic Community', 'European Economic Community.']
 
         result = select_by_id('1261173')[field]
-        expect(result).to eq ["Somers, John Somers, Baron, 1651-1716. Letter ballancing the necessity of keeping a land-force in times of peace, with the dangers that may follow on it.", "England and Wales. Army.", "Magna Carta."]
+        expect(result).to eq [
+          'Somers, John Somers, Baron, 1651-1716. Letter ballancing the necessity of keeping a land-force in times of peace, with the dangers that may follow on it.', 'England and Wales. Army.', 'Magna Carta.'
+        ]
 
         result = select_by_id('6552')[field]
-        expect(result).to eq ["Dictionaries"]
+        expect(result).to eq ['Dictionaries']
 
         result = select_by_id('6553')[field]
-        expect(result).to eq ["Photoprints", "Fire Reports"]
+        expect(result).to eq ['Photoprints', 'Fire Reports']
 
         result = select_by_id('610atpv')[field]
-        expect(result).to eq ["United States Strategic Bombing Survey. Reports. Pacific war"]
+        expect(result).to eq ['United States Strategic Bombing Survey. Reports. Pacific war']
 
         expect(results).not_to include hash_including(field => include(/Zhongguo gong chan dang Party work./))
         expect(results).not_to include hash_including(field => include(/atlanta/i))
@@ -538,7 +542,6 @@ RSpec.describe 'Subject config' do
       result = select_by_id('Vern610search')[field]
       expect(result).to eq ['vern610a vern610b vern610c vern610d vern610e vern610f vern610g vern610h vern610k vern610l vern610m vern610n vern610o vern610p vern610r vern610s vern610t vern610u']
 
-
       expect(results).not_to include hash_including(field => ['vern610v'])
       expect(results).not_to include hash_including(field => ['vern610x'])
       expect(results).not_to include hash_including(field => ['vern610y'])
@@ -549,7 +552,6 @@ RSpec.describe 'Subject config' do
       result = select_by_id('Vern611search')[field]
       expect(result).to eq ['vern611a vern611c vern611d vern611e vern611f vern611g vern611h vern611j vern611k vern611l vern611n vern611p vern611q vern611s vern611t vern611u']
 
-
       expect(results).not_to include hash_including(field => ['vern611v'])
       expect(results).not_to include hash_including(field => ['vern611x'])
       expect(results).not_to include hash_including(field => ['vern611y'])
@@ -559,7 +561,6 @@ RSpec.describe 'Subject config' do
     it 'has all subfields except v, x, y, z from  vern630' do
       result = select_by_id('Vern630search')[field]
       expect(result).to eq ['vern630a vern630d vern630e vern630f vern630g vern630h vern630k vern630l vern630m vern630n vern630o vern630p vern630r vern630s vern630t']
-
 
       expect(results).not_to include hash_including(field => ['vern630v'])
       expect(results).not_to include hash_including(field => ['vern630x'])
@@ -653,22 +654,22 @@ RSpec.describe 'Subject config' do
 
     it 'has subfield v,y from all subject fields' do
       expect(results).to include hash_including('id' => ['600search'], field => ['600v 600y']),
-                                 hash_including('id' => ["610search"], field => ["610v 610y"]),
-                                 hash_including('id' => ["611search"], field => ["611v 611y"]),
-                                 hash_including('id' => ["630search"], field => ["630v 630y"]),
-                                 hash_including('id' => ["650search"], field => ["650v 650y"]),
-                                 hash_including('id' => ["651search"], field => ["651v 651y"]),
-                                 hash_including('id' => ["654search"], field => ["654v 654y"]),
-                                 hash_including('id' => ["655search"], field => ["655v 655y"]),
-                                 hash_including('id' => ["656search"], field => ["656v 656y"]),
-                                 hash_including('id' => ["657search"], field => ["657v 657y"]),
+                                 hash_including('id' => ['610search'], field => ['610v 610y']),
+                                 hash_including('id' => ['611search'], field => ['611v 611y']),
+                                 hash_including('id' => ['630search'], field => ['630v 630y']),
+                                 hash_including('id' => ['650search'], field => ['650v 650y']),
+                                 hash_including('id' => ['651search'], field => ['651v 651y']),
+                                 hash_including('id' => ['654search'], field => ['654v 654y']),
+                                 hash_including('id' => ['655search'], field => ['655v 655y']),
+                                 hash_including('id' => ['656search'], field => ['656v 656y']),
+                                 hash_including('id' => ['657search'], field => ['657v 657y']),
                                  # no sub v in 658
-                                 hash_including('id' => ["690search"], field => ["690v 690y"]),
-                                 hash_including('id' => ["691search"], field => ["691v 691y"]),
-                                 hash_including('id' => ["696search"], field => ["696v 696y"]),
-                                 hash_including('id' => ["697search"], field => ["697v 697y"]),
-                                 hash_including('id' => ["698search"], field => ["698v 698y"]),
-                                 hash_including('id' => ["699search"], field => ["699v 699y"])
+                                 hash_including('id' => ['690search'], field => ['690v 690y']),
+                                 hash_including('id' => ['691search'], field => ['691v 691y']),
+                                 hash_including('id' => ['696search'], field => ['696v 696y']),
+                                 hash_including('id' => ['697search'], field => ['697v 697y']),
+                                 hash_including('id' => ['698search'], field => ['698v 698y']),
+                                 hash_including('id' => ['699search'], field => ['699v 699y'])
 
       expect(results).not_to include hash_including(field => /a$/)
     end
@@ -687,25 +688,25 @@ RSpec.describe 'Subject config' do
 
       it 'has the right transforms' do
         result = select_by_id('650y')[field]
-        expect(result).to eq ["20th century."]
+        expect(result).to eq ['20th century.']
 
         result = select_by_id('666')[field]
         expect(result).to eq ['20th century']
 
         result = select_by_id('111')[field]
-        expect(result).to eq ["449-1066."]
+        expect(result).to eq ['449-1066.']
 
         result = select_by_id('222')[field]
-        expect(result).to eq ["1921-"]
+        expect(result).to eq ['1921-']
 
         result = select_by_id('777')[field]
-        expect(result).to eq ["Roman period, 55 B.C.-449 A.D."]
+        expect(result).to eq ['Roman period, 55 B.C.-449 A.D.']
 
         result = select_by_id('888')[field]
-        expect(result).to eq ["To 449."]
+        expect(result).to eq ['To 449.']
 
         result = select_by_id('999')[field]
-        expect(result).to eq ["To 449 Congresses."]
+        expect(result).to eq ['To 449 Congresses.']
       end
     end
   end
@@ -715,22 +716,22 @@ RSpec.describe 'Subject config' do
 
     it 'has subfield v,y from all subject fields' do
       expect(results).to include hash_including('id' => ['Vern600search'], field => ['vern600v vern600y']),
-                                 hash_including('id' => ["Vern610search"], field => ["vern610v vern610y"]),
-                                 hash_including('id' => ["Vern611search"], field => ["vern611v vern611y"]),
-                                 hash_including('id' => ["Vern630search"], field => ["vern630v vern630y"]),
-                                 hash_including('id' => ["Vern650search"], field => ["vern650v vern650y"]),
-                                 hash_including('id' => ["Vern651search"], field => ["vern651v vern651y"]),
-                                 hash_including('id' => ["Vern654search"], field => ["vern654v vern654y"]),
-                                 hash_including('id' => ["Vern655search"], field => ["vern655v vern655y"]),
-                                 hash_including('id' => ["Vern656search"], field => ["vern656v vern656y"]),
-                                 hash_including('id' => ["Vern657search"], field => ["vern657v vern657y"]),
+                                 hash_including('id' => ['Vern610search'], field => ['vern610v vern610y']),
+                                 hash_including('id' => ['Vern611search'], field => ['vern611v vern611y']),
+                                 hash_including('id' => ['Vern630search'], field => ['vern630v vern630y']),
+                                 hash_including('id' => ['Vern650search'], field => ['vern650v vern650y']),
+                                 hash_including('id' => ['Vern651search'], field => ['vern651v vern651y']),
+                                 hash_including('id' => ['Vern654search'], field => ['vern654v vern654y']),
+                                 hash_including('id' => ['Vern655search'], field => ['vern655v vern655y']),
+                                 hash_including('id' => ['Vern656search'], field => ['vern656v vern656y']),
+                                 hash_including('id' => ['Vern657search'], field => ['vern657v vern657y']),
                                  # no sub v in 658
-                                 hash_including('id' => ["Vern690search"], field => ["vern690v vern690y"]),
-                                 hash_including('id' => ["Vern691search"], field => ["vern691v vern691y"]),
-                                 hash_including('id' => ["Vern696search"], field => ["vern696v vern696y"]),
-                                 hash_including('id' => ["Vern697search"], field => ["vern697v vern697y"]),
-                                 hash_including('id' => ["Vern698search"], field => ["vern698v vern698y"]),
-                                 hash_including('id' => ["Vern699search"], field => ["vern699v vern699y"])
+                                 hash_including('id' => ['Vern690search'], field => ['vern690v vern690y']),
+                                 hash_including('id' => ['Vern691search'], field => ['vern691v vern691y']),
+                                 hash_including('id' => ['Vern696search'], field => ['vern696v vern696y']),
+                                 hash_including('id' => ['Vern697search'], field => ['vern697v vern697y']),
+                                 hash_including('id' => ['Vern698search'], field => ['vern698v vern698y']),
+                                 hash_including('id' => ['Vern699search'], field => ['vern699v vern699y'])
 
       expect(results).not_to include hash_including(field => /a$/)
     end
@@ -744,7 +745,7 @@ RSpec.describe 'Subject config' do
       expect(results).not_to include hash_including('topic_facet' => include(/nomesh/))
 
       result = select_by_id('650a')
-      expect(result).to include 'topic_search' => ["I am a rock"], 'topic_facet' => ['I am a rock']
+      expect(result).to include 'topic_search' => ['I am a rock'], 'topic_facet' => ['I am a rock']
     end
 
     it 'removes 655a fields from subject_other_search and topic_facet' do
@@ -770,7 +771,6 @@ RSpec.describe 'Subject config' do
     end
   end
 
-
   describe 'topic_facet' do
     let(:field) { 'topic_facet' }
     let(:fixture_name) { 'subjectTests.mrc' }
@@ -778,43 +778,44 @@ RSpec.describe 'Subject config' do
     it 'has the right transforms' do
       # 600a, trailing period removed
       result = select_by_id('345228')[field]
-      expect(result).to eq ["Zemnukhov, Ivan", "World War, 1939-1945", "Guerrillas"]
+      expect(result).to eq ['Zemnukhov, Ivan', 'World War, 1939-1945', 'Guerrillas']
       result = select_by_id('11552426')[field]
       expect(result).to eq ["'Abdu'l-Bahá"]
       # 600acd, trailing period removed
-      expect(select_by_id("1261173")[field]).to include "Somers, John Somers, Baron, 1651-1716"
+      expect(select_by_id('1261173')[field]).to include 'Somers, John Somers, Baron, 1651-1716'
       # 600ad, trailing comma removed
-      expect(select_by_id("600trailingComma")[field]).to eq ["Monroe, Marilyn, 1926-1962"]
+      expect(select_by_id('600trailingComma')[field]).to eq ['Monroe, Marilyn, 1926-1962']
       # 600q now bundled with abcdq
-      expect(select_by_id("600aqdx")[field]).to eq ["Kennedy, John F. (John Fitzgerald), 1917-1963"]
+      expect(select_by_id('600aqdx')[field]).to eq ['Kennedy, John F. (John Fitzgerald), 1917-1963']
       # 600t, too few letters at end to remove trailing period
-      expect(select_by_id("1261173")[field]).to include "Letter ballancing the necessity of keeping a land-force in times of peace, with the dangers that may follow on it." # 630
+      expect(select_by_id('1261173')[field]).to include 'Letter ballancing the necessity of keeping a land-force in times of peace, with the dangers that may follow on it.' # 630
       # 600ad
-      expect(select_by_id("600adtpof")[field]).to include "Hindemith, Paul, 1895-1963"
+      expect(select_by_id('600adtpof')[field]).to include 'Hindemith, Paul, 1895-1963'
       # 600t separate
-      expect(select_by_id("600adtpof")[field]).to include "Nobilissima visione"
+      expect(select_by_id('600adtpof')[field]).to include 'Nobilissima visione'
       # 610ab, trailing period removed
-      expect(select_by_id("1261173")[field]).to include "England and Wales. Army"
-      expect(select_by_id("610trailing")[field]).to eq ["Augusta (Ga.)"]
+      expect(select_by_id('1261173')[field]).to include 'England and Wales. Army'
+      expect(select_by_id('610trailing')[field]).to eq ['Augusta (Ga.)']
       # 610t separate
-      expect(select_by_id("610atpv")[field]).to eq ["United States Strategic Bombing Survey", "Reports"]
+      expect(select_by_id('610atpv')[field]).to eq ['United States Strategic Bombing Survey', 'Reports']
       # 630a, trailing period
-      expect(select_by_id("1261173")[field]).to include "Magna Carta"
+      expect(select_by_id('1261173')[field]).to include 'Magna Carta'
       # 650a, trailing period
-      expect(select_by_id("919006")[field]).to include "Literature, Comparative"
+      expect(select_by_id('919006')[field]).to include 'Literature, Comparative'
       # 650a, trailing comma
-      expect(select_by_id("650trailingComma")[field]).to eq ["Seabiscuit (Race horse)"]
+      expect(select_by_id('650trailingComma')[field]).to eq ['Seabiscuit (Race horse)']
       # 650a, trailing paren left in
-      expect(select_by_id("650trailing")[field]).to eq ["BASIC (Computer program language)"]
+      expect(select_by_id('650trailing')[field]).to eq ['BASIC (Computer program language)']
       # 650a, starting percent sign stripped
-      expect(select_by_id("1976918")[field]).to eq ["PRIN796", "Lichfield, Leonard, d. 1657"]
+      expect(select_by_id('1976918')[field]).to eq ['PRIN796', 'Lichfield, Leonard, d. 1657']
       # 650a, redundant-occuring punctuation collapsed
-      expect(select_by_id("11623157")[field]).to eq ["(Das) Numinose"]
-      expect(select_by_id("971078")[field]).to eq ["!Ko (African tribe)"]
+      expect(select_by_id('11623157')[field]).to eq ['(Das) Numinose']
+      expect(select_by_id('971078')[field]).to eq ['!Ko (African tribe)']
       # 650a, missing opening or closing parenthesis removed
-      expect(select_by_id("9335854")[field]).to eq ["Numerical analysis", "Ocean waves"]
+      expect(select_by_id('9335854')[field]).to eq ['Numerical analysis', 'Ocean waves']
       # 650a, starting asterisk removed
-      expect(select_by_id("11146347")[field]).to eq ["2x Devices-- Adiabatic Processes", "N70500* --Physics--Controlled Thermonuclear Research-- Kinetics (Theoretical)"]
+      expect(select_by_id('11146347')[field]).to eq ['2x Devices-- Adiabatic Processes',
+                                                     'N70500* --Physics--Controlled Thermonuclear Research-- Kinetics (Theoretical)']
 
       # 655a, trailing period
       expect(results).not_to include hash_including(field => include(/bust\.?/))
@@ -831,9 +832,8 @@ RSpec.describe 'Subject config' do
         MARC::Record.new.tap do |r|
           r.leader = '01952cid  2200457Ia 4500'
           r.append(MARC::DataField.new('600', ' ', ' ',
-            MARC::Subfield.new('z', 'Stanford'),
-            MARC::Subfield.new('z', 'Berkeley')
-          ))
+                                       MARC::Subfield.new('z', 'Stanford'),
+                                       MARC::Subfield.new('z', 'Berkeley')))
           r.append(MARC::DataField.new('600', ' ', ' ', MARC::Subfield.new('z', 'San Jose')))
         end
       end
@@ -865,33 +865,33 @@ RSpec.describe 'Subject config' do
 
     it 'removes trailing periods' do
       result = select_by_id('650y')[field]
-      expect(result).to eq ["20th century"]
+      expect(result).to eq ['20th century']
 
       result = select_by_id('666')[field]
-      expect(result).to eq ["20th century"]
+      expect(result).to eq ['20th century']
     end
 
     it 'removes trailing periods after a 3 digit year' do
-        result = select_by_id('888')[field]
-        expect(result).to eq ["To 449"]
+      result = select_by_id('888')[field]
+      expect(result).to eq ['To 449']
 
-        result = select_by_id('999')[field]
-        expect(result).to eq ["To 449"]
+      result = select_by_id('999')[field]
+      expect(result).to eq ['To 449']
     end
 
     it 'removes trailing periods after a 4 digit year' do
-        result = select_by_id('111')[field]
-        expect(result).to eq ["449-1066"]
+      result = select_by_id('111')[field]
+      expect(result).to eq ['449-1066']
     end
 
     it 'does not strip trailing dash' do
       result = select_by_id('222')[field]
-      expect(result).to eq ["1921-"]
+      expect(result).to eq ['1921-']
     end
 
     it 'does not strip a trailing period' do
       result = select_by_id('777')[field]
-      expect(result).to eq ["Roman period, 55 B.C.-449 A.D."]
+      expect(result).to eq ['Roman period, 55 B.C.-449 A.D.']
     end
   end
 
@@ -900,37 +900,37 @@ RSpec.describe 'Subject config' do
 
     it 'contains a single string of all the alphabetic subfields concatenated together' do
       result = select_by_id('600search')[field]
-      expect(result).to eq ["600a 600b 600c 600d 600e 600f 600g 600h 600j 600k 600l 600m 600n 600o 600p 600q 600r 600s 600t 600u 600v 600x 600y 600z"]
+      expect(result).to eq ['600a 600b 600c 600d 600e 600f 600g 600h 600j 600k 600l 600m 600n 600o 600p 600q 600r 600s 600t 600u 600v 600x 600y 600z']
 
       result = select_by_id('610search')[field]
-      expect(result).to eq ["610a 610b 610c 610d 610e 610f 610g 610h 610k 610l 610m 610n 610o 610p 610r 610s 610t 610u 610v 610x 610y 610z"]
+      expect(result).to eq ['610a 610b 610c 610d 610e 610f 610g 610h 610k 610l 610m 610n 610o 610p 610r 610s 610t 610u 610v 610x 610y 610z']
 
       result = select_by_id('611search')[field]
-      expect(result).to eq ["611a 611c 611d 611e 611f 611g 611h 611j 611k 611l 611n 611p 611q 611s 611t 611u 611v 611x 611y"]
+      expect(result).to eq ['611a 611c 611d 611e 611f 611g 611h 611j 611k 611l 611n 611p 611q 611s 611t 611u 611v 611x 611y']
 
       result = select_by_id('630search')[field]
-      expect(result).to eq ["630a 630d 630e 630f 630g 630h 630k 630l 630m 630n 630o 630p 630r 630s 630t 630v 630x 630y 630z"]
+      expect(result).to eq ['630a 630d 630e 630f 630g 630h 630k 630l 630m 630n 630o 630p 630r 630s 630t 630v 630x 630y 630z']
 
       result = select_by_id('648search')[field]
-      expect(result).to eq ["648a 648v 648x 648y 648z"]
+      expect(result).to eq ['648a 648v 648x 648y 648z']
 
       result = select_by_id('650search')[field]
-      expect(result).to eq ["650a 650b 650c 650d 650e 650v 650x 650y 650z"]
+      expect(result).to eq ['650a 650b 650c 650d 650e 650v 650x 650y 650z']
 
       result = select_by_id('651search')[field]
-      expect(result).to eq ["651a 651e 651v 651x 651y 651z"]
+      expect(result).to eq ['651a 651e 651v 651x 651y 651z']
 
       result = select_by_id('653search')[field]
-      expect(result).to eq ["653a"]
+      expect(result).to eq ['653a']
 
       result = select_by_id('654search')[field]
-      expect(result).to eq ["654a 654b 654c 654e 654v 654y 654z"]
+      expect(result).to eq ['654a 654b 654c 654e 654v 654y 654z']
 
       result = select_by_id('655search')[field]
-      expect(result).to eq ["655a 655b 655c 655v 655x 655y 655z"]
+      expect(result).to eq ['655a 655b 655c 655v 655x 655y 655z']
 
       result = select_by_id('656search')[field]
-      expect(result).to eq ["656a 656k 656v 656x 656y 656z"]
+      expect(result).to eq ['656a 656k 656v 656x 656y 656z']
 
       result = select_by_id('657search')[field]
       expect(result).to eq ['657a 657v 657x 657y 657z']
@@ -966,37 +966,37 @@ RSpec.describe 'Subject config' do
 
     it 'contains a single string of all the alphabetic subfields concatenated together' do
       result = select_by_id('Vern600search')[field]
-      expect(result).to eq ["vern600a vern600b vern600c vern600d vern600e vern600f vern600g vern600h vern600j vern600k vern600l vern600m vern600n vern600o vern600p vern600q vern600r vern600s vern600t vern600u vern600v vern600x vern600y vern600z"]
+      expect(result).to eq ['vern600a vern600b vern600c vern600d vern600e vern600f vern600g vern600h vern600j vern600k vern600l vern600m vern600n vern600o vern600p vern600q vern600r vern600s vern600t vern600u vern600v vern600x vern600y vern600z']
 
       result = select_by_id('Vern610search')[field]
-      expect(result).to eq ["vern610a vern610b vern610c vern610d vern610e vern610f vern610g vern610h vern610k vern610l vern610m vern610n vern610o vern610p vern610r vern610s vern610t vern610u vern610v vern610x vern610y vern610z"]
+      expect(result).to eq ['vern610a vern610b vern610c vern610d vern610e vern610f vern610g vern610h vern610k vern610l vern610m vern610n vern610o vern610p vern610r vern610s vern610t vern610u vern610v vern610x vern610y vern610z']
 
       result = select_by_id('Vern611search')[field]
-      expect(result).to eq ["vern611a vern611c vern611d vern611e vern611f vern611g vern611h vern611j vern611k vern611l vern611n vern611p vern611q vern611s vern611t vern611u vern611v vern611x vern611y"]
+      expect(result).to eq ['vern611a vern611c vern611d vern611e vern611f vern611g vern611h vern611j vern611k vern611l vern611n vern611p vern611q vern611s vern611t vern611u vern611v vern611x vern611y']
 
       result = select_by_id('Vern630search')[field]
-      expect(result).to eq ["vern630a vern630d vern630e vern630f vern630g vern630h vern630k vern630l vern630m vern630n vern630o vern630p vern630r vern630s vern630t vern630v vern630x vern630y vern630z"]
+      expect(result).to eq ['vern630a vern630d vern630e vern630f vern630g vern630h vern630k vern630l vern630m vern630n vern630o vern630p vern630r vern630s vern630t vern630v vern630x vern630y vern630z']
 
       result = select_by_id('Vern648search')[field]
-      expect(result).to eq ["vern648a vern648v vern648x vern648y vern648z"]
+      expect(result).to eq ['vern648a vern648v vern648x vern648y vern648z']
 
       result = select_by_id('Vern650search')[field]
-      expect(result).to eq ["vern650a vern650b vern650c vern650d vern650e vern650v vern650x vern650y vern650z"]
+      expect(result).to eq ['vern650a vern650b vern650c vern650d vern650e vern650v vern650x vern650y vern650z']
 
       result = select_by_id('Vern651search')[field]
-      expect(result).to eq ["vern651a vern651e vern651v vern651x vern651y vern651z"]
+      expect(result).to eq ['vern651a vern651e vern651v vern651x vern651y vern651z']
 
       result = select_by_id('Vern653search')[field]
-      expect(result).to eq ["vern653a"]
+      expect(result).to eq ['vern653a']
 
       result = select_by_id('Vern654search')[field]
-      expect(result).to eq ["vern654a vern654b vern654c vern654e vern654v vern654y vern654z"]
+      expect(result).to eq ['vern654a vern654b vern654c vern654e vern654v vern654y vern654z']
 
       result = select_by_id('Vern655search')[field]
-      expect(result).to eq ["vern655a vern655b vern655c vern655v vern655x vern655y vern655z"]
+      expect(result).to eq ['vern655a vern655b vern655c vern655v vern655x vern655y vern655z']
 
       result = select_by_id('Vern656search')[field]
-      expect(result).to eq ["vern656a vern656k vern656v vern656x vern656y vern656z"]
+      expect(result).to eq ['vern656a vern656k vern656v vern656x vern656y vern656z']
 
       result = select_by_id('Vern657search')[field]
       expect(result).to eq ['vern657a vern657v vern657x vern657y vern657z']
@@ -1031,7 +1031,8 @@ RSpec.describe 'Subject config' do
     let(:field) { 'marc_collection_title_ssim' }
     let(:record) do
       MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('795', ' ', ' ', MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
+        r.append(MARC::DataField.new('795', ' ', ' ', MARC::Subfield.new('a', 'Main title'),
+                                     MARC::Subfield.new('p', 'A subtitle')))
       end
     end
 
@@ -1044,7 +1045,8 @@ RSpec.describe 'Subject config' do
     let(:field) { 'vern_marc_collection_title_ssim' }
     let(:record) do
       MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('880', ' ', ' ', MARC::Subfield.new('6', '795-00'), MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
+        r.append(MARC::DataField.new('880', ' ', ' ', MARC::Subfield.new('6', '795-00'),
+                                     MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
       end
     end
 
@@ -1058,13 +1060,16 @@ RSpec.describe 'Subject config' do
 
     let(:record) do
       MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('795', ' ', ' ', MARC::Subfield.new('a', 'Main title'), MARC::Subfield.new('p', 'A subtitle')))
-        r.append(MARC::DataField.new('880', ' ', ' ', MARC::Subfield.new('6', '795-00'), MARC::Subfield.new('a', 'Vernacular title')))
+        r.append(MARC::DataField.new('795', ' ', ' ', MARC::Subfield.new('a', 'Main title'),
+                                     MARC::Subfield.new('p', 'A subtitle')))
+        r.append(MARC::DataField.new('880', ' ', ' ', MARC::Subfield.new('6', '795-00'),
+                                     MARC::Subfield.new('a', 'Vernacular title')))
       end
     end
 
     it 'includes the collection title and subtitle' do
-      expect(result[field]).to eq [{ title: 'Main title A subtitle', source: 'sirsi' }, { source: 'sirsi', vernacular: 'Vernacular title' }].map(&:to_json)
+      expect(result[field]).to eq [{ title: 'Main title A subtitle', source: 'sirsi' },
+                                   { source: 'sirsi', vernacular: 'Vernacular title' }].map(&:to_json)
     end
   end
 end

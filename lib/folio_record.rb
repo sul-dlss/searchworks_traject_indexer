@@ -1,19 +1,22 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/module/delegation'
 require_relative 'traject/common/constants'
 
 class FolioRecord
   attr_reader :record, :client
+
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
 
   def self.new_from_source_record(record, client)
     FolioRecord.new({
-      'source_record' => [
-        record.dig('parsedRecord', 'content')
-      ],
-      'instance' => {
-        'id' => record.dig('externalIdsHolder', 'instanceId')
-      }
-    }, client)
+                      'source_record' => [
+                        record.dig('parsedRecord', 'content')
+                      ],
+                      'instance' => {
+                        'id' => record.dig('externalIdsHolder', 'instanceId')
+                      }
+                    }, client)
   end
 
   def initialize(record, client = nil)
@@ -39,7 +42,8 @@ class FolioRecord
       item_location_code = item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
       library_code, home_location_code = self.class.folio_sirsi_locations_map[item_location_code]
-      _current_library, current_location = self.class.folio_sirsi_locations_map[item.dig('location', 'location', 'code')]
+      _current_library, current_location = self.class.folio_sirsi_locations_map[item.dig('location', 'location',
+                                                                                         'code')]
 
       SirsiHolding.new(
         call_number: [item.dig('callNumber', 'callNumber'), item['volume']].compact.join(' '),
@@ -71,12 +75,11 @@ class FolioRecord
   end
 
   def self.folio_sirsi_locations_map
-    @folio_sirsi_locations_map ||= begin
-      CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'locations.tsv')), col_sep: "\t").each_with_object({}) do |row, hash|
-        library_code = row[1]
-        library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
-        hash[row[2]] ||= [library_code, row[0]]
-      end
+    @folio_sirsi_locations_map ||= CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'locations.tsv')),
+                                             col_sep: "\t").each_with_object({}) do |row, hash|
+      library_code = row[1]
+      library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
+      hash[row[2]] ||= [library_code, row[0]]
     end
   end
 
@@ -85,7 +88,9 @@ class FolioRecord
   end
 
   def holdings
-    (record['holdings'] || items_and_holdings&.dig('holdings') || []).compact.reject { |holding| holding['suppressFromDiscovery'] }
+    (record['holdings'] || items_and_holdings&.dig('holdings') || []).compact.reject do |holding|
+      holding['suppressFromDiscovery']
+    end
   end
 
   def instance
@@ -141,7 +146,7 @@ class FolioRecord
       record.dig('instance', 'editions').each do |edition|
         marc.append(MARC::DataField.new('250', '0', '', ['a', edition]))
       end
-      #instanceTypeId
+      # instanceTypeId
       record.dig('instance', 'publication').each do |pub|
         field = MARC::DataField.new('264', '0', '0')
         field.append(MARC::Subfield.new('a', pub['place'])) if pub['place']
@@ -172,7 +177,7 @@ class FolioRecord
       # nature of content
       marc.append(MARC::DataField.new('999', '', '', ['i', record.dig('instance', 'id')]))
       # date creaetd
-      #date updated
+      # date updated
     end.to_hash
   end
 end

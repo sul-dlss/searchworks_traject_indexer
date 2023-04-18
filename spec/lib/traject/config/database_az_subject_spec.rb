@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Sirsi config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -21,13 +23,12 @@ RSpec.describe 'Sirsi config' do
           r.append(MARC::DataField.new('099', ' ', ' ', MARC::Subfield.new('a', 'AP')))
           r.append(MARC::DataField.new('099', ' ', ' ', MARC::Subfield.new('a', 'Q')))
           r.append(MARC::DataField.new('999', ' ', ' ',
-            MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-            MARC::Subfield.new('w', 'ALPHANUM'),
-            MARC::Subfield.new('i', '1'),
-            MARC::Subfield.new('l', 'INTERNET'),
-            MARC::Subfield.new('m', 'SUL'),
-            MARC::Subfield.new('t', 'DATABASE')
-          ))
+                                       MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                       MARC::Subfield.new('w', 'ALPHANUM'),
+                                       MARC::Subfield.new('i', '1'),
+                                       MARC::Subfield.new('l', 'INTERNET'),
+                                       MARC::Subfield.new('m', 'SUL'),
+                                       MARC::Subfield.new('t', 'DATABASE')))
         end
       end
 
@@ -43,13 +44,12 @@ RSpec.describe 'Sirsi config' do
           r.append(MARC::ControlField.new('008', '040727c20049999nyuuu dss     0    2eng d'))
           r.append(MARC::DataField.new('099', ' ', ' ', MARC::Subfield.new('b', 'Q')))
           r.append(MARC::DataField.new('999', ' ', ' ',
-            MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-            MARC::Subfield.new('w', 'ALPHANUM'),
-            MARC::Subfield.new('i', '1'),
-            MARC::Subfield.new('l', 'INTERNET'),
-            MARC::Subfield.new('m', 'SUL'),
-            MARC::Subfield.new('t', 'DATABASE')
-          ))
+                                       MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                       MARC::Subfield.new('w', 'ALPHANUM'),
+                                       MARC::Subfield.new('i', '1'),
+                                       MARC::Subfield.new('l', 'INTERNET'),
+                                       MARC::Subfield.new('m', 'SUL'),
+                                       MARC::Subfield.new('t', 'DATABASE')))
         end
       end
 
@@ -67,13 +67,12 @@ RSpec.describe 'Sirsi config' do
         r.append(MARC::DataField.new('099', ' ', ' ', MARC::Subfield.new('a', 'JK')))
         r.append(MARC::DataField.new('099', ' ', ' ', MARC::Subfield.new('a', 'XM')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '6859025-2001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL'),
-          MARC::Subfield.new('t', 'DATABASE')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '6859025-2001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -88,13 +87,12 @@ RSpec.describe 'Sirsi config' do
         r.leader = '01541cai a2200349Ia 4500'
         r.append(MARC::ControlField.new('008', '030701c200u9999dcuuu dss 000 02eng d'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '1'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL'),
-          MARC::Subfield.new('t', 'DATABASE')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '1'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 

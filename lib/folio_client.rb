@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'http'
 require_relative 'folio_record'
 
@@ -19,7 +21,10 @@ class FolioClient
     if uri.user
       @username ||= uri.user
       @password ||= uri.password
-      @base_url = uri.dup.tap { |u| u.user = nil; u.password = nil }.to_s
+      @base_url = uri.dup.tap do |u|
+        u.user = nil
+        u.password = nil
+      end.to_s
     end
 
     @tenant = tenant
@@ -34,7 +39,9 @@ class FolioClient
   end
 
   def source_record(**kwargs)
-    FolioRecord.new_from_source_record(get_json("/source-storage/source-records", params: kwargs).dig('sourceRecords', 0), self)
+    FolioRecord.new_from_source_record(
+      get_json('/source-storage/source-records', params: kwargs).dig('sourceRecords', 0), self
+    )
   end
 
   private

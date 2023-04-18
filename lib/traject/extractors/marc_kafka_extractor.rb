@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'kafka'
 require 'kafka/statsd'
 require 'active_support' # required internally by ruby-kafka
@@ -16,7 +18,7 @@ class Traject::MarcKafkaExtractor
       ckey = records_to_combine.first['001'].value.sub(/^a/, '')
       Utils.logger.debug("Traject::MarcKafkaExtractor#each(#{ckey})")
 
-      producer.produce(records_to_combine.map { |x| x.to_marc }.join(''), key: ckey, topic: topic)
+      producer.produce(records_to_combine.map { |x| x.to_marc }.join(''), key: ckey, topic:)
     end
   ensure
     producer.deliver_messages
@@ -33,7 +35,7 @@ class Traject::MarcKafkaExtractor
 
       # Trigger a delivery every 30 seconds.
       delivery_interval: 30,
-      max_queue_size: 10000000
+      max_queue_size: 10_000_000
     )
   end
 end

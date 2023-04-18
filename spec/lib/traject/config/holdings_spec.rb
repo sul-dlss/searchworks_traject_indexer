@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Holdings config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -62,7 +64,7 @@ RSpec.describe 'Holdings config' do
       context do
         let(:fixture_name) { '7770475.marc' }
         it do
-          expect{select_by_id('7770475')[field]}.not_to raise_error
+          expect { select_by_id('7770475')[field] }.not_to raise_error
         end
       end
     end
@@ -73,31 +75,27 @@ RSpec.describe 'Holdings config' do
           MARC::Record.new.tap do |r|
             r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
             r.append(MARC::DataField.new('852', ' ', ' ',
-              MARC::Subfield.new('a', 'CSt'),
-              MARC::Subfield.new('b', 'MATH-CS'),
-              MARC::Subfield.new('c', 'SHELBYTITL'),
-              MARC::Subfield.new('=', '8287')
-            ))
+                                         MARC::Subfield.new('a', 'CSt'),
+                                         MARC::Subfield.new('b', 'MATH-CS'),
+                                         MARC::Subfield.new('c', 'SHELBYTITL'),
+                                         MARC::Subfield.new('=', '8287')))
             r.append(MARC::DataField.new('853', '2', ' ',
-              MARC::Subfield.new('8', '2'),
-              MARC::Subfield.new('a', 'v.'),
-              MARC::Subfield.new('b', 'no.'),
-              MARC::Subfield.new('u', '4'),
-              MARC::Subfield.new('v', 'r'),
-              MARC::Subfield.new('i', '(year)'),
-              MARC::Subfield.new('j', '(unit)')
-            ))
+                                         MARC::Subfield.new('8', '2'),
+                                         MARC::Subfield.new('a', 'v.'),
+                                         MARC::Subfield.new('b', 'no.'),
+                                         MARC::Subfield.new('u', '4'),
+                                         MARC::Subfield.new('v', 'r'),
+                                         MARC::Subfield.new('i', '(year)'),
+                                         MARC::Subfield.new('j', '(unit)')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '2.57'),
-              MARC::Subfield.new('a', '54'),
-              MARC::Subfield.new('b', '1'),
-              MARC::Subfield.new('i', '2013'),
-              MARC::Subfield.new('j', '1_TRIMESTRE')
-            ))
+                                         MARC::Subfield.new('8', '2.57'),
+                                         MARC::Subfield.new('a', '54'),
+                                         MARC::Subfield.new('b', '1'),
+                                         MARC::Subfield.new('i', '2013'),
+                                         MARC::Subfield.new('j', '1_TRIMESTRE')))
             r.append(MARC::DataField.new('866', '3', '1',
-              MARC::Subfield.new('8', '1'),
-              MARC::Subfield.new('a', 'v.25(1984)-')
-            ))
+                                         MARC::Subfield.new('8', '1'),
+                                         MARC::Subfield.new('a', 'v.25(1984)-')))
           end
         end
         it do
@@ -110,30 +108,27 @@ RSpec.describe 'Holdings config' do
           MARC::Record.new.tap do |r|
             r.append(MARC::ControlField.new('001', 'alatestRecdPatterns'))
             r.append(MARC::DataField.new('852', ' ', ' ',
-              MARC::Subfield.new('a', 'CSt'),
-              MARC::Subfield.new('b', 'lib'),
-              MARC::Subfield.new('c', 'loc'),
-              MARC::Subfield.new('=', 'output latest received')
-            ))
+                                         MARC::Subfield.new('a', 'CSt'),
+                                         MARC::Subfield.new('b', 'lib'),
+                                         MARC::Subfield.new('c', 'loc'),
+                                         MARC::Subfield.new('=', 'output latest received')))
             r.append(MARC::DataField.new('853', '2', ' ',
-              MARC::Subfield.new('8', '3'),
-              MARC::Subfield.new('a', 'v.'),
-              MARC::Subfield.new('b', 'pt.'),
-              MARC::Subfield.new('u', '3'),
-              MARC::Subfield.new('v', 'r'),
-              MARC::Subfield.new('c', 'no.'),
-              MARC::Subfield.new('v', 'c'),
-              MARC::Subfield.new('i', '(year)'),
-              MARC::Subfield.new('j', '(season)')
-            ))
+                                         MARC::Subfield.new('8', '3'),
+                                         MARC::Subfield.new('a', 'v.'),
+                                         MARC::Subfield.new('b', 'pt.'),
+                                         MARC::Subfield.new('u', '3'),
+                                         MARC::Subfield.new('v', 'r'),
+                                         MARC::Subfield.new('c', 'no.'),
+                                         MARC::Subfield.new('v', 'c'),
+                                         MARC::Subfield.new('i', '(year)'),
+                                         MARC::Subfield.new('j', '(season)')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '3.36'),
-              MARC::Subfield.new('a', '106'),
-              MARC::Subfield.new('b', '3'),
-              MARC::Subfield.new('c', '482'),
-              MARC::Subfield.new('i', '2010'),
-              MARC::Subfield.new('j', 'WIN')
-            ))
+                                         MARC::Subfield.new('8', '3.36'),
+                                         MARC::Subfield.new('a', '106'),
+                                         MARC::Subfield.new('b', '3'),
+                                         MARC::Subfield.new('c', '482'),
+                                         MARC::Subfield.new('i', '2010'),
+                                         MARC::Subfield.new('j', 'WIN')))
           end
         end
         it do
@@ -144,21 +139,18 @@ RSpec.describe 'Holdings config' do
             MARC::Record.new.tap do |r|
               r.append(MARC::ControlField.new('001', 'alatestRecdPatterns'))
               r.append(MARC::DataField.new('852', ' ', ' ',
-                MARC::Subfield.new('a', 'CSt'),
-                MARC::Subfield.new('b', 'lib'),
-                MARC::Subfield.new('c', 'loc'),
-                MARC::Subfield.new('=', 'output latest received')
-              ))
+                                           MARC::Subfield.new('a', 'CSt'),
+                                           MARC::Subfield.new('b', 'lib'),
+                                           MARC::Subfield.new('c', 'loc'),
+                                           MARC::Subfield.new('=', 'output latest received')))
               r.append(MARC::DataField.new('853', '2', ' ',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'v.'),
-                MARC::Subfield.new('i', '(year)')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'v.'),
+                                           MARC::Subfield.new('i', '(year)')))
               r.append(MARC::DataField.new('863', ' ', '1',
-                MARC::Subfield.new('8', '1.11'),
-                MARC::Subfield.new('a', '105'),
-                MARC::Subfield.new('i', '2009'),
-              ))
+                                           MARC::Subfield.new('8', '1.11'),
+                                           MARC::Subfield.new('a', '105'),
+                                           MARC::Subfield.new('i', '2009')))
             end
           end
           it do
@@ -170,29 +162,26 @@ RSpec.describe 'Holdings config' do
             MARC::Record.new.tap do |r|
               r.append(MARC::ControlField.new('001', 'alatestRecdPatterns'))
               r.append(MARC::DataField.new('852', ' ', ' ',
-                MARC::Subfield.new('a', 'CSt'),
-                MARC::Subfield.new('b', 'lib'),
-                MARC::Subfield.new('c', 'loc'),
-                MARC::Subfield.new('=', 'output latest received')
-              ))
+                                           MARC::Subfield.new('a', 'CSt'),
+                                           MARC::Subfield.new('b', 'lib'),
+                                           MARC::Subfield.new('c', 'loc'),
+                                           MARC::Subfield.new('=', 'output latest received')))
               r.append(MARC::DataField.new('853', '2', ' ',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'v.'),
-                MARC::Subfield.new('b', 'no.'),
-                MARC::Subfield.new('u', '52'),
-                MARC::Subfield.new('v', 'r'),
-                MARC::Subfield.new('i', '(year)'),
-                MARC::Subfield.new('j', '(month)'),
-                MARC::Subfield.new('k', '(day)')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'v.'),
+                                           MARC::Subfield.new('b', 'no.'),
+                                           MARC::Subfield.new('u', '52'),
+                                           MARC::Subfield.new('v', 'r'),
+                                           MARC::Subfield.new('i', '(year)'),
+                                           MARC::Subfield.new('j', '(month)'),
+                                           MARC::Subfield.new('k', '(day)')))
               r.append(MARC::DataField.new('863', ' ', '1',
-                MARC::Subfield.new('8', '1.569'),
-                MARC::Subfield.new('a', '205'),
-                MARC::Subfield.new('b', '10'),
-                MARC::Subfield.new('i', '2011'),
-                MARC::Subfield.new('j', '03'),
-                MARC::Subfield.new('k', '9')
-              ))
+                                           MARC::Subfield.new('8', '1.569'),
+                                           MARC::Subfield.new('a', '205'),
+                                           MARC::Subfield.new('b', '10'),
+                                           MARC::Subfield.new('i', '2011'),
+                                           MARC::Subfield.new('j', '03'),
+                                           MARC::Subfield.new('k', '9')))
             end
           end
           it do
@@ -208,24 +197,20 @@ RSpec.describe 'Holdings config' do
             MARC::Record.new.tap do |r|
               r.append(MARC::ControlField.new('001', 'asubz866'))
               r.append(MARC::DataField.new('852', ' ', ' ',
-                MARC::Subfield.new('a', 'CSt'),
-                MARC::Subfield.new('b', 'lib'),
-                MARC::Subfield.new('c', 'loc')
-              ))
+                                           MARC::Subfield.new('a', 'CSt'),
+                                           MARC::Subfield.new('b', 'lib'),
+                                           MARC::Subfield.new('c', 'loc')))
               r.append(MARC::DataField.new('866', ' ', '0',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'pt.1-4'),
-                MARC::Subfield.new('z', '<v.3,16,27-28 in series>')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'pt.1-4'),
+                                           MARC::Subfield.new('z', '<v.3,16,27-28 in series>')))
               r.append(MARC::DataField.new('866', '8', '1',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'pt.2'),
-                MARC::Subfield.new('z', '<v.16 in series>')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'pt.2'),
+                                           MARC::Subfield.new('z', '<v.16 in series>')))
               r.append(MARC::DataField.new('866', '8', '1',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'pt.5'),
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'pt.5')))
             end
           end
           it do
@@ -239,23 +224,19 @@ RSpec.describe 'Holdings config' do
             MARC::Record.new.tap do |r|
               r.append(MARC::ControlField.new('001', 'asubz867'))
               r.append(MARC::DataField.new('852', ' ', ' ',
-                MARC::Subfield.new('a', 'CSt'),
-                MARC::Subfield.new('b', 'lib'),
-                MARC::Subfield.new('c', 'loc')
-              ))
+                                           MARC::Subfield.new('a', 'CSt'),
+                                           MARC::Subfield.new('b', 'lib'),
+                                           MARC::Subfield.new('c', 'loc')))
               r.append(MARC::DataField.new('867', ' ', '0',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'first'),
-                MARC::Subfield.new('z', 'subz')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'first'),
+                                           MARC::Subfield.new('z', 'subz')))
               r.append(MARC::DataField.new('867', ' ', '0',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'second')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'second')))
               r.append(MARC::DataField.new('866', '3', '1',
-                MARC::Subfield.new('8', '0'),
-                MARC::Subfield.new('a', 'v.188')
-              ))
+                                           MARC::Subfield.new('8', '0'),
+                                           MARC::Subfield.new('a', 'v.188')))
             end
           end
           it do
@@ -270,23 +251,19 @@ RSpec.describe 'Holdings config' do
             MARC::Record.new.tap do |r|
               r.append(MARC::ControlField.new('001', 'asubz868'))
               r.append(MARC::DataField.new('852', ' ', ' ',
-                MARC::Subfield.new('a', 'CSt'),
-                MARC::Subfield.new('b', 'lib'),
-                MARC::Subfield.new('c', 'loc')
-              ))
+                                           MARC::Subfield.new('a', 'CSt'),
+                                           MARC::Subfield.new('b', 'lib'),
+                                           MARC::Subfield.new('c', 'loc')))
               r.append(MARC::DataField.new('868', ' ', '0',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'first'),
-                MARC::Subfield.new('z', 'subz')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'first'),
+                                           MARC::Subfield.new('z', 'subz')))
               r.append(MARC::DataField.new('868', ' ', '0',
-                MARC::Subfield.new('8', '1'),
-                MARC::Subfield.new('a', 'second')
-              ))
+                                           MARC::Subfield.new('8', '1'),
+                                           MARC::Subfield.new('a', 'second')))
               r.append(MARC::DataField.new('866', '3', '1',
-                MARC::Subfield.new('8', '0'),
-                MARC::Subfield.new('a', 'v.188')
-              ))
+                                           MARC::Subfield.new('8', '0'),
+                                           MARC::Subfield.new('a', 'v.188')))
             end
           end
           it do
@@ -304,50 +281,41 @@ RSpec.describe 'Holdings config' do
           MARC::Record.new.tap do |r|
             r.append(MARC::ControlField.new('001', 'alatest'))
             r.append(MARC::DataField.new('852', ' ', ' ',
-              MARC::Subfield.new('a', 'CSt'),
-              MARC::Subfield.new('b', 'lib'),
-              MARC::Subfield.new('c', 'loc'),
-              MARC::Subfield.new('=', '41906')
-            ))
+                                         MARC::Subfield.new('a', 'CSt'),
+                                         MARC::Subfield.new('b', 'lib'),
+                                         MARC::Subfield.new('c', 'loc'),
+                                         MARC::Subfield.new('=', '41906')))
             r.append(MARC::DataField.new('853', '2', ' ',
-              MARC::Subfield.new('8', '2'),
-              MARC::Subfield.new('a', '(year)')
-            ))
+                                         MARC::Subfield.new('8', '2'),
+                                         MARC::Subfield.new('a', '(year)')))
             r.append(MARC::DataField.new('853', '2', ' ',
-              MARC::Subfield.new('8', '3'),
-              MARC::Subfield.new('a', '(year)'),
-              MARC::Subfield.new('b', 'pt.'),
-              MARC::Subfield.new('u', '2'),
-              MARC::Subfield.new('v', 'r'),
-            ))
+                                         MARC::Subfield.new('8', '3'),
+                                         MARC::Subfield.new('a', '(year)'),
+                                         MARC::Subfield.new('b', 'pt.'),
+                                         MARC::Subfield.new('u', '2'),
+                                         MARC::Subfield.new('v', 'r')))
             r.append(MARC::DataField.new('866', '3', '1',
-              MARC::Subfield.new('8', '1'),
-              MARC::Subfield.new('a', '2003,2006-')
-            ))
+                                         MARC::Subfield.new('8', '1'),
+                                         MARC::Subfield.new('a', '2003,2006-')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '2.1'),
-              MARC::Subfield.new('a', '2003')
-            ))
+                                         MARC::Subfield.new('8', '2.1'),
+                                         MARC::Subfield.new('a', '2003')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '3.1'),
-              MARC::Subfield.new('a', '2006'),
-              MARC::Subfield.new('b', '1')
-            ))
+                                         MARC::Subfield.new('8', '3.1'),
+                                         MARC::Subfield.new('a', '2006'),
+                                         MARC::Subfield.new('b', '1')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '3.2'),
-              MARC::Subfield.new('a', '2006'),
-              MARC::Subfield.new('b', '2')
-            ))
+                                         MARC::Subfield.new('8', '3.2'),
+                                         MARC::Subfield.new('a', '2006'),
+                                         MARC::Subfield.new('b', '2')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '3.3'),
-              MARC::Subfield.new('a', '2011'),
-              MARC::Subfield.new('b', '1')
-            ))
+                                         MARC::Subfield.new('8', '3.3'),
+                                         MARC::Subfield.new('a', '2011'),
+                                         MARC::Subfield.new('b', '1')))
             r.append(MARC::DataField.new('863', ' ', '1',
-              MARC::Subfield.new('8', '3.4'),
-              MARC::Subfield.new('a', '2011'),
-              MARC::Subfield.new('b', '2')
-            ))
+                                         MARC::Subfield.new('8', '3.4'),
+                                         MARC::Subfield.new('a', '2011'),
+                                         MARC::Subfield.new('b', '2')))
           end
         end
         it do
@@ -360,20 +328,17 @@ RSpec.describe 'Holdings config' do
           MARC::Record.new.tap do |r|
             r.append(MARC::ControlField.new('001', 'malformedsub8'))
             r.append(MARC::DataField.new('852', ' ', ' ',
-              MARC::Subfield.new('a', 'CSt'),
-              MARC::Subfield.new('b', 'EAST-ASIA'),
-              MARC::Subfield.new('c', 'CHINESE')
-            ))
+                                         MARC::Subfield.new('a', 'CSt'),
+                                         MARC::Subfield.new('b', 'EAST-ASIA'),
+                                         MARC::Subfield.new('c', 'CHINESE')))
             r.append(MARC::DataField.new('866', '3', '1',
-              MARC::Subfield.new('a', 'v.5:no.7/8(1982:June)-v.7:no.9/10(1983:Aug.);v.8:no.1/2(1983:Sept.)-v.13:no.9/10(1988:Oct.),v.13:no.9(1992:Aug.)-v.14:no.9(1993:Oct.); '),
-              MARC::Subfield.new('8', '0')
-            ))
+                                         MARC::Subfield.new('a', 'v.5:no.7/8(1982:June)-v.7:no.9/10(1983:Aug.);v.8:no.1/2(1983:Sept.)-v.13:no.9/10(1988:Oct.),v.13:no.9(1992:Aug.)-v.14:no.9(1993:Oct.); '),
+                                         MARC::Subfield.new('8', '0')))
             r.append(MARC::DataField.new('863', '3', '1',
-              MARC::Subfield.new('a', 'no.182/183(1994:Jan.)-no.191(1994:Oct.),no.193(1994:Dec.)-no.229(1997:Dec.) '),
-              MARC::Subfield.new('8', '0'),
-              MARC::Subfield.new('c', 'No content metadata'),
-              MARC::Subfield.new('d', 'Lucie King Harris Fund')
-            ))
+                                         MARC::Subfield.new('a', 'no.182/183(1994:Jan.)-no.191(1994:Oct.),no.193(1994:Dec.)-no.229(1997:Dec.) '),
+                                         MARC::Subfield.new('8', '0'),
+                                         MARC::Subfield.new('c', 'No content metadata'),
+                                         MARC::Subfield.new('d', 'Lucie King Harris Fund')))
           end
         end
         it do
@@ -407,9 +372,9 @@ RSpec.describe 'Holdings config' do
         # it should not be included.
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          expect(select_by_id('SkippedLocs')[field]).not_to include /3FL-REF-S/
-          expect(select_by_id('SkippedLocs')[field]).not_to include /LOCKSS/
-          expect(select_by_id('SkippedLocs')[field]).not_to include /WITHDRAWN/
+          expect(select_by_id('SkippedLocs')[field]).not_to include(/3FL-REF-S/)
+          expect(select_by_id('SkippedLocs')[field]).not_to include(/LOCKSS/)
+          expect(select_by_id('SkippedLocs')[field]).not_to include(/WITHDRAWN/)
           expect(select_by_id('SkippedLocs')[field].length).to eq 1
           expect(select_by_id('SkippedLocs')[field]).to include 'lib -|- loc -|-  -|-  -|- '
         end
@@ -448,7 +413,7 @@ RSpec.describe 'Holdings config' do
       end
       describe 'multiple 866' do
         # when there are multiple 866s in a record, the "latest received" should
-	      # only attach to the open holdings statement
+        # only attach to the open holdings statement
         let(:fixture_name) { 'mhldDisplayEasy2.mrc' }
         it do
           expect(select_by_id('111')[field].length).to eq 4
@@ -460,7 +425,7 @@ RSpec.describe 'Holdings config' do
       end
       describe '866 and 867' do
         # the "latest received" should only attach to the open holdings statement
-	      # when there are multiple 866s, or combination of 866 and 867 or 868
+        # when there are multiple 866s, or combination of 866 and 867 or 868
         let(:fixture_name) { 'mhldDisplayEasy2.mrc' }
         it do
           expect(select_by_id('222')[field].length).to eq 2
@@ -469,21 +434,21 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'no longer skipped 866' do
-        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are 
+        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are
         #  NOT skipped: display 866 regardless of second indicator value or presence of 852 sub =
-        # previously: 
+        # previously:
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
         #  is skipped if 866 has ind2 of 0 and 852 has a sub =
         let(:fixture_name) { 'mhldDisplay86x.mrc' }
         it do
           start = 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in STACKS -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 1A (JAN 2011) -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 4A (FEB 2011) -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 5A (FEB 2011) -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 20A (JUN 2011) -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 21A (JUN 2011) -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 22A (JUN 2011) -|- '
-          expect(select_by_id('362573')[field]).to include start + 'V. 417 NO. 23A (JUN 2011) -|- '
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 1A (JAN 2011) -|- "
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 4A (FEB 2011) -|- "
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 5A (FEB 2011) -|- "
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 20A (JUN 2011) -|- "
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 21A (JUN 2011) -|- "
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 22A (JUN 2011) -|- "
+          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 23A (JUN 2011) -|- "
         end
       end
       describe 'ensure all (non-skipped) 867s are output correctly' do
@@ -491,8 +456,8 @@ RSpec.describe 'Holdings config' do
         it do
           expect(select_by_id('keep867ind0')[field]).to eq ['GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- ']
           start = 'GREEN -|- STACKS -|- Supplement -|- Supplement: '
-          expect(select_by_id('multKeep867ind0')[field][1]).to eq start + 'keep me 1 (867) -|- '
-          expect(select_by_id('multKeep867ind0')[field][2]).to eq start + 'keep me 2 (867) -|- '
+          expect(select_by_id('multKeep867ind0')[field][1]).to eq "#{start}keep me 1 (867) -|- "
+          expect(select_by_id('multKeep867ind0')[field][2]).to eq "#{start}keep me 2 (867) -|- "
         end
       end
       describe '867 no 866' do
@@ -505,18 +470,18 @@ RSpec.describe 'Holdings config' do
       end
       describe 'no longer skipped 867' do
         ##
-        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are 
+        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are
         #  NOT skipped: display 867 regardless of second indicator value or presence of 852 sub =
-        # previously: 
+        # previously:
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
-        #  is skipped if 867 has ind2 of 0 and 852 has a sub = 
+        #  is skipped if 867 has ind2 of 0 and 852 has a sub =
         let(:fixture_name) { 'mhldDisplay867.mrc' }
         it do
           start = 'GREEN -|- STACKS -|-  -|- Supplement: '
-          expect(select_by_id('skip867ind0')[field]).to eq [start + 'skip me (867) -|- ']
+          expect(select_by_id('skip867ind0')[field]).to eq ["#{start}skip me (867) -|- "]
           expect(select_by_id('multSkip867ind0')[field]).to eq [
-            start + 'skip me 1 (867) -|- ',
-            start + 'skip me 2 (867) -|- ',
+            "#{start}skip me 1 (867) -|- ",
+            "#{start}skip me 2 (867) -|- ",
             'GREEN -|- STACKS -|- Supplement -|-  -|- '
           ]
         end
@@ -539,18 +504,18 @@ RSpec.describe 'Holdings config' do
       end
       describe 'no longer skipped 868' do
         ##
-        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are 
+        # per email by Naomi Dushay on October 14, 2011, MHLD summary holdings are
         #  NOT skipped: display 868 regardless of second indicator value or presence of 852 sub =
-        # previously: 
+        # previously:
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
-        #  is skipped if 868 has ind2 of 0 and 852 has a sub = 
+        #  is skipped if 868 has ind2 of 0 and 852 has a sub =
         let(:fixture_name) { 'mhldDisplay868.mrc' }
         it do
           start = 'GREEN -|- CURRENTPER -|- skip 868 -|- Index: '
-          expect(select_by_id('skip868ind0')[field]).to include start + 'skip me (868) -|- '
+          expect(select_by_id('skip868ind0')[field]).to include "#{start}skip me (868) -|- "
           start = 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: '
-          expect(select_by_id('multSkip868ind0')[field]).to include start + 'skip me 1 (868) -|- '
-          expect(select_by_id('multSkip868ind0')[field]).to include start + 'skip me 2 (868) -|- '
+          expect(select_by_id('multSkip868ind0')[field]).to include "#{start}skip me 1 (868) -|- "
+          expect(select_by_id('multSkip868ind0')[field]).to include "#{start}skip me 2 (868) -|- "
         end
       end
       describe '852 subfield 3 should be included in the comment' do
@@ -583,7 +548,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'no 866' do
-        # if there is no 866, then 
+        # if there is no 866, then
         # if the 852 has a sub = , then display the most recent 863
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
@@ -616,7 +581,7 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- 2009- -|- 2011:Summer'
           expect(select_by_id('358041')[field]).to include 'SAL3 -|- STACKS -|-  -|- v.151(1972)-v.152(1972) -|- '
           expect(select_by_id('358041')[field]).to include 'SAL -|- STACKS -|-  -|- 1953; v.143(1968)-v.144(1968),v.153(1973)-v.154(1973),v.164(1978),v.166(1979),v.175(1984),v.178(1985),v.182(1988)-v.183(1989),v.194(2000)- -|- '
-          # 867 ind 0  previous 852 has sub =  - now used per email by Naomi Dushay on October 14, 2011 	
+          # 867 ind 0  previous 852 has sub =  - now used per email by Naomi Dushay on October 14, 2011
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- Supplement: COUNTRY LIFE ABROAD (WIN 2001), (JUL 14, 2005) -|- v.205:no.22 (2011:June 1)'
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE TRAVEL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- 2010/2011:Winter'
         end
@@ -640,11 +605,10 @@ RSpec.describe 'Holdings config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'BAILEYT'),
-            MARC::Subfield.new('b', 'druid:tf882hn2198'),
-            MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
-            MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')
-          ))
+                                       MARC::Subfield.new('f', 'BAILEYT'),
+                                       MARC::Subfield.new('b', 'druid:tf882hn2198'),
+                                       MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
+                                       MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')))
         end
       end
       it do
@@ -656,23 +620,20 @@ RSpec.describe 'Holdings config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'BAILEYT'),
-            MARC::Subfield.new('b', 'druid:tf882hn2198'),
-            MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
-            MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')
-          ))
+                                       MARC::Subfield.new('f', 'BAILEYT'),
+                                       MARC::Subfield.new('b', 'druid:tf882hn2198'),
+                                       MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
+                                       MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'HARRISL'),
-            MARC::Subfield.new('b', 'druid:bm267dr4255'),
-            MARC::Subfield.new('c', 'No content metadata'),
-            MARC::Subfield.new('d', 'Lucie King Harris Fund')
-          ))
+                                       MARC::Subfield.new('f', 'HARRISL'),
+                                       MARC::Subfield.new('b', 'druid:bm267dr4255'),
+                                       MARC::Subfield.new('c', 'No content metadata'),
+                                       MARC::Subfield.new('d', 'Lucie King Harris Fund')))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'BENDERRM'),
-            MARC::Subfield.new('b', 'druid:hd360gv1231'),
-            MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
-            MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')
-          ))
+                                       MARC::Subfield.new('f', 'BENDERRM'),
+                                       MARC::Subfield.new('b', 'druid:hd360gv1231'),
+                                       MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
+                                       MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')))
         end
       end
       it do
@@ -686,11 +647,10 @@ RSpec.describe 'Holdings config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'HARRISL'),
-            MARC::Subfield.new('b', 'druid:bm267dr4255'),
-            MARC::Subfield.new('c', 'No content metadata'),
-            MARC::Subfield.new('d', 'Lucie King Harris Fund')
-          ))
+                                       MARC::Subfield.new('f', 'HARRISL'),
+                                       MARC::Subfield.new('b', 'druid:bm267dr4255'),
+                                       MARC::Subfield.new('c', 'No content metadata'),
+                                       MARC::Subfield.new('d', 'Lucie King Harris Fund')))
         end
       end
       it do
@@ -705,15 +665,14 @@ RSpec.describe 'Holdings config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'BENDERRM'),
-            MARC::Subfield.new('b', 'druid:hd360gv1231'),
-            MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
-            MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')
-          ))
+                                       MARC::Subfield.new('f', 'BENDERRM'),
+                                       MARC::Subfield.new('b', 'druid:hd360gv1231'),
+                                       MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
+                                       MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')))
         end
       end
       it do
-        expect(result[field]).to eq ['BENDERRM', 'hd360gv1231']
+        expect(result[field]).to eq %w[BENDERRM hd360gv1231]
       end
     end
     describe 'multiple 979' do
@@ -721,27 +680,24 @@ RSpec.describe 'Holdings config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('001', 'aunitAfterYear'))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'BAILEYT'),
-            MARC::Subfield.new('b', 'druid:tf882hn2198'),
-            MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
-            MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')
-          ))
+                                       MARC::Subfield.new('f', 'BAILEYT'),
+                                       MARC::Subfield.new('b', 'druid:tf882hn2198'),
+                                       MARC::Subfield.new('c', 'tf882hn2198_00_0001.jp2'),
+                                       MARC::Subfield.new('d', 'Annie Nelson Bailey Memorial Book Fund')))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'HARRISL'),
-            MARC::Subfield.new('b', 'druid:bm267dr4255'),
-            MARC::Subfield.new('c', 'No content metadata'),
-            MARC::Subfield.new('d', 'Lucie King Harris Fund')
-          ))
+                                       MARC::Subfield.new('f', 'HARRISL'),
+                                       MARC::Subfield.new('b', 'druid:bm267dr4255'),
+                                       MARC::Subfield.new('c', 'No content metadata'),
+                                       MARC::Subfield.new('d', 'Lucie King Harris Fund')))
           r.append(MARC::DataField.new('979', ' ', ' ',
-            MARC::Subfield.new('f', 'BENDERRM'),
-            MARC::Subfield.new('b', 'druid:hd360gv1231'),
-            MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
-            MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')
-          ))
+                                       MARC::Subfield.new('f', 'BENDERRM'),
+                                       MARC::Subfield.new('b', 'druid:hd360gv1231'),
+                                       MARC::Subfield.new('c', 'hd360gv1231_00_0001.jp2'),
+                                       MARC::Subfield.new('d', 'Stanford Bookstore : Centennial')))
         end
       end
       it do
-        expect(result[field]).to eq ['BAILEYT', 'tf882hn2198', 'BENDERRM', 'hd360gv1231']
+        expect(result[field]).to eq %w[BAILEYT tf882hn2198 BENDERRM hd360gv1231]
       end
     end
   end

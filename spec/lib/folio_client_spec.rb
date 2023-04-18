@@ -3,7 +3,7 @@
 require 'folio_client'
 
 RSpec.describe FolioClient do
-  subject(:client) { described_class.new(url: url) }
+  subject(:client) { described_class.new(url:) }
   let(:url) { 'https://example.com' }
 
   before do
@@ -38,7 +38,7 @@ RSpec.describe FolioClient do
   describe '#get_json' do
     before do
       stub_request(:get, 'https://example.com/blah')
-        .to_return(body: body)
+        .to_return(body:)
     end
 
     let(:body) { '{"hello": "world"}' }
@@ -60,7 +60,7 @@ RSpec.describe FolioClient do
     before do
       stub_request(:get, 'https://example.com/source-storage/source-records?instanceHrid=a123')
         .with(headers: { 'x-okapi-token': 'tokentokentoken', 'X-Okapi-Tenant': 'sul' })
-        .to_return(body: body)
+        .to_return(body:)
     end
 
     let(:body) do

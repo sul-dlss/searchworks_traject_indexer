@@ -78,7 +78,7 @@ indexer = self
 # rubocop:disable Metrics/BlockLength
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
-  provide 'solr.url', ENV['SOLR_URL']
+  provide 'solr.url', ENV.fetch('SOLR_URL', nil)
   provide 'solr_better_json_writer.debounce_timeout', 5
 
   # These parameters are expected on the command line if you want to connect to a kafka topic:

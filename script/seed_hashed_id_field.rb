@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'httpclient'
 require 'digest/md5'
 require 'json'
@@ -9,10 +11,10 @@ ARGF.each_line do |id|
   id.strip!
 
   doc = {
-   id_field => id.to_s,
-   hashed_id_ssi: { set: Digest::MD5.hexdigest(id) }
- }
+    id_field => id.to_s,
+    hashed_id_ssi: { set: Digest::MD5.hexdigest(id) }
+  }
 
-  resp = client.post ENV['SOLR_URL'], [doc].to_json, 'Content-Type' => 'application/json'
+  resp = client.post ENV.fetch('SOLR_URL', nil), [doc].to_json, 'Content-Type' => 'application/json'
   puts resp.body unless resp.status == 200
 end

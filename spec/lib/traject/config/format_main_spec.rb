@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Format main config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -8,7 +10,7 @@ RSpec.describe 'Format main config' do
     end
   end
   subject(:result) { indexer.map_record(record) }
-  let(:field) { 'format_main_ssim'}
+  let(:field) { 'format_main_ssim' }
 
   describe 'format_main_ssim' do
     context 'with leader/06 i - audio non-music' do
@@ -30,9 +32,8 @@ RSpec.describe 'Format main config' do
           r.leader = '01952c d  2200457Ia 4500'
           r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 v eng d'))
           r.append(MARC::DataField.new('245', '1', ' ',
-            MARC::Subfield.new('a', 'sound recording: 245h'),
-            MARC::Subfield.new('h', '[sound recording]'),
-          ))
+                                       MARC::Subfield.new('a', 'sound recording: 245h'),
+                                       MARC::Subfield.new('h', '[sound recording]')))
         end
       end
 
@@ -73,10 +74,9 @@ RSpec.describe 'Format main config' do
           r.leader = '04473cam a2200313Ia 4500'
           r.append(MARC::ControlField.new('008', '040202s2003    fi g     b    100 0deng d'))
           r.append(MARC::DataField.new('600', '1', '0',
-            MARC::Subfield.new('a', 'Sibelius, Jean,'),
-            MARC::Subfield.new('d', '1865-1957'),
-            MARC::Subfield.new('v', 'Congresses.'),
-          ))
+                                       MARC::Subfield.new('a', 'Sibelius, Jean,'),
+                                       MARC::Subfield.new('d', '1865-1957'),
+                                       MARC::Subfield.new('v', 'Congresses.')))
         end
       end
 
@@ -91,9 +91,8 @@ RSpec.describe 'Format main config' do
           r.leader = '04473cam a2200313Ia 4500'
           r.append(MARC::ControlField.new('008', '040202s2003    fi g     b    100 0deng d'))
           r.append(MARC::DataField.new('650', '1', '0',
-            MARC::Subfield.new('a', 'Music'),
-            MARC::Subfield.new('v', 'Congresses.')
-          ))
+                                       MARC::Subfield.new('a', 'Music'),
+                                       MARC::Subfield.new('v', 'Congresses.')))
         end
       end
 
@@ -245,13 +244,12 @@ RSpec.describe 'Format main config' do
         r.leader = '02441cms a2200517 a 4500'
         r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -266,20 +264,18 @@ RSpec.describe 'Format main config' do
         r.leader = '02441cms a2200517 a 4500'
         r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -294,9 +290,8 @@ RSpec.describe 'Format main config' do
         r.leader = '04473caa a2200313Ia 4500'
         r.append(MARC::ControlField.new('008', '040202s2003    fi g     b    000 0deng d'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', "Music"),
-          MARC::Subfield.new('v', "Congresses.")
-        ))
+                                     MARC::Subfield.new('a', 'Music'),
+                                     MARC::Subfield.new('v', 'Congresses.')))
       end
     end
 
@@ -311,10 +306,9 @@ RSpec.describe 'Format main config' do
         r.leader = '04473caa a2200313Ia 4500'
         r.append(MARC::ControlField.new('008', '040202s2003    fi g     b    000 0deng d'))
         r.append(MARC::DataField.new('600', '1', '0',
-          MARC::Subfield.new('a', "Sibelius, Jean,"),
-          MARC::Subfield.new('d', "1865-1957"),
-          MARC::Subfield.new('v', "Congresses.")
-        ))
+                                     MARC::Subfield.new('a', 'Sibelius, Jean,'),
+                                     MARC::Subfield.new('d', '1865-1957'),
+                                     MARC::Subfield.new('v', 'Congresses.')))
       end
     end
 
@@ -401,7 +395,6 @@ RSpec.describe 'Format main config' do
     end
   end
 
-
   context '336a cartographic' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -422,12 +415,11 @@ RSpec.describe 'Format main config' do
         r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
         r.append(MARC::DataField.new('914', ' ', ' ', MARC::Subfield.new('a', 'EQUIP')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "F152 .A28"),
-          MARC::Subfield.new('w', "LC"),
-          MARC::Subfield.new('i', "36105018746623"),
-          MARC::Subfield.new('l', "HAS-DIGIT"),
-          MARC::Subfield.new('m', "GREEN")
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -443,12 +435,11 @@ RSpec.describe 'Format main config' do
         r.append(MARC::ControlField.new('008', '050127c20149999enkfr p       |   a0eng c'))
         r.append(MARC::DataField.new('914', ' ', ' ', MARC::Subfield.new('a', 'JUNK')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "F152 .A28"),
-          MARC::Subfield.new('w', "LC"),
-          MARC::Subfield.new('i', "36105018746623"),
-          MARC::Subfield.new('l', "HAS-DIGIT"),
-          MARC::Subfield.new('m', "GREEN")
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -463,12 +454,11 @@ RSpec.describe 'Format main config' do
         r.leader = '02808cas a22005778a 4500'
         r.append(MARC::ControlField.new('008', '050127c20149999enkfr p       |   a0eng c'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "F152 .A28"),
-          MARC::Subfield.new('w', "LC"),
-          MARC::Subfield.new('i', "36105018746623"),
-          MARC::Subfield.new('l', "HAS-DIGIT"),
-          MARC::Subfield.new('m', "GREEN")
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -898,9 +888,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'art original/digital graphic: 245h'),
-          MARC::Subfield.new('h', '[art original/digital graphic]'),
-        ))
+                                     MARC::Subfield.new('a', 'art original/digital graphic: 245h'),
+                                     MARC::Subfield.new('h', '[art original/digital graphic]')))
       end
     end
 
@@ -914,9 +903,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'slide: 245h'),
-          MARC::Subfield.new('h', '[slide]'),
-        ))
+                                     MARC::Subfield.new('a', 'slide: 245h'),
+                                     MARC::Subfield.new('h', '[slide]')))
       end
     end
 
@@ -930,9 +918,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'slides: 245h'),
-          MARC::Subfield.new('h', '[slides]'),
-        ))
+                                     MARC::Subfield.new('a', 'slides: 245h'),
+                                     MARC::Subfield.new('h', '[slides]')))
       end
     end
 
@@ -946,9 +933,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'chart: 245h'),
-          MARC::Subfield.new('h', '[chart]'),
-        ))
+                                     MARC::Subfield.new('a', 'chart: 245h'),
+                                     MARC::Subfield.new('h', '[chart]')))
       end
     end
 
@@ -962,9 +948,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'art reproduction: 245h'),
-          MARC::Subfield.new('h', '[art reproduction]'),
-        ))
+                                     MARC::Subfield.new('a', 'art reproduction: 245h'),
+                                     MARC::Subfield.new('h', '[art reproduction]')))
       end
     end
 
@@ -978,9 +963,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'graphic: 245h'),
-          MARC::Subfield.new('h', '[graphic]'),
-        ))
+                                     MARC::Subfield.new('a', 'graphic: 245h'),
+                                     MARC::Subfield.new('h', '[graphic]')))
       end
     end
 
@@ -994,9 +978,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'technical drawing: 245h'),
-          MARC::Subfield.new('h', '[technical drawing]'),
-        ))
+                                     MARC::Subfield.new('a', 'technical drawing: 245h'),
+                                     MARC::Subfield.new('h', '[technical drawing]')))
       end
     end
 
@@ -1010,9 +993,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'flash card: 245h'),
-          MARC::Subfield.new('h', '[flash card]'),
-        ))
+                                     MARC::Subfield.new('a', 'flash card: 245h'),
+                                     MARC::Subfield.new('h', '[flash card]')))
       end
     end
 
@@ -1026,9 +1008,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'transparency: 245h'),
-          MARC::Subfield.new('h', '[transparency]'),
-        ))
+                                     MARC::Subfield.new('a', 'transparency: 245h'),
+                                     MARC::Subfield.new('h', '[transparency]')))
       end
     end
 
@@ -1042,9 +1023,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'digital graphic: 245h'),
-          MARC::Subfield.new('h', '[digital graphic]'),
-        ))
+                                     MARC::Subfield.new('a', 'digital graphic: 245h'),
+                                     MARC::Subfield.new('h', '[digital graphic]')))
       end
     end
 
@@ -1058,9 +1038,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'activity card: 245h'),
-          MARC::Subfield.new('h', '[activity card]'),
-        ))
+                                     MARC::Subfield.new('a', 'activity card: 245h'),
+                                     MARC::Subfield.new('h', '[activity card]')))
       end
     end
 
@@ -1074,9 +1053,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'picture: 245h'),
-          MARC::Subfield.new('h', '[picture]'),
-        ))
+                                     MARC::Subfield.new('a', 'picture: 245h'),
+                                     MARC::Subfield.new('h', '[picture]')))
       end
     end
 
@@ -1090,9 +1068,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'graphic/digital graphic: 245h'),
-          MARC::Subfield.new('h', '[graphic/digital graphic]'),
-        ))
+                                     MARC::Subfield.new('a', 'graphic/digital graphic: 245h'),
+                                     MARC::Subfield.new('h', '[graphic/digital graphic]')))
       end
     end
 
@@ -1106,9 +1083,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'diapositives: 245h'),
-          MARC::Subfield.new('h', '[diapositives]'),
-        ))
+                                     MARC::Subfield.new('a', 'diapositives: 245h'),
+                                     MARC::Subfield.new('h', '[diapositives]')))
       end
     end
 
@@ -1136,13 +1112,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01823cas a22004457a 4500'
         r.append(MARC::ControlField.new('008', '961105d19961996dcuuuu       f0    0eng d'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'Industrial statistics'),
-          MARC::Subfield.new('v', 'Periodicals.'),
-        ))
+                                     MARC::Subfield.new('a', 'Industrial statistics'),
+                                     MARC::Subfield.new('v', 'Periodicals.')))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'United States'),
-          MARC::Subfield.new('v', 'Periodicals.'),
-        ))
+                                     MARC::Subfield.new('a', 'United States'),
+                                     MARC::Subfield.new('v', 'Periodicals.')))
       end
     end
 
@@ -1199,12 +1173,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01247cas a2200337 a 4500'
         r.append(MARC::ControlField.new('008', '830415c19809999vauuu    a    0    0eng  '))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
-          MARC::Subfield.new('w', 'LCPER'),
-          MARC::Subfield.new('i', '36105007402873'),
-          MARC::Subfield.new('l', 'STACKS'),
-          MARC::Subfield.new('m', 'GREEN'),
-        ))
+                                     MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
+                                     MARC::Subfield.new('w', 'LCPER'),
+                                     MARC::Subfield.new('i', '36105007402873'),
+                                     MARC::Subfield.new('l', 'STACKS'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1219,12 +1192,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01247cas a2200337 a 4500'
         r.append(MARC::ControlField.new('008', '830415c19809999vauuu    a    0    0eng  '))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
-          MARC::Subfield.new('w', 'DEWEYPER'),
-          MARC::Subfield.new('i', '36105007402873'),
-          MARC::Subfield.new('l', 'STACKS'),
-          MARC::Subfield.new('m', 'GREEN'),
-        ))
+                                     MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
+                                     MARC::Subfield.new('w', 'DEWEYPER'),
+                                     MARC::Subfield.new('i', '36105007402873'),
+                                     MARC::Subfield.new('l', 'STACKS'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1282,12 +1254,11 @@ RSpec.describe 'Format main config' do
         r.append(MARC::ControlField.new('008', '071214uuuuuuuuuxx uu |ss    u|    |||| d'))
         r.append(MARC::DataField.new('956', '4', '0', MARC::Subfield.new('u', ' http://library.stanford.edu/sfx?stuff')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '7117119-1001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('t', 'SUL'),
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '7117119-1001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('t', 'SUL')))
       end
     end
 
@@ -1377,14 +1348,12 @@ RSpec.describe 'Format main config' do
     end
   end
 
-
   context 'Leader/06 = a and Leader/07 = d and 999m = LANE-MED' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01952cad  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1398,8 +1367,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cac  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1413,8 +1381,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952ctd  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1428,8 +1395,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952ctc  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1443,8 +1409,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cac  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1458,8 +1423,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cac  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1473,8 +1437,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c c  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1488,8 +1451,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1503,8 +1465,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952ca   2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1518,8 +1479,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952ct   2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('m', 'LANE-MED')
-        ))
+                                     MARC::Subfield.new('m', 'LANE-MED')))
       end
     end
 
@@ -1554,23 +1514,22 @@ RSpec.describe 'Format main config' do
     end
   end
 
-#     /* If the call number prefixes in the MARC 999a are for Archive/Manuscript items, add Archive/Manuscript format
-#      * A (e.g. A0015), F (e.g. F0110), M (e.g. M1810), MISC (e.g. MISC 1773), MSS CODEX (e.g. MSS CODEX 0335),
-#     MSS MEDIA (e.g. MSS MEDIA 0025), MSS PHOTO (e.g. MSS PHOTO 0463), MSS PRINTS (e.g. MSS PRINTS 0417),
-#     PC (e.g. PC0012), SC (e.g. SC1076), SCD (e.g. SCD0012), SCM (e.g. SCM0348), and V (e.g. V0321).  However,
-#     A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
-#     the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
-#      */
+  #     /* If the call number prefixes in the MARC 999a are for Archive/Manuscript items, add Archive/Manuscript format
+  #      * A (e.g. A0015), F (e.g. F0110), M (e.g. M1810), MISC (e.g. MISC 1773), MSS CODEX (e.g. MSS CODEX 0335),
+  #     MSS MEDIA (e.g. MSS MEDIA 0025), MSS PHOTO (e.g. MSS PHOTO 0463), MSS PRINTS (e.g. MSS PRINTS 0417),
+  #     PC (e.g. PC0012), SC (e.g. SC1076), SCD (e.g. SCD0012), SCM (e.g. SCM0348), and V (e.g. V0321).  However,
+  #     A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
+  #     the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
+  #      */
 
   context '???' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'A0015'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'A0015'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1584,10 +1543,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F0110'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'F0110'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1601,10 +1559,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'M1810'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'M1810'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1618,10 +1575,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MISC 1773'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'MISC 1773'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1635,10 +1591,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MSS CODEX 0335'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'MSS CODEX 0335'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1652,10 +1607,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MSS MEDIA 0025'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'MSS MEDIA 0025'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1669,10 +1623,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MSS PHOTO 0463'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'MSS PHOTO 0463'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1686,10 +1639,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MSS PRINTS 0417'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'MSS PRINTS 0417'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1703,10 +1655,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'PC0012'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'PC0012'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1720,10 +1671,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'SC1076'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'SC1076'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1737,10 +1687,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'SCD0012'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'SCD0012'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1754,10 +1703,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'SCM0348'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'SCM0348'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1771,10 +1719,9 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'V0321'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'V0321'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1789,12 +1736,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01669nam a2200289ua 4500'
         r.append(MARC::ControlField.new('008', '870715r19741700ctu     a     000 0 eng d'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFILM N.S. 1350 REEL 230 NO. 3741'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '001AFX2969'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'MFILM N.S. 1350 REEL 230 NO. 3741'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '001AFX2969'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1809,12 +1755,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01879cam a2200409 i 4500'
         r.append(MARC::ControlField.new('008', '101015q20092010fr a    bbm   000 0 fre c'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFICHE 3239'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '8729402-1001'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'MFICHE 3239'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '8729402-1001'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1829,12 +1774,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01879cam a2200409 i 4500'
         r.append(MARC::ControlField.new('008', '101015q20092010fr a    bbm   000 0 fre c'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFICHE 3239'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '8729402-1001'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'SPEC-COLL')
-        ))
+                                     MARC::Subfield.new('a', 'MFICHE 3239'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '8729402-1001'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'SPEC-COLL')))
       end
     end
 
@@ -1849,9 +1793,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 v eng d'))
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'manuscript: 245h'),
-          MARC::Subfield.new('h', '[manuscript]')
-        ))
+                                     MARC::Subfield.new('a', 'manuscript: 245h'),
+                                     MARC::Subfield.new('h', '[manuscript]')))
       end
     end
 
@@ -1866,9 +1809,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 v eng d'))
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'manuscript/digital: 245h'),
-          MARC::Subfield.new('h', '[manuscript/digital]')
-        ))
+                                     MARC::Subfield.new('a', 'manuscript/digital: 245h'),
+                                     MARC::Subfield.new('h', '[manuscript/digital]')))
       end
     end
 
@@ -1908,8 +1850,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '00838cas a2200193z  4500'
         r.append(MARC::DataField.new('590', ' ', ' ',
-          MARC::Subfield.new('a', 'MARCit brief record.')
-        ))
+                                     MARC::Subfield.new('a', 'MARCit brief record.')))
       end
     end
 
@@ -1923,8 +1864,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '00838cas a2200193z  4500'
         r.append(MARC::DataField.new('590', ' ', ' ',
-          MARC::Subfield.new('a', 'MARCit brief record')
-        ))
+                                     MARC::Subfield.new('a', 'MARCit brief record')))
       end
     end
 
@@ -1938,8 +1878,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '00838cas a2200193z  4500'
         r.append(MARC::DataField.new('590', ' ', ' ',
-          MARC::Subfield.new('a', 'incorrect string')
-        ))
+                                     MARC::Subfield.new('a', 'incorrect string')))
       end
     end
 
@@ -1953,8 +1892,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '00838cas a2200193z  4500'
         r.append(MARC::DataField.new('590', ' ', ' ',
-          MARC::Subfield.new('a', 'something MARCit something')
-        ))
+                                     MARC::Subfield.new('a', 'something MARCit something')))
       end
     end
 
@@ -1968,8 +1906,7 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '00838cas a2200193z  4500'
         r.append(MARC::DataField.new('580', ' ', ' ',
-          MARC::Subfield.new('a', 'MARCit brief record.')
-        ))
+                                     MARC::Subfield.new('a', 'MARCit brief record.')))
       end
     end
 
@@ -1984,10 +1921,9 @@ RSpec.describe 'Format main config' do
         r.leader = '01952adm  2200457Ia 4500'
         r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 v eng d'))
         r.append(MARC::DataField.new('245', '1', ' ',
-          MARC::Subfield.new('a', 'microform: 245h'),
-          MARC::Subfield.new('c', 'stuff.'),
-          MARC::Subfield.new('h', '[microform]'),
-        ))
+                                     MARC::Subfield.new('a', 'microform: 245h'),
+                                     MARC::Subfield.new('c', 'stuff.'),
+                                     MARC::Subfield.new('h', '[microform]')))
       end
     end
 
@@ -2002,12 +1938,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01669nam a2200289ua 4500'
         r.append(MARC::ControlField.new('008', '870715r19741700ctu     a     000 0 eng d'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFILM N.S. 1350 REEL 230 NO. 3741'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '001AFX2969'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'GREEN'),
-        ))
+                                     MARC::Subfield.new('a', 'MFILM N.S. 1350 REEL 230 NO. 3741'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '001AFX2969'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -2022,12 +1957,11 @@ RSpec.describe 'Format main config' do
         r.leader = '01879cam a2200409 i 4500'
         r.append(MARC::ControlField.new('008', '101015q20092010fr a    bbm   000 0 fre c'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFICHE 3239'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '8729402-1001'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'GREEN'),
-        ))
+                                     MARC::Subfield.new('a', 'MFICHE 3239'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '8729402-1001'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -2081,10 +2015,9 @@ RSpec.describe 'Format main config' do
         r.leader = '01952adm  2200457Ia 4500'
         r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 v eng d'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'microform: 245h'),
-          MARC::Subfield.new('c', 'stuff.'),
-          MARC::Subfield.new('h', '[microform]'),
-        ))
+                                     MARC::Subfield.new('a', 'microform: 245h'),
+                                     MARC::Subfield.new('c', 'stuff.'),
+                                     MARC::Subfield.new('h', '[microform]')))
       end
     end
 
@@ -2126,8 +2059,7 @@ RSpec.describe 'Format main config' do
         r.leader = '01952cad  2200457Ia 4500'
         r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 v eng d'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', "dissertation note field; we don't care about the contents")
-        ))
+                                     MARC::Subfield.new('a', "dissertation note field; we don't care about the contents")))
       end
     end
 
@@ -2171,13 +2103,12 @@ RSpec.describe 'Format main config' do
         r.append(MARC::ControlField.new('008', '061227c20069999vau x dss    f0    2eng c'))
         r.append(MARC::DataField.new('956', '4', '0', MARC::Subfield.new('u', ' http://library.stanford.edu/sfx?stuff')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2219,13 +2150,12 @@ RSpec.describe 'Format main config' do
         r.leader = '01548cas a2200361Ia 4500'
         r.append(MARC::ControlField.new('008', '061227c20069999vau x dss    f0    2eng c'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2293,13 +2223,12 @@ RSpec.describe 'Format main config' do
         r.leader = '01548cai a2200361Ia 4500'
         r.append(MARC::ControlField.new('008', '040730d19uu2012dcuar w os   f0    2eng d'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2341,13 +2270,12 @@ RSpec.describe 'Format main config' do
         r.leader = '01548cas a2200361Ia 4500'
         r.append(MARC::ControlField.new('008', '040730d19uu2012dcuar w os   f0    2eng d'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2430,18 +2358,17 @@ RSpec.describe 'Format main config' do
         r.leader = '01579cai a2200337Ia 4500'
         r.append(MARC::ControlField.new('008', '081215c200u9999xx         a        eng d'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
     it 'is a book' do
-      expect(result[field]).to eq ['Book', 'Database']
+      expect(result[field]).to eq %w[Book Database]
     end
   end
 
@@ -2478,18 +2405,17 @@ RSpec.describe 'Format main config' do
         r.leader = '02085cas a2200325 a 4500'
         r.append(MARC::ControlField.new('008', '111014c20119999enk|| q o     |    2eng c'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', "INTERNET RESOURCE"),
-          MARC::Subfield.new('w', "ASIS"),
-          MARC::Subfield.new('i', "2475606-5001"),
-          MARC::Subfield.new('l', "INTERNET"),
-          MARC::Subfield.new('m', "SUL"),
-          MARC::Subfield.new('t', "DATABASE")
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL'),
+                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
     it 'is a book' do
-      expect(result[field]).to eq ['Book', 'Database']
+      expect(result[field]).to eq %w[Book Database]
     end
   end
 
@@ -2699,9 +2625,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'videorecording: 245h'),
-          MARC::Subfield.new('h', '[videorecording]'),
-        ))
+                                     MARC::Subfield.new('a', 'videorecording: 245h'),
+                                     MARC::Subfield.new('h', '[videorecording]')))
       end
     end
 
@@ -2715,9 +2640,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'video recording: 245h'),
-          MARC::Subfield.new('h', '[video recording]'),
-        ))
+                                     MARC::Subfield.new('a', 'video recording: 245h'),
+                                     MARC::Subfield.new('h', '[video recording]')))
       end
     end
 
@@ -2730,9 +2654,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'videorecordings: 245h'),
-          MARC::Subfield.new('h', '[videorecordings]'),
-        ))
+                                     MARC::Subfield.new('a', 'videorecordings: 245h'),
+                                     MARC::Subfield.new('h', '[videorecordings]')))
       end
     end
 
@@ -2746,9 +2669,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'video recordings: 245h'),
-          MARC::Subfield.new('h', '[video recordings]'),
-        ))
+                                     MARC::Subfield.new('a', 'video recordings: 245h'),
+                                     MARC::Subfield.new('h', '[video recordings]')))
       end
     end
 
@@ -2762,9 +2684,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'motion picture: 245h'),
-          MARC::Subfield.new('h', '[motion picture]'),
-        ))
+                                     MARC::Subfield.new('a', 'motion picture: 245h'),
+                                     MARC::Subfield.new('h', '[motion picture]')))
       end
     end
 
@@ -2778,9 +2699,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'filmstrip: 245h'),
-          MARC::Subfield.new('h', '[filmstrip]'),
-        ))
+                                     MARC::Subfield.new('a', 'filmstrip: 245h'),
+                                     MARC::Subfield.new('h', '[filmstrip]')))
       end
     end
 
@@ -2794,9 +2714,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'VCD-DVD: 245h'),
-          MARC::Subfield.new('h', '[VCD-DVD]'),
-        ))
+                                     MARC::Subfield.new('a', 'VCD-DVD: 245h'),
+                                     MARC::Subfield.new('h', '[VCD-DVD]')))
       end
     end
 
@@ -2810,9 +2729,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'videodisc: 245h'),
-          MARC::Subfield.new('h', '[videodisc]'),
-        ))
+                                     MARC::Subfield.new('a', 'videodisc: 245h'),
+                                     MARC::Subfield.new('h', '[videodisc]')))
       end
     end
 
@@ -2826,9 +2744,8 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01952cgd  2200457Ia 4500'
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'videocassette: 245h'),
-          MARC::Subfield.new('h', '[videocassette]'),
-        ))
+                                     MARC::Subfield.new('a', 'videocassette: 245h'),
+                                     MARC::Subfield.new('h', '[videocassette]')))
       end
     end
 
@@ -2907,9 +2824,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'ao cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -2924,9 +2840,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'co cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -2941,9 +2856,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'do cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -2958,9 +2872,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'go cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -2975,9 +2888,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'ko cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -2992,9 +2904,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'mo cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -3009,9 +2920,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'qo cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -3026,9 +2936,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'ro cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -3043,9 +2952,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'so cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -3060,9 +2968,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'vo cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 
@@ -3077,9 +2984,8 @@ RSpec.describe 'Format main config' do
         r.leader = '01952c d  2200457Ia 4500'
         r.append(MARC::ControlField.new('007', 'zo cg|||||||||'))
         r.append(MARC::DataField.new('245', '1', '0',
-          MARC::Subfield.new('a', 'kit: 245h'),
-          MARC::Subfield.new('h', '[kit]'),
-        ))
+                                     MARC::Subfield.new('a', 'kit: 245h'),
+                                     MARC::Subfield.new('h', '[kit]')))
       end
     end
 

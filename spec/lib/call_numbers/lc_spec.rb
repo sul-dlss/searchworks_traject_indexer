@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'call_numbers/lc'
 
 describe CallNumbers::LC do
-
   describe 'standard numbers' do
     it 'handles 1 - 3 class letters' do
       expect(described_class.new('P123.23 .M23 2002').klass).to eq 'P'

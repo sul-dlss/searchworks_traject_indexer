@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
 require 'traject'
@@ -33,7 +35,9 @@ settings do
     provide 'reader_class_name', 'Traject::FolioReader'
   end
 
-  provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV['OKAPI_URL'], username: ENV['OKAPI_USER'], password: ENV['OKAPI_PASSWORD'])
+  provide 'folio.client',
+          FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil), username: ENV.fetch('OKAPI_USER', nil),
+                          password: ENV.fetch('OKAPI_PASSWORD', nil))
 end
 
 ##
@@ -45,8 +49,7 @@ each_record do |record, context|
   end
 end
 
-load_config_file(File.expand_path('../sirsi_config.rb', __FILE__))
-
+load_config_file(File.expand_path('sirsi_config.rb', __dir__))
 
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
@@ -59,11 +62,13 @@ def call_number_for_holding(record, holding, context)
     if holding.call_number.to_s.empty? || holding.ignored_call_number?
       if record['086']
         last_086 = record.find_all { |f| f.tag == '086' }.last
-        separate_browse_call_num << CallNumbers::Other.new(last_086['a'], scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
+        separate_browse_call_num << CallNumbers::Other.new(last_086['a'],
+                                                           scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
       end
 
       Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
-        separate_browse_call_num << CallNumbers::LC.new(item_050, serial: serial) if SirsiHolding::CallNumber.new(item_050).valid_lc?
+        separate_browse_call_num << CallNumbers::LC.new(item_050,
+                                                        serial:) if SirsiHolding::CallNumber.new(item_050).valid_lc?
       end
     end
 
@@ -72,7 +77,7 @@ def call_number_for_holding(record, holding, context)
     return OpenStruct.new(
       scheme: 'OTHER',
       call_number: holding.call_number.to_s,
-      to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number.to_s}")
+      to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number}")
     ) if holding.bad_lc_lane_call_number?
     return OpenStruct.new(scheme: holding.call_number_type) if holding.e_call_number?
     return OpenStruct.new(scheme: holding.call_number_type) if holding.ignored_call_number?
@@ -94,13 +99,14 @@ def call_number_for_holding(record, holding, context)
 
     case calculated_call_number_type
     when 'LC'
-      CallNumbers::LC.new(holding.call_number.to_s, serial: serial)
+      CallNumbers::LC.new(holding.call_number.to_s, serial:)
     when 'DEWEY'
-      CallNumbers::Dewey.new(holding.call_number.to_s, serial: serial)
+      CallNumbers::Dewey.new(holding.call_number.to_s, serial:)
     else
       non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
+      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library,
+                                                                   LOCATION_MAP[holding.home_location], holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
 
       CallNumbers::Other.new(
         holding.call_number.to_s,
@@ -135,7 +141,9 @@ to_field 'location_facet' do |record, accumulator, context|
     accumulator << 'Curriculum Collection'
   end
 
-  if holdings(record, context).any? { |holding| holding.home_location =~ /^ARTLCK/ || holding.home_location == 'PAGE-AR' }
+  if holdings(record, context).any? do |holding|
+       holding.home_location =~ /^ARTLCK/ || holding.home_location == 'PAGE-AR'
+     end
     accumulator << 'Art Locked Stacks'
   end
 end
@@ -159,7 +167,7 @@ end
 to_field 'collection', literal('folio')
 
 # sirsi_config sets this to 'sirsi'; we need to remove that and set our own value:
-to_field 'context_source_ssi' do |record, accumulator, context|
+to_field 'context_source_ssi' do |_record, _accumulator, context|
   context.output_hash['context_source_ssi'] = ['folio']
 end
 
@@ -185,7 +193,7 @@ end
 
 to_field 'holdings_json_struct' do |record, accumulator|
   accumulator << JSON.generate({
-    holdings: record.holdings,
-    items: record.items
-  })
+                                 holdings: record.holdings,
+                                 items: record.items
+                               })
 end

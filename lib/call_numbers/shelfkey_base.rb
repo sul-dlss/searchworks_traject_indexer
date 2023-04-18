@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CallNumbers
   require 'forwardable'
   require 'i18n'
@@ -19,9 +21,11 @@ module CallNumbers
     )
 
     extend Forwardable
-    delegate %i[scheme klass klass_number klass_decimal doon1 doon2 doon3 cutter1 cutter2 cutter3 folio rest serial] => :call_number
+    delegate %i[scheme klass klass_number klass_decimal doon1 doon2 doon3 cutter1 cutter2 cutter3 folio rest
+                serial] => :call_number
 
     attr_reader :call_number
+
     def initialize(call_number)
       @call_number = call_number
     end
@@ -56,7 +60,7 @@ module CallNumbers
         return value.downcase.strip unless value[/\d+/]
 
         value.downcase.gsub(/\d+/) do |val|
-          pad(val, by: by, direction: :left)
+          pad(val, by:, direction: :left)
         end.strip
       end
 
@@ -64,7 +68,8 @@ module CallNumbers
         return unless cutter
 
         cutter = cutter.downcase.sub(/^\./, '') # downcase and remove opening period
-        cutter.sub!(/(\d+)/, round_cutter_number(cutter[/\d+/])) if cutter[/\d+/].length > CUTTER_ROUNDING # Round numbers to 6
+        # Round numbers to 6
+        cutter.sub!(/(\d+)/, round_cutter_number(cutter[/\d+/])) if cutter[/\d+/].length > CUTTER_ROUNDING
         cutter.sub!(/(\d+)/, ".#{pad(cutter[/\d+/])}") # Pad numbers
         cutter.sub!(/([a-z]+)/, pad(cutter[/[a-z]+/], by: 2)) # Pad letters
         cutter

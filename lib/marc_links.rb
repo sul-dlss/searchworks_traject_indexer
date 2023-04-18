@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MarcLinks
   PROXY_REGEX = /stanford\.idm\.oclc\.org/
 
@@ -18,19 +20,23 @@ module MarcLinks
       {
         version: '0.1',
 
-        html: [%Q(<a title="#{link_title_html_escaped}" href="#{link_field_html_escaped}">#{link_text_html_escaped}</a>),
+        html: [%(<a title="#{link_title_html_escaped}" href="#{link_field_html_escaped}">#{link_text_html_escaped}</a>),
                "#{'(source: Casalini)' if link_is_casalini?}",
-               (%Q( <span class="additional-link-text">#{additional_text_html_escaped}</span>) if additional_text)].compact.join(' '),
+               (if additional_text
+                  %( <span class="additional-link-text">#{additional_text_html_escaped}</span>)
+                end)].compact.join(' '),
         text: [link_text_html_escaped, "#{'(source: Casalini)' if link_is_casalini?}",
-               (" <span class='additional-link-text'>#{additional_text_html_escaped}</span>" if additional_text)].compact.join(' ').strip,
+               (if additional_text
+                  " <span class='additional-link-text'>#{additional_text_html_escaped}</span>"
+                end)].compact.join(' ').strip,
 
         stanford_only: stanford_only?,
         stanford_law_only: stanford_law_only?,
 
-        link_text: link_text,
-        link_title: link_title,
-        additional_text: additional_text,
-        href: link_field["u"],
+        link_text:,
+        link_title:,
+        additional_text:,
+        href: link_field['u'],
         sort: purl_info['sort'],
         casalini: link_is_casalini?,
 
@@ -38,7 +44,7 @@ module MarcLinks
         finding_aid: link_is_finding_aid?,
         managed_purl: link_is_managed_purl?,
         file_id: purl_info['file'],
-        druid: druid,
+        druid:,
         sfx: link_is_sfx?
       }
     end
@@ -46,24 +52,24 @@ module MarcLinks
     private
 
     def link_title_html_escaped
-      CGI::escapeHTML(link_title.to_s)
+      CGI.escapeHTML(link_title.to_s)
     end
 
     def link_field_html_escaped
-      CGI::escapeHTML(link_field['u'].to_s)
+      CGI.escapeHTML(link_field['u'].to_s)
     end
 
     def link_text_html_escaped
-      CGI::escapeHTML(link_text.to_s)
+      CGI.escapeHTML(link_text.to_s)
     end
 
     def additional_text_html_escaped
-      CGI::escapeHTML(additional_text.to_s)
+      CGI.escapeHTML(additional_text.to_s)
     end
 
     def link_is_casalini?
-      (field["x"] && field["x"] == "CasaliniTOC") ||
-        (field.subfields.find { |sf| sf.code == "z" && sf.value.match?(casalini_subz_regex) })
+      (field['x'] && field['x'] == 'CasaliniTOC') ||
+        (field.subfields.find { |sf| sf.code == 'z' && sf.value.match?(casalini_subz_regex) })
     end
 
     def link_is_sfx?
@@ -76,15 +82,17 @@ module MarcLinks
 
       @link_host ||= begin
         # Not sure why I need this, but it fails on certain URLs w/o it.  The link printed still has character in it
-        fixed_url = field['u'].gsub("^","").strip
+        fixed_url = field['u'].gsub('^', '').strip
         link = URI.parse(fixed_url)
 
         return link.host unless link.to_s =~ PROXY_REGEX && link.to_s.include?('url=')
+
         proxy = CGI.parse(link.query.force_encoding(Encoding::UTF_8))
         return link.host unless proxy.key?('url')
 
         extracted_url = URI.extract(proxy['url'].first).first
         return link.host unless extracted_url
+
         URI.parse(extracted_url).host
       rescue URI::InvalidURIError
         return nil
@@ -92,14 +100,14 @@ module MarcLinks
     end
 
     def link_text
-      if field["x"] and field["x"] == "CasaliniTOC"
+      if field['x'] and field['x'] == 'CasaliniTOC'
         link_field['3']
       elsif field['x'] && field['x'] =~ /SDR-PURL/
         purl_info['label']
       else
         sub3 = field['3']
         suby = field['y']
-        (!suby && !sub3) ? link_host : [sub3, suby].compact.join(' ')
+        !suby && !sub3 ? link_host : [sub3, suby].compact.join(' ')
       end
     end
 
@@ -108,12 +116,12 @@ module MarcLinks
     end
 
     def link_title
-      return '' if field["x"] and field["x"] == "CasaliniTOC"
+      return '' if field['x'] and field['x'] == 'CasaliniTOC'
 
       return subzs if field['x'] && field['x'] =~ /SDR-PURL/
 
       if subzs =~ stanford_affiliated_regex
-        "Available to Stanford-affiliated users only"
+        'Available to Stanford-affiliated users only'
       else
         subzs
       end
@@ -132,13 +140,15 @@ module MarcLinks
     def purl_info
       return {} unless link_field['x'] && link_field['x'] =~ /SDR-PURL/
 
-      @purl_info ||= link_field.subfields.select { |subfield| subfield.code == 'x' }.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
+      @purl_info ||= link_field.subfields.select do |subfield|
+                       subfield.code == 'x'
+                     end.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
     end
 
     def link_is_fulltext?
       return !link_is_sfx? if field.tag == '956'
 
-      resource_labels = ["table of contents", "abstract", "description", "sample text"]
+      resource_labels = ['table of contents', 'abstract', 'description', 'sample text']
       return false unless %w[0 1 3 4].include?(field.indicator2)
 
       # Similar logic exists in the mapping for the url_fulltext field in sirsi traject config.
@@ -161,11 +171,11 @@ module MarcLinks
     end
 
     def link_is_managed_purl?
-      field["u"] && field['x'] && field['x'].match?(/SDR-PURL/)
+      field['u'] && field['x'] && field['x'].match?(/SDR-PURL/)
     end
 
     def druid
-      field['u'] && field['u'].gsub(%r{^https?:\/\/purl.stanford.edu\/?}, '') if field['u'] =~ /purl.stanford.edu/
+      field['u'] && field['u'].gsub(%r{^https?://purl.stanford.edu/?}, '') if field['u'] =~ /purl.stanford.edu/
     end
 
     def stanford_affiliated_regex

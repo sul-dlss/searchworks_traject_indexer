@@ -1,7 +1,11 @@
-# and also redirect stderr to stdout to honeybadger doesn't complain
-job_type :honeybadger_wrapped_jruby_script, "cd :path && :environment_variable=:environment TRAJECT_ENV=:traject_env /usr/local/rvm/bin/rvm jruby-9.4.0.0 do bundle exec honeybadger exec -e :environment::traject_env -q script/:task"
+# frozen_string_literal: true
 
-job_type :honeybadger_wrapped_ruby_script, "cd :path && :environment_variable=:environment TRAJECT_ENV=:traject_env /usr/local/rvm/bin/rvm ruby-3.1.2 do bundle exec honeybadger exec -e :environment::traject_env -q script/:task"
+# and also redirect stderr to stdout to honeybadger doesn't complain
+job_type :honeybadger_wrapped_jruby_script,
+         'cd :path && :environment_variable=:environment TRAJECT_ENV=:traject_env /usr/local/rvm/bin/rvm jruby-9.4.0.0 do bundle exec honeybadger exec -e :environment::traject_env -q script/:task'
+
+job_type :honeybadger_wrapped_ruby_script,
+         'cd :path && :environment_variable=:environment TRAJECT_ENV=:traject_env /usr/local/rvm/bin/rvm ruby-3.1.2 do bundle exec honeybadger exec -e :environment::traject_env -q script/:task'
 
 # USING BODONI (prod) DATA
 every '45 6-23 * * *' do

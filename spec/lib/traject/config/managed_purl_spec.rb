@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Managed purl config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -17,11 +19,11 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'managed_purl_urls' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlItem1Collection")[field]).to eq ['https://purl.stanford.edu/nz353cp1092']
-      expect(select_by_id("managedPurlItem3Collections")[field]).to eq ['https://purl.stanford.edu/wd297xz1362']
-      expect(select_by_id("managedPurlCollection")[field]).to eq ['https://purl.stanford.edu/ct961sj2730']
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq ['https://purl.stanford.edu/ct961sj2730']
-      expect(select_by_id("NoManagedPurlItem")[field]).to be_nil
+      expect(select_by_id('managedPurlItem1Collection')[field]).to eq ['https://purl.stanford.edu/nz353cp1092']
+      expect(select_by_id('managedPurlItem3Collections')[field]).to eq ['https://purl.stanford.edu/wd297xz1362']
+      expect(select_by_id('managedPurlCollection')[field]).to eq ['https://purl.stanford.edu/ct961sj2730']
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq ['https://purl.stanford.edu/ct961sj2730']
+      expect(select_by_id('NoManagedPurlItem')[field]).to be_nil
     end
   end
 
@@ -29,10 +31,10 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'file_id' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlItem1Collection")[field]).to eq ['file1.jpg']
-      expect(select_by_id("managedPurlItem3Collections")[field]).to eq ['file1.jpg']
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq nil
-      expect(select_by_id("NoManagedPurlItem")[field]).to eq nil
+      expect(select_by_id('managedPurlItem1Collection')[field]).to eq ['file1.jpg']
+      expect(select_by_id('managedPurlItem3Collections')[field]).to eq ['file1.jpg']
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq nil
+      expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
     end
   end
 
@@ -40,10 +42,10 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'collection' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlItem1Collection")[field]).to eq ['sirsi', '9615156']
-      expect(select_by_id("managedPurlItem3Collections")[field]).to eq ['sirsi', '9615156', '123456789', 'yy000zz1111']
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq ['sirsi']
-      expect(select_by_id("NoManagedPurlItem")[field]).to eq ['sirsi']
+      expect(select_by_id('managedPurlItem1Collection')[field]).to eq %w[sirsi 9615156]
+      expect(select_by_id('managedPurlItem3Collections')[field]).to eq %w[sirsi 9615156 123456789 yy000zz1111]
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq ['sirsi']
+      expect(select_by_id('NoManagedPurlItem')[field]).to eq ['sirsi']
     end
   end
 
@@ -51,11 +53,13 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'collection_with_title' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlItem1Collection")[field]).to eq ['9615156-|-Francis E. Stafford photographs, 1909-1933']
-      expect(select_by_id("managedPurlItem3Collections")[field]).to eq ['9615156-|-Francis E. Stafford photographs, 1909-1933', '123456789-|-Test Collection, 1963-2015', 'yy000zz1111-|-Test Collection2, 1968-2015']
-      expect(select_by_id("managedPurlCollection")[field]).to eq nil
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq nil
-      expect(select_by_id("NoManagedPurlItem")[field]).to eq nil
+      expect(select_by_id('managedPurlItem1Collection')[field]).to eq ['9615156-|-Francis E. Stafford photographs, 1909-1933']
+      expect(select_by_id('managedPurlItem3Collections')[field]).to eq [
+        '9615156-|-Francis E. Stafford photographs, 1909-1933', '123456789-|-Test Collection, 1963-2015', 'yy000zz1111-|-Test Collection2, 1968-2015'
+      ]
+      expect(select_by_id('managedPurlCollection')[field]).to eq nil
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq nil
+      expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
     end
   end
 
@@ -63,11 +67,11 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'collection_type' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlCollection")[field]).to eq ['Digital Collection']
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq ['Digital Collection']
-      expect(select_by_id("NoManagedPurlItem")[field]).to eq nil
-      expect(select_by_id("managedPurlItem1Collection")[field]).to eq nil
-      expect(select_by_id("managedPurlItem3Collections")[field]).to eq nil
+      expect(select_by_id('managedPurlCollection')[field]).to eq ['Digital Collection']
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq ['Digital Collection']
+      expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
+      expect(select_by_id('managedPurlItem1Collection')[field]).to eq nil
+      expect(select_by_id('managedPurlItem3Collections')[field]).to eq nil
     end
   end
 
@@ -75,11 +79,11 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'set' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlItem1Set1Collection")[field]).to eq ['123456789']
-      expect(select_by_id("managedPurlItem1Collection")[field]).to eq nil
-      expect(select_by_id("managedPurlCollection")[field]).to eq nil
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq nil
-      expect(select_by_id("NoManagedPurlItem")[field]).to eq nil
+      expect(select_by_id('managedPurlItem1Set1Collection')[field]).to eq ['123456789']
+      expect(select_by_id('managedPurlItem1Collection')[field]).to eq nil
+      expect(select_by_id('managedPurlCollection')[field]).to eq nil
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq nil
+      expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
     end
   end
 
@@ -87,11 +91,12 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'set_with_title' }
 
     it 'maps the right data' do
-      expect(select_by_id("managedPurlItem1Set1Collection")[field]).to eq ['123456789-|-Test Set, 1963-2015']
-      expect(select_by_id("managedPurlItem3Sets2Collections")[field]).to eq ['aa000bb1111-|-Test set1', 'yy000zz1111-|-Test set2', '987654-|-Test set3']
-      expect(select_by_id("managedPurlCollection")[field]).to eq nil
-      expect(select_by_id("ManagedAnd2UnmanagedPurlCollection")[field]).to eq nil
-      expect(select_by_id("NoManagedPurlItem")[field]).to eq nil
+      expect(select_by_id('managedPurlItem1Set1Collection')[field]).to eq ['123456789-|-Test Set, 1963-2015']
+      expect(select_by_id('managedPurlItem3Sets2Collections')[field]).to eq ['aa000bb1111-|-Test set1',
+                                                                             'yy000zz1111-|-Test set2', '987654-|-Test set3']
+      expect(select_by_id('managedPurlCollection')[field]).to eq nil
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq nil
+      expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
     end
   end
 end

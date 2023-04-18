@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'logger'
 require_relative '../config/boot'
 
@@ -31,6 +33,7 @@ module Utils
   # https://rosettacode.org/wiki/Longest_common_prefix#Ruby
   def self.longest_common_prefix(*strs)
     return '' if strs.empty?
+
     min, max = strs.minmax
     idx = min.size.times { |i| break i if min[i] != max[i] }
     min[0...idx]
@@ -60,6 +63,6 @@ module Utils
   end
 
   def self.env_config
-    Settings.environments[ENV['TRAJECT_ENV']] || OpenStruct.new
+    Settings.environments[ENV.fetch('TRAJECT_ENV', nil)] || OpenStruct.new
   end
 end

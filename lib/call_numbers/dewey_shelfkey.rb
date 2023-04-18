@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/shelfkey_base'
 
 module CallNumbers
@@ -23,6 +25,7 @@ module CallNumbers
       return unless rest
       return if rest.empty? && (call_number.scheme == 'lc' || call_number.scheme == 'dewey')
       return self.class.pad_all_digits(rest) unless serial
+
       self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
     end
 
@@ -35,6 +38,7 @@ module CallNumbers
 
     def normalize_dewey_cutter(cutter)
       return unless cutter
+
       cutter = cutter.delete('.')
       cutter = cutter.delete('/')
       cutter.downcase

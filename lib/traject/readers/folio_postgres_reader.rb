@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'time'
 require 'traject'
 require 'pg'
@@ -9,7 +11,7 @@ module Traject
     include Enumerable
     attr_reader :settings, :last_response_date
 
-    def initialize(input_stream, settings)
+    def initialize(_input_stream, settings)
       @settings = Traject::Indexer::Settings.new settings
       @connection = PG.connect(@settings['postgres.url'])
       @page_size = @settings['postgres.page_size'] || 100

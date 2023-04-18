@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Sirsi config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -13,7 +15,7 @@ RSpec.describe 'Sirsi config' do
   describe 'toc_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'toc_search'}
+    let(:field) { 'toc_search' }
 
     it 'maps the right fields' do
       result = select_by_id('505')[field]
@@ -76,11 +78,12 @@ RSpec.describe 'Sirsi config' do
   describe 'toc_struct' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'toc_struct'}
+    let(:field) { 'toc_struct' }
 
     it 'maps the right fields' do
       result = select_by_id('505')[field].map { |x| JSON.parse(x, symbolize_names: true) }
-      expect(result).to include hash_including(fields: [array_including('505a')], label: 'Contents', unmatched_vernacular: nil, vernacular: [array_including(/^vern505a/)])
+      expect(result).to include hash_including(fields: [array_including('505a')], label: 'Contents',
+                                               unmatched_vernacular: nil, vernacular: [array_including(/^vern505a/)])
     end
 
     context 'with Nielson data' do
@@ -154,7 +157,7 @@ RSpec.describe 'Sirsi config' do
               MARC::DataField.new(
                 '905', ' ', ' ',
                 MARC::Subfield.new('1', 'Nielsen'),
-                MARC::Subfield.new('x', '12345678'),
+                MARC::Subfield.new('x', '12345678')
               )
             )
           end
@@ -178,7 +181,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields].first).to eq ['aaa', 'bbb', 'ccc']
+          expect(result_field.first[:fields].first).to eq %w[aaa bbb ccc]
         end
       end
 
@@ -186,20 +189,20 @@ RSpec.describe 'Sirsi config' do
         let(:record) do
           MARC::Record.new.tap do |r|
             r.append(MARC::DataField.new(
-              '505', ' ', ' ',
-              MARC::Subfield.new('a', 'aaa -- bbb -- ccc'),
-              MARC::Subfield.new('6', '880-04')
-            ))
+                       '505', ' ', ' ',
+                       MARC::Subfield.new('a', 'aaa -- bbb -- ccc'),
+                       MARC::Subfield.new('6', '880-04')
+                     ))
             r.append(MARC::DataField.new(
-              '880', ' ', ' ',
-              MARC::Subfield.new('a', 'v. 1. 土偶--v. 2. 仏像--v. 3. 銅器, 玉器.'),
-              MARC::Subfield.new('6', '505-04')
-            ))
+                       '880', ' ', ' ',
+                       MARC::Subfield.new('a', 'v. 1. 土偶--v. 2. 仏像--v. 3. 銅器, 玉器.'),
+                       MARC::Subfield.new('6', '505-04')
+                     ))
           end
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields].first).to eq ['aaa', 'bbb', 'ccc']
+          expect(result_field.first[:fields].first).to eq %w[aaa bbb ccc]
           expect(result_field.first[:vernacular].first).to eq ['v. 1. 土偶--', 'v. 2. 仏像--', 'v. 3. 銅器, 玉器.']
         end
       end
@@ -237,7 +240,8 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'structures the output' do
-          expect(result_field.first[:fields].first).to eq ['Basics of the law and legal system / Ronald Schouten', 'Civil commitment / Ronald Schouten and Philip J. Candilis']
+          expect(result_field.first[:fields].first).to eq ['Basics of the law and legal system / Ronald Schouten',
+                                                           'Civil commitment / Ronald Schouten and Philip J. Candilis']
         end
       end
 
@@ -315,7 +319,8 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'splits on chapter numbers' do
-          expect(result_field.first[:fields].first).to include '1 Introduction 9', '1.1 Human Body - Kinematic Perspective 10'
+          expect(result_field.first[:fields].first).to include '1 Introduction 9',
+                                                               '1.1 Human Body - Kinematic Perspective 10'
         end
       end
 
@@ -358,9 +363,9 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'splits on chapter numbers' do
-          expect(result_field.first[:fields].first).to include '7. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: The church of the Holy Sepulchre in Jerusalem', '8. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: Jerusalem and the Latin Kingdom:'
+          expect(result_field.first[:fields].first).to include '7. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: The church of the Holy Sepulchre in Jerusalem',
+                                                               '8. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: Jerusalem and the Latin Kingdom:'
         end
-
       end
 
       context 'with double-digit chapter numbers' do
@@ -380,7 +385,8 @@ RSpec.describe 'Sirsi config' do
         end
 
         it 'splits on chapter numbers' do
-          expect(result_field.first[:fields].first).to include '9. Global Nonlinear Techniques', '10. Closed Orbits and Limit Sets', '11. Applications in Biology'
+          expect(result_field.first[:fields].first).to include '9. Global Nonlinear Techniques',
+                                                               '10. Closed Orbits and Limit Sets', '11. Applications in Biology'
         end
       end
     end
@@ -409,7 +415,8 @@ RSpec.describe 'Sirsi config' do
       end
 
       it 'maps the right fields' do
-        expect(result_field.first[:unmatched_vernacular].first).to eq ['001-026. 水浒传(全26册)', '027-041. 岳飞传(全15册)', '042-046. 杨家将(全5册) --']
+        expect(result_field.first[:unmatched_vernacular].first).to eq ['001-026. 水浒传(全26册)', '027-041. 岳飞传(全15册)',
+                                                                       '042-046. 杨家将(全5册) --']
       end
     end
   end
@@ -417,7 +424,7 @@ RSpec.describe 'Sirsi config' do
   describe 'context_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'context_search'}
+    let(:field) { 'context_search' }
 
     it 'maps the right fields' do
       result = select_by_id('518')[field]
@@ -430,7 +437,7 @@ RSpec.describe 'Sirsi config' do
   describe 'vern_context_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'vern_context_search'}
+    let(:field) { 'vern_context_search' }
 
     it 'maps the right fields' do
       result = select_by_id('518')[field]
@@ -443,7 +450,7 @@ RSpec.describe 'Sirsi config' do
   describe 'summary_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'summary_search'}
+    let(:field) { 'summary_search' }
 
     it 'maps the right fields' do
       result = select_by_id('520')[field]
@@ -506,7 +513,7 @@ RSpec.describe 'Sirsi config' do
   describe 'summary_struct' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
-    let(:field) { 'summary_struct'}
+    let(:field) { 'summary_struct' }
 
     it 'maps the right fields' do
       result = select_by_id('520')[field].map { |x| JSON.parse(x, symbolize_names: true) }
@@ -562,7 +569,8 @@ RSpec.describe 'Sirsi config' do
       let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
 
       it 'structures the output' do
-        expect(result_field.first[:fields].first[:field]).to eq ['YUGOSLAV SERIAL 1973', { link: 'https://example.com' }]
+        expect(result_field.first[:fields].first[:field]).to eq ['YUGOSLAV SERIAL 1973',
+                                                                 { link: 'https://example.com' }]
       end
     end
 
@@ -599,7 +607,6 @@ RSpec.describe 'Sirsi config' do
       end
       let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
 
-
       it 'maps the right field values' do
         expect(result_field.last[:fields].first[:field]).to eq ['Content warning: Contains horrible things']
       end
@@ -610,18 +617,18 @@ RSpec.describe 'Sirsi config' do
     end
   end
 
-
   describe 'award_search' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'nielsenTests.mrc' }
-    let(:field) { 'award_search'}
+    let(:field) { 'award_search' }
 
     it 'maps the right fields' do
       result = select_by_id('586')[field]
       expect(result).to eq ['New Zealand Post book awards winner', '586 second award']
 
       result = select_by_id('986')[field]
-      expect(result).to eq ['Shortlisted for Montana New Zealand Book Awards: History Category 2006.', '986 second award']
+      expect(result).to eq ['Shortlisted for Montana New Zealand Book Awards: History Category 2006.',
+                            '986 second award']
 
       result = select_by_id('one586two986')[field]
       expect(result).to eq ['586 award', '986 award1', '986 award2']

@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 class CombiningEnumerable
   def initialize(left, right)
     @left = left
     @right = right
   end
 
-  def each(*args, &block)
+  def each(*args, &)
     return to_enum(:each, *args) unless block_given?
-    @left.each(*args, &block)
-    @right.each(*args, &block)
+
+    @left.each(*args, &)
+    @right.each(*args, &)
   end
 end
 
@@ -25,24 +28,22 @@ class Traject::MarcCombiningReader
     end
   end
 
-  def combinable_records
+  def combinable_records(&)
     return enum_for(:combinable_records) unless block_given?
 
     # See https://github.com/jruby/jruby/issues/5275;
     enumerable = if defined?(JRUBY_VERSION)
-      peek = marc_reader.each.first(2)
-      if peek.length == 1
-        peek
-      else
-        CombiningEnumerable.new(peek, marc_reader)
-      end
-    else
-      marc_reader
-    end
+                   peek = marc_reader.each.first(2)
+                   if peek.length == 1
+                     peek
+                   else
+                     CombiningEnumerable.new(peek, marc_reader)
+                   end
+                 else
+                   marc_reader
+                 end
 
-    enumerable.each.slice_when { |i, j| i['001'].value != j['001'].value }.each do |records_to_combine|
-      yield records_to_combine
-    end
+    enumerable.each.slice_when { |i, j| i['001'].value != j['001'].value }.each(&)
   end
 
   def each
@@ -56,19 +57,18 @@ class Traject::MarcCombiningReader
 
         first_record = records_to_combine.shift
         # if the first record in a set is an MHLD, give up and probably log an error message somewhere
-        next if ['u', 'v', 'x', 'y'].include? first_record.leader[6]
+        next if %w[u v x y].include? first_record.leader[6]
 
         record.leader = first_record.leader
         record.instance_variable_get(:@fields).concat(first_record.instance_variable_get(:@fields))
 
-        records_to_combine.each_with_index do |r, i|
-
+        records_to_combine.each_with_index do |r, _i|
           # An MHLD record is identified by the Leader/06 value. If leader/06 is any of these:
           #	u - Unknown
           #	v - Multipart item holdings
           #	x - Single-part item holdings
           #	y - Serial item holdings
-          if ['u', 'v', 'x', 'y'].include? r.leader[6]
+          if %w[u v x y].include? r.leader[6]
             record.instance_variable_get(:@fields).concat(r.fields(%w[852 853 863 866 867 868 999]))
           else
             record.instance_variable_get(:@fields).concat(r.fields('999'))

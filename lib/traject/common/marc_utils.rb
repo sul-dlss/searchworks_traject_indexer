@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Traject
   module MarcUtils
     def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
@@ -207,7 +209,7 @@ module Traject
 
       tag, number = tag_and_number.split('-', 2)
 
-      { tag: tag, number: number, script_id: script_id, field_orientation: field_orientation }
+      { tag:, number:, script_id:, field_orientation: }
     end
 
     def assemble_contributor_data_struct(field)
@@ -221,7 +223,7 @@ module Traject
         if subfield.code == 'e'
           relator_text << subfield.value
         elsif subfield.code == '4'
-          relator_text << Constants::RELATOR_TERMS[subfield.value] || subfield.value
+          (relator_text << Constants::RELATOR_TERMS[subfield.value]) || subfield.value
         elsif field.tag == '711' && subfield.code == 'j'
           extra_text << subfield.value
         elsif subfield.code != 'e' and subfield.code != '4'
@@ -337,7 +339,7 @@ module Traject
       lambda do |record, accumulator|
         Traject::MarcExtractor.new('008', first: true).collect_matching_lines(record) do |field, _spec, _extractor|
           if byte6values.include? field.value[6]
-            year = clean_marc_008_date(field.value[byte_range], u_replacement: u_replacement)
+            year = clean_marc_008_date(field.value[byte_range], u_replacement:)
             accumulator << year if year
           end
         end
@@ -392,9 +394,9 @@ module Traject
         /      /, # but a bunch of eResources like to use whitespace
         /--[^\S]/, # or omit the leading whitespace
         /[^\S]\.-[^\S]/, # or a .-
-        /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:\.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
-        /(?=(?:Appendix|Section|Chapter) [XVI]+[\.-]?)/i,
-        /(?=[^\d](?:\d+[:\.-]\s+))/i, # but sometimes it's just a number with something after it
+        /(?=(?:Chapter|Section|Appendix|Part|v\.) \d+[:.-]?\s+)/i, # and sometimes not even that; here are some common patterns that suggest chapters
+        /(?=(?:Appendix|Section|Chapter) [XVI]+[.-]?)/i,
+        /(?=[^\d](?:\d+[:.-]\s+))/i, # but sometimes it's just a number with something after it
         /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
       ]
       formatted_chapter_regexes.each do |regex|

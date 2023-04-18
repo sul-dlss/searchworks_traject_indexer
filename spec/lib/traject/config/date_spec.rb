@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Date config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -39,7 +41,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      q19439999', expected: '1943 ...' },
       { value_of_008: '      r19439999', expected: '1943' },
       { value_of_008: '      u19439999', expected: '1943 -' },
-      { value_of_008: '      |19439999', expected: nil },
+      { value_of_008: '      |19439999', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -83,7 +85,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      q19439999', expected: nil },
       { value_of_008: '      r19439999', expected: nil },
       { value_of_008: '      u19439999', expected: nil },
-      { value_of_008: '      |19439999', expected: nil },
+      { value_of_008: '      |19439999', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -130,7 +132,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      r19439999', expected: nil },
       { value_of_008: '      s19439999', expected: nil },
       { value_of_008: '      t19439999', expected: nil },
-      { value_of_008: '      |19439999', expected: nil },
+      { value_of_008: '      |19439999', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -168,7 +170,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19439999', expected: nil },
       { value_of_008: '      t19439999', expected: nil },
       { value_of_008: '      u19439999', expected: nil },
-      { value_of_008: '      |19439999', expected: nil },
+      { value_of_008: '      |19439999', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -206,7 +208,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19439999', expected: nil },
       { value_of_008: '      t19439999', expected: nil },
       { value_of_008: '      u19439999', expected: nil },
-      { value_of_008: '      |19439999', expected: nil },
+      { value_of_008: '      |19439999', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -244,7 +246,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19439999', expected: nil },
       { value_of_008: '      t19439999', expected: nil },
       { value_of_008: '      u19439999', expected: nil },
-      { value_of_008: '      |19439999', expected: nil },
+      { value_of_008: '      |19439999', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -285,7 +287,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19432007', expected: nil },
       { value_of_008: '      t19432007', expected: nil },
       { value_of_008: '      u19432007', expected: nil },
-      { value_of_008: '      |19432007', expected: nil },
+      { value_of_008: '      |19432007', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -326,7 +328,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19432007', expected: nil },
       { value_of_008: '      t19432007', expected: nil },
       { value_of_008: '      u19432007', expected: nil },
-      { value_of_008: '      |19432007', expected: nil },
+      { value_of_008: '      |19432007', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -364,7 +366,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19432007', expected: nil },
       { value_of_008: '      t19432007', expected: nil },
       { value_of_008: '      u19432007', expected: nil },
-      { value_of_008: '      |19432007', expected: nil },
+      { value_of_008: '      |19432007', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -402,7 +404,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19432007', expected: nil },
       { value_of_008: '      t19432007', expected: nil },
       { value_of_008: '      u19432007', expected: nil },
-      { value_of_008: '      |19432007', expected: nil },
+      { value_of_008: '      |19432007', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -440,7 +442,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      s19432007', expected: nil },
       { value_of_008: '      t19432007', expected: nil },
       { value_of_008: '      u19432007', expected: nil },
-      { value_of_008: '      |19432007', expected: nil },
+      { value_of_008: '      |19432007', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -478,7 +480,7 @@ RSpec.describe 'Date config' do
       { value_of_008: '      r19432007', expected: nil },
       { value_of_008: '      s19432007', expected: nil },
       { value_of_008: '      u19432007', expected: nil },
-      { value_of_008: '      |19432007', expected: nil },
+      { value_of_008: '      |19432007', expected: nil }
     ].each do |row|
       context "with a record with 008 field #{row[:value_of_008]}" do
         let(:record) do
@@ -566,8 +568,8 @@ RSpec.describe 'Date config' do
   end
 
   context 'a blank record (particularly without an 008 field)' do
-    subject(:result) { |rec| indexer.map_record(record) }
-    let(:record) {  MARC::Record.new }
+    subject(:result) { |_rec| indexer.map_record(record) }
+    let(:record) { MARC::Record.new }
 
     it 'indexes fine' do
       expect(result.keys).not_to include(/year_isi$/)
