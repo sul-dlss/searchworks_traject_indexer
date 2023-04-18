@@ -4,8 +4,8 @@
 ![tested on ruby 3.1](https://img.shields.io/badge/ruby-v3.1-red)
 ![tested on jruby 9.3](https://img.shields.io/badge/jruby-v9.3-red)
 
-<p align="center">indexing MARC, MODS, and more for <a href="https://github.com/sul-dlss/SearchWorks">SearchWorks</a>.</p>
-<img src="preview.png" align="center" alt="solr index fields displayed overlaid on SearchWorks catalog preview for a book">
+indexing MARC, MODS, and more for [SearchWorks](https://github.com/sul-dlss/SearchWorks).
+<img src="preview.png" alt="solr index fields displayed overlaid on SearchWorks catalog preview for a book">
 
 ## local development
 searchworks_traject_indexer is built on the [traject](https://github.com/traject/traject) transformation library, which requires ruby. we test the application using ruby 3.1 and jruby v9.3; support for other versions is not guaranteed.
@@ -21,12 +21,14 @@ SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject
 the above command will index the file `my_marc_file.marc` into the solr core `core-name` using the configuration for Symphony (`sirsi_config.rb`). after the command completes, you can check the solr web interface to see what was indexed.
 
 for assistance creating and managing a local solr instance for development, see [solr_wrapper](https://github.com/cbeer/solr_wrapper). for more on indexing, see "indexing data" below.
+
 ## testing
 you can run the full test suite with:
 ```sh
 bundle exec rake
 ```
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
+
 ## indexing data
 indexing is a multi-step process:
 1. an extractor process publishes data to be indexed to a [kafka](https://kafka.apache.org/) topic
@@ -116,6 +118,7 @@ another option is to use the `JsonWriter` to pipe output directly to somewhere e
 ```sh
 SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb -w Traject::JsonWriter my_marc_file.marc | tail -n +2 | jq '.pub_country'
 ```
+
 ## environments
 ### Symphony ILS (Sirsi)
 MARC binary data is dumped into files (each containing ~500k records) on the Symphony servers. These dumps happen hourly (containing every changed MARC record during that calendar day), nightly (containing every record changed the previous day), and monthly (containing every exportable MARC record in Symphony). Hourly and nightly dumps also include a `del` file, containing a catkey-per-line of records that have been deleted or retracted.
@@ -125,5 +128,6 @@ Additional data comes from a course reserves data dump, also on the Symphony ser
 The indexing machines have scheduled cron tasks (see `./config/schedule.rb`) that retrieve this data from the Symphony servers and process the data into a kafka topic. Messages in the topic are key-value pairs; the key is the catkey of the record, and the value is either blank (representing a delete) or containing one or more binary MARC records for the catkey. The topics are regularly compacted by Kafka to remove duplicate data.
 
 the sirsi traject config uses the special setting `SKIP_EMPTY_ITEM_DISPLAY`, which tells the indexer to skip or not skip empty item_display fields. anything greater than -1 will skip. tests are set to use `-1` unless otherwise configured.
+
 ### SDR
 The indexing machines also have scheduled cron tasks for loading data from purl-fetcher into a kafka topic. This task records a state file (in `./tmp`) that contains the timestamp of the most recent entry from purl-fetcher that was processed. Every minute, the cron task runs, retrieves the purl-fetcher changes since that most recent timestamp, and adds the message to a kafka topic.
