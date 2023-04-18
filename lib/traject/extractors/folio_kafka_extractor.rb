@@ -4,9 +4,13 @@ require 'kafka'
 require 'kafka/statsd'
 require 'active_support'
 
+# Produces kafka messages with data read from Folio
 class Traject::FolioKafkaExtractor
   attr_reader :reader, :kafka, :topic
 
+  # @param [Traject::FolioPostgresReader,Traject::FolioReader] reader reads records from folio
+  # @param [Kafka] kafka the connection to kafka
+  # @param [String] topic the kafka topic
   def initialize(reader:, kafka:, topic:)
     @reader = reader
     @kafka = kafka
