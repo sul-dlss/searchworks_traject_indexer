@@ -520,6 +520,7 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
+    # rubocop:disable Layout/LineLength
     describe 'lopped call numbers' do
       let(:fixture_name) { 'itemDisplayTests.mrc' }
 
@@ -598,6 +599,8 @@ RSpec.describe 'ItemInfo config' do
         ]
       end
     end
+    # rubocop:enable Layout/LineLength
+
 
     describe 'forward sort key (shelfkey)' do
       let(:fixture_name) { 'buildingTests.mrc' }
@@ -605,7 +608,11 @@ RSpec.describe 'ItemInfo config' do
       it 'has the shelfkey for the lopped call number' do
         item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
-          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO', 'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~', 'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
+          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
+          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...',
+          'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~', 'E184.S75 R47A V.1 1980',
+          'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+          '', 'LC' 
         ]
       end
     end

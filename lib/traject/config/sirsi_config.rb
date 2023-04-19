@@ -240,11 +240,13 @@ to_field 'vern_title_variant_search',
          extract_marc('210ab:222ab:242abnp:243adfgklmnoprs:246abfgnp:247abfgnp', alternate_script: :only)
 to_field 'title_related_search',
          extract_marc(
-           '505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: false
+           '505t:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst',
+           alternate_script: false
          )
 to_field 'vern_title_related_search',
          extract_marc(
-           '505tt:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst', alternate_script: :only
+           '505tt:700fgklmnoprst:710dfgklmnoprst:711fgklnpst:730adfgklmnoprst:740anp:760st:762st:765st:767st:770st:772st:773st:774st:775st:776st:777st:780st:785st:786st:787st:796fgklmnoprst:797dfgklmnoprst:798fgklnpst:799adfgklmnoprst',
+           alternate_script: :only
          )
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', first: true, alternate_script: false) do |_record, accumulator|
@@ -1691,7 +1693,8 @@ end
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
 to_field 'issn_search',
          extract_marc(
-           '022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x', alternate_script: false
+           '022a:022l:022m:022y:022z:400x:410x:411x:440x:490x:510x:700x:710x:711x:730x:760x:762x:765x:767x:770x:771x:772x:773x:774x:775x:776x:777x:778x:779x:780x:781x:782x:783x:784x:785x:786x:787x:788x:789x:800x:810x:811x:830x',
+           alternate_script: false
          ) do |_record, accumulator|
   accumulator.map!(&:strip)
   accumulator.select! { |v| v =~ issn_pattern }
@@ -2224,7 +2227,11 @@ to_field 'preferred_barcode' do |record, accumulator, context|
 
   # Prefer LC over Dewey over SUDOC over Alphanum over Other call number types
   chosen_holdings_by_callnumber_type = chosen_holdings.group_by(&:call_number_type)
-  preferred_callnumber_scheme_holdings = chosen_holdings_by_callnumber_type['LC'] || chosen_holdings_by_callnumber_type['DEWEY'] || chosen_holdings_by_callnumber_type['SUDOC'] || chosen_holdings_by_callnumber_type['ALPHANUM'] || chosen_holdings_by_callnumber_type.values.first
+  preferred_callnumber_scheme_holdings = chosen_holdings_by_callnumber_type['LC'] ||
+                                         chosen_holdings_by_callnumber_type['DEWEY'] ||
+                                         chosen_holdings_by_callnumber_type['SUDOC'] ||
+                                         chosen_holdings_by_callnumber_type['ALPHANUM'] ||
+                                         chosen_holdings_by_callnumber_type.values.first
 
   preferred_callnumber_holdings_by_call_number = preferred_callnumber_scheme_holdings.group_by do |holding|
     call_number_object = call_number_for_holding(record, holding, context)

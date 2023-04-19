@@ -16,6 +16,7 @@ RSpec.describe 'Author-title config' do
   let(:field) { 'author_title_search' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
 
+  # rubocop:disable Layout/LineLength
   describe 'maps search field values from 100, 110, 111 with data from the 240 or 245' do
     it 'maps the right data' do
       expect(select_by_id('100240')[field]).to eq ['100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
@@ -104,4 +105,5 @@ RSpec.describe 'Author-title config' do
       expect(select_by_id('vern811nosubt')[field]).to eq nil
     end
   end
+  # rubocop:enable Layout/LineLength
 end

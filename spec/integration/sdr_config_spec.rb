@@ -91,7 +91,7 @@ describe 'SDR indexing' do
                                 'building_facet' => ['Stanford Digital Repository'],
                                 'collection' => ['9665836'],
                                 'collection_with_title' => ['9665836-|-Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)'],
-                                'all_search' => [' Trustees Demo reel Stanford University. News and Publications Service pro producer moving image cau Stanford (Calif.) 2004-02-09 eng English videocassette 1 MiniDV tape access reformatted digital video/mp4 image/jpeg NTSC Sound Color Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320 Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv English eng CSt human prepared Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive) https://purl.stanford.edu/nj770kg7809 The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu). ']
+                                'all_search' => [' Trustees Demo reel Stanford University. News and Publications Service pro producer moving image cau Stanford (Calif.) 2004-02-09 eng English videocassette 1 MiniDV tape access reformatted digital video/mp4 image/jpeg NTSC Sound Color Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320 Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv English eng CSt human prepared Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive) https://purl.stanford.edu/nj770kg7809 The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu). '] # rubocop:disable Layout/LineLength
 
       expect(result).to include 'modsxml'
 
@@ -127,7 +127,8 @@ describe 'SDR indexing' do
                                                                              'name' => 'https://earthworks.stanford.edu'
                                                                            },
                                                                            'keywords' => ['Marine habitat conservation',
-                                                                                          'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+                                                                                          'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
+                                                                                          'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
                                                                            'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
                                                                            'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
                                                                            'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
@@ -550,7 +551,7 @@ describe 'SDR indexing' do
       stub_purl_request('sg213ph2100', File.read(file_fixture('sg213ph2100.xml').to_s))
     end
     it 'maps the data' do
-      expect(result).to include 'summary_search' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”'],
+      expect(result).to include 'summary_search' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”'], # rubocop:disable Layout/LineLength
                                 'iiif_manifest_url_ssim' => ['https://purl.stanford.edu/zz400gd3785/iiif/manifest']
     end
   end
