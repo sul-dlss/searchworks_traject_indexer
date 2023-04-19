@@ -7,9 +7,9 @@ require 'traject'
 indexer = Traject::Indexer.new.tap do |i|
   i.load_config_file('./lib/traject/config/sirsi_config.rb')
 end
-
-url = "#{ENV.fetch('SOLRMARC_STORED_FIELDS_SOLR_BASE_URL', nil)}/select?q=#{ENV.fetch('q',
-                                                                                      '*:*')}&fl=*&rows=1000&start=0&wt=json&fl=*"
+base = ENV.fetch('SOLRMARC_STORED_FIELDS_SOLR_BASE_URL')
+query = ENV.fetch('q', '*:*')
+url = "#{base}/select?q=#{query}&fl=*&rows=1000&start=0&wt=json&fl=*"
 response = HTTP.get(url)
 docs = JSON.parse(response)['response']['docs']
 docs.each do |expected|
