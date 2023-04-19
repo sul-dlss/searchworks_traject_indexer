@@ -601,7 +601,6 @@ RSpec.describe 'ItemInfo config' do
     end
     # rubocop:enable Layout/LineLength
 
-
     describe 'forward sort key (shelfkey)' do
       let(:fixture_name) { 'buildingTests.mrc' }
 
@@ -612,7 +611,7 @@ RSpec.describe 'ItemInfo config' do
           'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...',
           'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~', 'E184.S75 R47A V.1 1980',
           'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-          '', 'LC' 
+          '', 'LC'
         ]
       end
     end
