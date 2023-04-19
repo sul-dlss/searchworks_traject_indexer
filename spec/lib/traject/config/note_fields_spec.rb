@@ -337,7 +337,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         let(:toc) do
-          'Preface  Part I: Fundamentals  1: Energy in Thermal Physics  2: The Second Law  3: Interactions and Implications  Part II: Thermodynamics  4: Engines and Refrigerators  5: Free Energy and Chemical Thermodynamics  Part III: Statistical Mechanics  6: Boltzmann Statistics  7: Quantum Statistics  8: Systems of Interacting Particles  Appendix A: Elements of Quantum Mechanics  Appendix B: Mathematical Results  Suggested Reading  Reference Data  Index.'
+          'Preface  Part I: Fundamentals  1: Energy in Thermal Physics  2: The Second Law  3: Interactions and Implications  Part II: Thermodynamics  4: Engines and Refrigerators  5: Free Energy and Chemical Thermodynamics  Part III: Statistical Mechanics  6: Boltzmann Statistics  7: Quantum Statistics  8: Systems of Interacting Particles  Appendix A: Elements of Quantum Mechanics  Appendix B: Mathematical Results  Suggested Reading  Reference Data  Index.' # rubocop:disable Layout/LineLength
         end
 
         it 'splits on chapter numbers' do
@@ -359,7 +359,7 @@ RSpec.describe 'Sirsi config' do
         end
 
         let(:toc) do
-          '7. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: The church of the Holy Sepulchre in Jerusalem-- 8. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: Jerusalem and the Latin Kingdom:'
+          '7. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: The church of the Holy Sepulchre in Jerusalem-- 8. Crusader art in the reign of Queen Melisende and King Baldwin III: 1143-1163: Jerusalem and the Latin Kingdom:' # rubocop:disable Layout/LineLength
         end
 
         it 'splits on chapter numbers' do

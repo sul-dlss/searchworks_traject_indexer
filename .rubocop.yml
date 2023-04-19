@@ -7,6 +7,9 @@ AllCops:
   TargetRubyVersion: 3.1
   SuggestExtensions: false
 
+Layout/LineLength:
+  Max: 250
+
 Style/MultilineIfModifier:
   Enabled: false
 
