@@ -7,15 +7,14 @@ module CallNumbers
     def to_shelfkey
       [
         call_number.scheme,
-        (self.class.pad(klass.downcase, by: 3, character: ' ') if klass),
-        "#{self.class.pad(klass_number, by: 4,
-                                        direction: :left)}#{self.class.pad(klass_decimal || '.')}",
-        self.class.pad_all_digits(doon1),
-        self.class.pad_cutter(cutter1),
-        self.class.pad_all_digits(doon2),
-        self.class.pad_cutter(cutter2),
-        self.class.pad_all_digits(doon3),
-        self.class.pad_cutter(cutter3),
+        (pad(klass.downcase, by: 3, character: ' ') if klass),
+        [pad(klass_number, by: 4, direction: :left), pad(klass_decimal || '.')].join,
+        pad_all_digits(doon1),
+        pad_cutter(cutter1),
+        pad_all_digits(doon2),
+        pad_cutter(cutter2),
+        pad_all_digits(doon3),
+        pad_cutter(cutter3),
         (folio || '').downcase.strip,
         rest_with_serial_behavior
       ].compact.reject(&:empty?).join(' ').strip

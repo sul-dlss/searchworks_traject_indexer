@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/module/delegation'
+require 'i18n'
+
 module CallNumbers
-  require 'forwardable'
-  require 'i18n'
   class ShelfkeyBase
     CUTTER_ROUNDING = 6
     PADDING = 6
@@ -20,9 +21,8 @@ module CallNumbers
       '-' => '~'
     )
 
-    extend Forwardable
-    delegate %i[scheme klass klass_number klass_decimal doon1 doon2 doon3 cutter1 cutter2 cutter3 folio rest
-                serial] => :call_number
+    delegate :scheme, :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3,
+             :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
 
     attr_reader :call_number
 
@@ -37,6 +37,8 @@ module CallNumbers
     def to_reverse_shelfkey
       self.class.reverse(to_shelfkey).ljust(50, '~')
     end
+
+    delegate :pad, :pad_all_digits, :pad_cutter, to: :class
 
     class << self
       def reverse(value)
