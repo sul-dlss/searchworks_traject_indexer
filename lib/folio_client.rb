@@ -38,6 +38,7 @@ class FolioClient
     parse(get(path, **kwargs))
   end
 
+  # Kwargs may include 'instanceHrid'
   def source_record(**kwargs)
     FolioRecord.new_from_source_record(
       get_json('/source-storage/source-records', params: kwargs).dig('sourceRecords', 0), self
@@ -46,7 +47,11 @@ class FolioClient
 
   private
 
+  # @param [HTTP::Response] response
+  # @raises [StandardError] if the response was not a 200
+  # @return [Hash] the parsed JSON data structure
   def parse(response)
+    raise response unless response.status.ok?
     return nil if response.body.empty?
 
     JSON.parse(response.body)
@@ -55,6 +60,8 @@ class FolioClient
   def session_token
     @session_token ||= begin
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
+      raise response.body unless response.status.ok?
+
       response['x-okapi-token']
     end
   end
