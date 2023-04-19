@@ -6,7 +6,6 @@ gem 'traject', '~> 3.0'
 gem 'traject-marc4j_reader', platform: :jruby
 
 group :development, :test do
-  gem 'byebug', platform: :mri
   gem 'rspec'
   gem 'rubocop', require: false
   gem 'simplecov', require: false
