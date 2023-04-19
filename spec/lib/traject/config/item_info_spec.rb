@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'ItemInfo config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -15,7 +17,7 @@ RSpec.describe 'ItemInfo config' do
 
   describe 'barcode_search' do
     let(:fixture_name) { 'locationTests.mrc' }
-    let(:field) { 'barcode_search'}
+    let(:field) { 'barcode_search' }
 
     it 'has data' do
       # Single barcode
@@ -114,7 +116,8 @@ RSpec.describe 'ItemInfo config' do
 
     it 'has data' do
       expect(select_by_id('229800')[field]).to include 'ARS/STACKS', 'ARS/STACKS/type/STKS-MONO', 'ARS/*/type/STKS-MONO'
-      expect(select_by_id('575946')[field]).to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO', 'GREEN/*/type/STKS-MONO'
+      expect(select_by_id('575946')[field]).to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO',
+                                                       'GREEN/*/type/STKS-MONO'
     end
   end
 
@@ -131,14 +134,14 @@ RSpec.describe 'ItemInfo config' do
 
       it 'inlcudes various libraries' do
         sample_libs_and_ids = {
-          'ART': '345228',
-          'CLASSICS': '1147269',
-          'ENG': '1849258',
+          ART: '345228',
+          CLASSICS: '1147269',
+          ENG: '1849258',
           'GOV-DOCS': '2099904',
-          'GREEN': '1261173',
-          'HOOVER': '3743949',
-          'SAL3': '690002',
-          'SCIENCE': '460947',
+          GREEN: '1261173',
+          HOOVER: '3743949',
+          SAL3: '690002',
+          SCIENCE: '460947',
           'SPEC-COLL': '4258089'
         }
 
@@ -334,16 +337,16 @@ RSpec.describe 'ItemInfo config' do
           MARC::Record.new.tap do |record|
             record.leader = '01247cas a2200337 a 4500'
             record.append(MARC::ControlField.new(
-              '008', '830415c19809999vauuu    a    0    0eng  '
-            ))
+                            '008', '830415c19809999vauuu    a    0    0eng  '
+                          ))
             record.append(
               MARC::DataField.new(
                 '999', ' ', ' ',
-                MARC::Subfield.new('a', "PQ9661 .P31 C6 VOL 1 1946"),
-                MARC::Subfield.new('w', "LC"),
-                MARC::Subfield.new('i', "36105111222333"),
+                MARC::Subfield.new('a', 'PQ9661 .P31 C6 VOL 1 1946'),
+                MARC::Subfield.new('w', 'LC'),
+                MARC::Subfield.new('i', '36105111222333'),
                 MARC::Subfield.new('l', 'NEWS-STKS'),
-                MARC::Subfield.new('m', "BUSINESS")
+                MARC::Subfield.new('m', 'BUSINESS')
               )
             )
           end
@@ -362,7 +365,8 @@ RSpec.describe 'ItemInfo config' do
             'Shelved by title VOL 1 1946',
             /shelved by title/,
             '',
-            'LC')
+            'LC'
+          )
         end
       end
 
@@ -371,16 +375,16 @@ RSpec.describe 'ItemInfo config' do
           MARC::Record.new.tap do |record|
             record.leader = '01247cas a2200337 a 4500'
             record.append(MARC::ControlField.new(
-              '008', '830415c19809999vauuu    a    0    0eng  '
-            ))
+                            '008', '830415c19809999vauuu    a    0    0eng  '
+                          ))
             record.append(
               MARC::DataField.new(
                 '999', ' ', ' ',
-                MARC::Subfield.new('a', "BUS54594-11 V.3 1986 MAY-AUG."),
-                MARC::Subfield.new('w', "ALPHANUM"),
-                MARC::Subfield.new('i', "20504037816"),
+                MARC::Subfield.new('a', 'BUS54594-11 V.3 1986 MAY-AUG.'),
+                MARC::Subfield.new('w', 'ALPHANUM'),
+                MARC::Subfield.new('i', '20504037816'),
                 MARC::Subfield.new('l', 'NEWS-STKS'),
-                MARC::Subfield.new('m', "BUSINESS")
+                MARC::Subfield.new('m', 'BUSINESS')
               )
             )
           end
@@ -399,7 +403,8 @@ RSpec.describe 'ItemInfo config' do
             'Shelved by title V.3 1986 MAY-AUG.',
             /shelved by title/,
             '',
-            'ALPHANUM')
+            'ALPHANUM'
+          )
         end
       end
 
@@ -408,16 +413,16 @@ RSpec.describe 'ItemInfo config' do
           MARC::Record.new.tap do |record|
             record.leader = '01247cas a2200337 a 4500'
             record.append(MARC::ControlField.new(
-              '008', '830415c19809999vauuu    a    0    0eng  '
-            ))
+                            '008', '830415c19809999vauuu    a    0    0eng  '
+                          ))
             record.append(
               MARC::DataField.new(
                 '999', ' ', ' ',
-                MARC::Subfield.new('a', "E184.S75 R47A V.1 1980"),
-                MARC::Subfield.new('w', "LC"),
-                MARC::Subfield.new('i', "36105444555666"),
+                MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
+                MARC::Subfield.new('w', 'LC'),
+                MARC::Subfield.new('i', '36105444555666'),
                 MARC::Subfield.new('l', 'NEWS-STKS'),
-                MARC::Subfield.new('m', "GREEN")
+                MARC::Subfield.new('m', 'GREEN')
               )
             )
           end
@@ -436,7 +441,8 @@ RSpec.describe 'ItemInfo config' do
             'E184.S75 R47A V.1 1980',
             /^lc/,
             '',
-            'LC')
+            'LC'
+          )
         end
       end
 
@@ -597,7 +603,6 @@ RSpec.describe 'ItemInfo config' do
       let(:fixture_name) { 'buildingTests.mrc' }
 
       it 'has the shelfkey for the lopped call number' do
-
         item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
         expect(item_display).to eq [
           '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO', 'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~', 'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Traject::KafkaMarcReader do
@@ -16,7 +18,7 @@ describe Traject::KafkaMarcReader do
       end
 
       it 'creates a record tagged for deletion' do
-        expect(reader.each.to_a).to eq [{ id: '123', delete: true}]
+        expect(reader.each.to_a).to eq [{ id: '123', delete: true }]
       end
     end
 
@@ -32,7 +34,6 @@ describe Traject::KafkaMarcReader do
         expect(res).to include an_instance_of(MARC::Record)
         expect(res.first['001'].value).to eq 'a444'
       end
-
     end
   end
 end

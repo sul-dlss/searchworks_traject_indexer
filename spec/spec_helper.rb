@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 
 require_relative '../config/boot'
@@ -17,7 +19,7 @@ SimpleCov.start
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 ENV['SKIP_EMPTY_ITEM_DISPLAY'] = '-1'
 
@@ -31,7 +33,7 @@ def file_fixture(fixture_name)
     path
   else
     msg = "the directory '%s' does not contain a file named '%s'"
-    raise ArgumentError, msg % [file_fixture_path, fixture_name]
+    raise ArgumentError, format(msg, file_fixture_path, fixture_name)
   end
 end
 

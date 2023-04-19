@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'traject'
-require './lib/traject/readers/marc_combining_reader.rb'
+require './lib/traject/readers/marc_combining_reader'
 
 RSpec.describe 'bad jruby handling of #slice_when (https://github.com/jruby/jruby/issues/5275)' do
   it 'handles single-record record merging' do

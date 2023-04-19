@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../config/boot'
 
 require 'traject'
@@ -13,13 +15,13 @@ ARGV.each do |path|
 
     if path =~ /\.del$/
       producer = Utils.kafka.async_producer(
-          # Trigger a delivery once 100 messages have been buffered.
-          delivery_threshold: 100,
+        # Trigger a delivery once 100 messages have been buffered.
+        delivery_threshold: 100,
 
-          # Trigger a delivery every 30 seconds.
-          delivery_interval: 30,
-          max_queue_size: 10000000
-        )
+        # Trigger a delivery every 30 seconds.
+        delivery_interval: 30,
+        max_queue_size: 10_000_000
+      )
 
       f.each_line do |ckey|
         producer.produce(nil, key: ckey.strip, topic: Utils.env_config.kafka_topic)
@@ -29,7 +31,7 @@ ARGV.each do |path|
       producer.shutdown
     else
       reader = Traject::MarcCombiningReader.new(f, 'marc_source.type' => 'binary', 'marc4j_reader.permissive' => true)
-      Traject::MarcKafkaExtractor.new(reader: reader, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
+      Traject::MarcKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
     end
 
     File.delete(f)

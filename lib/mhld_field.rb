@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Class used for containing mhld display information
 class MhldField
@@ -33,30 +35,34 @@ class MhldField
   # calling this method.
   def get863display_value(pattern853)
     return unless pattern853
-    result = ''
+
+    result = String.new
     [*'a'..'f'].map do |char|
       caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
       value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
       break unless caption && value
+
       result += ':' unless result.empty?
       result += get_captioned(caption, value)
     end
-    alt_scheme = ''
+    alt_scheme = String.new
     [*'g'..'h'].map do |char|
       caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
       value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
       break unless caption && value
+
       alt_scheme += ', ' if char != 'g'
       alt_scheme += "#{caption}#{value}"
     end
     result += ":(#{alt_scheme})" unless alt_scheme.empty?
     prepender = ''
     shall_i_prepend = false
-    chronology = ''
+    chronology = String.new
     [*'i'..'m'].map do |char|
       caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
       value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
       break unless caption && value
+
       case caption
       when /(\(month\)|\(season\)|\(unit\))/i
         value = translate_month_or_season(value)
@@ -72,10 +78,10 @@ class MhldField
       shall_i_prepend = true
     end
     unless chronology.empty?
-      result += if !result.empty?
-                  " (#{chronology})"
-                else
+      result += if result.empty?
                   chronology
+                else
+                  " (#{chronology})"
                 end
     end
     result

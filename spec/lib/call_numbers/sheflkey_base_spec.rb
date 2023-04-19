@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/shelfkey_base'
 
 describe CallNumbers::ShelfkeyBase do

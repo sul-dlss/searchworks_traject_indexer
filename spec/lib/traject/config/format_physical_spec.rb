@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Format physical config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -8,7 +10,7 @@ RSpec.describe 'Format physical config' do
     end
   end
   subject(:result) { indexer.map_record(record) }
-  let(:field) { 'format_physical_ssim'}
+  let(:field) { 'format_physical_ssim' }
 
   context 'with 007/00 = m (Film)' do
     let(:record) do
@@ -55,12 +57,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -75,12 +76,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd f'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -95,12 +95,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 's     j'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -115,12 +114,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd    j'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -219,7 +217,6 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-
   context 'with some garbage in the 007' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -251,9 +248,8 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01291cgm a2200289 a 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 pair of stereoscopic slides +'),
-          MARC::Subfield.new('e', 'legend and diagram.')
-        ))
+                                     MARC::Subfield.new('a', '1 pair of stereoscopic slides +'),
+                                     MARC::Subfield.new('e', 'legend and diagram.')))
       end
     end
 
@@ -262,10 +258,10 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-#   /**
-#    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
-#    *   (007/00 = k AND  007/01 = h)  OR  300a contains "photograph"
-#    */
+  #   /**
+  #    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
+  #    *   (007/00 = k AND  007/01 = h)  OR  300a contains "photograph"
+  #    */
 
   context 'with 007/00 = kj boo' do
     let(:record) do
@@ -298,8 +294,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01291cgm a2200289 a 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 photograph (1 leaf).')
-        ))
+                                     MARC::Subfield.new('a', '1 photograph (1 leaf).')))
       end
     end
 
@@ -308,10 +303,10 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-#   /**
-#    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
-#    *   (007/00 = r)  OR  300a contains "remote-sensing image"
-#    */
+  #   /**
+  #    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
+  #    *   (007/00 = r)  OR  300a contains "remote-sensing image"
+  #    */
   context 'with 007/00 = r' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -331,8 +326,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 remote sensing image ;')
-        ))
+                                     MARC::Subfield.new('a', '1 remote sensing image ;')))
       end
     end
 
@@ -346,8 +340,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', 'remote-sensing images; ')
-        ))
+                                     MARC::Subfield.new('a', 'remote-sensing images; ')))
       end
     end
 
@@ -362,12 +355,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd fungnnmmneu'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -382,12 +374,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd fungnnmmneu'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '2475606-5001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
@@ -402,17 +393,15 @@ RSpec.describe 'Format physical config' do
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd zsngnnmmned'))
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 sound disc :'),
-          MARC::Subfield.new('b', 'digital ;'),
-          MARC::Subfield.new('c', '4 3/4 in.')
-        ))
+                                     MARC::Subfield.new('a', '1 sound disc :'),
+                                     MARC::Subfield.new('b', 'digital ;'),
+                                     MARC::Subfield.new('c', '4 3/4 in.')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -427,17 +416,15 @@ RSpec.describe 'Format physical config' do
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd zsngnnmmned'))
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 sound disc :'),
-          MARC::Subfield.new('b', 'digital ;'),
-          MARC::Subfield.new('c', '4 3/4 in.')
-        ))
+                                     MARC::Subfield.new('a', '1 sound disc :'),
+                                     MARC::Subfield.new('b', 'digital ;'),
+                                     MARC::Subfield.new('c', '4 3/4 in.')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -451,65 +438,63 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', field_value)
-        ))
+                                     MARC::Subfield.new('a', field_value)))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
     [
-      "1 sound disc (1 hr., 1 min.) : digital, stereo. ; 4 3/4 in.",
-      "1 sound disc (1:06:59) : digital, stereo. ; 4 3/4 in. + pamphlet.",
-      "1 sound disc (39:46) : digital, stereo. ; 4 3/4 in.",
-      "1 sound disc (40 min., 29 sec.) : digital, stereo. ; 4 3/4 in.",
-      "1 sound disc (43 min.) : digital, stereo. ; 4 3/4 in. + pamphlet.",
-      "1 sound disc (43 min.) : digital, stereo. ; 4 3/4 in.",
-      "1 sound disc (44 min.) digital, stereo. ; 4 3/4 in.",
-      "1 sound disc (51 min.) : digital. ; 4 3/4 in.",
-      "1 sound disc (68:57 min.) : digital, analog ; 4 3/4 in.",
-      "1 sound disc : digital ; 4 3/4 in.",
-      "1 sound disc : digital, 4 3/4 in.",
-      "1 sound disc : digital, chiefly mono. ; 4 3/4 in.",
-      "1 sound disc : digital, monaural ; 4 3/4 in. + pamphlet.",
-      "1 sound disc : digital, mono. ; 4 3/4 in.",
-      "1 sound disc : digital, stereo ; 4 3/4 in.",
-      "1 sound disc : digital, stereo. 4 3/4 in.",
-      "1 sound disc : digital, stereo. ; 4 3/4 in. + booklet.",
-      "1 sound disc : digital, stereo. ; 4 3/4 in. + pamphlet.",
-      "1 sound disc : digital, stereo. ; 4 3/4 in.",
-      "2 sound discs : digital ; 4 3/4 in.",
-      "2 sound discs : digital, stereo. ; 4 3/4 in.",
-      "2 sound discs : digital, stereo., HJ ; 4 3/4 in.",
-      "1 sound disc (ca. 1 hr. 6 min.) : digital, stereo. ; 4 3/4 in.",
-      "3 sound discs (ca. 151 min.) : digital ; 4 3/4 in.",
-      "3 sound discs (ca. 2 hrs., 56 min.) : digital, stereo. ; 4 3/4 in. + 1 booklet (147 p.).",
-      "1 sound disc : digital, mono. ; c 4 3/4in.",
-      "1 sound disc ; 4 3/4 in.",
-      "1 compact sound disc : digital, stereo. ; 4 3/4 in.",
+      '1 sound disc (1 hr., 1 min.) : digital, stereo. ; 4 3/4 in.',
+      '1 sound disc (1:06:59) : digital, stereo. ; 4 3/4 in. + pamphlet.',
+      '1 sound disc (39:46) : digital, stereo. ; 4 3/4 in.',
+      '1 sound disc (40 min., 29 sec.) : digital, stereo. ; 4 3/4 in.',
+      '1 sound disc (43 min.) : digital, stereo. ; 4 3/4 in. + pamphlet.',
+      '1 sound disc (43 min.) : digital, stereo. ; 4 3/4 in.',
+      '1 sound disc (44 min.) digital, stereo. ; 4 3/4 in.',
+      '1 sound disc (51 min.) : digital. ; 4 3/4 in.',
+      '1 sound disc (68:57 min.) : digital, analog ; 4 3/4 in.',
+      '1 sound disc : digital ; 4 3/4 in.',
+      '1 sound disc : digital, 4 3/4 in.',
+      '1 sound disc : digital, chiefly mono. ; 4 3/4 in.',
+      '1 sound disc : digital, monaural ; 4 3/4 in. + pamphlet.',
+      '1 sound disc : digital, mono. ; 4 3/4 in.',
+      '1 sound disc : digital, stereo ; 4 3/4 in.',
+      '1 sound disc : digital, stereo. 4 3/4 in.',
+      '1 sound disc : digital, stereo. ; 4 3/4 in. + booklet.',
+      '1 sound disc : digital, stereo. ; 4 3/4 in. + pamphlet.',
+      '1 sound disc : digital, stereo. ; 4 3/4 in.',
+      '2 sound discs : digital ; 4 3/4 in.',
+      '2 sound discs : digital, stereo. ; 4 3/4 in.',
+      '2 sound discs : digital, stereo., HJ ; 4 3/4 in.',
+      '1 sound disc (ca. 1 hr. 6 min.) : digital, stereo. ; 4 3/4 in.',
+      '3 sound discs (ca. 151 min.) : digital ; 4 3/4 in.',
+      '3 sound discs (ca. 2 hrs., 56 min.) : digital, stereo. ; 4 3/4 in. + 1 booklet (147 p.).',
+      '1 sound disc : digital, mono. ; c 4 3/4in.',
+      '1 sound disc ; 4 3/4 in.',
+      '1 compact sound disc : digital, stereo. ; 4 3/4 in.',
       #     // look!  centimeters
-      "1 sound disc : digital, mono. ; 12 cm.",
-      "2 sound discs : digital, mono. ; 12 cm.",
-      "1 sound disc : digital ; 12 cm.",
+      '1 sound disc : digital, mono. ; 12 cm.',
+      '2 sound discs : digital, mono. ; 12 cm.',
+      '1 sound disc : digital ; 12 cm.',
       #     // audio disc not sound disc
-      "2 audio discs : digital, CD audio ; 4 3/4 in.",
-      "1 audio disc : digital, CD audio, 4 3/4 in.",
-      "1 audio disc : digital, CD audio, mono ; 4 3/4 in.",
+      '2 audio discs : digital, CD audio ; 4 3/4 in.',
+      '1 audio disc : digital, CD audio, 4 3/4 in.',
+      '1 audio disc : digital, CD audio, mono ; 4 3/4 in.',
       #     // CD audio, not digital
-      "1 audio disc : 4 3/4 in.",
-      "1 audio disc : CD audio ; 4 3/4 in.",
-      "1 audio disc : CD audio, 4 3/4 in.",
-      "1 audio disc : CD-R, 4 3/4 in.",
-      "1 audio disc : CD-R, CD audio ; 4 3/4 in.",
-      "1 audio disc : digital ; 4 3/4 in.",
-      "1 audio disc : digital, CD audio ; 4 3/4 in.",
-      "1 audio disc : digital, CD audio, 4 3/4 in.",
-      "1 audio disc : digital, CD audio, mono ; 4 3/4 in."
+      '1 audio disc : 4 3/4 in.',
+      '1 audio disc : CD audio ; 4 3/4 in.',
+      '1 audio disc : CD audio, 4 3/4 in.',
+      '1 audio disc : CD-R, 4 3/4 in.',
+      '1 audio disc : CD-R, CD audio ; 4 3/4 in.',
+      '1 audio disc : digital ; 4 3/4 in.',
+      '1 audio disc : digital, CD audio ; 4 3/4 in.',
+      '1 audio disc : digital, CD audio, 4 3/4 in.',
+      '1 audio disc : digital, CD audio, mono ; 4 3/4 in.'
     ].each do |f300_values|
       context "with #{f300_values}" do
         let(:field_value) { f300_values }
@@ -521,17 +506,17 @@ RSpec.describe 'Format physical config' do
     end
 
     [
-      "1 sound disc (6 hr.) : DVD audio, digital ; 4 3/4 in.",
-      "1 sound disc : digital, DVD ; 4 3/4 in.",
-      "1 sound disc : digital, DVD audio ; 4 3/4 in.",
-      "1 sound disc : digital, DVD audio; 4 3/4 in.",
-      "1 sound disc : digital, SACD ; 4 3/4 in. + 1 BluRay audio disc.",
-      "1 online resource (1 sound file)",
-      "2s. 12in. 33.3rpm.",
-      "1 sound disc : 33 1/3 rpm, stereo ; 12 in.",
-      "1 sound disc : analog, 33 1/3 rpm, stereo. ; 12 in.",
-      "1 sound disc : 33 1/3 rpm ; 12 in.",
-      "1 sound disc (47 min) : analog, 33 1/3 rpm., stereo. ; 12 in."
+      '1 sound disc (6 hr.) : DVD audio, digital ; 4 3/4 in.',
+      '1 sound disc : digital, DVD ; 4 3/4 in.',
+      '1 sound disc : digital, DVD audio ; 4 3/4 in.',
+      '1 sound disc : digital, DVD audio; 4 3/4 in.',
+      '1 sound disc : digital, SACD ; 4 3/4 in. + 1 BluRay audio disc.',
+      '1 online resource (1 sound file)',
+      '2s. 12in. 33.3rpm.',
+      '1 sound disc : 33 1/3 rpm, stereo ; 12 in.',
+      '1 sound disc : analog, 33 1/3 rpm, stereo. ; 12 in.',
+      '1 sound disc : 33 1/3 rpm ; 12 in.',
+      '1 sound disc (47 min) : analog, 33 1/3 rpm., stereo. ; 12 in.'
     ].each do |f300_values|
       context "with #{f300_values}" do
         let(:field_value) { f300_values }
@@ -549,12 +534,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01002cjm a2200313Ma 4500'
         r.append(MARC::ControlField.new('007', 'sd dmsdnnmslne'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -569,12 +553,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01002cjm a2200313Ma 4500'
         r.append(MARC::ControlField.new('007', 'sd dmsdnnmslne'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '2475606-5001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
@@ -589,12 +572,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::ControlField.new('007', 'sdubsmennmplue'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -609,12 +591,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::ControlField.new('007', 'sdubsmennmplue'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '2475606-5001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
@@ -628,15 +609,13 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '2s. 12in. 33.3rpm.'),
-        ))
+                                     MARC::Subfield.new('a', '2s. 12in. 33.3rpm.')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -650,17 +629,15 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 sound disc :'),
-          MARC::Subfield.new('b', 'analog, 33 1/3 rpm, stereo. ;'),
-          MARC::Subfield.new('c', '12 in.')
-        ))
+                                     MARC::Subfield.new('a', '1 sound disc :'),
+                                     MARC::Subfield.new('b', 'analog, 33 1/3 rpm, stereo. ;'),
+                                     MARC::Subfield.new('c', '12 in.')))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -674,60 +651,58 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', field_value)
-        ))
+                                     MARC::Subfield.new('a', field_value)))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
     [
-      "1 disc.  33 1/3 rpm. stereo. 12 in.",
-      "1 disc.  33.3 rpm. stereo. 12 in.",
-      "1 disc. 33 1/3 rpm.  quad. 12 in.",
-      "1 disc. 33 1/3 rpm. 12 in.",
-      "1 disc. 33 1/3 rpm. quad. 12 in.",
-      "1 disc. 33 1/3 rpm. stereo. 12 in.",
-      "1 s.  12 in.  33 1/3 rpm.  stereophonic.",
-      "1 s. 12 in. 33 1/3 rpm. microgroove.",
-      "1 sound disc (38 min.) : 33 1/3 rpm, mono. ; 12 in.",
-      "1 sound disc : 33 1/3 rpm ; 12 in. + insert.",
-      "1 sound disc : 33 1/3 rpm ; 12 in.",
-      "1 sound disc : 33 1/3 rpm, ; 12 in.",
-      "1 sound disc : 33 1/3 rpm, monaural ; 12 in.",
-      "1 sound disc : 33 1/3 rpm, stereo ; 12 in. + insert ([4] p.)",
-      "1 sound disc : 33 1/3 rpm, stereo. ; 12 in.",
-      "1 sound disc : analog, 33 1/3 rpm ; 12 in.",
-      "1 sound disc : analog, 33 1/3 rpm, mono. ; 12 in.",
-      "1 sound disc : analog, 33 1/3 rpm, stereo ; 12 in.",
-      "1 sound disc : analog, 33 1/3 rpm, stereo. ; 12 in. + insert.",
-      "1 sound disc analog, 33 1/3 rpm, stereo. ; 12 in.",
-      "1 sound disc: analog, stereo, 33 1/3 rpm, 12 in.",
-      "1-1/4s. 12in. 33.3rpm.",
-      "1/2 s. 12in. 33.3rpm. stereophonic.",
-      "1/2 s. 33 1/3 rpm. stereophonic. 12 in.",
-      "1/3s. 12in.  33.3rpm. stereophonic.",
-      "1/6s. 12in. 33.3rpm.",
-      "10s. 12in. 33.3rpm.",
-      "1s. 10in. 33.3rpm.",
-      "1s. 12in. 33.3rpm.",
-      "2 discs. 33 1/3 rpm.  stereo. 12 in.",
-      "2 discs. 33 1/3 rpm. stereo. 12 in.",
-      "2 s.  12 in.  33 1/3 rpm.  microgroove.  stereophonic.",
-      "2 s.  12 in.  33 1/3 rpm. stereophonic.",
-      "2 s. 12 in. 33.3 rpm.",
-      "2s.  12in.  33 1/3rpm. stereophonic.",
-      "2s. 12in. 33 1/3rpm. stereophonic.",
-      "3 discs. 33 1/3 rpm.  stereo. 12 in.",
-      "4s.  12in.  33.3rpm. stereophonic.",
-      "4s. 12in. 33.3rpm. stereophonic.",
-      "5 sound discs : 33 1/3 rpm ; 12 in.",
-      "on side 1 of 1 disc. 33 1/3 rpm. stereo. 12 in.",
+      '1 disc.  33 1/3 rpm. stereo. 12 in.',
+      '1 disc.  33.3 rpm. stereo. 12 in.',
+      '1 disc. 33 1/3 rpm.  quad. 12 in.',
+      '1 disc. 33 1/3 rpm. 12 in.',
+      '1 disc. 33 1/3 rpm. quad. 12 in.',
+      '1 disc. 33 1/3 rpm. stereo. 12 in.',
+      '1 s.  12 in.  33 1/3 rpm.  stereophonic.',
+      '1 s. 12 in. 33 1/3 rpm. microgroove.',
+      '1 sound disc (38 min.) : 33 1/3 rpm, mono. ; 12 in.',
+      '1 sound disc : 33 1/3 rpm ; 12 in. + insert.',
+      '1 sound disc : 33 1/3 rpm ; 12 in.',
+      '1 sound disc : 33 1/3 rpm, ; 12 in.',
+      '1 sound disc : 33 1/3 rpm, monaural ; 12 in.',
+      '1 sound disc : 33 1/3 rpm, stereo ; 12 in. + insert ([4] p.)',
+      '1 sound disc : 33 1/3 rpm, stereo. ; 12 in.',
+      '1 sound disc : analog, 33 1/3 rpm ; 12 in.',
+      '1 sound disc : analog, 33 1/3 rpm, mono. ; 12 in.',
+      '1 sound disc : analog, 33 1/3 rpm, stereo ; 12 in.',
+      '1 sound disc : analog, 33 1/3 rpm, stereo. ; 12 in. + insert.',
+      '1 sound disc analog, 33 1/3 rpm, stereo. ; 12 in.',
+      '1 sound disc: analog, stereo, 33 1/3 rpm, 12 in.',
+      '1-1/4s. 12in. 33.3rpm.',
+      '1/2 s. 12in. 33.3rpm. stereophonic.',
+      '1/2 s. 33 1/3 rpm. stereophonic. 12 in.',
+      '1/3s. 12in.  33.3rpm. stereophonic.',
+      '1/6s. 12in. 33.3rpm.',
+      '10s. 12in. 33.3rpm.',
+      '1s. 10in. 33.3rpm.',
+      '1s. 12in. 33.3rpm.',
+      '2 discs. 33 1/3 rpm.  stereo. 12 in.',
+      '2 discs. 33 1/3 rpm. stereo. 12 in.',
+      '2 s.  12 in.  33 1/3 rpm.  microgroove.  stereophonic.',
+      '2 s.  12 in.  33 1/3 rpm. stereophonic.',
+      '2 s. 12 in. 33.3 rpm.',
+      '2s.  12in.  33 1/3rpm. stereophonic.',
+      '2s. 12in. 33 1/3rpm. stereophonic.',
+      '3 discs. 33 1/3 rpm.  stereo. 12 in.',
+      '4s.  12in.  33.3rpm. stereophonic.',
+      '4s. 12in. 33.3rpm. stereophonic.',
+      '5 sound discs : 33 1/3 rpm ; 12 in.',
+      'on side 1 of 1 disc. 33 1/3 rpm. stereo. 12 in.'
     ].each do |f300_values|
       context "with #{f300_values}" do
         let(:field_value) { f300_values }
@@ -737,17 +712,17 @@ RSpec.describe 'Format physical config' do
     end
 
     [
-      "1 sound disc : digital ; 4 3/4 in.",
-      "1 sound disc : digital, stereo. ; 4 3/4 in.",
-      "1 videodisc (133 min.) : sd., col. ; 4 3/4 in.",
-      "1 score (18 p.) ; 22 x 28 cm. + 4 parts ; 33 cm. + 1 sound disc (digital ; 4 3/4 in.)",
-      "1 sound disc (33 min.) : digital, stereo. ; 4 3/4 in.",
-      "1 sound disc (6 hr.) : DVD audio, digital ; 4 3/4 in.",
-      "1 sound disc : digital, DVD ; 4 3/4 in.",
-      "1 sound disc : digital, DVD audio ; 4 3/4 in.",
-      "1 sound disc : digital, DVD audio; 4 3/4 in.",
-      "1 sound disc : digital, SACD ; 4 3/4 in. + 1 BluRay audio disc.",
-      "1 online resource (1 sound file)"
+      '1 sound disc : digital ; 4 3/4 in.',
+      '1 sound disc : digital, stereo. ; 4 3/4 in.',
+      '1 videodisc (133 min.) : sd., col. ; 4 3/4 in.',
+      '1 score (18 p.) ; 22 x 28 cm. + 4 parts ; 33 cm. + 1 sound disc (digital ; 4 3/4 in.)',
+      '1 sound disc (33 min.) : digital, stereo. ; 4 3/4 in.',
+      '1 sound disc (6 hr.) : DVD audio, digital ; 4 3/4 in.',
+      '1 sound disc : digital, DVD ; 4 3/4 in.',
+      '1 sound disc : digital, DVD audio ; 4 3/4 in.',
+      '1 sound disc : digital, DVD audio; 4 3/4 in.',
+      '1 sound disc : digital, SACD ; 4 3/4 in. + 1 BluRay audio disc.',
+      '1 online resource (1 sound file)'
     ].each do |f300_values|
       context "with #{f300_values}" do
         let(:field_value) { f300_values }
@@ -763,12 +738,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01205cim a2200337Ia 4500'
         r.append(MARC::ControlField.new('007', 'ss lunjlc-----'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -783,12 +757,11 @@ RSpec.describe 'Format physical config' do
         r.leader = '01205cim a2200337Ia 4500'
         r.append(MARC::ControlField.new('007', 'ss lunjlc-----'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-          MARC::Subfield.new('w', 'ASIS'),
-          MARC::Subfield.new('i', '2475606-5001'),
-          MARC::Subfield.new('l', 'INTERNET'),
-          MARC::Subfield.new('m', 'SUL')
-        ))
+                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
+                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('i', '2475606-5001'),
+                                     MARC::Subfield.new('l', 'INTERNET'),
+                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
@@ -797,12 +770,12 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-#   /**
-#    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
-#    *   (007/00 = h AND  007/01 = b,c,d,h or j)  OR  300a contains "microfilm"
-#    *    Naomi addition:  OR  if  callnum.startsWith("MFILM")
-#    *    Question:  (what if 245h has "microform" -- see 9646614 for example)
-#    */
+  #   /**
+  #    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
+  #    *   (007/00 = h AND  007/01 = b,c,d,h or j)  OR  300a contains "microfilm"
+  #    *    Naomi addition:  OR  if  callnum.startsWith("MFILM")
+  #    *    Question:  (what if 245h has "microform" -- see 9646614 for example)
+  #    */
   context 'with a 007/01 that is not correct for Microfilm' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -886,13 +859,12 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01543cam a2200325Ka 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFILM N.S. 17443'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '9636901-1001'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'GREEN'),
-          MARC::Subfield.new('t', 'NH-MICR')
-        ))
+                                     MARC::Subfield.new('a', 'MFILM N.S. 17443'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '9636901-1001'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'GREEN'),
+                                     MARC::Subfield.new('t', 'NH-MICR')))
       end
     end
 
@@ -906,8 +878,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01543cam a2200325Ka 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '21 microfilm reels ;')
-        ))
+                                     MARC::Subfield.new('a', '21 microfilm reels ;')))
       end
     end
 
@@ -916,12 +887,12 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-#   /**
-#    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
-#    *   (007/00 = h AND  007/01 = e,f or g)  OR  300a contains "microfiche"
-#    *    Naomi addition:  OR  if  callnum.startsWith("MFICHE")
-#    *    Question:  (what if 245h has "microform" -- see 9646614 for example)
-#    */
+  #   /**
+  #    *  Spec (per Vitus 2013-11, email to gryph-search with Excel spreadsheet attachment):
+  #    *   (007/00 = h AND  007/01 = e,f or g)  OR  300a contains "microfiche"
+  #    *    Naomi addition:  OR  if  callnum.startsWith("MFICHE")
+  #    *    Question:  (what if 245h has "microform" -- see 9646614 for example)
+  #    */
   context 'with a 007/01 that is not correct for Microfilm' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -979,13 +950,12 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01543cam a2200325Ka 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MFICHE 1183 N.5.1.7205'),
-          MARC::Subfield.new('w', 'ALPHANUM'),
-          MARC::Subfield.new('i', '9636901-1001'),
-          MARC::Subfield.new('l', 'MEDIA-MTXT'),
-          MARC::Subfield.new('m', 'GREEN'),
-          MARC::Subfield.new('t', 'NH-MICR')
-        ))
+                                     MARC::Subfield.new('a', 'MFICHE 1183 N.5.1.7205'),
+                                     MARC::Subfield.new('w', 'ALPHANUM'),
+                                     MARC::Subfield.new('i', '9636901-1001'),
+                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
+                                     MARC::Subfield.new('m', 'GREEN'),
+                                     MARC::Subfield.new('t', 'NH-MICR')))
       end
     end
 
@@ -999,8 +969,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01543cam a2200325Ka 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', 'microfiches :')
-        ))
+                                     MARC::Subfield.new('a', 'microfiches :')))
       end
     end
 
@@ -1008,17 +977,17 @@ RSpec.describe 'Format physical config' do
       expect(result[field]).to eq ['Microfiche']
     end
   end
-#
-#   /**
-#    *  Spec from email chain Nov 2013
-#    *  INDEX-89 - Video Physical Formats
-#    *  The order of checking for data
-#      *     i. call number
-#      *    ii. 538$a
-#      *   iii. 300$b and 347$b
-#      *   iv. 007
-#      * "Other video" not needed if there is a more specific value already determined
-#    **/
+  #
+  #   /**
+  #    *  Spec from email chain Nov 2013
+  #    *  INDEX-89 - Video Physical Formats
+  #    *  The order of checking for data
+  #      *     i. call number
+  #      *    ii. 538$a
+  #      *   iii. 300$b and 347$b
+  #      *   iv. 007
+  #      * "Other video" not needed if there is a more specific value already determined
+  #    **/
   context 'with 007/00 - m' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -1037,8 +1006,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ZDVD')
-        ))
+                                     MARC::Subfield.new('a', 'ZDVD')))
       end
     end
 
@@ -1052,8 +1020,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ZDVD')
-        ))
+                                     MARC::Subfield.new('a', 'ZDVD')))
       end
     end
 
@@ -1067,8 +1034,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MDVD')
-        ))
+                                     MARC::Subfield.new('a', 'MDVD')))
       end
     end
 
@@ -1082,8 +1048,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ADVD')
-        ))
+                                     MARC::Subfield.new('a', 'ADVD')))
       end
     end
 
@@ -1097,8 +1062,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'ADVD')
-        ))
+                                     MARC::Subfield.new('a', 'ADVD')))
       end
     end
 
@@ -1126,8 +1090,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vb czaizq'))
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'DVD')
-        ))
+                                     MARC::Subfield.new('a', 'DVD')))
       end
     end
 
@@ -1140,8 +1103,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ZDVD 12345 BLU-RAY')
-        ))
+                                     MARC::Subfield.new('a', 'ZDVD 12345 BLU-RAY')))
       end
     end
 
@@ -1154,8 +1116,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'Bluray')
-        ))
+                                     MARC::Subfield.new('a', 'Bluray')))
       end
     end
 
@@ -1168,8 +1129,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'Blu ray')
-        ))
+                                     MARC::Subfield.new('a', 'Blu ray')))
       end
     end
 
@@ -1182,8 +1142,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'Blu-ray')
-        ))
+                                     MARC::Subfield.new('a', 'Blu-ray')))
       end
     end
 
@@ -1209,8 +1168,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ZVC')
-        ))
+                                     MARC::Subfield.new('a', 'ZVC')))
       end
     end
 
@@ -1223,8 +1181,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ARTVC')
-        ))
+                                     MARC::Subfield.new('a', 'ARTVC')))
       end
     end
 
@@ -1237,8 +1194,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MVC')
-        ))
+                                     MARC::Subfield.new('a', 'MVC')))
       end
     end
 
@@ -1251,8 +1207,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'AVC')
-        ))
+                                     MARC::Subfield.new('a', 'AVC')))
       end
     end
 
@@ -1265,8 +1220,7 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'VHS')
-        ))
+                                     MARC::Subfield.new('a', 'VHS')))
       end
     end
 
@@ -1306,8 +1260,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('b', 'MP4')
-        ))
+                                     MARC::Subfield.new('b', 'MP4')))
       end
     end
 
@@ -1321,8 +1274,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('347', ' ', ' ',
-          MARC::Subfield.new('b', 'MPEG-4')
-        ))
+                                     MARC::Subfield.new('b', 'MPEG-4')))
       end
     end
 
@@ -1376,11 +1328,9 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', '    vaizq'))
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('b', 'M')
-        ))
+                                     MARC::Subfield.new('b', 'M')))
         r.append(MARC::DataField.new('347', ' ', ' ',
-          MARC::Subfield.new('b', 'M')
-        ))
+                                     MARC::Subfield.new('b', 'M')))
       end
     end
 
@@ -1394,8 +1344,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'Junk')
-        ))
+                                     MARC::Subfield.new('a', 'Junk')))
       end
     end
 
@@ -1409,8 +1358,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'ZVD')
-        ))
+                                     MARC::Subfield.new('a', 'ZVD')))
       end
     end
 
@@ -1424,8 +1372,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'MVD')
-        ))
+                                     MARC::Subfield.new('a', 'MVD')))
       end
     end
 
@@ -1439,8 +1386,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'CAV')
-        ))
+                                     MARC::Subfield.new('a', 'CAV')))
       end
     end
 
@@ -1454,8 +1400,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'CLV')
-        ))
+                                     MARC::Subfield.new('a', 'CLV')))
       end
     end
 
@@ -1483,8 +1428,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'CAV')
-        ))
+                                     MARC::Subfield.new('a', 'CAV')))
       end
     end
 
@@ -1499,8 +1443,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'CLV')
-        ))
+                                     MARC::Subfield.new('a', 'CLV')))
       end
     end
 
@@ -1515,8 +1458,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'VCD')
-        ))
+                                     MARC::Subfield.new('a', 'VCD')))
       end
     end
 
@@ -1531,8 +1473,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'Video CD')
-        ))
+                                     MARC::Subfield.new('a', 'Video CD')))
       end
     end
 
@@ -1547,8 +1488,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('538', ' ', ' ',
-          MARC::Subfield.new('a', 'VideoCD')
-        ))
+                                     MARC::Subfield.new('a', 'VideoCD')))
       end
     end
 
@@ -1563,8 +1503,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('b', 'VCD')
-        ))
+                                     MARC::Subfield.new('b', 'VCD')))
       end
     end
 
@@ -1579,8 +1518,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('b', 'Video CD')
-        ))
+                                     MARC::Subfield.new('b', 'Video CD')))
       end
     end
 
@@ -1595,8 +1533,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('b', 'VideoCD')
-        ))
+                                     MARC::Subfield.new('b', 'VideoCD')))
       end
     end
 
@@ -1611,8 +1548,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('347', ' ', ' ',
-          MARC::Subfield.new('b', 'VCD')
-        ))
+                                     MARC::Subfield.new('b', 'VCD')))
       end
     end
 
@@ -1627,8 +1563,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('347', ' ', ' ',
-          MARC::Subfield.new('b', 'Video CD')
-        ))
+                                     MARC::Subfield.new('b', 'Video CD')))
       end
     end
 
@@ -1643,8 +1578,7 @@ RSpec.describe 'Format physical config' do
         r.leader = '04711cgm a2200733Ia 4500'
         r.append(MARC::ControlField.new('007', 'vd czaizq'))
         r.append(MARC::DataField.new('347', ' ', ' ',
-          MARC::Subfield.new('b', 'VideoCD')
-        ))
+                                     MARC::Subfield.new('b', 'VideoCD')))
       end
     end
 
@@ -1666,24 +1600,23 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-#   /**
-#    *  SW-1531 - Piano Organ roll value
-#    *  if 007/00 = 's' and 007/01 = 'q' or
-#    *  if 338$a or 300$a contains "audio roll"
-#    *
-#    **/
+  #   /**
+  #    *  SW-1531 - Piano Organ roll value
+  #    *  if 007/00 = 's' and 007/01 = 'q' or
+  #    *  if 338$a or 300$a contains "audio roll"
+  #    *
+  #    **/
   context 'with 007/00 = sq' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sq'))
         r.append(MARC::DataField.new('999', ' ', ' ',
-          MARC::Subfield.new('a', 'F152 .A28'),
-          MARC::Subfield.new('w', 'LC'),
-          MARC::Subfield.new('i', '36105018746623'),
-          MARC::Subfield.new('l', 'HAS-DIGIT'),
-          MARC::Subfield.new('m', 'GREEN')
-        ))
+                                     MARC::Subfield.new('a', 'F152 .A28'),
+                                     MARC::Subfield.new('w', 'LC'),
+                                     MARC::Subfield.new('i', '36105018746623'),
+                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
+                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1697,8 +1630,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
-          MARC::Subfield.new('a', '1 audio roll')
-        ))
+                                     MARC::Subfield.new('a', '1 audio roll')))
       end
     end
 
@@ -1712,8 +1644,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::DataField.new('338', ' ', ' ',
-          MARC::Subfield.new('a', '1 audio roll')
-        ))
+                                     MARC::Subfield.new('a', '1 audio roll')))
       end
     end
 
@@ -1727,8 +1658,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::DataField.new('338', ' ', ' ',
-          MARC::Subfield.new('a', '1 audio and roll')
-        ))
+                                     MARC::Subfield.new('a', '1 audio and roll')))
       end
     end
 
@@ -1744,8 +1674,7 @@ RSpec.describe 'Format physical config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('344', ' ', ' ',
-            MARC::Subfield.new('a', 'analog')
-          ))
+                                       MARC::Subfield.new('a', 'analog')))
         end
       end
 
@@ -1758,8 +1687,7 @@ RSpec.describe 'Format physical config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('345', ' ', ' ',
-            MARC::Subfield.new('a', '3D')
-          ))
+                                       MARC::Subfield.new('a', '3D')))
         end
       end
 
@@ -1772,8 +1700,7 @@ RSpec.describe 'Format physical config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('346', ' ', ' ',
-            MARC::Subfield.new('a', 'Beta')
-          ))
+                                       MARC::Subfield.new('a', 'Beta')))
         end
       end
 
@@ -1786,8 +1713,7 @@ RSpec.describe 'Format physical config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('347', ' ', ' ',
-            MARC::Subfield.new('a', 'audio file')
-          ))
+                                       MARC::Subfield.new('a', 'audio file')))
         end
       end
 

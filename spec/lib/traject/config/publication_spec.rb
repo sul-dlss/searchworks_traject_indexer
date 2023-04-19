@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Publication config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -21,21 +23,21 @@ RSpec.describe 'Publication config' do
       expect(select_by_id('260bunknown')[field]).to eq ['Victoria, B.C.']
 
       # 		// 260ab
-      expect(select_by_id('260ababc')[field]).to eq ["Paris : Gauthier-Villars ; Chicago : University of Chicago Press"]
-      expect(select_by_id('260abbc')[field]).to eq ["Washington, D.C. : first b : second b U.S. G.P.O."]
-      expect(select_by_id('260ab3')[field]).to eq ["London : Vogue"]
-      expect(select_by_id('260crightbracket')[field]).to eq ["i.e. Bruxelles : Moens"]
+      expect(select_by_id('260ababc')[field]).to eq ['Paris : Gauthier-Villars ; Chicago : University of Chicago Press']
+      expect(select_by_id('260abbc')[field]).to eq ['Washington, D.C. : first b : second b U.S. G.P.O.']
+      expect(select_by_id('260ab3')[field]).to eq ['London : Vogue']
+      expect(select_by_id('260crightbracket')[field]).to eq ['i.e. Bruxelles : Moens']
     end
 
     it 'skips 260a s.l, 260b s.n.' do
       expect(select_by_id('260abunknown')[field]).to eq nil
 
       # 260a contains s.l. (unknown - sin location, presumably)
-  		expect(select_by_id('260aunknown')[field]).to eq ["Insight Press"]
-  		expect(select_by_id('260abaslbc')[field]).to eq ["[Philadelphia] : Some name another name"]
+      expect(select_by_id('260aunknown')[field]).to eq ['Insight Press']
+      expect(select_by_id('260abaslbc')[field]).to eq ['[Philadelphia] : Some name another name']
       #
       # 260b contains s.n. (unknown - sin name, presumably)
-  		expect(select_by_id('260bunknown')[field]).to eq ["Victoria, B.C."]
+      expect(select_by_id('260bunknown')[field]).to eq ['Victoria, B.C.']
     end
 
     context 'with a record with a 264' do
@@ -43,18 +45,14 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '264a')
-          ))
+                                       MARC::Subfield.new('a', '264a')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('b', '264b')
-          ))
+                                       MARC::Subfield.new('b', '264b')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '264c')
-          ))
+                                       MARC::Subfield.new('c', '264c')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '264a'),
-            MARC::Subfield.new('b', '264b')
-          ))
+                                       MARC::Subfield.new('a', '264a'),
+                                       MARC::Subfield.new('b', '264b')))
         end
       end
 
@@ -68,21 +66,16 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '264a')
-          ))
+                                       MARC::Subfield.new('a', '264a')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('b', '264b')
-          ))
+                                       MARC::Subfield.new('b', '264b')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '264c')
-          ))
+                                       MARC::Subfield.new('c', '264c')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '264a'),
-            MARC::Subfield.new('b', '264b')
-          ))
+                                       MARC::Subfield.new('a', '264a'),
+                                       MARC::Subfield.new('b', '264b')))
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('a', '260a')
-          ))
+                                       MARC::Subfield.new('a', '260a')))
         end
       end
 
@@ -96,25 +89,21 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '[Place of publication not identified] :'),
-            MARC::Subfield.new('b', 'b1')
-          ))
+                                       MARC::Subfield.new('a', '[Place of publication not identified] :'),
+                                       MARC::Subfield.new('b', 'b1')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '[Place of Production not identified] :'),
-            MARC::Subfield.new('b', 'b2')
-          ))
+                                       MARC::Subfield.new('a', '[Place of Production not identified] :'),
+                                       MARC::Subfield.new('b', 'b2')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', 'Place of manufacture Not Identified'),
-            MARC::Subfield.new('b', 'b3')
-          ))
+                                       MARC::Subfield.new('a', 'Place of manufacture Not Identified'),
+                                       MARC::Subfield.new('b', 'b3')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '[Place of distribution not identified]')
-          ))
+                                       MARC::Subfield.new('a', '[Place of distribution not identified]')))
         end
       end
 
       it 'maps all the data' do
-        expect(result[field]).to eq ['b1', 'b2', 'b3']
+        expect(result[field]).to eq %w[b1 b2 b3]
       end
     end
 
@@ -123,25 +112,21 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', 'a1'),
-            MARC::Subfield.new('b', '[publisher not identified], ')
-          ))
+                                       MARC::Subfield.new('a', 'a1'),
+                                       MARC::Subfield.new('b', '[publisher not identified], ')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', 'a2'),
-            MARC::Subfield.new('b', '[Producer not identified]')
-          ))
+                                       MARC::Subfield.new('a', 'a2'),
+                                       MARC::Subfield.new('b', '[Producer not identified]')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', 'a3'),
-            MARC::Subfield.new('b', 'Manufacturer Not Identified')
-          ))
+                                       MARC::Subfield.new('a', 'a3'),
+                                       MARC::Subfield.new('b', 'Manufacturer Not Identified')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('b', '[distributor not identified]')
-          ))
+                                       MARC::Subfield.new('b', '[distributor not identified]')))
         end
       end
 
       it 'maps all the data' do
-        expect(result[field]).to eq ['a1', 'a2', 'a3']
+        expect(result[field]).to eq %w[a1 a2 a3]
       end
     end
   end
@@ -159,15 +144,13 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('a', '264a'),
-            MARC::Subfield.new('6', '880-01')
-          ))
+                                       MARC::Subfield.new('a', '264a'),
+                                       MARC::Subfield.new('6', '880-01')))
           r.append(MARC::DataField.new('880', ' ', ' ',
-            MARC::Subfield.new('6', '264-01'),
-            MARC::Subfield.new('a', '880a for 264'),
-            MARC::Subfield.new('b', '880b for 264'),
-            MARC::Subfield.new('c', '880c for 264')
-          ))
+                                       MARC::Subfield.new('6', '264-01'),
+                                       MARC::Subfield.new('a', '880a for 264'),
+                                       MARC::Subfield.new('b', '880b for 264'),
+                                       MARC::Subfield.new('c', '880c for 264')))
         end
       end
 
@@ -200,17 +183,13 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '[Date of publication not identified] :')
-          ))
+                                       MARC::Subfield.new('c', '[Date of publication not identified] :')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '[Date of Production not identified]')
-          ))
+                                       MARC::Subfield.new('c', '[Date of Production not identified]')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', 'Date of manufacture Not Identified')
-          ))
+                                       MARC::Subfield.new('c', 'Date of manufacture Not Identified')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '[Date of distribution not identified]')
-          ))
+                                       MARC::Subfield.new('c', '[Date of distribution not identified]')))
         end
       end
 
@@ -233,17 +212,13 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '9999')
-          ))
+                                       MARC::Subfield.new('c', '9999')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '6666')
-          ))
+                                       MARC::Subfield.new('c', '6666')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '22nd century')
-          ))
+                                       MARC::Subfield.new('c', '22nd century')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '8610s')
-          ))
+                                       MARC::Subfield.new('c', '8610s')))
         end
       end
 
@@ -265,17 +240,13 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '0000')
-          ))
+                                       MARC::Subfield.new('c', '0000')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '0036')
-          ))
+                                       MARC::Subfield.new('c', '0036')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '0197')
-          ))
+                                       MARC::Subfield.new('c', '0197')))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '0204')
-          ))
+                                       MARC::Subfield.new('c', '0204')))
         end
       end
 
@@ -301,15 +272,14 @@ RSpec.describe 'Publication config' do
       '©2002' => '2002',
       'Ⓟ1983 ' => '1983',
       '[2011]' => '2011',
-      '[1940?]' => '1940',
+      '[1940?]' => '1940'
     }.each do |data_264c, expected|
       context 'with a year in the 264' do
         subject(:result) { indexer.map_record(record) }
         let(:record) do
           MARC::Record.new.tap do |r|
             r.append(MARC::DataField.new('264', ' ', ' ',
-              MARC::Subfield.new('c', data_264c)
-            ))
+                                         MARC::Subfield.new('c', data_264c)))
           end
         end
 
@@ -318,12 +288,12 @@ RSpec.describe 'Publication config' do
     end
 
     {
-      # FIXME (from solrmarc): 'copyright 2005' => '2005',
+      # FIXME: (from solrmarc): 'copyright 2005' => '2005',
       ['[2011]', '©2009'] => '2011',
       ['2012.', '©2009'] => '2012',
       '197?' => '1970',
       '[197?]' => '1970',
-      ['1560', '1564'] => '1560'
+      %w[1560 1564] => '1560'
     }.each do |data_264c, expected|
       context 'with a garbage value in the 008, and year in the 264' do
         subject(:result) { indexer.map_record(record) }
@@ -332,8 +302,7 @@ RSpec.describe 'Publication config' do
             Array(data_264c).each do |v|
               r.append(MARC::ControlField.new('008', '       0000'))
               r.append(MARC::DataField.new('264', ' ', ' ',
-                MARC::Subfield.new('c', v)
-              ))
+                                           MARC::Subfield.new('c', v)))
             end
           end
         end
@@ -348,8 +317,7 @@ RSpec.describe 'Publication config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('008', '       0000'))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '0019')
-          ))
+                                       MARC::Subfield.new('c', '0019')))
         end
       end
 
@@ -362,11 +330,9 @@ RSpec.describe 'Publication config' do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('008', '       0000'))
           r.append(MARC::DataField.new('264', ' ', ' ',
-            MARC::Subfield.new('c', '1260')
-          ))
+                                       MARC::Subfield.new('c', '1260')))
           r.append(MARC::DataField.new('264', ' ', '1',
-            MARC::Subfield.new('c', '1264')
-          ))
+                                       MARC::Subfield.new('c', '1264')))
         end
       end
 
@@ -379,24 +345,23 @@ RSpec.describe 'Publication config' do
       let(:fixture_name) { 'pubDateTests.mrc' }
 
       it 'maps the right data' do
-      	expect(select_by_id('firstDateOnly008')[field]).to eq ['2000']
-      	expect(select_by_id('bothDates008')[field]).to eq ['1964']
-      	expect(select_by_id('contRes')[field]).to eq ['1984']
-      	expect(select_by_id('pubDate195u')[field]).to eq ['1950s']
-      	expect(select_by_id('pubDate00uu')[field]).to eq ['1st century']
-      	expect(select_by_id('pubDate01uu')[field]).to eq ['2nd century']
-      	expect(select_by_id('pubDate02uu')[field]).to eq ['3rd century']
-      	expect(select_by_id('pubDate03uu')[field]).to eq ['4th century']
-      	expect(select_by_id('pubDate08uu')[field]).to eq ['9th century']
-      	expect(select_by_id('pubDate09uu')[field]).to eq ['10th century']
-      	expect(select_by_id('pubDate10uu')[field]).to eq ['11th century']
-      	expect(select_by_id('pubDate11uu')[field]).to eq ['12th century']
-      	expect(select_by_id('pubDate12uu')[field]).to eq ['13th century']
-      	expect(select_by_id('pubDate13uu')[field]).to eq ['14th century']
-      	expect(select_by_id('pubDate16uu')[field]).to eq ['17th century']
-      	expect(select_by_id('pubDate19uu')[field]).to eq ['20th century']
-      	expect(select_by_id('pubDate20uu')[field]).to eq ['21st century']
-
+        expect(select_by_id('firstDateOnly008')[field]).to eq ['2000']
+        expect(select_by_id('bothDates008')[field]).to eq ['1964']
+        expect(select_by_id('contRes')[field]).to eq ['1984']
+        expect(select_by_id('pubDate195u')[field]).to eq ['1950s']
+        expect(select_by_id('pubDate00uu')[field]).to eq ['1st century']
+        expect(select_by_id('pubDate01uu')[field]).to eq ['2nd century']
+        expect(select_by_id('pubDate02uu')[field]).to eq ['3rd century']
+        expect(select_by_id('pubDate03uu')[field]).to eq ['4th century']
+        expect(select_by_id('pubDate08uu')[field]).to eq ['9th century']
+        expect(select_by_id('pubDate09uu')[field]).to eq ['10th century']
+        expect(select_by_id('pubDate10uu')[field]).to eq ['11th century']
+        expect(select_by_id('pubDate11uu')[field]).to eq ['12th century']
+        expect(select_by_id('pubDate12uu')[field]).to eq ['13th century']
+        expect(select_by_id('pubDate13uu')[field]).to eq ['14th century']
+        expect(select_by_id('pubDate16uu')[field]).to eq ['17th century']
+        expect(select_by_id('pubDate19uu')[field]).to eq ['20th century']
+        expect(select_by_id('pubDate20uu')[field]).to eq ['21st century']
 
         #  No pub date when unknown
         expect(select_by_id('bothDatesBlank')[field]).to be_nil
@@ -421,18 +386,18 @@ RSpec.describe 'Publication config' do
     let(:field) { 'pub_year_tisim' }
 
     {
-      [{ '260' => { 'subfields' => [{ 'c' => '1973' }]}}] => '1973',
-      [{ '260' => { 'subfields' => [{ 'c' => '[1973]' }]}}] => '1973',
-      [{ '260' => { 'subfields' => [{ 'c' => '1973]' }]}}] => '1973',
-      [{ '260' => { 'subfields' => [{ 'c' => '[1973?]' }]}}] => '1973',
-      [{ '260' => { 'subfields' => [{ 'c' => '[196-?]' }]}}] => '1960',
-      [{ '260' => { 'subfields' => [{ 'c' => 'c1975.' }]}}] => '1975',
-      [{ '260' => { 'subfields' => [{ 'c' => '[c1973]' }]}}] => '1973',
-      [{ '260' => { 'subfields' => [{ 'c' => 'c1973]' }]}}] => '1973',
-      [{ '260' => { 'subfields' => [{ 'c' => '1973 [i.e. 1974]' }]}}] => '1974',
-      [{ '260' => { 'subfields' => [{ 'c' => '1971[i.e.1972]' }]}}] => '1972',
-      [{ '260' => { 'subfields' => [{ 'c' => '1973 [i.e.1974]' }]}}] => '1974',
-      [{ '260' => { 'subfields' => [{ 'c' => '1967 [i. e. 1968]' }]}}] => '1968'
+      [{ '260' => { 'subfields' => [{ 'c' => '1973' }] } }] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '[1973]' }] } }] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '1973]' }] } }] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '[1973?]' }] } }] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '[196-?]' }] } }] => '1960',
+      [{ '260' => { 'subfields' => [{ 'c' => 'c1975.' }] } }] => '1975',
+      [{ '260' => { 'subfields' => [{ 'c' => '[c1973]' }] } }] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => 'c1973]' }] } }] => '1973',
+      [{ '260' => { 'subfields' => [{ 'c' => '1973 [i.e. 1974]' }] } }] => '1974',
+      [{ '260' => { 'subfields' => [{ 'c' => '1971[i.e.1972]' }] } }] => '1972',
+      [{ '260' => { 'subfields' => [{ 'c' => '1973 [i.e.1974]' }] } }] => '1974',
+      [{ '260' => { 'subfields' => [{ 'c' => '1967 [i. e. 1968]' }] } }] => '1968'
     }.each do |fields, expected|
       context 'with a single value in a 260c' do
         let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
@@ -445,7 +410,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'without a 008 or 260c usable value' do
-      let(:fields) { [{ '250' => { 'subfields' => [{ 'c' => '[19--]' }]}}]}
+      let(:fields) { [{ '250' => { 'subfields' => [{ 'c' => '[19--]' }] } }] }
       let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
       subject(:result) { indexer.map_record(record) }
 
@@ -483,13 +448,11 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('a', 'Special ed.')
-          ))
+                                       MARC::Subfield.new('a', 'Special ed.')))
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('a', 'London :'),
-            MARC::Subfield.new('b', "William Heinemann,"),
-            MARC::Subfield.new('c', "2012")
-          ))
+                                       MARC::Subfield.new('a', 'London :'),
+                                       MARC::Subfield.new('b', 'William Heinemann,'),
+                                       MARC::Subfield.new('c', '2012')))
         end
       end
 
@@ -503,9 +466,8 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('a', 'Canadian ed. ='),
-            MARC::Subfield.new('b', "Éd. canadienne.")
-          ))
+                                       MARC::Subfield.new('a', 'Canadian ed. ='),
+                                       MARC::Subfield.new('b', 'Éd. canadienne.')))
         end
       end
 
@@ -519,8 +481,7 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('a', 'Rev. as of Jan. 1, 1958.')
-          ))
+                                       MARC::Subfield.new('a', 'Rev. as of Jan. 1, 1958.')))
         end
       end
 
@@ -534,12 +495,10 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('a', '3rd draft /'),
-            MARC::Subfield.new('b', 'edited by Paul Watson.')
-          ))
+                                       MARC::Subfield.new('a', '3rd draft /'),
+                                       MARC::Subfield.new('b', 'edited by Paul Watson.')))
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('a', 'London')
-          ))
+                                       MARC::Subfield.new('a', 'London')))
         end
       end
 
@@ -553,13 +512,11 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('6', '880-04'),
-            MARC::Subfield.new('a', 'Di 1 ban.')
-          ))
+                                       MARC::Subfield.new('6', '880-04'),
+                                       MARC::Subfield.new('a', 'Di 1 ban.')))
           r.append(MARC::DataField.new('880', ' ', ' ',
-            MARC::Subfield.new('6', '250-04'),
-            MARC::Subfield.new('a', '第1版.')
-          ))
+                                       MARC::Subfield.new('6', '250-04'),
+                                       MARC::Subfield.new('a', '第1版.')))
         end
       end
 
@@ -573,19 +530,17 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('6', '880-03'),
-            MARC::Subfield.new('a', 'Or Yehudah :'),
-            MARC::Subfield.new('b', 'Kineret :'),
-            MARC::Subfield.new('b', 'Zemorah-Bitan,'),
-            MARC::Subfield.new('c', 'c2013.'),
-          ))
+                                       MARC::Subfield.new('6', '880-03'),
+                                       MARC::Subfield.new('a', 'Or Yehudah :'),
+                                       MARC::Subfield.new('b', 'Kineret :'),
+                                       MARC::Subfield.new('b', 'Zemorah-Bitan,'),
+                                       MARC::Subfield.new('c', 'c2013.')))
           r.append(MARC::DataField.new('880', ' ', ' ',
-            MARC::Subfield.new('6', '260-03//r'),
-            MARC::Subfield.new('a', 'אור יהודה :'),
-            MARC::Subfield.new('b', 'כנרת :'),
-            MARC::Subfield.new('b', 'זמורה־ביתן,'),
-            MARC::Subfield.new('c', 'c2013.')
-          ))
+                                       MARC::Subfield.new('6', '260-03//r'),
+                                       MARC::Subfield.new('a', 'אור יהודה :'),
+                                       MARC::Subfield.new('b', 'כנרת :'),
+                                       MARC::Subfield.new('b', 'זמורה־ביתן,'),
+                                       MARC::Subfield.new('c', 'c2013.')))
         end
       end
 
@@ -599,17 +554,15 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('6', '880-02'),
-            MARC::Subfield.new('a', '[Taibei] :'),
-            MARC::Subfield.new('b', ' Gai hui,'),
-            MARC::Subfield.new('c', 'Minguo 69 [1980]'),
-          ))
+                                       MARC::Subfield.new('6', '880-02'),
+                                       MARC::Subfield.new('a', '[Taibei] :'),
+                                       MARC::Subfield.new('b', ' Gai hui,'),
+                                       MARC::Subfield.new('c', 'Minguo 69 [1980]')))
           r.append(MARC::DataField.new('880', ' ', ' ',
-            MARC::Subfield.new('6', '260-02'),
-            MARC::Subfield.new('a', '[台北] :'),
-            MARC::Subfield.new('b', '該會,'),
-            MARC::Subfield.new('c', '民國69 [1980]')
-          ))
+                                       MARC::Subfield.new('6', '260-02'),
+                                       MARC::Subfield.new('a', '[台北] :'),
+                                       MARC::Subfield.new('b', '該會,'),
+                                       MARC::Subfield.new('c', '民國69 [1980]')))
         end
       end
 
@@ -623,25 +576,21 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('6', '880-04'),
-            MARC::Subfield.new('a', 'Di 1 ban.')
-          ))
+                                       MARC::Subfield.new('6', '880-04'),
+                                       MARC::Subfield.new('a', 'Di 1 ban.')))
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('6', '880-05'),
-            MARC::Subfield.new('a', 'Shanghai Shi :'),
-            MARC::Subfield.new('b', 'Shanghai shu dian chu ban she,'),
-            MARC::Subfield.new('c', '2013.')
-          ))
+                                       MARC::Subfield.new('6', '880-05'),
+                                       MARC::Subfield.new('a', 'Shanghai Shi :'),
+                                       MARC::Subfield.new('b', 'Shanghai shu dian chu ban she,'),
+                                       MARC::Subfield.new('c', '2013.')))
           r.append(MARC::DataField.new('880', ' ', ' ',
-            MARC::Subfield.new('6', '250-04'),
-            MARC::Subfield.new('a', '第1版.')
-          ))
+                                       MARC::Subfield.new('6', '250-04'),
+                                       MARC::Subfield.new('a', '第1版.')))
           r.append(MARC::DataField.new('880', ' ', ' ',
-            MARC::Subfield.new('6', '260-05'),
-            MARC::Subfield.new('a', '上海市 :'),
-            MARC::Subfield.new('b', '上海书店出版社,'),
-            MARC::Subfield.new('c', '2013.')
-          ))
+                                       MARC::Subfield.new('6', '260-05'),
+                                       MARC::Subfield.new('a', '上海市 :'),
+                                       MARC::Subfield.new('b', '上海书店出版社,'),
+                                       MARC::Subfield.new('c', '2013.')))
         end
       end
 
@@ -655,16 +604,13 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('a', '3rd draft /'),
-            MARC::Subfield.new('b', 'edited by Paul Watson.')
-          ))
+                                       MARC::Subfield.new('a', '3rd draft /'),
+                                       MARC::Subfield.new('b', 'edited by Paul Watson.')))
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('a', 'London')
-          ))
+                                       MARC::Subfield.new('a', 'London')))
           r.append(MARC::DataField.new('264', ' ', '3',
-            MARC::Subfield.new('a', 'Cambridge'),
-            MARC::Subfield.new('b', 'Kinset Printing Company')
-          ))
+                                       MARC::Subfield.new('a', 'Cambridge'),
+                                       MARC::Subfield.new('b', 'Kinset Printing Company')))
         end
       end
 
@@ -678,15 +624,12 @@ RSpec.describe 'Publication config' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
-            MARC::Subfield.new('a', '3rd draft /'),
-            MARC::Subfield.new('b', 'edited by Paul Watson.')
-          ))
+                                       MARC::Subfield.new('a', '3rd draft /'),
+                                       MARC::Subfield.new('b', 'edited by Paul Watson.')))
           r.append(MARC::DataField.new('260', ' ', ' ',
-            MARC::Subfield.new('a', 'London')
-          ))
+                                       MARC::Subfield.new('a', 'London')))
           r.append(MARC::DataField.new('264', ' ', '4',
-            MARC::Subfield.new('c', '2002')
-          ))
+                                       MARC::Subfield.new('c', '2002')))
         end
       end
       it 'omits the 264 value' do
@@ -694,7 +637,6 @@ RSpec.describe 'Publication config' do
       end
     end
   end
-
 
   describe 'pub_date_sort' do
     let(:fixture_name) { 'pubDateTests.mrc' }
@@ -757,5 +699,4 @@ RSpec.describe 'Publication config' do
       specify { expect(result[field]).to eq nil }
     end
   end
-
 end

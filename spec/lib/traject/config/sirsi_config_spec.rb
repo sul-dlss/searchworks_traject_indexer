@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Sirsi config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -28,7 +30,8 @@ RSpec.describe 'Sirsi config' do
   describe 'hashed_id_ssi' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     it do
-      expect(results).to include hash_including('id' => ['001suba'], 'hashed_id_ssi' => ['f00f2f3999440420ee1cb0fbfaf6dd25'])
+      expect(results).to include hash_including('id' => ['001suba'],
+                                                'hashed_id_ssi' => ['f00f2f3999440420ee1cb0fbfaf6dd25'])
     end
   end
 
@@ -71,11 +74,10 @@ RSpec.describe 'Sirsi config' do
           r.leader = '01952cas  2200457Ia 4500'
           r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
           r.append(MARC::DataField.new('999', ' ', ' ',
-            MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-            MARC::Subfield.new('w', 'LC'),
-            MARC::Subfield.new('i', 'LCbarcode'),
-            MARC::Subfield.new('m', 'GREEN')
-          ))
+                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
+                                       MARC::Subfield.new('w', 'LC'),
+                                       MARC::Subfield.new('i', 'LCbarcode'),
+                                       MARC::Subfield.new('m', 'GREEN')))
         end
       end
       it 'indexes individual subfields' do

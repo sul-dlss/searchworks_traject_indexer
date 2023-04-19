@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/shelfkey_base'
 require 'call_numbers/call_number_base'
 
@@ -20,11 +22,11 @@ module CallNumbers
     end
 
     def to_lopped_shelfkey
-      self.class.new(lopped, serial: serial, scheme: scheme).to_shelfkey
+      self.class.new(lopped, serial:, scheme:).to_shelfkey
     end
 
     def to_lopped_reverse_shelfkey
-      self.class.new(lopped, serial: serial, scheme: scheme).to_reverse_shelfkey
+      self.class.new(lopped, serial:, scheme:).to_reverse_shelfkey
     end
 
     def lopped
@@ -32,11 +34,11 @@ module CallNumbers
 
       lopped_call_number = longest_common_prefix.sub(Regexp.union(/ (20|19|18)\d{0,2}$/, / (20|19|18)\d{2}[ -:]$/), '')
 
-      lopped_vol_pattern = /[ \.\(\:\/](#{VOL_PARTS})/i
-      lopped_addl_vol_pattern = /[ \.\(\:\/](#{ADDL_VOL_PARTS.join('|')}).*/i
+      lopped_vol_pattern = %r{[ .(:/](#{VOL_PARTS})}i
+      lopped_addl_vol_pattern = %r{[ .(:/](#{ADDL_VOL_PARTS.join('|')}).*}i
 
       lopped_call_number = lopped_call_number.slice(0...(lopped_call_number.index(lopped_vol_pattern) || lopped_call_number.index(lopped_addl_vol_pattern) || lopped_call_number.length))
-      lopped_call_number = lopped_call_number.sub(/[\-:\(\\]$/, '').strip
+      lopped_call_number = lopped_call_number.sub(/[-:(\\]$/, '').strip
       return call_number if lopped_call_number =~ /^(mcd|mdvd|zdvd|mfilm|mfiche)$/i
       return call_number if lopped_call_number.length <= 4
 
@@ -57,6 +59,7 @@ module CallNumbers
     # this transfomation only applies when generating shelfkeys
     def shelfkey_scheme
       return 'sudoc' if scheme == 'SUDOC'
+
       'other'
     end
   end

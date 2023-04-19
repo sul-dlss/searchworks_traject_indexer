@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/dewey_shelfkey'
 require 'call_numbers/call_number_base'
 
@@ -5,18 +7,19 @@ module CallNumbers
   class Dewey < CallNumberBase
     attr_reader :call_number, :serial,
                 :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop
+
     def initialize(call_number, serial: false)
-      match_data = /
+      match_data = %r{
         (?<klass_number>\d{1,3})(?<klass_decimal>\.?\d+)?\s*
         (?<doon1>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
-        (?<cutter1>[\.\/]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
+        (?<cutter1>[\./]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
         (?<potential_stuff_to_lop>(?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
-        (?<cutter2>[\.\/]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
+        (?<cutter2>[\./]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
         (?<doon3>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
-        (?<cutter3>[\.\/]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
+        (?<cutter3>[\./]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
         (?<folio>(?<=\s)?F{1,2}(?=(\s|$)))?
         (?<rest>.*))
-      /x.match(call_number)
+      }x.match(call_number)
 
       @call_number = call_number
       match_data ||= {}
@@ -55,6 +58,7 @@ module CallNumbers
       value = value[0...(value.index(LOOSE_MONTHS_REGEX) || value.length)] # remove loose months
 
       return self.class.lop_years(value) if serial
+
       value.strip
     end
 

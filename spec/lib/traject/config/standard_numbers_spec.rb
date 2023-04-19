@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Standard Numbers' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -12,7 +14,6 @@ RSpec.describe 'Standard Numbers' do
   let(:record) { records.first }
 
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-
 
   describe 'oclc' do
     let(:fixture_name) { 'oclcNumTests.mrc' }
@@ -51,7 +52,7 @@ RSpec.describe 'Standard Numbers' do
       expect(select_by_id('035and079butNoOclc')[field]).to be_nil
 
       # multiple oclc numbers
-      expect(select_by_id('MultOclcNums')[field]).to eq(['656729', '38052115', '38403775'])
+      expect(select_by_id('MultOclcNums')[field]).to eq(%w[656729 38052115 38403775])
     end
   end
 
@@ -59,7 +60,7 @@ RSpec.describe 'Standard Numbers' do
     let(:fixture_name) { 'isbnTests.mrc' }
     let(:field) { 'isbn_display' }
 
-    it 'has the correct data' do#
+    it 'has the correct data' do #
       # no isbn
       expect(select_by_id('No020')[field]).to be_nil
       expect(select_by_id('020noSubaOrz')[field]).to be_nil
@@ -68,51 +69,51 @@ RSpec.describe 'Standard Numbers' do
       expect(select_by_id('020suba10digit')[field]).to eq(['1417559128'])
       expect(select_by_id('020suba10endsX')[field]).to eq(['123456789X'])
       expect(select_by_id('020suba10trailingText')[field]).to eq(
-        ['1234567890', '0123456789', '0521672694', '052185668X']
+        %w[1234567890 0123456789 0521672694 052185668X]
       )
-#
-# 		# 020 subfield a 13 digit varieties
+      #
+      # 		# 020 subfield a 13 digit varieties
       expect(select_by_id('020suba13')[field]).to eq(['9780809424887'])
       expect(select_by_id('020suba13endsX')[field]).to eq(['979123456789X'])
       expect(select_by_id('020suba13bad')[field]).to be_nil
-      expect(select_by_id('020suba13trailingText')[field]).to eq(['978185585039X', '9780809424887', '9780809424870'])
+      expect(select_by_id('020suba13trailingText')[field]).to eq(%w[978185585039X 9780809424887 9780809424870])
 
       # sub a mixed 10 and 13 digit
       expect(select_by_id('020subaMult')[field]).to eq(
-        ['0809424886', '123456789X', '1234567890', '979123456789X', '9780809424887', '9781855850484']
+        %w[0809424886 123456789X 1234567890 979123456789X 9780809424887 9781855850484]
       )
 
       # no subfield a in 020, but has subfield z 10 digit
       expect(select_by_id('020subz10digit')[field]).to eq(['9876543210'])
       expect(select_by_id('020subz10endsX')[field]).to eq(['123456789X'])
       expect(select_by_id('020subz10trailingText')[field]).to eq(
-        ['1234567890', '0123456789', '0521672694']
+        %w[1234567890 0123456789 0521672694]
       )
 
       # no subfield a in 020, but has subfield z 13 digit
       expect(select_by_id('020subz13digit')[field]).to eq(['9780809424887'])
       expect(select_by_id('020subz13endsX')[field]).to eq(['979123456789X'])
       expect(select_by_id('020subz13trailingText')[field]).to eq(
-        ['978185585039X', '9780809424887', '9780809424870']
+        %w[978185585039X 9780809424887 9780809424870]
       )
 
       # mult subfield z in single 020
       expect(select_by_id('020multSubz')[field].sort).to eq(
-        [
-          '9802311987',
-          '9802311995',
-          '9802312002',
-          '9876543210',
-          '123456789X',
-          '9780809424887',
-          '979123456789X',
-          '9780809424870'
+        %w[
+          9802311987
+          9802311995
+          9802312002
+          9876543210
+          123456789X
+          9780809424887
+          979123456789X
+          9780809424870
         ].sort
       )
 
       # mult a and z - should only have a
       expect(select_by_id('020SubaAndz')[field]).to eq(
-        ['0123456789', '0521672694', '052185668X']
+        %w[0123456789 0521672694 052185668X]
       )
     end
   end
@@ -159,7 +160,7 @@ RSpec.describe 'Standard Numbers' do
       expect(select_by_id('022subAandL')[field]).to eq(['0945-2419'])
       expect(select_by_id('022subLandM')[field]).to be_nil
       expect(select_by_id('022subMandZ')[field]).to eq(['1144-5858'])
-      expect(select_by_id('Two022a')[field]).to eq(['0666-7770', '1221-2112'])
+      expect(select_by_id('Two022a')[field]).to eq(%w[0666-7770 1221-2112])
     end
 
     describe 'lane records' do
@@ -192,14 +193,14 @@ RSpec.describe 'Standard Numbers' do
       expect(select_by_id('022subaX')[field]).to eq(['1047-201X'])
 
       expect(select_by_id('022subL')[field]).to eq(['0796-5621'])
-      expect(select_by_id('022subAandL')[field]).to eq(['0945-2419', '0796-5621'])
-      expect(select_by_id('022subLandM')[field]).to eq(['0038-6073', '0796-5621'])
+      expect(select_by_id('022subAandL')[field]).to eq(%w[0945-2419 0796-5621])
+      expect(select_by_id('022subLandM')[field]).to eq(%w[0038-6073 0796-5621])
 
       expect(select_by_id('022subM')[field]).to eq(['0863-4564'])
       expect(select_by_id('022subY')[field]).to eq(['0813-1964'])
-      expect(select_by_id('022subMandZ')[field]).to eq(['0103-8915', '1144-5858'])
+      expect(select_by_id('022subMandZ')[field]).to eq(%w[0103-8915 1144-5858])
       expect(select_by_id('022subZ')[field]).to eq(['1144-585X'])
-      expect(select_by_id('Two022a')[field]).to eq(['0666-7770', '1221-2112'])
+      expect(select_by_id('Two022a')[field]).to eq(%w[0666-7770 1221-2112])
 
       expect(select_by_id('785x')[field]).to eq(['8750-2836'])
     end

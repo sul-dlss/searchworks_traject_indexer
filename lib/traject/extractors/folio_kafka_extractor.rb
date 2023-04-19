@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'kafka'
 require 'kafka/statsd'
 require 'active_support'
@@ -18,7 +20,7 @@ class Traject::FolioKafkaExtractor
       # sometimes folio source records don't have an associated instance record
       next if record.instance_id.nil? || record.instance_id.empty?
 
-      producer.produce(JSON.fast_generate(record.as_json), key: record.instance_id, topic: topic)
+      producer.produce(JSON.fast_generate(record.as_json), key: record.instance_id, topic:)
     end
   ensure
     producer.deliver_messages
@@ -35,7 +37,7 @@ class Traject::FolioKafkaExtractor
 
       # Trigger a delivery every 30 seconds.
       delivery_interval: 30,
-      max_queue_size: 10000000,
+      max_queue_size: 10_000_000,
 
       compression_codec: :gzip,
       max_retries: 5,

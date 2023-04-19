@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'forwardable'
 
 class SirsiHolding
   extend Forwardable
 
-  delegate [:dewey?, :valid_lc?] => :call_number
+  delegate %i[dewey? valid_lc?] => :call_number
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
   CLOSED_LIBS = %w[BIOLOGY CHEMCHMENG MATH-CS].freeze
@@ -20,7 +22,9 @@ class SirsiHolding
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
   attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag
-  def initialize(tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '', barcode: '', public_note: '')
+
+  def initialize(tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '',
+                 barcode: '', public_note: '')
     @call_number = call_number
     @current_location = current_location
     @home_location = home_location
@@ -70,6 +74,7 @@ class SirsiHolding
     return false if valid_lc?
     return false if library != 'LANE-MED'
     return false if dewey?
+
     call_number_type == 'LC'
   end
 
@@ -106,7 +111,7 @@ class SirsiHolding
   end
 
   def ==(other)
-    self.class === other and
+    other.is_a?(self.class) and
       other.call_number == @call_number and
       other.current_location == @current_location and
       other.home_location == @home_location and
@@ -127,6 +132,7 @@ class SirsiHolding
   # Call number normalization ported from solrmarc code
   def normalize_call_number(call_number = '')
     return call_number unless %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
+
     call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     call_number = call_number.gsub(/\. \./, ' .') # reduce double periods to a single period
     call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
@@ -138,11 +144,12 @@ class SirsiHolding
   end
 
   class CallNumber
-    BEGIN_CUTTER_REGEX = /( +|(\.[A-Z])| *\/)/
+    BEGIN_CUTTER_REGEX = %r{( +|(\.[A-Z])| */)}
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
-    VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+[\w]*))?) *\.?[A-Z]\d+.*/
+    VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
 
     attr_reader :call_number
+
     def initialize(call_number)
       @call_number = call_number
     end

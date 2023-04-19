@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'All_search integration' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -21,7 +23,7 @@ RSpec.describe 'All_search integration' do
   describe 'vern_all_search' do
     let(:field) { 'vern_all_search' }
     it do
-      expect(select_by_id('100017')[field][0]).to eq "משנת זוהר : גופי מאמרי הזוהר / מסודרים לפי העניינים ומתורגמים עברית בידי פ. לחובר וישעיה תשבי ; בצירוף ביאורים, מובאות וחילופי נוסחאות מאת ישעיה תשבי."
+      expect(select_by_id('100017')[field][0]).to eq 'משנת זוהר : גופי מאמרי הזוהר / מסודרים לפי העניינים ומתורגמים עברית בידי פ. לחובר וישעיה תשבי ; בצירוף ביאורים, מובאות וחילופי נוסחאות מאת ישעיה תשבי.'
     end
   end
 end

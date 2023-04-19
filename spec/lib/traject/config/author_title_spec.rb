@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Author-title config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }

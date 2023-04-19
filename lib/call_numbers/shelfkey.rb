@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/shelfkey_base'
 
 module CallNumbers
@@ -6,7 +8,8 @@ module CallNumbers
       [
         call_number.scheme,
         (self.class.pad(klass.downcase, by: 3, character: ' ') if klass),
-        "#{self.class.pad(klass_number, by: 4, direction: :left)}#{self.class.pad(klass_decimal ? klass_decimal : '.')}",
+        "#{self.class.pad(klass_number, by: 4,
+                                        direction: :left)}#{self.class.pad(klass_decimal || '.')}",
         self.class.pad_all_digits(doon1),
         self.class.pad_cutter(cutter1),
         self.class.pad_all_digits(doon2),

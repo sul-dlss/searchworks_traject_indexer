@@ -1,12 +1,10 @@
 #!/usr/bin/env ruby
-
+# frozen_string_literal: true
 
 # If we're loading from source instead of a gem, rubygems
 # isn't setting load paths for us, so we need to set it ourselves
-self_load_path = File.expand_path("../lib", File.dirname(__FILE__))
-unless $LOAD_PATH.include? self_load_path
-  $LOAD_PATH << self_load_path
-end
+self_load_path = File.expand_path('../lib', File.dirname(__FILE__))
+$LOAD_PATH << self_load_path unless $LOAD_PATH.include? self_load_path
 
 require 'honeybadger'
 require 'traject/command_line'
@@ -16,7 +14,7 @@ result = nil
 
 begin
   result = cmdline.execute
-rescue => e
+rescue StandardError => e
   Honeybadger.notify(e)
 end
 

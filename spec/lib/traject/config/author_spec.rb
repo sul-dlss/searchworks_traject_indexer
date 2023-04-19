@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Author config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -84,7 +86,8 @@ RSpec.describe 'Author config' do
 
     it 'has all subfields from 700, 720, and 796' do
       result = select_by_id('7xxPersonSearch')[field]
-      expect(result).to eq ['700a 700b 700c 700d 700g 700j 700q 700u', '720a 720e', '796a 796b 796c 796d 796g 796j 796q 796u']
+      expect(result).to eq ['700a 700b 700c 700d 700g 700j 700q 700u', '720a 720e',
+                            '796a 796b 796c 796d 796g 796j 796q 796u']
       expect(results).not_to include hash_including(field => ['700e'])
       expect(results).not_to include hash_including(field => ['796e'])
       expect(results).not_to include hash_including(field => ['none'])
@@ -110,7 +113,7 @@ RSpec.describe 'Author config' do
         result = select_by_id('7xxLowVernSearch')[field][0]
         expect(result).to eq 'vern700g vern700j nope'
 
-        ['7xxLowVernSearch', '7xxVernPersonSearch'].each do |id|
+        %w[7xxLowVernSearch 7xxVernPersonSearch].each do |id|
           expect(select_by_id(id)[field].first).to include 'vern700g vern700j'
         end
 
@@ -197,7 +200,7 @@ RSpec.describe 'Author config' do
         result = select_by_id('8xxVernSearch')[field][0]
         expect(result).to eq 'vern800g vern800j nope'
 
-        ['800VernSearch', '8xxVernSearch'].each do |id|
+        %w[800VernSearch 8xxVernSearch].each do |id|
           expect(select_by_id(id)[field].first).to include 'vern800g vern800j'
         end
 
@@ -515,7 +518,7 @@ RSpec.describe 'Author config' do
 
   describe 'author_sort' do
     let(:field) { 'author_sort' }
-    MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8) + ' '
+    MAX_CODE_POINT = "#{0x10FFFF.chr(Encoding::UTF_8)} "
     context 'has the correct fields:' do
       it '100 then 245' do
         result = select_by_id('345228')[field]
@@ -534,7 +537,7 @@ RSpec.describe 'Author config' do
 
       it 'no 1xx but 240 then 245' do
         result = select_by_id('666')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'De incertitudine et vanitate scientiarum German ZZZZ']
+        expect(result).to eq ["#{MAX_CODE_POINT}De incertitudine et vanitate scientiarum German ZZZZ"]
       end
 
       it '100 then 240 then 245' do
@@ -544,7 +547,7 @@ RSpec.describe 'Author config' do
 
       it 'no 1xx no 240, 245 only' do
         result = select_by_id('245only')[field]
-        expect(result).to eq [MAX_CODE_POINT + '245 no 100 or 240']
+        expect(result).to eq ["#{MAX_CODE_POINT}245 no 100 or 240"]
       end
 
       it 'no subfield e from 100' do
@@ -566,27 +569,27 @@ RSpec.describe 'Author config' do
     context 'ignores non-filing characters' do
       it '0 non-filing in the 240 field' do
         result = select_by_id('2400')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'Wacky 240 0 nonfiling']
+        expect(result).to eq ["#{MAX_CODE_POINT}Wacky 240 0 nonfiling"]
       end
       it '2 non-filing in the 240 field' do
         result = select_by_id('2402')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'Wacky 240 2 nonfiling']
+        expect(result).to eq ["#{MAX_CODE_POINT}Wacky 240 2 nonfiling"]
       end
       it '7 non-filing in the 240 field' do
         result = select_by_id('2407')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'Tacky 240 7 nonfiling']
+        expect(result).to eq ["#{MAX_CODE_POINT}Tacky 240 7 nonfiling"]
       end
       it 'in the 245 field and a 240 field without non-filing characters' do
         result = select_by_id('575946')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'De incertitudine et vanitate scientiarum German Ruckzug der biblischen Prophetie von der neueren Geschichte']
+        expect(result).to eq ["#{MAX_CODE_POINT}De incertitudine et vanitate scientiarum German Ruckzug der biblischen Prophetie von der neueren Geschichte"]
       end
       it 'in the 245 field' do
         result = select_by_id('1261174')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'second part of the Confutation of the Ballancing letter']
+        expect(result).to eq ["#{MAX_CODE_POINT}second part of the Confutation of the Ballancing letter"]
       end
       it 'in the 240 and 245 field' do
         result = select_by_id('892452')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'Wacky 240 245 nonfiling']
+        expect(result).to eq ["#{MAX_CODE_POINT}Wacky 240 245 nonfiling"]
       end
     end
 
@@ -598,17 +601,17 @@ RSpec.describe 'Author config' do
 
       it 'in the 240 field' do
         result = select_by_id('0240')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'sleep little fishies 240 has sub 0']
+        expect(result).to eq ["#{MAX_CODE_POINT}sleep little fishies 240 has sub 0"]
       end
 
       it 'in the 240 field with multiple numeric subfields' do
         result = select_by_id('24025')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'la di dah 240 has sub 2 and 5']
+        expect(result).to eq ["#{MAX_CODE_POINT}la di dah 240 has sub 2 and 5"]
       end
 
       it 'in the 245 field' do
         result = select_by_id('2458')[field]
-        expect(result).to eq [MAX_CODE_POINT + '245 has sub 8']
+        expect(result).to eq ["#{MAX_CODE_POINT}245 has sub 8"]
       end
     end
 
@@ -620,12 +623,12 @@ RSpec.describe 'Author config' do
 
       it 'leading hyphens' do
         result = select_by_id('333')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'ind 0 leading hyphens in 240']
+        expect(result).to eq ["#{MAX_CODE_POINT}ind 0 leading hyphens in 240"]
       end
 
       it 'leading elipsis' do
         result = select_by_id('444')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'ind 0 leading elipsis in 240']
+        expect(result).to eq ["#{MAX_CODE_POINT}ind 0 leading elipsis in 240"]
       end
 
       it 'leading quotation mark and elipsis' do
@@ -635,7 +638,7 @@ RSpec.describe 'Author config' do
 
       it 'non-filing characters with leading quotation mark and elipsis' do
         result = select_by_id('777')[field]
-        expect(result).to eq [MAX_CODE_POINT + 'ind 4 leading quote elipsis in 240']
+        expect(result).to eq ["#{MAX_CODE_POINT}ind 4 leading quote elipsis in 240"]
       end
 
       it 'interspersed punctuation across fields' do
@@ -695,25 +698,21 @@ RSpec.describe 'Author config' do
         MARC::Record.new.tap do |r|
           r.leader = '00988nas a2200193z  4500'
           r.append(MARC::DataField.new('100', ' ', ' ',
-            MARC::Subfield.new('0', 'http://example.com/authority_100'),
-            MARC::Subfield.new('1', 'http://example.com/rwo_100'),
-            MARC::Subfield.new('a', '100a')
-          ))
+                                       MARC::Subfield.new('0', 'http://example.com/authority_100'),
+                                       MARC::Subfield.new('1', 'http://example.com/rwo_100'),
+                                       MARC::Subfield.new('a', '100a')))
           r.append(MARC::DataField.new('110', ' ', ' ',
-            MARC::Subfield.new('0', 'http://example.com/authority_110'),
-            MARC::Subfield.new('1', 'http://example.com/rwo_110'),
-            MARC::Subfield.new('a', '110a')
-          ))
+                                       MARC::Subfield.new('0', 'http://example.com/authority_110'),
+                                       MARC::Subfield.new('1', 'http://example.com/rwo_110'),
+                                       MARC::Subfield.new('a', '110a')))
           r.append(MARC::DataField.new('111', ' ', ' ',
-            MARC::Subfield.new('0', 'http://example.com/authority_111'),
-            MARC::Subfield.new('1', 'http://example.com/rwo_111'),
-            MARC::Subfield.new('a', '111a')
-          ))
+                                       MARC::Subfield.new('0', 'http://example.com/authority_111'),
+                                       MARC::Subfield.new('1', 'http://example.com/rwo_111'),
+                                       MARC::Subfield.new('a', '111a')))
           r.append(MARC::DataField.new('700', ' ', ' ',
-            MARC::Subfield.new('0', 'http://example.com/authority_700'),
-            MARC::Subfield.new('1', 'http://example.com/rwo_700'),
-            MARC::Subfield.new('a', '700a')
-          ))
+                                       MARC::Subfield.new('0', 'http://example.com/authority_700'),
+                                       MARC::Subfield.new('1', 'http://example.com/rwo_700'),
+                                       MARC::Subfield.new('a', '700a')))
         end
       end
       let(:result) { results.first }
@@ -724,24 +723,24 @@ RSpec.describe 'Author config' do
           link: '100a',
           search: '100a',
           authorities: ['http://example.com/authority_100'],
-          rwo: ['http://example.com/rwo_100'],
+          rwo: ['http://example.com/rwo_100']
         }]
         expect(struct).to include corporate_author: [{
           link: '110a',
           search: '110a',
           authorities: ['http://example.com/authority_110'],
-          rwo: ['http://example.com/rwo_110'],
+          rwo: ['http://example.com/rwo_110']
         }]
         expect(struct).to include meeting: [{
           link: '111a',
           search: '111a',
           authorities: ['http://example.com/authority_111'],
-          rwo: ['http://example.com/rwo_111'],
+          rwo: ['http://example.com/rwo_111']
         }]
         expect(struct).to include contributors: [
           hash_including(
             authorities: ['http://example.com/authority_700'],
-            rwo: ['http://example.com/rwo_700'],
+            rwo: ['http://example.com/rwo_700']
           )
         ]
 

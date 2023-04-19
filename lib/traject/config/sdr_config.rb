@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH << File.expand_path('../..', __dir__)
 
 require 'traject'
@@ -24,24 +26,24 @@ indexer = self
 
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
-  provide 'solr.url', ENV['SOLR_URL']
+  provide 'solr.url', ENV.fetch('SOLR_URL', nil)
 
   # These parameters are expected on the command line if you want to connect to a kafka topic:
   # provide 'kafka.topic'
   # provide 'kafka.consumer_group_id'
   if self['kafka.topic']
-    provide "reader_class_name", "Traject::KafkaPurlFetcherReader"
+    provide 'reader_class_name', 'Traject::KafkaPurlFetcherReader'
     consumer = Utils.kafka.consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 15)
     consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   else
-    provide "reader_class_name", "Traject::DruidReader"
+    provide 'reader_class_name', 'Traject::DruidReader'
   end
 
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
   provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
 
-  provide 'purl_fetcher.skip_catkey', ENV['PURL_FETCHER_SKIP_CATKEY']
+  provide 'purl_fetcher.skip_catkey', ENV.fetch('PURL_FETCHER_SKIP_CATKEY', nil)
   self['purl_fetcher.skip_catkey'] = self['purl_fetcher.skip_catkey'] != 'false'
 
   provide 'solr_writer.commit_on_close', true
@@ -92,7 +94,7 @@ def mods_display(method, *args, default: nil)
   end
 end
 
-each_record do |record, context|
+each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
 
@@ -130,7 +132,7 @@ to_field 'druid' do |record, accumulator|
 end
 
 to_field 'modsxml', stanford_mods(:to_xml)
-to_field 'all_search', stanford_mods(:text) do |record, accumulator|
+to_field 'all_search', stanford_mods(:text) do |_record, accumulator|
   accumulator.map! { |x| x.gsub(/\s+/, ' ') }
 end
 
@@ -178,7 +180,8 @@ to_field 'pub_year_isi', stanford_mods(:pub_year_int) # for sorting
 #   can remove after pub_year_isi is populated for all indexing data (i.e. solrmarc, crez) and app code is changed
 to_field 'pub_date_sort', stanford_mods(:pub_year_sort_str)
 to_field 'imprint_display', stanford_mods(:imprint_display_str)
-to_field 'pub_country', mods_xpath('mods:originInfo/mods:place/mods:placeTerm[@type="code"][@authority="marccountry" or @authority="iso3166"]') do |_record, accumulator|
+to_field 'pub_country',
+         mods_xpath('mods:originInfo/mods:place/mods:placeTerm[@type="code"][@authority="marccountry" or @authority="iso3166"]') do |_record, accumulator|
   accumulator.map!(&:text).map!(&:strip)
   translation_map = Traject::TranslationMap.new('country_map')
   accumulator.replace [translation_map.translate_array(accumulator).first]
@@ -188,36 +191,43 @@ end
 to_field 'pub_date', stanford_mods(:pub_year_display_str)
 to_field 'pub_year_ss', stanford_mods(:pub_year_display_str)
 
-to_field 'beginning_year_isi', mods_xpath('mods:originInfo[mods:issuance/text()="continuing" or mods:issuance/text()="serial" or mods:issuance/text()="integrating resource"]/mods:dateIssued[@point="start"]'), first_only do |_record, accumulator|
+to_field 'beginning_year_isi',
+         mods_xpath('mods:originInfo[mods:issuance/text()="continuing" or mods:issuance/text()="serial" or mods:issuance/text()="integrating resource"]/mods:dateIssued[@point="start"]'), first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-to_field 'ending_year_isi', mods_xpath('mods:originInfo[mods:issuance/text()="continuing" or mods:issuance/text()="serial" or mods:issuance/text()="integrating resource"]/mods:dateIssued[@point="end"]'), first_only do |_record, accumulator|
+to_field 'ending_year_isi',
+         mods_xpath('mods:originInfo[mods:issuance/text()="continuing" or mods:issuance/text()="serial" or mods:issuance/text()="integrating resource"]/mods:dateIssued[@point="end"]'), first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-to_field 'earliest_year_isi', mods_xpath('//mods:mods[mods:typeOfResource[@collection="yes"]]/mods:originInfo/mods:dateCreated[@point="start"]'), first_only do |_record, accumulator|
+to_field 'earliest_year_isi',
+         mods_xpath('//mods:mods[mods:typeOfResource[@collection="yes"]]/mods:originInfo/mods:dateCreated[@point="start"]'), first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-to_field 'latest_year_isi', mods_xpath('//mods:mods[mods:typeOfResource[@collection="yes"]]/mods:originInfo/mods:dateCreated[@point="end"]'), first_only do |_record, accumulator|
+to_field 'latest_year_isi',
+         mods_xpath('//mods:mods[mods:typeOfResource[@collection="yes"]]/mods:originInfo/mods:dateCreated[@point="end"]'), first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-to_field 'earliest_poss_year_isi', mods_xpath('mods:originInfo/mods:dateCreated[@point="start"][@qualifier]|mods:originInfo/mods:dateIssued[@point="start"][@qualifier]'), first_only do |_record, accumulator|
+to_field 'earliest_poss_year_isi',
+         mods_xpath('mods:originInfo/mods:dateCreated[@point="start"][@qualifier]|mods:originInfo/mods:dateIssued[@point="start"][@qualifier]'), first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-to_field 'latest_poss_year_isi', mods_xpath('mods:originInfo/mods:dateCreated[@point="end"][@qualifier]|mods:originInfo/mods:dateIssued[@point="end"][@qualifier]'), first_only do |_record, accumulator|
+to_field 'latest_poss_year_isi',
+         mods_xpath('mods:originInfo/mods:dateCreated[@point="end"][@qualifier]|mods:originInfo/mods:dateIssued[@point="end"][@qualifier]'), first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-
-to_field 'release_year_isi', mods_xpath('mods:originInfo[@eventType="distribution"]/mods:dateIssued'), first_only do |_record, accumulator|
+to_field 'release_year_isi', mods_xpath('mods:originInfo[@eventType="distribution"]/mods:dateIssued'),
+         first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
-to_field 'production_year_isi', mods_xpath('mods:originInfo[@eventType="production"]/mods:dateIssued'), first_only do |_record, accumulator|
+to_field 'production_year_isi', mods_xpath('mods:originInfo[@eventType="production"]/mods:dateIssued'),
+         first_only do |_record, accumulator|
   accumulator.map!(&:text).map! { |v| v.to_i.to_s unless v.empty? }
 end
 
@@ -238,11 +248,10 @@ end
 to_field 'format_main_ssim', stanford_mods(:format_main)
 to_field 'genre_ssim', stanford_mods(:sw_genre)
 to_field 'language', stanford_mods(:sw_language_facet)
-to_field 'physical', stanford_mods(:term_values, [:physical_description, :extent])
+to_field 'physical', stanford_mods(:term_values, %i[physical_description extent])
 to_field 'summary_search', mods_display(:abstract)
 to_field 'toc_search', stanford_mods(:term_values, :tableOfContents)
-to_field 'url_suppl', stanford_mods(:term_values, [:related_item, :location, :url])
-
+to_field 'url_suppl', stanford_mods(:term_values, %i[related_item location url])
 
 to_field 'url_fulltext' do |record, accumulator|
   accumulator << "#{settings['purl.url']}/#{record.druid}"
@@ -251,38 +260,38 @@ end
 to_field 'access_facet', literal('Online')
 to_field 'building_facet', literal('Stanford Digital Repository')
 
-to_field 'isbn_search', stanford_mods(:identifier) do |record, accumulator|
+to_field 'isbn_search', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'isbn' }
   accumulator.map! { |identifier| identifier.text }
 end
 
-to_field 'issn_search', stanford_mods(:identifier) do |record, accumulator|
+to_field 'issn_search', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'issn' }
   accumulator.map! { |identifier| identifier.text }
 end
 
-to_field 'isbn_display', stanford_mods(:identifier) do |record, accumulator|
+to_field 'isbn_display', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'isbn' }
   accumulator.map! { |identifier| identifier.text }
 end
 
-to_field 'issn_display', stanford_mods(:identifier) do |record, accumulator|
+to_field 'issn_display', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'issn' }
   accumulator.map! { |identifier| identifier.text }
 end
 
-to_field 'lccn', stanford_mods(:identifier) do |record, accumulator|
+to_field 'lccn', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'lccn' }
   accumulator.map! { |identifier| identifier.text }
   accumulator.replace [accumulator.first] if accumulator.first # grab only the first value
 end
 
-to_field 'oclc', stanford_mods(:identifier) do |record, accumulator|
+to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'oclc' }
   accumulator.map! { |identifier| identifier.text }
@@ -327,7 +336,7 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
       keywords: context.output_hash['subject_all_search'],
       includedInDataCatalog: {
         '@type': 'DataCatalog',
-        'name': 'https://earthworks.stanford.edu'
+        name: 'https://earthworks.stanford.edu'
       },
       distribution: [
         {
@@ -339,7 +348,6 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
     }
   end
 end
-
 
 # # Stanford student work facet
 #  it is expected that these values will go to a field analyzed with
@@ -358,18 +366,18 @@ to_field 'stanford_work_facet_hsim' do |record, accumulator|
     collections = record.collections
 
     collections.each do |c|
-      case c.label
-      when /phd/i
-        accumulator << 'Thesis/Dissertation|Doctoral|Unspecified'
-      when /master/i
-        accumulator << 'Thesis/Dissertation|Master\'s|Unspecified'
-      when /honor/i
-        accumulator << 'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
-      when /capstone/i, /undergraduate/i
-        accumulator << 'Thesis/Dissertation|Bachelor\'s|Unspecified'
-      else
-        accumulator << 'Thesis/Dissertation|Unspecified'
-      end
+      accumulator << case c.label
+                     when /phd/i
+                       'Thesis/Dissertation|Doctoral|Unspecified'
+                     when /master/i
+                       'Thesis/Dissertation|Master\'s|Unspecified'
+                     when /honor/i
+                       'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
+                     when /capstone/i, /undergraduate/i
+                       'Thesis/Dissertation|Bachelor\'s|Unspecified'
+                     else
+                       'Thesis/Dissertation|Unspecified'
+                     end
     end
   end
 end
@@ -424,17 +432,17 @@ to_field 'context_version_ssi' do |_record, accumulator|
   accumulator << Utils.version
 end
 
-each_record do |record, context|
+each_record do |record, _context|
   $druid_title_cache[record.druid] = record.label if record.is_collection
 end
 
-each_record do |record, context|
+each_record do |_record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
   end
 end
 
-each_record do |record, context|
+each_record do |_record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Stanford work and department config' do
   extend ResultHelpers
 
@@ -16,12 +18,10 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a4820195'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (B.A.)--Stanford University, 2002.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (B.A.)--Stanford University, 2002.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Department of Geophysics')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Department of Geophysics')))
       end
     end
 
@@ -38,14 +38,12 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a1343750'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'D.M.A. term project Department of Music, Stanford University, 1989.')
-        ))
+                                     MARC::Subfield.new('a', 'D.M.A. term project Department of Music, Stanford University, 1989.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Department of Music.'),
-          MARC::Subfield.new('t', 'Projects.'),
-          MARC::Subfield.new('p', 'D.M.A. Term.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Department of Music.'),
+                                     MARC::Subfield.new('t', 'Projects.'),
+                                     MARC::Subfield.new('p', 'D.M.A. Term.')))
       end
     end
 
@@ -62,15 +60,13 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a965475'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('g', 'Thesis'),
-          MARC::Subfield.new('b', 'Ed.D.'),
-          MARC::Subfield.new('c', 'Stanford University'),
-          MARC::Subfield.new('d', '1977.')
-        ))
+                                     MARC::Subfield.new('g', 'Thesis'),
+                                     MARC::Subfield.new('b', 'Ed.D.'),
+                                     MARC::Subfield.new('c', 'Stanford University'),
+                                     MARC::Subfield.new('d', '1977.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Department of School of Education.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Department of School of Education.')))
       end
     end
 
@@ -86,8 +82,7 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a2303030'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (Ed.M.)--Leland Stanford Junior University, 1934.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (Ed.M.)--Leland Stanford Junior University, 1934.')))
       end
     end
 
@@ -102,8 +97,7 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a2285433'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (Ed.S.)--Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (Ed.S.)--Stanford University.')))
       end
     end
 
@@ -119,12 +113,10 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a11688582'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (Engineering)--Stanford University, 2016.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (Engineering)--Stanford University, 2016.')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Department of Aeronautics and Astronautics.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Department of Aeronautics and Astronautics.')))
         end
       end
 
@@ -140,14 +132,12 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a5650590'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('b', 'Engineer'),
-            MARC::Subfield.new('c', 'Stanford University'),
-            MARC::Subfield.new('d', '1912')
-          ))
+                                       MARC::Subfield.new('b', 'Engineer'),
+                                       MARC::Subfield.new('c', 'Stanford University'),
+                                       MARC::Subfield.new('d', '1912')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Department of Geology.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Department of Geology.')))
         end
       end
 
@@ -163,14 +153,12 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2950747'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('b', 'Degree of Engineer'),
-            MARC::Subfield.new('c', 'Stanford University'),
-            MARC::Subfield.new('d', '1994')
-          ))
+                                       MARC::Subfield.new('b', 'Degree of Engineer'),
+                                       MARC::Subfield.new('c', 'Stanford University'),
+                                       MARC::Subfield.new('d', '1994')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Department of Civil Engineering.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Department of Civil Engineering.')))
         end
       end
 
@@ -186,8 +174,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2161308'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (Engr.)--Dept. of Electrical Engineering, Stanford University.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (Engr.)--Dept. of Electrical Engineering, Stanford University.')))
         end
       end
 
@@ -202,8 +189,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2230657'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (M.A.)--Dept. of English, Stanford University.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (M.A.)--Dept. of English, Stanford University.')))
         end
       end
 
@@ -220,10 +206,9 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a1795310'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('b', 'J.D.'),
-          MARC::Subfield.new('c', 'Stanford University'),
-          MARC::Subfield.new('d', '1929')
-        ))
+                                     MARC::Subfield.new('b', 'J.D.'),
+                                     MARC::Subfield.new('c', 'Stanford University'),
+                                     MARC::Subfield.new('d', '1929')))
       end
     end
 
@@ -238,12 +223,10 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a7912414'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (J.S.D)--Stanford University, 2008.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (J.S.D)--Stanford University, 2008.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'School of Law.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'School of Law.')))
       end
     end
 
@@ -259,8 +242,7 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a1811178'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (J.S.M.)--Stanford University, 1972.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (J.S.M.)--Stanford University, 1972.')))
       end
     end
 
@@ -275,8 +257,7 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a1803872'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (L.L.M.) - Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (L.L.M.) - Stanford University.')))
       end
     end
 
@@ -292,12 +273,10 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2001059'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (A.M.)--Leland Stanford Junior University.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (A.M.)--Leland Stanford Junior University.')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Department of Chemistry')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Department of Chemistry')))
         end
       end
 
@@ -313,11 +292,10 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a5730269'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('g', 'Thesis'),
-            MARC::Subfield.new('b', 'M.A.'),
-            MARC::Subfield.new('c', 'Stanford University'),
-            MARC::Subfield.new('d', '1939.')
-          ))
+                                       MARC::Subfield.new('g', 'Thesis'),
+                                       MARC::Subfield.new('b', 'M.A.'),
+                                       MARC::Subfield.new('c', 'Stanford University'),
+                                       MARC::Subfield.new('d', '1939.')))
         end
       end
 
@@ -332,8 +310,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2188938'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'The editor\'s thesis (M.A.)--Dept. of Modern European Languages, Stanford University.')
-          ))
+                                       MARC::Subfield.new('a', 'The editor\'s thesis (M.A.)--Dept. of Modern European Languages, Stanford University.')))
         end
       end
 
@@ -348,8 +325,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a5628179'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (M.A)--Stanford University, 1931.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (M.A)--Stanford University, 1931.')))
         end
       end
 
@@ -364,8 +340,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'anotMA'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Stanford University drama master\'s thesis')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University drama master\'s thesis')))
         end
       end
 
@@ -381,13 +356,11 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a11652845'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (M.D.)--Stanford University, 1931.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (M.D.)--Stanford University, 1931.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University'),
-          MARC::Subfield.new('b', 'School of Medicine.'),
-          MARC::Subfield.new('b', 'Department of Medicine.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University'),
+                                     MARC::Subfield.new('b', 'School of Medicine.'),
+                                     MARC::Subfield.new('b', 'Department of Medicine.')))
       end
     end
 
@@ -404,16 +377,13 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a10197046'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (M.F.A.)--Stanford University, 2013.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (M.F.A.)--Stanford University, 2013.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University'),
-          MARC::Subfield.new('b', 'Master of Fine Arts.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University'),
+                                     MARC::Subfield.new('b', 'Master of Fine Arts.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University'),
-          MARC::Subfield.new('b', 'Department of Art and Art History.'),
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University'),
+                                     MARC::Subfield.new('b', 'Department of Art and Art History.')))
       end
     end
 
@@ -430,12 +400,10 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a10370180'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (M.L.A.)--Stanford University, 2013.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (M.L.A.)--Stanford University, 2013.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Master of Liberal Arts Program.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Master of Liberal Arts Program.')))
       end
     end
 
@@ -451,11 +419,9 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a5799855'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (M.L.S.)--Stanford University, 2003.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (M.L.S.)--Stanford University, 2003.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford Program in International Legal Studies.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford Program in International Legal Studies.')))
       end
     end
 
@@ -472,12 +438,10 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2478369'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (M.S.)--Stanford University, 1993.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (M.S.)--Stanford University, 1993.')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Department of Applied Earth Sciences.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Department of Applied Earth Sciences.')))
         end
       end
 
@@ -493,14 +457,12 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a4106221'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('b', 'Degree of Master of Science'),
-            MARC::Subfield.new('c', 'Stanford University'),
-            MARC::Subfield.new('d', '1998')
-          ))
+                                       MARC::Subfield.new('b', 'Degree of Master of Science'),
+                                       MARC::Subfield.new('c', 'Stanford University'),
+                                       MARC::Subfield.new('d', '1998')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Department of Biological Sciences.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Department of Biological Sciences.')))
         end
       end
 
@@ -517,12 +479,10 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a12080422'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (Ph.D.)--Stanford University, 2017.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (Ph.D.)--Stanford University, 2017.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Department of Electrical Engineering.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Department of Electrical Engineering.')))
       end
     end
 
@@ -538,12 +498,10 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a8390172'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Student Report--Stanford University, 2009.')
-        ))
+                                     MARC::Subfield.new('a', 'Student Report--Stanford University, 2009.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Department of Petroleum Engineering.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Department of Petroleum Engineering.')))
       end
     end
 
@@ -559,14 +517,12 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a10037295'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis--Graduate School of Business, Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis--Graduate School of Business, Stanford University.')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'Stanford University.'),
-          MARC::Subfield.new('b', 'Graduate School of Business'),
-          MARC::Subfield.new('t', 'Dissertation.'),
-          MARC::Subfield.new('d', '1979.')
-        ))
+                                     MARC::Subfield.new('a', 'Stanford University.'),
+                                     MARC::Subfield.new('b', 'Graduate School of Business'),
+                                     MARC::Subfield.new('t', 'Dissertation.'),
+                                     MARC::Subfield.new('d', '1979.')))
       end
     end
 
@@ -583,8 +539,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2759546'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Honors thesis (B.A.)--Stanford University.')
-          ))
+                                       MARC::Subfield.new('a', 'Honors thesis (B.A.)--Stanford University.')))
         end
       end
 
@@ -600,8 +555,7 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a750717'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Senior Honors project - Department of Music, Stanford University.')
-          ))
+                                       MARC::Subfield.new('a', 'Senior Honors project - Department of Music, Stanford University.')))
         end
       end
 
@@ -617,8 +571,7 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a4086853'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Doctoral dissertation, Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Doctoral dissertation, Stanford University.')))
       end
     end
 
@@ -633,8 +586,7 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a8109556'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Master\'s project--Stanford University, 2005.')
-        ))
+                                     MARC::Subfield.new('a', 'Master\'s project--Stanford University, 2005.')))
       end
     end
 
@@ -649,10 +601,9 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a2163948'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('g', 'Thesis'),
-          MARC::Subfield.new('c', 'Stanford University'),
-          MARC::Subfield.new('d', '1930.')
-        ))
+                                     MARC::Subfield.new('g', 'Thesis'),
+                                     MARC::Subfield.new('c', 'Stanford University'),
+                                     MARC::Subfield.new('d', '1930.')))
       end
     end
 
@@ -667,20 +618,15 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'aWithSpaces'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (Ed. D. )--Stanford University, 2008.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (Ed. D. )--Stanford University, 2008.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (Ph. D.) - Dept, of Music, Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (Ph. D.) - Dept, of Music, Stanford University.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (M. F. A.) -- Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (M. F. A.) -- Stanford University.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (M. S.)--Stanford University, 1983.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (M. S.)--Stanford University, 1983.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (B.A. Music) -- Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (B.A. Music) -- Stanford University.')))
       end
     end
 
@@ -699,14 +645,11 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'aWithOutSpaces'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis(A.M.)--Leland Stanford Junior University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis(A.M.)--Leland Stanford Junior University.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis(B.A.)--Stanford University, 2002.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis(B.A.)--Stanford University, 2002.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (E.Eng.)--Dept. of Electrical Engineering, Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (E.Eng.)--Dept. of Electrical Engineering, Stanford University.')))
       end
     end
 
@@ -723,20 +666,15 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'aPeriodsMissing'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (JSD)--Stanford University, 2008.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (JSD)--Stanford University, 2008.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis Phd.D.)--School of Education, Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis Phd.D.)--School of Education, Stanford University.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (LL.M.)--Stanford University, 1943.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (LL.M.)--Stanford University, 1943.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis (MFA) --Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis (MFA) --Stanford University.')))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('a', 'Thesis M.A Stanford University.')
-        ))
+                                     MARC::Subfield.new('a', 'Thesis M.A Stanford University.')))
       end
     end
 
@@ -755,14 +693,12 @@ RSpec.describe 'Stanford work and department config' do
         r.leader = '01737cam a2200445Ka 4500'
         r.append(MARC::ControlField.new('001', 'a3312224'))
         r.append(MARC::DataField.new('502', ' ', ' ',
-          MARC::Subfield.new('b', 'M.A.'),
-          MARC::Subfield.new('c', 'California State University, Fresno.'),
-          MARC::Subfield.new('d', '1996')
-        ))
+                                     MARC::Subfield.new('b', 'M.A.'),
+                                     MARC::Subfield.new('c', 'California State University, Fresno.'),
+                                     MARC::Subfield.new('d', '1996')))
         r.append(MARC::DataField.new('710', '2', ' ',
-          MARC::Subfield.new('a', 'California State University, Fresno.'),
-          MARC::Subfield.new('b', 'Department of English.')
-        ))
+                                     MARC::Subfield.new('a', 'California State University, Fresno.'),
+                                     MARC::Subfield.new('b', 'Department of English.')))
       end
     end
 
@@ -779,15 +715,13 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a5638754'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('b', 'Ph. D.'),
-            MARC::Subfield.new('c', 'Stanford University'),
-            MARC::Subfield.new('d', '1924')
-          ))
+                                       MARC::Subfield.new('b', 'Ph. D.'),
+                                       MARC::Subfield.new('c', 'Stanford University'),
+                                       MARC::Subfield.new('d', '1924')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University'),
-            MARC::Subfield.new('b', 'Department of Pharmacology.'),
-            MARC::Subfield.new('b', 'School of Medicine.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University'),
+                                       MARC::Subfield.new('b', 'Department of Pharmacology.'),
+                                       MARC::Subfield.new('b', 'School of Medicine.')))
         end
       end
 
@@ -804,16 +738,13 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a11073269'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (Ph.D.); Supercedes report DE98059289; Thesis submitted to Stanford Univ., CA (US); TH: Thesis (Ph.D.); PBD: May 1997; PBD: 1 May 1997')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (Ph.D.); Supercedes report DE98059289; Thesis submitted to Stanford Univ., CA (US); TH: Thesis (Ph.D.); PBD: May 1997; PBD: 1 May 1997')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford Linear Accelerator Center.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford Linear Accelerator Center.')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'United States.'),
-            MARC::Subfield.new('b', 'Dept. of Energy. '),
-            MARC::Subfield.new('b', 'Office of Energy Research')
-          ))
+                                       MARC::Subfield.new('a', 'United States.'),
+                                       MARC::Subfield.new('b', 'Dept. of Energy. '),
+                                       MARC::Subfield.new('b', 'Office of Energy Research')))
         end
       end
 
@@ -831,15 +762,13 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a2101659'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('g', 'Thesis'),
-            MARC::Subfield.new('b', 'Ph.D.'),
-            MARC::Subfield.new('c', 'Stanford University'),
-            MARC::Subfield.new('d', '1960.'),
-          ))
+                                       MARC::Subfield.new('g', 'Thesis'),
+                                       MARC::Subfield.new('b', 'Ph.D.'),
+                                       MARC::Subfield.new('c', 'Stanford University'),
+                                       MARC::Subfield.new('d', '1960.')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', ' ')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', ' ')))
         end
       end
 
@@ -856,12 +785,10 @@ RSpec.describe 'Stanford work and department config' do
           r.leader = '01737cam a2200445Ka 4500'
           r.append(MARC::ControlField.new('001', 'a12116908'))
           r.append(MARC::DataField.new('502', ' ', ' ',
-            MARC::Subfield.new('a', 'Thesis (Ph.D.)--Stanford University, 2017.')
-          ))
+                                       MARC::Subfield.new('a', 'Thesis (Ph.D.)--Stanford University, 2017.')))
           r.append(MARC::DataField.new('710', '2', ' ',
-            MARC::Subfield.new('a', 'Stanford University.'),
-            MARC::Subfield.new('b', 'Dept. of Material Sci & Eng.')
-          ))
+                                       MARC::Subfield.new('a', 'Stanford University.'),
+                                       MARC::Subfield.new('b', 'Dept. of Material Sci & Eng.')))
         end
       end
 

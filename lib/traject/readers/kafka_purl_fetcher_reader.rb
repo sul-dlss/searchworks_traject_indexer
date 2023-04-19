@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'kafka'
 require 'kafka/statsd'
 require 'active_support'
@@ -14,7 +16,7 @@ class Traject::KafkaPurlFetcherReader
   def each
     return to_enum(:each) unless block_given?
 
-    kafka.each_message(max_bytes: 10000000) do |message|
+    kafka.each_message(max_bytes: 10_000_000) do |message|
       Utils.logger.debug("Traject::KafkaPurlFetcherReader#each(#{message.key})")
 
       if message.value.nil?
@@ -53,7 +55,7 @@ class Traject::KafkaPurlFetcherReader
       # Remove changed records that now have a catkey
       return true if skip_catkey && (change['catkey'].presence || record.catkey)
       # Remove withdrawn records that are missing public xml
-      return true if !record.public_xml?
+      return true unless record.public_xml?
     end
 
     false

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'debouncer'
 
 class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
-
   module IndexerPatch
     def log_skip(context)
       if writer_class == Traject::SolrBetterJsonWriter
@@ -15,7 +16,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
   def initialize(*args)
     super
 
-    @debouncer = Debouncer.new(@settings["solr_better_json_writer.debounce_timeout"] || 60, &method(:drain_queue))
+    @debouncer = Debouncer.new(@settings['solr_better_json_writer.debounce_timeout'] || 60, &method(:drain_queue))
     @retry_count = 0
   end
 
@@ -39,16 +40,19 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
   # @param [Array<Traject::Indexer::Context>] an array of contexts
   def send_batch(batch)
     return if batch.empty?
+
     json_package = generate_json(batch)
     begin
-      resp = @http_client.post @solr_update_url, json_package, "Content-type" => "application/json"
-    rescue StandardError => exception
+      resp = @http_client.post @solr_update_url, json_package, 'Content-type' => 'application/json'
+    rescue StandardError => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
     end
 
     if exception || resp.status != 200
-      error_message = exception ?
-        Traject::Util.exception_to_log_message(exception) :
-        "Solr response: #{resp.status}: #{resp.body}"
+      error_message = if exception
+                        Traject::Util.exception_to_log_message(exception)
+                      else
+                        "Solr response: #{resp.status}: #{resp.body}"
+                      end
 
       logger.error "Error in Solr batch add. Will retry documents individually at performance penalty: #{error_message}"
 
@@ -72,36 +76,37 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
   def send_single(c)
     json_package = generate_json([c])
     begin
-      resp = @http_client.post @solr_update_url, json_package, "Content-type" => "application/json"
+      resp = @http_client.post @solr_update_url, json_package, 'Content-type' => 'application/json'
       # Catch Timeouts and network errors as skipped records, but otherwise
       # allow unexpected errors to propagate up.
-    rescue *skippable_exceptions => exception
+    rescue *skippable_exceptions => e
       # no body, local variable exception set above will be used below
     end
 
     if exception || resp.status != 200
-      if exception
-        msg = Traject::Util.exception_to_log_message(exception)
-      else
-        msg = "Solr error response: #{resp.status}: #{resp.body}"
-      end
+      msg = if exception
+              Traject::Util.exception_to_log_message(exception)
+            else
+              "Solr error response: #{resp.status}: #{resp.body}"
+            end
       logger.error "Could not add record #{c.record_inspect}: #{msg}"
       logger.debug("\t" + exception.backtrace.join("\n\t")) if exception
       logger.debug(c.source_record.to_s) if c.source_record
 
       @skipped_record_incrementer.increment
       if @max_skipped and skipped_record_count > @max_skipped
-        raise MaxSkippedRecordsExceeded.new("#{self.class.name}: Exceeded maximum number of skipped records (#{@max_skipped}): aborting")
+        raise MaxSkippedRecordsExceeded,
+              "#{self.class.name}: Exceeded maximum number of skipped records (#{@max_skipped}): aborting"
       end
 
       return false
     end
 
-    return true
+    true
   end
 
   def max_sleep_seconds
-    Float(2 ** @retry_count)
+    Float(2**@retry_count)
   end
 
   def generate_json(batch)

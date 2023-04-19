@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Format physical config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -8,7 +10,7 @@ RSpec.describe 'Format physical config' do
     end
   end
   subject(:result) { indexer.map_record(record) }
-  let(:field) { 'genre_ssim'}
+  let(:field) { 'genre_ssim' }
 
   describe 'conference proceedings' do
     context 'with a book' do
@@ -17,9 +19,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '15069nam a2200409 a 4500'
           r.append(MARC::ControlField.new('008', '091123s2014    si a    sb    101 0 eng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -32,9 +33,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '03779cmm a2200505 i 4500'
           r.append(MARC::ControlField.new('008', '131010t20132013cau        m        eng c'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -47,9 +47,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '01515cas a2200385Ma 4500'
           r.append(MARC::ControlField.new('008', '000208c199u9999nyu x   s     0    0eng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
           r.append(MARC::DataField.new('999', ' ', ' ', MARC::Subfield.new('t', 'DATABASE')))
         end
       end
@@ -63,9 +62,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '01443cpcaa2200289   4500'
           r.append(MARC::ControlField.new('008', '840706i18701943cau                 ger d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -78,9 +76,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '01102cas a2200277   4500'
           r.append(MARC::ControlField.new('008', '870604d19191919njudr ne      1    0eng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -93,9 +90,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '01482com a2200337 a 4500'
           r.append(MARC::ControlField.new('008', '840726s1980    dcu---        1   bneng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -108,9 +104,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '03701cim a2200421 a 4500'
           r.append(MARC::ControlField.new('008', '040802c200u9999cau            l    eng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -123,9 +118,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '02840cgm a2200481 i 4500'
           r.append(MARC::ControlField.new('008', '110805t20112011cau074            vleng c'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -138,9 +132,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '02958cgm a2200469Ki 4500'
           r.append(MARC::ControlField.new('008', '110504s2011    cau418            vleng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'subject'),
-            MARC::Subfield.new('v', 'Congresses'),
-          ))
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
         end
       end
 
@@ -153,9 +146,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '04473caa a2200313Ia 4500'
           r.append(MARC::ControlField.new('008', '040202s2003    fi g     b    000 0deng d'))
           r.append(MARC::DataField.new('650', ' ', '0',
-            MARC::Subfield.new('a', 'Music'),
-            MARC::Subfield.new('v', 'Congresses.'),
-          ))
+                                       MARC::Subfield.new('a', 'Music'),
+                                       MARC::Subfield.new('v', 'Congresses.')))
         end
       end
 
@@ -168,9 +160,8 @@ RSpec.describe 'Format physical config' do
           r.leader = '04473caa a2200313Ia 4500'
           r.append(MARC::ControlField.new('008', '040202s2003    fi g     b    000 0deng d'))
           r.append(MARC::DataField.new('600', ' ', '0',
-            MARC::Subfield.new('a', 'Music'),
-            MARC::Subfield.new('v', 'Congresses.'),
-          ))
+                                       MARC::Subfield.new('a', 'Music'),
+                                       MARC::Subfield.new('v', 'Congresses.')))
         end
       end
 
@@ -250,9 +241,8 @@ RSpec.describe 'Format physical config' do
         r.leader = '02808cas a22005778a 4500'
         r.append(MARC::ControlField.new('008', '050127c20149999enkfr p       |   a0eng c'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
       end
     end
 
@@ -265,9 +255,8 @@ RSpec.describe 'Format physical config' do
         r.leader = '02808cas a22005778a 4500'
         r.append(MARC::ControlField.new('008', '050127c20149999enkfr         |   a0eng c'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
       end
     end
 
@@ -280,9 +269,8 @@ RSpec.describe 'Format physical config' do
         r.leader = '02808cas a22005778a 4500'
         r.append(MARC::ControlField.new('008', '110417s2011    le |||||||||||||| ||ara d'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
       end
     end
 
@@ -296,9 +284,8 @@ RSpec.describe 'Format physical config' do
         r.append(MARC::ControlField.new('006', 'ser p       0    0'))
         r.append(MARC::ControlField.new('006', '000000d197819uuilunnn         l    eng d'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
       end
     end
 
@@ -312,9 +299,8 @@ RSpec.describe 'Format physical config' do
         r.append(MARC::ControlField.new('006', 'ser         0    0'))
         r.append(MARC::ControlField.new('006', '000000d197819uuilunnn         l    eng d'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
       end
     end
 
@@ -328,26 +314,25 @@ RSpec.describe 'Format physical config' do
         r.append(MARC::ControlField.new('006', 'suu wss|||||0   |2'))
         r.append(MARC::ControlField.new('006', '130923c20139999un uu         1    0ukr d'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
       end
     end
 
     specify { expect(result[field]).to include 'Conference proceedings' }
   end
 
-#   /**
-#    * Thesis value for a variety of main formats
-#    */
-# @Test
-#   public final void testThesis()
-#   {
-#       String fldVal = Genre.THESIS.toString();
-#     Record record = factory.newRecord();
-#     DataField df502 = factory.newDataField("502", ' ', ' ');
-#     df502.addSubfield(factory.newSubfield('a', "I exist"));
-#
+  #   /**
+  #    * Thesis value for a variety of main formats
+  #    */
+  # @Test
+  #   public final void testThesis()
+  #   {
+  #       String fldVal = Genre.THESIS.toString();
+  #     Record record = factory.newRecord();
+  #     DataField df502 = factory.newDataField("502", ' ', ' ');
+  #     df502.addSubfield(factory.newSubfield('a', "I exist"));
+  #
   context 'thesis that is also a book' do
     let(:record) do
       MARC::Record.new.tap do |r|
@@ -439,9 +424,8 @@ RSpec.describe 'Format physical config' do
         r.leader = '01360cam a22003011  4500'
         r.append(MARC::ControlField.new('008', '890928s1929    mdu           000 0 eng c'))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'subject'),
-          MARC::Subfield.new('v', 'Congresses'),
-        ))
+                                     MARC::Subfield.new('a', 'subject'),
+                                     MARC::Subfield.new('v', 'Congresses')))
         r.append(MARC::DataField.new('502', ' ', ' ', MARC::Subfield.new('a', 'Thesis (Ph. D.)--Johns Hopkins, 1928.')))
       end
     end
@@ -544,7 +528,7 @@ RSpec.describe 'Format physical config' do
   context 'with the presence of a 008 that says it is not a report' do
     let(:record) do
       MARC::Record.new.tap do |r|
-      r.append(MARC::ControlField.new('008', '091123s2014    si a    sbt   101 0 eng d'))
+        r.append(MARC::ControlField.new('008', '091123s2014    si a    sbt   101 0 eng d'))
         r.append(MARC::DataField.new('027', ' ', ' ', MARC::Subfield.new('a', 'I exist')))
       end
     end
@@ -598,11 +582,9 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04473cam a2200313Ia 4500'
         r.append(MARC::DataField.new('655', ' ', ' ',
-          MARC::Subfield.new('a', 'Silent films.')
-        ))
+                                     MARC::Subfield.new('a', 'Silent films.')))
         r.append(MARC::DataField.new('655', ' ', ' ',
-          MARC::Subfield.new('a', 'Clay animation films.')
-        ))
+                                     MARC::Subfield.new('a', 'Clay animation films.')))
       end
     end
 
@@ -616,8 +598,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04473cam a2200313Ia 4500'
         r.append(MARC::DataField.new('655', ' ', ' ',
-          MARC::Subfield.new('v', 'Software.')
-        ))
+                                     MARC::Subfield.new('v', 'Software.')))
       end
     end
 
@@ -631,47 +612,35 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04473cam a2200313Ia 4500'
         r.append(MARC::DataField.new('600', ' ', '0',
-          MARC::Subfield.new('a', 'Gautama Buddha'),
-          MARC::Subfield.new('v', 'Early works to 1800.')
-        ))
+                                     MARC::Subfield.new('a', 'Gautama Buddha'),
+                                     MARC::Subfield.new('v', 'Early works to 1800.')))
         r.append(MARC::DataField.new('600', ' ', '1',
-          MARC::Subfield.new('v', 'Bildband')
-        ))
+                                     MARC::Subfield.new('v', 'Bildband')))
         r.append(MARC::DataField.new('610', ' ', '0',
-          MARC::Subfield.new('a', 'Something'),
-          MARC::Subfield.new('v', 'Case studies')
-        ))
+                                     MARC::Subfield.new('a', 'Something'),
+                                     MARC::Subfield.new('v', 'Case studies')))
         r.append(MARC::DataField.new('610', ' ', ' ',
-          MARC::Subfield.new('v', 'Guidebooks')
-        ))
+                                     MARC::Subfield.new('v', 'Guidebooks')))
         r.append(MARC::DataField.new('611', ' ', '0',
-          MARC::Subfield.new('a', 'Something'),
-          MARC::Subfield.new('v', 'Speeches in Congress')
-        ))
+                                     MARC::Subfield.new('a', 'Something'),
+                                     MARC::Subfield.new('v', 'Speeches in Congress')))
         r.append(MARC::DataField.new('611', ' ', '4',
-          MARC::Subfield.new('v', 'Fiction')
-        ))
+                                     MARC::Subfield.new('v', 'Fiction')))
         r.append(MARC::DataField.new('630', ' ', '0',
-          MARC::Subfield.new('a', 'Something'),
-          MARC::Subfield.new('v', 'Criticism, interpretation, etc.')
-        ))
+                                     MARC::Subfield.new('a', 'Something'),
+                                     MARC::Subfield.new('v', 'Criticism, interpretation, etc.')))
         r.append(MARC::DataField.new('630', ' ', '7',
-          MARC::Subfield.new('v', 'Teatro')
-        ))
+                                     MARC::Subfield.new('v', 'Teatro')))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('a', 'World War, 1939-1945'),
-          MARC::Subfield.new('v', 'Personal narratives.')
-        ))
+                                     MARC::Subfield.new('a', 'World War, 1939-1945'),
+                                     MARC::Subfield.new('v', 'Personal narratives.')))
         r.append(MARC::DataField.new('650', ' ', '1',
-          MARC::Subfield.new('v', 'Humor')
-        ))
+                                     MARC::Subfield.new('v', 'Humor')))
         r.append(MARC::DataField.new('651', ' ', '0',
-          MARC::Subfield.new('a', 'Something'),
-          MARC::Subfield.new('v', 'Census, 1999.')
-        ))
+                                     MARC::Subfield.new('a', 'Something'),
+                                     MARC::Subfield.new('v', 'Census, 1999.')))
         r.append(MARC::DataField.new('651', ' ', '4',
-          MARC::Subfield.new('v', 'Ausstellung')
-        ))
+                                     MARC::Subfield.new('v', 'Ausstellung')))
       end
     end
 
@@ -698,17 +667,16 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04473cam a2200313Ia 4500'
         r.append(MARC::DataField.new('650', ' ', ' ',
-          MARC::Subfield.new('a', 'Automobiles'),
-          MARC::Subfield.new('x', 'Collision damage'),
-          MARC::Subfield.new('z', 'California'),
-          MARC::Subfield.new('v', 'Statistics'),
-          MARC::Subfield.new('v', 'Periodicals.')
-        ))
+                                     MARC::Subfield.new('a', 'Automobiles'),
+                                     MARC::Subfield.new('x', 'Collision damage'),
+                                     MARC::Subfield.new('z', 'California'),
+                                     MARC::Subfield.new('v', 'Statistics'),
+                                     MARC::Subfield.new('v', 'Periodicals.')))
       end
     end
 
     it 'should contain all 650v' do
-      expect(result[field]).to eq ['Statistics', 'Periodicals']
+      expect(result[field]).to eq %w[Statistics Periodicals]
     end
   end
 
@@ -717,34 +685,30 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '04473cam a2200313Ia 4500'
         r.append(MARC::DataField.new('650', ' ', ' ',
-          MARC::Subfield.new('v', 'Anecdotes..') # trailing periods
+                                     MARC::Subfield.new('v', 'Anecdotes..') # trailing periods
         ))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('v', 'Art and the war.') # trailing period
+                                     MARC::Subfield.new('v', 'Art and the war.') # trailing period
         ))
         # Trailing whitespace and multiple intra-field whitespace
         r.append(MARC::DataField.new('655', ' ', '7',
-          MARC::Subfield.new('v', 'Accordion fold format  (Binding) ') # trailing period
+                                     MARC::Subfield.new('v', 'Accordion fold format  (Binding) ') # trailing period
         ))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('v', 'Underwater photography .') # trailing space period
+                                     MARC::Subfield.new('v', 'Underwater photography .') # trailing space period
         ))
         r.append(MARC::DataField.new('655', ' ', ' ',
-          MARC::Subfield.new('v', 'Sociology. .') # trailing period space
+                                     MARC::Subfield.new('v', 'Sociology. .') # trailing period space
         ))
         # Period succeeding word with three letters
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('v', 'Translations into Udi.')
-        ))
+                                     MARC::Subfield.new('v', 'Translations into Udi.')))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('v', 'Mic.')
-        ))
+                                     MARC::Subfield.new('v', 'Mic.')))
         r.append(MARC::DataField.new('650', ' ', '0',
-          MARC::Subfield.new('v', 'Art.')
-        ))
+                                     MARC::Subfield.new('v', 'Art.')))
         r.append(MARC::DataField.new('655', ' ', ' ',
-          MARC::Subfield.new('a', 'Dr.')
-        ))
+                                     MARC::Subfield.new('a', 'Dr.')))
       end
     end
 

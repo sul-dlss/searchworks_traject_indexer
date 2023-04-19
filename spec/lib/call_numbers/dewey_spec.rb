@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/dewey'
 
 describe CallNumbers::Dewey do
@@ -112,7 +114,6 @@ describe CallNumbers::Dewey do
       end
 
       context 'serial' do
-
       end
     end
   end

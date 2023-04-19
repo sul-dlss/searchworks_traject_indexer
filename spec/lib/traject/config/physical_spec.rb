@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Sirsi config' do
   extend ResultHelpers
   subject(:result) { indexer.map_record(record) }
@@ -13,7 +15,7 @@ RSpec.describe 'Sirsi config' do
   describe 'physical' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
     let(:fixture_name) { 'physicalTests.mrc' }
-    let(:field) { 'physical'}
+    let(:field) { 'physical' }
 
     it 'has the correct physical descriptions' do
       result = select_by_id('300111')[field]
@@ -33,17 +35,17 @@ RSpec.describe 'Sirsi config' do
       let(:fixture_name) { 'displayFieldsTests.mrc' }
 
       it 'has the correct physical descriptions' do
-  	    expect(select_by_id('3001')[field]).to eq ['1 sound disc (20 min.); analog, 33 1/3 rpm, stereo. ; 12 in.']
-  	    expect(select_by_id('3002')[field]).to eq ['records 1 box 2 x 4 x 3 1/2 ft.']
-  	    expect(select_by_id('3003')[field]).to eq ['17 boxes (7 linear ft.)']
-  	    expect(select_by_id('3004')[field]).to eq ['poems 1 page ; 108 cm. x 34.5 cm.']
-  	    expect(select_by_id('3005')[field]).to eq [
+        expect(select_by_id('3001')[field]).to eq ['1 sound disc (20 min.); analog, 33 1/3 rpm, stereo. ; 12 in.']
+        expect(select_by_id('3002')[field]).to eq ['records 1 box 2 x 4 x 3 1/2 ft.']
+        expect(select_by_id('3003')[field]).to eq ['17 boxes (7 linear ft.)']
+        expect(select_by_id('3004')[field]).to eq ['poems 1 page ; 108 cm. x 34.5 cm.']
+        expect(select_by_id('3005')[field]).to eq [
           '65 prints : relief process ; 29 x 22 cm.',
           '8 albums (550 photoprints) ; 51 x 46 cm. or smaller.'
         ]
       end
     end
-	end
+  end
 
   describe 'vern_physical' do
     subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }

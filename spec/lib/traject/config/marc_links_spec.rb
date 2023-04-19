@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'marc_links_struct' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -11,7 +13,7 @@ RSpec.describe 'marc_links_struct' do
 
   context 'for a simple 856' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='3'>Link text 1</subfield>
@@ -21,41 +23,41 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='z'>Title text2</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
 
-    it "should place the $3 and $y as the link text" do
-      expect(result_field.first[:html]).to match /<a.*>Link text 1 Link text 2<\/a>/
+    it 'should place the $3 and $y as the link text' do
+      expect(result_field.first[:html]).to match(%r{<a.*>Link text 1 Link text 2</a>})
     end
-    it "should place the $z as the link title attribute" do
-      expect(result_field.first[:html]).to match /<a.*title="Title text1 Title text2".*>/
+    it 'should place the $z as the link title attribute' do
+      expect(result_field.first[:html]).to match(/<a.*title="Title text1 Title text2".*>/)
     end
     it 'should include the plain text version' do
-      expect(result_field.first[:text]).to eq "Link text 1 Link text 2"
+      expect(result_field.first[:text]).to eq 'Link text 1 Link text 2'
     end
     it 'should include the href' do
-      expect(result_field.first[:href]).to eq "https://library.stanford.edu"
+      expect(result_field.first[:href]).to eq 'https://library.stanford.edu'
     end
   end
 
   context 'for a no-label-document' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='u'>https://library.stanford.edu</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
-    it "should use the host of the URL if no text is available" do
-      expect(result_field.first[:html]).to match /<a.*>library.stanford.edu<\/a>/
+    it 'should use the host of the URL if no text is available' do
+      expect(result_field.first[:html]).to match(%r{<a.*>library.stanford.edu</a>})
     end
   end
 
-  context "casalini links" do
+  context 'casalini links' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='4' ind2='1'>
             <subfield code='3'>Link text</subfield>
@@ -80,28 +82,28 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='y'>Link text</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
-    it "does not have any text before the link" do
-      expect(result_field.first[:html]).to match /^<a /
+    it 'does not have any text before the link' do
+      expect(result_field.first[:html]).to match(/^<a /)
     end
-    it "places $3 as the link text" do
-      expect(result_field.first[:html]).to match /<a.*>Link text<\/a>/
+    it 'places $3 as the link text' do
+      expect(result_field.first[:html]).to match(%r{<a.*>Link text</a>})
     end
     it "places '(source: Casalini)' after the link" do
-      expect(result_field.first[:html]).to match /<\/a> \(source: Casalini\)/
+      expect(result_field.first[:html]).to match(%r{</a> \(source: Casalini\)})
     end
     it "does not place '(source: Casalini)' twice after the link" do
-      expect(result_field.first[:html]).not_to match /<\/a> \(source: Casalini\).*\(source: Casalini\)/
+      expect(result_field.first[:html]).not_to match(%r{</a> \(source: Casalini\).*\(source: Casalini\)})
     end
-    it "identifies the link as a Casalini link from value of $x or $z" do
+    it 'identifies the link as a Casalini link from value of $x or $z' do
       expect(result_field.all? { |x| x[:casalini] }).to be_truthy
     end
   end
 
-  context "stanford_only" do
+  context 'stanford_only' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='u'>https://library.stanford.edu</subfield>
@@ -124,18 +126,18 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='z'>Available to stanford affiliated users</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
-    it "should identify all the permutations of the Stanford Only string as Stanford Only resources" do
+    it 'should identify all the permutations of the Stanford Only string as Stanford Only resources' do
       expect(result_field).to be_present
       expect(result_field.all? { |x| x[:stanford_only] }).to be_truthy
       expect(result_field.select { |x| x[:text] =~ /additional-link-text/ }.length).to eq 1
     end
   end
 
-  context "Stanford law only" do
+  context 'Stanford law only' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='u'>https://library.stanford.edu</subfield>
@@ -143,20 +145,19 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='z'>Available to stanford law school community</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
 
-    it "should show availability text" do
+    it 'should show availability text' do
       expect(result_field).to be_present
       expect(result_field.first[:text]).to match(/additional-link-text/)
       expect(result_field.first[:text]).to include 'Available to stanford law school community'
     end
-
   end
 
-  context "fulltext" do
+  context 'fulltext' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='u'>https://library.stanford.edu</subfield>
@@ -175,9 +176,9 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='y'>Link text</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
-    it "should identify fulltext links" do
+    it 'should identify fulltext links' do
       expect(result_field).to be_present
       expect(result_field.all? { |x| x[:fulltext] }).to be_truthy
     end
@@ -185,7 +186,7 @@ RSpec.describe 'marc_links_struct' do
 
   context 'managed_purl' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='u'>https://library.stanford.edu</subfield>
@@ -196,7 +197,7 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='y'>Link text 2</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
 
     it 'should return the managed purl links' do
@@ -218,7 +219,7 @@ RSpec.describe 'marc_links_struct' do
 
     context 'when stanford affiliated' do
       let(:marc) do
-        <<-xml
+        <<-XML
           <record>
             <datafield tag='856' ind1='0' ind2='0'>
               <subfield code='u'>https://library.stanford.edu</subfield>
@@ -227,7 +228,7 @@ RSpec.describe 'marc_links_struct' do
               <subfield code='z'>Available to stanford affiliated users at</subfield>
             </datafield>
           </record>
-        xml
+        XML
       end
 
       it 'does not include empty html from the additional_text that cannot be displayed' do
@@ -236,9 +237,9 @@ RSpec.describe 'marc_links_struct' do
     end
   end
 
-  context "supplemental" do
+  context 'supplemental' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='2'>
             <subfield code='3'>Before text</subfield>
@@ -276,16 +277,16 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='y'>Link text</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
-    it "should identify supplemental links" do
+    it 'should identify supplemental links' do
       expect(result_field).to be_present
       expect(result_field.any? { |x| x[:fulltext] }).to be_falsey
     end
   end
-  context "finding_aid" do
+  context 'finding_aid' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='2'>
             <subfield code='3'>FINDING AID:</subfield>
@@ -299,53 +300,53 @@ RSpec.describe 'marc_links_struct' do
             <subfield code='z'>This is a finding aid</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
-    it "should return all finding aid links" do
+    it 'should return all finding aid links' do
       expect(result_field).to be_present
       expect(result_field.all? { |x| x[:finding_aid] }).to be_truthy
     end
   end
-  describe "ez-proxy" do
+  describe 'ez-proxy' do
     let(:marc) do
-      <<-xml
+      <<-XML
         <record>
           <datafield tag='856' ind1='0' ind2='0'>
             <subfield code='u'>https://stanford.idm.oclc.org/?url=https://library.stanford.edu</subfield>
           </datafield>
         </record>
-      xml
+      XML
     end
 
-    it "should place the host of the url parameter as link text of no explicit label is available" do
-      expect(result_field.first[:html]).to match /<a.*>library.stanford.edu<\/a/
+    it 'should place the host of the url parameter as link text of no explicit label is available' do
+      expect(result_field.first[:html]).to match(%r{<a.*>library.stanford.edu</a})
     end
   end
-  context "bad URLs" do
+  context 'bad URLs' do
     context 'when an 856 has no $u' do
       let(:marc) do
-        <<-xml
+        <<-XML
           <record>
             <datafield tag='856' ind1='0' ind2='0'>
               <subfield code='y'>Some text</subfield>
             </datafield>
           </record>
-        xml
+        XML
       end
-      it "should not return anything" do
+      it 'should not return anything' do
         expect(result[field]).not_to be_present
       end
     end
 
     context 'with URLs with spaces in them' do
       let(:marc) do
-        <<-xml
+        <<-XML
           <record>
             <datafield tag='856' ind1='0' ind2='0'>
               <subfield code='u'>https://stanford.idm.oclc.org/?url=https://library.stanford.edu/url%20that has+spaces</subfield>
             </datafield>
           </record>
-        xml
+        XML
       end
 
       it 'handles pulling the proxy host' do
@@ -355,17 +356,17 @@ RSpec.describe 'marc_links_struct' do
 
     context 'with characters that need to be HTML escaped' do
       let(:marc) do
-        <<-xml
+        <<-XML
           <record>
             <datafield tag='856' ind1='0' ind2='0'>
               <subfield code='u'>https://somelink/with'singlequote.pdf</subfield>
             </datafield>
           </record>
-        xml
+        XML
       end
 
       it 'HTML escapes the single quote' do
-        expect(result_field.first[:html]).to match(%r{with&#39;singlequote\.pdf})
+        expect(result_field.first[:html]).to match(/with&#39;singlequote\.pdf/)
       end
     end
   end

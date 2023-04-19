@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'call_numbers/shelfkey'
 require 'call_numbers/call_number_base'
 

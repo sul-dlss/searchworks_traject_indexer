@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'kafka'
 require 'kafka/statsd'
 require 'active_support'
@@ -7,7 +9,7 @@ require_relative '../../folio_record'
 class Traject::KafkaFolioReader
   attr_reader :settings
 
-  def initialize(input_stream, settings)
+  def initialize(_input_stream, settings)
     @settings = Traject::Indexer::Settings.new settings
     @client = settings['folio.client'] || FolioClient.new
   end
@@ -15,7 +17,7 @@ class Traject::KafkaFolioReader
   def each
     return to_enum(:each) unless block_given?
 
-    kafka.each_message(max_bytes: 10000000) do |message|
+    kafka.each_message(max_bytes: 10_000_000) do |message|
       Utils.logger.debug("Traject::KafkaFolioReader#each(#{message.key})")
       record = JSON.parse(message.value)
 
