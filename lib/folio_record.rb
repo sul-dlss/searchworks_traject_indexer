@@ -8,6 +8,8 @@ class FolioRecord
 
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
 
+  # @param [Hash<String,Object>] record
+  # @param [FolioClient] client
   def self.new_from_source_record(record, client)
     FolioRecord.new({
                       'source_record' => [
@@ -19,6 +21,8 @@ class FolioRecord
                     }, client)
   end
 
+  # @param [Hash<String,Object>] record
+  # @param [FolioClient] client (nil)
   def initialize(record, client = nil)
     @record = record
     @client = client
