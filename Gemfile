@@ -25,7 +25,6 @@ gem 'parallel'
 gem 'pg', platform: :mri
 gem 'rake'
 gem 'retriable'
-gem 'rexml' # required for ruby 3
 gem 'ruby-kafka'
 gem 'stanford-mods', '~> 3.0'
 gem 'statsd-ruby'

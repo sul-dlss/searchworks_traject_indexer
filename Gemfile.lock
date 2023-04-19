@@ -267,7 +267,6 @@ DEPENDENCIES
   pg
   rake
   retriable
-  rexml
   rspec
   rubocop
   ruby-kafka
