@@ -36,23 +36,36 @@ RSpec.describe FolioClient do
   end
 
   describe '#get_json' do
-    before do
-      stub_request(:get, 'https://example.com/blah')
-        .to_return(body:)
-    end
+    subject(:request) { client.get_json('/blah') }
 
-    let(:body) { '{"hello": "world"}' }
-
-    it 'parses json responses into ruby objects' do
-      expect(client.get_json('/blah')).to eq('hello' => 'world')
-    end
-
-    describe 'when the response is empty' do
-      let(:body) { '' }
-
-      it 'returns nil' do
-        expect(client.get_json('/blah')).to be_nil
+    context 'when the status is ok' do
+      before do
+        stub_request(:get, 'https://example.com/blah')
+          .to_return(body: '{"hello": "world"}')
       end
+
+      it { is_expected.to eq('hello' => 'world') }
+    end
+
+    context 'when the status is not ok' do
+      before do
+        stub_request(:get, 'https://example.com/blah')
+          .with(headers: { 'x-okapi-token': 'tokentokentoken', 'X-Okapi-Tenant': 'sul' })
+          .to_return(body: 'Verboten!', status: 401)
+      end
+
+      it 'raises an error' do
+        expect { request }.to raise_error 'Verboten!'
+      end
+    end
+
+    context 'when the response is empty' do
+      before do
+        stub_request(:get, 'https://example.com/blah')
+          .to_return(body: '')
+      end
+
+      it { is_expected.to be_nil }
     end
   end
 
