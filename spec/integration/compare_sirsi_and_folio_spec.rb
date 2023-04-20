@@ -28,10 +28,8 @@ RSpec.describe 'comparing against a well-known location full of documents genera
   shared_examples 'records match' do |*flags|
     before { pending } if flags.include?(:pending)
 
-    let(:client) do
-      FolioClient.new url: ENV.fetch('OKAPI_URL'), username: ENV.fetch('OKAPI_USER', nil),
-                      password: ENV.fetch('OKAPI_PASSWORD', nil)
-    end
+    let(:client) { FolioClient.new }
+
     let(:folio_record) do
       if ENV.key?('DATABASE_URL')
         Traject::FolioPostgresReader.new(nil, 'postgres.url' => ENV.fetch('DATABASE_URL'),
