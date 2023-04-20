@@ -24,7 +24,7 @@ File.open(state_file, 'r+') do |f|
   Utils.logger.info "Found last_date in #{state_file}: #{last_date}"
 
   reader = Traject::FolioReader.new(nil, 'folio.updated_after': last_date.utc.iso8601,
-                                         'folio.client': FolioClient.new(url: Utils.env_config.okapi_url || ENV.fetch('OKAPI_URL', nil)))
+                                         'folio.client': FolioClient.new(url: ENV.fetch('OKAPI_URL')))
 
   Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
 
