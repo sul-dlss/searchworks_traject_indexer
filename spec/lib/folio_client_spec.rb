@@ -8,7 +8,7 @@ RSpec.describe FolioClient do
 
   before do
     stub_request(:post, 'https://example.com/authn/login')
-      .to_return(headers: { 'x-okapi-token': 'tokentokentoken' })
+      .to_return(headers: { 'x-okapi-token': 'tokentokentoken' }, status: 201)
   end
 
   describe '#get' do
