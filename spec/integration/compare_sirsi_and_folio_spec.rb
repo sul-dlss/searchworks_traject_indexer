@@ -59,7 +59,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
       ]
     end
     it 'matches' do
-      aggregate_failures 'testing response' do
+      aggregate_failures "testing response for catkey #{catkey}" do
         mapped_fields.each do |key|
           next if skipped_fields.include? key
 
