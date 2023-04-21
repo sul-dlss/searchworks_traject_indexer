@@ -25,7 +25,9 @@ RSpec.describe 'comparing against a well-known location full of documents genera
     MARC::XMLReader.new(StringIO.new(HTTP.get(marc_url).body.to_s)).to_a.first
   end
 
-  shared_examples 'records match' do
+  shared_examples 'records match' do |*flags|
+    before { pending } if flags.include?(:pending)
+
     let(:client) do
       FolioClient.new url: ENV.fetch('OKAPI_URL'), username: ENV.fetch('OKAPI_USER', nil),
                       password: ENV.fetch('OKAPI_PASSWORD', nil)
@@ -93,6 +95,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
     it_behaves_like 'records match'
   end
 
+  # working
   %w[
     a1004359
     a10269181
@@ -107,6 +110,20 @@ RSpec.describe 'comparing against a well-known location full of documents genera
       let(:catkey) { catkey }
 
       it_behaves_like 'records match'
+    end
+  end
+
+  # pending
+  %w[
+    a576562
+    a12451243
+    a13288549
+    a10151431
+  ].each do |catkey|
+    context "catkey #{catkey}" do
+      let(:catkey) { catkey }
+
+      it_behaves_like 'records match', :pending
     end
   end
 end
