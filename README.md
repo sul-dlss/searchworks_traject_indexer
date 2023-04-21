@@ -29,11 +29,22 @@ bundle exec rake
 ```
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
 
+## Building services
+For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd:
+```
+foreman export -a traject -f Procfile.stage --formation marc_bodoni_dev_indexer=1,marc_morison_dev_indexer=1,folio_dev_indexer=8,sw_dev_indexer=2,sw_preview_stage_indexer=2,earthworks_stage_indexer=1 systemd ~/service_templates
+sudo cp /opt/app/indexer/service_templates/* /usr/lib/systemd/system/
+
+sudo systemctl enable traject.target
+sudo systemctl start traject.target
+```
+
 ## indexing data
 indexing is a multi-step process:
 1. an extractor process publishes data to be indexed to a [kafka](https://kafka.apache.org/) topic
-2. a daemon run by [eye](https://github.com/kostya/eye) consumes data from the kafka topic and invokes traject
+2. Systemd runs the various traject services
 3. traject uses a given configuration to index the data into a solr collection
+
 ### publishing data to kafka
 extractor processes are written as ruby scripts in `script/` and usually invoked by shell scripts located in the same directory. they make use of traject extractor classes stored in `lib/traject/extractors/`, which use the ruby kafka client to publish data to a kafka topic using the pattern:
 ```ruby
