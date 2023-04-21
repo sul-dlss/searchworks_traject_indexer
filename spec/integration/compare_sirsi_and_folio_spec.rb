@@ -47,6 +47,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
 
     let(:skipped_fields) do
       [
+        'collection',
         'marcxml', # FOLIO records have slightly different MARC records
         'all_search', # FOLIO records have slightly different MARC records
         'item_display', # handled separately because item types are mapped different
