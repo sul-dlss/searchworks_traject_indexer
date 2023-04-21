@@ -50,7 +50,7 @@ class FolioRecord
                                                                                          'code')]
 
       SirsiHolding.new(
-        call_number: [item.dig('callNumber', 'callNumber'), item['volume']].compact.join(' '),
+        call_number: [item.dig('callNumber', 'callNumber'), item['enumeration']].compact.join(' '),
         current_location: (current_location unless current_location == home_location_code),
         home_location: home_location_code,
         library: library_code,
