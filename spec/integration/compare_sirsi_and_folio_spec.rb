@@ -68,11 +68,14 @@ RSpec.describe 'comparing against a well-known location full of documents genera
         end
 
         sirsi_result['item_display'].each_with_index do |item_display, index|
-          item_display_parts = item_display.split('-|-')
-          folio_display_parts = folio_result.fetch('item_display', [])[index]&.split('-|-') || []
+          item_display_parts = item_display.split('-|-').map(&:strip)
+          folio_display_parts = folio_result.fetch('item_display', [])[index]&.split('-|-')&.map(&:strip) || []
 
           # we're not mapping item types
           item_display_parts[4] = folio_display_parts[4] = ''
+
+          # The "ASIS" call number type is mapped to "OTHER" in Symphony, but "ALPHANUM" in FOLIO
+          item_display_parts[11] = 'ALPHANUM' if item_display_parts[11] == 'OTHER' && folio_display_parts[11] == 'ALPHANUM'
 
           expect(folio_display_parts).to eq item_display_parts
         end
