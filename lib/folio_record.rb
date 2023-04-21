@@ -50,7 +50,7 @@ class FolioRecord
                                                                                          'code')]
 
       SirsiHolding.new(
-        call_number: [item.dig('callNumber', 'callNumber'), item['volume']].compact.join(' '),
+        call_number: [item.dig('callNumber', 'callNumber'), item['enumeration']].compact.join(' '),
         current_location: (current_location unless current_location == home_location_code),
         home_location: home_location_code,
         library: library_code,
@@ -83,6 +83,10 @@ class FolioRecord
                                              col_sep: "\t").each_with_object({}) do |row, hash|
       library_code = row[1]
       library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
+
+      # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
+      next if row[2] == 'SAL3-STACKS' && row[0] != 'STACKS'
+
       hash[row[2]] ||= [library_code, row[0]]
     end
   end

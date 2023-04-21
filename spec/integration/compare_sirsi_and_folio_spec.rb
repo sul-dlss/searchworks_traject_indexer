@@ -25,7 +25,9 @@ RSpec.describe 'comparing against a well-known location full of documents genera
     MARC::XMLReader.new(StringIO.new(HTTP.get(marc_url).body.to_s)).to_a.first
   end
 
-  shared_examples 'records match' do
+  shared_examples 'records match' do |*flags|
+    before { pending } if flags.include?(:pending)
+
     let(:client) do
       FolioClient.new url: ENV.fetch('OKAPI_URL'), username: ENV.fetch('OKAPI_USER', nil),
                       password: ENV.fetch('OKAPI_PASSWORD', nil)
@@ -59,7 +61,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
       ]
     end
     it 'matches' do
-      aggregate_failures 'testing response' do
+      aggregate_failures "testing response for catkey #{catkey}" do
         mapped_fields.each do |key|
           next if skipped_fields.include? key
 
@@ -68,11 +70,14 @@ RSpec.describe 'comparing against a well-known location full of documents genera
         end
 
         sirsi_result['item_display'].each_with_index do |item_display, index|
-          item_display_parts = item_display.split('-|-')
-          folio_display_parts = folio_result.fetch('item_display', [])[index]&.split('-|-') || []
+          item_display_parts = item_display.split('-|-').map(&:strip)
+          folio_display_parts = folio_result.fetch('item_display', [])[index]&.split('-|-')&.map(&:strip) || []
 
           # we're not mapping item types
           item_display_parts[4] = folio_display_parts[4] = ''
+
+          # The "ASIS" call number type is mapped to "OTHER" in Symphony, but "ALPHANUM" in FOLIO
+          item_display_parts[11] = 'ALPHANUM' if item_display_parts[11] == 'OTHER' && folio_display_parts[11] == 'ALPHANUM'
 
           expect(folio_display_parts).to eq item_display_parts
         end
@@ -90,6 +95,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
     it_behaves_like 'records match'
   end
 
+  # working
   %w[
     a1004359
     a10269181
@@ -104,6 +110,20 @@ RSpec.describe 'comparing against a well-known location full of documents genera
       let(:catkey) { catkey }
 
       it_behaves_like 'records match'
+    end
+  end
+
+  # pending
+  %w[
+    a576562
+    a12451243
+    a13288549
+    a10151431
+  ].each do |catkey|
+    context "catkey #{catkey}" do
+      let(:catkey) { catkey }
+
+      it_behaves_like 'records match', :pending
     end
   end
 end
