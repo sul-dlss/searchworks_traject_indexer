@@ -83,6 +83,10 @@ class FolioRecord
                                              col_sep: "\t").each_with_object({}) do |row, hash|
       library_code = row[1]
       library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
+
+      # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
+      next if row[2] == 'SAL3-STACKS' && row[0] != 'STACKS'
+
       hash[row[2]] ||= [library_code, row[0]]
     end
   end
