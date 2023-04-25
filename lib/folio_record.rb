@@ -2,8 +2,10 @@
 
 require 'active_support/core_ext/module/delegation'
 require_relative 'traject/common/constants'
+require 'csv'
 
 class FolioRecord
+  LIMIT = (2**31) - 1 # Folio max results
   attr_reader :record, :client
 
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
@@ -89,6 +91,46 @@ class FolioRecord
 
       hash[row[2]] ||= [library_code, row[0]]
     end
+  end
+
+  # Remove suppressed record and electronic records
+  def filtered_holdings
+    holdings.filter_map do |holding|
+      next if holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
+
+      {
+        id: holding.fetch('id'),
+        location: holding.dig('location', 'effectiveLocation'),
+        note: holding.fetch('holdingsStatements').find { |statement| statement.key?('note') }&.fetch('note'),
+        library_has: holding.fetch('holdingsStatements').find { |statement| statement.key?('statement') }&.fetch('statement')
+      }
+    end
+  end
+
+  # Creates the mhld_display value. This drives the holding display in searchworks.
+  # This packed format mimics how we indexed this data when we used Symphony.
+  def mhld
+    filtered_holdings.map do |holding|
+      library, location = self.class.folio_sirsi_locations_map.fetch(holding.fetch(:location).fetch('code'))
+      public_note = holding.fetch(:note)
+      library_has = holding.fetch(:library_has) # We probably don't care about this anymore, as it's expensive for staff to keep it up to date.
+      [library, location, public_note, library_has, latest_received(holding.fetch(:id))].join(' -|- ')
+    end
+  end
+
+  # @return [String] the latest received piece for a holding
+  def latest_received(holding_id)
+    # NOTE: We saw some piece records without 'chronology'. Was this just test data?
+    pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(date: Date.parse(piece.fetch('chronology'))) if piece['chronology'] }
+    latest_piece = pieces.max_by { |piece| piece.fetch(:date) }
+    "#{latest_piece.fetch('enumeration')} (#{latest_piece.fetch('chronology')})" if latest_piece
+  end
+
+  # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
+  # hrid: a567006 has > 1000 on test.
+  def pieces_per_holding
+    @pieces_per_holding ||= client.get_json("/orders/pieces?limit=#{LIMIT}&query=titles.instanceId==\"#{instance_id}\"")
+                                  .fetch('pieces').group_by { |piece| piece['holdingId'] }
   end
 
   def items

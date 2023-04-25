@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'folio_client'
 require 'folio_record'
 
-describe 'FOLIO indexing' do
+RSpec.describe 'FOLIO indexing' do
   subject(:result) { indexer.map_record(folio_record) }
 
   let(:indexer) do
@@ -23,9 +23,10 @@ describe 'FOLIO indexing' do
   end
 
   let(:client) { instance_double(FolioClient) }
+  let(:items_and_holdings) { {} }
 
   before do
-    allow(folio_record).to receive(:items_and_holdings).and_return({})
+    allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
   end
 
   it 'maps the record with sirsi fields' do
@@ -43,7 +44,7 @@ describe 'FOLIO indexing' do
                               'holdings_json_struct' => [start_with('{')]
   end
 
-  context 'suppressed record' do
+  context 'when the record is suppressed' do
     let(:folio_record) do
       FolioRecord.new({ 'instance' => { 'hrid' => 'blah', 'suppressFromDiscovery' => true } })
     end
@@ -53,7 +54,7 @@ describe 'FOLIO indexing' do
     end
   end
 
-  context 'cataloged dates' do
+  describe 'cataloged dates' do
     context 'missing date' do
       before do
         folio_record.instance['catalogedDate'] = nil
@@ -82,6 +83,191 @@ describe 'FOLIO indexing' do
       it 'is an ISO8601 timestamp in UTC' do
         expect(result['date_cataloged']).to eq ['2007-05-11T00:00:00Z']
       end
+    end
+  end
+
+  describe 'mhld_display' do
+    let(:items_and_holdings) do
+      { 'instanceId' => 'cc3d8728-a6b9-45c4-ad0c-432873c3ae47',
+        'source' => 'MARC',
+        'modeOfIssuance' => 'serial',
+        'natureOfContent' => [],
+        'holdings' =>
+         [{ 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+            'notes' => [],
+            'location' =>
+            { 'effectiveLocation' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'permanentLocation' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'temporaryLocation' => {} },
+            'formerIds' => [],
+            'callNumber' => {},
+            'holdingsType' => 'Unknown',
+            'electronicAccess' => [],
+            'receivingHistory' => { 'entries' => [] },
+            'statisticalCodes' => [],
+            'holdingsStatements' => [{ 'note' => 'Library has latest 10 yrs. only.' }, { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }],
+            'suppressFromDiscovery' => false,
+            'holdingsStatementsForIndexes' => [],
+            'holdingsStatementsForSupplements' => [] },
+          { 'id' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+            'notes' => [],
+            'location' =>
+            { 'effectiveLocation' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'permanentLocation' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'temporaryLocation' => {} },
+            'formerIds' => [],
+            'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },
+            'holdingsType' => 'Monograph',
+            'electronicAccess' => [],
+            'receivingHistory' => { 'entries' => [{ 'enumeration' => 'TEST', 'publicDisplay' => true }, nil] },
+            'statisticalCodes' => [],
+            'holdingsStatements' => [],
+            'suppressFromDiscovery' => false,
+            'holdingsStatementsForIndexes' => [],
+            'holdingsStatementsForSupplements' => [] }],
+        'items' =>
+         [{ 'id' => '8f6446bf-a0f3-4b73-92ad-e9466bb4448e',
+            'tags' => { 'tagList' => [] },
+            'notes' => [],
+            'status' => 'In process',
+            'location' =>
+            { 'location' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'permanentLocation' => {},
+              'temporaryLocation' => {} },
+            'formerIds' => [],
+            'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },
+            'chronology' => 'OCT 2023',
+            'enumeration' => 'v.243:no.10',
+            'yearCaption' => [],
+            'materialType' => 'periodical',
+            'electronicAccess' => [],
+            'holdingsRecordId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+            'statisticalCodes' => [],
+            'permanentLoanType' => 'Can circulate',
+            'suppressFromDiscovery' => false },
+          { 'id' => 'd38d9c48-63fa-4215-9bf6-945fed220e74',
+            'tags' => { 'tagList' => [] },
+            'notes' => [],
+            'status' => 'In process',
+            'location' =>
+            { 'location' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'permanentLocation' => {},
+              'temporaryLocation' => {} },
+            'formerIds' => [],
+            'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },
+            'chronology' => 'SEP 2023',
+            'enumeration' => 'v.243:no.9',
+            'yearCaption' => [],
+            'materialType' => 'periodical',
+            'electronicAccess' => [],
+            'holdingsRecordId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+            'statisticalCodes' => [],
+            'permanentLoanType' => 'Can circulate',
+            'suppressFromDiscovery' => false },
+          { 'id' => 'ff7224d2-290b-4d3e-8364-1a48355ed27f',
+            'tags' => { 'tagList' => [] },
+            'notes' => [{ 'note' => 'TEST item', 'itemNoteTypeName' => 'Note' }],
+            'status' => 'In transit',
+            'barcode' => '123456789987654',
+            'location' =>
+            { 'location' =>
+              { 'code' => 'PMD', 'name' => 'PILOT - Metadata', 'campusName' => 'Stanford Libraries', 'libraryName' => 'SUL', 'institutionName' => 'Stanford University' },
+              'permanentLocation' =>
+              { 'code' => 'EAR-STACKS',
+                'name' => 'Earth Sciences Stacks',
+                'campusName' => 'Stanford Libraries',
+                'libraryName' => 'Branner Earth Sciences',
+                'institutionName' => 'Stanford University' },
+              'temporaryLocation' =>
+              { 'code' => 'PMD', 'name' => 'PILOT - Metadata', 'campusName' => 'Stanford Libraries', 'libraryName' => 'SUL', 'institutionName' => 'Stanford University' } },
+            'formerIds' => [],
+            'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },
+            'copyNumber' => '1',
+            'enumeration' => 'V.243:NO.2 FEB 2023',
+            'yearCaption' => [],
+            'materialType' => 'periodical',
+            'electronicAccess' => [],
+            'holdingsRecordId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+            'statisticalCodes' => [],
+            'permanentLoanType' => 'Can circulate',
+            'suppressFromDiscovery' => false }] }
+    end
+
+    before do
+      allow(client).to receive(:get_json)
+        .with('/orders/pieces?limit=2147483647&query=titles.instanceId=="b2fe7336-33d1-5553-86cb-a15af14c7348"')
+        .and_return(
+          { 'pieces' =>
+            [{ 'id' => '6df463df-f3e3-4eb5-86b0-5b496938132b',
+               'comment' => 'TEST Receiving history',
+               'format' => 'Physical',
+               'itemId' => 'd38d9c48-63fa-4215-9bf6-945fed220e74',
+               'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+               'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
+               'holdingId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+               'displayOnHolding' => true,
+               'enumeration' => 'v.243:no.9',
+               'chronology' => 'SEP 2023',
+               'copyNumber' => '1',
+               'receivingStatus' => 'Received',
+               'supplement' => false,
+               'receiptDate' => '2023-03-22T00:00:00.000+00:00',
+               'receivedDate' => '2023-03-22T13:57:04.492+00:00' },
+             { 'id' => '0f4d596c-ec1b-42c5-9bcc-e3d61e225924',
+               'caption' => 'v.',
+               'comment' => 'TEST Receiving history',
+               'format' => 'Physical',
+               'itemId' => '8f6446bf-a0f3-4b73-92ad-e9466bb4448e',
+               'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+               'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
+               'holdingId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+               'displayOnHolding' => true,
+               'enumeration' => 'v.243:no.10',
+               'chronology' => 'OCT 2023',
+               'copyNumber' => '1',
+               'receivingStatus' => 'Received',
+               'supplement' => false,
+               'receiptDate' => '2023-03-22T00:00:00.000+00:00',
+               'receivedDate' => '2023-03-22T13:58:34.083+00:00' }],
+            'totalRecords' => 2 }
+        )
+    end
+
+    it 'has MHDL data' do
+      expect(result.fetch('mhld_field')).to eq [
+        'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- ',
+        'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
+      ]
     end
   end
 end

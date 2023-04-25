@@ -133,6 +133,10 @@ to_field 'format_physical_ssim' do |record, accumulator, context|
   end
 end
 
+to_field 'mhld_field' do |record, accumulator, _context|
+  record.mhld.each { |holding| accumulator << holding }
+end
+
 to_field 'location_facet' do |record, accumulator, context|
   if holdings(record, context).any? { |holding| holding.home_location == 'CURRICULUM' }
     accumulator << 'Curriculum Collection'
