@@ -35,9 +35,7 @@ settings do
     provide 'reader_class_name', 'Traject::FolioReader'
   end
 
-  provide 'folio.client',
-          FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil), username: ENV.fetch('OKAPI_USER', nil),
-                          password: ENV.fetch('OKAPI_PASSWORD', nil))
+  provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil))
 end
 
 ##
