@@ -32,6 +32,8 @@ RSpec.describe 'comparing against a well-known location full of documents genera
 
     let(:folio_record) do
       if ENV.key?('DATABASE_URL')
+        require 'traject/readers/folio_postgres_reader'
+
         Traject::FolioPostgresReader.new(nil, 'postgres.url' => ENV.fetch('DATABASE_URL'),
                                               'postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey}'").first
       else
