@@ -134,7 +134,7 @@ to_field 'format_physical_ssim' do |record, accumulator, context|
 end
 
 to_field 'mhld_field' do |record, accumulator, _context|
-  record.mhld.each { |holding| accumulator << holding }
+  # record.mhld.each { |holding| accumulator << holding }
 end
 
 to_field 'location_facet' do |record, accumulator, context|
