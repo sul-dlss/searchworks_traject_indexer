@@ -2,7 +2,7 @@
 
 require 'active_support/core_ext/module/delegation'
 require_relative 'traject/common/constants'
-require 'csv'
+require 'locations_map'
 
 class FolioRecord
   attr_reader :record, :client
@@ -46,9 +46,8 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       item_location_code = item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
-      library_code, home_location_code = self.class.folio_sirsi_locations_map[item_location_code]
-      _current_library, current_location = self.class.folio_sirsi_locations_map[item.dig('location', 'location',
-                                                                                         'code')]
+      library_code, home_location_code = LocationsMap.for(item_location_code)
+      _current_library, current_location = LocationsMap.for(item.dig('location', 'location', 'code'))
 
       SirsiHolding.new(
         call_number: [item.dig('callNumber', 'callNumber'), item['enumeration']].compact.join(' '),
@@ -79,19 +78,6 @@ class FolioRecord
     end
   end
 
-  def self.folio_sirsi_locations_map
-    @folio_sirsi_locations_map ||= CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'locations.tsv')),
-                                             col_sep: "\t").each_with_object({}) do |row, hash|
-      library_code = row[1]
-      library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
-
-      # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
-      next if row[2] == 'SAL3-STACKS' && row[0] != 'STACKS'
-
-      hash[row[2]] ||= [library_code, row[0]]
-    end
-  end
-
   # Remove suppressed record and electronic records
   def filtered_holdings
     holdings.filter_map do |holding|
@@ -110,7 +96,7 @@ class FolioRecord
   # This packed format mimics how we indexed this data when we used Symphony.
   def mhld
     filtered_holdings.map do |holding|
-      library, location = self.class.folio_sirsi_locations_map.fetch(holding.fetch(:location).fetch('code'))
+      library, location = LocationsMap.for(holding.fetch(:location).fetch('code'))
       public_note = holding.fetch(:note)
       # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
       # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
