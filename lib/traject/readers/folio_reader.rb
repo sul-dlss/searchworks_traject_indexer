@@ -15,9 +15,7 @@ module Traject
     def each
       return to_enum(:each) unless block_given?
 
-      response = client.get('/source-storage/stream/source-records',
-                            params: { limit: FolioClient::MAX_RESULTS_LIMIT,
-                                      updatedAfter: settings.fetch('folio.updated_after', Time.at(0).utc.iso8601) })
+      response = client.stream_source_records(updated_after: settings.fetch('folio.updated_after', Time.at(0).utc.iso8601))
       buffer = ''
       @last_response_date = Time.httpdate(response.headers['Date'])
 
