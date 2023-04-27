@@ -19,6 +19,11 @@ module Traject
       @sql_filters = @settings['postgres.sql_filters'] || 'TRUE'
     end
 
+    # Return a single record by catkey by temporarily applying a SQL filter
+    def self.find_by_catkey(catkey, settings = {})
+      new(nil, settings.merge!('postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey}'")).first
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
