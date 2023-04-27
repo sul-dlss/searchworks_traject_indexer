@@ -158,13 +158,7 @@ class FolioRecord
   end
 
   def items_and_holdings
-    @items_and_holdings ||= begin
-      body = {
-        instanceIds: [instance_id],
-        skipSuppressedFromDiscoveryRecords: false
-      }
-      client.get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
-    end
+    @items_and_holdings ||= client.items_and_holdings(instance_id:)
   end
 
   def stripped_marc_json
