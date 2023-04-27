@@ -135,7 +135,7 @@ class FolioRecord
   end
 
   def pieces_from_api
-    client.get_json("/orders/pieces?limit=#{LIMIT}&query=titles.instanceId==\"#{instance_id}\"")
+    client.get_json('/orders/pieces', params: { limit: LIMIT, query: "titles.instanceId==\"#{instance_id}\"" })
           .fetch('pieces')
   end
 
