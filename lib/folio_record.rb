@@ -113,7 +113,9 @@ class FolioRecord
     filtered_holdings.map do |holding|
       library, location = self.class.folio_sirsi_locations_map.fetch(holding.fetch(:location).fetch('code'))
       public_note = holding.fetch(:note)
-      library_has = holding.fetch(:library_has) # We probably don't care about this anymore, as it's expensive for staff to keep it up to date.
+      # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
+      # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
+      library_has = holding.fetch(:library_has)
       [library, location, public_note, library_has, latest_received(holding.fetch(:id))].join(' -|- ')
     end
   end
