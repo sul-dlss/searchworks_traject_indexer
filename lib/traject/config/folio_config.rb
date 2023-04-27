@@ -133,7 +133,7 @@ to_field 'format_physical_ssim' do |record, accumulator, context|
   end
 end
 
-to_field 'mhld_field' do |record, accumulator, _context|
+to_field 'mhld_display' do |record, accumulator, _context|
   record.mhld.each { |holding| accumulator << holding }
 end
 
