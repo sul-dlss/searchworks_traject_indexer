@@ -47,8 +47,8 @@ class FolioClient
   end
 
   def pieces(instance_id:)
-    client.get_json('/orders/pieces', params: { limit: MAX_RESULTS_LIMIT, query: "titles.instanceId==\"#{instance_id}\"" })
-          .fetch('pieces')
+    get_json('/orders/pieces', params: { limit: MAX_RESULTS_LIMIT, query: "titles.instanceId==\"#{instance_id}\"" })
+      .fetch('pieces')
   end
 
   private
