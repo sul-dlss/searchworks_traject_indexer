@@ -118,6 +118,11 @@ another option is to use the `JsonWriter` to pipe output directly to somewhere e
 ```sh
 SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb -w Traject::JsonWriter my_marc_file.marc | tail -n +2 | jq '.pub_country'
 ```
+when working with non-MARC data held locally (e.g. JSON exports from FOLIO), you can use the `FolioJsonReader` to pipe output into traject from stdin:
+```sh
+# after exporting OKAPI_URL, OKAPI_USER, OKAPI_PASSWORD
+cat record.json | bundle exec traject -c lib/traject/config/folio_config.rb -s reader_class_name=Traject::FolioJsonReader --stdin --debug-mode
+```
 
 ## environments
 ### Symphony ILS (Sirsi)

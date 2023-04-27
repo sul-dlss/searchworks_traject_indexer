@@ -32,6 +32,7 @@ settings do
     require 'traject/readers/folio_postgres_reader'
     provide 'reader_class_name', 'Traject::FolioPostgresReader'
   else
+    require 'traject/readers/folio_json_reader'
     provide 'reader_class_name', 'Traject::FolioReader'
     provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil))
   end

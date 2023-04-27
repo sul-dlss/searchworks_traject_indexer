@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'traject', '~> 3.0'
 gem 'traject-marc4j_reader', platform: :jruby
+gem 'traject_plus'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri]
