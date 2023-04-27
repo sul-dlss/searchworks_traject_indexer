@@ -4,6 +4,7 @@ require 'http'
 require_relative 'folio_record'
 
 class FolioClient
+  MAX_RESULTS_LIMIT = (2**31) - 1 # Folio max results
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
