@@ -51,6 +51,11 @@ class FolioClient
       .fetch('pieces')
   end
 
+  def stream_source_records(updated_after:)
+    get('/source-storage/stream/source-records',
+        params: { limit: MAX_RESULTS_LIMIT, updatedAfter: updated_after })
+  end
+
   private
 
   # @param [HTTP::Response] response
