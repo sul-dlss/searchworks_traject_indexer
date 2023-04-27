@@ -56,6 +56,14 @@ class FolioClient
         params: { limit: MAX_RESULTS_LIMIT, updatedAfter: updated_after })
   end
 
+  def items_and_holdings(instance_id:)
+    body = {
+      instanceIds: [instance_id],
+      skipSuppressedFromDiscoveryRecords: false
+    }
+    get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
+  end
+
   private
 
   # @param [HTTP::Response] response
