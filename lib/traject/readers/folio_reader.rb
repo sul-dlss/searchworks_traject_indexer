@@ -28,14 +28,7 @@ module Traject
         buffer.each_line do |line|
           if line.end_with?("\n")
             record = JSON.parse(line)
-            yield FolioRecord.new({
-                                    'source_record' => [
-                                      record.dig('parsedRecord', 'content')
-                                    ],
-                                    'instance' => {
-                                      'id' => record.dig('externalIdsHolder', 'instanceId')
-                                    }
-                                  }, client)
+            yield FolioRecord.new_from_source_record(record, client)
           else
             newbuffer += line
           end
