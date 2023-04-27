@@ -129,8 +129,12 @@ class FolioRecord
   # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
   # hrid: a567006 has > 1000 on test.
   def pieces_per_holding
-    @pieces_per_holding ||= client.get_json("/orders/pieces?limit=#{LIMIT}&query=titles.instanceId==\"#{instance_id}\"")
-                                  .fetch('pieces').group_by { |piece| piece['holdingId'] }
+    @pieces_per_holding ||= record.fetch('pieces') { pieces_from_api }.compact.group_by { |piece| piece['holdingId'] }
+  end
+
+  def pieces_from_api
+    client.get_json("/orders/pieces?limit=#{LIMIT}&query=titles.instanceId==\"#{instance_id}\"")
+          .fetch('pieces')
   end
 
   def items
