@@ -5,7 +5,6 @@ require_relative 'traject/common/constants'
 require 'csv'
 
 class FolioRecord
-  LIMIT = (2**31) - 1 # Folio max results
   attr_reader :record, :client
 
   delegate :fields, :each, :[], :leader, :tags, :select, :find_all, :to_hash, to: :marc_record
@@ -131,12 +130,7 @@ class FolioRecord
   # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
   # hrid: a567006 has > 1000 on test.
   def pieces_per_holding
-    @pieces_per_holding ||= record.fetch('pieces') { pieces_from_api }.compact.group_by { |piece| piece['holdingId'] }
-  end
-
-  def pieces_from_api
-    client.get_json('/orders/pieces', params: { limit: LIMIT, query: "titles.instanceId==\"#{instance_id}\"" })
-          .fetch('pieces')
+    @pieces_per_holding ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact.group_by { |piece| piece['holdingId'] }
   end
 
   def items

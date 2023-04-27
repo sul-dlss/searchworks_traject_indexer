@@ -224,47 +224,44 @@ RSpec.describe 'FOLIO indexing' do
     end
 
     before do
-      allow(client).to receive(:get_json)
-        .with('/orders/pieces?limit=2147483647&query=titles.instanceId=="b2fe7336-33d1-5553-86cb-a15af14c7348"')
-        .and_return(
-          { 'pieces' =>
-            [{ 'id' => '6df463df-f3e3-4eb5-86b0-5b496938132b',
-               'comment' => 'TEST Receiving history',
-               'format' => 'Physical',
-               'itemId' => 'd38d9c48-63fa-4215-9bf6-945fed220e74',
-               'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
-               'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
-               'holdingId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
-               'displayOnHolding' => true,
-               'enumeration' => 'v.243:no.9',
-               'chronology' => 'SEP 2023',
-               'copyNumber' => '1',
-               'receivingStatus' => 'Received',
-               'supplement' => false,
-               'receiptDate' => '2023-03-22T00:00:00.000+00:00',
-               'receivedDate' => '2023-03-22T13:57:04.492+00:00' },
-             { 'id' => '0f4d596c-ec1b-42c5-9bcc-e3d61e225924',
-               'caption' => 'v.',
-               'comment' => 'TEST Receiving history',
-               'format' => 'Physical',
-               'itemId' => '8f6446bf-a0f3-4b73-92ad-e9466bb4448e',
-               'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
-               'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
-               'holdingId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
-               'displayOnHolding' => true,
-               'enumeration' => 'v.243:no.10',
-               'chronology' => 'OCT 2023',
-               'copyNumber' => '1',
-               'receivingStatus' => 'Received',
-               'supplement' => false,
-               'receiptDate' => '2023-03-22T00:00:00.000+00:00',
-               'receivedDate' => '2023-03-22T13:58:34.083+00:00' }],
-            'totalRecords' => 2 }
-        )
+      allow(client).to receive(:pieces).with(instance_id: 'b2fe7336-33d1-5553-86cb-a15af14c7348')
+                                       .and_return(
+                                         [{ 'id' => '6df463df-f3e3-4eb5-86b0-5b496938132b',
+                                            'comment' => 'TEST Receiving history',
+                                            'format' => 'Physical',
+                                            'itemId' => 'd38d9c48-63fa-4215-9bf6-945fed220e74',
+                                            'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+                                            'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
+                                            'holdingId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+                                            'displayOnHolding' => true,
+                                            'enumeration' => 'v.243:no.9',
+                                            'chronology' => 'SEP 2023',
+                                            'copyNumber' => '1',
+                                            'receivingStatus' => 'Received',
+                                            'supplement' => false,
+                                            'receiptDate' => '2023-03-22T00:00:00.000+00:00',
+                                            'receivedDate' => '2023-03-22T13:57:04.492+00:00' },
+                                          { 'id' => '0f4d596c-ec1b-42c5-9bcc-e3d61e225924',
+                                            'caption' => 'v.',
+                                            'comment' => 'TEST Receiving history',
+                                            'format' => 'Physical',
+                                            'itemId' => '8f6446bf-a0f3-4b73-92ad-e9466bb4448e',
+                                            'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+                                            'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
+                                            'holdingId' => 'bcbe255f-731f-43e6-86a9-c2546434e8b1',
+                                            'displayOnHolding' => true,
+                                            'enumeration' => 'v.243:no.10',
+                                            'chronology' => 'OCT 2023',
+                                            'copyNumber' => '1',
+                                            'receivingStatus' => 'Received',
+                                            'supplement' => false,
+                                            'receiptDate' => '2023-03-22T00:00:00.000+00:00',
+                                            'receivedDate' => '2023-03-22T13:58:34.083+00:00' }]
+                                       )
     end
 
     it 'has MHDL data' do
-      expect(result.fetch('mhld_field')).to eq [
+      expect(result.fetch('mhld_display')).to eq [
         'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- ',
         'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
       ]
