@@ -9,6 +9,11 @@ RSpec.describe 'comparing against a well-known location full of documents genera
 
   let(:folio_indexer) do
     Traject::Indexer.new.tap do |i|
+      if ENV.key?('DATABASE_URL')
+        i.settings do
+          provide 'postgres.url', ENV.fetch('DATABASE_URL')
+        end
+      end
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end

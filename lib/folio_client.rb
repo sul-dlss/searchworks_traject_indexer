@@ -13,7 +13,6 @@ class FolioClient
   attr_reader :base_url
 
   def initialize(url: ENV.fetch('OKAPI_URL'), username: ENV.fetch('OKAPI_USER', nil), password: ENV.fetch('OKAPI_PASSWORD', nil), tenant: 'sul')
-    return unless url
     uri = URI.parse(url)
 
     @base_url = url
