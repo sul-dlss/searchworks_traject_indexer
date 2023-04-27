@@ -7,7 +7,7 @@ require_relative '../../folio_client'
 require_relative '../../folio_record'
 
 module Traject
-  class FolioPostgresReader
+  class FolioPostgresReader # rubocop:disable  Metrics/ClassLength
     include Enumerable
     attr_reader :settings, :last_response_date
 
@@ -160,7 +160,13 @@ module Traject
                                                       )
                         )
                 )
-              )
+              ),
+            'pieces',
+              COALESCE(
+                jsonb_agg(
+                  DISTINCT pieces.jsonb
+                ),
+              '[]'::jsonb)
             )
       FROM sul_mod_inventory_storage.instance vi
       LEFT JOIN sul_mod_inventory_storage.holdings_record hr
@@ -214,6 +220,11 @@ module Traject
         ON rs.external_id = vi.id
       LEFT JOIN sul_mod_source_record_storage.marc_records_lb mr
         ON mr.id = rs.id
+      -- Pieces relation
+      LEFT JOIN sul_mod_orders_storage.titles titles
+        ON (titles.jsonb ->> 'instanceId')::uuid  = vi.id
+      LEFT JOIN sul_mod_orders_storage.pieces pieces
+        ON pieces.titleid = titles.id
       WHERE (sul_mod_inventory_storage.strtotimestamp((vi.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
             sul_mod_inventory_storage.strtotimestamp((hr.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
             sul_mod_inventory_storage.strtotimestamp((item.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}')
