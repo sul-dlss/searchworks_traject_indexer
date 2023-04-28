@@ -43,6 +43,8 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     deep_merge (1.2.2)
+    deprecation (1.1.0)
+      activesupport
     diff-lcs (1.5.0)
     digest-crc (0.6.4)
       rake (>= 12.0.0, < 14.0.0)
@@ -118,6 +120,8 @@ GEM
     iso-639 (0.3.6)
     json (2.6.3)
     json (2.6.3-java)
+    jsonpath (1.1.2)
+      multi_json
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
@@ -142,6 +146,7 @@ GEM
       i18n
       stanford-mods (~> 3.3)
       view_component
+    multi_json (1.15.0)
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
     net-ssh (7.1.0)
@@ -227,6 +232,11 @@ GEM
     traject-marc4j_reader (1.1.0-java)
       marc (~> 1.0)
       marc-marc4j (~> 1.0)
+    traject_plus (2.0.0)
+      activesupport
+      deprecation
+      jsonpath
+      traject (~> 3.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
@@ -285,6 +295,7 @@ DEPENDENCIES
   statsd-ruby
   traject (~> 3.0)
   traject-marc4j_reader
+  traject_plus
   webmock
   whenever
 

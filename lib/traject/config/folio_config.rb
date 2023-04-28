@@ -31,6 +31,8 @@ settings do
   elsif self['postgres.url']
     require 'traject/readers/folio_postgres_reader'
     provide 'reader_class_name', 'Traject::FolioPostgresReader'
+  elsif self['reader_class_name'] == 'Traject::FolioJsonReader'
+    require 'traject/readers/folio_json_reader'
   else
     provide 'reader_class_name', 'Traject::FolioReader'
     provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil))
