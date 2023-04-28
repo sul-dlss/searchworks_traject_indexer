@@ -120,9 +120,9 @@ SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject
 ```
 when working with non-MARC data held locally (e.g. JSON exports from FOLIO), you can use the `FolioJsonReader` to pipe output into traject from stdin:
 ```sh
-# after exporting OKAPI_URL, OKAPI_USER, OKAPI_PASSWORD
 cat record.json | bundle exec traject -c lib/traject/config/folio_config.rb -s reader_class_name=Traject::FolioJsonReader --stdin --debug-mode
 ```
+note that this approach doesn't use the `FolioClient` to make API calls, so the burden is on the user to create a fully-formed `FolioRecord` prior to indexing.
 
 ## environments
 ### Symphony ILS (Sirsi)
