@@ -131,3 +131,10 @@ the sirsi traject config uses the special setting `SKIP_EMPTY_ITEM_DISPLAY`, whi
 
 ### SDR
 The indexing machines also have scheduled cron tasks for loading data from purl-fetcher into a kafka topic. This task records a state file (in `./tmp`) that contains the timestamp of the most recent entry from purl-fetcher that was processed. Every minute, the cron task runs, retrieves the purl-fetcher changes since that most recent timestamp, and adds the message to a kafka topic.
+
+### FOLIO
+Data is read directly from the postgres database underlying FOLIO, using a custom SQL query stored in the `FolioPostgresReader`. To mimic this activity in local development, one can SSH tunnel to the FOLIO database and use the `#find_by_catkey` helper method:
+```rb
+# after SSH tunneling to the FOLIO database
+Traject::FolioPostgresReader.find_by_catkey('a123456, 'postgres.url' => 'postgres://[user]:[password]@localhost/okapi')
+```
