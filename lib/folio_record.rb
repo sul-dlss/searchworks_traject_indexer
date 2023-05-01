@@ -2,7 +2,7 @@
 
 require 'active_support/core_ext/module/delegation'
 require_relative 'traject/common/constants'
-require 'locations_map'
+require_relative 'locations_map'
 
 class FolioRecord
   attr_reader :record, :client
