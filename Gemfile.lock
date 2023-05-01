@@ -111,7 +111,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     httpclient (2.8.3)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     io-console (0.6.0-java)
@@ -161,9 +161,9 @@ GEM
       nokogiri
     openssl_pkcs8_pure (0.0.0.2)
     parallel (1.23.0)
-    parser (3.2.2.0)
+    parser (3.2.2.1)
       ast (~> 2.4.1)
-    pg (1.4.6)
+    pg (1.5.3)
     public_suffix (5.0.1)
     racc (1.6.2)
     racc (1.6.2-java)
@@ -244,7 +244,7 @@ GEM
     unf (0.1.4-java)
     unf_ext (0.0.8.2)
     unicode-display_width (2.4.2)
-    view_component (2.82.0)
+    view_component (3.0.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -255,7 +255,7 @@ GEM
     whenever (1.0.0)
       chronic (>= 0.6.3)
     yell (2.2.2)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   java
