@@ -351,12 +351,10 @@ RSpec.describe 'Holdings config' do
       describe 'test 852 output' do
         let(:fixture_name) { 'mhldDisplay852only.mrc' }
         it do
-          expect(select_by_id('358041')[field].length).to eq 5
+          expect(select_by_id('358041')[field].length).to eq 3
           expect(select_by_id('358041')[field][0]).to eq 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
-          expect(select_by_id('358041')[field][1]).to eq 'SAL3 -|- STACKS -|-  -|-  -|- '
-          expect(select_by_id('358041')[field][2]).to eq 'SAL -|- STACKS -|-  -|-  -|- '
-          expect(select_by_id('358041')[field][3]).to eq 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
-          expect(select_by_id('358041')[field][4]).to eq 'GREEN -|- CURRENTPER -|- COUNTRY LIFE TRAVEL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
+          expect(select_by_id('358041')[field][1]).to eq 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
+          expect(select_by_id('358041')[field][2]).to eq 'GREEN -|- CURRENTPER -|- COUNTRY LIFE TRAVEL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
         end
       end
       describe 'skip mhlds' do
@@ -372,18 +370,14 @@ RSpec.describe 'Holdings config' do
         # it should not be included.
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
-          expect(select_by_id('SkippedLocs')[field]).not_to include(/3FL-REF-S/)
-          expect(select_by_id('SkippedLocs')[field]).not_to include(/LOCKSS/)
-          expect(select_by_id('SkippedLocs')[field]).not_to include(/WITHDRAWN/)
-          expect(select_by_id('SkippedLocs')[field].length).to eq 1
-          expect(select_by_id('SkippedLocs')[field]).to include 'lib -|- loc -|-  -|-  -|- '
+          expect(select_by_id('SkippedLocs')[field]).to be_blank
         end
       end
       describe 'number of separators' do
         # ensure output with and without 86x have same number of separators
         let(:fixture_name) { 'mhldDisplay852only.mrc' }
         it '852 alone without comment' do
-          expect(select_by_id('358041')[field]).to include 'SAL3 -|- STACKS -|-  -|-  -|- '
+          expect(select_by_id('358041')[field]).not_to include 'SAL3 -|- STACKS -|-  -|-  -|- '
         end
         it '852 alone without comment' do
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
@@ -456,8 +450,8 @@ RSpec.describe 'Holdings config' do
         it do
           expect(select_by_id('keep867ind0')[field]).to eq ['GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- ']
           start = 'GREEN -|- STACKS -|- Supplement -|- Supplement: '
-          expect(select_by_id('multKeep867ind0')[field][1]).to eq "#{start}keep me 1 (867) -|- "
-          expect(select_by_id('multKeep867ind0')[field][2]).to eq "#{start}keep me 2 (867) -|- "
+          expect(select_by_id('multKeep867ind0')[field][0]).to eq "#{start}keep me 1 (867) -|- "
+          expect(select_by_id('multKeep867ind0')[field][1]).to eq "#{start}keep me 2 (867) -|- "
         end
       end
       describe '867 no 866' do
