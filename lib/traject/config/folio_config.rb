@@ -23,8 +23,12 @@ require 'utils'
 
 I18n.available_locales = [:en]
 
+extend Traject::SolrBetterJsonWriter::IndexerPatch # rubocop:disable Style/MixinUsage
+
 settings do
-  # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
+  provide 'writer_class_name', 'Traject::SolrBetterJsonWriter' # required for deletes
+
+  # Upstream sirsi_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
     require 'traject/readers/kafka_folio_reader'
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
