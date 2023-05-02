@@ -2531,7 +2531,9 @@ to_field 'mhld_display' do |record, accumulator, _context|
       mhld_field.fields868 << field
     end
   end
-  accumulator.concat mhld_results.concat add_values_to_result(mhld_field)
+  mhld_results.concat add_values_to_result(mhld_field)
+
+  accumulator.concat(mhld_results.select { |mhld_result| mhld_result.present? })
 end
 
 def add_values_to_result(mhld_field)
@@ -2567,7 +2569,7 @@ def add_values_to_result(mhld_field)
   end
   if !has866 && !has867 && !has868
     latest_received = mhld_field.latest_received if mhld_field.df852has_equals_sf
-    mhld_results << mhld_field.display(latest_received)
+    mhld_results << mhld_field.display(latest_received) unless mhld_field.public_note.blank? && mhld_field.library_has.blank? && latest_received.blank?
   end
 
   mhld_results
