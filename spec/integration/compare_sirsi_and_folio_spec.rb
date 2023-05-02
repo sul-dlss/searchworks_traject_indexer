@@ -63,26 +63,51 @@ RSpec.describe 'comparing against a well-known location full of documents genera
         'context_source_ssi' # sirsi_config sets this to 'sirsi', and folio sets it to 'folio'
       ]
     end
+
+    let(:unordered_fields) do
+      [
+        'item_display', # the order of items is not guaranteed
+        'barcode_search',
+        'callnum_search',
+        'reverse_shelfkey',
+        'shelfkey',
+        'mhld_display', # derived from the mhlds
+        'building_facet' # derived from the item list
+      ]
+    end
     it 'matches' do
       aggregate_failures "testing response for catkey #{catkey}" do
         mapped_fields.each do |key|
           next if skipped_fields.include? key
 
-          expect(folio_result[key]).to eq(sirsi_result[key]),
-                                       "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
+          if unordered_fields.include?(key) && folio_result[key].present?
+            expect(folio_result[key]).to match_array(sirsi_result[key]),
+                                         "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
+          else
+            expect(folio_result[key]).to eq(sirsi_result[key]),
+                                         "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
+          end
         end
 
-        sirsi_result['item_display'].each_with_index do |item_display, index|
-          item_display_parts = item_display.split('-|-').map(&:strip)
-          folio_display_parts = folio_result.fetch('item_display', [])[index]&.split('-|-')&.map(&:strip) || []
+        if sirsi_result['item_display'] || folio_result['item_display']
+          sirsi_item_display_fields = sirsi_result.fetch('item_display', []).map { |item_display| item_display.split('-|-').map(&:strip) }
+          folio_item_display_fields = folio_result.fetch('item_display', []).map { |item_display| item_display.split('-|-').map(&:strip) }
 
-          # we're not mapping item types
-          item_display_parts[4] = folio_display_parts[4] = ''
+          sirsi_item_display_fields.each do |item_display_parts|
+            folio_display_parts = folio_item_display_fields.find { |item_displays| item_displays[0] == item_display_parts[0] }
 
-          # The "ASIS" call number type is mapped to "OTHER" in Symphony, but "ALPHANUM" in FOLIO
-          item_display_parts[11] = 'ALPHANUM' if item_display_parts[11] == 'OTHER' && folio_display_parts[11] == 'ALPHANUM'
+            if folio_display_parts.present?
+              # we're not mapping item types
+              item_display_parts[4] = folio_display_parts[4] = ''
 
-          expect(folio_display_parts).to eq item_display_parts
+              # The "ASIS" call number type is mapped to "OTHER" in Symphony, but "ALPHANUM" in FOLIO
+              item_display_parts[11] = 'ALPHANUM' if item_display_parts[11] == 'OTHER' && folio_display_parts[11] == 'ALPHANUM'
+
+              expect(folio_display_parts).to eq item_display_parts
+            else
+              expect(folio_display_parts).to be_present, "could not find item with barcode #{item_display_parts[0]} in FOLIO record"
+            end
+          end
         end
       end
     end
