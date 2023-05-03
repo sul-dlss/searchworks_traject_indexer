@@ -28,8 +28,13 @@ File.open(state_file, 'r+') do |f|
                                                         'postgres.url': ENV.fetch('DATABASE_URL')).last_response_date
 
   shards = if Utils.env_config.processes
-             ((0..9).to_a + ('a'..'f').to_a).map do |k|
-               "vi.id::text LIKE '#{k}%'"
+             (0x0..0xf).to_a.map do |k|
+               next_val = k + 1
+               if next_val == 16
+                 "vi.id >= 'f0000000-0000-0000-0000-000000000000'"
+               else
+                 "vi.id BETWEEN '#{k.to_s(16)}0000000-0000-0000-0000-000000000000' AND '#{next_val.to_s(16)}0000000-0000-0000-0000-000000000000'"
+               end
              end
            else
              ['TRUE']
