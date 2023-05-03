@@ -886,47 +886,30 @@ end
 # get full text urls from 856, then reject gsb forms
 to_field 'url_fulltext' do |record, accumulator|
   Traject::MarcExtractor.new('856u', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    if %w[0 1 3 4].include?(field.indicator2) && !field.subfields.select do |f|
-                                                    f.code == 'z' || f.code == '3'
-                                                  end.map(&:value).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i }
-      # Similar logic exists in the link_is_fulltext? method in the MarcLinks class.
-      # They need to remain the same (or should be refactored to use the same code in the future)
-      accumulator.concat extractor.collect_subfields(field, spec)
-    end
+    next unless MarcLinks::Processor.new(field).link_is_fulltext?
+
+    accumulator.concat extractor.collect_subfields(field, spec)
   end
 
-  accumulator.reject! do |v|
-    v.start_with?('http://www.gsb.stanford.edu/jacksonlibrary/services/') ||
-      v.start_with?('https://www.gsb.stanford.edu/jacksonlibrary/services/')
-  end
+  accumulator.reject! { |v| MarcLinks::GSB_URL_REGEX.match?(v) }
 end
 
 # get all 956 subfield u containing fulltext urls that aren't SFX
 to_field 'url_fulltext', extract_marc('956u') do |_record, accumulator|
-  accumulator.reject! do |v|
-    v.start_with?('http://caslon.stanford.edu:3210/sfxlcl3?') ||
-      v.start_with?('http://library.stanford.edu/sfx?')
-  end
+  accumulator.reject! { |v| MarcLinks::SFX_URL_REGEX.match?(v) }
 end
 
 # returns the URLs for supplementary information (rather than fulltext)
 to_field 'url_suppl' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
-    case field.indicator2
-    when '0', '3'
-      # no-op
-    when '2'
-      accumulator.concat extractor.collect_subfields(field, spec)
-    else
-      accumulator.concat extractor.collect_subfields(field, spec) if field.subfields.select do |f|
-                                                                       f.code == 'z' || f.code == '3'
-                                                                     end.map(&:value).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i }
-    end
+    next unless MarcLinks::Processor.new(field).link_is_supplemental?
+
+    accumulator.concat extractor.collect_subfields(field, spec)
   end
 end
 
 to_field 'url_sfx', extract_marc('956u') do |_record, accumulator|
-  accumulator.select! { |v| v =~ Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+}) }
+  accumulator.select! { |v| MarcLinks::SFX_URL_REGEX.match?(v) }
 end
 
 # returns the URLs for restricted full text of a resource described
@@ -935,23 +918,10 @@ end
 # or "Access restricted to Stanford community" for Lane.
 to_field 'url_restricted' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
-    next unless field.subfields.select do |f|
-                  f.code == 'z'
-                end.map(&:value).any? do |z|
-                  z =~ Regexp.union(/available to stanford-affiliated users at:/i,
-                                    /Access restricted to Stanford community/i)
-                end
+    marc_link = MarcLinks::Processor.new(field)
+    next unless marc_link.link_is_fulltext? && marc_link.stanford_only?
 
-    case field.indicator2
-    when '0', '3'
-      accumulator.concat extractor.collect_subfields(field, spec)
-    when '2'
-      # no-op
-    else
-      accumulator.concat extractor.collect_subfields(field, spec) unless (field.subfields.select { |f|
-                                                                            f.code == 'z'
-                                                                          }.map(&:value) + [field['3']]).any? { |v| v =~ /(table of contents|abstract|description|sample text)/i }
-    end
+    accumulator.concat extractor.collect_subfields(field, spec)
   end
 end
 
