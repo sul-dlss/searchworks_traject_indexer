@@ -10,6 +10,8 @@ Eye.application 'traject' do
   working_dir File.expand_path(File.join(File.dirname(__FILE__)))
   stop_on_delete true
 
+  env 'LANG' => 'en_US.UTF-8' # Force UTF-8 or character class literals (e.g. /\p{L}/) will fail
+
   group 'workers' do
     # workers can take a while to restart, especially when they've consumed a lot of memory
     start_timeout 90.seconds
