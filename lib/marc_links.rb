@@ -36,7 +36,7 @@ module MarcLinks
         link_text:,
         link_title:,
         additional_text:,
-        href: link_field['u'],
+        href: field['u'],
         sort: purl_info['sort'],
         casalini: link_is_casalini?,
 
@@ -56,7 +56,7 @@ module MarcLinks
     end
 
     def link_field_html_escaped
-      CGI.escapeHTML(link_field['u'].to_s)
+      CGI.escapeHTML(field['u'].to_s)
     end
 
     def link_text_html_escaped
@@ -73,7 +73,7 @@ module MarcLinks
     end
 
     def link_is_sfx?
-      link_field['u']&.match? Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+})
+      field['u']&.match? Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+})
     end
 
     # Parse a URI object to return the host of the URL in the "url" parameter if it's a proxied resoruce
@@ -101,7 +101,7 @@ module MarcLinks
 
     def link_text
       if field['x'] and field['x'] == 'CasaliniTOC'
-        link_field['3']
+        field['3']
       elsif /SDR-PURL/.match?(field['x'])
         purl_info['label']
       else
@@ -138,9 +138,9 @@ module MarcLinks
     end
 
     def purl_info
-      return {} unless /SDR-PURL/.match?(link_field['x'])
+      return {} unless /SDR-PURL/.match?(field['x'])
 
-      @purl_info ||= link_field.subfields.select do |subfield|
+      @purl_info ||= field.subfields.select do |subfield|
                        subfield.code == 'x'
                      end.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
     end
