@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
 module MarcLinks
-  PROXY_REGEX = /stanford\.idm\.oclc\.org/
+  PROXY_URL_REGEX = /stanford\.idm\.oclc\.org/
+  SFX_URL_REGEX = Regexp.union(%r{^https?://library.stanford.edu/sfx\?.+},
+                               %r{^https?://caslon.stanford.edu:3210/sfxlcl3\?.+})
+
+  CASALINI_LABEL_REGEX = /\(?source:?\s?casalini\)?/i
+  SUPPLEMENTAL_LABEL_REGEX = /(table of contents|abstract|description|sample text)/i
+  SDR_NOTE_REGEX = /SDR-PURL/
+
+  STANFORD_AFFILIATED_REGEX = /available[ -]?to[ -]?stanford[ -]?affiliated[ -]?users[ -]?a?t?[:;.]?/i
+  STANFORD_LAW_AFFILIATED_REGEX = /Available to Stanford Law School/i
 
   class Processor
     attr_reader :link_field
@@ -69,11 +78,11 @@ module MarcLinks
 
     def link_is_casalini?
       (field['x'] && field['x'] == 'CasaliniTOC') ||
-        (field.subfields.find { |sf| sf.code == 'z' && sf.value.match?(casalini_subz_regex) })
+        (field.subfields.find { |sf| sf.code == 'z' && sf.value.match?(CASALINI_LABEL_REGEX) })
     end
 
     def link_is_sfx?
-      field['u']&.match? Regexp.union(%r{^http://library.stanford.edu/sfx\?.+}, %r{^http://caslon.stanford.edu:3210/sfxlcl3\?.+})
+      SFX_URL_REGEX.match?(field['u'])
     end
 
     # Parse a URI object to return the host of the URL in the "url" parameter if it's a proxied resoruce
@@ -85,7 +94,7 @@ module MarcLinks
         fixed_url = field['u'].gsub('^', '').strip
         link = URI.parse(fixed_url)
 
-        return link.host unless PROXY_REGEX.match?(link.to_s) && link.to_s.include?('url=')
+        return link.host unless PROXY_URL_REGEX.match?(link.to_s) && link.to_s.include?('url=')
 
         proxy = CGI.parse(link.query.force_encoding(Encoding::UTF_8))
         return link.host unless proxy.key?('url')
@@ -102,7 +111,7 @@ module MarcLinks
     def link_text
       if field['x'] and field['x'] == 'CasaliniTOC'
         field['3']
-      elsif /SDR-PURL/.match?(field['x'])
+      elsif SDR_NOTE_REGEX.match?(field['x'])
         purl_info['label']
       else
         sub3 = field['3']
@@ -118,9 +127,9 @@ module MarcLinks
     def link_title
       return '' if field['x'] and field['x'] == 'CasaliniTOC'
 
-      return subzs if /SDR-PURL/.match?(field['x'])
+      return subzs if SDR_NOTE_REGEX.match?(field['x'])
 
-      if stanford_affiliated_regex.match?(subzs)
+      if STANFORD_AFFILIATED_REGEX.match?(subzs)
         'Available to Stanford-affiliated users only'
       else
         subzs
@@ -131,14 +140,14 @@ module MarcLinks
       return subzs if stanford_law_only?
       return unless stanford_only?
 
-      subbed_title = subzs.gsub(stanford_affiliated_regex, '')
-                          .gsub(casalini_subz_regex, '')
+      subbed_title = subzs.gsub(STANFORD_AFFILIATED_REGEX, '')
+                          .gsub(CASALINI_LABEL_REGEX, '')
                           .strip
       subbed_title unless subbed_title.empty?
     end
 
     def purl_info
-      return {} unless /SDR-PURL/.match?(field['x'])
+      return {} unless SDR_NOTE_REGEX.match?(field['x'])
 
       @purl_info ||= field.subfields.select do |subfield|
                        subfield.code == 'x'
@@ -148,14 +157,9 @@ module MarcLinks
     def link_is_fulltext?
       return !link_is_sfx? if field.tag == '956'
 
-      resource_labels = ['table of contents', 'abstract', 'description', 'sample text']
       return false unless %w[0 1 3 4].include?(field.indicator2)
 
-      # Similar logic exists in the mapping for the url_fulltext field in sirsi traject config.
-      # They need to remain the same (or should be refactored to use the same code in the future)
-      resource_labels.none? do |resource_label|
-        "#{field['3']} #{field['z']}".downcase.include?(resource_label)
-      end
+      !supplemental_resource_label?
     end
 
     def link_is_finding_aid?
@@ -163,31 +167,25 @@ module MarcLinks
     end
 
     def stanford_only?
-      subzs.match?(stanford_affiliated_regex) || "#{field['3']} #{field['z']}".match?(stanford_affiliated_regex)
+      field.subfields.select { |f| %w[z 3].include?(f.code) }
+           .map(&:value).any? { |v| STANFORD_AFFILIATED_REGEX.match?(v) }
     end
 
     def stanford_law_only?
-      subzs.match?(stanford_law_affiliated_regex)
+      STANFORD_LAW_AFFILIATED_REGEX.match?(subzs)
+    end
+
+    def supplemental_resource_label?
+      field.subfields.select { |f| %w[z 3].include?(f.code) }
+           .map(&:value).any? { |v| SUPPLEMENTAL_LABEL_REGEX.match?(v) }
     end
 
     def link_is_managed_purl?
-      field['u'] && field['x'] && field['x'].match?(/SDR-PURL/)
+      field['u'] && SDR_NOTE_REGEX.match?(field['x'])
     end
 
     def druid
       field['u'] && field['u'].gsub(%r{^https?://purl.stanford.edu/?}, '') if /purl.stanford.edu/.match?(field['u'])
-    end
-
-    def stanford_affiliated_regex
-      Regexp.new(/available[ -]?to[ -]?stanford[ -]?affiliated[ -]?users[ -]?a?t?[:;.]?/i)
-    end
-
-    def casalini_subz_regex
-      Regexp.new(/\(?source:?\s?casalini\)?/i)
-    end
-
-    def stanford_law_affiliated_regex
-      /Available to Stanford Law School/i
     end
   end
 end
