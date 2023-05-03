@@ -35,7 +35,10 @@ module Traject
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
-        @connection.exec("DECLARE folio CURSOR FOR #{sql_query}")
+        conditions = %w[vi hr item].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+
+        union_queries = conditions.map { |c| sql_query(c) }.join(') UNION (')
+        @connection.exec("DECLARE folio CURSOR FOR (#{union_queries})")
 
         # execute our query
         loop do
@@ -53,7 +56,7 @@ module Traject
       Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
     end
 
-    def sql_query
+    def sql_query(conditions)
       <<-SQL
       WITH viewLocations(locId, locJsonb, locCampJsonb, locLibJsonb, locInstJsonb) AS (
         SELECT loc.id AS locId,
@@ -230,11 +233,7 @@ module Traject
         ON (titles.jsonb ->> 'instanceId')::uuid  = vi.id
       LEFT JOIN sul_mod_orders_storage.pieces pieces
         ON pieces.titleid = titles.id
-      WHERE (sul_mod_inventory_storage.strtotimestamp((vi.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
-            sul_mod_inventory_storage.strtotimestamp((hr.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}' OR
-            sul_mod_inventory_storage.strtotimestamp((item.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}')
-      -- Optional additional filtering as raw SQL
-      AND #{@sql_filters}
+      WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
       SQL
     end
