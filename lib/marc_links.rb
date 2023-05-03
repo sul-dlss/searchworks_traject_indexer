@@ -85,7 +85,7 @@ module MarcLinks
         fixed_url = field['u'].gsub('^', '').strip
         link = URI.parse(fixed_url)
 
-        return link.host unless link.to_s =~ PROXY_REGEX && link.to_s.include?('url=')
+        return link.host unless PROXY_REGEX.match?(link.to_s) && link.to_s.include?('url=')
 
         proxy = CGI.parse(link.query.force_encoding(Encoding::UTF_8))
         return link.host unless proxy.key?('url')
@@ -102,7 +102,7 @@ module MarcLinks
     def link_text
       if field['x'] and field['x'] == 'CasaliniTOC'
         link_field['3']
-      elsif field['x'] && field['x'] =~ /SDR-PURL/
+      elsif /SDR-PURL/.match?(field['x'])
         purl_info['label']
       else
         sub3 = field['3']
@@ -118,9 +118,9 @@ module MarcLinks
     def link_title
       return '' if field['x'] and field['x'] == 'CasaliniTOC'
 
-      return subzs if field['x'] && field['x'] =~ /SDR-PURL/
+      return subzs if /SDR-PURL/.match?(field['x'])
 
-      if subzs =~ stanford_affiliated_regex
+      if stanford_affiliated_regex.match?(subzs)
         'Available to Stanford-affiliated users only'
       else
         subzs
@@ -138,7 +138,7 @@ module MarcLinks
     end
 
     def purl_info
-      return {} unless link_field['x'] && link_field['x'] =~ /SDR-PURL/
+      return {} unless /SDR-PURL/.match?(link_field['x'])
 
       @purl_info ||= link_field.subfields.select do |subfield|
                        subfield.code == 'x'
@@ -175,7 +175,7 @@ module MarcLinks
     end
 
     def druid
-      field['u'] && field['u'].gsub(%r{^https?://purl.stanford.edu/?}, '') if field['u'] =~ /purl.stanford.edu/
+      field['u'] && field['u'].gsub(%r{^https?://purl.stanford.edu/?}, '') if /purl.stanford.edu/.match?(field['u'])
     end
 
     def stanford_affiliated_regex
