@@ -19,7 +19,7 @@ state_file = ENV['STATE_FILE'] || File.expand_path(
 File.open(state_file, 'w') { |f| f.puts '1970-01-01T00:00:00Z' } unless File.exist? state_file
 
 File.open(state_file, 'r+') do |f|
-  f.flock(File::LOCK_EX | File::LOCK_NB)
+  abort "Unable to acquire lock on #{state_file}" unless f.flock(File::LOCK_EX | File::LOCK_NB)
 
   last_date = Time.iso8601(f.read.strip)
   Utils.logger.info "Found last_date in #{state_file}: #{last_date}"
