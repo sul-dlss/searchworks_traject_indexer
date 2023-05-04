@@ -87,6 +87,8 @@ RSpec.describe 'FOLIO indexing' do
   end
 
   describe 'mhld_display' do
+    subject(:mhld_display) { result.fetch('mhld_display') }
+
     let(:items_and_holdings) do
       { 'instanceId' => 'cc3d8728-a6b9-45c4-ad0c-432873c3ae47',
         'source' => 'MARC',
@@ -115,7 +117,7 @@ RSpec.describe 'FOLIO indexing' do
             'electronicAccess' => [],
             'receivingHistory' => { 'entries' => [] },
             'statisticalCodes' => [],
-            'holdingsStatements' => [{ 'note' => 'Library has latest 10 yrs. only.' }, { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }],
+            'holdingsStatements' => holdings_statements,
             'suppressFromDiscovery' => false,
             'holdingsStatementsForIndexes' => [],
             'holdingsStatementsForSupplements' => [] },
@@ -260,11 +262,36 @@ RSpec.describe 'FOLIO indexing' do
                                        )
     end
 
-    it 'has MHDL data' do
-      expect(result.fetch('mhld_display')).to eq [
-        'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- ',
-        'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
-      ]
+    context 'with a single note and a single statement' do
+      let(:holdings_statements) do
+        [
+          { 'note' => 'Library has latest 10 yrs. only.' },
+          { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+        ]
+      end
+      it {
+        is_expected.to eq [
+          'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- ',
+          'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
+        ]
+      }
+    end
+
+    context 'with multiple notes and statements (a2741508)' do
+      let(:holdings_statements) do
+        [{ 'note' => '1990-2006 also on microfiche: XF 441' },
+         { 'staffNote' => 'Keep all', 'statement' => 'v.1-37' },
+         { 'statement' => '"Digest" 1994' },
+         { 'note' => 'Library has latest vol. only', 'staffNote' => 'Discard when replaced', 'statement' => '"Master table of contents"' }]
+      end
+      it {
+        is_expected.to eq [
+          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- v.1-37 -|- ',
+          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- "Digest" 1994 -|- ',
+          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- "Master table of contents" Library has latest vol. only -|- ',
+          'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
+        ]
+      }
     end
   end
 end
