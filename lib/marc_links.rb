@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module MarcLinks
+  GSB_URL_REGEX = %r{^https?://www.gsb.stanford.edu/jacksonlibrary/services/}
   PROXY_URL_REGEX = /stanford\.idm\.oclc\.org/
   SFX_URL_REGEX = Regexp.union(%r{^https?://library.stanford.edu/sfx\?.+},
                                %r{^https?://caslon.stanford.edu:3210/sfxlcl3\?.+})
@@ -9,7 +10,8 @@ module MarcLinks
   SUPPLEMENTAL_LABEL_REGEX = /(table of contents|abstract|description|sample text)/i
   SDR_NOTE_REGEX = /SDR-PURL/
 
-  STANFORD_AFFILIATED_REGEX = /available[ -]?to[ -]?stanford[ -]?affiliated[ -]?users[ -]?a?t?[:;.]?/i
+  STANFORD_AFFILIATED_REGEX = Regexp.union(/available[ -]?to[ -]?stanford[ -]?affiliated[ -]?users[ -]?a?t?[:;.]?/i,
+                                           /Access restricted to Stanford community/i)
   STANFORD_LAW_AFFILIATED_REGEX = /Available to Stanford Law School/i
 
   class Processor
@@ -58,6 +60,25 @@ module MarcLinks
       }
     end
 
+    def link_is_fulltext?
+      return !link_is_sfx? if field.tag == '956'
+
+      return false unless %w[0 1 3 4].include?(field.indicator2)
+
+      !supplemental_resource_label?
+    end
+
+    def link_is_supplemental?
+      return false if %w[0 3].include?(field.indicator2)
+
+      field.indicator2 == '2' || supplemental_resource_label?
+    end
+
+    def stanford_only?
+      field.subfields.select { |f| %w[z 3].include?(f.code) }
+           .map(&:value).any? { |v| STANFORD_AFFILIATED_REGEX.match?(v) }
+    end
+
     private
 
     def link_title_html_escaped
@@ -78,7 +99,7 @@ module MarcLinks
 
     def link_is_casalini?
       (field['x'] && field['x'] == 'CasaliniTOC') ||
-        (field.subfields.find { |sf| sf.code == 'z' && sf.value.match?(CASALINI_LABEL_REGEX) })
+        (field.subfields.find { |sf| sf.code == 'z' && CASALINI_LABEL_REGEX.match?(sf.value) })
     end
 
     def link_is_sfx?
@@ -154,21 +175,8 @@ module MarcLinks
                      end.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
     end
 
-    def link_is_fulltext?
-      return !link_is_sfx? if field.tag == '956'
-
-      return false unless %w[0 1 3 4].include?(field.indicator2)
-
-      !supplemental_resource_label?
-    end
-
     def link_is_finding_aid?
       "#{field['3']} #{field['z']}".downcase.include?('finding aid')
-    end
-
-    def stanford_only?
-      field.subfields.select { |f| %w[z 3].include?(f.code) }
-           .map(&:value).any? { |v| STANFORD_AFFILIATED_REGEX.match?(v) }
     end
 
     def stanford_law_only?
