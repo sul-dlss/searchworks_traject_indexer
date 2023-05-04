@@ -57,7 +57,7 @@ class FolioRecord
         scheme: call_number_type_map(item.dig('callNumber', 'typeName')),
         type: item['materialType'],
         barcode: item['barcode'],
-        # TODO: not implementing public note (was 999 subfield o) currently
+        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),
         tag: item
       )
     end
