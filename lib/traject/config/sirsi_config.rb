@@ -884,19 +884,15 @@ end
 #
 # # URL Fields
 # get full text urls from 856, then reject gsb forms
+# get all 956 subfield u containing fulltext urls that aren't SFX
 to_field 'url_fulltext' do |record, accumulator|
-  Traject::MarcExtractor.new('856u', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
+  Traject::MarcExtractor.new('856u:956u', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     next unless MarcLinks::Processor.new(field).link_is_fulltext?
 
     accumulator.concat extractor.collect_subfields(field, spec)
   end
 
   accumulator.reject! { |v| MarcLinks::GSB_URL_REGEX.match?(v) }
-end
-
-# get all 956 subfield u containing fulltext urls that aren't SFX
-to_field 'url_fulltext', extract_marc('956u') do |_record, accumulator|
-  accumulator.reject! { |v| MarcLinks::SFX_URL_REGEX.match?(v) }
 end
 
 # returns the URLs for supplementary information (rather than fulltext)
