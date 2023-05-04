@@ -113,7 +113,7 @@ module Traject
                     'callNumber', item.jsonb -> 'effectiveCallNumberComponents' ||
                                   jsonb_build_object('typeName', cnt.jsonb ->> 'name'),
                     'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(item.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                    'notes', COALESCE(sul_mod_inventory_storage.getHoldingNoteTypeName(item.jsonb -> 'notes'), '[]'::jsonb),
+                    'notes', COALESCE(sul_mod_inventory_storage.getItemNoteTypeName(item.jsonb -> 'notes'), '[]'::jsonb),
                     'location',
                       jsonb_build_object('permanentLocation',
                                           itemPermLoc.locJsonb || jsonb_build_object(
