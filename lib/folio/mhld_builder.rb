@@ -21,7 +21,7 @@ module Folio
         # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
         library_has = holding.fetch(:library_has)
         latest = latest_received(holding.fetch(:id))
-        [library, location, public_note, library_has, latest].join(' -|- ') if public_note || library_has || latest
+        [library, location, public_note, library_has, latest].join(' -|- ') if public_note || library_has.present? || latest
       end
     end
 
@@ -59,7 +59,15 @@ module Folio
         else
           statement.fetch('statement')
         end
-      end
+      end + statments_for_index(holding) + statements_for_supplements(holding)
+    end
+
+    def statments_for_index(holding)
+      holding.fetch('holdingsStatementsForIndexes').map { |statement| "Index: #{statement.fetch('statement')}" }
+    end
+
+    def statements_for_supplements(holding)
+      holding.fetch('holdingsStatementsForSupplements').map { |statement| "Supplement: #{statement.fetch('statement')}" }
     end
 
     # @return [String] the latest received piece for a holding
