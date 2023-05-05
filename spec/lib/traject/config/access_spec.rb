@@ -149,7 +149,7 @@ RSpec.describe 'Access config' do
       it { expect(result[field]).to eq ['On order'] }
     end
 
-    context 'when an XX call number is not ON-ORDER (and is not in a blacklisted location)' do
+    context 'when an XX call number is not ON-ORDER' do
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -162,7 +162,7 @@ RSpec.describe 'Access config' do
         end
       end
 
-      it { expect(result[field]).to eq ['On order'] }
+      it { expect(result[field]).to eq ['At the Library'] }
     end
 
     context 'when an XX call number is not ON-ORDER (but is in HV-ARCHIVE)' do
@@ -179,7 +179,7 @@ RSpec.describe 'Access config' do
         end
       end
 
-      it { expect(result[field]).not_to include 'On order' }
+      it { expect(result[field]).to eq ['At the Library'] }
     end
 
     context 'when an XX call number is not ON-ORDER (but it is in a blacklisted home location)' do

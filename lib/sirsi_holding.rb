@@ -20,6 +20,8 @@ class SirsiHolding
                     SPECBX-S SPECM-S SPECMED-S SPECMEDX-S SPECMX-S SSRC-FIC-S SSRC-SLS STAFSHADOW
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
+  ON_ORDER_IGNORED_LOCATIONS = %w[ENDPROCESS INPROCESS LAC SPEC-INPRO].freeze
+  ONLINE_LOCATIONS = %w[E-RECVD E-RESV ELECTR-LOC INTERNET KIOST ONLINE-TXT RESV-URL WORKSTATN].freeze
 
   attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag
 
@@ -107,7 +109,14 @@ class SirsiHolding
   end
 
   def on_order?
-    temp_call_number? && (current_location == 'ON-ORDER' || (!current_location.nil? && home_location == 'ON-ORDER'))
+    # if we've received the item, it's no longer on order even if it hasn't finished processing
+    return false if ON_ORDER_IGNORED_LOCATIONS.include?(current_location) || ON_ORDER_IGNORED_LOCATIONS.include?(home_location)
+
+    (current_location == 'ON-ORDER' || home_location == 'ON-ORDER')
+  end
+
+  def online?
+    ONLINE_LOCATIONS.include?(current_location) || ONLINE_LOCATIONS.include?(home_location) || e_call_number?
   end
 
   def ==(other)

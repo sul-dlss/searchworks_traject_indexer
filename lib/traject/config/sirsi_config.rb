@@ -964,18 +964,12 @@ to_field 'oclc' do |record, accumulator|
 end
 
 to_field 'access_facet' do |record, accumulator, context|
-  online_locs = %w[E-RECVD E-RESV ELECTR-LOC INTERNET KIOST ONLINE-TXT RESV-URL WORKSTATN]
-  on_order_ignore_locs = %w[ENDPROCESS INPROCESS LAC SPEC-INPRO]
   holdings(record, context).each do |holding|
     next if holding.skipped?
 
-    field = holding.tag
-
-    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
+    if holding.online?
       accumulator << 'Online'
-    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && (on_order_ignore_locs & [
-      field['k'], field['l']
-    ]).empty? && field['m'] != 'HV-ARCHIVE'))
+    elsif holding.on_order?
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
@@ -1739,7 +1733,7 @@ end
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
   context.clipboard[:call_number_for_holding][holding] ||= begin
-    return OpenStruct.new(scheme: holding.call_number_type) if holding.on_order? || holding.in_process?
+    return OpenStruct.new(scheme: holding.call_number_type) if (holding.on_order? && holding.ignored_call_number?) || holding.in_process?
 
     serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
 
