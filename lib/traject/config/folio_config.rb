@@ -174,6 +174,27 @@ to_field 'context_source_ssi' do |_record, _accumulator, context|
   context.output_hash['context_source_ssi'] = ['folio']
 end
 
+to_field 'crez_instructor_search' do |record, _accumulator, context|
+  context.output_hash['crez_instructor_search'] = record.courses.flat_map { |course| course[:instructors] }.compact.uniq
+end
+
+to_field 'crez_course_name_search' do |record, _accumulator, context|
+  context.output_hash['crez_course_name_search'] = record.courses.map { |course| course[:course_name] }.compact.uniq
+end
+
+to_field 'crez_course_id_search' do |record, _accumulator, context|
+  context.output_hash['crez_course_id_search'] = record.courses.map { |course| course[:course_id] }.compact.uniq
+end
+
+# TODO: included for parity; refactor SW to use courses_json_struct instead
+to_field 'crez_course_info' do |record, _accumulator, context|
+  context.output_hash['crez_course_info'] = record.courses.flat_map do |course|
+    [course[:course_id]].product(course[:instructors]).map do |course_id, instructor|
+      [course_id, course[:course_name], instructor].join(' -|- ')
+    end
+  end
+end
+
 ## FOLIO specific fields
 
 ## QUESTIONS / ISSUES
@@ -199,4 +220,8 @@ to_field 'holdings_json_struct' do |record, accumulator|
                                  holdings: record.holdings,
                                  items: record.items
                                })
+end
+
+to_field 'courses_json_struct' do |record, accumulator|
+  accumulator << JSON.generate(record.courses)
 end

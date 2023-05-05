@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/module/delegation'
+require 'active_support/core_ext/enumerable'
 require_relative 'traject/common/constants'
 require_relative 'locations_map'
 require_relative 'folio/eresource_holdings_builder'
 require_relative 'folio/mhld_builder'
 
+# rubocop:disable Metrics/ClassLength
 class FolioRecord
   attr_reader :record, :client
 
@@ -110,6 +112,18 @@ class FolioRecord
     record
   end
 
+  # Course information for any courses that have this record's items on reserve
+  # @return [Array<Hash>] course information
+  def courses
+    record['courses'].map do |course|
+      {
+        course_name: course['name'],
+        course_id: course['courseNumber'],
+        instructors: course['instructorObjects'].pluck('name')
+      }
+    end
+  end
+
   private
 
   # @param [String] type either 'items' or 'holdings'
@@ -190,3 +204,4 @@ class FolioRecord
     end.to_hash
   end
 end
+# rubocop:enable Metrics/ClassLength

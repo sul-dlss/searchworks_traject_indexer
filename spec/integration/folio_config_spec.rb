@@ -27,6 +27,7 @@ RSpec.describe 'FOLIO indexing' do
 
   before do
     allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
+    allow(folio_record).to receive(:courses).and_return([])
   end
 
   it 'maps the record with sirsi fields' do

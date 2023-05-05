@@ -85,7 +85,6 @@ module Traject
               COALESCE(
                 jsonb_agg(
                   DISTINCT item.jsonb || jsonb_build_object(
-                    'crez', COALESCE(cr.jsonb, '[]'::jsonb),
                     'suppressFromDiscovery',
                     CASE WHEN item.id IS NOT NULL THEN
                       COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false) OR
@@ -163,18 +162,17 @@ module Traject
                   DISTINCT pieces.jsonb
                 ),
               '[]'::jsonb),
-            'course_reserves',
+            'courses',
               COALESCE(
                 jsonb_agg(
-                  DISTINCT#{' '}
-                  jsonb_strip_nulls(
-                    jsonb_build_object(
-                      'reserve', cr.jsonb,
-                      'courselisting', cl.jsonb,
-                      'course', cc.jsonb
-                    )
+                  DISTINCT jsonb_build_object(
+                    'id', cc.id,
+                    'name', cc.jsonb ->> 'name',
+                    'courseNumber', cc.jsonb ->> 'courseNumber',
+                    'courseListingId', cc.jsonb ->> 'courseListingId',
+                    'instructorObjects', cl.jsonb #> '{instructorObjects}'
                   )
-                ),
+                ) FILTER (WHERE cc.id IS NOT NULL),
               '[]'::jsonb)
             )
       FROM sul_mod_inventory_storage.instance vi
@@ -182,6 +180,7 @@ module Traject
          ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
          ON item.holdingsrecordid = hr.id
+      -- Course information related to items on reserve
       LEFT JOIN sul_mod_courses.coursereserves_reserves cr
         ON (cr.jsonb ->> 'itemId')::uuid = item.id
       LEFT JOIN sul_mod_courses.coursereserves_courselistings cl
