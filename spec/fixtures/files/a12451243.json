@@ -1,0 +1,1065 @@
+{
+  "recordId": "65377118-081d-5816-94a9-a9ad9f76ac3c",
+  "snapshotId": "00d4d302-36c9-4387-9a1b-59206995250f",
+  "recordType": "MARC_BIB",
+  "parsedRecord": {
+    "id": "65377118-081d-5816-94a9-a9ad9f76ac3c",
+    "content": {
+      "fields": [
+        {
+          "001": "a12451243"
+        },
+        {
+          "003": "SIRSI"
+        },
+        {
+          "006": "m     o  d        "
+        },
+        {
+          "007": "cr cnu---unuuu"
+        },
+        {
+          "008": "140719s2014    nju     ob    000 0 eng d"
+        },
+        {
+          "040": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "EBLCP"
+              },
+              {
+                "b": "eng"
+              },
+              {
+                "e": "pn"
+              },
+              {
+                "c": "EBLCP"
+              },
+              {
+                "d": "IDEBK"
+              },
+              {
+                "d": "N$T"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "OCLCO"
+              },
+              {
+                "d": "JSTOR"
+              },
+              {
+                "d": "YDXCP"
+              },
+              {
+                "d": "OCLCF "
+              },
+              {
+                "d": "DEBBG"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "OCLCO"
+              },
+              {
+                "d": "DEBSZ"
+              },
+              {
+                "d": "OCL"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "AGLDB"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "IOG"
+              },
+              {
+                "d": "OCLCO"
+              },
+              {
+                "d": "YDX"
+              },
+              {
+                "d": "EZ9 "
+              },
+              {
+                "d": "BETBC"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "OCLCO"
+              },
+              {
+                "d": "STF"
+              },
+              {
+                "d": "VTS"
+              },
+              {
+                "d": "REC"
+              },
+              {
+                "d": "LVT"
+              },
+              {
+                "d": "DKC"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "M8D"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "OCLCO"
+              },
+              {
+                "d": "OCLCQ "
+              },
+              {
+                "d": "LUN"
+              },
+              {
+                "d": "AJS"
+              },
+              {
+                "d": "UHL"
+              },
+              {
+                "d": "OCLCO"
+              },
+              {
+                "d": "OCLCQ"
+              },
+              {
+                "d": "CSt"
+              }
+            ]
+          }
+        },
+        {
+          "019": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "1020568352"
+              },
+              {
+                "a": "1119094396"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "9781400853953"
+              },
+              {
+                "q": "(electronic bk.)"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "1400853958"
+              },
+              {
+                "q": "(electronic bk.)"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "z": "9781405129282"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "z": "140512928X"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "z": "9781405129299"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "z": "1405129298"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "z": "9786610924387"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "z": "6610924384"
+              }
+            ]
+          }
+        },
+        {
+          "024": {
+            "ind1": "8",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "99818396148"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC)884013624"
+              },
+              {
+                "z": "(OCoLC)1020568352"
+              },
+              {
+                "z": "(OCoLC)1119094396"
+              }
+            ]
+          }
+        },
+        {
+          "037": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "22573/ctt735vjg"
+              },
+              {
+                "b": "JSTOR"
+              }
+            ]
+          }
+        },
+        {
+          "050": {
+            "ind1": " ",
+            "ind2": "4",
+            "subfields": [
+              {
+                "a": "PR3562 .L385 2014"
+              }
+            ]
+          }
+        },
+        {
+          "072": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "POE"
+              },
+              {
+                "x": "005020"
+              },
+              {
+                "2": "bisacsh"
+              }
+            ]
+          }
+        },
+        {
+          "072": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "REL006000"
+              },
+              {
+                "2": "bisacsh"
+              }
+            ]
+          }
+        },
+        {
+          "072": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "POE005020"
+              },
+              {
+                "2": "bisacsh"
+              }
+            ]
+          }
+        },
+        {
+          "082": {
+            "ind1": "0",
+            "ind2": "4",
+            "subfields": [
+              {
+                "a": "821.4"
+              },
+              {
+                "a": "821/.4"
+              }
+            ]
+          }
+        },
+        {
+          "084": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "HK 2573"
+              },
+              {
+                "2": "rvk"
+              }
+            ]
+          }
+        },
+        {
+          "049": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "MAIN"
+              }
+            ]
+          }
+        },
+        {
+          "100": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Lewalski, Barbara Kiefer."
+              }
+            ]
+          }
+        },
+        {
+          "245": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "\"\"Paradise Lost\"\" and the Rhetoric of Literary Forms."
+              }
+            ]
+          }
+        },
+        {
+          "260": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Princeton :"
+              },
+              {
+                "b": "Princeton University Press,"
+              },
+              {
+                "c": "2014."
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "1 online resource (392 pages)"
+              }
+            ]
+          }
+        },
+        {
+          "336": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "text"
+              },
+              {
+                "b": "txt"
+              },
+              {
+                "2": "rdacontent"
+              }
+            ]
+          }
+        },
+        {
+          "337": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "computer"
+              },
+              {
+                "b": "c"
+              },
+              {
+                "2": "rdamedia"
+              }
+            ]
+          }
+        },
+        {
+          "338": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "online resource"
+              },
+              {
+                "b": "cr"
+              },
+              {
+                "2": "rdacarrier"
+              }
+            ]
+          }
+        },
+        {
+          "490": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Princeton Legacy Library"
+              }
+            ]
+          }
+        },
+        {
+          "588": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Print version record."
+              }
+            ]
+          }
+        },
+        {
+          "500": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Cover."
+              }
+            ]
+          }
+        },
+        {
+          "520": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "This comprehensive study interprets Paradise Lost as a rhetoric of literary forms, by attending to the broad spectrum of literary genres, modes, and exemplary works Milton incorporates within that poem. Originally published in 1985. The Princeton Legacy Library uses the latest print-on-demand technology to again make available previously out-of-print books from the distinguished backlist of Princeton University Press. These paperback editions preserve the original texts of these important books while presenting them in durable paperback editions. The goal of the Princeton."
+              }
+            ]
+          }
+        },
+        {
+          "505": {
+            "ind1": "0",
+            "ind2": "0",
+            "subfields": [
+              {
+                "t": "Frontmatter --"
+              },
+              {
+                "t": "Contents --"
+              },
+              {
+                "t": "Preface --"
+              },
+              {
+                "t": "Abbreviations --"
+              },
+              {
+                "t": "Chapter 1. Paradise Lost As Encyclopedic Epic: The Uses Of Literary Forms --"
+              },
+              {
+                "t": "Chapter 2. Inspiration and Literary Art: The Prophet-Poets of Paradise Lost --"
+              },
+              {
+                "t": "Chapter 3. \"Argument Heroic Deem'd\": The Genres of the Satanic Heroic Mode --"
+              },
+              {
+                "t": "Chapter 4. \"Semblance of Worth, not Substance\": The Discursive and Lyric Genres of the Damned --"
+              },
+              {
+                "t": "Chapter 5. \"Other Excellence\": Generic Multiplicity and Milton's Literary God --"
+              },
+              {
+                "t": "Chapter 6. \"Our Happy State\": Literary Forms for Angelic Wholeness --"
+              },
+              {
+                "t": "Chapter 7. \"A Happy Rural Seat of Various View\": Pastoral Idyl and the Genres of Edenic Innocence --"
+              },
+              {
+                "t": "Chapter 8. \"Our Pleasant Labor\": Georgic and Comedic Modes and Genres in Eden --"
+              },
+              {
+                "t": "Chapter 9. \"I Now Must Change Those Notes to Tragic\": The Fall and the Tragic Genres --"
+              },
+              {
+                "t": "Chapter 10. \"Not Less but More Heroic\": Prophecy and the Transformation of Literary Forms --"
+              },
+              {
+                "t": "Notes -- "
+              },
+              {
+                "t": "Index"
+              }
+            ]
+          }
+        },
+        {
+          "504": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Includes bibliographical references (pages 344-351)."
+              }
+            ]
+          }
+        },
+        {
+          "600": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Milton, John,"
+              },
+              {
+                "d": "1608-1674."
+              },
+              {
+                "t": "Paradise lost."
+              }
+            ]
+          }
+        },
+        {
+          "600": {
+            "ind1": "1",
+            "ind2": "1",
+            "subfields": [
+              {
+                "a": "Milton, John,"
+              },
+              {
+                "d": "1608-1674."
+              },
+              {
+                "t": "Paradise lost."
+              }
+            ]
+          }
+        },
+        {
+          "630": {
+            "ind1": "0",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "Paradise lost (Milton, John)"
+              },
+              {
+                "2": "fast"
+              },
+              {
+                "0": "(OCoLC)fst01356057"
+              }
+            ]
+          }
+        },
+        {
+          "600": {
+            "ind1": "0",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "Adam"
+              },
+              {
+                "c": "(biblisk gestalt)"
+              },
+              {
+                "v": "poesi."
+              },
+              {
+                "2": "sao"
+              }
+            ]
+          }
+        },
+        {
+          "600": {
+            "ind1": "0",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "Eva"
+              },
+              {
+                "c": "(biblisk gestalt)"
+              },
+              {
+                "v": "poesi."
+              },
+              {
+                "2": "sao"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Literary form"
+              },
+              {
+                "x": "History"
+              },
+              {
+                "y": "17th century."
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "6",
+            "subfields": [
+              {
+                "a": "Genres littéraires"
+              },
+              {
+                "x": "Histoire"
+              },
+              {
+                "y": "17e siècle."
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "POETRY"
+              },
+              {
+                "x": "English, Irish, Scottish, Welsh."
+              },
+              {
+                "2": "bisacsh"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "RELIGION"
+              },
+              {
+                "x": "Biblical Studies"
+              },
+              {
+                "x": "General."
+              },
+              {
+                "2": "bisacsh"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "Literary form."
+              },
+              {
+                "2": "fast"
+              },
+              {
+                "0": "(OCoLC)fst00999924"
+              }
+            ]
+          }
+        },
+        {
+          "648": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "1600-1699"
+              },
+              {
+                "2": "fast"
+              }
+            ]
+          }
+        },
+        {
+          "655": {
+            "ind1": " ",
+            "ind2": "7",
+            "subfields": [
+              {
+                "a": "History."
+              },
+              {
+                "2": "fast"
+              },
+              {
+                "0": "(OCoLC)fst01411628"
+              }
+            ]
+          }
+        },
+        {
+          "776": {
+            "ind1": "0",
+            "ind2": "8",
+            "subfields": [
+              {
+                "i": "Print version:"
+              },
+              {
+                "a": "Lewalski, Barbara Kiefer."
+              },
+              {
+                "t": "\"\"Paradise Lost\"\" and the Rhetoric of Literary Forms."
+              },
+              {
+                "d": "Princeton : Princeton University Press, ©2014"
+              }
+            ]
+          }
+        },
+        {
+          "830": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Princeton legacy library."
+              }
+            ]
+          }
+        },
+        {
+          "856": {
+            "ind1": "4",
+            "ind2": "0",
+            "subfields": [
+              {
+                "z": "Available to Stanford-affiliated users."
+              },
+              {
+                "u": "http://search.ebscohost.com/login.aspx?authtype=ip,sso&custid=s4392798&direct=true&scope=site&db=nlebk&AN=791871"
+              },
+              {
+                "x": "WMS"
+              },
+              {
+                "y": "EBSCO University Press"
+              },
+              {
+                "x": "Provider: EBSCO"
+              },
+              {
+                "x": "subscribed"
+              },
+              {
+                "x": "eLoaderURL"
+              },
+              {
+                "x": "up4"
+              },
+              {
+                "x": "upocn884013624"
+              }
+            ]
+          }
+        },
+        {
+          "936": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "BATCHLOAD"
+              }
+            ]
+          }
+        },
+        {
+          "901": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "a12451243"
+              },
+              {
+                "a": "a13086353"
+              }
+            ]
+          }
+        },
+        {
+          "994": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "92"
+              },
+              {
+                "b": "STF"
+              }
+            ]
+          }
+        },
+        {
+          "901": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "a13086353"
+              },
+              {
+                "a": "a12451243"
+              }
+            ]
+          }
+        },
+        {
+          "901": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "a13086353"
+              },
+              {
+                "a": "a12451243"
+              }
+            ]
+          }
+        },
+        {
+          "901": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "a12451243"
+              }
+            ]
+          }
+        },
+        {
+          "910": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "eLoaderRecord"
+              },
+              {
+                "x": "up4"
+              }
+            ]
+          }
+        },
+        {
+          "915": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "NO EXPORT"
+              },
+              {
+                "b": "AUTHORITY VENDOR"
+              },
+              {
+                "d": "20180512"
+              }
+            ]
+          }
+        },
+        {
+          "596": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "22"
+              }
+            ]
+          }
+        },
+        {
+          "918": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "12451243"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "upocn884013624"
+              }
+            ]
+          }
+        },
+        {
+          "999": {
+            "ind1": "f",
+            "ind2": "f",
+            "subfields": [
+              {
+                "i": "342bbef8-494c-5726-abe9-50df6fe50b43"
+              },
+              {
+                "s": "5a48de78-444e-55a2-957f-d697e9cab684"
+              }
+            ]
+          }
+        }
+      ],
+      "leader": "04663cam a2200793   4500"
+    }
+  },
+  "deleted": false,
+  "externalIdsHolder": {
+    "instanceId": "342bbef8-494c-5726-abe9-50df6fe50b43",
+    "instanceHrid": "a12451243"
+  },
+  "additionalInfo": {
+    "suppressDiscovery": false
+  },
+  "metadata": {
+    "createdDate": "2022-07-27T00:00:14.195+0000",
+    "createdByUserId": "ffee972c-1c22-4ad8-95be-3436162f7b16",
+    "updatedDate": "2022-07-27T00:00:14.281+0000",
+    "updatedByUserId": "ffee972c-1c22-4ad8-95be-3436162f7b16"
+  }
+}

@@ -86,6 +86,131 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  describe 'electronic resources' do
+    let(:source_record_json) do
+      JSON.parse(File.read(file_fixture('a12451243.json')))
+    end
+
+    let(:items_and_holdings) do
+      { 'items' => [],
+        'holdings' =>
+         [{ 'location' =>
+          { 'permanentLocation' =>
+            { 'code' => 'SUL-ELECTRONIC' },
+            'effectiveLocation' =>
+            { 'code' => 'SUL-ELECTRONIC' } },
+            'suppressFromDiscovery' => false,
+            'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+            'holdingsStatements' => [],
+            'holdingsStatementsForIndexes' => [],
+            'holdingsStatementsForSupplements' => [] }] }
+    end
+
+    before do
+      folio_record.instance['hrid'] = 'a12451243'
+      allow(client).to receive(:pieces).and_return([])
+    end
+
+    it {
+      expect(result['item_display']).to eq(
+        ['a12451243-0000 -|- SUL -|- INTERNET -|-  -|- ONLINE -|-  -|- ' \
+         'lc pr  3562.000000 l0.385000 002014 -|- ' \
+         'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~ -|-  -|-  -|-  -|- LC']
+      )
+    }
+
+    it { expect(result['access_facet']).to eq ['Online'] }
+    it { expect(result['shelfkey']).to eq ['lc pr  3562.000000 l0.385000 002014'] }
+    it { expect(result['building_facet']).to be_nil }
+
+    context 'when the holding library is Law' do
+      let(:items_and_holdings) do
+        { 'items' => [],
+          'holdings' =>
+           [{ 'location' =>
+            { 'permanentLocation' =>
+              { 'code' => 'LAW-ELECTRONIC' },
+              'effectiveLocation' =>
+              { 'code' => 'LAW-ELECTRONIC' } },
+              'suppressFromDiscovery' => false,
+              'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+              'holdingsStatements' => [],
+              'holdingsStatementsForIndexes' => [],
+              'holdingsStatementsForSupplements' => [] }] }
+      end
+
+      it { expect(result['building_facet']).to eq ['Law (Crown)'] }
+    end
+
+    context 'when the holding does not include an electronic location' do
+      let(:items) do
+        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'crez' => [],
+           'hrid' => 'ai1755834_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '36105043687818',
+           '_version' => 1,
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+               'code' => 'LAW-BASEMENT',
+               'name' => 'Law Basement',
+               'campus' =>
+               { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3',
+                 'code' => 'LAW',
+                 'name' => 'Law School' },
+               'details' => nil,
+               'library' =>
+               { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78',
+                 'code' => 'LAW',
+                 'name' => 'Robert Crown Law' },
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+               'code' => 'LAW-BASEMENT',
+               'name' => 'Law Basement',
+               'campus' =>
+               { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3',
+                 'code' => 'LAW',
+                 'name' => 'Law School' },
+               'details' => nil,
+               'library' =>
+               { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78',
+                 'code' => 'LAW',
+                 'name' => 'Robert Crown Law' },
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'temporaryLocation' => nil } }]
+      end
+
+      let(:holdings) do
+        [{ 'location' =>
+          { 'permanentLocation' =>
+            { 'code' => 'LAW-BASEMENT' },
+            'effectiveLocation' =>
+            { 'code' => 'LAW-BASEMENT' } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [],
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      it { expect(result['item_display'].find { |h| h.match?(/INTERNET/) }).to be_nil }
+    end
+  end
+
   describe 'mhld_display' do
     subject(:mhld_display) { result.fetch('mhld_display') }
     let(:holding) do
