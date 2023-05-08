@@ -33,7 +33,7 @@ GEM
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
     concurrent-ruby (1.2.2)
-    config (4.1.0)
+    config (4.2.0)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
     crack (0.4.5)
@@ -197,7 +197,7 @@ GEM
       rubocop-ast (>= 1.28.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.28.0)
+    rubocop-ast (1.28.1)
       parser (>= 3.2.1.0)
     ruby-kafka (1.5.0)
       digest-crc
