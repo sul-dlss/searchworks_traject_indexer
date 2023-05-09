@@ -35,7 +35,7 @@ module Traject
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
-        conditions = %w[vi hr item].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+        conditions = %w[vi hr item cr cl cc].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
 
         union_queries = conditions.map { |c| sql_query(c) }.join(') UNION (')
         @connection.exec("DECLARE folio CURSOR FOR (#{union_queries})")
@@ -72,19 +72,7 @@ module Traject
            LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
                 ON (loc.jsonb ->> 'libraryId')::uuid = locLib.id
         WHERE (loc.jsonb ->> 'isActive')::bool = true
-        ),
-       courseReserves(itemId, jsonb) AS (
-        SELECT
-          cr.jsonb ->> 'itemId' as itemId,
-          jsonb_build_object(
-            'reserve', cr.jsonb,
-            'courselisting', cl.jsonb,
-            'course', cc.jsonb
-          ) as jsonb
-        FROM sul_mod_courses.coursereserves_reserves as cr
-        JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
-        JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
-      )
+        )
       SELECT
         vi.id,
           jsonb_build_object(
@@ -174,6 +162,19 @@ module Traject
                 jsonb_agg(
                   DISTINCT pieces.jsonb
                 ),
+              '[]'::jsonb),
+            'course_reserves',
+              COALESCE(
+                jsonb_agg(
+                  DISTINCT#{' '}
+                  jsonb_strip_nulls(
+                    jsonb_build_object(
+                      'reserve', cr.jsonb,
+                      'courselisting', cl.jsonb,
+                      'course', cc.jsonb
+                    )
+                  )
+                ),
               '[]'::jsonb)
             )
       FROM sul_mod_inventory_storage.instance vi
@@ -181,8 +182,12 @@ module Traject
          ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
          ON item.holdingsrecordid = hr.id
-      LEFT JOIN courseReserves cr
-        ON cr.itemId::uuid = item.id
+      LEFT JOIN sul_mod_courses.coursereserves_reserves cr
+        ON (cr.jsonb ->> 'itemId')::uuid = item.id
+      LEFT JOIN sul_mod_courses.coursereserves_courselistings cl
+        ON cl.id = cr.courselistingid
+      LEFT JOIN sul_mod_courses.coursereserves_courses cc
+        ON cc.courselistingid = cl.id
       -- Item's Effective location relation
       LEFT JOIN viewLocations itemEffLoc
             ON (item.jsonb ->> 'effectiveLocationId')::uuid = itemEffLoc.locId
