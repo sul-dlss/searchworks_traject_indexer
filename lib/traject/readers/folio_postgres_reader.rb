@@ -35,7 +35,7 @@ module Traject
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
-        conditions = %w[vi hr item].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+        conditions = %w[vi hr item cr cc cl].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
 
         union_queries = conditions.map { |c| sql_query(c) }.join(') UNION (')
         @connection.exec("DECLARE folio CURSOR FOR (#{union_queries})")
