@@ -3,6 +3,7 @@
 require 'active_support/core_ext/module/delegation'
 require_relative 'traject/common/constants'
 require_relative 'locations_map'
+require_relative 'folio/eresource_holdings_builder'
 require_relative 'folio/mhld_builder'
 
 class FolioRecord
@@ -62,6 +63,10 @@ class FolioRecord
         tag: item
       )
     end
+  end
+
+  def eresource_holdings
+    Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
   end
 
   def call_number_type_map(name)
