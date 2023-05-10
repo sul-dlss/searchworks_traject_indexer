@@ -17,6 +17,8 @@ module Folio
                                LANE-EDOC
                                LANE-EPER
                                LANE-IMAGE
+                               LANE-ISIIF
+                               LANE-MOBI
                                LAW-ELECTRONIC
                                LAW-SDR
                                SUL-ELECTRONIC
