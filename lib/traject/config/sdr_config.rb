@@ -20,6 +20,7 @@ def log_skip(context)
   writer.put(context)
 end
 
+cached_title_value = ->(record) { [record.searchworks_id, record.label].join('-|-') }
 $druid_title_cache = {}
 
 indexer = self
@@ -307,7 +308,7 @@ end
 
 to_field 'collection_with_title' do |record, accumulator|
   accumulator.concat(record.collections.map do |collection|
-    $druid_title_cache[collection.druid] ||= "#{collection.searchworks_id}-|-#{collection.label}"
+    $druid_title_cache[collection.druid] ||= cached_title_value.call(collection)
   end)
 end
 
@@ -317,7 +318,7 @@ end
 
 to_field 'set_with_title' do |record, accumulator|
   accumulator.concat(record.constituents.map do |constituent|
-    $druid_title_cache[constituent.druid] ||= "#{constituent.searchworks_id}-|-#{constituent.label}"
+    $druid_title_cache[constituent.druid] ||= cached_title_value.call(constituent)
   end)
 end
 
@@ -433,7 +434,7 @@ to_field 'context_version_ssi' do |_record, accumulator|
 end
 
 each_record do |record, _context|
-  $druid_title_cache[record.druid] = record.label if record.is_collection
+  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.is_collection
 end
 
 each_record do |_record, context|
