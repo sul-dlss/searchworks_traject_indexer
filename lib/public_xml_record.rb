@@ -89,7 +89,7 @@ class PublicXmlRecord
   end
 
   # @return true if the identityMetadata has <objectType>collection</objectType>, false otherwise
-  def is_collection
+  def collection?
     object_type_nodes = public_xml_doc.xpath('//objectType')
     object_type_nodes.find_index { |n| %w[collection set].include? n.text.downcase }
   end
@@ -98,7 +98,7 @@ class PublicXmlRecord
   # this comes from the <thumb> element in publicXML or the first image found (as parsed by discovery-indexer)
   # @return [String] filename or nil if none found
   def thumb
-    return if is_collection
+    return if collection?
 
     encoded_thumb if %w[book image manuscript map webarchive-seed].include?(dor_content_type)
   end

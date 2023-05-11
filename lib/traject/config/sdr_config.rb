@@ -138,7 +138,7 @@ to_field 'all_search', stanford_mods(:text) do |_record, accumulator|
 end
 
 to_field 'collection_type' do |record, accumulator|
-  accumulator << 'Digital Collection' if record.is_collection
+  accumulator << 'Digital Collection' if record.collection?
 end
 
 ##
@@ -434,7 +434,7 @@ to_field 'context_version_ssi' do |_record, accumulator|
 end
 
 each_record do |record, _context|
-  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.is_collection
+  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.collection?
 end
 
 each_record do |_record, context|

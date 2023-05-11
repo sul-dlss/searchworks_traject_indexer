@@ -53,7 +53,7 @@ load_config_file(File.expand_path('sirsi_config.rb', __dir__))
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
   context.clipboard[:call_number_for_holding][holding] ||= begin
-    return OpenStruct.new(scheme: holding.call_number_type) if holding.is_on_order? || holding.is_in_process?
+    return OpenStruct.new(scheme: holding.call_number_type) if holding.on_order? || holding.in_process?
 
     serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
 
