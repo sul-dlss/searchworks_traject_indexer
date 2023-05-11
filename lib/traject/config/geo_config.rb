@@ -176,7 +176,7 @@ end
 
 each_record do |record, context|
   context.skip!('This item is in processing or does not exist') unless record.public_xml?
-  next if %w[image map book geo file].include?(record.dor_content_type) || record.is_collection
+  next if %w[image map book geo file].include?(record.dor_content_type) || record.collection?
 
   context.skip!(
     "This content type: #{record.dor_content_type} is not supported"
@@ -212,7 +212,7 @@ to_field 'layer_geom_type_s' do |record, accumulator, context|
   next if context.output_hash['layer_geom_type_s'] && !context.output_hash['layer_geom_type_s'].empty?
 
   accumulator << 'Image' if %w[image map book].include?(record.dor_content_type)
-  accumulator << 'Collection' if record.is_collection
+  accumulator << 'Collection' if record.collection?
 end
 
 to_field 'layer_modified_dt' do |record, accumulator|
@@ -357,7 +357,7 @@ to_field 'layer_slug_s' do |record, accumulator|
   accumulator << "stanford-#{record.druid}"
 end
 to_field 'layer_id_s' do |record, accumulator|
-  accumulator << "druid:#{record.druid}" unless record.is_collection
+  accumulator << "druid:#{record.druid}" unless record.collection?
 end
 
 to_field 'hashed_id_ssi' do |_record, accumulator, context|
@@ -431,7 +431,7 @@ to_field 'dct_isPartOf_sm',
 end
 
 each_record do |record, _context|
-  $druid_title_cache[record.druid] = record.label if record.is_collection
+  $druid_title_cache[record.druid] = record.label if record.collection?
 end
 
 each_record do |_record, context|
