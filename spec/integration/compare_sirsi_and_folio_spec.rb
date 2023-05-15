@@ -80,6 +80,9 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         mapped_fields.each do |key|
           next if skipped_fields.include? key
 
+          # we can treat nil and an empty array as equivalent (but not e.g. nil and an empty string)
+          next if Array(folio_result[key]).empty? && Array(sirsi_result[key]).empty?
+
           if unordered_fields.include?(key) && folio_result[key].present?
             expect(folio_result[key]).to match_array(sirsi_result[key]),
                                          "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
