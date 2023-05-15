@@ -29,11 +29,33 @@ bundle exec rake
 ```
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
 
+## Building services
+For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd:
+```
+# disable/remove old rules
+sudo systemctl stop traject.target
+sudo systemctl disable traject.target
+
+# Ensure the .env file exists with JRUBY_OPTS=-J-Xmx8192m LANG=en_US.UTF-8 and then:
+foreman export -a traject -u indexer -f Procfile.stage --formation marc_bodoni_dev_indexer=1,marc_morison_dev_indexer=1,folio_dev_indexer=8,sw_dev_indexer=2,sw_preview_stage_indexer=2,earthworks_stage_indexer=1 systemd ~/service_templates
+sudo cp /opt/app/indexer/service_templates/* /usr/lib/systemd/system/
+
+sudo systemctl enable traject.target
+sudo systemctl start traject.target
+```
+
+## Monitor logs
+```
+ksu
+journalctl -u traject-marc_bodoni_dev_indexer.1.service -e
+```
+
 ## indexing data
 indexing is a multi-step process:
 1. an extractor process publishes data to be indexed to a [kafka](https://kafka.apache.org/) topic
-2. a daemon run by [eye](https://github.com/kostya/eye) consumes data from the kafka topic and invokes traject
+2. Systemd runs the various traject services
 3. traject uses a given configuration to index the data into a solr collection
+
 ### publishing data to kafka
 extractor processes are written as ruby scripts in `script/` and usually invoked by shell scripts located in the same directory. they make use of traject extractor classes stored in `lib/traject/extractors/`, which use the ruby kafka client to publish data to a kafka topic using the pattern:
 ```ruby
@@ -55,7 +77,7 @@ another useful operation is resetting the messages published in a particular top
 ```
 some tools offer the option to "plan" execution by default, and actually execute using the `--execute` flag. for more, try passing `--help`.
 ### consuming data from kafka
-the daemon processes are managed by a common [eye configuration](./traject.eye). it reads information from the `config/settings.yml` (using the `config` gem) to set up the indexing daemons.
+the daemon processes are managed by systemd.
 
 the `config/settings.yml` file is configured as a capistrano shared file, allowing each deployment environment to have separate configuration. note that most settings are not checked into GitHub and are not available in `shared_configs`.
 
@@ -73,22 +95,32 @@ processes:
     config:
       start_command: '/usr/local/rvm/bin/rvm jruby-9.3.2.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/sirsi_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
 ```
-daemon processes run continuously. you can use `eye info` in an ssh session to view status information:
-```sh
-$ eye info
 
-traject
-  workers
-    earthworks-stage-indexer_0 .... up  (12:07, 0%, 73Mb, <1218016>)
-    folio_dev_indexer_0 ........... up  (14:34, 6%, 137Mb, <1386323>)
-    marc_bodoni_dev_indexer_0 ..... up  (12:07, 0%, 2731Mb, <1223573>)
-    marc_morison_dev_indexer_0 .... up  (12:07, 0%, 1253Mb, <1223963>)
-    sw_dev_indexer_0 .............. up  (12:07, 0%, 75Mb, <1224054>)
-    sw_dev_indexer_1 .............. up  (12:07, 0%, 73Mb, <1224303>)
-    sw_preview_stage_indexer_0 .... up  (12:07, 0%, 73Mb, <1224638>)
-    sw_preview_stage_indexer_1 .... up  (12:07, 0%, 73Mb, <1224861>)
+You can use `sudo systemctl list-dependencies traject.target` to view status information:
 ```
-you can stop and start daemons with e.g. `eye stop sw_dev_indexer`. note that it may take some time for all the processes to start and stop. for more information on eye, use `eye help` or see the [eye wiki](https://github.com/kostya/eye/wiki).
+● ├─traject-earthworks_stage_indexer.1.service
+● ├─traject-folio_dev_indexer.1.service
+● ├─traject-folio_dev_indexer.2.service
+● ├─traject-folio_dev_indexer.3.service
+● ├─traject-folio_dev_indexer.4.service
+● ├─traject-folio_dev_indexer.5.service
+● ├─traject-folio_dev_indexer.6.service
+● ├─traject-folio_dev_indexer.7.service
+● ├─traject-folio_dev_indexer.8.service
+● ├─traject-marc_bodoni_dev_indexer.1.service
+● ├─traject-marc_morison_dev_indexer.1.service
+● ├─traject-sw_dev_indexer.1.service
+● ├─traject-sw_dev_indexer.2.service
+● ├─traject-sw_preview_stage_indexer.1.service
+● └─traject-sw_preview_stage_indexer.2.service
+```
+
+Then look at the logs of any service by doing:
+```
+ksu
+journalctl -u traject-marc_bodoni_dev_indexer.1.service -e
+```
+
 
 ### indexing the data into solr
 traject configurations specific to each target environment are responsible for transforming the data into a format that can be indexed into solr. you can view the configuration files in `lib/traject/config/`, which often include traject commands like:
@@ -99,7 +131,8 @@ which extracts information from the 008 field of a MARC record and puts it into 
 
 each traject configuration specifies a reader class located in `lib/traject/readers/` that can read the data from the kafka topic and hand it off to be transformed into solr JSON.
 
-other configuration values, like the URL of the solr instance, are usually set at the top of the configuration file using traject's `provide`. many can be set by environment variables; some of these in turn are set by the eye configuration:
+other configuration values, like the URL of the solr instance, are usually set at the top of the configuration file using traject's `provide`. many can be set by environment variables
+
 ```yaml
 processes:
   - name: my_indexer
