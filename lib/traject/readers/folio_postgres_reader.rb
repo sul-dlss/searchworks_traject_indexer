@@ -156,6 +156,17 @@ module Traject
                         )
                 )
               ),
+            'boundWithParents',
+              COALESCE(
+              jsonb_agg(
+                jsonb_build_object(
+                'parentInstanceHrid', parentInstance.jsonb ->> 'hrid',
+                'parentInstanceTitle', parentInstance.jsonb ->> 'title',
+                'parentItemId', parentItem.id,
+                'parentItemBarcode', parentItem.jsonb ->> 'barcode',
+                'childHoldingCallNumber', hr.jsonb ->> 'callNumber'
+                )
+              ), '[]'::jsonb),
             'pieces',
               COALESCE(
                 jsonb_agg(
@@ -237,6 +248,15 @@ module Traject
         ON (titles.jsonb ->> 'instanceId')::uuid  = vi.id
       LEFT JOIN sul_mod_orders_storage.pieces pieces
         ON pieces.titleid = titles.id
+      -- Bound with parts relation
+      LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
+        ON (bw.jsonb ->> 'holdingsRecordId')::uuid = hr.id
+      LEFT JOIN sul_mod_inventory_storage.item parentItem
+        ON (bw.jsonb ->> 'itemId')::uuid = parentItem.id
+      LEFT JOIN sul_mod_inventory_storage.holdings_record parentHolding
+        ON parentItem.holdingsRecordId = parentHolding.id
+      LEFT JOIN sul_mod_inventory_storage.instance parentInstance
+        ON parentHolding.instanceid = parentInstance.id
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
       SQL

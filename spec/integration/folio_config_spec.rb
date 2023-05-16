@@ -233,7 +233,7 @@ RSpec.describe 'FOLIO indexing' do
           'temporaryLocation' => {} },
         'formerIds' => [],
         'callNumber' => {},
-        'holdingsType' => 'Unknown',
+        'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
         'electronicAccess' => [],
         'receivingHistory' => { 'entries' => [] },
         'statisticalCodes' => [],
@@ -394,7 +394,7 @@ RSpec.describe 'FOLIO indexing' do
             'temporaryLocation' => {} },
           'formerIds' => [],
           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },
-          'holdingsType' => 'Monograph',
+          'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
           'electronicAccess' => [],
           'receivingHistory' => { 'entries' => [{ 'enumeration' => 'TEST', 'publicDisplay' => true }, nil] },
           'statisticalCodes' => [],
@@ -467,6 +467,28 @@ RSpec.describe 'FOLIO indexing' do
         [{ 'staffNote' => 'Send to cataloging to receive and update holdings...', 'statement' => 'v.1, 11' }]
       end
       it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- '] }
+    end
+  end
+
+  describe 'bound_with_parents_struct' do
+    let(:bound_with_parents) do
+      [{
+        'parentInstanceId' => '134624',
+        'parentInstanceTitle' => 'Investigations of the relative amount of time spent on the ground',
+        'parentItemBarcode' => '36105131576063',
+        'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+        'childHoldingCallNumber' => '064.8 .D191H'
+      }]
+    end
+    before do
+      allow(folio_record).to receive(:bound_with_parents).and_return(bound_with_parents)
+    end
+    it 'has bound with parent data as json' do
+      # rubocop:disable Layout/LineLength
+      expect(
+        result['bound_with_parents_struct']
+      ).to eq ['[{"parentInstanceId":"134624","parentInstanceTitle":"Investigations of the relative amount of time spent on the ground","parentItemBarcode":"36105131576063","parentItemId":"d1eece03-e4b6-5bd3-b6be-3d76ae8cf96d","childHoldingCallNumber":"064.8 .D191H"}]']
+      # rubocop:enable Layout/LineLength
     end
   end
 end

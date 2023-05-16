@@ -225,3 +225,7 @@ end
 to_field 'courses_json_struct' do |record, accumulator|
   accumulator << JSON.generate(record.courses)
 end
+
+to_field 'bound_with_parents_struct' do |record, accumulator|
+  accumulator << record.bound_with_parents.to_json
+end

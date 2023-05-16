@@ -33,16 +33,38 @@ class FolioRecord
     @client = client
   end
 
-  def marc_record
-    @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
-  end
-
   def instance_id
     instance['id']
   end
 
   def hrid
     instance['hrid']
+  end
+
+  def marc_record
+    @marc_record ||= begin
+      record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
+
+      # if 590 with Bound-with related subfields are present, return the record as is
+      field590 = record.find { |f| f.tag == '590' }
+      subfield_a = field590&.find { |sf| sf.code == 'a' }
+      subfield_c = field590&.find { |sf| sf.code == 'c' }
+      unless field590 && subfield_a && subfield_c
+        # if 590 or one of its Bound-with related subfields is missing, and FOLIO says this record is Bound-with, append the relevant data from FOLIO
+        parents ||= bound_with_parents
+        # if Bound-with parents are found, edit the marc record
+        if parents&.any?
+          # append a new 590 and/or its subfields if not present
+          parents.each do |parent|
+            field590 = MARC::DataField.new('590', ' ', ' ') if field590.nil?
+            field590.subfields << MARC::Subfield.new('a', "#{parent['childHoldingCallNumber']} bound with #{parent['parentInstanceTitle']}") if subfield_a.nil?
+            field590.subfields << MARC::Subfield.new('c', "#{parent['parentInstanceId']} (parent record)") if subfield_c.nil?
+            record.append(field590)
+          end
+        end
+      end
+      record
+    end
   end
 
   def sirsi_holdings
@@ -108,6 +130,11 @@ class FolioRecord
     record['instance'] || {}
   end
 
+  def bound_with_parents
+    record['boundWithParents'] || []
+  end
+
+  # hash representation of the record
   def as_json
     record
   end
