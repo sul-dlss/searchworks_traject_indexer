@@ -53,21 +53,21 @@ module Folio
 
     # @return [Array<String>] the list of statements
     def statements_for_holding(holding)
-      holding.fetch('holdingsStatements').select { |statement| statement.key?('statement') }.map do |statement|
-        if statement['note'].present?
-          "#{statement.fetch('statement')} #{statement.fetch('note')}"
-        else
-          statement.fetch('statement')
-        end
+      holding.fetch('holdingsStatements').select { |statement| statement.key?('statement') }.filter_map do |statement|
+        display_statement(statement)
       end + statments_for_index(holding) + statements_for_supplements(holding)
     end
 
     def statments_for_index(holding)
-      holding.fetch('holdingsStatementsForIndexes').filter_map { |statement| "Index: #{statement.fetch('statement')}" if statement.key?('statement') }
+      holding.fetch('holdingsStatementsForIndexes').filter_map { |statement| display_statement(statement) }.map { |v| "Index: #{v}" }
     end
 
     def statements_for_supplements(holding)
-      holding.fetch('holdingsStatementsForSupplements').filter_map { |statement| "Supplement: #{statement.fetch('statement')}" if statement.key?('statement') }
+      holding.fetch('holdingsStatementsForSupplements').filter_map { |statement| display_statement(statement) }.map { |v| "Supplement: #{v}" }
+    end
+
+    def display_statement(statement)
+      [statement['statement'], statement['note']].reject(&:blank?).join(' ').presence
     end
 
     # @return [String] the latest received piece for a holding
