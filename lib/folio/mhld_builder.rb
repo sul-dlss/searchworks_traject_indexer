@@ -63,7 +63,7 @@ module Folio
     end
 
     def statments_for_index(holding)
-      holding.fetch('holdingsStatementsForIndexes').map { |statement| "Index: #{statement.fetch('statement')}" }
+      holding.fetch('holdingsStatementsForIndexes').filter_map { |statement| "Index: #{statement.fetch('statement')}" if statement.key?('statement') }
     end
 
     def statements_for_supplements(holding)
