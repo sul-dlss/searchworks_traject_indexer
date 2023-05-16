@@ -102,6 +102,7 @@ RSpec.describe 'FOLIO indexing' do
             { 'code' => 'SUL-ELECTRONIC' } },
             'suppressFromDiscovery' => false,
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+            'holdingsType' => { 'id' => '12312', 'name' => 'Unknown', 'source' => 'folio' },
             'holdingsStatements' => [],
             'holdingsStatementsForIndexes' => [],
             'holdingsStatementsForSupplements' => [] }] }
@@ -135,6 +136,7 @@ RSpec.describe 'FOLIO indexing' do
               { 'code' => 'LAW-ELECTRONIC' } },
               'suppressFromDiscovery' => false,
               'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+              'holdingsType' => { 'id' => '12312', 'name' => 'Unknown', 'source' => 'folio' },
               'holdingsStatements' => [],
               'holdingsStatementsForIndexes' => [],
               'holdingsStatementsForSupplements' => [] }] }
@@ -198,6 +200,7 @@ RSpec.describe 'FOLIO indexing' do
             { 'code' => 'LAW-BASEMENT' } },
            'suppressFromDiscovery' => false,
            'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsType' => { 'id' => '12312', 'name' => 'Unknown', 'source' => 'folio' },
            'holdingsStatements' => [],
            'holdingsStatementsForIndexes' => [],
            'holdingsStatementsForSupplements' => [] }]
