@@ -37,9 +37,9 @@ sudo systemctl stop traject.target
 sudo systemctl disable traject.target
 
 # Ensure the .env file exists with JRUBY_OPTS=-J-Xmx8192m LANG=en_US.UTF-8 and then:
-foreman export -a traject -u indexer -f Procfile.stage --formation marc_bodoni_dev_indexer=1,marc_morison_dev_indexer=1,folio_dev_indexer=8,sw_dev_indexer=2,sw_preview_stage_indexer=2,earthworks_stage_indexer=1 systemd ~/service_templates
+foreman export -a traject -u indexer -f Procfile.stage --root /opt/app/indexer/searchworks_traject_indexer/current --formation marc_bodoni_dev_indexer=1,marc_morison_dev_indexer=1,folio_dev_indexer=8,sw_dev_indexer=2,sw_preview_stage_indexer=2,earthworks_stage_indexer=1 systemd ~/service_templates
 
-foreman export -a traject -u indexer -f Procfile.prod --formation marc_bodoni_prod_indexer=1,marc_morison_prod_indexer=1,sdr_prod_indexer_catchup=2,sdr_preview_indexer=2,earthworks_prod_indexer=1 systemd ~/service_templates
+foreman export -a traject -u indexer -f Procfile.prod --root /opt/app/indexer/searchworks_traject_indexer/current --formation marc_bodoni_prod_indexer=1,marc_morison_prod_indexer=1,sdr_prod_indexer_catchup=2,sdr_preview_indexer=2,earthworks_prod_indexer=1 systemd ~/service_templates
 
 sudo cp /opt/app/indexer/service_templates/* /usr/lib/systemd/system/
 
