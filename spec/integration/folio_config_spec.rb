@@ -443,7 +443,7 @@ RSpec.describe 'FOLIO indexing' do
       }
     end
 
-    context 'with holdingsStatementsForSupplements' do
+    context 'with holdingsStatementsForSupplements that have statements' do
       let(:supplement_statements) do
         [{ 'note' => '', 'staffNote' => '', 'statement' => 'guide' }]
       end
@@ -456,6 +456,17 @@ RSpec.describe 'FOLIO indexing' do
           'EARTH-SCI -|- STACKS -|-  -|- Supplement: guide -|- '
         ]
       }
+    end
+
+    context 'with holdingsStatementsForSupplements that have no statement' do
+      # See hrid: a10362341
+      let(:supplement_statements) do
+        [{ 'note' => 'Library keeps latest only', 'staffNote' => 'Library keeps latest supplement only.' }]
+      end
+      let(:holdings_statements) do
+        [{ 'staffNote' => 'Send to cataloging to receive and update holdings...', 'statement' => 'v.1, 11' }]
+      end
+      it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- '] }
     end
   end
 end

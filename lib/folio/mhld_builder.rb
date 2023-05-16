@@ -67,7 +67,7 @@ module Folio
     end
 
     def statements_for_supplements(holding)
-      holding.fetch('holdingsStatementsForSupplements').map { |statement| "Supplement: #{statement.fetch('statement')}" }
+      holding.fetch('holdingsStatementsForSupplements').filter_map { |statement| "Supplement: #{statement.fetch('statement')}" if statement.key?('statement') }
     end
 
     # @return [String] the latest received piece for a holding
