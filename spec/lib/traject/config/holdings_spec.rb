@@ -386,7 +386,7 @@ RSpec.describe 'Holdings config' do
           let(:fixture_name) { 'mhldDisplay868.mrc' }
           it do
             expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- v.194(2006)- -|- '
-            expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- Index: keep me (868) -|- '
+            expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- Index: keep me (868) -|- '
           end
         end
         describe '852 w/ 867' do
@@ -412,9 +412,9 @@ RSpec.describe 'Holdings config' do
         it do
           expect(select_by_id('111')[field].length).to eq 4
           expect(select_by_id('111')[field][0]).to eq 'lib1 -|- loc1 -|- comment1 -|- 866a1open- -|- v.417:no.11 (2011:March 25)'
-          expect(select_by_id('111')[field][1]).to eq 'lib1 -|- loc1 -|- comment1 -|- 866a2closed -|- '
-          expect(select_by_id('111')[field][2]).to eq 'lib1 -|- loc1 -|- comment1 -|- 866a3closed -|- '
-          expect(select_by_id('111')[field][3]).to eq 'lib1 -|- loc1 -|- comment1 -|- 866a4closed -|- '
+          expect(select_by_id('111')[field][1]).to eq 'lib1 -|- loc1 -|-  -|- 866a2closed -|- '
+          expect(select_by_id('111')[field][2]).to eq 'lib1 -|- loc1 -|-  -|- 866a3closed -|- '
+          expect(select_by_id('111')[field][3]).to eq 'lib1 -|- loc1 -|-  -|- 866a4closed -|- '
         end
       end
       describe '866 and 867' do
@@ -435,23 +435,21 @@ RSpec.describe 'Holdings config' do
         #  is skipped if 866 has ind2 of 0 and 852 has a sub =
         let(:fixture_name) { 'mhldDisplay86x.mrc' }
         it do
-          start = 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in STACKS -|- '
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 1A (JAN 2011) -|- "
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 4A (FEB 2011) -|- "
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 5A (FEB 2011) -|- "
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 20A (JUN 2011) -|- "
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 21A (JUN 2011) -|- "
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 22A (JUN 2011) -|- "
-          expect(select_by_id('362573')[field]).to include "#{start}V. 417 NO. 23A (JUN 2011) -|- "
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 1A (JAN 2011) -|- '
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 4A (FEB 2011) -|- '
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 5A (FEB 2011) -|- '
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 20A (JUN 2011) -|- '
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 21A (JUN 2011) -|- '
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 22A (JUN 2011) -|- '
+          expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 23A (JUN 2011) -|- '
         end
       end
       describe 'ensure all (non-skipped) 867s are output correctly' do
         let(:fixture_name) { 'mhldDisplay867.mrc' }
         it do
           expect(select_by_id('keep867ind0')[field]).to eq ['GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- ']
-          start = 'GREEN -|- STACKS -|- Supplement -|- Supplement: '
-          expect(select_by_id('multKeep867ind0')[field][0]).to eq "#{start}keep me 1 (867) -|- "
-          expect(select_by_id('multKeep867ind0')[field][1]).to eq "#{start}keep me 2 (867) -|- "
+          expect(select_by_id('multKeep867ind0')[field][0]).to eq 'GREEN -|- STACKS -|- Supplement -|- Supplement: keep me 1 (867) -|- '
+          expect(select_by_id('multKeep867ind0')[field][1]).to eq 'GREEN -|- STACKS -|-  -|- Supplement: keep me 2 (867) -|- '
         end
       end
       describe '867 no 866' do
@@ -484,7 +482,8 @@ RSpec.describe 'Holdings config' do
         let(:fixture_name) { 'mhldDisplay868.mrc' }
         # keep if 2nd indicator "0" and no 852 sub =
         it do
-          expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- Index: keep me (868) -|- '
+          expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- v.194(2006)- -|- '
+          expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- Index: keep me (868) -|- '
           expect(select_by_id('multKeep868ind0')[field]).to include 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: keep me 1 (868) -|- '
           expect(select_by_id('multKeep868ind0')[field]).to include 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: keep me 2 (868) -|- '
         end
@@ -505,8 +504,8 @@ RSpec.describe 'Holdings config' do
         #  is skipped if 868 has ind2 of 0 and 852 has a sub =
         let(:fixture_name) { 'mhldDisplay868.mrc' }
         it do
-          start = 'GREEN -|- CURRENTPER -|- skip 868 -|- Index: '
-          expect(select_by_id('skip868ind0')[field]).to include "#{start}skip me (868) -|- "
+          expect(select_by_id('skip868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- skip 868 -|- v.194(2006)- -|- '
+          expect(select_by_id('skip868ind0')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- Index: skip me (868) -|- '
           start = 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: '
           expect(select_by_id('multSkip868ind0')[field]).to include "#{start}skip me 1 (868) -|- "
           expect(select_by_id('multSkip868ind0')[field]).to include "#{start}skip me 2 (868) -|- "

@@ -2430,115 +2430,76 @@ skipped_locations = Traject::TranslationMap.new('locations_skipped_list')
 missing_locations = Traject::TranslationMap.new('locations_missing_list')
 
 to_field 'mhld_display' do |record, accumulator, _context|
-  mhld_field = MhldField.new
-  mhld_results = []
+  location_groups = Traject::MarcExtractor.new('852:853:863:866:867:868').collect_matching_lines(record) { |field, _spec, _extractor| field }.slice_before { |field| field.tag == '852' }
 
-  Traject::MarcExtractor.new('852:853:863:866:867:868').collect_matching_lines(record) do |field, _spec, _extractor|
-    case field.tag
-    when '852'
-      # Adds the previous 852 with setup things from other fields (853, 863, 866, 867, 868)
-      mhld_results.concat add_values_to_result(mhld_field)
+  location_groups.each do |fields|
+    next unless fields.first.tag == '852'
 
-      # Reset to process new 852
-      mhld_field = MhldField.new
+    fields_by_tag = fields.group_by(&:tag)
 
-      used_sub_fields = field.subfields.select do |sf|
-        %w[3 z b c].include? sf.code
-      end
-      comment = []
-      comment << used_sub_fields.map { |sf| sf.value if sf.code == '3' }.compact.join(' ')
-      comment << used_sub_fields.map { |sf| sf.value if sf.code == 'z' }.compact.join(' ')
-      comment = comment.reject(&:empty?).join(' ')
-      next if comment =~ /all holdings transferred/i
+    marc852 = fields.first
 
-      library_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'b' }.compact.join(' ')
-      library_code = 'null' if library_code.empty?
-      location_code = used_sub_fields.collect { |sf| sf.value if sf.code == 'c' }.compact.join(' ')
-      location_code = 'null' if location_code.empty?
+    library = marc852.subfields.select { |sf| sf.code == 'b' }.map(&:value).compact.join(' ')
+    library = 'null' if library.empty?
+    location = marc852.subfields.select { |sf| sf.code == 'c' }.map(&:value).compact.join(' ')
+    location = 'null' if location.empty?
 
-      next if skipped_locations[location_code] || missing_locations[location_code]
+    comments = marc852.subfields.select { |sf| sf.code == '3' || sf.code == 'z' }.map(&:value).compact
+    next if comments.any? { |c| c =~ /all holdings transferred/i }
 
-      mhld_field.library = library_code
-      mhld_field.location = location_code
-      mhld_field.public_note = comment
+    # Reset to process new 852
+    mhld_field = MhldField.new
+    mhld_results = []
 
-      ##
-      # Check if a subfield = exists
-      mhld_field.df852has_equals_sf = field.subfields.select do |sf|
-        ['='].include? sf.code
-      end.compact.any?
-    when '853'
-      link_seq_num = field.subfields.select do |sf|
-        %w[8].include? sf.code
-      end.collect(&:value).first.to_i
+    next if skipped_locations[location] || missing_locations[location]
 
-      mhld_field.patterns853[link_seq_num] = field
-    when '863'
-      sub8 = field.subfields.select do |sf|
-        %w[8].include? sf.code
-      end.collect(&:value).first.to_s.strip
-      next if sub8.empty?
+    comment = comments.reject(&:empty?).join(' ')
 
-      link_num, seq_num = sub8.split('.').map(&:to_i)
-      next if seq_num.nil?
-
-      if mhld_field.most_recent863link_num < link_num || (
-        mhld_field.most_recent863link_num == link_num && mhld_field.most_recent863seq_num < seq_num
-      )
-        mhld_field.most_recent863link_num = link_num.to_i
-        mhld_field.most_recent863seq_num = seq_num.to_i
-        mhld_field.most_recent863 = field
-      end
-    when '866'
-      mhld_field.fields866 << field
-    when '867'
-      mhld_field.fields867 << field
-    when '868'
-      mhld_field.fields868 << field
+    marc853s = fields_by_tag.fetch('853', []).each_with_object({}) do |field, hash|
+      link_seq_num = field.select { |sf| sf.code == '8' }.map(&:value).first.to_i
+      hash[link_seq_num] = field
     end
-  end
-  mhld_results.concat add_values_to_result(mhld_field)
 
-  accumulator.concat(mhld_results.select { |mhld_result| mhld_result.present? })
-end
-
-def add_values_to_result(mhld_field)
-  return [] if mhld_field.library.nil?
-
-  latest_recd_out = false
-  has866 = false
-  has867 = false
-  has868 = false
-  mhld_results = []
-  mhld_field.fields866.each do |f|
-    sub_a = f['a'] || ''
-
-    mhld_field.library_has = library_has(f)
-    if sub_a.end_with?('-') && !latest_recd_out
-      latest_received = mhld_field.latest_received
-      latest_recd_out = true
+    most_recent_marc863 = fields_by_tag.fetch('863', []).select { |field| field['8'].present? }.max_by do |field|
+      link_num, seq_num = field['8'].split('.', 2).map(&:to_i)
+      [link_num, seq_num || -1]
     end
-    has866 = true
-    mhld_results << mhld_field.display(latest_received)
-  end
-  mhld_field.fields867.each do |f|
-    mhld_field.library_has = "Supplement: #{library_has(f)}"
-    latest_received = mhld_field.latest_received unless has866
-    has867 = true
-    mhld_results << mhld_field.display(latest_received)
-  end
-  mhld_field.fields868.each do |f|
-    mhld_field.library_has = "Index: #{library_has(f)}"
-    latest_received = mhld_field.latest_received unless has866
-    has868 = true
-    mhld_results << mhld_field.display(latest_received)
-  end
-  if !has866 && !has867 && !has868
-    latest_received = mhld_field.latest_received if mhld_field.df852has_equals_sf
-    mhld_results << mhld_field.display(latest_received) unless mhld_field.public_note.blank? && mhld_field.library_has.blank? && latest_received.blank?
-  end
 
-  mhld_results
+    fields_by_tag['866']&.each do |field|
+      mhld_results << ['', library_has(field), '']
+    end
+
+    fields_by_tag['867']&.each do |field|
+      mhld_results << ['', "Supplement: #{library_has(field)}", '']
+    end
+
+    fields_by_tag['868']&.each do |field|
+      mhld_results << ['', "Index: #{library_has(field)}", '']
+    end
+
+    if mhld_results.none? && comment.present? && !marc852['=']
+      mhld_results << [comment, '', '']
+    else
+      mhld_results << ['', '', ''] if mhld_results.empty?
+
+      first_mhld_result = mhld_results.first
+      # public note
+      first_mhld_result[0] = comment if comment.present?
+
+      # latest received
+      if most_recent_marc863
+        most_recent_marc863_link_num = most_recent_marc863['8']&.split('.')&.first.to_i
+
+        if most_recent_marc863_link_num != 0
+          pattern = marc853s[most_recent_marc863_link_num]
+          library_has = first_mhld_result[1]
+          first_mhld_result[2] = mhld_field.get863display_value(pattern, most_recent_marc863) if library_has.end_with?('-') || library_has.start_with?('Supplement') || library_has.start_with?('Index') || library_has == ''
+        end
+      end
+    end
+
+    accumulator.concat(mhld_results.select { |arr| arr.any?(&:present?) }.map { |arr| ([library, location] + arr).join(' -|- ') })
+  end
 end
 
 def library_has(field)
