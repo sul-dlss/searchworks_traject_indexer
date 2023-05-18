@@ -173,7 +173,7 @@ class FolioRecord
 
   def instance_derived_marc_record
     MARC::Record.new.tap do |marc|
-      marc.append(MARC::ControlField.new('001', record.dig('instance', 'hrid')))
+      marc.append(MARC::ControlField.new('001', hrid))
       # mode of issuance
       # identifiers
       record.dig('instance', 'languages').each do |l|
