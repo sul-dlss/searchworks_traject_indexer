@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require 'time'
-require 'traject'
-require 'pg'
-require_relative '../../folio_client'
-require_relative '../../folio_record'
 
 module Traject
   class FolioPostgresReader # rubocop:disable  Metrics/ClassLength

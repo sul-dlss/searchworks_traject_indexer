@@ -2,10 +2,6 @@
 
 require_relative '../config/boot'
 
-require 'traject'
-require 'traject/extractors/marc_kafka_extractor'
-require 'traject/readers/marc_combining_reader'
-
 log_file = File.expand_path("../log/process_marc_to_kafka_#{Utils.env_config.kafka_topic}.log", __dir__)
 Utils.set_log_file(log_file)
 

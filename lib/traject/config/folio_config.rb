@@ -1,25 +1,11 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << File.expand_path('../..', __dir__)
-
 require 'traject'
 require 'traject/macros/marc21_semantics'
-require 'traject/readers/folio_reader'
-require 'traject/writers/solr_better_json_writer'
-require 'traject/common/marc_utils'
-require 'traject/common/constants'
-require 'call_numbers/lc'
-require 'call_numbers/dewey'
-require 'call_numbers/other'
-require 'call_numbers/shelfkey'
-require 'sirsi_holding'
-require 'mhld_field'
-require 'marc_links'
+
 require 'i18n'
-require 'honeybadger'
 require 'active_support'
 require 'active_support/core_ext/time'
-require 'utils'
 
 I18n.available_locales = [:en]
 

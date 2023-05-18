@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'json'
-require_relative '../lib/traject/readers/folio_postgres_reader'
+require_relative '../config/boot'
 
 postgres_url = ENV.fetch('DATABASE_URL', nil)
 raise 'DATABASE_URL must be set' unless postgres_url

@@ -2,10 +2,6 @@
 
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/enumerable'
-require_relative 'traject/common/constants'
-require_relative 'locations_map'
-require_relative 'folio/eresource_holdings_builder'
-require_relative 'folio/mhld_builder'
 
 # rubocop:disable Metrics/ClassLength
 class FolioRecord

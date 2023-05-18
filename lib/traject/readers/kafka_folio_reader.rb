@@ -3,8 +3,6 @@
 require 'kafka'
 require 'kafka/statsd'
 require 'active_support'
-require_relative '../../folio_client'
-require_relative '../../folio_record'
 
 # Reads messages out of Kafka and yields FolioRecords
 class Traject::KafkaFolioReader

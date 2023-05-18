@@ -298,6 +298,7 @@ DEPENDENCIES
   traject_plus
   webmock
   whenever
+  zeitwerk
 
 BUNDLED WITH
    2.3.20
