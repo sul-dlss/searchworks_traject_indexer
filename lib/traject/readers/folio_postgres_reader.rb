@@ -166,7 +166,8 @@ module Traject
                 'parentItemBarcode', parentItem.jsonb ->> 'barcode',
                 'childHoldingCallNumber', hr.jsonb ->> 'callNumber'
                 )
-              ), '[]'::jsonb),
+              ) FILTER (WHERE parentItem.id IS NOT NULL),
+              '[]'::jsonb),
             'pieces',
               COALESCE(
                 jsonb_agg(
