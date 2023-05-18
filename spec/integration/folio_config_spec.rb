@@ -398,7 +398,7 @@ RSpec.describe 'FOLIO indexing' do
           'electronicAccess' => [],
           'receivingHistory' => { 'entries' => [{ 'enumeration' => 'TEST', 'publicDisplay' => true }, nil] },
           'statisticalCodes' => [],
-          'holdingsStatements' => [],
+          'holdingsStatements' => [{ 'note' => '', 'staffNote' => 'Such a good book' }],
           'suppressFromDiscovery' => false,
           'holdingsStatementsForIndexes' => [],
           'holdingsStatementsForSupplements' => [] }

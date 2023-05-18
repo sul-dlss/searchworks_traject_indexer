@@ -27,10 +27,13 @@ module Folio
 
     private
 
-    # Remove suppressed record and electronic records
+    # Remove suppressed records, electronic records, and records with no holdings statement
     def filtered_holdings
       holdings.filter_map do |holding|
-        next if holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
+        no_holding_statements = (holding.fetch('holdingsStatements') +
+                                 holding.fetch('holdingsStatementsForIndexes') +
+                                 holding.fetch('holdingsStatementsForSupplements')).empty?
+        next if no_holding_statements || holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
 
         note = holding.fetch('holdingsStatements').find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
 
