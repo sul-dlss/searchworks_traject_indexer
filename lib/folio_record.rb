@@ -6,6 +6,7 @@ require_relative 'traject/common/constants'
 require_relative 'locations_map'
 require_relative 'folio/eresource_holdings_builder'
 require_relative 'folio/mhld_builder'
+require_relative 'folio/holding'
 
 # rubocop:disable Metrics/ClassLength
 class FolioRecord
@@ -111,7 +112,7 @@ class FolioRecord
   # Creates the mhld_display value. This drives the holding display in searchworks.
   # This packed format mimics how we indexed this data when we used Symphony.
   def mhld
-    holdings.present? ? Folio::MhldBuilder.build(holdings, pieces) : []
+    holdings.present? ? Folio::MhldBuilder.build(holdings.map { |dyn| Folio::Holding::Holding.from_dynamic!(dyn) }, pieces) : []
   end
 
   def items

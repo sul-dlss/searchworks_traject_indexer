@@ -30,14 +30,14 @@ module Folio
     # Remove suppressed record and electronic records
     def filtered_holdings
       holdings.filter_map do |holding|
-        next if holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
+        next if holding.discovery_suppress || holding.holdings_type.name == 'Electronic'
 
-        note = holding.fetch('holdingsStatements').find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
+        note = holding.holdings_statements.find { |statement| statement.note && !statement.statement }&.note
 
         library_has_for_holding(holding).map do |library_has|
           {
-            id: holding.fetch('id'),
-            location: holding.dig('location', 'effectiveLocation'),
+            id: holding.id,
+            location: holding.effective_location,
             note:,
             library_has:
           }
@@ -53,21 +53,21 @@ module Folio
 
     # @return [Array<String>] the list of statements
     def statements_for_holding(holding)
-      holding.fetch('holdingsStatements').select { |statement| statement.key?('statement') }.map do |statement|
-        if statement['note'].present?
-          "#{statement.fetch('statement')} #{statement.fetch('note')}"
+      holding.holdings_statements.select(&:statement).map do |statement|
+        if statement.note.present?
+          "#{statement.statement} #{statement.note}"
         else
-          statement.fetch('statement')
+          statement.statement
         end
       end + statments_for_index(holding) + statements_for_supplements(holding)
     end
 
     def statments_for_index(holding)
-      holding.fetch('holdingsStatementsForIndexes').filter_map { |statement| "Index: #{statement.fetch('statement')}" if statement.key?('statement') }
+      holding.holdings_statements_for_indexes.filter_map { |statement| "Index: #{statement.statement}" if statement.statement }
     end
 
     def statements_for_supplements(holding)
-      holding.fetch('holdingsStatementsForSupplements').filter_map { |statement| "Supplement: #{statement.fetch('statement')}" if statement.key?('statement') }
+      holding.holdings_statements_for_supplements.filter_map { |statement| "Supplement: #{statement.statement}" if statement.statement }
     end
 
     # @return [String] the latest received piece for a holding
