@@ -140,7 +140,7 @@ class FolioRecord
   end
 
   def to_honeybadger_context
-    { hrid: }
+    { hrid:, instance_id: }
   end
 
   # Course information for any courses that have this record's items on reserve
