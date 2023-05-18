@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../locations_map'
+
 module Folio
   class MhldBuilder
     def self.build(holdings, pieces)
