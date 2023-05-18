@@ -62,8 +62,15 @@ settings do
 
   provide 'solr_writer.commit_on_close', true
   provide 'mapping_rescue', (lambda do |context, e|
-    Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
-
+    Honeybadger.notify(e, context: {
+                         context: context.record_inspect,
+                         record: begin
+                           context.source_record.to_honeybadger_context
+                         rescue StandardError
+                           nil
+                         end,
+                         index_step: context.index_step.inspect
+                       })
     indexer.send(:default_mapping_rescue).call(context, e)
   end)
 

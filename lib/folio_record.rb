@@ -139,6 +139,10 @@ class FolioRecord
     record
   end
 
+  def to_honeybadger_context
+    { hrid: }
+  end
+
   # Course information for any courses that have this record's items on reserve
   # @return [Array<Hash>] course information
   def courses
