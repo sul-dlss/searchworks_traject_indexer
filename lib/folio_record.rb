@@ -80,11 +80,37 @@ class FolioRecord
         current_location: (current_location unless current_location == home_location_code),
         home_location: home_location_code,
         library: library_code,
-        scheme: call_number_type_map(item.dig('callNumber', 'typeName')),
+        scheme: call_number_type_map(item.dig('callNumberType', 'name')),
         type: item['materialType'],
         barcode: item['barcode'],
         public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),
         tag: item
+      )
+    end.concat(bound_with_holdings)
+  end
+
+  # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
+  # TODO: remove this when we stop using SirsiHoldings
+  def bound_with_holdings
+    @bound_with_holdings ||= holdings.filter { |holding| holding.dig('holdingsType', 'name') == 'Bound-with' }.map do |holding|
+      parent_item = record['boundWithParents'].find { |parent| parent['childHoldingId'] == holding['id'] }
+      parent_item_perm_location = parent_item.dig('parentItemLocation', 'permanentLocation', 'code')
+      library_code, home_location_code = LocationsMap.for(parent_item_perm_location)
+      _current_library, current_location = LocationsMap.for(parent_item.dig('parentItemLocation', 'effectiveLocation', 'code'))
+      SirsiHolding.new(
+        call_number: holding['callNumber'],
+        scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
+        tag: {},
+        # parent item's barcode
+        barcode: parent_item['parentItemBarcode'],
+        # parent item's current location or SEE-OTHER (SAL3)
+        # For the SAL3 logic, see https://consul.stanford.edu/display/MD/Bound+withs
+        # When the bound-with item is in SAL3, both the Home and Current Locations on the child records should always be SEE-OTHER.
+        current_location: library_code == 'SAL3' ? '' : (current_location unless current_location == home_location_code),
+        # parent item's permanent location or SEE-OTHER (SAL3)
+        home_location: library_code == 'SAL3' ? 'SEE-OTHER' : home_location_code,
+        # parent item's library
+        library: library_code
       )
     end
   end

@@ -164,7 +164,24 @@ module Traject
                 'parentInstanceTitle', parentInstance.jsonb ->> 'title',
                 'parentItemId', parentItem.id,
                 'parentItemBarcode', parentItem.jsonb ->> 'barcode',
-                'childHoldingCallNumber', hr.jsonb ->> 'callNumber'
+                'parentItemLocation', jsonb_build_object('permanentLocation',
+                                                          parentItemPermLoc.locJsonb || jsonb_build_object(
+                                                                    'campus', parentItemPermLoc.locCampJsonb,
+                                                                    'library', parentItemPermLoc.locLibJsonb,
+                                                                    'institution', parentItemPermLoc.locInstJsonb),
+                                                        'temporaryLocation',
+                                                          parentItemTempLoc.locJsonb || jsonb_build_object(
+                                                                    'campus', parentItemTempLoc.locCampJsonb,
+                                                                    'library', parentItemTempLoc.locLibJsonb,
+                                                                    'institution', parentItemTempLoc.locInstJsonb),
+                                                        'effectiveLocation',
+                                                          parentItemEffLoc.locJsonb || jsonb_build_object(
+                                                                    'campus', parentItemEffLoc.locCampJsonb,
+                                                                    'library', parentItemEffLoc.locLibJsonb,
+                                                                    'institution', parentItemEffLoc.locInstJsonb)
+              ),
+                'childHoldingCallNumber', hr.jsonb ->> 'callNumber',
+                'childHoldingId', hr.id
                 )
               ) FILTER (WHERE parentItem.id IS NOT NULL),
               '[]'::jsonb),
@@ -258,6 +275,15 @@ module Traject
         ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
         ON parentHolding.instanceid = parentInstance.id
+      -- BW Parent Item's Effective location relation
+      LEFT JOIN viewLocations parentItemEffLoc
+        ON (parentItem.jsonb ->> 'effectiveLocationId')::uuid = parentItemEffLoc.locId
+      -- BW Parent Item's Permanent location relation
+      LEFT JOIN viewLocations parentItemPermLoc
+        ON (parentItem.jsonb ->> 'permanentLocationId')::uuid = parentItemPermLoc.locId
+      -- BW Parent Item's Temporary location relation
+      LEFT JOIN viewLocations parentItemTempLoc
+        ON (parentItem.jsonb ->> 'temporaryLocationId')::uuid = parentItemTempLoc.locId
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
       SQL
