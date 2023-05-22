@@ -83,8 +83,8 @@ module Folio
       return unless latest_piece
 
       enumeration = latest_piece['enumeration'] # may not be present
-      cronology = latest_piece.fetch('chronology')
-      enumeration ? "#{enumeration} (#{cronology})" : cronology
+      chronology = latest_piece.fetch('chronology')
+      enumeration ? "#{enumeration} (#{chronology})" : chronology
     end
 
     # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
