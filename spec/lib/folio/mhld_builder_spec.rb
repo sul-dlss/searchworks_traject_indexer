@@ -61,4 +61,74 @@ RSpec.describe Folio::MhldBuilder do
       it { is_expected.to eq ['EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- '] }
     end
   end
+
+  context 'when pieces is present and has no enumeration' do
+    let(:holdings) do
+      [{ 'id' => 'ef966540-7893-5eb0-b2a6-6fc7e1240ebd',
+         'hrid' => 'ah13475642_2',
+         'notes' => [],
+         '_version' => 1,
+         'location' =>
+         { 'effectiveLocation' =>
+           { 'id' => '1a2856e5-fe97-4731-974e-951d778c41a0',
+             'code' => 'GRE-CURRENTPER',
+             'name' => 'Green Library Current Periodicals',
+             'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+             'details' => nil,
+             'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Cecil H. Green' },
+             'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+           'permanentLocation' =>
+           { 'id' => '1a2856e5-fe97-4731-974e-951d778c41a0',
+             'code' => 'GRE-CURRENTPER',
+             'name' => 'Green Library Current Periodicals',
+             'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+             'details' => nil,
+             'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Cecil H. Green' },
+             'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+           'temporaryLocation' => nil },
+         'metadata' =>
+         { 'createdDate' => '2023-05-07T13:07:06.828Z',
+           'updatedDate' => '2023-05-07T13:07:06.828Z',
+           'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+           'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+         'sourceId' => '036ee84a-6afd-4c3c-9ad3-4a12ab875f59',
+         'formerIds' => [],
+         'illPolicy' => nil,
+         'instanceId' => '26bc8396-bac4-5fa6-a170-bd024c13dd69',
+         'holdingsType' => { 'id' => 'e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae', 'name' => 'Serial', 'source' => 'folio' },
+         'holdingsItems' => [],
+         'callNumberType' =>
+         { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+         'holdingsTypeId' => 'e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae',
+         'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+         'electronicAccess' => [],
+         'bareHoldingsItems' => [],
+         'discoverySuppress' => false,
+         'holdingsStatements' =>
+         [{ 'note' => 'Latest issues in CURRENT PERIODICALS; earlier issues in STACKS' }, { 'statement' => '2018' }],
+         'statisticalCodeIds' => [],
+         'administrativeNotes' => [],
+         'effectiveLocationId' => '1a2856e5-fe97-4731-974e-951d778c41a0',
+         'permanentLocationId' => '1a2856e5-fe97-4731-974e-951d778c41a0',
+         'suppressFromDiscovery' => false,
+         'holdingsStatementsForIndexes' => [],
+         'holdingsStatementsForSupplements' => [] }]
+    end
+
+    let(:pieces) do
+      [{ 'id' => '1e504a21-66c3-417f-aff8-25174d73c592',
+         'format' => 'Physical',
+         'itemId' => '0797fa1f-2e40-426c-aa31-f1cf6e9fc875',
+         'titleId' => 'dab77adb-1955-406e-94b0-165d9fb0a8e0',
+         'poLineId' => 'a866835f-9c89-4772-bdeb-803dbc155694',
+         'holdingId' => 'ef966540-7893-5eb0-b2a6-6fc7e1240ebd',
+         'chronology' => 'JUN 2022',
+         'supplement' => false,
+         'receivedDate' => '2023-05-18T18:00:09.036+00:00',
+         'receivingStatus' => 'Received',
+         'displayOnHolding' => true }]
+    end
+
+    it { is_expected.to eq ['GREEN -|- CURRENTPER -|- Latest issues in CURRENT PERIODICALS; earlier issues in STACKS -|- 2018 -|- JUN 2022'] }
+  end
 end
