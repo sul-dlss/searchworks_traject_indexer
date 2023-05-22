@@ -80,7 +80,11 @@ module Folio
       # NOTE: We saw some piece records without 'chronology'. Was this just test data?
       pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(date: Date.parse(piece.fetch('chronology'))) if piece['chronology'] }
       latest_piece = pieces.max_by { |piece| piece.fetch(:date) }
-      "#{latest_piece.fetch('enumeration')} (#{latest_piece.fetch('chronology')})" if latest_piece
+      return unless latest_piece
+
+      enumeration = latest_piece['enumeration'] # may not be present
+      cronology = latest_piece.fetch('chronology')
+      enumeration ? "#{enumeration} (#{cronology})" : cronology
     end
 
     # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
