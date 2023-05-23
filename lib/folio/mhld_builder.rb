@@ -78,7 +78,7 @@ module Folio
     # @return [String] the latest received piece for a holding
     def latest_received(holding_id)
       # NOTE: We saw some piece records without 'chronology'. Was this just test data?
-      pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(date: Date.parse(piece.fetch('chronology'))) if piece['chronology'] }
+      pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(date: extract_sortable(piece.fetch('chronology'))) if piece['chronology'] }
       latest_piece = pieces.max_by { |piece| piece.fetch(:date) }
       return unless latest_piece
 
@@ -91,6 +91,14 @@ module Folio
     # hrid: a567006 has > 1000 on test.
     def pieces_per_holding
       @pieces_per_holding ||= pieces.group_by { |piece| piece['holdingId'] }
+    end
+
+    def extract_sortable(date_str)
+      if /^\d\d\d\d$/.match?(date_str)
+        Date.parse("#{date_str}-01-01")
+      else
+        Date.parse(date_str)
+      end
     end
   end
 end
