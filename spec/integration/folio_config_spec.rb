@@ -466,7 +466,7 @@ RSpec.describe 'FOLIO indexing' do
       let(:holdings_statements) do
         [{ 'staffNote' => 'Send to cataloging to receive and update holdings...', 'statement' => 'v.1, 11' }]
       end
-      it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- '] }
+      it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- ', 'EARTH-SCI -|- STACKS -|-  -|- Supplement: Library keeps latest only -|- '] }
     end
   end
 
