@@ -4,12 +4,6 @@ require 'rspec'
 
 require_relative '../config/boot'
 
-require 'traject'
-require 'traject/readers/kafka_marc_reader'
-require 'traject/readers/kafka_purl_fetcher_reader'
-require 'traject/readers/marc_combining_reader'
-require 'traject/readers/druid_reader'
-require 'traject/writers/solr_better_json_writer'
 require 'debug' if RUBY_ENGINE == 'ruby'
 require 'webmock/rspec'
 WebMock.disable_net_connect!

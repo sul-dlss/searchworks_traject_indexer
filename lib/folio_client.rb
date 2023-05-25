@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'http'
-require_relative 'folio_record'
-
 class FolioClient
   MAX_RESULTS_LIMIT = (2**31) - 1 # Folio max results
   DEFAULT_HEADERS = {

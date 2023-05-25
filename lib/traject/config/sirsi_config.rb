@@ -1,25 +1,9 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << File.expand_path('../..', __dir__)
-
-require 'traject'
+require_relative '../../../config/boot'
 require 'traject/macros/marc21_semantics'
-require 'traject/readers/marc_combining_reader'
-require 'traject/readers/kafka_marc_reader'
-require 'traject/writers/solr_better_json_writer'
-require 'traject/common/marc_utils'
-require 'traject/common/constants'
-require 'call_numbers/lc'
-require 'call_numbers/dewey'
-require 'call_numbers/other'
-require 'call_numbers/shelfkey'
-require 'sirsi_holding'
-require 'mhld_field'
-require 'marc_links'
-require 'utils'
 require 'csv'
 require 'i18n'
-require 'honeybadger'
 require 'digest/md5'
 require 'active_support'
 require 'active_support/core_ext/enumerable'

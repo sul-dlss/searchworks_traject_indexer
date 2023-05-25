@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'call_numbers/shelfkey_base'
-require 'call_numbers/call_number_base'
-
 module CallNumbers
   class Other < CallNumberBase
     VOL_PARTS = '(bd|ed|jahrg|new ser|no|pts?|series|[^a-z]t|v|vols?|vyp)'

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'time'
-require_relative '../../folio_client'
-require_relative '../../folio_record'
 
 module Traject
   class FolioReader
