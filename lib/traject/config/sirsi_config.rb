@@ -2365,6 +2365,7 @@ to_field 'item_display' do |record, accumulator, context|
       lopped_call_number = holding.call_number.to_s
     end
 
+    # item is on order if holding is on order
     current_location = holding.current_location
     if holding.on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
       current_location = 'ON-ORDER'
