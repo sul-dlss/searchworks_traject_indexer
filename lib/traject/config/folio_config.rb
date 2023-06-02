@@ -12,13 +12,13 @@ I18n.available_locales = [:en]
 settings do
   # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
-    require 'traject/readers/kafka_folio_reader'
+    require './lib/traject/readers/kafka_folio_reader'
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
   elsif self['postgres.url']
-    require 'traject/readers/folio_postgres_reader'
+    require './lib/traject/readers/folio_postgres_reader'
     provide 'reader_class_name', 'Traject::FolioPostgresReader'
   elsif self['reader_class_name'] == 'Traject::FolioJsonReader'
-    require 'traject/readers/folio_json_reader'
+    require './lib/traject/readers/folio_json_reader'
   else
     provide 'reader_class_name', 'Traject::FolioReader'
     provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil))
