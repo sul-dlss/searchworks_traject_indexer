@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'traject_plus'
+
 module Traject
   # A Traject reader for processing MARC JSON from FOLIO via stdin.
   class FolioJsonReader < TrajectPlus::JsonReader
