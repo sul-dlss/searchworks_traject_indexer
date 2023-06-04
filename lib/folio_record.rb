@@ -90,8 +90,10 @@ class FolioRecord
   def bound_with_holdings
     return [] unless record['boundWithParents']
 
-    @bound_with_holdings ||= holdings.filter { |holding| holding['holdingsType'].is_a?(Hash) ? holding.dig('holdingsType', 'name') == 'Bound-with' : holding['holdingsType'] == 'Bound-with' }.map do |holding|
+    @bound_with_holdings ||= holdings.filter { |holding| holding['holdingsType'].is_a?(Hash) ? holding.dig('holdingsType', 'name') == 'Bound-with' : holding['holdingsType'] == 'Bound-with' }.filter_map do |holding|
       parent_item = record['boundWithParents'].find { |parent| parent['childHoldingId'] == holding['id'] }
+      next unless parent_item
+
       parent_item_perm_location = parent_item.dig('parentItemLocation', 'permanentLocation', 'code')
       library_code, home_location_code = LocationsMap.for(parent_item_perm_location)
       _current_library, current_location = LocationsMap.for(parent_item.dig('parentItemLocation', 'effectiveLocation', 'code'))
