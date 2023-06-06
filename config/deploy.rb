@@ -72,6 +72,16 @@ namespace :deploy do
       sudo :systemctl, 'restart', 'traject.target', raise_on_non_zero_exit: false
     end
   end
+
+  desc 'update and deploy new systemd scripts'
+  task :update_systemd_scripts do
+    on roles(:app) do
+      within release_path do
+        execute "script/export_procfiles_to_systemd_#{fetch(:procfile_env_suffix)}.sh"
+        execute 'script/reload_systemd_indexers.sh'
+      end
+    end
+  end
 end
 
 before 'bundler:install', 'jruby_bundle_install'

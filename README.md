@@ -30,7 +30,13 @@ bundle exec rake
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
 
 ## Building services
-For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd:
+For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd. This can be done using a capistrano task:
+```
+cap prod deploy:update_systemd_scripts
+```
+
+Or manually from the server:
+
 ```
 # either
 script/export_proc_files_to_systemd_stage.sh
@@ -57,7 +63,7 @@ indexing is a multi-step process:
 extractor processes are written as ruby scripts in `script/` and usually invoked by shell scripts located in the same directory. they make use of traject extractor classes stored in `lib/traject/extractors/`, which use the ruby kafka client to publish data to a kafka topic using the pattern:
 ```ruby
 producer.produce(record, key: id, topic: topic)
-``` 
+```
 the key is usually a unique identifier like a catkey or DRUID, and the topic groups all data that should be consumed by a single traject indexer.
 
 the shell scripts that invoke extractors are run on a schedule as `cron` jobs, defined by `config/schedule.rb`. you can override this schedule if necessary when debugging by using the `crontab` utility in an `ssh` session.
