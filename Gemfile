@@ -39,6 +39,8 @@ group :deployment do
   gem 'capistrano-rvm'
   gem 'capistrano-shared_configs'
   gem 'dlss-capistrano'
+
+  gem 'foreman'
 end
 
 gem 'activesupport', '~> 7.0'
