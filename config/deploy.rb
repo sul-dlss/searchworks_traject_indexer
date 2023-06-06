@@ -28,6 +28,7 @@ set :honeybadger_env, "#{fetch(:stage)}"
 # set :pty, true
 
 # Default value for :linked_files is []
+append :linked_files, 'indexing.env'
 append :linked_files, 'config/settings.local.yml'
 
 # Default value for linked_dirs is []
