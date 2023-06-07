@@ -30,21 +30,21 @@ bundle exec rake
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
 
 ## Building services
-For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd:
+For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd. This can be done using a capistrano task:
 ```
-# disable/remove old rules
-sudo systemctl stop traject.target
-sudo systemctl disable traject.target
+cap prod deploy:update_systemd_scripts
+```
 
-# Ensure the .env file exists with JRUBY_OPTS=-J-Xmx8192m LANG=en_US.UTF-8 and then:
-foreman export -a traject -u indexer -f Procfile.stage --root /opt/app/indexer/searchworks_traject_indexer/current --formation marc_bodoni_dev_indexer=1,marc_morison_dev_indexer=1,folio_dev_indexer=8,sw_dev_indexer=2,sw_preview_stage_indexer=2,earthworks_stage_indexer=1 systemd ~/service_templates
+Or manually from the server:
 
-foreman export -a traject -u indexer -f Procfile.prod --root /opt/app/indexer/searchworks_traject_indexer/current --formation marc_bodoni_prod_indexer=1,marc_morison_prod_indexer=1,sdr_prod_indexer_catchup=2,sdr_preview_indexer=2,earthworks_prod_indexer=1 systemd ~/service_templates
+```
+# either
+script/export_proc_files_to_systemd_stage.sh
+# or
+script/export_proc_files_to_systemd_prod.sh
 
-sudo cp /opt/app/indexer/service_templates/* /usr/lib/systemd/system/
-
-sudo systemctl enable traject.target
-sudo systemctl start traject.target
+# and then:
+script/reload_systemd_indexers.sh
 ```
 
 ## Monitor logs
@@ -63,7 +63,7 @@ indexing is a multi-step process:
 extractor processes are written as ruby scripts in `script/` and usually invoked by shell scripts located in the same directory. they make use of traject extractor classes stored in `lib/traject/extractors/`, which use the ruby kafka client to publish data to a kafka topic using the pattern:
 ```ruby
 producer.produce(record, key: id, topic: topic)
-``` 
+```
 the key is usually a unique identifier like a catkey or DRUID, and the topic groups all data that should be consumed by a single traject indexer.
 
 the shell scripts that invoke extractors are run on a schedule as `cron` jobs, defined by `config/schedule.rb`. you can override this schedule if necessary when debugging by using the `crontab` utility in an `ssh` session.
