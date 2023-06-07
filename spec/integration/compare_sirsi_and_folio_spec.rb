@@ -145,11 +145,21 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   # pending
-  %w[
-    a576562
-    a12451243
-    a13288549
-    a10151431
+  [
+    'a576562',
+    'a12451243',
+    'a13288549',
+    'a10151431',
+    'a7919757', # on-order
+    'a3372664', # holdings notes are different
+    'a7812385', # missing holdings note "no.409 missing."
+    'a14408747', # missing holdings note
+    'a2741508', # missing a bunch of MHLD data
+    'a4705967', # missing MHLD note
+    'a14317027', # HOOVER + HV-ARCHIVE are merged?
+    'a3324747', # missing temporary location data
+    'a4706463', # missing item-level public note
+    'a9089314', # missing item-level public note
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
