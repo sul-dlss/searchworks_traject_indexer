@@ -124,6 +124,21 @@ RSpec.describe 'ItemInfo config' do
   describe 'item_display' do
     let(:field) { 'item_display' }
 
+    context 'when an item is on-order' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '596', ' ', ' ',
+              MARC::Subfield.new('a', '1 2 22')
+            )
+          )
+        end
+      end
+
+      it { expect(result[field]).to match_array([match('-|- GREEN -|-'), match('-|- ART -|-')]) }
+    end
+
     describe 'field is populated correctly, focusing on building/library' do
       let(:fixture_name) { 'buildingTests.mrc' }
 

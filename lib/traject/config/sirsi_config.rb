@@ -2398,10 +2398,13 @@ to_field 'item_display' do |record, accumulator, context|
   order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(record)
   translation_map = Traject::TranslationMap.new('library_on_order_map')
 
-  order_libs.each do |order_lib|
+  lib_codes = order_libs.flat_map { |l| l.split(' ') }.map { |order_lib| translation_map[order_lib] }.uniq
+  # exclude generic SUL if there's a more specific library
+  lib_codes -= ['SUL'] if lib_codes.length > 1
+  lib_codes.each do |lib|
     accumulator << [
       '',
-      translation_map[order_lib],
+      lib,
       'ON-ORDER',
       'ON-ORDER',
       '',
