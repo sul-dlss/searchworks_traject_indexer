@@ -56,7 +56,7 @@ module Traject
       <<-SQL
       WITH viewLocations(locId, locJsonb, locCampJsonb, locLibJsonb, locInstJsonb) AS (
         SELECT loc.id AS locId,
-               jsonb_build_object('id', loc.id, 'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'), 'code', loc.jsonb ->> 'code', 'details', loc.jsonb -> 'details') AS locJsonb,
+               jsonb_build_object('id', loc.id, 'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'), 'isActive', COALESCE((loc.jsonb ->> 'isActive')::bool, false), 'code', loc.jsonb ->> 'code', 'details', loc.jsonb -> 'details') AS locJsonb,
                jsonb_build_object('id', locCamp.id, 'name', COALESCE(locCamp.jsonb ->> 'discoveryDisplayName', locCamp.jsonb ->> 'name'), 'code', locCamp.jsonb ->> 'code') AS locCampJsonb,
                jsonb_build_object('id', locLib.id, 'name', COALESCE(locLib.jsonb ->> 'discoveryDisplayName', locLib.jsonb ->> 'name'), 'code', locLib.jsonb ->> 'code') AS locLibJsonb,
                jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
@@ -67,7 +67,6 @@ module Traject
                 ON (loc.jsonb ->> 'campusId')::uuid = locCamp.id
            LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
                 ON (loc.jsonb ->> 'libraryId')::uuid = locLib.id
-        WHERE (loc.jsonb ->> 'isActive')::bool = true
         )
       SELECT
         vi.id,
