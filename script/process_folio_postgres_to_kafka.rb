@@ -38,9 +38,19 @@ File.open(state_file, 'r+') do |f|
              ['TRUE']
            end
   counts = Parallel.map(shards, in_processes: Utils.env_config.processes.to_i) do |sql_filter|
-    reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date.utc.iso8601,
-                                                   'postgres.url': ENV.fetch('DATABASE_URL'), 'postgres.sql_filters': sql_filter)
-    Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
+    attempts ||= 1
+    begin
+      reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date&.utc&.iso8601,
+                                                     'postgres.url': ENV.fetch('DATABASE_URL'), 'postgres.sql_filters': sql_filter)
+      Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
+    rescue PG::Error => e
+      raise(e) if attempts > 5
+
+      attempts += 1
+      Utils.logger.info e.message
+      sleep rand((2**attempts)..(2 * (2**attempts)))
+      retry
+    end
   end
 
   Utils.logger.info "Processed #{counts.sum} total records"
