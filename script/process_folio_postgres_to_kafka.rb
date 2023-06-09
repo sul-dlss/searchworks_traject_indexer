@@ -37,12 +37,13 @@ File.open(state_file, 'r+') do |f|
            else
              ['TRUE']
            end
-  Parallel.map(shards, in_processes: Utils.env_config.processes.to_i) do |sql_filter|
+  counts = Parallel.map(shards, in_processes: Utils.env_config.processes.to_i) do |sql_filter|
     reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date.utc.iso8601,
                                                    'postgres.url': ENV.fetch('DATABASE_URL'), 'postgres.sql_filters': sql_filter)
     Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
   end
 
+  Utils.logger.info "Processed #{counts.sum} total records"
   Utils.logger.info "Response generated at: #{last_response_date} (previous: #{last_date})"
 
   if last_response_date > last_date

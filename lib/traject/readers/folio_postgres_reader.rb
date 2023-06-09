@@ -45,6 +45,10 @@ module Traject
             yield FolioRecord.new(JSON.parse(row['jsonb_build_object']))
           end
         end
+
+        # close the cursor; should happen automatically at the end of the transaction
+        # but just in case we keep the reader around...
+        @connection.exec('CLOSE folio')
       end
     end
 
