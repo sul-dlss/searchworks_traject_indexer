@@ -267,9 +267,9 @@ module Traject
         ON pieces.titleid = titles.id
       -- Bound with parts relation
       LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
-        ON (bw.jsonb ->> 'holdingsRecordId')::uuid = hr.id
+        ON bw.holdingsrecordid = hr.id
       LEFT JOIN sul_mod_inventory_storage.item parentItem
-        ON (bw.jsonb ->> 'itemId')::uuid = parentItem.id
+        ON bw.itemid = parentItem.id
       LEFT JOIN sul_mod_inventory_storage.holdings_record parentHolding
         ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
