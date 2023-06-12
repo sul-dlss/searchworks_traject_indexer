@@ -34,6 +34,6 @@ every :day, at: '09:00pm' do
 end
 
 # USING FOLIO DATA
-every :hour, roles: [:stage] do
+every '*/5 * * * *', roles: [:stage] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres.sh', traject_env: 'folio_test'
 end
