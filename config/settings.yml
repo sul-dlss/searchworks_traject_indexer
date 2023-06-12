@@ -7,5 +7,5 @@ environments:
   morison:
     kafka_topic: marc_morison
   folio_test:
-    processes: 8
+    processes: 1
     kafka_topic: marc_folio_test

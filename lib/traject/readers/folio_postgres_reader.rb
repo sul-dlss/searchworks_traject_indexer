@@ -11,7 +11,7 @@ module Traject
       @settings = Traject::Indexer::Settings.new settings
       @connection = PG.connect(@settings['postgres.url'])
       @page_size = @settings['postgres.page_size'] || 100
-      @updated_after = @settings['folio.updated_after'] || Time.at(0).utc.iso8601
+      @updated_after = @settings['folio.updated_after']
       @sql_filters = @settings['postgres.sql_filters'] || 'TRUE'
     end
 
@@ -31,10 +31,14 @@ module Traject
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
-        conditions = %w[vi hr item cr cl cc].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+        queries = if @updated_after
+                    conditions = %w[vi hr item cr cl cc].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+                    conditions.map { |c| sql_query(c) }.join(') UNION (')
+                  else
+                    sql_query([@sql_filters])
+                  end
 
-        union_queries = conditions.map { |c| sql_query(c) }.join(') UNION (')
-        @connection.exec("DECLARE folio CURSOR FOR (#{union_queries})")
+        @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
 
         # execute our query
         loop do
