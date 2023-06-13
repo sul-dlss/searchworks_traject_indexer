@@ -23,6 +23,8 @@ settings do
     provide 'reader_class_name', 'Traject::FolioReader'
     provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil))
   end
+
+  provide 'skip_empty_item_display', -1
 end
 
 ##
@@ -217,4 +219,12 @@ end
 
 to_field 'bound_with_parents_struct' do |record, accumulator|
   accumulator << record.bound_with_parents.to_json
+end
+
+##
+# Skip records for missing `item_display` field
+each_record do |_record, context|
+  if context.output_hash['item_display'].blank? && context.output_hash['url_fulltext'].blank?
+    context.skip!('No item_display or url_fulltext field')
+  end
 end
