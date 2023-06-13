@@ -201,6 +201,7 @@ class FolioRecord
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def instance_derived_marc_record
     MARC::Record.new.tap do |marc|
       marc.append(MARC::ControlField.new('001', hrid))
@@ -249,16 +250,25 @@ class FolioRecord
       record.dig('instance', 'series').each do |series|
         marc.append(MARC::DataField.new('490', '0', '', ['a', series]))
       end
-      # 856 stuff
-
       record.dig('instance', 'subjects').each do |subject|
         marc.append(MARC::DataField.new('653', '', '', ['a', subject]))
       end
+
+      # 856 stuff
+      record.dig('instance', 'electronicAccess')&.each do |eresource|
+        marc.append(MARC::DataField.new('856', '4', '0', ['u', eresource['uri']]))
+      end
+
+      holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
+        marc.append(MARC::DataField.new('856', '4', '0', ['u', eresource['uri']]))
+      end
+
       # nature of content
       marc.append(MARC::DataField.new('999', '', '', ['i', record.dig('instance', 'id')]))
       # date creaetd
       # date updated
     end.to_hash
   end
+  # rubocop:enable Metrics/AbcSize
 end
 # rubocop:enable Metrics/ClassLength
