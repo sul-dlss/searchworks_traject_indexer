@@ -85,10 +85,10 @@ class FolioRecord
   # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
   # TODO: remove this when we stop using SirsiHoldings
   def bound_with_holdings
-    return [] unless record['boundWithParents']
+    return [] unless bound_with_parents
 
     @bound_with_holdings ||= holdings.filter { |holding| holding['holdingsType'].is_a?(Hash) ? holding.dig('holdingsType', 'name') == 'Bound-with' : holding['holdingsType'] == 'Bound-with' }.filter_map do |holding|
-      parent_item = record['boundWithParents'].find { |parent| parent['childHoldingId'] == holding['id'] }
+      parent_item = bound_with_parents.find { |parent| parent['childHoldingId'] == holding['id'] }
       next unless parent_item
 
       parent_item_perm_location = parent_item.dig('parentItemLocation', 'permanentLocation', 'code')
