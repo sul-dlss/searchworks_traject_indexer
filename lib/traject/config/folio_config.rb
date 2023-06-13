@@ -39,6 +39,11 @@ def reserves_lookup = {}
 
 load_config_file(File.expand_path('sirsi_config.rb', __dir__))
 
+# Skip records that only have suppressed items
+each_record do |record, context|
+  context.skip!('Only suppressed items') if record.items_all_suppressed?
+end
+
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
   context.clipboard[:call_number_for_holding][holding] ||= begin
