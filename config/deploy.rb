@@ -65,12 +65,6 @@ task :jruby_bundle_install do
   end
 end
 
-task :install_foreman do
-  on roles(:app) do
-    execute :gem, 'install', 'foreman', '-v', '~> 0.87.0'
-  end
-end
-
 namespace :deploy do
   desc "config for monitoring the deployment's traject workers"
   before :cleanup, :start_workers do
@@ -91,4 +85,3 @@ namespace :deploy do
 end
 
 before 'bundler:install', 'jruby_bundle_install'
-after 'bundler:install', 'install_foreman'

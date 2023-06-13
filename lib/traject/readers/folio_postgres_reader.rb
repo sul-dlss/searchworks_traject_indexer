@@ -11,7 +11,7 @@ module Traject
       @settings = Traject::Indexer::Settings.new settings
       @connection = PG.connect(@settings['postgres.url'])
       @page_size = @settings['postgres.page_size'] || 100
-      @updated_after = @settings['folio.updated_after'] || Time.at(0).utc.iso8601
+      @updated_after = @settings['folio.updated_after']
       @sql_filters = @settings['postgres.sql_filters'] || 'TRUE'
     end
 
@@ -31,10 +31,14 @@ module Traject
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
-        conditions = %w[vi hr item cr cl cc].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+        queries = if @updated_after
+                    conditions = %w[vi hr item cr cl cc].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
+                    conditions.map { |c| sql_query(c) }.join(') UNION (')
+                  else
+                    sql_query([@sql_filters])
+                  end
 
-        union_queries = conditions.map { |c| sql_query(c) }.join(') UNION (')
-        @connection.exec("DECLARE folio CURSOR FOR (#{union_queries})")
+        @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
 
         # execute our query
         loop do
@@ -45,6 +49,10 @@ module Traject
             yield FolioRecord.new(JSON.parse(row['jsonb_build_object']))
           end
         end
+
+        # close the cursor; should happen automatically at the end of the transaction
+        # but just in case we keep the reader around...
+        @connection.exec('CLOSE folio')
       end
     end
 
@@ -263,9 +271,9 @@ module Traject
         ON pieces.titleid = titles.id
       -- Bound with parts relation
       LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
-        ON (bw.jsonb ->> 'holdingsRecordId')::uuid = hr.id
+        ON bw.holdingsrecordid = hr.id
       LEFT JOIN sul_mod_inventory_storage.item parentItem
-        ON (bw.jsonb ->> 'itemId')::uuid = parentItem.id
+        ON bw.itemid = parentItem.id
       LEFT JOIN sul_mod_inventory_storage.holdings_record parentHolding
         ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
