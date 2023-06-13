@@ -141,11 +141,15 @@ class FolioRecord
   end
 
   def items
-    @items ||= load_unsuppressed('items')
+    @items ||= load('items').reject { |item| item['suppressFromDiscovery'] }
+  end
+
+  def items_all_suppressed?
+    load('items').any? && load('items').all? { |item| item['suppressFromDiscovery'] }
   end
 
   def holdings
-    @holdings ||= load_unsuppressed('holdings')
+    @holdings ||= load('holdings').reject { |item| item['suppressFromDiscovery'] }
   end
 
   def pieces
@@ -184,9 +188,9 @@ class FolioRecord
   private
 
   # @param [String] type either 'items' or 'holdings'
-  # @return [Array] list of records, of the specified type excluding those that are suppressed
-  def load_unsuppressed(type)
-    (record[type] || items_and_holdings&.dig(type) || []).compact.reject { |item| item['suppressFromDiscovery'] }
+  # @return [Array] list of records, of the specified type
+  def load(type)
+    (record[type] || items_and_holdings&.dig(type) || []).compact
   end
 
   def items_and_holdings
