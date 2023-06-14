@@ -168,6 +168,36 @@ RSpec.describe FolioRecord do
     end
   end
 
+  describe 'derived 856 fields' do
+    let(:record) do
+      {
+        'instance' => {
+          'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+        },
+        'holdings' => [{
+          'electronicAccess' => [
+            { 'uri' => 'http://example.com/2', 'name' => 'Resource' }
+          ]
+        }],
+        'source_record' => [{
+          'fields' => [
+            { '001' => 'a14154194' },
+            { '856' => {
+              'subfields' => [
+                { 'u' => 'http://example.com/1' }
+              ]
+            } }
+          ]
+        }]
+      }
+    end
+
+    it 'replaces any 856 field data with a derived values from the electronic access statement in the FOLIO holdings' do
+      expect(folio_record.marc_record.fields('856').length).to eq(1)
+      expect(folio_record.marc_record['856'].subfields).to include(have_attributes(code: 'u', value: 'http://example.com/2'))
+    end
+  end
+
   describe '#bound_with_holdings' do
     context 'when the holding is not a bound-with child' do
       let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_basic.json'))), client) }
