@@ -37,65 +37,82 @@ RSpec.describe FolioRecord do
   end
 
   describe 'the 590 field' do
-    context 'when record has existing 590 in its MARC' do
-      context 'when 590 has subfield a' do
-        let(:record) do
-          {
-            'instance' => {
-              'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-            },
-            'holdings' => [],
-            'source_record' => [{
-              'fields' => [
-                { '001' => 'a14154194' },
-                { '590' => {
-                  'subfields' => [
-                    { 'a' => 'Cataloged info about the Bound-with' }
-                  ]
-                } }
-              ]
-            }]
-          }
-        end
-        it 'does not overwrite existing 590s' do
-          expect(folio_record.marc_record['590']['a']).to eq('Cataloged info about the Bound-with')
-        end
+    context 'when record has existing bound-with 590 in its MARC' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'holdings' => [],
+          'source_record' => [{
+            'fields' => [
+              { '001' => 'a14154194' },
+              { '590' => {
+                'subfields' => [
+                  { 'a' => 'Cataloged info about the Bound-with' },
+                  { 'c' => '1234 (parent record)' }
+                ]
+              } }
+            ]
+          }],
+          'boundWithParents' => [
+            {
+              'parentInstanceId' => '134624',
+              'parentInstanceTitle' => 'Mursilis Sprachlähmung',
+              'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+              'parentItemBarcode' => '36105018739321',
+              'childHoldingCallNumber' => '064.8 .D191H'
+            }
+          ]
+        }
       end
 
-      context 'when 590 exists but is missing subfield a, c, or d, and has Bound-with parents via FOLIO APIs' do
-        let(:record) do
-          {
-            'instance' => {
-              'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-            },
-            'holdings' => [],
-            'source_record' => [{
-              'fields' => [
-                { '001' => 'a14154194' },
-                { '590' => {
-                  'subfields' => []
-                } }
-              ]
-            }],
-            'boundWithParents' => [
-              {
-                'parentInstanceId' => '134624',
-                'parentInstanceTitle' => 'Mursilis Sprachlähmung',
-                'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
-                'parentItemBarcode' => '36105018739321',
-                'childHoldingCallNumber' => '064.8 .D191H'
-              }
-            ]
-          }
-        end
-        it 'writes a new 590' do
-          expect(folio_record.marc_record['590'].subfields).to match_array([
-                                                                             have_attributes(code: 'a', value: '064.8 .D191H bound with Mursilis Sprachlähmung'),
-                                                                             have_attributes(code: 'c', value: '134624 (parent record)')
-                                                                           ])
-        end
+      it 'does not overwrite existing 590s' do
+        expect(folio_record.marc_record.fields('590').length).to eq 1
+        expect(folio_record.marc_record.fields('590').first.subfields).to match_array([
+                                                                                        have_attributes(code: 'a', value: 'Cataloged info about the Bound-with'),
+                                                                                        have_attributes(code: 'c', value: '1234 (parent record)')
+                                                                                      ])
       end
     end
+
+    context 'when 590 exists but it is not a bound-with and has Bound-with parents via FOLIO APIs' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'holdings' => [],
+          'source_record' => [{
+            'fields' => [
+              { '001' => 'a14154194' },
+              { '590' => {
+                'subfields' => [{ 'a' => 'Totally not a bound-with' }]
+              } }
+            ]
+          }],
+          'boundWithParents' => [
+            {
+              'parentInstanceId' => '134624',
+              'parentInstanceTitle' => 'Mursilis Sprachlähmung',
+              'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+              'parentItemBarcode' => '36105018739321',
+              'childHoldingCallNumber' => '064.8 .D191H'
+            }
+          ]
+        }
+      end
+      it 'writes a new 590' do
+        expect(folio_record.marc_record.fields('590').first.subfields).to match_array([
+                                                                                        have_attributes(code: 'a', value: 'Totally not a bound-with')
+                                                                                      ])
+        expect(folio_record.marc_record.fields('590').last.subfields).to match_array([
+                                                                                       have_attributes(code: 'a', value: '064.8 .D191H bound with Mursilis Sprachlähmung'),
+                                                                                       have_attributes(code: 'c', value: '134624 (parent record)')
+                                                                                     ])
+      end
+    end
+
     context 'when record does not have existing 590 in its MARC' do
       let(:record) do
         {
