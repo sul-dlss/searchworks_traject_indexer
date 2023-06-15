@@ -114,7 +114,7 @@ RSpec.describe 'FOLIO indexing' do
 
     it {
       expect(result['item_display']).to eq(
-        ['a12451243-0000 -|- SUL -|- INTERNET -|-  -|- ONLINE -|-  -|- ' \
+        ['12451243-1001 -|- SUL -|- INTERNET -|-  -|- ONLINE -|-  -|- ' \
          'lc pr  3562.000000 l0.385000 002014 -|- ' \
          'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~ -|-  -|-  -|-  -|- LC']
       )
