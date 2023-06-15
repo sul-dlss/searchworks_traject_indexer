@@ -78,7 +78,7 @@ module Folio
     end
 
     def barcode(index)
-      "#{hrid}-#{index.to_s.rjust(4, '0')}"
+      "#{hrid.sub(/^a/, '')}-#{(1000 + index + 1).to_s.rjust(4, '0')}"
     end
 
     def home_location_code

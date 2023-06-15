@@ -46,7 +46,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   it { expect(holdings.first.home_location).to eq 'INTERNET' }
   it { expect(holdings.first.library).to eq 'SUL' }
   it { expect(holdings.first.type).to eq 'ONLINE' }
-  it { expect(holdings.first.barcode).to eq 'a12451243-0000' }
+  it { expect(holdings.first.barcode).to eq '12451243-1001' }
   it { expect(holdings.first.tag).to be_a MARC::DataField }
 
   context 'record does not have any fulltext links' do
