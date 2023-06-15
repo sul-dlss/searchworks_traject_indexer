@@ -49,6 +49,10 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
       path = File.expand_path('../../lib/traject/config/sirsi_config.rb', __dir__)
       File.read(path).scan(/to_field ["']([^"']+)["']/).map(&:first).uniq
     end
+    before(:each) do
+      pending 'No record in FOLIO' unless folio_record.present?
+      pending 'No source record' if folio_record.record['source_record'].none?
+    end
 
     let(:skipped_fields) do
       [
