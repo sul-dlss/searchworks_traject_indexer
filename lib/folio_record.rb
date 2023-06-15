@@ -113,6 +113,8 @@ class FolioRecord
   end
 
   def eresource_holdings
+    return [] if items.any?
+
     Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
   end
 
