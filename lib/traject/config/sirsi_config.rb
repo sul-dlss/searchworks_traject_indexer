@@ -980,6 +980,9 @@ to_field 'access_facet' do |record, accumulator, context|
     end
   end
 
+  # Bound-withs are, by definition, at the library
+  accumulator << 'At the Library' if accumulator.empty? && record.fields('590').any? { |f| f['a'] && f['c'] }
+
   accumulator << 'On order' if accumulator.empty?
   accumulator << 'Online' if context.output_hash['url_fulltext']
   accumulator << 'Online' if context.output_hash['url_sfx']
@@ -2394,6 +2397,9 @@ end
 
 to_field 'item_display' do |record, accumulator, context|
   next if holdings(record, context).any?
+
+  # If there are no items, but this item appears to be a bound-with, we don't want to add the placeholder
+  next if record.fields('590').any? { |f| f['a'] && f['c'] }
 
   order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(record)
   translation_map = Traject::TranslationMap.new('library_on_order_map')

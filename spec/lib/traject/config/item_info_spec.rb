@@ -139,6 +139,23 @@ RSpec.describe 'ItemInfo config' do
       it { expect(result[field]).to match_array([match('-|- GREEN -|-'), match('-|- ART -|-')]) }
     end
 
+    context 'when an item is bound-with' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.append(
+            MARC::DataField.new(
+              '590', ' ', ' ',
+              MARC::Subfield.new('a', 'bound with something else'),
+              MARC::Subfield.new('c', '1234 (parent catkey)')
+            )
+          )
+        end
+      end
+
+      it 'omits the on-order placeholder' do
+        expect(result[field]).to be_nil
+      end
+    end
     describe 'field is populated correctly, focusing on building/library' do
       let(:fixture_name) { 'buildingTests.mrc' }
 

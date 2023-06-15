@@ -51,6 +51,20 @@ RSpec.describe 'Access config' do
     specify { expect(result[field]).to eq ['Online'] }
   end
 
+  describe 'with a bound-with without any holdings' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = '00988nas a2200193z  4500'
+        r.append(MARC::ControlField.new('008', '071214uuuuuuuuuxx uu |ss    u|    |||| d'))
+        r.append(MARC::DataField.new('590', '4', '0',
+                                     MARC::Subfield.new('a', 'Bound-with'),
+                                     MARC::Subfield.new('c', '123456789')))
+      end
+    end
+
+    specify { expect(result[field]).to eq ['At the Library'] }
+  end
+
   describe 'when the url is that of a GSB request' do
     it 'is considered at the library' do
       expect(select_by_id('123http')[field]).to eq ['At the Library']
