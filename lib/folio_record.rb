@@ -37,10 +37,26 @@ class FolioRecord
     instance['hrid']
   end
 
+  # Extend the MARC record with data from the FOLIO instance
+  # to create parity with the data contained in the Symphony record.
+  # @return [MARC::Record]
   def marc_record
     @marc_record ||= begin
       record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
 
+      # Copy FOLIO Holdings electronic access data to an 856 (used by Lane)
+      # overwriting any existing 856 fields (to avoid having to reconcile/merge data)
+      eholdings = holdings.flat_map { |h| h['electronicAccess'] }
+
+      if eholdings.any?
+        record.fields.delete_if { |field| field.tag == '856' }
+
+        eholdings.each do |eresource|
+          record.append(folio_electronic_access_marc_field(eresource))
+        end
+      end
+
+      # Copy bound-with holdings to the 590 field, if one isn't already present:
       # if 590 with Bound-with related subfields are present, return the record as is
       unless record.fields('590').any? { |f| f['a'] && f['c'] }
         # if 590 or one of its Bound-with related subfields is missing, and FOLIO says this record is Bound-with, append the relevant data from FOLIO
@@ -85,10 +101,10 @@ class FolioRecord
   # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
   # TODO: remove this when we stop using SirsiHoldings
   def bound_with_holdings
-    return [] unless record['boundWithParents']
+    return [] unless bound_with_parents
 
     @bound_with_holdings ||= holdings.filter { |holding| holding['holdingsType'].is_a?(Hash) ? holding.dig('holdingsType', 'name') == 'Bound-with' : holding['holdingsType'] == 'Bound-with' }.filter_map do |holding|
-      parent_item = record['boundWithParents'].find { |parent| parent['childHoldingId'] == holding['id'] }
+      parent_item = bound_with_parents.find { |parent| parent['childHoldingId'] == holding['id'] }
       next unless parent_item
 
       parent_item_perm_location = parent_item.dig('parentItemLocation', 'permanentLocation', 'code')
@@ -204,6 +220,7 @@ class FolioRecord
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def instance_derived_marc_record
     MARC::Record.new.tap do |marc|
       marc.append(MARC::ControlField.new('001', hrid))
@@ -252,16 +269,42 @@ class FolioRecord
       record.dig('instance', 'series').each do |series|
         marc.append(MARC::DataField.new('490', '0', '', ['a', series]))
       end
-      # 856 stuff
-
       record.dig('instance', 'subjects').each do |subject|
         marc.append(MARC::DataField.new('653', '', '', ['a', subject]))
       end
+
+      # 856 stuff
+      record.dig('instance', 'electronicAccess')&.each do |eresource|
+        marc.append(folio_electronic_access_marc_field(eresource))
+      end
+
+      holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
+        marc.append(folio_electronic_access_marc_field(eresource))
+      end
+
       # nature of content
       marc.append(MARC::DataField.new('999', '', '', ['i', record.dig('instance', 'id')]))
       # date creaetd
       # date updated
     end.to_hash
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def folio_electronic_access_marc_field(eresource)
+    ind2 = case eresource['name']
+           when 'Resource'
+             '0'
+           when 'Version of resource'
+             '1'
+           when 'Related resource'
+             '2'
+           when 'No display constant generated'
+             '8'
+           else
+             ''
+           end
+
+    MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']])
   end
 end
 # rubocop:enable Metrics/ClassLength
