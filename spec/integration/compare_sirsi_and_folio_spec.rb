@@ -63,6 +63,9 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         'building_location_facet_ssim', # item types are different; internal use only so this is fine.
         'date_cataloged', # Comes out of a 9xx field
         'context_marc_fields_ssim', # different 9xx fields
+        'url_fulltext', # FOLIO has ezproxy prefixes
+        'url_restricted', # FOLIO has ezproxy prefixes
+        'marc_links_struct', # FOLIO has ezproxy prefixes
         'marc_json_struct',
         'context_source_ssi' # sirsi_config sets this to 'sirsi', and folio sets it to 'folio'
       ]
@@ -94,6 +97,14 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
             expect(folio_result[key]).to eq(sirsi_result[key]),
                                          "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
           end
+        end
+
+        %w[url_fulltext url_restricted marc_links_struct].each do |key|
+          # we can treat nil and an empty array as equivalent (but not e.g. nil and an empty string)
+          next if Array(folio_result[key]).empty? && Array(sirsi_result[key]).empty?
+
+          expect(folio_result[key].map { |x| x.gsub('https://stanford.idm.oclc.org/login?url=', '') }).to eq(sirsi_result[key]),
+                                                                                                          "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
         end
 
         if sirsi_result['item_display'] || folio_result['item_display']
