@@ -149,11 +149,30 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   # pending
-  %w[
-    a576562
-    a12451243
-    a13288549
-    a10151431
+  [
+    'a576562',
+    'a12451243',
+    'a13288549',
+    'a10151431',
+    'a81622', # funky call-number problems
+    'a6634796', # missing call number in item_display
+    'a1553634', # migration error holdings
+    'a13295747', # electronic, not on-order
+    'a14540777', # In-process
+    'a3118108', # missing
+    'a10146027', # SUL/SDR instead of SUL/INTERNET
+    'a12264341', # extra electronic items
+    'a9335111', # missing bound-withs
+    'a14644326', # in-process current location mapping
+    'a14461522', # ???
+    'a4084116', # call number changed?
+    'a13652131', # electronic only, missing physical holding?
+    'a12709561', # Shown as on-order
+    'a282409', # MARC 699 field
+    'a10690790', # ezproxy prefix
+    'a6535458', # MHLD punctuation
+    'a5814693', # MHLD ordering
+    'a6517994' # has unexpected MHLD statements
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
