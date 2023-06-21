@@ -2177,11 +2177,8 @@ to_field 'barcode_search', extract_marc('999i')
 # * 2. If no Green shelfkey, use the above algorithm libraries (raw codes in 999) in alpha order.
 # *
 to_field 'preferred_barcode' do |record, accumulator, context|
-  non_skipped_holdings = []
-  holdings(record, context).each do |holding|
-    next if holding.skipped? || holding.bad_lc_lane_call_number? || holding.ignored_call_number?
-
-    non_skipped_holdings << holding
+  non_skipped_holdings = holdings(record, context).reject do |holding|
+    holding.skipped? || holding.bad_lc_lane_call_number? || holding.ignored_call_number?
   end
 
   next if non_skipped_holdings.length == 0
