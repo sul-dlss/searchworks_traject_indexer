@@ -154,8 +154,12 @@ class SirsiHolding
       @call_number = call_number
     end
 
+    def <=>(other)
+      to_s <=> other.to_s
+    end
+
     def to_s
-      call_number
+      call_number.to_s
     end
 
     def dewey?
