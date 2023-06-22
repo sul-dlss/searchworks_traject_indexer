@@ -95,7 +95,7 @@ class FolioRecord
         public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),
         tag: item
       )
-    end.concat(bound_with_holdings)
+    end.concat(bound_with_holdings).concat(eresource_holdings)
   end
 
   # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding

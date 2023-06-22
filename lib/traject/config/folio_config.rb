@@ -113,7 +113,7 @@ def call_number_for_holding(record, holding, context)
 end
 
 def holdings(record, context)
-  context.clipboard[:holdings] ||= record.sirsi_holdings.concat(record.eresource_holdings)
+  context.clipboard[:holdings] ||= record.sirsi_holdings
 end
 
 ## FOLIO diverging implementations

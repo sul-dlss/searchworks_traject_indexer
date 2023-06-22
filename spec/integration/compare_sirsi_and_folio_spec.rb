@@ -142,15 +142,20 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   # working
-  %w[
-    a1004359
-    a10269181
-    a10173326
-    a10779956
-    a12857777
-    a1759444
-    a303651
-    a304635
+  [
+    'a1004359',
+    'a10269181',
+    'a10173326',
+    'a10779956',
+    'a12857777',
+    'a1759444',
+    'a303651',
+    'a304635',
+    'a12451243',
+    'a13288549',
+    'a13295747', # electronic
+    'a12709561', # electronic
+    'a10690790' # ezproxy prefix
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
@@ -162,14 +167,11 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   # pending
   [
     'a576562',
-    'a12451243',
-    'a13288549',
     'a10151431',
     'a81622', # funky call-number problems
     'a515836', # funky call-number problems
     'a6634796', # missing call number in item_display
     'a1553634', # migration error holdings
-    'a13295747', # electronic, not on-order
     'a14540777', # In-process
     'a3118108', # missing
     'a10146027', # SUL/SDR instead of SUL/INTERNET
@@ -179,9 +181,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a14461522', # ???
     'a4084116', # call number changed?
     'a13652131', # electronic only, missing physical holding?
-    'a12709561', # Shown as on-order
     'a282409', # MARC 699 field
-    'a10690790', # ezproxy prefix
     'a2492166', # bound-with call numbers missing
     'a6535458', # MHLD punctuation
     'a5814693', # MHLD ordering

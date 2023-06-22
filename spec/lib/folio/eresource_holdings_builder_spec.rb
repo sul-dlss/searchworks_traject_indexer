@@ -49,12 +49,14 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   it { expect(holdings.first.barcode).to eq '12451243-1001' }
   it { expect(holdings.first.tag).to be_a MARC::DataField }
 
-  context 'record does not have any fulltext links' do
+  context 'record does not have any fulltext links (but does have an 856/956)' do
     let(:source_record_json) do
       JSON.parse(File.read(file_fixture('a14185492.json')))
     end
 
-    it { expect(holdings).to be_empty }
+    it { expect(holdings.count).to eq 1 }
+    it { expect(holdings.first.call_number.call_number).to eq 'INTERNET RESOURCE' }
+    it { expect(holdings.first.home_location).to eq 'INTERNET' }
   end
 
   context 'the holding library is Law' do
