@@ -89,7 +89,7 @@ class FolioRecord
         current_location: (current_location unless current_location == home_location_code),
         home_location: home_location_code,
         library: library_code,
-        scheme: call_number_type_map(item.dig('callNumberType', 'name')),
+        scheme: call_number_type_map(item.dig('callNumberType', 'name') || item.dig('callNumber', 'typeName')),
         type: item['materialType'],
         barcode: item['barcode'],
         public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),

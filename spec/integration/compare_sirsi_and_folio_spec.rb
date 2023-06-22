@@ -63,6 +63,9 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         'building_location_facet_ssim', # item types are different; internal use only so this is fine.
         'date_cataloged', # Comes out of a 9xx field
         'context_marc_fields_ssim', # different 9xx fields
+        'url_fulltext', # FOLIO has ezproxy prefixes
+        'url_restricted', # FOLIO has ezproxy prefixes
+        'marc_links_struct', # FOLIO has ezproxy prefixes
         'marc_json_struct',
         'context_source_ssi' # sirsi_config sets this to 'sirsi', and folio sets it to 'folio'
       ]
@@ -94,6 +97,14 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
             expect(folio_result[key]).to eq(sirsi_result[key]),
                                          "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
           end
+        end
+
+        %w[url_fulltext url_restricted marc_links_struct].each do |key|
+          # we can treat nil and an empty array as equivalent (but not e.g. nil and an empty string)
+          next if Array(folio_result[key]).empty? && Array(sirsi_result[key]).empty?
+
+          expect(folio_result[key].map { |x| x.gsub('https://stanford.idm.oclc.org/login?url=', '') }).to eq(sirsi_result[key]),
+                                                                                                          "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
         end
 
         if sirsi_result['item_display'] || folio_result['item_display']
@@ -149,11 +160,30 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   # pending
-  %w[
-    a576562
-    a12451243
-    a13288549
-    a10151431
+  [
+    'a576562',
+    'a12451243',
+    'a13288549',
+    'a10151431',
+    'a81622', # funky call-number problems
+    'a6634796', # missing call number in item_display
+    'a1553634', # migration error holdings
+    'a13295747', # electronic, not on-order
+    'a14540777', # In-process
+    'a3118108', # missing
+    'a10146027', # SUL/SDR instead of SUL/INTERNET
+    'a12264341', # extra electronic items
+    'a9335111', # missing bound-withs
+    'a14644326', # in-process current location mapping
+    'a14461522', # ???
+    'a4084116', # call number changed?
+    'a13652131', # electronic only, missing physical holding?
+    'a12709561', # Shown as on-order
+    'a282409', # MARC 699 field
+    'a10690790', # ezproxy prefix
+    'a6535458', # MHLD punctuation
+    'a5814693', # MHLD ordering
+    'a6517994' # has unexpected MHLD statements
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
