@@ -166,6 +166,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a13288549',
     'a10151431',
     'a81622', # funky call-number problems
+    'a515836', # funky call-number problems
     'a6634796', # missing call number in item_display
     'a1553634', # migration error holdings
     'a13295747', # electronic, not on-order
@@ -181,6 +182,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a12709561', # Shown as on-order
     'a282409', # MARC 699 field
     'a10690790', # ezproxy prefix
+    'a2492166', # bound-with call numbers missing
     'a6535458', # MHLD punctuation
     'a5814693', # MHLD ordering
     'a6517994' # has unexpected MHLD statements
