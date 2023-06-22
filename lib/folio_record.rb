@@ -83,6 +83,12 @@ class FolioRecord
       item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'location', 'code'))
+      current_location ||= case item['status']
+                           when 'Missing', 'Long missing'
+                             'MISSING'
+                           when 'In process'
+                             'INPROCESS'
+                           end
 
       SirsiHolding.new(
         call_number: [item.dig('callNumber', 'callNumber'), item['enumeration']].compact.join(' '),

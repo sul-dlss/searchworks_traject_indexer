@@ -115,6 +115,11 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
             folio_display_parts = folio_item_display_fields.find { |item_displays| item_displays[0] == item_display_parts[0] }
 
             if folio_display_parts.present?
+              # INPROCESS and MISSING can be a location or current location
+              if %w[INPROCESS MISSING].include?(item_display_parts[2])
+                item_display_parts[3] = item_display_parts[2]
+                item_display_parts[2] = folio_display_parts[2]
+              end
               # we're not mapping item types
               item_display_parts[4] = folio_display_parts[4] = ''
 
@@ -155,7 +160,10 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a13288549',
     'a13295747', # electronic
     'a12709561', # electronic
-    'a10690790' # ezproxy prefix
+    'a10690790', # ezproxy prefix
+    'a81622', # missing status
+    'a14644326', # in-process status
+    'a3118108' # missing status
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
@@ -168,16 +176,12 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   [
     'a576562',
     'a10151431',
-    'a81622', # funky call-number problems
     'a515836', # funky call-number problems
     'a6634796', # missing call number in item_display
     'a1553634', # migration error holdings
-    'a14540777', # In-process
-    'a3118108', # missing
     'a10146027', # SUL/SDR instead of SUL/INTERNET
     'a12264341', # extra electronic items
     'a9335111', # missing bound-withs
-    'a14644326', # in-process current location mapping
     'a14461522', # ???
     'a4084116', # call number changed?
     'a13652131', # electronic only, missing physical holding?
