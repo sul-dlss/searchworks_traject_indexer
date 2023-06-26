@@ -42,7 +42,10 @@ module Folio
       # like a PURL or HathiTrust link and we don't need to do anything.
       return [] unless electronic_holding_location_code
 
-      fulltext_links.map.with_index do |_url, index|
+      fields = fulltext_links
+      fields = electronic_location_fields.first(1) if fields.empty?
+
+      fields.map.with_index do |_url, index|
         item = marc_item(index)
         SirsiHolding.new(
           call_number: item['a'],
