@@ -31,7 +31,6 @@ gem 'ruby-kafka'
 gem 'stanford-mods', '~> 3.0'
 gem 'statsd-ruby'
 gem 'whenever'
-gem 'zeitwerk'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
