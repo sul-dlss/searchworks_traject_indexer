@@ -1977,7 +1977,7 @@ to_field 'callnum_search' do |record, accumulator, context|
     if holding.call_number_type == 'DEWEY' || holding.call_number_type == 'LC'
       call_number = call_number.strip
       call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
-      call_number = call_number.gsub(/\. \./, ' .') # reduce multiple whitespace chars to a single space
+      call_number = call_number.gsub('. .', ' .') # reduce multiple whitespace chars to a single space
       call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
       call_number = call_number.gsub(/\s*\.$/, '') # remove trailing period and any spaces before it
     end
@@ -2010,10 +2010,10 @@ to_field 'shelfkey' do |record, accumulator, context|
       # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
       accumulator << if lopped_shelfkey != call_number_object.to_shelfkey || stuff_in_the_same_library.reject do |x|
                                                                                x.call_number.to_s == holding.call_number.to_s
-                                                                             end.select do |x|
+                                                                             end.any? do |x|
                           call_number_for_holding(record, x,
                                                   context).lopped == call_number_object.lopped
-                        end.any?
+                        end
                        lopped_shelfkey + ' ...'
                      else
                        lopped_shelfkey
@@ -2158,7 +2158,7 @@ to_field 'stanford_dept_sim' do |record, accumulator, context|
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.replace(accumulator.map do |value|
-    value = value.gsub(/Dept\./, 'Department')
+    value = value.gsub('Dept.', 'Department')
     value = value.gsub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[.{2,}]|[LAE][arn][wtg])\.$/, '\1')
   end)
 end
@@ -2349,10 +2349,10 @@ to_field 'item_display' do |record, accumulator, context|
         # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this holding's shelfkey, we need to add ellipses.
         if call_number_object.lopped == holding.call_number.to_s && stuff_in_the_same_library.reject do |x|
                                                                       x.call_number.to_s == holding.call_number.to_s
-                                                                    end.select do |x|
+                                                                    end.any? do |x|
              call_number_for_holding(record, x,
                                      context).lopped == call_number_object.lopped
-           end.any?
+           end
           lopped_call_number += ' ...'
           shelfkey += ' ...'
         end

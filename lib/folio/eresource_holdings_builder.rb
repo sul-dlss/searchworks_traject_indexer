@@ -63,7 +63,7 @@ module Folio
     def fulltext_links
       electronic_location_fields.select do |field|
         MarcLinks::Processor.new(field).link_is_fulltext? &&
-          field.subfields.select { |sf| sf.code == 'u' && MarcLinks::GSB_URL_REGEX.match?(sf.value) }.none?
+          field.subfields.none? { |sf| sf.code == 'u' && MarcLinks::GSB_URL_REGEX.match?(sf.value) }
       end
     end
 
