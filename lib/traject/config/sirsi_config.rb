@@ -1624,6 +1624,8 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
           field_text << { link: sub_field.value }
         elsif sub_field.code == '1'
           field_text << { source: Constants::SOURCES[sub_field.value] }
+        elsif sub_field.code == "c"
+          field_text << { source: sub_field.value }
         elsif !(Constants::EXCLUDE_FIELDS + ['x']).include?(sub_field.code)
           field_text << sub_field.value unless sub_field.code == 'a' && sub_field.value[0, 1] == '%'
         end

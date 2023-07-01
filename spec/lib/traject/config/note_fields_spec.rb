@@ -648,7 +648,8 @@ RSpec.describe 'Sirsi config' do
           r.append(
             MARC::DataField.new(
               '520', '4', ' ',
-              MARC::Subfield.new('a', 'Content warning: Contains horrible things')
+              MARC::Subfield.new('a', 'Content warning: Contains horrible things'),
+              MARC::Subfield.new('c', 'Anonymous')
             )
           )
         end
@@ -656,7 +657,7 @@ RSpec.describe 'Sirsi config' do
       let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
 
       it 'maps the right field values' do
-        expect(result_field.last[:fields].first[:field]).to eq ['Content warning: Contains horrible things']
+        expect(result_field.last[:fields].first[:field]).to eq ['Content warning: Contains horrible things', source: 'Anonymous']
       end
 
       it 'sets the right label' do
