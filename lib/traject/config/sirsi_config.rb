@@ -2511,6 +2511,75 @@ def library_has(field)
   [field['a'], field['z']].compact.join(' ')
 end
 
+to_field 'mhld_struct' do |record, accumulator, _context|
+  location_groups = Traject::MarcExtractor.new('852:853:863:866:867:868').collect_matching_lines(record) { |field, _spec, _extractor| field }.slice_before { |field| field.tag == '852' }
+
+  result = location_groups.each_with_object({}) do |fields, hash|
+    next unless fields.first.tag == '852'
+
+    fields_by_tag = fields.group_by(&:tag)
+
+    marc852 = fields.first
+
+    library = marc852.subfields.select { |sf| sf.code == 'b' }.map(&:value).compact.join(' ')
+    library = nil if library.empty?
+    location = marc852.subfields.select { |sf| sf.code == 'c' }.map(&:value).compact.join(' ')
+    location = nil if location.empty?
+
+    comments = marc852.subfields.select { |sf| sf.code == '3' || sf.code == 'z' }.map(&:value).compact
+    next if comments.any? { |c| c =~ /all holdings transferred/i }
+
+    # Reset to process new 852
+    mhld_field = MhldField.new
+
+    next if skipped_locations[location] || missing_locations[location]
+
+    mhld_result = {}
+
+    comment = comments.reject(&:empty?).join(' ')
+
+    marc853s = fields_by_tag.fetch('853', []).each_with_object({}) do |field, h|
+      link_seq_num = field.select { |sf| sf.code == '8' }.map(&:value).first.to_i
+      h[link_seq_num] = field
+    end
+
+    most_recent_marc863 = fields_by_tag.fetch('863', []).select { |field| field['8'].present? }.max_by do |field|
+      link_num, seq_num = field['8'].split('.', 2).map(&:to_i)
+      [link_num, seq_num || -1]
+    end
+
+    mhld_result[:holdings] = (fields_by_tag['866'] || []).map do |field|
+      { statement: field['a'], note: field['z'] }.reject { |_k, v| v.blank? }
+    end
+
+    mhld_result[:supplements] = (fields_by_tag['867'] || []).map do |field|
+      { statement: field['a'], note: field['z'] }.reject { |_k, v| v.blank? }
+    end
+
+    mhld_result[:index] = (fields_by_tag['868'] || []).map do |field|
+      { statement: field['a'], note: field['z'] }.reject { |_k, v| v.blank? }
+    end
+
+    mhld_result[:note] = comment if comment.present?
+
+    if most_recent_marc863 && (marc852['='] || mhld_result[:holdings].none? || mhld_result[:holdings].any? { |statement| statement[:statement].end_with? '-' } || mhld_result[:supplements] || mhld_result[:index])
+      most_recent_marc863_link_num = most_recent_marc863['8']&.split('.')&.first.to_i
+
+      if most_recent_marc863_link_num != 0
+        pattern = marc853s[most_recent_marc863_link_num]
+        mhld_result[:latest_received] = mhld_field.get863display_value(pattern, most_recent_marc863)
+      end
+    end
+
+    next if mhld_result.all? { |_k, v| v.blank? }
+
+    hash[library] ||= {}
+    hash[library][location] ||= mhld_result
+  end
+
+  accumulator << result unless result.blank?
+end
+
 to_field 'bookplates_display' do |record, accumulator|
   Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, _spec, _extractor|
     file = field['c']

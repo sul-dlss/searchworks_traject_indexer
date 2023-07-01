@@ -36,6 +36,7 @@ RSpec.describe 'Holdings config' do
   end
   describe 'mhld_display' do
     let(:field) { 'mhld_display' }
+    let(:struct_field) { 'mhld_struct' }
     describe 'real data' do
       let(:fixture_name) { '2499.marc' }
 
@@ -44,6 +45,19 @@ RSpec.describe 'Holdings config' do
           'MUSIC -|- STACKS -|-  -|- v.1 -|- ',
           'MUSIC -|- STACKS -|-  -|- v.2 -|- '
         ]
+
+        expect(JSON.parse(select_by_id('2499')[struct_field].first)).to eq({
+                                                                             'MUSIC' => {
+                                                                               'STACKS' => {
+                                                                                 'holdings' => [
+                                                                                   { 'statement' => 'v.1' },
+                                                                                   { 'statement' => 'v.2' }
+                                                                                 ],
+                                                                                 'index' => [],
+                                                                                 'supplements' => []
+                                                                               }
+                                                                             }
+                                                                           })
       end
       context do
         let(:fixture_name) { '9012.marc' }
@@ -51,6 +65,15 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('9012')[field]).to eq [
             'SAL3 -|- STACKS -|-  -|- 1948,1965-1967,1974-1975 -|- '
           ]
+          expect(JSON.parse(select_by_id('9012')[struct_field].first)).to eq({
+                                                                               'SAL3' => {
+                                                                                 'STACKS' => {
+                                                                                   'holdings' => [{ 'statement' => '1948,1965-1967,1974-1975' }],
+                                                                                   'index' => [],
+                                                                                   'supplements' => []
+                                                                                 }
+                                                                               }
+                                                                             })
         end
       end
       context do
@@ -59,6 +82,15 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('1572')[field]).to eq [
             'SAL3 -|- STACKS -|-  -|- Heft 1-2 <v.568-569 in series> -|- '
           ]
+          expect(JSON.parse(select_by_id('1572')[struct_field].first)).to eq({
+                                                                               'SAL3' => {
+                                                                                 'STACKS' => {
+                                                                                   'holdings' => [{ 'statement' => 'Heft 1-2 <v.568-569 in series>' }],
+                                                                                   'index' => [],
+                                                                                   'supplements' => []
+                                                                                 }
+                                                                               }
+                                                                             })
         end
       end
       context do
@@ -100,6 +132,19 @@ RSpec.describe 'Holdings config' do
         end
         it do
           expect(result[field]).to eq ['MATH-CS -|- SHELBYTITL -|-  -|- v.25(1984)- -|- v.54:no.1 (2013:1_TRIMESTRE)']
+
+          expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                 'MATH-CS' => {
+                                                                   'SHELBYTITL' => {
+                                                                     'holdings' => [
+                                                                       { 'statement' => 'v.25(1984)-' }
+                                                                     ],
+                                                                     'index' => [],
+                                                                     'supplements' => [],
+                                                                     'latest_received' => 'v.54:no.1 (2013:1_TRIMESTRE)'
+                                                                   }
+                                                                 }
+                                                               })
         end
       end
       describe 'latest received' do
@@ -133,6 +178,17 @@ RSpec.describe 'Holdings config' do
         end
         it do
           expect(result[field]).to eq ['lib -|- loc -|-  -|-  -|- v.106:pt.3:no.482 (2010:WIN)']
+
+          expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                 'lib' => {
+                                                                   'loc' => {
+                                                                     'holdings' => [],
+                                                                     'index' => [],
+                                                                     'supplements' => [],
+                                                                     'latest_received' => 'v.106:pt.3:no.482 (2010:WIN)'
+                                                                   }
+                                                                 }
+                                                               })
         end
         context do
           let(:record) do
@@ -155,6 +211,16 @@ RSpec.describe 'Holdings config' do
           end
           it do
             expect(result[field]).to eq ['lib -|- loc -|-  -|-  -|- v.105 (2009)']
+            expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                   'lib' => {
+                                                                     'loc' => {
+                                                                       'holdings' => [],
+                                                                       'index' => [],
+                                                                       'supplements' => [],
+                                                                       'latest_received' => 'v.105 (2009)'
+                                                                     }
+                                                                   }
+                                                                 })
           end
         end
         context do
@@ -186,6 +252,17 @@ RSpec.describe 'Holdings config' do
           end
           it do
             expect(result[field]).to eq ['lib -|- loc -|-  -|-  -|- v.205:no.10 (2011:March 9)']
+
+            expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                   'lib' => {
+                                                                     'loc' => {
+                                                                       'holdings' => [],
+                                                                       'index' => [],
+                                                                       'supplements' => [],
+                                                                       'latest_received' => 'v.205:no.10 (2011:March 9)'
+                                                                     }
+                                                                   }
+                                                                 })
           end
         end
       end
@@ -217,6 +294,20 @@ RSpec.describe 'Holdings config' do
             expect(result[field][0]).to eq 'lib -|- loc -|-  -|- pt.1-4 <v.3,16,27-28 in series> -|- '
             expect(result[field][1]).to eq 'lib -|- loc -|-  -|- pt.2 <v.16 in series> -|- '
             expect(result[field][2]).to eq 'lib -|- loc -|-  -|- pt.5 -|- '
+
+            expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                   'lib' => {
+                                                                     'loc' => {
+                                                                       'holdings' => [
+                                                                         { 'statement' => 'pt.1-4', 'note' => '<v.3,16,27-28 in series>' },
+                                                                         { 'statement' => 'pt.2', 'note' => '<v.16 in series>' },
+                                                                         { 'statement' => 'pt.5' }
+                                                                       ],
+                                                                       'index' => [],
+                                                                       'supplements' => []
+                                                                     }
+                                                                   }
+                                                                 })
           end
         end
         context '867subz' do
@@ -244,6 +335,21 @@ RSpec.describe 'Holdings config' do
             expect(result[field][0]).to eq 'lib -|- loc -|-  -|- v.188 -|- '
             expect(result[field][1]).to eq 'lib -|- loc -|-  -|- Supplement: first subz -|- '
             expect(result[field][2]).to eq 'lib -|- loc -|-  -|- Supplement: second -|- '
+
+            expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                   'lib' => {
+                                                                     'loc' => {
+                                                                       'holdings' => [
+                                                                         { 'statement' => 'v.188' }
+                                                                       ],
+                                                                       'index' => [],
+                                                                       'supplements' => [
+                                                                         { 'statement' => 'first', 'note' => 'subz' },
+                                                                         { 'statement' => 'second' }
+                                                                       ]
+                                                                     }
+                                                                   }
+                                                                 })
           end
         end
         context '868subz' do
@@ -271,6 +377,21 @@ RSpec.describe 'Holdings config' do
             expect(result[field][0]).to eq 'lib -|- loc -|-  -|- v.188 -|- '
             expect(result[field][1]).to eq 'lib -|- loc -|-  -|- Index: first subz -|- '
             expect(result[field][2]).to eq 'lib -|- loc -|-  -|- Index: second -|- '
+
+            expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                   'lib' => {
+                                                                     'loc' => {
+                                                                       'holdings' => [
+                                                                         { 'statement' => 'v.188' }
+                                                                       ],
+                                                                       'index' => [
+                                                                         { 'statement' => 'first', 'note' => 'subz' },
+                                                                         { 'statement' => 'second' }
+                                                                       ],
+                                                                       'supplements' => []
+                                                                     }
+                                                                   }
+                                                                 })
           end
         end
       end
@@ -321,6 +442,19 @@ RSpec.describe 'Holdings config' do
         it do
           expect(result[field].length).to eq 1
           expect(result[field]).to eq ['lib -|- loc -|-  -|- 2003,2006- -|- 2011:pt.2']
+
+          expect(JSON.parse(result[struct_field].first)).to eq({
+                                                                 'lib' => {
+                                                                   'loc' => {
+                                                                     'holdings' => [
+                                                                       { 'statement' => '2003,2006-' }
+                                                                     ],
+                                                                     'index' => [],
+                                                                     'supplements' => [],
+                                                                     'latest_received' => '2011:pt.2'
+                                                                   }
+                                                                 }
+                                                               })
         end
       end
       describe 'malformed 863$8' do
@@ -363,6 +497,7 @@ RSpec.describe 'Holdings config' do
         let(:fixture_name) { 'mhldDisplay852only.mrc' }
         it do
           expect(select_by_id('3974376')[field]).to be_nil
+          expect(select_by_id('3974376')[struct_field]).to be_nil
         end
       end
       describe 'skip skipped locations' do
@@ -371,6 +506,7 @@ RSpec.describe 'Holdings config' do
         let(:fixture_name) { 'mhldDisplay.mrc' }
         it do
           expect(select_by_id('SkippedLocs')[field]).to be_blank
+          expect(select_by_id('SkippedLocs')[struct_field]).to be_blank
         end
       end
       describe 'number of separators' do
@@ -387,12 +523,40 @@ RSpec.describe 'Holdings config' do
           it do
             expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- v.194(2006)- -|- '
             expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- Index: keep me (868) -|- '
+
+            expect(JSON.parse(select_by_id('keep868ind0')[struct_field].first)).to eq({
+                                                                                        'GREEN' => {
+                                                                                          'CURRENTPER' => {
+                                                                                            'holdings' => [
+                                                                                              { 'statement' => 'v.194(2006)-' }
+                                                                                            ],
+                                                                                            'index' => [
+                                                                                              { 'statement' => 'keep me (868)' }
+                                                                                            ],
+                                                                                            'supplements' => [],
+                                                                                            'note' => 'keep 868'
+                                                                                          }
+                                                                                        }
+                                                                                      })
           end
         end
         describe '852 w/ 867' do
           let(:fixture_name) { 'mhldDisplay867.mrc' }
           it do
             expect(select_by_id('keep867ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- '
+
+            expect(JSON.parse(select_by_id('keep867ind0')[struct_field].first)).to eq({
+                                                                                        'GREEN' => {
+                                                                                          'CURRENTPER' => {
+                                                                                            'holdings' => [],
+                                                                                            'index' => [],
+                                                                                            'supplements' => [
+                                                                                              { 'statement' => 'keep me (867)' }
+                                                                                            ],
+                                                                                            'note' => 'keep 867'
+                                                                                          }
+                                                                                        }
+                                                                                      })
           end
         end
       end
