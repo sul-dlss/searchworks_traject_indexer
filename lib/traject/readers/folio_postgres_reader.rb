@@ -32,8 +32,17 @@ module Traject
 
         # declare a cursor
         queries = if @updated_after
-                    conditions = %w[vi hr item cr cl cc].map { |table| "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'" }.map { |q| [q, @sql_filters].compact }
-                    conditions.map { |c| sql_query(c) }.join(') UNION (')
+                    filter_join = {
+                      'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
+                      'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr.id',
+                      'cr_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item.id',
+                      'cl_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr.courselistingid',
+                      'cc_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl.id'
+                    }
+                    conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
+                      "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
+                    end
+                    conditions.map { |c| sql_query([c, @sql_filters].compact, addl_from: filter_join[c]) }.join(') UNION (')
                   else
                     sql_query([@sql_filters])
                   end
@@ -60,7 +69,7 @@ module Traject
       Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
     end
 
-    def sql_query(conditions)
+    def sql_query(conditions, addl_from: nil)
       <<-SQL
       WITH viewLocations(locId, locJsonb, locCampJsonb, locLibJsonb, locInstJsonb) AS (
         SELECT loc.id AS locId,
@@ -288,6 +297,7 @@ module Traject
       -- BW Parent Item's Temporary location relation
       LEFT JOIN viewLocations parentItemTempLoc
         ON (parentItem.jsonb ->> 'temporaryLocationId')::uuid = parentItemTempLoc.locId
+      #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
       SQL
