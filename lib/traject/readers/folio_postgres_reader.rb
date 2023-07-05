@@ -51,6 +51,10 @@ module Traject
         # set search path to avoid namespacing problems with folio functions
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
+        # These settings seem to hint postgres to a better query plan
+        @connection.exec('SET join_collapse_limit = 64')
+        @connection.exec('SET from_collapse_limit = 64')
+
         # declare a cursor
         @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
 
