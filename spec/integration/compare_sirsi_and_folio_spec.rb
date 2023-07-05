@@ -163,7 +163,8 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a10690790', # ezproxy prefix
     'a81622', # missing status
     'a14644326', # in-process status
-    'a3118108' # missing status
+    'a3118108', # missing status
+    'a10146027' # SUL/SDR instead of SUL/INTERNET
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
@@ -179,7 +180,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a515836', # funky call-number problems
     'a6634796', # missing call number in item_display
     'a1553634', # migration error holdings
-    'a10146027', # SUL/SDR instead of SUL/INTERNET
     'a12264341', # extra electronic items
     'a9335111', # missing bound-withs
     'a14461522', # ???
