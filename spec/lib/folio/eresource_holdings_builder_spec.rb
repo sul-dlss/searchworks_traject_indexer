@@ -92,4 +92,20 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
 
     it { expect(holdings).to be_empty }
   end
+
+  context 'the holding location is SUL-SDR' do
+    let(:items_and_holdings) do
+      { 'items' => [],
+        'holdings' =>
+         [{ 'location' =>
+          { 'permanentLocation' =>
+            { 'code' => 'SUL-SDR' },
+            'effectiveLocation' =>
+            { 'code' => 'SUL-SDR' } },
+            'suppressFromDiscovery' => false,
+            'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+            'holdingsStatements' => [] }] }
+    end
+    it { expect(holdings.first.home_location).to eq 'INTERNET' }
+  end
 end
