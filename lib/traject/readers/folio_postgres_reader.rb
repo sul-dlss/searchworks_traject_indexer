@@ -88,11 +88,11 @@ module Traject
                jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
         FROM sul_mod_inventory_storage.location loc
            LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
-                ON (loc.jsonb ->> 'institutionId')::uuid = locInst.id
+                ON loc.institutionid = locInst.id
            LEFT JOIN sul_mod_inventory_storage.loccampus locCamp
-                ON (loc.jsonb ->> 'campusId')::uuid = locCamp.id
+                ON loc.campusid = locCamp.id
            LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
-                ON (loc.jsonb ->> 'libraryId')::uuid = locLib.id
+                ON loc.libraryid = locLib.id
         )
       SELECT
         vi.id,
@@ -240,13 +240,13 @@ module Traject
         ON cc.courselistingid = cl.id
       -- Item's Effective location relation
       LEFT JOIN viewLocations itemEffLoc
-            ON (item.jsonb ->> 'effectiveLocationId')::uuid = itemEffLoc.locId
+            ON item.effectivelocationid = itemEffLoc.locId
       -- Item's Permanent location relation
       LEFT JOIN viewLocations itemPermLoc
-            ON (item.jsonb ->> 'permanentLocationId')::uuid = itemPermLoc.locId
+            ON item.permanentlocationid = itemPermLoc.locId
       -- Item's Temporary location relation
       LEFT JOIN viewLocations itemTempLoc
-            ON (item.jsonb ->> 'temporaryLocationId')::uuid = itemTempLoc.locId
+            ON item.temporarylocationid = itemTempLoc.locId
       -- Item's Material type relation
       LEFT JOIN sul_mod_inventory_storage.material_type mt
             ON item.materialtypeid = mt.id
@@ -258,24 +258,24 @@ module Traject
             ON (item.jsonb ->> 'itemDamagedStatusId')::uuid = itemDmgStat.id
       -- Item's Permanent loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type plt
-            ON (item.jsonb ->> 'permanentLoanTypeId')::uuid = plt.id
+            ON item.permanentloantypeid = plt.id
       -- Item's Temporary loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type tlt
-            ON (item.jsonb ->> 'temporaryLoanTypeId')::uuid = tlt.id
+            ON item.temporaryloantypeid = tlt.id
       -- Holdings type relation
       LEFT JOIN sul_mod_inventory_storage.holdings_type ht
          ON ht.id = hr.holdingstypeid
       LEFT JOIN viewLocations holdPermLoc
-         ON (hr.jsonb ->> 'permanentLocationId')::uuid = holdPermLoc.locId
+         ON hr.permanentlocationid = holdPermLoc.locId
       -- Holdings Temporary location relation
       LEFT JOIN viewLocations holdTempLoc
-         ON (hr.jsonb ->> 'temporaryLocationId')::uuid = holdTempLoc.locId
+         ON hr.temporarylocationid = holdTempLoc.locId
       -- Holdings Effective location relation
       LEFT JOIN viewLocations holdEffLoc
-         ON (hr.jsonb ->> 'effectiveLocationId')::uuid = holdEffLoc.locId
+         ON hr.effectivelocationid = holdEffLoc.locId
       -- Holdings Call number type relation
       LEFT JOIN sul_mod_inventory_storage.call_number_type hrcnt
-         ON (hr.jsonb ->> 'callNumberTypeId')::uuid = hrcnt.id
+         ON hr.callnumbertypeid = hrcnt.id
       -- Holdings Ill policy relation
       LEFT JOIN sul_mod_inventory_storage.ill_policy ilp
             ON hr.illpolicyid = ilp.id
@@ -299,13 +299,13 @@ module Traject
         ON parentHolding.instanceid = parentInstance.id
       -- BW Parent Item's Effective location relation
       LEFT JOIN viewLocations parentItemEffLoc
-        ON (parentItem.jsonb ->> 'effectiveLocationId')::uuid = parentItemEffLoc.locId
+        ON parentItem.effectivelocationid = parentItemEffLoc.locId
       -- BW Parent Item's Permanent location relation
       LEFT JOIN viewLocations parentItemPermLoc
-        ON (parentItem.jsonb ->> 'permanentLocationId')::uuid = parentItemPermLoc.locId
+        ON parentItem.permanentlocationid = parentItemPermLoc.locId
       -- BW Parent Item's Temporary location relation
       LEFT JOIN viewLocations parentItemTempLoc
-        ON (parentItem.jsonb ->> 'temporaryLocationId')::uuid = parentItemTempLoc.locId
+        ON parentItem.temporarylocationid = parentItemTempLoc.locId
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
