@@ -20,6 +20,27 @@ module Traject
       new(nil, settings.merge!('postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey}'")).first
     end
 
+    def queries
+      if @updated_after
+        filter_join = {
+          'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
+          'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr.id',
+          'cr_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item.id',
+          'cl_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr.courselistingid',
+          'cc_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl.id'
+        }
+
+        conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
+          c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
+          sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
+        end
+
+        conditions.join(') UNION (')
+      else
+        sql_query([@sql_filters])
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -30,26 +51,11 @@ module Traject
         # set search path to avoid namespacing problems with folio functions
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
+        # These settings seem to hint postgres to a better query plan
+        @connection.exec('SET join_collapse_limit = 64')
+        @connection.exec('SET from_collapse_limit = 64')
+
         # declare a cursor
-        queries = if @updated_after
-                    filter_join = {
-                      'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
-                      'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr.id',
-                      'cr_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item.id',
-                      'cl_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr.courselistingid',
-                      'cc_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl.id'
-                    }
-
-                    conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
-                      c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-                      sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
-                    end
-
-                    conditions.join(') UNION (')
-                  else
-                    sql_query([@sql_filters])
-                  end
-
         @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
 
         # execute our query
@@ -82,11 +88,11 @@ module Traject
                jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
         FROM sul_mod_inventory_storage.location loc
            LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
-                ON (loc.jsonb ->> 'institutionId')::uuid = locInst.id
+                ON loc.institutionid = locInst.id
            LEFT JOIN sul_mod_inventory_storage.loccampus locCamp
-                ON (loc.jsonb ->> 'campusId')::uuid = locCamp.id
+                ON loc.campusid = locCamp.id
            LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
-                ON (loc.jsonb ->> 'libraryId')::uuid = locLib.id
+                ON loc.libraryid = locLib.id
         )
       SELECT
         vi.id,
@@ -234,13 +240,13 @@ module Traject
         ON cc.courselistingid = cl.id
       -- Item's Effective location relation
       LEFT JOIN viewLocations itemEffLoc
-            ON (item.jsonb ->> 'effectiveLocationId')::uuid = itemEffLoc.locId
+            ON item.effectivelocationid = itemEffLoc.locId
       -- Item's Permanent location relation
       LEFT JOIN viewLocations itemPermLoc
-            ON (item.jsonb ->> 'permanentLocationId')::uuid = itemPermLoc.locId
+            ON item.permanentlocationid = itemPermLoc.locId
       -- Item's Temporary location relation
       LEFT JOIN viewLocations itemTempLoc
-            ON (item.jsonb ->> 'temporaryLocationId')::uuid = itemTempLoc.locId
+            ON item.temporarylocationid = itemTempLoc.locId
       -- Item's Material type relation
       LEFT JOIN sul_mod_inventory_storage.material_type mt
             ON item.materialtypeid = mt.id
@@ -252,24 +258,24 @@ module Traject
             ON (item.jsonb ->> 'itemDamagedStatusId')::uuid = itemDmgStat.id
       -- Item's Permanent loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type plt
-            ON (item.jsonb ->> 'permanentLoanTypeId')::uuid = plt.id
+            ON item.permanentloantypeid = plt.id
       -- Item's Temporary loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type tlt
-            ON (item.jsonb ->> 'temporaryLoanTypeId')::uuid = tlt.id
+            ON item.temporaryloantypeid = tlt.id
       -- Holdings type relation
       LEFT JOIN sul_mod_inventory_storage.holdings_type ht
          ON ht.id = hr.holdingstypeid
       LEFT JOIN viewLocations holdPermLoc
-         ON (hr.jsonb ->> 'permanentLocationId')::uuid = holdPermLoc.locId
+         ON hr.permanentlocationid = holdPermLoc.locId
       -- Holdings Temporary location relation
       LEFT JOIN viewLocations holdTempLoc
-         ON (hr.jsonb ->> 'temporaryLocationId')::uuid = holdTempLoc.locId
+         ON hr.temporarylocationid = holdTempLoc.locId
       -- Holdings Effective location relation
       LEFT JOIN viewLocations holdEffLoc
-         ON (hr.jsonb ->> 'effectiveLocationId')::uuid = holdEffLoc.locId
+         ON hr.effectivelocationid = holdEffLoc.locId
       -- Holdings Call number type relation
       LEFT JOIN sul_mod_inventory_storage.call_number_type hrcnt
-         ON (hr.jsonb ->> 'callNumberTypeId')::uuid = hrcnt.id
+         ON hr.callnumbertypeid = hrcnt.id
       -- Holdings Ill policy relation
       LEFT JOIN sul_mod_inventory_storage.ill_policy ilp
             ON hr.illpolicyid = ilp.id
@@ -293,13 +299,13 @@ module Traject
         ON parentHolding.instanceid = parentInstance.id
       -- BW Parent Item's Effective location relation
       LEFT JOIN viewLocations parentItemEffLoc
-        ON (parentItem.jsonb ->> 'effectiveLocationId')::uuid = parentItemEffLoc.locId
+        ON parentItem.effectivelocationid = parentItemEffLoc.locId
       -- BW Parent Item's Permanent location relation
       LEFT JOIN viewLocations parentItemPermLoc
-        ON (parentItem.jsonb ->> 'permanentLocationId')::uuid = parentItemPermLoc.locId
+        ON parentItem.permanentlocationid = parentItemPermLoc.locId
       -- BW Parent Item's Temporary location relation
       LEFT JOIN viewLocations parentItemTempLoc
-        ON (parentItem.jsonb ->> 'temporaryLocationId')::uuid = parentItemTempLoc.locId
+        ON parentItem.temporarylocationid = parentItemTempLoc.locId
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
