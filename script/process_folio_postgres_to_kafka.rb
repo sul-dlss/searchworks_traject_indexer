@@ -15,8 +15,10 @@ state_file = ENV['STATE_FILE'] || File.expand_path(
   "../tmp/searchworks_traject_folio_postgres_indexer_last_run_#{Utils.env_config.kafka_topic}", __dir__
 )
 
+full_dump = ARGV[0] == 'full'
+
 # Make sure there's a state file
-File.open(state_file, 'w') { |f| f.puts '' } unless File.exist? state_file
+File.open(state_file, 'w') { |f| f.puts '' } if !File.exist?(state_file) || full_dump
 
 File.open(state_file, 'r+') do |f|
   abort "Unable to acquire lock on #{state_file}" unless f.flock(File::LOCK_EX | File::LOCK_NB)
@@ -29,7 +31,10 @@ File.open(state_file, 'r+') do |f|
   last_response_date = Traject::FolioPostgresReader.new(nil,
                                                         'postgres.url': ENV.fetch('DATABASE_URL')).last_response_date
 
-  shards = if Utils.env_config.processes.to_i > 1
+  processes = Utils.env_config.full_dump_processes if full_dump
+  processes ||= Utils.env_config.processes
+
+  shards = if processes.to_i > 1
              step = Utils.env_config.step_size || 0x0100
              ranges = (0x0000..0xffff).step(step).each_cons(2).map { |(min, max)| min...max }
              ranges << (ranges.last.max..0xffff)
@@ -39,7 +44,7 @@ File.open(state_file, 'r+') do |f|
            else
              ['TRUE']
            end
-  counts = Parallel.map(shards, in_processes: Utils.env_config.processes.to_i) do |sql_filter|
+  counts = Parallel.map(shards, in_processes: processes.to_i) do |sql_filter|
     attempts ||= 1
     begin
       reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date&.utc&.iso8601,
