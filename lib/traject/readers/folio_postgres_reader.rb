@@ -20,6 +20,27 @@ module Traject
       new(nil, settings.merge!('postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey}'")).first
     end
 
+    def queries
+      if @updated_after
+        filter_join = {
+          'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
+          'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr.id',
+          'cr_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item.id',
+          'cl_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr.courselistingid',
+          'cc_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl.id'
+        }
+
+        conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
+          c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
+          sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
+        end
+
+        conditions.join(') UNION (')
+      else
+        sql_query([@sql_filters])
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -31,25 +52,6 @@ module Traject
         @connection.exec('SET search_path = "sul_mod_inventory_storage"')
 
         # declare a cursor
-        queries = if @updated_after
-                    filter_join = {
-                      'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
-                      'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr.id',
-                      'cr_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item.id',
-                      'cl_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr.courselistingid',
-                      'cc_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl.id'
-                    }
-
-                    conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
-                      c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-                      sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
-                    end
-
-                    conditions.join(') UNION (')
-                  else
-                    sql_query([@sql_filters])
-                  end
-
         @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
 
         # execute our query
