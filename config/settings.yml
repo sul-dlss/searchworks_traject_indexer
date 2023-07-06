@@ -7,5 +7,6 @@ environments:
   morison:
     kafka_topic: marc_morison
   folio_test:
+    database_url: <%= ENV['DATABASE_URL'] %>
     processes: 1
     kafka_topic: marc_folio_test

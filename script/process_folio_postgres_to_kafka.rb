@@ -29,7 +29,7 @@ File.open(state_file, 'r+') do |f|
   Utils.logger.info "Found last_date in #{state_file}: #{last_date}" if last_date
 
   last_response_date = Traject::FolioPostgresReader.new(nil,
-                                                        'postgres.url': ENV.fetch('DATABASE_URL')).last_response_date
+                                                        'postgres.url': Utils.env_config.database_url).last_response_date
 
   processes = Utils.env_config.full_dump_processes if full_dump
   processes ||= Utils.env_config.processes
@@ -48,7 +48,7 @@ File.open(state_file, 'r+') do |f|
     attempts ||= 1
     begin
       reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date&.utc&.iso8601,
-                                                     'postgres.url': ENV.fetch('DATABASE_URL'), 'postgres.sql_filters': sql_filter)
+                                                     'postgres.url': Utils.env_config.database_url, 'postgres.sql_filters': sql_filter)
       Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
     rescue PG::Error => e
       raise(e) if attempts > 5
