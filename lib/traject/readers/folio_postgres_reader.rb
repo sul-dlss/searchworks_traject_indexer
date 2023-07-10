@@ -213,6 +213,19 @@ module Traject
                   DISTINCT pieces.jsonb
                 ),
               '[]'::jsonb),
+            'holdingSummaries',
+              COALESCE(
+                jsonb_agg(
+                  DISTINCT jsonb_build_object(
+                    'poLineId', po_line.id,
+                    'poLineNumber', po_line.jsonb ->> 'poLineNumber',
+                    'polReceiptStatus', po_line.jsonb ->> 'receiptStatus',
+                    'orderType', purchase_order.jsonb ->> 'orderType',
+                    'orderStatus', purchase_order.jsonb ->> 'workflowStatus',
+                    'orderSentDate', purchase_order.jsonb ->> 'dateOrdered',
+                    'orderCloseReason', purchase_order.jsonb #> '{closeReason}'
+                  )),
+              '[]'::jsonb),
             'courses',
               COALESCE(
                 jsonb_agg(
@@ -288,6 +301,11 @@ module Traject
         ON (titles.jsonb ->> 'instanceId')::uuid  = vi.id
       LEFT JOIN sul_mod_orders_storage.pieces pieces
         ON pieces.titleid = titles.id
+      -- Holding Summaries (purchase order) relation
+      LEFT JOIN sul_mod_orders_storage.po_line po_line
+        ON (po_line.jsonb ->> 'instanceId')::uuid = vi.id
+      LEFT JOIN sul_mod_orders_storage.purchase_order purchase_order
+        ON purchase_order.id = po_line.purchaseOrderId
       -- Bound with parts relation
       LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
         ON bw.holdingsrecordid = hr.id
