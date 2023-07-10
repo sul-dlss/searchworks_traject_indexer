@@ -2574,18 +2574,26 @@ end
 
 to_field 'collection_struct' do |record, accumulator|
   Traject::MarcExtractor.new('856x').collect_matching_lines(record) do |field, spec, extractor|
-    source, item_type, type, druid, id, title = extractor.collect_subfields(field, spec)
+    source, item_type, *other_data = extractor.collect_subfields(field, spec)
     next unless source == 'SDR-PURL' && item_type == 'item'
+
+    data = other_data.to_h { |v| v.split(':', 2) }
+
+    next unless data['collection']
+
+    druid, id, title = data['collection'].split(':')
 
     accumulator << {
       source:,
       item_type:,
-      type:,
+      type: 'collection',
       druid:,
       id:,
       title:
     }
   end
+
+  accumulator.uniq!
 end
 
 to_field 'marc_collection_title_ssim', extract_marc('795ap', alternate_script: false)

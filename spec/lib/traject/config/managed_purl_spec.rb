@@ -61,6 +61,16 @@ RSpec.describe 'Managed purl config' do
       expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq nil
       expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
     end
+
+    context 'collection_struct' do
+      let(:field) { 'collection_struct' }
+
+      it 'maps the right data' do
+        expect(select_by_id('managedPurlItem1Collection')[field].map do |x|
+                 JSON.parse(x)
+               end).to match_array [{ 'druid' => 'yg867hg1375', 'id' => '9615156', 'item_type' => 'item', 'source' => 'SDR-PURL', 'title' => 'Francis E. Stafford photographs, 1909-1933', 'type' => 'collection' }]
+      end
+    end
   end
 
   describe 'collection_type' do
