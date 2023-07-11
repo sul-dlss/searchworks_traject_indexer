@@ -79,7 +79,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       resp = @http_client.post @solr_update_url, json_package, 'Content-type' => 'application/json'
       # Catch Timeouts and network errors as skipped records, but otherwise
       # allow unexpected errors to propagate up.
-    rescue *skippable_exceptions => e
+    rescue *skippable_exceptions => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
       # no body, local variable exception set above will be used below
     end
 
