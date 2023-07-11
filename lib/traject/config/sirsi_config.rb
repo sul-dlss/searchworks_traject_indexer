@@ -2577,7 +2577,7 @@ to_field 'collection_struct' do |record, accumulator|
     source, item_type, *other_data = extractor.collect_subfields(field, spec)
     next unless source == 'SDR-PURL' && item_type == 'item'
 
-    data = other_data.to_h { |v| v.split(':', 2) }
+    data = other_data.select { |v| v =~ /:/ }.to_h { |v| v.split(':', 2) }
 
     next unless data['collection']
 
