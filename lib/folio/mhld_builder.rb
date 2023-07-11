@@ -4,16 +4,17 @@ require_relative '../locations_map'
 
 module Folio
   class MhldBuilder
-    def self.build(holdings, pieces)
-      new(holdings, pieces).build
+    def self.build(holdings, holding_summaries, pieces)
+      new(holdings, holding_summaries, pieces).build
     end
 
-    def initialize(holdings, pieces)
+    def initialize(holdings, holding_summaries, pieces)
       @holdings = holdings
+      @holding_summaries = holding_summaries
       @pieces = pieces
     end
 
-    attr_reader :holdings, :pieces
+    attr_reader :holdings, :holding_summaries, :pieces
 
     def build
       filtered_holdings.flatten.map do |holding|
@@ -80,11 +81,17 @@ module Folio
       # NOTE: We saw some piece records without 'chronology'. Was this just test data?
       pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(sortable_date: extract_sortable(piece['chronology'])) }
       latest_piece = pieces.max_by { |piece| piece.fetch(:sortable_date) }
-      return unless latest_piece
+
+      return unless latest_piece && order_is_ongoing_and_open?(latest_piece)
 
       enumeration = latest_piece['enumeration'] # may not be present
       chronology = latest_piece.fetch('chronology')
       enumeration ? "#{enumeration} (#{chronology})" : chronology
+    end
+
+    def order_is_ongoing_and_open?(latest_piece)
+      holding_summary = holding_summaries.find { |summary| summary['poLineId'] == latest_piece['poLineId'] }
+      holding_summary && holding_summary['orderType'] == 'Ongoing' && holding_summary['orderStatus'] == 'Open'
     end
 
     # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)

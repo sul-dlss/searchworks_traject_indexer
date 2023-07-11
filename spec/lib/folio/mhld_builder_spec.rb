@@ -4,9 +4,10 @@ require 'spec_helper'
 require 'folio/mhld_builder'
 
 RSpec.describe Folio::MhldBuilder do
-  subject(:mhld_display) { described_class.build(holdings, pieces) }
+  subject(:mhld_display) { described_class.build(holdings, holding_summaries, pieces) }
 
   let(:holdings) { [] }
+  let(:holding_summaries) { [] }
   let(:pieces) { [] }
 
   it { is_expected.to be_empty }
@@ -43,6 +44,15 @@ RSpec.describe Folio::MhldBuilder do
     end
     let(:index_statements) { [] }
     let(:supplement_statements) { [] }
+    let(:holding_summaries) do
+      [{ 'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+         'poLineNumber' => '12545-1',
+         'polReceiptStatus' => 'Received',
+         'orderType' => 'Ongoing',
+         'orderStatus' => 'Open',
+         'orderSentDate' => '2023-03-11T00:00:00.000Z',
+         'orderCloseReason' => nil }]
+    end
 
     context 'without holdings statements' do
       let(:holdings_statements) { [] }
@@ -173,6 +183,70 @@ RSpec.describe Folio::MhldBuilder do
 
         it { is_expected.to eq ['EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- v.244 (2023)'] }
       end
+
+      context 'when the order is one-time' do
+        let(:pieces) do
+          [{ 'id' => '0f4d596c-ec1b-42c5-9bcc-e3d61e225924',
+             'caption' => 'v.',
+             'comment' => 'TEST Receiving history',
+             'format' => 'Physical',
+             'itemId' => '8f6446bf-a0f3-4b73-92ad-e9466bb4448e',
+             'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+             'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
+             'holdingId' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+             'displayOnHolding' => true,
+             'enumeration' => 'v.244',
+             'chronology' => '2023',
+             'copyNumber' => '1',
+             'receivingStatus' => 'Received',
+             'supplement' => false,
+             'receiptDate' => '2023-03-22T00:00:00.000+00:00',
+             'receivedDate' => '2023-03-22T13:58:34.083+00:00' }]
+        end
+        let(:holding_summaries) do
+          [{ 'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+             'poLineNumber' => '12545-1',
+             'polReceiptStatus' => 'Received',
+             'orderType' => 'One-time',
+             'orderStatus' => 'Open',
+             'orderSentDate' => '2023-03-11T00:00:00.000Z',
+             'orderCloseReason' => nil }]
+        end
+
+        it { is_expected.to eq ['EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- '] }
+      end
+
+      context 'when the order is closed' do
+        let(:pieces) do
+          [{ 'id' => '0f4d596c-ec1b-42c5-9bcc-e3d61e225924',
+             'caption' => 'v.',
+             'comment' => 'TEST Receiving history',
+             'format' => 'Physical',
+             'itemId' => '8f6446bf-a0f3-4b73-92ad-e9466bb4448e',
+             'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+             'titleId' => '7fa131ef-7443-4a21-b970-ce2b4669004a',
+             'holdingId' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+             'displayOnHolding' => true,
+             'enumeration' => 'v.244',
+             'chronology' => '2023',
+             'copyNumber' => '1',
+             'receivingStatus' => 'Received',
+             'supplement' => false,
+             'receiptDate' => '2023-03-22T00:00:00.000+00:00',
+             'receivedDate' => '2023-03-22T13:58:34.083+00:00' }]
+        end
+        let(:holding_summaries) do
+          [{ 'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+             'poLineNumber' => '12545-1',
+             'polReceiptStatus' => 'Received',
+             'orderType' => 'Ongoing',
+             'orderStatus' => 'Closed',
+             'orderSentDate' => '2023-03-11T00:00:00.000Z',
+             'orderCloseReason' => nil }]
+        end
+
+        it { is_expected.to eq ['EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- '] }
+      end
     end
   end
 
@@ -227,6 +301,16 @@ RSpec.describe Folio::MhldBuilder do
          'suppressFromDiscovery' => false,
          'holdingsStatementsForIndexes' => [],
          'holdingsStatementsForSupplements' => [] }]
+    end
+
+    let(:holding_summaries) do
+      [{ 'poLineId' => 'a866835f-9c89-4772-bdeb-803dbc155694',
+         'poLineNumber' => '12545-1',
+         'polReceiptStatus' => 'Received',
+         'orderType' => 'Ongoing',
+         'orderStatus' => 'Open',
+         'orderSentDate' => '2023-03-11T00:00:00.000Z',
+         'orderCloseReason' => nil }]
     end
 
     let(:pieces) do

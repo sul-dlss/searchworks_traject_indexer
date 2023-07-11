@@ -158,7 +158,7 @@ class FolioRecord
   # Creates the mhld_display value. This drives the holding display in searchworks.
   # This packed format mimics how we indexed this data when we used Symphony.
   def mhld
-    holdings.present? ? Folio::MhldBuilder.build(holdings, pieces) : []
+    holdings.present? ? Folio::MhldBuilder.build(holdings, holding_summaries, pieces) : []
   end
 
   def items
@@ -171,6 +171,10 @@ class FolioRecord
 
   def holdings
     @holdings ||= load('holdings').reject { |item| item['suppressFromDiscovery'] }
+  end
+
+  def holding_summaries
+    record['holdingSummaries'] || []
   end
 
   def pieces

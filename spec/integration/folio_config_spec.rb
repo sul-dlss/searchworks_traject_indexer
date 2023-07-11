@@ -24,10 +24,12 @@ RSpec.describe 'FOLIO indexing' do
 
   let(:client) { instance_double(FolioClient) }
   let(:items_and_holdings) { {} }
+  let(:holding_summaries) { [] }
 
   before do
     allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
     allow(folio_record).to receive(:courses).and_return([])
+    allow(folio_record).to receive(:holding_summaries).and_return(holding_summaries)
   end
 
   it 'maps the record with sirsi fields' do
@@ -411,6 +413,15 @@ RSpec.describe 'FOLIO indexing' do
           { 'note' => 'Library has latest 10 yrs. only.' },
           { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
         ]
+      end
+      let(:holding_summaries) do
+        [{ 'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+           'poLineNumber' => '12545-1',
+           'polReceiptStatus' => 'Received',
+           'orderType' => 'Ongoing',
+           'orderStatus' => 'Open',
+           'orderSentDate' => '2023-03-11T00:00:00.000Z',
+           'orderCloseReason' => nil }]
       end
       it {
         is_expected.to eq [
