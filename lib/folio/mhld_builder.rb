@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../locations_map'
+require_relative 'holdings'
 
 module Folio
   class MhldBuilder
@@ -78,9 +79,7 @@ module Folio
 
     # @return [String] the latest received piece for a holding
     def latest_received(holding_id)
-      # NOTE: We saw some piece records without 'chronology'. Was this just test data?
-      pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(sortable_date: extract_sortable(piece['chronology'])) }
-      latest_piece = pieces.max_by { |piece| piece.fetch(:sortable_date) }
+      latest_piece = Holdings.find_latest(pieces_per_holding.fetch(holding_id, []))
 
       return unless latest_piece && order_is_ongoing_and_open?(latest_piece)
 
@@ -98,26 +97,6 @@ module Folio
     # hrid: a567006 has > 1000 on test.
     def pieces_per_holding
       @pieces_per_holding ||= pieces.group_by { |piece| piece['holdingId'] }
-    end
-
-    # We've seen cronologies that looks like full dates, MON YYYY, WIN YYYY, and nil
-    # This will always produced a type of date. If the input is undecipherable, it returns 0001-01-01,
-    # which sorts to the back.
-    def extract_sortable(date_str)
-      return old_date unless date_str
-
-      if /^\d\d\d\d$/.match?(date_str)
-        Date.parse("#{date_str}-01-01")
-      else
-        Date.parse(date_str)
-      end
-    rescue Date::Error
-      old_date
-    end
-
-    # For sorting purposes, something that will sort to the back.
-    def old_date
-      Date.parse('0001-01-01')
     end
   end
 end
