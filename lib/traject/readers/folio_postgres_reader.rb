@@ -32,12 +32,13 @@ module Traject
           'cl_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid",
           'cc_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid
                                        LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id",
+          'rs_filter' => 'LEFT JOIN sul_mod_source_record_storage.records_lb rs_filter ON rs_filter.external_id = vi.id'
         }
 
         conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
           c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
           sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
-        end
+        end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'", @sql_filters].compact, addl_from: filter_join['rs_filter'])]
 
         conditions.join(') UNION (')
       else
