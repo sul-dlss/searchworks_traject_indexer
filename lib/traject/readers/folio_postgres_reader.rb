@@ -22,18 +22,23 @@ module Traject
 
     def queries
       if @updated_after
+        cr_filter = 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id
+                     LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id
+                     LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item_filter.id'
         filter_join = {
           'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
-          'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr.id',
-          'cr_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item.id',
-          'cl_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr.courselistingid',
-          'cc_filter' => 'LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl.id'
+          'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id',
+          'cr_filter' => cr_filter,
+          'cl_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid",
+          'cc_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid
+                                       LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id",
+          'rs_filter' => 'LEFT JOIN sul_mod_source_record_storage.records_lb rs_filter ON rs_filter.external_id = vi.id'
         }
 
         conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
           c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
           sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
-        end
+        end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'", @sql_filters].compact, addl_from: filter_join['rs_filter'])]
 
         conditions.join(') UNION (')
       else
