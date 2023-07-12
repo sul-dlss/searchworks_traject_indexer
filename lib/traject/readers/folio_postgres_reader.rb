@@ -298,7 +298,7 @@ module Traject
       LEFT JOIN sul_mod_inventory_storage.ill_policy ilp
             ON hr.illpolicyid = ilp.id
       LEFT JOIN sul_mod_source_record_storage.records_lb rs
-        ON rs.external_id = vi.id
+        ON rs.external_id = vi.id AND rs.state = 'ACTUAL'
       LEFT JOIN sul_mod_source_record_storage.marc_records_lb mr
         ON mr.id = rs.id
       -- Pieces relation
