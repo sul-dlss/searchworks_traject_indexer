@@ -214,6 +214,246 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  describe 'item_display' do
+    context 'item status is checked out' do
+      let(:items) do
+        [{ 'id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
+           'hrid' => 'ai9330051_1_1',
+           'notes' => [],
+           'status' => 'Checked out',
+           'barcode' => '36105064298164',
+           '_version' => 2,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:28:44.515Z',
+            'updatedDate' => '2023-06-03T00:51:05.108Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => 'cef01822-dc95-45c9-8a71-85c32e24c05f' },
+           'formerIds' => [],
+           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'HV6432.7 .R57 2011' },
+           'copyNumber' => '1',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Can circulate',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLoanTypeId' => '2b94c631-fca9-4892-a730-03ee529ffe27',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'HV 46432.7 R57 42011 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'HV6432.7 .R57 2011' } }]
+      end
+      let(:holdings) do
+        [{ 'id' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'hrid' => 'ah9330051_1',
+           'notes' => [],
+           '_version' => 1,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:16:28.403Z',
+            'updatedDate' => '2023-05-07T00:16:28.403Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'sourceId' => 'f32d531e-df79-46b3-8932-cdd35f7a2264',
+           'formerIds' => [],
+           'illPolicy' => nil,
+           'callNumber' => 'HV6432.7 .R57 2011',
+           'instanceId' => '741a706a-3088-5260-82c6-973244655ac2',
+           'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'holdingsTypeId' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+           'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+           'electronicAccess' => [],
+           'bareHoldingsItems' => [],
+           'holdingsStatements' => [],
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it { expect(result['item_display'].find { |h| h.match?(/CHECKEDOUT/) }).to be_present }
+    end
+
+    context 'item status is in-transit' do
+      let(:items) do
+        [{ 'id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
+           'hrid' => 'ai9330051_1_1',
+           'notes' => [],
+           'status' => 'In transit',
+           'barcode' => '36105064298164',
+           '_version' => 2,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:28:44.515Z',
+            'updatedDate' => '2023-06-03T00:51:05.108Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => 'cef01822-dc95-45c9-8a71-85c32e24c05f' },
+           'formerIds' => [],
+           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'HV6432.7 .R57 2011' },
+           'copyNumber' => '1',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Can circulate',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLoanTypeId' => '2b94c631-fca9-4892-a730-03ee529ffe27',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'HV 46432.7 R57 42011 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'HV6432.7 .R57 2011' } }]
+      end
+      let(:holdings) do
+        [{ 'id' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'hrid' => 'ah9330051_1',
+           'notes' => [],
+           '_version' => 1,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:16:28.403Z',
+            'updatedDate' => '2023-05-07T00:16:28.403Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'sourceId' => 'f32d531e-df79-46b3-8932-cdd35f7a2264',
+           'formerIds' => [],
+           'illPolicy' => nil,
+           'callNumber' => 'HV6432.7 .R57 2011',
+           'instanceId' => '741a706a-3088-5260-82c6-973244655ac2',
+           'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'holdingsTypeId' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+           'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+           'electronicAccess' => [],
+           'bareHoldingsItems' => [],
+           'holdingsStatements' => [],
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it { expect(result['item_display'].find { |h| h.match?(/INTRANSIT/) }).to be_present }
+    end
+  end
+
   describe 'mhld_display' do
     subject(:mhld_display) { result.fetch('mhld_display') }
     let(:holding) do
