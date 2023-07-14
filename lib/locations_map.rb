@@ -16,6 +16,10 @@ class LocationsMap
   end
 
   def load_map
+    load_home_locations.merge(load_current_locations)
+  end
+
+  def load_home_locations
     CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'locations.tsv')),
               col_sep: "\t").each_with_object({}) do |(home_location, library_code, folio_code), hash|
       library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
@@ -27,6 +31,13 @@ class LocationsMap
       home_location = 'INTERNET' if home_location == 'SDR'
 
       hash[folio_code] ||= [library_code, home_location]
+    end
+  end
+
+  def load_current_locations
+    CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'temp_locations.tsv')),
+              col_sep: "\t").each_with_object({}) do |(current_location, library_code, folio_code), hash|
+      hash[folio_code] ||= [library_code, current_location]
     end
   end
 end
