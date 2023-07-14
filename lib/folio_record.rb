@@ -83,12 +83,7 @@ class FolioRecord
       item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'location', 'code'))
-      current_location ||= case item['status']
-                           when 'Missing', 'Long missing'
-                             'MISSING'
-                           when 'In process'
-                             'INPROCESS'
-                           end
+      current_location ||= folio_status_to_location(item['status'])
 
       SirsiHolding.new(
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
@@ -315,6 +310,23 @@ class FolioRecord
            end
 
     MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']])
+  end
+
+  def folio_status_to_location(status)
+    case status
+    when 'Checked out', 'Claimed returned', 'Aged to lost'
+      'CHECKEDOUT'
+    when 'Awaiting pickup', 'Awaiting delivery'
+      'GRE-LOAN'
+    when 'In process', 'In process (non-requestable)'
+      'INPROCESS'
+    when 'In transit'
+      'INTRANSIT'
+    when 'Missing', 'Long missing'
+      'MISSING'
+    when 'On order'
+      'ON-ORDER'
+    end
   end
 end
 # rubocop:enable Metrics/ClassLength
