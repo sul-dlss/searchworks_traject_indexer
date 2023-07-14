@@ -2222,10 +2222,12 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   end.last if checking_for_ties_holdings.length > 1
 
   # Prefer items with the first volume sort key
+
   holding_with_the_most_recent_shelfkey = callnumber_with_the_most_items.min_by do |holding|
     call_number_object = call_number_for_holding(record, holding, context)
-    [call_number_object.to_volume_sort, holding.barcode]
+    [call_number_object.to_volume_sort, holding.barcode || '']
   end
+
   accumulator << holding_with_the_most_recent_shelfkey.barcode
 end
 
