@@ -1,114 +1,6 @@
 {
   "items": [
     {
-      "id": "64d4220b-ebae-5fb0-971c-0f98f6d9cc93",
-      "hrid": "ai14238203_2_3",
-      "notes": [
-
-      ],
-      "status": "Available",
-      "barcode": "36105232609557",
-      "_version": 1,
-      "location": {
-        "effectiveLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "permanentLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
-      },
-      "metadata": {
-        "createdDate": "2023-05-07T16:08:35.666Z",
-        "updatedDate": "2023-05-07T16:08:35.666Z",
-        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
-      },
-      "formerIds": [
-
-      ],
-      "callNumber": {
-        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
-        "typeName": "Library of Congress classification",
-        "callNumber": "HV6533 .H3 W55 2022"
-      },
-      "copyNumber": "3",
-      "yearCaption": [
-
-      ],
-      "materialType": "book",
-      "callNumberType": {
-        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
-        "name": "Library of Congress classification",
-        "source": "folio"
-      },
-      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
-      "numberOfPieces": "1",
-      "circulationNotes": [
-
-      ],
-      "electronicAccess": [
-
-      ],
-      "holdingsRecordId": "d1125a4f-0cbd-5a4a-a248-d6ef47f67e78",
-      "itemDamagedStatus": null,
-      "permanentLoanType": "Can circulate",
-      "temporaryLoanType": null,
-      "statisticalCodeIds": [
-
-      ],
-      "administrativeNotes": [
-
-      ],
-      "effectiveLocationId": "4573e824-9273-4f13-972f-cff7bf504217",
-      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
-      "permanentLocationId": "4573e824-9273-4f13-972f-cff7bf504217",
-      "suppressFromDiscovery": false,
-      "effectiveShelvingOrder": "HV 46533 H3 W55 42022 13",
-      "effectiveCallNumberComponents": {
-        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
-        "callNumber": "HV6533 .H3 W55 2022"
-      }
-    },
-    {
       "id": "771eb80c-d464-5deb-bce0-c16e49979d1c",
       "hrid": "ai14238203_2_1",
       "notes": [
@@ -134,6 +26,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -156,6 +49,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -222,9 +116,9 @@
       "notes": [
 
       ],
-      "status": "Available",
+      "status": "Aged to lost",
       "barcode": "36105232530696",
-      "_version": 1,
+      "_version": 3,
       "location": {
         "effectiveLocation": {
           "id": "4573e824-9273-4f13-972f-cff7bf504217",
@@ -242,6 +136,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -264,6 +159,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -274,9 +170,8 @@
       },
       "metadata": {
         "createdDate": "2023-05-07T16:08:35.666Z",
-        "updatedDate": "2023-05-07T16:08:35.666Z",
-        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+        "updatedDate": "2023-07-08T07:52:04.936Z",
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
       },
       "formerIds": [
 
@@ -349,6 +244,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -370,6 +266,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -425,6 +322,120 @@
       "permanentLocationId": "1af90de1-a5c0-4c46-bab1-2847d041f997",
       "suppressFromDiscovery": false,
       "effectiveShelvingOrder": "HV 46533 H3 W55 42022 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "HV6533 .H3 W55 2022"
+      }
+    },
+    {
+      "id": "64d4220b-ebae-5fb0-971c-0f98f6d9cc93",
+      "hrid": "ai14238203_2_3",
+      "notes": [
+
+      ],
+      "status": "Aged to lost",
+      "barcode": "36105232609557",
+      "_version": 5,
+      "location": {
+        "effectiveLocation": {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Green Library Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Cecil H. Green"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Green Library Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Cecil H. Green"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "temporaryLocation": null
+      },
+      "metadata": {
+        "createdDate": "2023-05-07T16:08:35.666Z",
+        "updatedDate": "2023-07-08T09:13:33.743Z",
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "HV6533 .H3 W55 2022"
+      },
+      "copyNumber": "3",
+      "lastCheckIn": {
+        "dateTime": "2023-06-03T01:25:59.210+00:00",
+        "staffMemberId": "9c77fffb-9d40-422c-8742-4c0f79957888",
+        "servicePointId": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "d1125a4f-0cbd-5a4a-a248-d6ef47f67e78",
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4573e824-9273-4f13-972f-cff7bf504217",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "permanentLocationId": "4573e824-9273-4f13-972f-cff7bf504217",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "HV 46533 H3 W55 42022 13",
       "effectiveCallNumberComponents": {
         "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
         "callNumber": "HV6533 .H3 W55 2022"
@@ -529,6 +540,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -551,6 +563,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -635,6 +648,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -656,6 +670,7 @@
             "code": "GREEN",
             "name": "Cecil H. Green"
           },
+          "isActive": true,
           "institution": {
             "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
             "code": "SU",
@@ -877,18 +892,6 @@
 
     ]
   },
-  "reserves": [
-    {
-      "id": null,
-      "itemId": null,
-      "courseListingId": null
-    },
-    {
-      "id": "7cc0e34a-d217-40c4-9252-c6e37aabe6b1",
-      "itemId": "771eb80c-d464-5deb-bce0-c16e49979d1c",
-      "courseListingId": "97722041-31e7-4830-be5c-5a686783ca2c"
-    }
-  ],
   "source_record": [
     {
       "fields": [
@@ -1868,6 +1871,20 @@
         }
       ],
       "leader": "06880cam a22007578i 4500"
+    }
+  ],
+  "boundWithParents": [
+
+  ],
+  "holdingSummaries": [
+    {
+      "poLineId": null,
+      "orderType": null,
+      "orderStatus": null,
+      "poLineNumber": null,
+      "orderSentDate": null,
+      "orderCloseReason": null,
+      "polReceiptStatus": null
     }
   ]
 }
