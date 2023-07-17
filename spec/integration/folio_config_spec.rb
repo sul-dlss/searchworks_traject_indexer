@@ -22,7 +22,23 @@ RSpec.describe 'FOLIO indexing' do
     JSON.parse(File.read(file_fixture('a14185492.json')))
   end
 
-  let(:client) { instance_double(FolioClient) }
+  let(:client_instance_response) do
+    {
+      'id' =>	'4e481734-9304-5035-99b3-afe6153d9835',
+      'hrid' => 'a2656738',
+      'statisticalCodeIds' =>	%w[d3f618e2-9fa9-4623-94ae-1d95d1d66f79]
+    }
+  end
+
+  let(:statistical_codes_response) do
+    [
+      { 'id' => 'd3f618e2-9fa9-4623-94ae-1d95d1d66f79', 'name' => 'MARCIVE loaded record' },
+      { 'id' => '12313', 'name' => 'Not used' },
+      { 'id' => '4bc78766-8f34-4b1a-9e39-2a689a4ae998', 'name' => 'Database' }
+    ]
+  end
+
+  let(:client) { instance_double(FolioClient, instance: client_instance_response, statistical_codes: statistical_codes_response) }
   let(:items_and_holdings) { {} }
   let(:holding_summaries) { [] }
 
@@ -718,6 +734,26 @@ RSpec.describe 'FOLIO indexing' do
         [{ 'staffNote' => 'Send to cataloging to receive and update holdings...', 'statement' => 'v.1, 11' }]
       end
       it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- ', 'EARTH-SCI -|- STACKS -|-  -|- Supplement: Library keeps latest only -|- '] }
+    end
+  end
+
+  describe 'the Resource Type facet (format_main_ssim)' do
+    subject(:field) { result['format_main_ssim'] }
+
+    context 'with the database statistical code' do
+      let(:client_instance_response) do
+        {
+          'id' =>	'4e481734-9304-5035-99b3-afe6153d9835',
+          'hrid' => 'a2656738',
+          'statisticalCodeIds' =>	%w[d3f618e2-9fa9-4623-94ae-1d95d1d66f79 4bc78766-8f34-4b1a-9e39-2a689a4ae998]
+        }
+      end
+
+      it { is_expected.to eq ['Music score', 'Database'] }
+    end
+
+    context 'without the database statistical code' do
+      it { is_expected.to eq ['Music score'] }
     end
   end
 end

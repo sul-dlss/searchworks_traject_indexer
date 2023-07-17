@@ -170,6 +170,13 @@ class FolioRecord
     @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
   end
 
+  def statistical_codes
+    @statistical_codes ||= instance.fetch('statisticalCodes') do
+      my_ids = client.instance(instance_id:).fetch('statisticalCodeIds')
+      client.statistical_codes.select { |code| my_ids.include?(code['id']) }
+    end
+  end
+
   def instance
     record['instance'] || {}
   end

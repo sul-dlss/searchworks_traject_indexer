@@ -222,6 +222,11 @@ to_field 'courses_json_struct' do |record, accumulator|
   accumulator << JSON.generate(record.courses)
 end
 
+# Statistical code is 'Database'
+to_field 'format_main_ssim' do |record, accumulator, _context|
+  accumulator << 'Database' if record.statistical_codes.any? { |stat_code| stat_code['name'] == 'Database' }
+end
+
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|

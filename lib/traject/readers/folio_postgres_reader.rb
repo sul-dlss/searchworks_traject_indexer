@@ -113,7 +113,12 @@ module Traject
               vi.jsonb || jsonb_build_object(
                 'suppressFromDiscovery', COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false),
                 'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(vi.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                'notes', jsonb_path_query_array(vi.jsonb->'notes', '$ ? (@.staffOnly == false)')
+                'statisticalCodes', COALESCE(json_agg(DISTINCT
+                  jsonb_build_object(
+                    'id', sc.id,
+                    'name', sc.jsonb ->> 'name'
+                  )
+                ) FILTER (WHERE sc.id IS NOT NULL), '[]'::json)
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
@@ -257,37 +262,40 @@ module Traject
             )
       FROM sul_mod_inventory_storage.instance vi
       LEFT JOIN sul_mod_inventory_storage.holdings_record hr
-         ON hr.instanceid = vi.id
+          ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
-         ON item.holdingsrecordid = hr.id
+          ON item.holdingsrecordid = hr.id
+      -- Instance's statistical code
+      LEFT JOIN LATERAL jsonb_array_elements_text(vi.jsonb -> 'statisticalCodeIds') uuid_stats_code(id) ON TRUE
+      LEFT JOIN sul_mod_inventory_storage.statistical_code sc ON uuid_stats_code.id::uuid = sc.id
       -- Course information related to items on reserve
       LEFT JOIN sul_mod_courses.coursereserves_reserves cr
-        ON (cr.jsonb ->> 'itemId')::uuid = item.id
+          ON (cr.jsonb ->> 'itemId')::uuid = item.id
       LEFT JOIN sul_mod_courses.coursereserves_courselistings cl
-        ON cl.id = cr.courselistingid
+          ON cl.id = cr.courselistingid
       LEFT JOIN sul_mod_courses.coursereserves_courses cc
-        ON cc.courselistingid = cl.id
+          ON cc.courselistingid = cl.id
       -- Item's Effective location relation
       LEFT JOIN viewLocations itemEffLoc
-            ON item.effectivelocationid = itemEffLoc.locId
+          ON item.effectivelocationid = itemEffLoc.locId
       -- Item's Permanent location relation
       LEFT JOIN viewLocations itemPermLoc
-            ON item.permanentlocationid = itemPermLoc.locId
+          ON item.permanentlocationid = itemPermLoc.locId
       -- Item's Temporary location relation
       LEFT JOIN viewLocations itemTempLoc
-            ON item.temporarylocationid = itemTempLoc.locId
+          ON item.temporarylocationid = itemTempLoc.locId
       -- Item's Material type relation
       LEFT JOIN sul_mod_inventory_storage.material_type mt
-            ON item.materialtypeid = mt.id
+          ON item.materialtypeid = mt.id
       -- Item's Call number type relation
       LEFT JOIN sul_mod_inventory_storage.call_number_type cnt
-            ON (item.jsonb #>> '{effectiveCallNumberComponents, typeId}')::uuid = cnt.id
+          ON (item.jsonb #>> '{effectiveCallNumberComponents, typeId}')::uuid = cnt.id
       -- Item's Damaged status relation
       LEFT JOIN sul_mod_inventory_storage.item_damaged_status itemDmgStat
-            ON (item.jsonb ->> 'itemDamagedStatusId')::uuid = itemDmgStat.id
+          ON (item.jsonb ->> 'itemDamagedStatusId')::uuid = itemDmgStat.id
       -- Item's Permanent loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type plt
-            ON item.permanentloantypeid = plt.id
+          ON item.permanentloantypeid = plt.id
       -- Item's Temporary loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type tlt
             ON item.temporaryloantypeid = tlt.id
