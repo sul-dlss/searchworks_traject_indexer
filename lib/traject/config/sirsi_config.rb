@@ -1989,7 +1989,7 @@ to_field 'callnum_search' do |record, accumulator, context|
 end
 
 to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, accumulator, _context|
-  accumulator.select! { |cn|  cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX }
+  accumulator.select! { |cn| cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX }
 end
 
 # shelfkey = custom, getShelfkeys
