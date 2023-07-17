@@ -12,12 +12,21 @@ module Traject
       @connection = PG.connect(@settings['postgres.url'])
       @page_size = @settings['postgres.page_size'] || 100
       @updated_after = @settings['folio.updated_after']
-      @sql_filters = @settings['postgres.sql_filters'] || 'TRUE'
+      @sql_filters = default_filters
     end
 
     # Return a single record by catkey by temporarily applying a SQL filter
     def self.find_by_catkey(catkey, settings = {})
       new(nil, settings.merge!('postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey}'")).first
+    end
+
+    def default_filters
+      [suppress_shadowed_items, @settings['postgres.sql_filters']].compact
+    end
+
+    # exclude things that are shadowed in symphony, which are in locations that don't get mapped and thus end up in the "migration error" locations.
+    def suppress_shadowed_items
+      "item.effectivelocationid NOT IN (SELECT id from location WHERE jsonb ->> 'code' like '%MIGRATE-ERR')"
     end
 
     def queries
@@ -37,12 +46,12 @@ module Traject
 
         conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
           c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-          sql_query([c, @sql_filters].compact, addl_from: filter_join[table])
-        end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'", @sql_filters].compact, addl_from: filter_join['rs_filter'])]
+          sql_query([c] + @sql_filters, addl_from: filter_join[table])
+        end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter'])]
 
         conditions.join(') UNION (')
       else
-        sql_query([@sql_filters])
+        sql_query(@sql_filters)
       end
     end
 
