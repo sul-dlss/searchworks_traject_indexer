@@ -21,12 +21,7 @@ module Traject
     end
 
     def default_filters
-      [suppress_shadowed_items, @settings['postgres.sql_filters']].compact
-    end
-
-    # exclude things that are shadowed in symphony, which are in locations that don't get mapped and thus end up in the "migration error" locations.
-    def suppress_shadowed_items
-      "item.effectivelocationid NOT IN (SELECT id from location WHERE jsonb ->> 'code' like '%MIGRATE-ERR')"
+      [@settings['postgres.sql_filters']].compact
     end
 
     def queries

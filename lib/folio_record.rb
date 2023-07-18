@@ -81,6 +81,8 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       item_location_code = item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
+      next if item_location_code&.end_with? 'MIGRATE-ERR'
+
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'location', 'code'))
       current_location ||= folio_status_to_location(item['status'])
