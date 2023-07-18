@@ -52,6 +52,14 @@ module Traject
       end
     end
 
+    # This gets the UUID of the "Database" statistical code. This is the only statistical code we care about.
+    def statical_code_database
+      @statical_code_database ||= begin
+        response = @connection.exec("SELECT id FROM sul_mod_inventory_storage.statistical_code WHERE jsonb->>'name' = 'Database';")
+        response.map { |row| row['id'] }.first
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -113,7 +121,16 @@ module Traject
               vi.jsonb || jsonb_build_object(
                 'suppressFromDiscovery', COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false),
                 'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(vi.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                'notes', jsonb_path_query_array(vi.jsonb->'notes', '$ ? (@.staffOnly == false)')
+                'statisticalCodes', CASE WHEN '#{statical_code_database}' = ANY(ARRAY(SELECT jsonb_array_elements_text(vi.jsonb->'statisticalCodeIds'))) THEN
+                                        jsonb_build_array(
+                                          jsonb_build_object(
+                                              'id', '#{statical_code_database}',
+                                              'name', 'Database'
+                                          )
+                                        )
+                                    ELSE
+                                       '[]'::jsonb
+                                    END
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',

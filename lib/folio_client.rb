@@ -61,6 +61,14 @@ class FolioClient
     get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
   end
 
+  def instance(instance_id:)
+    get_json("/inventory/instances/#{instance_id}")
+  end
+
+  def statistical_codes
+    @statistical_codes ||= get_json('/statistical-codes?limit=2000&query=cql.allRecords=1 sortby name').fetch('statisticalCodes')
+  end
+
   private
 
   # @param [HTTP::Response] response

@@ -1114,6 +1114,7 @@ to_field 'format_main_ssim' do |record, accumulator, _context|
   end
 end
 
+# Legacy Symphony Item Type is DATABASE
 to_field 'format_main_ssim' do |record, accumulator, context|
   accumulator << 'Database' if holdings(record, context).any? { |holding| holding.type == 'DATABASE' }
 end
