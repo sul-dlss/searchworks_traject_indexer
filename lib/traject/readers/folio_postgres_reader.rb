@@ -257,89 +257,89 @@ module Traject
             )
       FROM sul_mod_inventory_storage.instance vi
       LEFT JOIN sul_mod_inventory_storage.holdings_record hr
-         ON hr.instanceid = vi.id
+          ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
-         ON item.holdingsrecordid = hr.id
+          ON item.holdingsrecordid = hr.id
       -- Course information related to items on reserve
       LEFT JOIN sul_mod_courses.coursereserves_reserves cr
-        ON (cr.jsonb ->> 'itemId')::uuid = item.id
+          ON (cr.jsonb ->> 'itemId')::uuid = item.id
       LEFT JOIN sul_mod_courses.coursereserves_courselistings cl
-        ON cl.id = cr.courselistingid
+          ON cl.id = cr.courselistingid
       LEFT JOIN sul_mod_courses.coursereserves_courses cc
-        ON cc.courselistingid = cl.id
+          ON cc.courselistingid = cl.id
       -- Item's Effective location relation
       LEFT JOIN viewLocations itemEffLoc
-            ON item.effectivelocationid = itemEffLoc.locId
+          ON item.effectivelocationid = itemEffLoc.locId
       -- Item's Permanent location relation
       LEFT JOIN viewLocations itemPermLoc
-            ON item.permanentlocationid = itemPermLoc.locId
+          ON item.permanentlocationid = itemPermLoc.locId
       -- Item's Temporary location relation
       LEFT JOIN viewLocations itemTempLoc
-            ON item.temporarylocationid = itemTempLoc.locId
+          ON item.temporarylocationid = itemTempLoc.locId
       -- Item's Material type relation
       LEFT JOIN sul_mod_inventory_storage.material_type mt
-            ON item.materialtypeid = mt.id
+          ON item.materialtypeid = mt.id
       -- Item's Call number type relation
       LEFT JOIN sul_mod_inventory_storage.call_number_type cnt
-            ON (item.jsonb #>> '{effectiveCallNumberComponents, typeId}')::uuid = cnt.id
+          ON (item.jsonb #>> '{effectiveCallNumberComponents, typeId}')::uuid = cnt.id
       -- Item's Damaged status relation
       LEFT JOIN sul_mod_inventory_storage.item_damaged_status itemDmgStat
-            ON (item.jsonb ->> 'itemDamagedStatusId')::uuid = itemDmgStat.id
+          ON (item.jsonb ->> 'itemDamagedStatusId')::uuid = itemDmgStat.id
       -- Item's Permanent loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type plt
-            ON item.permanentloantypeid = plt.id
+          ON item.permanentloantypeid = plt.id
       -- Item's Temporary loan type relation
       LEFT JOIN sul_mod_inventory_storage.loan_type tlt
-            ON item.temporaryloantypeid = tlt.id
+          ON item.temporaryloantypeid = tlt.id
       -- Holdings type relation
       LEFT JOIN sul_mod_inventory_storage.holdings_type ht
-         ON ht.id = hr.holdingstypeid
+          ON ht.id = hr.holdingstypeid
       LEFT JOIN viewLocations holdPermLoc
-         ON hr.permanentlocationid = holdPermLoc.locId
+          ON hr.permanentlocationid = holdPermLoc.locId
       -- Holdings Temporary location relation
       LEFT JOIN viewLocations holdTempLoc
-         ON hr.temporarylocationid = holdTempLoc.locId
+          ON hr.temporarylocationid = holdTempLoc.locId
       -- Holdings Effective location relation
       LEFT JOIN viewLocations holdEffLoc
-         ON hr.effectivelocationid = holdEffLoc.locId
+          ON hr.effectivelocationid = holdEffLoc.locId
       -- Holdings Call number type relation
       LEFT JOIN sul_mod_inventory_storage.call_number_type hrcnt
-         ON hr.callnumbertypeid = hrcnt.id
+          ON hr.callnumbertypeid = hrcnt.id
       -- Holdings Ill policy relation
       LEFT JOIN sul_mod_inventory_storage.ill_policy ilp
-            ON hr.illpolicyid = ilp.id
+          ON hr.illpolicyid = ilp.id
       LEFT JOIN sul_mod_source_record_storage.records_lb rs
-        ON rs.external_id = vi.id AND rs.state = 'ACTUAL'
+          ON rs.external_id = vi.id AND rs.state = 'ACTUAL'
       LEFT JOIN sul_mod_source_record_storage.marc_records_lb mr
-        ON mr.id = rs.id
+          ON mr.id = rs.id
       -- Pieces relation
       LEFT JOIN sul_mod_orders_storage.titles titles
-        ON (titles.jsonb ->> 'instanceId')::uuid  = vi.id
+          ON (titles.jsonb ->> 'instanceId')::uuid  = vi.id
       LEFT JOIN sul_mod_orders_storage.pieces pieces
-        ON pieces.titleid = titles.id
+          ON pieces.titleid = titles.id
       -- Holding Summaries (purchase order) relation
       LEFT JOIN sul_mod_orders_storage.po_line po_line
-        ON (po_line.jsonb ->> 'instanceId')::uuid = vi.id
+          ON (po_line.jsonb ->> 'instanceId')::uuid = vi.id
       LEFT JOIN sul_mod_orders_storage.purchase_order purchase_order
-        ON purchase_order.id = po_line.purchaseOrderId
+          ON purchase_order.id = po_line.purchaseOrderId
       -- Bound with parts relation
       LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
-        ON bw.holdingsrecordid = hr.id
+          ON bw.holdingsrecordid = hr.id
       LEFT JOIN sul_mod_inventory_storage.item parentItem
-        ON bw.itemid = parentItem.id
+          ON bw.itemid = parentItem.id
       LEFT JOIN sul_mod_inventory_storage.holdings_record parentHolding
-        ON parentItem.holdingsRecordId = parentHolding.id
+          ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
-        ON parentHolding.instanceid = parentInstance.id
+          ON parentHolding.instanceid = parentInstance.id
       -- BW Parent Item's Effective location relation
       LEFT JOIN viewLocations parentItemEffLoc
-        ON parentItem.effectivelocationid = parentItemEffLoc.locId
+          ON parentItem.effectivelocationid = parentItemEffLoc.locId
       -- BW Parent Item's Permanent location relation
       LEFT JOIN viewLocations parentItemPermLoc
-        ON parentItem.permanentlocationid = parentItemPermLoc.locId
+          ON parentItem.permanentlocationid = parentItemPermLoc.locId
       -- BW Parent Item's Temporary location relation
       LEFT JOIN viewLocations parentItemTempLoc
-        ON parentItem.temporarylocationid = parentItemTempLoc.locId
+          ON parentItem.temporarylocationid = parentItemTempLoc.locId
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
