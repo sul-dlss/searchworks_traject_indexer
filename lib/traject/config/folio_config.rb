@@ -222,14 +222,10 @@ to_field 'courses_json_struct' do |record, accumulator|
   accumulator << JSON.generate(record.courses)
 end
 
-to_field 'bound_with_parents_struct' do |record, accumulator|
-  accumulator << record.bound_with_parents.to_json
-end
-
 ##
 # Skip records for missing `item_display` field
-each_record do |record, context|
-  if context.output_hash['item_display'].blank? && context.output_hash['url_fulltext'].blank? && record.bound_with_parents.blank?
+each_record do |_record, context|
+  if context.output_hash['item_display'].blank? && context.output_hash['url_fulltext'].blank?
     context.skip!('No item_display or url_fulltext field')
   end
 end
