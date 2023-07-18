@@ -41,12 +41,14 @@ module Traject
           'rs_filter' => 'LEFT JOIN sul_mod_source_record_storage.records_lb rs_filter ON rs_filter.external_id = vi.id'
         }
 
-        conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
-          c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-          sql_query([c] + @sql_filters, addl_from: filter_join[table])
-        end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter'])]
+        subqueries = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
+          sql_query([updated_at_filter(table)] + @sql_filters, addl_from: filter_join[table])
+        end + [
+          sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter']),
+          location_updated_subquery
+        ]
 
-        conditions.join(') UNION (')
+        subqueries.join(') UNION (')
       else
         sql_query(@sql_filters)
       end
@@ -58,6 +60,30 @@ module Traject
         response = @connection.exec("SELECT id FROM sul_mod_inventory_storage.statistical_code WHERE jsonb->>'name' = 'Database';")
         response.map { |row| row['id'] }.first
       end
+    end
+    
+    # Ensure that if a location has been updated, then any item or holding that uses that location is in the result set.
+    def location_updated_subquery
+      addl_with = <<~WITH
+        , updated_locations AS (
+          SELECT id FROM sul_mod_inventory_storage.location loc WHERE#{' '}
+          #{updated_at_filter('loc')}
+        )
+      WITH
+      location_updated_filter = <<~FILTER
+        (item.effectivelocationid IN (SELECT id FROM updated_locations) OR
+        hr.effectivelocationid IN (SELECT id FROM updated_locations) OR
+        item.permanentlocationid IN (SELECT id FROM updated_locations) OR
+        hr.permanentlocationid IN (SELECT id FROM updated_locations) OR
+        item.temporarylocationid IN (SELECT id FROM updated_locations) OR
+        hr.temporarylocationid IN (SELECT id FROM updated_locations))
+      FILTER
+      sql_query([location_updated_filter] + @sql_filters, addl_with:)
+    end
+
+    # A SQL clause to filter by updatedDate in the JSONB metadata of the given table.
+    def updated_at_filter(table)
+      "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
     end
 
     def each
@@ -98,22 +124,22 @@ module Traject
       Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
     end
 
-    def sql_query(conditions, addl_from: nil)
+    def sql_query(conditions, addl_from: nil, addl_with: nil)
       <<-SQL
       WITH viewLocations(locId, locJsonb, locCampJsonb, locLibJsonb, locInstJsonb) AS (
-        SELECT loc.id AS locId,
-               jsonb_build_object('id', loc.id, 'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'), 'isActive', COALESCE((loc.jsonb ->> 'isActive')::bool, false), 'code', loc.jsonb ->> 'code', 'details', loc.jsonb -> 'details') AS locJsonb,
-               jsonb_build_object('id', locCamp.id, 'name', COALESCE(locCamp.jsonb ->> 'discoveryDisplayName', locCamp.jsonb ->> 'name'), 'code', locCamp.jsonb ->> 'code') AS locCampJsonb,
-               jsonb_build_object('id', locLib.id, 'name', COALESCE(locLib.jsonb ->> 'discoveryDisplayName', locLib.jsonb ->> 'name'), 'code', locLib.jsonb ->> 'code') AS locLibJsonb,
-               jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
-        FROM sul_mod_inventory_storage.location loc
-           LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
-                ON loc.institutionid = locInst.id
-           LEFT JOIN sul_mod_inventory_storage.loccampus locCamp
-                ON loc.campusid = locCamp.id
-           LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
-                ON loc.libraryid = locLib.id
-        )
+          SELECT loc.id AS locId,
+                jsonb_build_object('id', loc.id, 'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'), 'isActive', COALESCE((loc.jsonb ->> 'isActive')::bool, false), 'code', loc.jsonb ->> 'code', 'details', loc.jsonb -> 'details') AS locJsonb,
+                jsonb_build_object('id', locCamp.id, 'name', COALESCE(locCamp.jsonb ->> 'discoveryDisplayName', locCamp.jsonb ->> 'name'), 'code', locCamp.jsonb ->> 'code') AS locCampJsonb,
+                jsonb_build_object('id', locLib.id, 'name', COALESCE(locLib.jsonb ->> 'discoveryDisplayName', locLib.jsonb ->> 'name'), 'code', locLib.jsonb ->> 'code') AS locLibJsonb,
+                jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
+          FROM sul_mod_inventory_storage.location loc
+            LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
+                  ON loc.institutionid = locInst.id
+            LEFT JOIN sul_mod_inventory_storage.loccampus locCamp
+                  ON loc.campusid = locCamp.id
+            LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
+                  ON loc.libraryid = locLib.id
+      )#{addl_with}
       SELECT
         vi.id,
           jsonb_build_object(
