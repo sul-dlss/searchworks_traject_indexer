@@ -60,16 +60,11 @@ class FolioRecord
       # if 590 with Bound-with related subfields are present, return the record as is
       unless record.fields('590').any? { |f| f['a'] && f['c'] }
         # if 590 or one of its Bound-with related subfields is missing, and FOLIO says this record is Bound-with, append the relevant data from FOLIO
-        parents ||= bound_with_parents
-        # if Bound-with parents are found, edit the marc record
-        if parents&.any?
-          # append a new 590 and/or its subfields if not present
-          parents.each do |parent|
-            field590 = MARC::DataField.new('590', ' ', ' ')
-            field590.subfields << MARC::Subfield.new('a', "#{parent['childHoldingCallNumber']} bound with #{parent['parentInstanceTitle']}")
-            field590.subfields << MARC::Subfield.new('c', "#{parent['parentInstanceId']} (parent record)")
-            record.append(field590)
-          end
+        holdings.select { |holding| holding['boundWith'].present? }.each do |holding|
+          field590 = MARC::DataField.new('590', ' ', ' ')
+          field590.subfields << MARC::Subfield.new('a', "#{holding['callNumber']} bound with #{holding.dig('boundWith', 'instance', 'title')}")
+          field590.subfields << MARC::Subfield.new('c', "#{holding.dig('boundWith', 'instance', 'hrid')} (parent record)")
+          record.append(field590)
         end
       end
       record
@@ -102,21 +97,18 @@ class FolioRecord
   # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
   # TODO: remove this when we stop using SirsiHoldings
   def bound_with_holdings
-    return [] unless bound_with_parents
-
-    @bound_with_holdings ||= holdings.filter { |holding| holding['holdingsType'].is_a?(Hash) ? holding.dig('holdingsType', 'name') == 'Bound-with' : holding['holdingsType'] == 'Bound-with' }.filter_map do |holding|
-      parent_item = bound_with_parents.find { |parent| parent['childHoldingId'] == holding['id'] }
-      next unless parent_item
-
-      parent_item_perm_location = parent_item.dig('parentItemLocation', 'permanentLocation', 'code')
+    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? }.map do |holding|
+      parent_item = holding.dig('boundWith', 'item')
+      parent_item_perm_location = parent_item.dig('location', 'permanentLocation', 'code')
       library_code, home_location_code = LocationsMap.for(parent_item_perm_location)
-      _current_library, current_location = LocationsMap.for(parent_item.dig('parentItemLocation', 'effectiveLocation', 'code'))
+      _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'effectiveLocation', 'code'))
+      current_location ||= folio_status_to_location(parent_item['status'])
       SirsiHolding.new(
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         tag: {},
         # parent item's barcode
-        barcode: parent_item['parentItemBarcode'],
+        barcode: parent_item['barcode'],
         # parent item's current location or SEE-OTHER (SAL3)
         # For the SAL3 logic, see https://consul.stanford.edu/display/MD/Bound+withs
         # When the bound-with item is in SAL3, both the Home and Current Locations on the child records should always be SEE-OTHER.
@@ -178,10 +170,6 @@ class FolioRecord
 
   def instance
     record['instance'] || {}
-  end
-
-  def bound_with_parents
-    record['boundWithParents'] || []
   end
 
   # hash representation of the record

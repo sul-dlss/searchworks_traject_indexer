@@ -43,7 +43,20 @@ RSpec.describe FolioRecord do
           'instance' => {
             'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
           },
-          'holdings' => [],
+          'holdings' => [{
+            'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+            'callNumber' => '064.8 .D191H',
+            'boundWith' => {
+              'instance' => {
+                'hrid' => '134624',
+                'title' => 'Mursilis Sprachlähmung'
+              },
+              'item' => {
+                'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+                'barcode' => '36105018739321'
+              }
+            }
+          }],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' },
@@ -54,16 +67,7 @@ RSpec.describe FolioRecord do
                 ]
               } }
             ]
-          }],
-          'boundWithParents' => [
-            {
-              'parentInstanceId' => '134624',
-              'parentInstanceTitle' => 'Mursilis Sprachlähmung',
-              'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
-              'parentItemBarcode' => '36105018739321',
-              'childHoldingCallNumber' => '064.8 .D191H'
-            }
-          ]
+          }]
         }
       end
 
@@ -82,7 +86,20 @@ RSpec.describe FolioRecord do
           'instance' => {
             'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
           },
-          'holdings' => [],
+          'holdings' => [{
+            'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+            'callNumber' => '064.8 .D191H',
+            'boundWith' => {
+              'instance' => {
+                'hrid' => '134624',
+                'title' => 'Mursilis Sprachlähmung'
+              },
+              'item' => {
+                'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+                'barcode' => '36105018739321'
+              }
+            }
+          }],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' },
@@ -90,16 +107,7 @@ RSpec.describe FolioRecord do
                 'subfields' => [{ 'a' => 'Totally not a bound-with' }]
               } }
             ]
-          }],
-          'boundWithParents' => [
-            {
-              'parentInstanceId' => '134624',
-              'parentInstanceTitle' => 'Mursilis Sprachlähmung',
-              'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
-              'parentItemBarcode' => '36105018739321',
-              'childHoldingCallNumber' => '064.8 .D191H'
-            }
-          ]
+          }]
         }
       end
       it 'writes a new 590' do
@@ -119,21 +127,25 @@ RSpec.describe FolioRecord do
           'instance' => {
             'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
           },
-          'holdings' => [],
+          'holdings' => [{
+            'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+            'callNumber' => '064.8 .D191H',
+            'boundWith' => {
+              'instance' => {
+                'hrid' => '134624',
+                'title' => 'Mursilis Sprachlähmung'
+              },
+              'item' => {
+                'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
+                'barcode' => '36105018739321'
+              }
+            }
+          }],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' }
             ]
-          }],
-          'boundWithParents' => [
-            {
-              'parentInstanceId' => '134624',
-              'parentInstanceTitle' => 'Mursilis Sprachlähmung',
-              'parentItemId' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
-              'parentItemBarcode' => '36105018739321',
-              'childHoldingCallNumber' => '064.8 .D191H'
-            }
-          ]
+          }]
         }
       end
 
