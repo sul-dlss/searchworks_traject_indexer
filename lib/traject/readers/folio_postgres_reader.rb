@@ -52,6 +52,14 @@ module Traject
       end
     end
 
+    # This gets the UUID of the "Database" statistical code. This is the only statistical code we care about.
+    def statical_code_database
+      @statical_code_database ||= begin
+        response = @connection.exec("SELECT id FROM sul_mod_inventory_storage.statistical_code WHERE jsonb->>'name' = 'Database';")
+        response.map { |row| row['id'] }.first
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -113,12 +121,16 @@ module Traject
               vi.jsonb || jsonb_build_object(
                 'suppressFromDiscovery', COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false),
                 'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(vi.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                'statisticalCodes', COALESCE(json_agg(DISTINCT
-                  jsonb_build_object(
-                    'id', sc.id,
-                    'name', sc.jsonb ->> 'name'
-                  )
-                ) FILTER (WHERE sc.id IS NOT NULL), '[]'::json)
+                'statisticalCodes', CASE WHEN '#{statical_code_database}' = ANY(ARRAY(SELECT jsonb_array_elements_text(vi.jsonb->'statisticalCodeIds'))) THEN
+                                        jsonb_build_array(
+                                          jsonb_build_object(
+                                              'id', '#{statical_code_database}',
+                                              'name', 'Database'
+                                          )
+                                        )
+                                    ELSE
+                                       '[]'::jsonb
+                                    END
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
@@ -265,9 +277,6 @@ module Traject
           ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
           ON item.holdingsrecordid = hr.id
-      -- Instance's statistical code
-      LEFT JOIN LATERAL jsonb_array_elements_text(vi.jsonb -> 'statisticalCodeIds') uuid_stats_code(id) ON TRUE
-      LEFT JOIN sul_mod_inventory_storage.statistical_code sc ON uuid_stats_code.id::uuid = sc.id
       -- Course information related to items on reserve
       LEFT JOIN sul_mod_courses.coursereserves_reserves cr
           ON (cr.jsonb ->> 'itemId')::uuid = item.id
