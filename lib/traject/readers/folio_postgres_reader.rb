@@ -12,6 +12,8 @@ module Traject
       @connection = PG.connect(@settings['postgres.url'])
       @page_size = @settings['postgres.page_size'] || 100
       @updated_after = @settings['folio.updated_after']
+      @statement_timeout = @settings.fetch('statement_timeout', 'DEFAULT') # Timeout value in milliseconds
+
       @sql_filters = default_filters
     end
 
@@ -63,6 +65,7 @@ module Traject
         # These settings seem to hint postgres to a better query plan
         @connection.exec('SET join_collapse_limit = 64')
         @connection.exec('SET from_collapse_limit = 64')
+        @connection.exec("SET statement_timeout = #{@statement_timeout}")
 
         # declare a cursor
         @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
