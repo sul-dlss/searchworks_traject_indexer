@@ -1,234 +1,265 @@
 {
-  "items": [
-
-  ],
-  "pieces": [
-    null
-  ],
-  "courses": [
-
+  "courses": [],
+  "holdingSummaries": [
+    {
+      "orderCloseReason": null,
+      "orderSentDate": null,
+      "orderStatus": null,
+      "orderType": null,
+      "poLineId": null,
+      "poLineNumber": null,
+      "polReceiptStatus": null
+    }
   ],
   "holdings": [
     {
-      "id": "465cf5fc-56fd-561f-98d5-4fac5e2b401a",
-      "hrid": "ah2279186_1",
-      "notes": [
-
-      ],
       "_version": 1,
-      "location": {
-        "effectiveLocation": {
-          "id": "158168a3-ede4-4cc1-8c98-61f4feeb22ea",
-          "code": "SAL3-SEE-OTHER",
-          "name": "Off-campus storage",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": null,
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3",
-            "name": "Stanford Auxiliary Library 3"
-          },
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
+      "administrativeNotes": [],
+      "bareHoldingsItems": [],
+      "boundWith": {
+        "instance": {
+          "hrid": "a5488000",
+          "id": "9f13e6e6-5d22-517b-a106-76754e0b3d87",
+          "title": "The gases of swamp rice soils ... / by W.H. Harrison ... and P.A. Subramania Aiyer ..."
         },
-        "permanentLocation": {
-          "id": "158168a3-ede4-4cc1-8c98-61f4feeb22ea",
-          "code": "SAL3-SEE-OTHER",
-          "name": "Off-campus storage",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
+        "item": {
+          "barcode": "36105026515499",
+          "hrid": "ai5488000_1_3",
+          "id": "6f53b2d1-4a80-5018-bd43-dd267f6180d2",
+          "location": {
+            "effectiveLocation": {
+              "campus": {
+                "code": "SUL",
+                "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                "name": "Stanford Libraries"
+              },
+              "code": "SAL3-STACKS",
+              "details": {
+                "scanServicePoint": "SAL3"
+              },
+              "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+              "institution": {
+                "code": "SU",
+                "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "name": "Stanford University"
+              },
+              "isActive": true,
+              "library": {
+                "code": "SAL3",
+                "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+                "name": "Stanford Auxiliary Library 3"
+              },
+              "name": "Off-campus storage"
+            },
+            "permanentLocation": {
+              "campus": {
+                "code": "SUL",
+                "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                "name": "Stanford Libraries"
+              },
+              "code": "SAL3-STACKS",
+              "details": {
+                "scanServicePoint": "SAL3"
+              },
+              "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+              "institution": {
+                "code": "SU",
+                "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "name": "Stanford University"
+              },
+              "isActive": true,
+              "library": {
+                "code": "SAL3",
+                "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+                "name": "Stanford Auxiliary Library 3"
+              },
+              "name": "Off-campus storage"
+            },
+            "temporaryLocation": null
           },
-          "details": null,
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3",
-            "name": "Stanford Auxiliary Library 3"
-          },
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
+          "status": "In transit"
+        }
       },
-      "metadata": {
-        "createdDate": "2023-05-06T09:57:16.280Z",
-        "updatedDate": "2023-05-06T09:57:16.280Z",
-        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
-      },
-      "formerIds": [
-
-      ],
-      "illPolicy": null,
       "callNumber": "630.654 .I39M",
-      "instanceId": "68314fbd-2e30-5dbb-8278-66959c6195b3",
-      "holdingsType": {
-        "id": "5b08b35d-aaa3-4806-998c-9cd85e5bc406",
-        "name": "Bound-with",
-        "source": "local"
-      },
-      "holdingsItems": [
-
-      ],
       "callNumberType": {
         "id": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
         "name": "Dewey Decimal classification",
         "source": "folio"
       },
-      "holdingsTypeId": "5b08b35d-aaa3-4806-998c-9cd85e5bc406",
       "callNumberTypeId": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
-      "electronicAccess": [
-
-      ],
-      "bareHoldingsItems": [
-
-      ],
-      "holdingsStatements": [
-
-      ],
-      "statisticalCodeIds": [
-
-      ],
-      "administrativeNotes": [
-
-      ],
       "effectiveLocationId": "158168a3-ede4-4cc1-8c98-61f4feeb22ea",
+      "electronicAccess": [],
+      "formerIds": [],
+      "holdingsItems": [],
+      "holdingsStatements": [],
+      "holdingsStatementsForIndexes": [],
+      "holdingsStatementsForSupplements": [],
+      "holdingsType": {
+        "id": "5b08b35d-aaa3-4806-998c-9cd85e5bc406",
+        "name": "Bound-with",
+        "source": "local"
+      },
+      "holdingsTypeId": "5b08b35d-aaa3-4806-998c-9cd85e5bc406",
+      "hrid": "ah2279186_1",
+      "id": "465cf5fc-56fd-561f-98d5-4fac5e2b401a",
+      "illPolicy": null,
+      "instanceId": "68314fbd-2e30-5dbb-8278-66959c6195b3",
+      "location": {
+        "effectiveLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL3-SEE-OTHER",
+          "details": null,
+          "id": "158168a3-ede4-4cc1-8c98-61f4feeb22ea",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL3",
+            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+            "name": "Stanford Auxiliary Library 3"
+          },
+          "name": "Off-campus storage"
+        },
+        "permanentLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL3-SEE-OTHER",
+          "details": null,
+          "id": "158168a3-ede4-4cc1-8c98-61f4feeb22ea",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL3",
+            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+            "name": "Stanford Auxiliary Library 3"
+          },
+          "name": "Off-campus storage"
+        },
+        "temporaryLocation": null
+      },
+      "metadata": {
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "createdDate": "2023-05-06T09:57:16.280Z",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedDate": "2023-05-06T09:57:16.280Z"
+      },
+      "notes": [],
       "permanentLocationId": "158168a3-ede4-4cc1-8c98-61f4feeb22ea",
-      "suppressFromDiscovery": false,
-      "holdingsStatementsForIndexes": [
-
-      ],
-      "holdingsStatementsForSupplements": [
-
-      ]
+      "statisticalCodeIds": [],
+      "suppressFromDiscovery": false
     }
   ],
   "instance": {
-    "id": "68314fbd-2e30-5dbb-8278-66959c6195b3",
-    "hrid": "a2279186",
-    "notes": [
+    "_version": 1,
+    "administrativeNotes": [
+      "rcp2312"
+    ],
+    "alternativeTitles": [],
+    "catalogedDate": "1992-07-30",
+    "classifications": [],
+    "contributors": [
       {
-        "note": "Copy 1 bound with v. 5, no. 1",
-        "staffOnly": true,
-        "instanceNoteTypeId": "265c4910-3997-4242-9269-6a4a2e91392b"
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a",
+        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
+        "contributorTypeText": "Contributor",
+        "name": "Finlow, Robert Steel, 1877-",
+        "primary": true
       }
     ],
-    "title": "\"Heart damage\" in baled jute, by R.S. Finlow ...",
-    "series": [
-      "India. Department of Agriculture. Memoirs. Chemical series ; vol. V, no. 2"
+    "discoverySuppress": false,
+    "editions": [],
+    "electronicAccess": [],
+    "holdingsRecords2": [],
+    "hrid": "a2279186",
+    "id": "68314fbd-2e30-5dbb-8278-66959c6195b3",
+    "identifiers": [
+      {
+        "identifierTypeId": "c858e4f2-2b6b-4385-842b-60732ee14abb",
+        "value": "agr19000123"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(OCoLC-M)26059935"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(OCoLC-I)274765705"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "ALK9201"
+      }
     ],
-    "source": "MARC",
-    "_version": 1,
-    "editions": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-05-06T09:49:31.191Z",
-      "updatedDate": "2023-05-06T09:49:31.191Z",
-      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-      "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
-    },
-    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
-    "subjects": [
-      "Jute fiber"
-    ],
+    "indexTitle": "\"heart damage\" in baled jute,",
+    "instanceFormatIds": [],
+    "instanceFormats": [],
+    "instanceTypeId": "30fffe0e-e985-4144-b2e2-1e8179bdb41f",
     "languages": [
       "eng"
     ],
-    "indexTitle": "\"heart damage\" in baled jute,",
-    "identifiers": [
-      {
-        "value": "agr19000123",
-        "identifierTypeId": "c858e4f2-2b6b-4385-842b-60732ee14abb"
-      },
-      {
-        "value": "(OCoLC-M)26059935",
-        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
-      },
-      {
-        "value": "(OCoLC-I)274765705",
-        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
-      },
-      {
-        "value": "ALK9201",
-        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
-      }
-    ],
-    "publication": [
-      {
-        "place": "Calcutta London",
-        "publisher": "W. Thacker & Co Published for the Imperial Dept. of Agriculture in India by Thacker, Spink & Co",
-        "dateOfPublication": "1918"
-      }
-    ],
-    "contributors": [
-      {
-        "name": "Finlow, Robert Steel, 1877-",
-        "primary": true,
-        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
-        "contributorTypeText": "Contributor",
-        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a"
-      }
-    ],
-    "catalogedDate": "1992-07-30",
-    "staffSuppress": false,
-    "instanceTypeId": "30fffe0e-e985-4144-b2e2-1e8179bdb41f",
-    "previouslyHeld": false,
-    "classifications": [
-
-    ],
-    "instanceFormats": [
-
-    ],
-    "electronicAccess": [
-
-    ],
-    "holdingsRecords2": [
-
-    ],
-    "modeOfIssuanceId": "9d18a02f-5897-4c31-9106-c9abb5c7ae8b",
-    "publicationRange": [
-
-    ],
-    "alternativeTitles": [
-
-    ],
-    "discoverySuppress": false,
-    "instanceFormatIds": [
-
-    ],
-    "publicationPeriod": {
-      "start": 1918
+    "metadata": {
+      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "createdDate": "2023-05-06T09:49:31.191Z",
+      "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "updatedDate": "2023-05-06T09:49:31.191Z"
     },
-    "statusUpdatedDate": "2023-05-06T09:49:30.983+0000",
-    "statisticalCodeIds": [
-
-    ],
-    "administrativeNotes": [
-      "rcp2312"
+    "modeOfIssuanceId": "9d18a02f-5897-4c31-9106-c9abb5c7ae8b",
+    "natureOfContentTermIds": [],
+    "notes": [
+      {
+        "instanceNoteTypeId": "265c4910-3997-4242-9269-6a4a2e91392b",
+        "note": "Copy 1 bound with v. 5, no. 1",
+        "staffOnly": true
+      }
     ],
     "physicalDescriptions": [
       "3 p. l., [33]-68 p. diagr. 25 cm."
     ],
-    "publicationFrequency": [
-
+    "previouslyHeld": false,
+    "publication": [
+      {
+        "dateOfPublication": "1918",
+        "place": "Calcutta London",
+        "publisher": "W. Thacker & Co Published for the Imperial Dept. of Agriculture in India by Thacker, Spink & Co"
+      }
+    ],
+    "publicationFrequency": [],
+    "publicationPeriod": {
+      "start": 1918
+    },
+    "publicationRange": [],
+    "series": [
+      "India. Department of Agriculture. Memoirs. Chemical series ; vol. V, no. 2"
+    ],
+    "source": "MARC",
+    "staffSuppress": false,
+    "statisticalCodeIds": [],
+    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
+    "statusUpdatedDate": "2023-05-06T09:49:30.983+0000",
+    "subjects": [
+      "Jute fiber"
     ],
     "suppressFromDiscovery": false,
-    "natureOfContentTermIds": [
-
-    ]
+    "title": "\"Heart damage\" in baled jute, by R.S. Finlow ..."
   },
+  "items": [],
+  "pieces": [
+    null
+  ],
   "source_record": [
     {
       "fields": [
@@ -538,61 +569,6 @@
         }
       ],
       "leader": "01146nam a2200301   4500"
-    }
-  ],
-  "boundWithParents": [
-    {
-      "parentItemId": "6f53b2d1-4a80-5018-bd43-dd267f6180d2",
-      "childHoldingId": "465cf5fc-56fd-561f-98d5-4fac5e2b401a",
-      "parentItemBarcode": "36105026515499",
-      "parentInstanceHrid": "a5488000",
-      "parentItemLocation": {
-        "effectiveLocation": {
-          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
-          "code": "SAL3-STACKS",
-          "name": "Off-campus storage",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": null,
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3",
-            "name": "Stanford Auxiliary Library 3"
-          },
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "permanentLocation": {
-          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
-          "code": "SAL3-STACKS",
-          "name": "Off-campus storage",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": null,
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3",
-            "name": "Stanford Auxiliary Library 3"
-          },
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
-      },
-      "parentInstanceTitle": "The gases of swamp rice soils ... / by W.H. Harrison ... and P.A. Subramania Aiyer ...",
-      "childHoldingCallNumber": "630.654 .I39M"
     }
   ]
 }

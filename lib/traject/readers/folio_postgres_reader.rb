@@ -189,39 +189,42 @@ module Traject
                                                                     'campus', holdEffLoc.locCampJsonb,
                                                                     'library', holdEffLoc.locLibJsonb,
                                                                     'institution', holdEffLoc.locInstJsonb)
-                                                      )
-                        )
+                                                      ),
+                        'boundWith',
+                          CASE WHEN parentItem.id IS NOT NULL THEN
+                            jsonb_build_object(
+                              'instance', jsonb_build_object(
+                                'id', parentInstance.id,
+                                'hrid', parentInstance.jsonb ->> 'hrid',
+                                'title', parentInstance.jsonb ->> 'title'
+                              ),
+                              'item', jsonb_build_object(
+                                'id', parentItem.id,
+                                'hrid', parentItem.jsonb ->> 'hrid',
+                                'barcode', parentItem.jsonb ->> 'barcode',
+                                'status', parentItem.jsonb #>> '{status, name}',
+                                'location', jsonb_build_object('permanentLocation',
+                                                                      parentItemPermLoc.locJsonb || jsonb_build_object(
+                                                                                'campus', parentItemPermLoc.locCampJsonb,
+                                                                                'library', parentItemPermLoc.locLibJsonb,
+                                                                                'institution', parentItemPermLoc.locInstJsonb),
+                                                                    'temporaryLocation',
+                                                                      parentItemTempLoc.locJsonb || jsonb_build_object(
+                                                                                'campus', parentItemTempLoc.locCampJsonb,
+                                                                                'library', parentItemTempLoc.locLibJsonb,
+                                                                                'institution', parentItemTempLoc.locInstJsonb),
+                                                                    'effectiveLocation',
+                                                                      parentItemEffLoc.locJsonb || jsonb_build_object(
+                                                                                'campus', parentItemEffLoc.locCampJsonb,
+                                                                                'library', parentItemEffLoc.locLibJsonb,
+                                                                                'institution', parentItemEffLoc.locInstJsonb)
+                                )
+                              )
+                            )
+                          ELSE NULL END::jsonb
+                  )
                 )
               ),
-            'boundWithParents',
-              COALESCE(
-              jsonb_agg(
-                jsonb_build_object(
-                'parentInstanceHrid', parentInstance.jsonb ->> 'hrid',
-                'parentInstanceTitle', parentInstance.jsonb ->> 'title',
-                'parentItemId', parentItem.id,
-                'parentItemBarcode', parentItem.jsonb ->> 'barcode',
-                'parentItemLocation', jsonb_build_object('permanentLocation',
-                                                          parentItemPermLoc.locJsonb || jsonb_build_object(
-                                                                    'campus', parentItemPermLoc.locCampJsonb,
-                                                                    'library', parentItemPermLoc.locLibJsonb,
-                                                                    'institution', parentItemPermLoc.locInstJsonb),
-                                                        'temporaryLocation',
-                                                          parentItemTempLoc.locJsonb || jsonb_build_object(
-                                                                    'campus', parentItemTempLoc.locCampJsonb,
-                                                                    'library', parentItemTempLoc.locLibJsonb,
-                                                                    'institution', parentItemTempLoc.locInstJsonb),
-                                                        'effectiveLocation',
-                                                          parentItemEffLoc.locJsonb || jsonb_build_object(
-                                                                    'campus', parentItemEffLoc.locCampJsonb,
-                                                                    'library', parentItemEffLoc.locLibJsonb,
-                                                                    'institution', parentItemEffLoc.locInstJsonb)
-              ),
-                'childHoldingCallNumber', hr.jsonb ->> 'callNumber',
-                'childHoldingId', hr.id
-                )
-              ) FILTER (WHERE parentItem.id IS NOT NULL),
-              '[]'::jsonb),
             'pieces',
               COALESCE(
                 jsonb_agg(
