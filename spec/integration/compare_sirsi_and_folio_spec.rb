@@ -50,7 +50,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
       File.read(path).scan(/to_field ["']([^"']+)["']/).map(&:first).uniq
     end
     before(:each) do
-      pending 'No record in FOLIO' unless folio_record.present?
+      skip 'No record in FOLIO' unless folio_record.present?
       pending 'No source record' if folio_record.record['source_record'].none?
     end
 
