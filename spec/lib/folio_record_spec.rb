@@ -34,6 +34,33 @@ RSpec.describe FolioRecord do
     it 'preserves non-junk tags' do
       expect(folio_record.marc_record['001']).to have_attributes(tag: '001', value: 'a14154194')
     end
+
+    context 'with subfield 0 data that used to be in the subfield =' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'holdings' => [],
+          'source_record' => [{
+            'fields' => [
+              { '264' => {
+                'subfields' => [
+                  { '0' => '(SIRSI)blah' },
+                  { '0' => 'http://example.com' }
+                ]
+              } }
+            ]
+          }]
+        }
+      end
+
+      it 'strips only that migrated data' do
+        expect(folio_record.marc_record['264'].subfields).to match_array([
+                                                                           have_attributes(code: '0', value: 'http://example.com')
+                                                                         ])
+      end
+    end
   end
 
   describe 'the 590 field' do

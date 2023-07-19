@@ -44,6 +44,12 @@ class FolioRecord
     @marc_record ||= begin
       record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
 
+      record.fields.each do |field|
+        next unless field.respond_to? :subfields
+
+        field.subfields.delete_if { |subfield| subfield.code == '0' && subfield.value.start_with?('(SIRSI)') }
+      end
+
       # Copy FOLIO Holdings electronic access data to an 856 (used by Lane)
       # overwriting any existing 856 fields (to avoid having to reconcile/merge data)
       eholdings = holdings.flat_map { |h| h['electronicAccess'] }
