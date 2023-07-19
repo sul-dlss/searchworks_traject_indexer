@@ -61,24 +61,43 @@ module Traject
         response.map { |row| row['id'] }.first
       end
     end
-    
+
+    def find_updated_locations
+      sql = "SELECT id FROM sul_mod_inventory_storage.location loc WHERE #{updated_at_filter('loc')}"
+      result = @connection.exec(sql)
+      result.map { |row| row.fetch('id') }
+    end
+
     # Ensure that if a location has been updated, then any item or holding that uses that location is in the result set.
+    # This seems like a stupid implementation, but its the only way I could get postgres to use the index rather than doing a sequential scan.
     def location_updated_subquery
-      addl_with = <<~WITH
-        , updated_locations AS (
-          SELECT id FROM sul_mod_inventory_storage.location loc WHERE#{' '}
-          #{updated_at_filter('loc')}
-        )
-      WITH
+      updated_locations = find_updated_locations
+      # First do a query to see if any locations have been updated.
+      # This allows us to avoid slowing the main query if there are no changes.
+      return if updated_locations.empty?
+
+      locations = updated_locations.map { |id| "'#{id}'" }.join(",\n      ")
       location_updated_filter = <<~FILTER
-        (item.effectivelocationid IN (SELECT id FROM updated_locations) OR
-        hr.effectivelocationid IN (SELECT id FROM updated_locations) OR
-        item.permanentlocationid IN (SELECT id FROM updated_locations) OR
-        hr.permanentlocationid IN (SELECT id FROM updated_locations) OR
-        item.temporarylocationid IN (SELECT id FROM updated_locations) OR
-        hr.temporarylocationid IN (SELECT id FROM updated_locations))
+        (item.effectivelocationid IN (
+          #{locations}
+        ) OR
+        hr.effectivelocationid IN (
+          #{locations}
+        ) OR
+        item.permanentlocationid IN (
+          #{locations}
+        ) OR
+        hr.permanentlocationid IN (
+          #{locations}
+        ) OR
+        item.temporarylocationid IN (
+          #{locations}
+        ) OR
+        hr.temporarylocationid IN (
+          #{locations}
+        ))
       FILTER
-      sql_query([location_updated_filter] + @sql_filters, addl_with:)
+      sql_query([location_updated_filter] + @sql_filters)
     end
 
     # A SQL clause to filter by updatedDate in the JSONB metadata of the given table.

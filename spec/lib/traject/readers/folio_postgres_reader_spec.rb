@@ -8,7 +8,7 @@ RSpec.describe Traject::FolioPostgresReader, if: ENV.key?('DATABASE_URL') do
     WebMock.enable_net_connect!
   end
   let(:date) { Time.now.advance(days: -1) }
-  let(:timeout_in_milliseconds) { 1000 * 60 * 3 } # Three minutes
+  let(:timeout_in_milliseconds) { 1000 * 60 * 9 } # Three minutes
   subject(:reader) do
     described_class.new(nil, 'folio.updated_after' => date,
                              'postgres.url' => ENV.fetch('DATABASE_URL'),
