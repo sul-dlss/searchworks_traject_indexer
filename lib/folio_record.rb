@@ -99,7 +99,7 @@ class FolioRecord
         public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),
         tag: item
       )
-    end.concat(bound_with_holdings).concat(eresource_holdings)
+    end.concat(bound_with_holdings).concat(eresource_holdings).concat(on_order_stub_holdings)
   end
 
   # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
@@ -133,6 +133,30 @@ class FolioRecord
     return [] if items.any?
 
     Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
+  end
+
+  def on_order_stub_holdings
+    return [] if items.any?
+
+    on_order_only_holdings = holdings.select do |holding|
+      items.none? { |item| item['holdingRecordId'] == holding['id'] } && pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
+    end
+
+    item_location_codes = on_order_only_holdings.map { |holding| holding.dig('location', 'effectiveLocation', 'code') }.uniq
+
+    item_location_codes.map do |item_location_code|
+      library_code, = LocationsMap.for(item_location_code)
+
+      SirsiHolding.new(
+        barcode: '',
+        call_number: '',
+        scheme: '',
+        current_location: 'ON-ORDER',
+        home_location: 'ON-ORDER',
+        library: library_code,
+        tag: {}
+      )
+    end
   end
 
   def call_number_type_map(name)
