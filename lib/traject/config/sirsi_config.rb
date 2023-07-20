@@ -2249,7 +2249,12 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   accumulator << preferred_holding.barcode if preferred_holding
 end
 
-library_map = Traject::TranslationMap.new('library_map')
+library_map = case settings['reader_class_name']
+              when /Folio/
+                LibrariesMap
+              else
+                Traject::TranslationMap.new('library_map')
+              end
 resv_locs = Traject::TranslationMap.new('locations_reserves_list')
 
 to_field 'building_facet' do |record, accumulator, context|
@@ -2268,6 +2273,7 @@ to_field 'building_facet' do |record, accumulator, context|
       accumulator << 'ART' if (holding.library == 'SAL3') && (holding.home_location == 'PAGE-AR')
     end
   end
+
   accumulator.replace library_map.translate_array(accumulator)
 end
 
