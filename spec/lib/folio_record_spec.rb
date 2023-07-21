@@ -257,4 +257,43 @@ RSpec.describe FolioRecord do
       end
     end
   end
+
+  describe '#sirsi_holdings' do
+    context 'with Symphony migrated data without on-order item records' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
+                         'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+                         'receivingStatus' => 'Expected',
+                         'displayOnHolding' => false }],
+          'holdings' => [{
+            'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+            'location' => {
+              'effectiveLocation' => {
+                'code' => 'GRE-STACKS'
+              }
+            }
+          }],
+          'items' => [],
+          'source_record' => [{
+            'fields' => [
+              { '001' => 'a14154194' }
+            ]
+          }]
+        }
+      end
+
+      it 'creates a stub on-order item' do
+        expect(folio_record.sirsi_holdings.first).to have_attributes(
+          barcode: '',
+          current_location: 'ON-ORDER',
+          home_location: 'ON-ORDER',
+          library: 'GREEN'
+        )
+      end
+    end
+  end
 end
