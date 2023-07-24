@@ -24,7 +24,8 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   let(:items_and_holdings) do
     { 'items' => [],
       'holdings' =>
-       [{ 'location' =>
+       [{ 'holdingType' => { 'name' => 'Electronic' },
+          'location' =>
           { 'permanentLocation' =>
             { 'code' => 'SUL-ELECTRONIC' },
             'effectiveLocation' =>
@@ -63,7 +64,8 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'location' =>
+         [{ 'holdingType' => { 'name' => 'Electronic' },
+            'location' =>
           { 'permanentLocation' =>
             { 'code' => 'LAW-ELECTRONIC' },
             'effectiveLocation' =>
@@ -76,18 +78,11 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     it { expect(holdings.first.library).to eq 'LAW' }
   end
 
-  context 'the holding does not include an electronic location' do
+  context 'the holding does not include an electronic type' do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'location' =>
-          { 'permanentLocation' =>
-            { 'code' => 'LAW-BASEMENT' },
-            'effectiveLocation' =>
-            { 'code' => 'LAW-BASEMENT' } },
-            'suppressFromDiscovery' => false,
-            'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
-            'holdingsStatements' => [] }] }
+         [{ 'holdingType' => { 'name' => 'Whatever' } }] }
     end
 
     it { expect(holdings).to be_empty }
@@ -97,7 +92,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'location' =>
+         [{ 'holdingType' => { 'name' => 'Electronic' }, 'location' =>
           { 'permanentLocation' =>
             { 'code' => 'SUL-SDR' },
             'effectiveLocation' =>
@@ -107,5 +102,22 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
             'holdingsStatements' => [] }] }
     end
     it { expect(holdings.first.home_location).to eq 'INTERNET' }
+  end
+
+  context 'the holding library is Lane (without a explicit holdingType)' do
+    let(:items_and_holdings) do
+      { 'items' => [],
+        'holdings' =>
+         [{ 'location' =>
+          { 'permanentLocation' =>
+            { 'code' => 'LANE-EDATA' },
+            'effectiveLocation' =>
+            { 'code' => 'LANE-EDATA',  'details' => { 'holdingTypeName' => 'Electronic' } } },
+            'suppressFromDiscovery' => false,
+            'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+            'holdingsStatements' => [] }] }
+    end
+
+    it { expect(holdings.first.library).to eq 'LANE-MED' }
   end
 end

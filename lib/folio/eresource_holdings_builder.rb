@@ -7,22 +7,6 @@ module Folio
   class EresourceHoldingsBuilder
     CALL_NUMBER = 'INTERNET RESOURCE'
     TYPE = 'ONLINE'
-    ONLINE_LOCATION_CODES = %w[BUS-ELECTRONIC
-                               BUS-SDR
-                               HILA-ELECTRONIC
-                               HILA-SDR
-                               LANE-ECOLL
-                               LANE-ECOMP
-                               LANE-EDATA
-                               LANE-EDOC
-                               LANE-EPER
-                               LANE-IMAGE
-                               LANE-ISIIF
-                               LANE-MOBI
-                               LAW-ELECTRONIC
-                               LAW-SDR
-                               SUL-ELECTRONIC
-                               SUL-SDR].freeze
 
     def self.build(hrid, holdings, marc_record)
       new(hrid, holdings, marc_record).build
@@ -40,7 +24,7 @@ module Folio
       # If there isn't a holding with an electronic holding code
       # we assume the fulltext link supplements a physical item,
       # like a PURL or HathiTrust link and we don't need to do anything.
-      return [] unless electronic_holding_location_code
+      return [] unless electronic_holding_location
 
       fields = fulltext_links
       fields = electronic_location_fields.first(1) if fields.empty?
@@ -93,16 +77,14 @@ module Folio
     end
 
     def mapped_location_codes
-      @mapped_location_codes ||= LocationsMap.for(electronic_holding_location_code)
+      @mapped_location_codes ||= LocationsMap.for(electronic_holding_location.dig('location', 'effectiveLocation', 'code'))
     end
 
     # This finds the first holding matching an online location code.
     # This approach works fine unless there are records with multiple
     # e-resource holdings associated with different locations.
-    def electronic_holding_location_code
-      @electronic_holding_location_code ||=
-        (holdings || []).map { |h| h.dig('location', 'permanentLocation', 'code') }
-                        .find { |c| ONLINE_LOCATION_CODES.include?(c) }
+    def electronic_holding_location
+      @electronic_holding_location ||= holdings&.find { |h| (h.dig('holdingType', 'name') || h.dig('location', 'effectiveLocation', 'details', 'holdingTypeName')) == 'Electronic' }
     end
   end
 end

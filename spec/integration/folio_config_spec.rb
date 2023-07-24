@@ -113,7 +113,8 @@ RSpec.describe 'FOLIO indexing' do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'location' =>
+         [{ 'holdingType' => { 'name' => 'Electronic' },
+            'location' =>
           { 'permanentLocation' =>
             { 'code' => 'SUL-ELECTRONIC' },
             'effectiveLocation' =>
@@ -146,7 +147,8 @@ RSpec.describe 'FOLIO indexing' do
       let(:items_and_holdings) do
         { 'items' => [],
           'holdings' =>
-           [{ 'location' =>
+           [{ 'holdingType' => { 'name' => 'Electronic' },
+              'location' =>
             { 'permanentLocation' =>
               { 'code' => 'LAW-ELECTRONIC' },
               'effectiveLocation' =>
