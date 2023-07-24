@@ -213,6 +213,14 @@ module Traject
                                 'hrid', parentInstance.jsonb ->> 'hrid',
                                 'title', parentInstance.jsonb ->> 'title'
                               ),
+                              'holding', jsonb_build_object(
+                                'location', jsonb_build_object('effectiveLocation',
+                                                                    parentHoldingEffLoc.locJsonb || jsonb_build_object(
+                                                                                'campus', parentHoldingEffLoc.locCampJsonb,
+                                                                                'library', parentHoldingEffLoc.locLibJsonb,
+                                                                                'institution', parentHoldingEffLoc.locInstJsonb)
+                                )
+                              ),
                               'item', jsonb_build_object(
                                 'id', parentItem.id,
                                 'hrid', parentItem.jsonb ->> 'hrid',
@@ -354,6 +362,9 @@ module Traject
       -- BW Parent Item's Temporary location relation
       LEFT JOIN viewLocations parentItemTempLoc
           ON parentItem.temporarylocationid = parentItemTempLoc.locId
+      -- BW Parent Item's Effective location relation
+      LEFT JOIN viewLocations parentHoldingEffLoc
+          ON parentHolding.effectivelocationid = parentHoldingEffLoc.locId
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id

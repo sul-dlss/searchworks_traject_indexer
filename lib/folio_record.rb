@@ -81,11 +81,11 @@ class FolioRecord
     @sirsi_holdings ||= items.map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       item_location_code = item.dig('location', 'permanentLocation', 'code')
-      item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
+      item_location_code ||= holding.dig('location', 'effectiveLocation', 'code')
       next if item_location_code&.end_with? 'MIGRATE-ERR'
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
-      _current_library, current_location = LocationsMap.for(item.dig('location', 'location', 'code'))
+      _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
       current_location ||= folio_status_to_location(item['status'])
 
       SirsiHolding.new(
@@ -107,9 +107,12 @@ class FolioRecord
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? }.map do |holding|
       parent_item = holding.dig('boundWith', 'item')
-      parent_item_perm_location = parent_item.dig('location', 'permanentLocation', 'code')
-      library_code, home_location_code = LocationsMap.for(parent_item_perm_location)
-      _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'effectiveLocation', 'code'))
+      parent_holding = holding.dig('boundWith', 'holding')
+      item_location_code = parent_item.dig('location', 'permanentLocation', 'code')
+      item_location_code ||= parent_holding.dig('location', 'effectiveLocation', 'code')
+
+      library_code, home_location_code = LocationsMap.for(item_location_code)
+      _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
       current_location ||= folio_status_to_location(parent_item['status'])
       SirsiHolding.new(
         call_number: holding['callNumber'],
