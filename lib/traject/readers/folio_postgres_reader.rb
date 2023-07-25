@@ -60,6 +60,33 @@ module Traject
       end
     end
 
+    def locations
+      @locations ||= begin
+        response = @connection.exec <<-SQL
+          SELECT loc.id AS id,
+                jsonb_build_object(
+                  'id', loc.id,
+                  'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'),
+                  'isActive', COALESCE((loc.jsonb ->> 'isActive')::bool, false),
+                  'code', loc.jsonb ->> 'code',
+                  'details', loc.jsonb -> 'details',
+                  'campus', jsonb_build_object('id', locCamp.id, 'name', COALESCE(locCamp.jsonb ->> 'discoveryDisplayName', locCamp.jsonb ->> 'name'), 'code', locCamp.jsonb ->> 'code'),
+                  'library',jsonb_build_object('id', locLib.id, 'name', COALESCE(locLib.jsonb ->> 'discoveryDisplayName', locLib.jsonb ->> 'name'), 'code', locLib.jsonb ->> 'code'),
+                  'institution', jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code')
+                ) AS jsonb
+          FROM sul_mod_inventory_storage.location loc
+            LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
+                  ON loc.institutionid = locInst.id
+            LEFT JOIN sul_mod_inventory_storage.loccampus locCamp
+                  ON loc.campusid = locCamp.id
+            LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
+                  ON loc.libraryid = locLib.id
+        SQL
+
+        response.map { |row| JSON.parse(row['jsonb']) }.index_by { |loc| loc['id'] }
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -84,7 +111,29 @@ module Traject
           break if response.entries.empty?
 
           response.each do |row|
-            yield FolioRecord.new(JSON.parse(row['jsonb_build_object']))
+            data = JSON.parse(row['jsonb_build_object'])
+
+            data['items'].each do |item|
+              item['location'] = {
+                'effectiveLocation' => locations[item['effectiveLocationId']],
+                'permanentLocation' => locations[item['permanentLocationId']],
+                'temporaryLocation' => locations[item['temporaryLocationId']]
+              }.compact
+            end
+
+            data['holdings'].each do |holding|
+              holding['location'] = {
+                'effectiveLocation' => locations[holding['effectiveLocationId']],
+                'permanentLocation' => locations[holding['permanentLocationId']],
+                'temporaryLocation' => locations[holding['temporaryLocationId']]
+              }.compact
+
+              holding['boundWith']['holding']['location'] = {
+                'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
+              } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
+            end
+
+            yield FolioRecord.new(data)
           end
         end
 
@@ -100,20 +149,6 @@ module Traject
 
     def sql_query(conditions, addl_from: nil)
       <<-SQL
-      WITH viewLocations(locId, locJsonb, locCampJsonb, locLibJsonb, locInstJsonb) AS (
-        SELECT loc.id AS locId,
-               jsonb_build_object('id', loc.id, 'name', COALESCE(loc.jsonb ->> 'discoveryDisplayName', loc.jsonb ->> 'name'), 'isActive', COALESCE((loc.jsonb ->> 'isActive')::bool, false), 'code', loc.jsonb ->> 'code', 'details', loc.jsonb -> 'details') AS locJsonb,
-               jsonb_build_object('id', locCamp.id, 'name', COALESCE(locCamp.jsonb ->> 'discoveryDisplayName', locCamp.jsonb ->> 'name'), 'code', locCamp.jsonb ->> 'code') AS locCampJsonb,
-               jsonb_build_object('id', locLib.id, 'name', COALESCE(locLib.jsonb ->> 'discoveryDisplayName', locLib.jsonb ->> 'name'), 'code', locLib.jsonb ->> 'code') AS locLibJsonb,
-               jsonb_build_object('id', locInst.id, 'name', COALESCE(locInst.jsonb ->> 'discoveryDisplayName', locInst.jsonb ->> 'name'), 'code', locInst.jsonb ->> 'code') AS locInstJsonb
-        FROM sul_mod_inventory_storage.location loc
-           LEFT JOIN sul_mod_inventory_storage.locinstitution locInst
-                ON loc.institutionid = locInst.id
-           LEFT JOIN sul_mod_inventory_storage.loccampus locCamp
-                ON loc.campusid = locCamp.id
-           LEFT JOIN sul_mod_inventory_storage.loclibrary locLib
-                ON loc.libraryid = locLib.id
-        )
       SELECT
         vi.id,
           jsonb_build_object(
@@ -152,24 +187,7 @@ module Traject
                     'callNumber', item.jsonb -> 'effectiveCallNumberComponents' ||
                                   jsonb_build_object('typeName', cnt.jsonb ->> 'name'),
                     'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(item.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                    'notes', COALESCE(sul_mod_inventory_storage.getItemNoteTypeName(item.jsonb -> 'notes'), '[]'::jsonb),
-                    'location',
-                      jsonb_build_object('permanentLocation',
-                                          itemPermLoc.locJsonb || jsonb_build_object(
-                                                    'campus', itemPermLoc.locCampJsonb,
-                                                    'library', itemPermLoc.locLibJsonb,
-                                                    'institution', itemPermLoc.locInstJsonb),
-                                        'temporaryLocation',
-                                          itemTempLoc.locJsonb || jsonb_build_object(
-                                                    'campus', itemTempLoc.locCampJsonb,
-                                                    'library', itemTempLoc.locLibJsonb,
-                                                    'institution', itemTempLoc.locInstJsonb),
-                                        'effectiveLocation',
-                                          itemEffLoc.locJsonb || jsonb_build_object(
-                                                    'campus', itemEffLoc.locCampJsonb,
-                                                    'library', itemEffLoc.locLibJsonb,
-                                                    'institution', itemEffLoc.locInstJsonb)
-                                      )
+                    'notes', COALESCE(sul_mod_inventory_storage.getItemNoteTypeName(item.jsonb -> 'notes'), '[]'::jsonb)
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -189,22 +207,6 @@ module Traject
                         'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(hr.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
                         'notes', COALESCE(sul_mod_inventory_storage.getHoldingNoteTypeName(hr.jsonb -> 'notes'), '[]'::jsonb),
                         'illPolicy', ilp.jsonb - 'metadata',
-                        'location', jsonb_build_object('permanentLocation',
-                                                          holdPermLoc.locJsonb || jsonb_build_object(
-                                                                    'campus', holdPermLoc.locCampJsonb,
-                                                                    'library', holdPermLoc.locLibJsonb,
-                                                                    'institution', holdPermLoc.locInstJsonb),
-                                                        'temporaryLocation',
-                                                          holdTempLoc.locJsonb || jsonb_build_object(
-                                                                    'campus', holdTempLoc.locCampJsonb,
-                                                                    'library', holdTempLoc.locLibJsonb,
-                                                                    'institution', holdTempLoc.locInstJsonb),
-                                                        'effectiveLocation',
-                                                          holdEffLoc.locJsonb || jsonb_build_object(
-                                                                    'campus', holdEffLoc.locCampJsonb,
-                                                                    'library', holdEffLoc.locLibJsonb,
-                                                                    'institution', holdEffLoc.locInstJsonb)
-                                                      ),
                         'boundWith',
                           CASE WHEN parentItem.id IS NOT NULL THEN
                             jsonb_build_object(
@@ -213,35 +215,12 @@ module Traject
                                 'hrid', parentInstance.jsonb ->> 'hrid',
                                 'title', parentInstance.jsonb ->> 'title'
                               ),
-                              'holding', jsonb_build_object(
-                                'location', jsonb_build_object('effectiveLocation',
-                                                                    parentHoldingEffLoc.locJsonb || jsonb_build_object(
-                                                                                'campus', parentHoldingEffLoc.locCampJsonb,
-                                                                                'library', parentHoldingEffLoc.locLibJsonb,
-                                                                                'institution', parentHoldingEffLoc.locInstJsonb)
-                                )
-                              ),
+                              'holding', jsonb_build_object('effectiveLocationId', parentHolding.jsonb ->> 'effectiveLocationId'),
                               'item', jsonb_build_object(
                                 'id', parentItem.id,
                                 'hrid', parentItem.jsonb ->> 'hrid',
                                 'barcode', parentItem.jsonb ->> 'barcode',
-                                'status', parentItem.jsonb #>> '{status, name}',
-                                'location', jsonb_build_object('permanentLocation',
-                                                                      parentItemPermLoc.locJsonb || jsonb_build_object(
-                                                                                'campus', parentItemPermLoc.locCampJsonb,
-                                                                                'library', parentItemPermLoc.locLibJsonb,
-                                                                                'institution', parentItemPermLoc.locInstJsonb),
-                                                                    'temporaryLocation',
-                                                                      parentItemTempLoc.locJsonb || jsonb_build_object(
-                                                                                'campus', parentItemTempLoc.locCampJsonb,
-                                                                                'library', parentItemTempLoc.locLibJsonb,
-                                                                                'institution', parentItemTempLoc.locInstJsonb),
-                                                                    'effectiveLocation',
-                                                                      parentItemEffLoc.locJsonb || jsonb_build_object(
-                                                                                'campus', parentItemEffLoc.locCampJsonb,
-                                                                                'library', parentItemEffLoc.locLibJsonb,
-                                                                                'institution', parentItemEffLoc.locInstJsonb)
-                                )
+                                'status', parentItem.jsonb #>> '{status, name}'
                               )
                             )
                           ELSE NULL END::jsonb
@@ -292,15 +271,6 @@ module Traject
           ON cl.id = cr.courselistingid
       LEFT JOIN sul_mod_courses.coursereserves_courses cc
           ON cc.courselistingid = cl.id
-      -- Item's Effective location relation
-      LEFT JOIN viewLocations itemEffLoc
-          ON item.effectivelocationid = itemEffLoc.locId
-      -- Item's Permanent location relation
-      LEFT JOIN viewLocations itemPermLoc
-          ON item.permanentlocationid = itemPermLoc.locId
-      -- Item's Temporary location relation
-      LEFT JOIN viewLocations itemTempLoc
-          ON item.temporarylocationid = itemTempLoc.locId
       -- Item's Material type relation
       LEFT JOIN sul_mod_inventory_storage.material_type mt
           ON item.materialtypeid = mt.id
@@ -319,14 +289,6 @@ module Traject
       -- Holdings type relation
       LEFT JOIN sul_mod_inventory_storage.holdings_type ht
           ON ht.id = hr.holdingstypeid
-      LEFT JOIN viewLocations holdPermLoc
-          ON hr.permanentlocationid = holdPermLoc.locId
-      -- Holdings Temporary location relation
-      LEFT JOIN viewLocations holdTempLoc
-          ON hr.temporarylocationid = holdTempLoc.locId
-      -- Holdings Effective location relation
-      LEFT JOIN viewLocations holdEffLoc
-          ON hr.effectivelocationid = holdEffLoc.locId
       -- Holdings Call number type relation
       LEFT JOIN sul_mod_inventory_storage.call_number_type hrcnt
           ON hr.callnumbertypeid = hrcnt.id
@@ -353,18 +315,6 @@ module Traject
           ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
           ON parentHolding.instanceid = parentInstance.id
-      -- BW Parent Item's Effective location relation
-      LEFT JOIN viewLocations parentItemEffLoc
-          ON parentItem.effectivelocationid = parentItemEffLoc.locId
-      -- BW Parent Item's Permanent location relation
-      LEFT JOIN viewLocations parentItemPermLoc
-          ON parentItem.permanentlocationid = parentItemPermLoc.locId
-      -- BW Parent Item's Temporary location relation
-      LEFT JOIN viewLocations parentItemTempLoc
-          ON parentItem.temporarylocationid = parentItemTempLoc.locId
-      -- BW Parent Item's Effective location relation
-      LEFT JOIN viewLocations parentHoldingEffLoc
-          ON parentHolding.effectivelocationid = parentHoldingEffLoc.locId
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
