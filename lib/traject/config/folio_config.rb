@@ -46,6 +46,7 @@ each_record do |record, context|
   context.skip!('Only suppressed items') if record.items_all_suppressed?
 end
 
+# rubocop:disable Metrics/MethodLength
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
   context.clipboard[:call_number_for_holding][holding] ||= begin
@@ -72,6 +73,7 @@ def call_number_for_holding(record, holding, context)
     return OpenStruct.new(
       scheme: 'OTHER',
       call_number: holding.call_number.to_s,
+      to_lopped_shelfkey: holding.call_number.to_s,
       to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number}")
     ) if holding.bad_lc_lane_call_number?
     return OpenStruct.new(scheme: holding.call_number_type) if holding.e_call_number?
@@ -111,6 +113,7 @@ def call_number_for_holding(record, holding, context)
     end
   end
 end
+# rubocop:enable Metrics/MethodLength
 
 def holdings(record, context)
   context.clipboard[:holdings] ||= record.sirsi_holdings
