@@ -24,7 +24,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   let(:items_and_holdings) do
     { 'items' => [],
       'holdings' =>
-       [{ 'holdingType' => { 'name' => 'Electronic' },
+       [{ 'holdingsType' => { 'name' => 'Electronic' },
           'location' =>
           { 'permanentLocation' =>
             { 'code' => 'SUL-ELECTRONIC' },
@@ -64,7 +64,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'holdingType' => { 'name' => 'Electronic' },
+         [{ 'holdingsType' => { 'name' => 'Electronic' },
             'location' =>
           { 'permanentLocation' =>
             { 'code' => 'LAW-ELECTRONIC' },
@@ -82,7 +82,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'holdingType' => { 'name' => 'Whatever' } }] }
+         [{ 'holdingsType' => { 'name' => 'Whatever' } }] }
     end
 
     it { expect(holdings).to be_empty }
@@ -92,7 +92,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'holdingType' => { 'name' => 'Electronic' }, 'location' =>
+         [{ 'holdingsType' => { 'name' => 'Electronic' }, 'location' =>
           { 'permanentLocation' =>
             { 'code' => 'SUL-SDR' },
             'effectiveLocation' =>
@@ -104,7 +104,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
     it { expect(holdings.first.home_location).to eq 'INTERNET' }
   end
 
-  context 'the holding library is Lane (without a explicit holdingType)' do
+  context 'the holding library is Lane (without a explicit holdingsType)' do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
@@ -112,7 +112,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
           { 'permanentLocation' =>
             { 'code' => 'LANE-EDATA' },
             'effectiveLocation' =>
-            { 'code' => 'LANE-EDATA',  'details' => { 'holdingTypeName' => 'Electronic' } } },
+            { 'code' => 'LANE-EDATA',  'details' => { 'holdingsTypeName' => 'Electronic' } } },
             'suppressFromDiscovery' => false,
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [] }] }
