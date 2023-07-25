@@ -55,7 +55,7 @@ module Traject
     # This gets the UUID of the "Database" statistical code. This is the only statistical code we care about.
     def statical_code_database
       @statical_code_database ||= begin
-        response = @connection.exec("SELECT id FROM sul_mod_inventory_storage.statistical_code WHERE jsonb->>'name' = 'Database';")
+        response = @connection.exec("SELECT id FROM sul_mod_inventory_storage.statistical_code WHERE lower(sul_mod_inventory_storage.f_unaccent(jsonb ->> 'name'::text)) = 'database';")
         response.map { |row| row['id'] }.first
       end
     end
