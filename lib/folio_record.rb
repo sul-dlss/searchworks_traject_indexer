@@ -78,7 +78,7 @@ class FolioRecord
   end
 
   def sirsi_holdings
-    @sirsi_holdings ||= items.map do |item|
+    @sirsi_holdings ||= items.filter_map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       item_location_code = item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= holding.dig('location', 'effectiveLocation', 'code')
