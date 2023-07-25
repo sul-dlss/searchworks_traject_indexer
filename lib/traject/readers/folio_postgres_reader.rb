@@ -87,6 +87,24 @@ module Traject
       end
     end
 
+    def service_points
+      @service_points ||= begin
+        response = @connection.exec <<-SQL
+          SELECT service_point.id AS id,
+                jsonb_build_object(
+                  'id', service_point.id,
+                  'code', service_point.jsonb ->> 'code',
+                  'name', service_point.jsonb ->> 'name',
+                  'pickupLocation', COALESCE((service_point.jsonb ->> 'pickupLocation')::bool, false),
+                  'discoveryDisplayName', service_point.jsonb ->> 'discoveryDisplayName'
+                ) AS jsonb
+          FROM sul_mod_inventory_storage.service_point service_point
+        SQL
+
+        response.map { |row| JSON.parse(row['jsonb']) }.index_by { |service_point| service_point['id'] }
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -128,6 +146,10 @@ module Traject
               holding['boundWith']['holding']['location'] = {
                 'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
               } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
+            end
+
+            data['requests'].each do |request|
+              request['pickupServicePoint'] = service_points[request['pickupServicePointId']]
             end
 
             yield FolioRecord.new(data)
@@ -254,6 +276,17 @@ module Traject
                     'instructorObjects', cl.jsonb #> '{instructorObjects}'
                   )
                 ) FILTER (WHERE cc.id IS NOT NULL),
+              '[]'::jsonb),
+            'requests',
+              COALESCE(
+                jsonb_agg(
+                  DISTINCT jsonb_build_object(
+                    'id', request.id,
+                    'itemId', request.jsonb ->> 'itemId',
+                    'status', request.jsonb ->> 'status',
+                    'pickupServicePointId', request.jsonb ->> 'pickupServicePointId'
+                  )
+                ) FILTER (WHERE request.id IS NOT NULL),
               '[]'::jsonb)
             )
       FROM sul_mod_inventory_storage.instance vi
@@ -312,6 +345,9 @@ module Traject
           ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
           ON parentHolding.instanceid = parentInstance.id
+      -- Requests relation
+      LEFT JOIN sul_mod_circulation_storage.request request
+          ON (request.jsonb ->> 'instanceId')::uuid = vi.id
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id

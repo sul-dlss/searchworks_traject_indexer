@@ -86,7 +86,7 @@ class FolioRecord
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= folio_status_to_location(item['status'])
+      current_location ||= Folio::StatusCurrentLocation.new(item, requests).current_location
 
       SirsiHolding.new(
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
@@ -113,7 +113,7 @@ class FolioRecord
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= folio_status_to_location(parent_item['status'])
+      current_location ||= Folio::StatusCurrentLocation.new(parent_item, requests).current_location
       SirsiHolding.new(
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
@@ -201,6 +201,10 @@ class FolioRecord
 
   def pieces
     @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
+  end
+
+  def requests
+    record['requests'] || []
   end
 
   def statistical_codes
@@ -340,23 +344,6 @@ class FolioRecord
            end
 
     MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']])
-  end
-
-  def folio_status_to_location(status)
-    case status
-    when 'Checked out', 'Claimed returned', 'Aged to lost'
-      'CHECKEDOUT'
-    when 'Awaiting pickup', 'Awaiting delivery'
-      'GRE-LOAN'
-    when 'In process', 'In process (non-requestable)'
-      'INPROCESS'
-    when 'In transit'
-      'INTRANSIT'
-    when 'Missing', 'Long missing'
-      'MISSING'
-    when 'On order'
-      'ON-ORDER'
-    end
   end
 end
 # rubocop:enable Metrics/ClassLength
