@@ -225,7 +225,7 @@ module Traject
                             )
                           ELSE NULL END::jsonb
                   )
-                )
+                ) FILTER (WHERE hr.id IS NOT NULL), '[]'::jsonb
               ),
             'pieces',
               COALESCE(
