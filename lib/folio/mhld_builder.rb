@@ -24,7 +24,7 @@ module Folio
         # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
         # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
         library_has = holding.fetch(:library_has)
-        latest = latest_received(holding.fetch(:id))
+        latest = latest_received(holding.fetch(:location).fetch('code'))
         [library, location, public_note, library_has, latest].join(' -|- ') if public_note || library_has.present? || latest
       end
     end
@@ -78,14 +78,14 @@ module Folio
     end
 
     # @return [String] the latest received piece for a holding
-    def latest_received(holding_id)
-      latest_piece = Holdings.find_latest(pieces_per_holding.fetch(holding_id, []))
+    def latest_received(location_id)
+      latest_piece = Holdings.find_latest(pieces_per_location.fetch(location_id, []))
 
       return unless latest_piece && order_is_ongoing_and_open?(latest_piece)
 
-      enumeration = latest_piece['enumeration'] # may not be present
-      chronology = latest_piece['chronology'] # may not be present
-      enumeration ? "#{enumeration} (#{chronology})" : chronology
+      enumeration = latest_piece['enumeration'].presence # may not be present
+      chronology = latest_piece['chronology'].presence # may not be present
+      enumeration && chronology ? "#{enumeration} (#{chronology})" : enumeration || chronology
     end
 
     def order_is_ongoing_and_open?(latest_piece)
@@ -95,8 +95,12 @@ module Folio
 
     # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
     # hrid: a567006 has > 1000 on test.
-    def pieces_per_holding
-      @pieces_per_holding ||= pieces.group_by { |piece| piece['holdingId'] }
+    def pieces_per_location
+      @pieces_per_location ||= pieces.group_by { |piece| holdings_by_id[piece['holdingId']]&.dig('location', 'effectiveLocation', 'code') }
+    end
+
+    def holdings_by_id
+      @holdings_by_id ||= holdings.index_by { |holding| holding['id'] }
     end
   end
 end
