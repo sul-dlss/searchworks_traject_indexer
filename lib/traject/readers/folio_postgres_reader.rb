@@ -94,9 +94,6 @@ module Traject
         # check postgres's clock time
         @last_response_date = last_response_date
 
-        # set search path to avoid namespacing problems with folio functions
-        @connection.exec('SET search_path = "sul_mod_inventory_storage"')
-
         # These settings seem to hint postgres to a better query plan
         @connection.exec('SET join_collapse_limit = 64')
         @connection.exec('SET from_collapse_limit = 64')
@@ -187,7 +184,7 @@ module Traject
                     'callNumber', item.jsonb -> 'effectiveCallNumberComponents' ||
                                   jsonb_build_object('typeName', cnt.jsonb ->> 'name'),
                     'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(item.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                    'notes', COALESCE(sul_mod_inventory_storage.getItemNoteTypeName(item.jsonb -> 'notes'), '[]'::jsonb)
+                    'notes', COALESCE((SELECT json_agg(e || jsonb_build_object('itemNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.item_note_type WHERE id = nullif(e ->> 'itemNoteTypeId','')::uuid ))) FROM jsonb_array_elements(item.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::json)
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -205,7 +202,7 @@ module Traject
                         'holdingsType', ht.jsonb - 'metadata',
                         'callNumberType', hrcnt.jsonb - 'metadata',
                         'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(hr.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                        'notes', COALESCE(sul_mod_inventory_storage.getHoldingNoteTypeName(hr.jsonb -> 'notes'), '[]'::jsonb),
+                        'notes', COALESCE((SELECT json_agg(e || jsonb_build_object('holdingsNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.holdings_note_type WHERE id = nullif(e ->> 'holdingsNoteTypeId','')::uuid ))) FROM jsonb_array_elements(hr.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::json),
                         'illPolicy', ilp.jsonb - 'metadata',
                         'boundWith',
                           CASE WHEN parentItem.id IS NOT NULL THEN
