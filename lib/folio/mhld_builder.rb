@@ -83,9 +83,9 @@ module Folio
 
       return unless latest_piece && order_is_ongoing_and_open?(latest_piece)
 
-      enumeration = latest_piece['enumeration'] # may not be present
-      chronology = latest_piece['chronology'] # may not be present
-      enumeration ? "#{enumeration} (#{chronology})" : chronology
+      enumeration = latest_piece['enumeration'].presence # may not be present
+      chronology = latest_piece['chronology'].presence # may not be present
+      enumeration && chronology ? "#{enumeration} (#{chronology})" : enumeration || chronology
     end
 
     def order_is_ongoing_and_open?(latest_piece)
