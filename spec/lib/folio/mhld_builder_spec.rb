@@ -329,4 +329,87 @@ RSpec.describe Folio::MhldBuilder do
 
     it { is_expected.to eq ['GREEN -|- CURRENTPER -|- Latest issues in CURRENT PERIODICALS; earlier issues in STACKS -|- 2018 -|- JUN 2022'] }
   end
+
+  context 'when pieces is present and has no enumeration or chronology' do
+    let(:holdings) do
+      [
+        { 'id' => '5de47999-ea02-501c-b99c-512669581b81',
+          'hrid' => 'ah3225044_2',
+          'notes' => [],
+          '_version' => 1,
+          'metadata' =>
+          { 'createdDate' => '2023-05-06T12:15:24.413Z',
+            'updatedDate' => '2023-05-06T12:15:24.413Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+          'sourceId' => '036ee84a-6afd-4c3c-9ad3-4a12ab875f59',
+          'boundWith' => nil,
+          'formerIds' => [],
+          'illPolicy' => nil,
+          'copyNumber' => '1',
+          'instanceId' => 'c4a0abd3-6705-5490-b72c-7a73a741b4c1',
+          'holdingsType' => { 'id' => 'e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae', 'name' => 'Serial', 'source' => 'folio' },
+          'holdingsItems' => [],
+          'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+          'holdingsTypeId' => 'e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae',
+          'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+          'electronicAccess' => [],
+          'bareHoldingsItems' => [],
+          'discoverySuppress' => false,
+          'holdingsStatements' => [{ 'note' => 'Library has latest full year only' }],
+          'statisticalCodeIds' => [],
+          'administrativeNotes' => [],
+          'effectiveLocationId' => '5ecf146b-ce87-42f2-aa63-00d085e82d81',
+          'permanentLocationId' => '5ecf146b-ce87-42f2-aa63-00d085e82d81',
+          'suppressFromDiscovery' => false,
+          'holdingsStatementsForIndexes' => [],
+          'holdingsStatementsForSupplements' => [],
+          'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '5ecf146b-ce87-42f2-aa63-00d085e82d81',
+              'code' => 'LAW-STACKS1',
+              'name' => 'Law 1st Floor Stacks',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '5ecf146b-ce87-42f2-aa63-00d085e82d81',
+              'code' => 'LAW-STACKS1',
+              'name' => 'Law 1st Floor Stacks',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } } } }
+      ]
+    end
+
+    let(:holding_summaries) do
+      [{ 'poLineId' => '253a67d4-2a17-472d-81d4-3afc8db2b062',
+         'orderType' => 'Ongoing',
+         'orderStatus' => 'Open',
+         'poLineNumber' => '6102L00-1',
+         'orderSentDate' => '2000-08-22T08:00:00.000+00:00',
+         'orderCloseReason' => nil,
+         'polReceiptStatus' => 'Ongoing' }]
+    end
+
+    let(:pieces) do
+      [{ 'id' => '3ceb55f5-8a63-431f-a6ee-afe5029cd406',
+         'format' => 'Physical',
+         'itemId' => 'bb963566-b400-4c59-94f3-18fd676353fe',
+         'titleId' => '08a59b0f-099b-47f4-82e0-e6fa22e4a510',
+         'poLineId' => '253a67d4-2a17-472d-81d4-3afc8db2b062',
+         'holdingId' => '5de47999-ea02-501c-b99c-512669581b81',
+         'copyNumber' => 'test',
+         'supplement' => false,
+         'receivedDate' => '2023-06-22T22:39:26.113+00:00',
+         'receivingStatus' => 'Received',
+         'displayOnHolding' => true }]
+    end
+
+    it { is_expected.to eq ['LAW -|- STACKS-1 -|- Library has latest full year only -|-  -|- '] }
+  end
 end
