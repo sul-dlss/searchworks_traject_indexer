@@ -36,10 +36,10 @@ module Folio
       holdings.filter_map do |holding|
         no_holding_statements = (holding.fetch('holdingsStatements') +
                                  holding.fetch('holdingsStatementsForIndexes') +
-                                 holding.fetch('holdingsStatementsForSupplements')).empty?
+                                 holding.fetch('holdingsStatementsForSupplements')).compact.empty?
         next if no_holding_statements || holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
 
-        note = holding.fetch('holdingsStatements').find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
+        note = holding.fetch('holdingsStatements').compact.find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
 
         library_has_for_holding(holding).map do |library_has|
           {
@@ -60,17 +60,17 @@ module Folio
 
     # @return [Array<String>] the list of statements
     def statements_for_holding(holding)
-      holding.fetch('holdingsStatements').select { |statement| statement.key?('statement') }.filter_map do |statement|
+      holding.fetch('holdingsStatements').compact.select { |statement| statement.key?('statement') }.filter_map do |statement|
         display_statement(statement)
       end + statments_for_index(holding) + statements_for_supplements(holding)
     end
 
     def statments_for_index(holding)
-      holding.fetch('holdingsStatementsForIndexes').filter_map { |statement| display_statement(statement) }.map { |v| "Index: #{v}" }
+      holding.fetch('holdingsStatementsForIndexes').compact.filter_map { |statement| display_statement(statement) }.map { |v| "Index: #{v}" }
     end
 
     def statements_for_supplements(holding)
-      holding.fetch('holdingsStatementsForSupplements').filter_map { |statement| display_statement(statement) }.map { |v| "Supplement: #{v}" }
+      holding.fetch('holdingsStatementsForSupplements').compact.filter_map { |statement| display_statement(statement) }.map { |v| "Supplement: #{v}" }
     end
 
     def display_statement(statement)
