@@ -1,12 +1,34 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'benchmark'
 require 'traject/readers/folio_postgres_reader'
 
+# These test enables us to benchmark the query speed.
 RSpec.describe Traject::FolioPostgresReader, if: ENV.key?('DATABASE_URL') do
   before do
     WebMock.enable_net_connect!
   end
+
+  if RSpec.configuration.default_formatter == 'doc'
+    around do |test|
+      Benchmark.bm do |bm|
+        bm.report do
+          test.run
+        end
+      end
+    end
+  end
+
+  # Benchmarking results:
+  # (against the folio-test on 2023-07-25)
+  # with a delta for a whole day
+  #      user     system      total        real
+  #  0.016099   0.008823   0.024922 (  4.396743)
+  # with a chunk (of about 2.5k items)
+  #      user     system      total        real
+  #  0.799907   0.173947   0.973854 ( 45.960047)
+
   context 'with a delta for a whole day' do
     let(:date) { Time.now.advance(days: -1) }
     let(:timeout_in_milliseconds) { 1000 * 60 } # 1 minute max
@@ -16,7 +38,6 @@ RSpec.describe Traject::FolioPostgresReader, if: ENV.key?('DATABASE_URL') do
                                'statement_timeout' => timeout_in_milliseconds)
     end
 
-    # This test enables us to benchmark the query speed.  Against the folio-test db, I see results in 5s on 2023-07-25
     it 'creates FolioRecords' do
       begin
         result = reader.first
@@ -42,7 +63,6 @@ RSpec.describe Traject::FolioPostgresReader, if: ENV.key?('DATABASE_URL') do
       "vi.id BETWEEN '#{min.to_s(16).rjust(4, '0')}0000-0000-0000-0000-000000000000' AND '#{max.to_s(16).rjust(4, '0')}ffff-ffff-ffff-ffff-ffffffffffff'"
     end
 
-    # This test enables us to benchmark the query speed.  Against the folio-test db, I see results in ~45s on 2023-07-25
     it 'creates FolioRecords' do
       begin
         result = reader.to_a.last
