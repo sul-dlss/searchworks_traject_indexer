@@ -931,7 +931,7 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
           'barcode' => '36105007402873', 'library' => 'SCIENCE', 'home_location' => 'STACKS', 'type' => 'STKS-MONO',
           'lopped_callnumber' => 'E184.S75 R47A ...', 'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...', 'reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
-          'callnumber' => 'E184.S75 R47A V.1 1980', 'full_callnumber' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'scheme' => 'LC'
+          'callnumber' => 'E184.S75 R47A V.1 1980', 'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'scheme' => 'LC'
         )
       end
     end
@@ -1167,9 +1167,9 @@ RSpec.describe 'ItemInfo config' do
 
           expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
                                                                                                            hash_including('callnumber' => 'E184.S75 R47A V.1 1980',
-                                                                                                                          'full_callnumber' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
+                                                                                                                          'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
                                                                                                            hash_including('callnumber' => 'E184.S75 R47A V.2 1980',
-                                                                                                                          'full_callnumber' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                                                                                                                          'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
                                                                                                          ])
         end
       end
@@ -1195,9 +1195,9 @@ RSpec.describe 'ItemInfo config' do
 
           expect(select_by_id('373245')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
                                                                                                            hash_including('callnumber' => '553.2805 .P187 V.1-2 1916-1918',
-                                                                                                                          'full_callnumber' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~'),
+                                                                                                                          'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~'),
                                                                                                            hash_including('callnumber' => '553.2805 .P187 V.1-2 1919-1920',
-                                                                                                                          'full_callnumber' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
+                                                                                                                          'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
                                                                                                          ])
         end
 

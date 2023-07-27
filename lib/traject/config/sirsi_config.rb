@@ -2388,7 +2388,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
                    end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
                               call_number
                             end),
-      full_callnumber: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
+      full_shelfkey: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
       note: holding.public_note,
       scheme:
     }
@@ -2839,7 +2839,7 @@ to_field 'item_display' do |_record, accumulator, context|
       item[:shelfkey],
       item[:reverse_shelfkey],
       item[:callnumber],
-      item[:full_callnumber],
+      item[:full_shelfkey],
       item[:note],
       item[:scheme]
     ] + (item[:course_id] ? [item[:course_id], item[:reserve_desk], item[:loan_period]] : [])).join(' -|- ')
