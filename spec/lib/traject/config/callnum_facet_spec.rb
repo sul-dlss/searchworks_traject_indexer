@@ -2,6 +2,7 @@
 
 require 'sirsi_holding'
 
+# rubocop:disable Metrics/ParameterLists
 def record_with_999(call_number:, scheme:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
   indexer.map_record(
     MARC::Record.new.tap do |r|
@@ -21,6 +22,7 @@ def record_with_999(call_number:, scheme:, indexer:, home_location: 'STACKS', li
     end
   )
 end
+# rubocop:enable Metrics/ParameterLists
 
 RSpec.describe 'Call Number Facet' do
   subject(:result) { indexer.map_record(record) }
