@@ -137,6 +137,7 @@ RSpec.describe 'ItemInfo config' do
       end
 
       it { expect(result[field]).to match_array([match('-|- GREEN -|-'), match('-|- ART -|-')]) }
+      it { expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([hash_including('library' => 'GREEN'), hash_including('library' => 'ART')]) }
     end
 
     context 'when an item is bound-with' do
@@ -154,6 +155,7 @@ RSpec.describe 'ItemInfo config' do
 
       it 'omits the on-order placeholder' do
         expect(result[field]).to be_nil
+        expect(result['item_display_struct']).to be_nil
       end
     end
     describe 'field is populated correctly, focusing on building/library' do
@@ -162,6 +164,9 @@ RSpec.describe 'ItemInfo config' do
       it 'APPLIEDPHY ignored for building facet, but not here' do
         expect(select_by_id('115472')[field].length).to eq 1
         expect(select_by_id('115472')[field].first).to include('-|- APPLIEDPHY -|-')
+        expect(select_by_id('115472')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                         hash_including('barcode' => '36105033811451', 'library' => 'APPLIEDPHY')
+                                                                                                       ])
       end
 
       it 'inlcudes various libraries' do
@@ -182,6 +187,9 @@ RSpec.describe 'ItemInfo config' do
           expect(select_by_id(id)[field]).to be_any do |field|
             field.include?("-|- #{library} -|-")
           end
+          expect(select_by_id(id)['item_display_struct'].map { |x| JSON.parse(x) }).to be_any do |field|
+            field['library'] == library.to_s
+          end
         end
       end
 
@@ -195,6 +203,11 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('1033119')[field].last).to match(
           /^36105001623284 -\|- SAL -\|- .*BX4659 \.E85 W44 1982/
         )
+
+        expect(select_by_id('1033119')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('barcode' => '36105037439663', 'library' => 'GREEN', 'callnumber' => 'BX4659.E85 W44'),
+                                                                                                          hash_including('barcode' => '36105001623284', 'library' => 'SAL', 'callnumber' => 'BX4659 .E85 W44 1982')
+                                                                                                        ])
       end
 
       it 'handles same build, same loc, same callnum, one in another building' do
@@ -210,6 +223,12 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('2328381')[field][2]).to match(
           /^36105048104132 -\|- SAL3 -\|- .*827\.5 \.S97TG/
         )
+
+        expect(select_by_id('2328381')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('barcode' => '36105003934432', 'library' => 'SAL', 'callnumber' => 'PR3724.T3'),
+                                                                                                          hash_including('barcode' => '36105003934424', 'library' => 'SAL', 'callnumber' => 'PR3724.T3'),
+                                                                                                          hash_including('barcode' => '36105048104132', 'library' => 'SAL3', 'callnumber' => '827.5 .S97TG')
+                                                                                                        ])
       end
 
       describe 'with item display fixture' do
@@ -220,6 +239,9 @@ RSpec.describe 'ItemInfo config' do
           expect(select_by_id('6661112')[field].first).to match(
             /^36105082101390 -\|- LANE-MED -\|- .*Z3871\.Z8 V\.22 1945/
           )
+          expect(select_by_id('6661112')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                            hash_including('barcode' => '36105082101390', 'library' => 'LANE-MED', 'callnumber' => 'Z3871.Z8 V.22 1945')
+                                                                                                          ])
         end
 
         it 'handles mult items same build, diff loc' do
@@ -235,6 +257,12 @@ RSpec.describe 'ItemInfo config' do
           expect(select_by_id('2328381')[field][2]).to match(
             /^36105048104132 -\|- GRN-REF -\|- .*827\.5 \.S97TG/
           )
+
+          expect(select_by_id('2328381')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                            hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'callnumber' => 'PR3724.T3'),
+                                                                                                            hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'callnumber' => 'PR3724.T3 A2'),
+                                                                                                            hash_including('barcode' => '36105048104132', 'library' => 'GRN-REF', 'callnumber' => '827.5 .S97TG')
+                                                                                                          ])
         end
       end
 
@@ -260,6 +288,9 @@ RSpec.describe 'ItemInfo config' do
                 field.include?("-|- #{location} -|-")
               end
             end
+            expect(select_by_id(id.to_s)['item_display_struct'].map { |x| JSON.parse(x) }).to be_any do |field|
+              locations.include?(field['home_location'])
+            end
           end
         end
 
@@ -279,6 +310,9 @@ RSpec.describe 'ItemInfo config' do
             expect(data.first).to match(
               /^36105007402873 -\|- GREEN -\|- ON-ORDER .* E184\.S75 R47A V\.1 1980/
             )
+            expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
+              'barcode' => '36105007402873', 'library' => 'GREEN', 'home_location' => 'ON-ORDER', 'callnumber' => 'E184.S75 R47A V.1 1980'
+            )
           end
 
           it 'handles reserve locations' do
@@ -286,6 +320,10 @@ RSpec.describe 'ItemInfo config' do
             expect(select_by_id('690002')[field].first).to match(
               /^36105046693508 -\|- EARTH-SCI -\|- BRAN-RESV/
             )
+
+            expect(select_by_id('690002')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                             hash_including('barcode' => '36105046693508', 'library' => 'EARTH-SCI', 'home_location' => 'BRAN-RESV')
+                                                                                                           ])
           end
 
           it 'handles mult items same build, diff loc' do
@@ -301,6 +339,12 @@ RSpec.describe 'ItemInfo config' do
             expect(select_by_id('2328381')[field][2]).to match(
               /^36105048104132 -\|- GRN-REF -\|- STACKS/
             )
+
+            expect(select_by_id('2328381')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                              hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'home_location' => 'STACKS'),
+                                                                                                              hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'home_location' => 'BINDERY'),
+                                                                                                              hash_including('barcode' => '36105048104132', 'library' => 'GRN-REF', 'home_location' => 'STACKS')
+                                                                                                            ])
           end
 
           it 'hanldes multiple items for single bib with same library / location, diff callnum' do
@@ -316,6 +360,12 @@ RSpec.describe 'ItemInfo config' do
             expect(select_by_id('666')[field][2]).to match(
               /^36105048104132 -\|- GREEN -\|- STACKS/
             )
+
+            expect(select_by_id('666')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'home_location' => 'STACKS'),
+                                                                                                          hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'home_location' => 'STACKS'),
+                                                                                                          hash_including('barcode' => '36105048104132', 'library' => 'GREEN', 'home_location' => 'STACKS')
+                                                                                                        ])
           end
         end
       end
@@ -333,10 +383,16 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('575946')[field].last).to match(
           /^36105035087093 -\|- GREEN -\|- STACKS -\|- CHECKEDOUT -/
         )
+
+        expect(select_by_id('575946')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                         hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT'),
+                                                                                                         hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT')
+                                                                                                       ])
       end
 
       it 'WITHDRAWN as current location implies item is skipped' do
         expect(select_by_id('3277173')[field]).to be_nil
+        expect(select_by_id('3277173')['item_display_struct']).to be_nil
       end
     end
 
@@ -348,6 +404,10 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('1111')[field].first).to match(
           /^36105129694373 -\|- SCIENCE -\|- SHELBYTITL .* Shelved by title VOL 1 1946/
         )
+        expect(select_by_id('1111')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                       hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'home_location' => 'SHELBYTITL',
+                                                                                                                      'callnumber' => 'Shelved by title VOL 1 1946')
+                                                                                                     ])
       end
 
       it 'handles STORBYTITL' do
@@ -355,6 +415,10 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('3311')[field].first).to match(
           /^36105129694375 -\|- SCIENCE -\|- STORBYTITL .* Shelved by title VOL 1 1946/
         )
+        expect(select_by_id('3311')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                       hash_including('barcode' => '36105129694375', 'library' => 'SCIENCE', 'home_location' => 'STORBYTITL',
+                                                                                                                      'callnumber' => 'Shelved by title VOL 1 1946')
+                                                                                                     ])
       end
 
       it 'handles SHELBYSER' do
@@ -362,6 +426,10 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('2211')[field].first).to match(
           /^36105129694374 -\|- SCIENCE -\|- SHELBYSER .* Shelved by Series title VOL 1 1946/
         )
+        expect(select_by_id('2211')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                       hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'home_location' => 'SHELBYSER',
+                                                                                                                      'callnumber' => 'Shelved by Series title VOL 1 1946')
+                                                                                                     ])
       end
 
       context 'with a NEWS-STKS location' do
@@ -399,6 +467,10 @@ RSpec.describe 'ItemInfo config' do
             '',
             'LC'
           )
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946',
+                                                                                                          'scheme' => 'LC')
+                                                                                         ])
         end
       end
 
@@ -437,6 +509,10 @@ RSpec.describe 'ItemInfo config' do
             '',
             'ALPHANUM'
           )
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
+                                                                                                          'scheme' => 'ALPHANUM')
+                                                                                         ])
         end
       end
 
@@ -475,6 +551,9 @@ RSpec.describe 'ItemInfo config' do
             '',
             'LC'
           )
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('barcode' => '36105444555666', 'library' => 'GREEN', 'home_location' => 'NEWS-STKS', 'callnumber' => 'E184.S75 R47A V.1 1980', 'scheme' => 'LC')
+                                                                                         ])
         end
       end
 
@@ -494,6 +573,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'retains the O.S. designation before the volume number' do
           expect(result[field].first.split(' -|- ')[8]).to include('O.S:V.1 1909/1910')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('callnumber' => end_with('O.S:V.1 1909/1910'))
+                                                                                         ])
         end
       end
 
@@ -513,6 +595,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'retains the N.S. designation before the volume number' do
           expect(result[field].first.split(' -|- ')[8]).to include('N.S:V.1 1909/1910')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('callnumber' => end_with('N.S:V.1 1909/1910'))
+                                                                                         ])
         end
       end
     end
@@ -526,12 +611,20 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('804724')[field]).to be_nil
         expect(select_by_id('1033119')[field]).to be_nil
         expect(select_by_id('1505065')[field]).to be_nil
+        expect(select_by_id('345228')['item_display_struct']).to be_nil
+        expect(select_by_id('575946')['item_display_struct']).to be_nil
+        expect(select_by_id('804724')['item_display_struct']).to be_nil
+        expect(select_by_id('1033119')['item_display_struct']).to be_nil
+        expect(select_by_id('1505065')['item_display_struct']).to be_nil
 
         # INPROCESS - keep it
         expect(select_by_id('7651581')[field].length).to eq 1
         expect(select_by_id('7651581')[field].first).to match(
           /^36105129694373 -\|- SAL3 -\|- INPROCESS/
         )
+        expect(select_by_id('7651581')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('barcode' => '36105129694373', 'library' => 'SAL3', 'home_location' => 'INPROCESS')
+                                                                                                        ])
       end
     end
 
@@ -549,6 +642,11 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('7652182')[field][2]).to match(
           /^36105130437192 -\|- EARTH-SCI -\|- MEDIA/
         )
+        expect(select_by_id('7652182')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'home_location' => 'PERM-RES'),
+                                                                                                          hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'home_location' => 'REFERENCE'),
+                                                                                                          hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'home_location' => 'MEDIA')
+                                                                                                        ])
       end
     end
 
@@ -563,54 +661,89 @@ RSpec.describe 'ItemInfo config' do
           '36105007402874 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.2 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
         ]
 
+        expect(select_by_id('460947000')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                            hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
+                                                                                                            hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                                                                                          ])
+
         # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
         item_display = select_by_id('575946')[field]
         expect(item_display).to eq [
           '36105035087092 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.31 -|- lc cb  0003.000000 a0.600000 suppl. v.000031 -|-  -|- LC',
           '36105035087093 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.32 -|- lc cb  0003.000000 a0.600000 suppl. v.000032 -|-  -|- LC'
         ]
+        expect(select_by_id('575946')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...'),
+                                                                                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...')
+                                                                                                       ])
 
         item_display = select_by_id('690002000')[field]
         expect(item_display).to eq [
           '36105046693508 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|- ml3l1~yuq}wxzzzzzz~3xyy~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|-  -|- DEWEY'
         ]
+        expect(select_by_id('690002000')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                            hash_including('lopped_callnumber' => '159.32 .W211')
+                                                                                                          ])
 
         item_display = select_by_id('2557826')[field]
         expect(item_display).to eq [
           '001AMR5851 -|- GREEN -|- FED-DOCS -|-  -|- GOVSTKS -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|- 75mbn~l~zzzzzy}zzzzxr~nbb~zzvxsv~zzzzzy~~~~~~~~~~~ -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|-  -|- SUDOC'
         ]
+        expect(select_by_id('2557826')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('lopped_callnumber' => 'E 1.28:COO-4274-1')
+                                                                                                        ])
 
         item_display = select_by_id('460947')[field]
         expect(item_display).to eq [
           '36105007402873 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC',
           '36105007402872 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.2 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
         ]
+        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
+                                                                                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                                                                                       ])
 
         item_display = select_by_id('446688')[field]
         expect(item_display).to eq [
           '36105007402873 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|- ml3l1~ttt}xszzzzzz~kxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|-  -|- DEWEY'
         ]
+        expect(select_by_id('446688')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                         hash_including('lopped_callnumber' => '666.27 .F22')
+                                                                                                       ])
 
         item_display = select_by_id('4578538')[field]
         expect(item_display).to eq [
           '36105046377987 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- SUSEL-69048 -|- other susel-069048 -|- b6il8~757le~ztqzvr~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- SUSEL-69048 -|- other susel-069048 -|-  -|- ALPHANUM'
         ]
+        expect(select_by_id('4578538')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('lopped_callnumber' => 'SUSEL-69048')
+                                                                                                        ])
 
         item_display = select_by_id('1261173')[field]
         expect(item_display).to eq [
           '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|- b6il8~dkhed~c}7}~zzywuz~8lle~zzzxwz~cb}~zzwsvy~~~~ -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|-  -|- ALPHANUM'
         ]
+        expect(select_by_id('1261173')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('lopped_callnumber' => 'MFILM N.S. 1350 REEL 230 NO. 3741')
+                                                                                                        ])
 
         item_display = select_by_id('1234673')[field]
         expect(item_display).to eq [
           '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|- b6il8~dnm~o8lcmle~aep17~oll6ib4lc~7~l8bhnp~4p8hp6hbc7 -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|-  -|- ALPHANUM'
         ]
+        expect(select_by_id('1234673')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('lopped_callnumber' => 'MCD Brendel Plays Beethoven\'s Eroica variations')
+                                                                                                        ])
 
         item_display = select_by_id('3941911')[field]
         expect(item_display).to eq [
           '36105025373064 -|- GREEN -|- BENDER -|-  -|- NONCIRC -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC',
           '36105019748495 -|- GREEN -|- BENDER -|-  -|- STKS-MONO -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC'
         ]
+        expect(select_by_id('3941911')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('lopped_callnumber' => 'PS3557 .O5829 K3 1998'),
+                                                                                                          hash_including('lopped_callnumber' => 'PS3557 .O5829 K3 1998')
+                                                                                                        ])
 
         item_display = select_by_id('111')[field]
         expect(item_display).to eq [
@@ -618,17 +751,29 @@ RSpec.describe 'ItemInfo config' do
           '36105003934424 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.1 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000001 -|-  -|- LC',
           '36105048104132 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.2 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000002 -|-  -|- LC'
         ]
+        expect(select_by_id('111')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...'),
+                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...'),
+                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...')
+                                                                                                    ])
 
         item_display = select_by_id('222')[field]
         expect(item_display).to eq [
           '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~4z}xzzzzz~~~~~~~~~~~~ -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|-  -|- LC',
           '36105003934424 -|- SAL -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~4z}xzzzzz~~~~~~~~~~~~ -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|-  -|- LC'
         ]
+        expect(select_by_id('222')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 V2'),
+                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 V2')
+                                                                                                    ])
 
         item_display = select_by_id('4823592')[field]
         expect(item_display).to eq [
           '36105063104488 -|- LAW -|- BASEMENT -|-  -|- LAW-STKS -|- Y 4.G 74/7:G 21/10 -|- other y 000004.g 000074/000007:g 000021/000010 -|- b6il8~1~zzzzzv}j~zzzzsv~zzzzzs~j~zzzzxy~zzzzyz~~~~ -|- Y 4.G 74/7:G 21/10 -|- other y 000004.g 000074/000007:g 000021/000010 -|-  -|- OTHER'
         ]
+        expect(select_by_id('4823592')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                          hash_including('lopped_callnumber' => 'Y 4.G 74/7:G 21/10')
+                                                                                                        ])
       end
     end
     # rubocop:enable Layout/LineLength
@@ -645,6 +790,9 @@ RSpec.describe 'ItemInfo config' do
           'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
           '', 'LC'
         ]
+        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
+          'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'
+        )
       end
     end
 
@@ -665,6 +813,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).to include('-|- .PUBLIC. Note -|-')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.PUBLIC. Note'
         end
       end
 
@@ -684,6 +833,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).to include('-|- .public. Note -|-')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.public. Note'
         end
       end
 
@@ -703,6 +853,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).to include('-|- .PuBlIc. Note -|-')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.PuBlIc. Note'
         end
       end
 
@@ -722,6 +873,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is not included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).not_to include('public Note')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to be_nil
         end
       end
 
@@ -741,6 +893,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is not included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).not_to include('Note .PUBLIC.')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to be_nil
         end
       end
 
@@ -760,6 +913,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is not included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).not_to include('Note ')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to be_nil
         end
       end
     end
@@ -774,6 +928,11 @@ RSpec.describe 'ItemInfo config' do
           'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
           'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
         ]
+        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
+          'barcode' => '36105007402873', 'library' => 'SCIENCE', 'home_location' => 'STACKS', 'type' => 'STKS-MONO',
+          'lopped_callnumber' => 'E184.S75 R47A ...', 'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...', 'reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
+          'callnumber' => 'E184.S75 R47A V.1 1980', 'full_callnumber' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'scheme' => 'LC'
+        )
       end
     end
 
@@ -784,6 +943,11 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('460947')[field].length).to eq 2
         expect(select_by_id('460947')[field].first).to include('-|- E184.S75 R47A V.1 1980 -|-')
         expect(select_by_id('460947')[field].last).to include('-|- E184.S75 R47A V.2 1980 -|-')
+
+        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                         hash_including('callnumber' => 'E184.S75 R47A V.1 1980'),
+                                                                                                         hash_including('callnumber' => 'E184.S75 R47A V.2 1980')
+                                                                                                       ])
       end
     end
 
@@ -803,6 +967,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- ALPHANUM')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('ALPHANUM'))
+                                                                                         ])
         end
       end
 
@@ -821,6 +988,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- DEWEY')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('DEWEY'))
+                                                                                         ])
         end
       end
 
@@ -839,6 +1009,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- LC')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('LC'))
+                                                                                         ])
         end
       end
 
@@ -857,6 +1030,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- SUDOC')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('SUDOC'))
+                                                                                         ])
         end
       end
 
@@ -875,6 +1051,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- OTHER')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('OTHER'))
+                                                                                         ])
         end
       end
 
@@ -893,6 +1072,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- OTHER')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('OTHER'))
+                                                                                         ])
         end
       end
 
@@ -912,6 +1094,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- ALPHANUM')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('ALPHANUM'))
+                                                                                         ])
         end
       end
 
@@ -930,6 +1115,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- OTHER')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('OTHER'))
+                                                                                         ])
         end
       end
 
@@ -948,6 +1136,9 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].first).to end_with('-|- OTHER')
+          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                           hash_including('scheme' => end_with('OTHER'))
+                                                                                         ])
         end
       end
     end
@@ -973,6 +1164,13 @@ RSpec.describe 'ItemInfo config' do
           expect(select_by_id('460947')[field].last).to include(
             '-|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-'
           )
+
+          expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                           hash_including('callnumber' => 'E184.S75 R47A V.1 1980',
+                                                                                                                          'full_callnumber' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
+                                                                                                           hash_including('callnumber' => 'E184.S75 R47A V.2 1980',
+                                                                                                                          'full_callnumber' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                                                                                                         ])
         end
       end
 
@@ -994,6 +1192,13 @@ RSpec.describe 'ItemInfo config' do
           expect(select_by_id('373245')[field].last).to include(
             '-|- dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~ -|-'
           )
+
+          expect(select_by_id('373245')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                           hash_including('callnumber' => '553.2805 .P187 V.1-2 1916-1918',
+                                                                                                                          'full_callnumber' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~'),
+                                                                                                           hash_including('callnumber' => '553.2805 .P187 V.1-2 1919-1920',
+                                                                                                                          'full_callnumber' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
+                                                                                                         ])
         end
 
         # The Education library has a collection of call numbers w/ a scheme of DEWEY but begin w/ TX
@@ -1015,6 +1220,9 @@ RSpec.describe 'ItemInfo config' do
           # this is potentially incidental since we don't fall back for non-valid DEWEY
           it 'are handled' do
             expect(result['item_display'].first).to include('-|- dewey 443.21000000 a3 -|-')
+            expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                             hash_including('shelfkey' => 'dewey 443.21000000 a3')
+                                                                                           ])
           end
         end
       end
@@ -1063,6 +1271,10 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('1')[field].length).to eq 2
         expect(select_by_id('1')[field].first).to start_with('36105003934432 -|-')
         expect(select_by_id('1')[field].last).to start_with('36105003934424 -|-')
+        expect(select_by_id('1')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                                    hash_including('barcode' => '36105003934432'),
+                                                                                                    hash_including('barcode' => '36105003934424')
+                                                                                                  ])
       end
     end
   end

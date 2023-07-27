@@ -2305,7 +2305,7 @@ to_field 'building_location_facet_ssim' do |record, accumulator, context|
   end
 end
 
-to_field 'item_display' do |record, accumulator, context|
+to_field 'item_display_struct' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
 
@@ -2374,28 +2374,28 @@ to_field 'item_display' do |record, accumulator, context|
       current_location = 'ON-ORDER'
     end
 
-    accumulator << [
-      holding.barcode,
-      holding.library,
-      holding.home_location,
-      current_location,
-      holding.type,
-      (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      (shelfkey unless holding.lost_or_missing?),
-      (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
-      (unless holding.ignored_call_number? && !holding.shelved_by_location?
-         call_number
-       end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
-                  call_number
-                end),
-      (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      holding.public_note,
-      scheme
-    ].join(' -|- ')
+    accumulator << {
+      barcode: holding.barcode,
+      library: holding.library,
+      home_location: holding.home_location,
+      current_location:,
+      type: holding.type,
+      lopped_callnumber: (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
+      shelfkey: (shelfkey unless holding.lost_or_missing?),
+      reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
+      callnumber: (unless holding.ignored_call_number? && !holding.shelved_by_location?
+                     call_number
+                   end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
+                              call_number
+                            end),
+      full_callnumber: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
+      note: holding.public_note,
+      scheme:
+    }
   end
 end
 
-to_field 'item_display' do |record, accumulator, context|
+to_field 'item_display_struct' do |record, accumulator, context|
   next if holdings(record, context).any?
 
   # If there are no items, but this item appears to be a bound-with, we don't want to add the placeholder
@@ -2408,26 +2408,19 @@ to_field 'item_display' do |record, accumulator, context|
   # exclude generic SUL if there's a more specific library
   lib_codes -= ['SUL'] if lib_codes.length > 1
   lib_codes.each do |lib|
-    accumulator << [
-      '',
-      lib,
-      'ON-ORDER',
-      'ON-ORDER',
-      '',
-      '',
-      '',
-      '',
-      '',
-      ''
-    ].join(' -|- ')
+    accumulator << {
+      library: lib,
+      home_location: 'ON-ORDER',
+      current_location: 'ON-ORDER'
+    }
   end
 end
 
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|
-  if context.output_hash['item_display'].nil? && settings['skip_empty_item_display'] > -1
-    context.skip!('No item_display field')
+  if context.output_hash['item_display_struct'].nil? && settings['skip_empty_item_display'] > -1
+    context.skip!('No item_display_struct field')
   end
 end
 
@@ -2743,7 +2736,7 @@ end
 
 each_record do |_record, context|
   context.output_hash.reject do |k, _v|
-    k == 'mhld_display' || k == 'item_display' || k =~ /^url_/ || k =~ /^marc/
+    k == 'mhld_display' || k == 'item_display_struct' || k =~ /^url_/ || k =~ /^marc/
   end.transform_values do |v|
     v.map! do |x|
       x.respond_to?(:strip) ? x.strip : x
@@ -2754,24 +2747,24 @@ each_record do |_record, context|
 end
 
 # We update item_display once we have crez info
-to_field 'item_display' do |_record, _accumulator, context|
+to_field 'item_display_struct' do |_record, _accumulator, context|
   course_reserves = context.clipboard[:crez_data]
   next if course_reserves.empty?
 
-  context.output_hash['item_display'].map! do |item_display_value|
-    split_item_display = item_display_value.split('-|-')
-    row = course_reserves.reverse.find { |r| r[:barcode].strip == split_item_display[0].strip }
+  context.output_hash['item_display_struct'].map! do |item_display_value|
+    row = course_reserves.reverse.find { |r| r[:barcode].strip == item_display_value[:barcode].strip }
 
     if row
       rez_desk = row[:rez_desk] || ''
       loan_period = LOAN_CODE_2_USER_STR[row[:loan_period]] || ''
       course_id = row[:course_id] || ''
-      suffix = [course_id, rez_desk, loan_period].join(' -|- ')
-      # replace current location in existing item_display field with rez_desk
-      old_val_array = item_display_value.split(' -|- ', -1)
-      old_val_array[3] = rez_desk
-      new_val = old_val_array.join(' -|- ')
-      new_val + ' -|- ' + suffix
+
+      item_display_value.merge(
+        current_location: rez_desk,
+        course_id:,
+        reserve_desk: rez_desk,
+        loan_period:
+      )
     else
       item_display_value
     end
@@ -2782,9 +2775,8 @@ to_field 'building_facet' do |_record, _accumulator, context|
   course_reserves = context.clipboard[:crez_data]
   next if course_reserves.empty?
 
-  new_building_facet_vals = context.output_hash['item_display'].map do |item_display_value|
-    split_item_display = item_display_value.split('-|-').map(&:strip)
-    barcode = split_item_display[0].strip
+  new_building_facet_vals = context.output_hash['item_display_struct'].map do |item_display_value|
+    barcode = item_display_value[:barcode].strip
     reserves_for_item = course_reserves.select { |row| row[:barcode].strip == barcode }.first
 
     if reserves_for_item && REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
@@ -2793,7 +2785,7 @@ to_field 'building_facet' do |_record, _accumulator, context|
       # This is not dissimilar to the original building_facet mapping:
       # Try the current location first, in case it has an overridden library, and then
       # fall back on the library code.
-      library_map[split_item_display[3]] || library_map[split_item_display[1]]
+      library_map[item_display_value[:current_location]] || library_map[item_display_value[:library]]
     end
   end
 
@@ -2833,6 +2825,25 @@ to_field 'context_marc_fields_ssim' do |record, accumulator|
       ['?', field.tag, code].flatten.join
     end
   end.flatten.uniq)
+end
+
+to_field 'item_display' do |_record, accumulator, context|
+  context.output_hash['item_display_struct']&.each do |item|
+    accumulator << ([
+      item[:barcode],
+      item[:library],
+      item[:home_location],
+      item[:current_location],
+      item[:type],
+      item[:lopped_callnumber],
+      item[:shelfkey],
+      item[:reverse_shelfkey],
+      item[:callnumber],
+      item[:full_callnumber],
+      item[:note],
+      item[:scheme]
+    ] + (item[:course_id] ? [item[:course_id], item[:reserve_desk], item[:loan_period]] : [])).join(' -|- ')
+  end
 end
 
 each_record do |_record, context|
