@@ -87,6 +87,24 @@ module Traject
       end
     end
 
+    def service_points
+      @service_points ||= begin
+        response = @connection.exec <<-SQL
+          SELECT service_point.id AS id,
+                jsonb_build_object(
+                  'id', service_point.id,
+                  'code', service_point.jsonb ->> 'code',
+                  'name', service_point.jsonb ->> 'name',
+                  'pickupLocation', COALESCE((service_point.jsonb ->> 'pickupLocation')::bool, false),
+                  'discoveryDisplayName', service_point.jsonb ->> 'discoveryDisplayName'
+                ) AS jsonb
+          FROM sul_mod_inventory_storage.service_point service_point
+        SQL
+
+        response.map { |row| JSON.parse(row['jsonb']) }.index_by { |service_point| service_point['id'] }
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -116,6 +134,8 @@ module Traject
                 'permanentLocation' => locations[item['permanentLocationId']],
                 'temporaryLocation' => locations[item['temporaryLocationId']]
               }.compact
+
+              item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
             end
 
             data['holdings'].each do |holding|
@@ -187,7 +207,14 @@ module Traject
                     'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(item.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
                     'administrativeNotes', '[]'::jsonb,
                     'circulationNotes', COALESCE((SELECT jsonb_agg(e) FROM jsonb_array_elements(item.jsonb -> 'circulationNotes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
-                    'notes', COALESCE((SELECT jsonb_agg(e || jsonb_build_object('itemNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.item_note_type WHERE id = nullif(e ->> 'itemNoteTypeId','')::uuid ))) FROM jsonb_array_elements(item.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb)
+                    'notes', COALESCE((SELECT jsonb_agg(e || jsonb_build_object('itemNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.item_note_type WHERE id = nullif(e ->> 'itemNoteTypeId','')::uuid ))) FROM jsonb_array_elements(item.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
+                    'request', CASE WHEN request.id IS NOT NULL THEN
+                      jsonb_build_object(
+                        'id', request.id,
+                        'status', request.jsonb ->> 'status',
+                        'pickupServicePointId', request.jsonb ->> 'pickupServicePointId'
+                      )
+                    END
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -317,6 +344,10 @@ module Traject
           ON parentItem.holdingsRecordId = parentHolding.id
       LEFT JOIN sul_mod_inventory_storage.instance parentInstance
           ON parentHolding.instanceid = parentInstance.id
+      -- Requests relation
+      LEFT JOIN sul_mod_circulation_storage.request request
+          ON (request.jsonb ->> 'itemId')::uuid = item.id
+          AND request.jsonb ->> 'status' = 'Open - Awaiting pickup'
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id

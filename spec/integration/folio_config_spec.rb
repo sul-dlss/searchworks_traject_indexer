@@ -476,6 +476,135 @@ RSpec.describe 'FOLIO indexing' do
 
       it { expect(result['item_display'].find { |h| h.match?(/INTRANSIT/) }).to be_present }
     end
+
+    context 'item is awaiting pickup' do
+      let(:items) do
+        [{ 'id' => '7fdf7094-d30a-5f70-b23e-bc420a82a1d7',
+           'hrid' => 'ai645341_1_1',
+           'notes' => [],
+           'status' => 'Awaiting pickup',
+           'barcode' => '36105080746311',
+           '_version' => 3,
+           'request' => { 'id' => '7c8e3f57-6f1b-4d59-a8c6-9b51e32edd38',
+                          'status' => 'Open - Awaiting pickup',
+                          'pickupServicePoint' =>
+            { 'pickupServicePointId' => 'b6987737-1e63-44cc-bfb1-2bcf044adcd7',
+              'code' => 'RUMSEY-MAP',
+              'name' => 'David Rumsey Map Center',
+              'pickupLocation' => true,
+              'discoveryDisplayName' => 'David Rumsey Map Center' } },
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'temporaryLocation' => nil } }]
+      end
+      let(:holdings) do
+        [{ 'id' => '9c7b3dca-1619-5210-9bd1-6df775986b81',
+           'hrid' => 'ah645341_1',
+           'notes' => [],
+           '_version' => 1,
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'temporaryLocation' => nil },
+           'formerIds' => [],
+           'callNumber' => 'D810.S8 C31 A32',
+           'instanceId' => 'c08db92b-c343-5955-abb1-b739ab186ecb',
+           'holdingsType' =>
+           { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+             'name' => 'Monograph',
+             'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' =>
+           { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+             'name' => 'Library of Congress classification',
+             'source' => 'folio' },
+           'holdingsStatements' => [],
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it 'uses the pickup location of the request to generate a current location value' do
+        expect(result['item_display'].find { |h| h.match?(/RUM-LOAN/) }).to be_present
+      end
+    end
   end
 
   describe 'mhld_display' do
