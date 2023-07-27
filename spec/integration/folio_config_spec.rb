@@ -350,6 +350,12 @@ RSpec.describe 'FOLIO indexing' do
       end
 
       it { expect(result['item_display'].find { |h| h.match?(/CHECKEDOUT/) }).to be_present }
+
+      it 'includes the item UUID in the item_display_struct field' do
+        expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                         hash_including('id' => '5362817d-f2df-503c-aa20-b2287c64ae25')
+                                                                                       ])
+      end
     end
 
     context 'item status is in-transit' do

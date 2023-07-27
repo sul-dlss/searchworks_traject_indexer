@@ -21,10 +21,12 @@ class SirsiHolding
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag
+  attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag
 
-  def initialize(tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '',
+  # rubocop:disable Metrics/ParameterLists
+  def initialize(id: nil, tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '',
                  barcode: '', public_note: '')
+    @id = id
     @call_number = call_number
     @current_location = current_location
     @home_location = home_location
@@ -35,6 +37,7 @@ class SirsiHolding
     @tag = tag
     @public_note = public_note
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def call_number
     @call_number_obj ||= CallNumber.new(normalize_call_number(@call_number))
