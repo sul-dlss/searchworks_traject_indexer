@@ -162,7 +162,8 @@ module Traject
                                         )
                                     ELSE
                                        '[]'::jsonb
-                                    END
+                                    END,
+                'administrativeNotes', '[]'::jsonb
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
@@ -184,7 +185,9 @@ module Traject
                     'callNumber', item.jsonb -> 'effectiveCallNumberComponents' ||
                                   jsonb_build_object('typeName', cnt.jsonb ->> 'name'),
                     'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(item.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                    'notes', COALESCE((SELECT json_agg(e || jsonb_build_object('itemNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.item_note_type WHERE id = nullif(e ->> 'itemNoteTypeId','')::uuid ))) FROM jsonb_array_elements(item.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::json)
+                    'administrativeNotes', '[]'::jsonb,
+                    'circulationNotes', COALESCE((SELECT jsonb_agg(e) FROM jsonb_array_elements(item.jsonb -> 'circulationNotes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
+                    'notes', COALESCE((SELECT jsonb_agg(e || jsonb_build_object('itemNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.item_note_type WHERE id = nullif(e ->> 'itemNoteTypeId','')::uuid ))) FROM jsonb_array_elements(item.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb)
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -199,10 +202,12 @@ module Traject
                           COALESCE((vi.jsonb ->> 'discoverySuppress')::bool, false) OR
                           COALESCE((hr.jsonb ->> 'discoverySuppress')::bool, false)
                         ELSE NULL END::bool,
+                        'administrativeNotes', '[]'::jsonb,
+                        'holdingsStatements', COALESCE((SELECT jsonb_agg(e) FROM jsonb_array_elements(hr.jsonb -> 'holdingsStatements') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
                         'holdingsType', ht.jsonb - 'metadata',
                         'callNumberType', hrcnt.jsonb - 'metadata',
                         'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(hr.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
-                        'notes', COALESCE((SELECT json_agg(e || jsonb_build_object('holdingsNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.holdings_note_type WHERE id = nullif(e ->> 'holdingsNoteTypeId','')::uuid ))) FROM jsonb_array_elements(hr.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::json),
+                        'notes', COALESCE((SELECT jsonb_agg(e || jsonb_build_object('holdingsNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.holdings_note_type WHERE id = nullif(e ->> 'holdingsNoteTypeId','')::uuid ))) FROM jsonb_array_elements(hr.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
                         'illPolicy', ilp.jsonb - 'metadata',
                         'boundWith',
                           CASE WHEN parentItem.id IS NOT NULL THEN
