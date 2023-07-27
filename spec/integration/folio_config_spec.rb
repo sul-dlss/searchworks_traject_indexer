@@ -41,13 +41,11 @@ RSpec.describe 'FOLIO indexing' do
   let(:client) { instance_double(FolioClient, instance: client_instance_response, statistical_codes: statistical_codes_response) }
   let(:items_and_holdings) { {} }
   let(:holding_summaries) { [] }
-  let(:requests) { [] }
 
   before do
     allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
     allow(folio_record).to receive(:courses).and_return([])
     allow(folio_record).to receive(:holding_summaries).and_return(holding_summaries)
-    allow(folio_record).to receive(:requests).and_return(requests)
   end
 
   it 'maps the record with sirsi fields' do
@@ -487,6 +485,14 @@ RSpec.describe 'FOLIO indexing' do
            'status' => 'Awaiting pickup',
            'barcode' => '36105080746311',
            '_version' => 3,
+           'request' => { 'id' => '7c8e3f57-6f1b-4d59-a8c6-9b51e32edd38',
+                          'status' => 'Open - Awaiting pickup',
+                          'pickupServicePoint' =>
+            { 'pickupServicePointId' => 'b6987737-1e63-44cc-bfb1-2bcf044adcd7',
+              'code' => 'RUMSEY-MAP',
+              'name' => 'David Rumsey Map Center',
+              'pickupLocation' => true,
+              'discoveryDisplayName' => 'David Rumsey Map Center' } },
            'location' =>
            { 'effectiveLocation' =>
              { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
@@ -589,16 +595,6 @@ RSpec.describe 'FOLIO indexing' do
       let(:items_and_holdings) do
         { 'items' => items,
           'holdings' => holdings }
-      end
-      let(:requests) do
-        [{ 'id' => '7c8e3f57-6f1b-4d59-a8c6-9b51e32edd38',
-           'itemId' => '7fdf7094-d30a-5f70-b23e-bc420a82a1d7',
-           'status' => 'Open - Awaiting pickup',
-           'pickupServicePoint' =>
-           { 'code' => 'RUMSEY-MAP',
-             'name' => 'David Rumsey Map Center',
-             'discoveryDisplayName' => 'David Rumsey Map Center' },
-           'pickupServicePointId' => 'b6987737-1e63-44cc-bfb1-2bcf044adcd7' }]
       end
 
       before do

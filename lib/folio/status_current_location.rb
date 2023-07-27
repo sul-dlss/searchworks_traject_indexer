@@ -5,11 +5,10 @@ module Folio
   # and any requests associated with the item's instance record
   # and creates an equivalent Symphony current location
   class StatusCurrentLocation
-    attr_reader :item, :requests
+    attr_reader :item
 
-    def initialize(item, requests)
+    def initialize(item)
       @item = item
-      @requests = requests
     end
 
     def current_location
@@ -52,14 +51,7 @@ module Folio
     end
 
     def service_point_code
-      request_awaiting_pickup&.dig('pickupServicePoint', 'code')
-    end
-
-    def request_awaiting_pickup
-      requests.find do |request|
-        request['itemId'] == item['id'] &&
-          request['status'] == 'Open - Awaiting pickup'
-      end
+      item&.dig('request', 'pickupServicePoint', 'code')
     end
   end
 end

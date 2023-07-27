@@ -86,7 +86,7 @@ class FolioRecord
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= Folio::StatusCurrentLocation.new(item, requests).current_location
+      current_location ||= Folio::StatusCurrentLocation.new(item).current_location
 
       SirsiHolding.new(
         id: item['id'],
@@ -114,7 +114,7 @@ class FolioRecord
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= Folio::StatusCurrentLocation.new(parent_item, requests).current_location
+      current_location ||= Folio::StatusCurrentLocation.new(parent_item).current_location
       SirsiHolding.new(
         id: parent_item['id'],
         call_number: holding['callNumber'],
@@ -203,10 +203,6 @@ class FolioRecord
 
   def pieces
     @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
-  end
-
-  def requests
-    record['requests'] || []
   end
 
   def statistical_codes
