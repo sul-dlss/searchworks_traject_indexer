@@ -353,6 +353,7 @@ module Traject
       -- Requests relation
       LEFT JOIN sul_mod_circulation_storage.request request
           ON (request.jsonb ->> 'instanceId')::uuid = vi.id
+          AND request.jsonb ->> 'status' = 'Open - Awaiting pickup'
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
