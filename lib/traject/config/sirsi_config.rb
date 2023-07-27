@@ -2375,6 +2375,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
     end
 
     accumulator << {
+      id: holding.id,
       barcode: holding.barcode,
       library: holding.library,
       home_location: holding.home_location,

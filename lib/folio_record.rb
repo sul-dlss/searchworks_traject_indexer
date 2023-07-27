@@ -89,6 +89,7 @@ class FolioRecord
       current_location ||= folio_status_to_location(item['status'])
 
       SirsiHolding.new(
+        id: item['id'],
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
         current_location: (current_location unless current_location == home_location_code),
         home_location: home_location_code,
@@ -115,6 +116,7 @@ class FolioRecord
       _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
       current_location ||= folio_status_to_location(parent_item['status'])
       SirsiHolding.new(
+        id: parent_item['id'],
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         tag: {},
