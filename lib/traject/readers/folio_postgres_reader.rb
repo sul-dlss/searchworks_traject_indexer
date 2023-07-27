@@ -135,7 +135,7 @@ module Traject
                 'temporaryLocation' => locations[item['temporaryLocationId']]
               }.compact
 
-              item['requests']['pickupServicePoint'] = service_points[request['pickupServicePointId']] if item['requests']
+              item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
             end
 
             data['holdings'].each do |holding|
@@ -205,13 +205,13 @@ module Traject
                                   jsonb_build_object('typeName', cnt.jsonb ->> 'name'),
                     'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(item.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
                     'notes', COALESCE((SELECT json_agg(e || jsonb_build_object('itemNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.item_note_type WHERE id = nullif(e ->> 'itemNoteTypeId','')::uuid ))) FROM jsonb_array_elements(item.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::json),
-                    'requests', CASE WHEN request.id IS NOT NULL THEN
+                    'request', CASE WHEN request.id IS NOT NULL THEN
                       jsonb_build_object(
                         'id', request.id,
                         'status', request.jsonb ->> 'status',
                         'pickupServicePointId', request.jsonb ->> 'pickupServicePointId'
                       )
-                    ELSE NULL END::bool
+                    END
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -341,7 +341,7 @@ module Traject
           ON parentHolding.instanceid = parentInstance.id
       -- Requests relation
       LEFT JOIN sul_mod_circulation_storage.request request
-          ON (request.jsonb ->> 'itemId')::uuid = vi.id
+          ON (request.jsonb ->> 'itemId')::uuid = item.id
           AND request.jsonb ->> 'status' = 'Open - Awaiting pickup'
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
