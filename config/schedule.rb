@@ -37,3 +37,7 @@ end
 every '*/5 * * * *', roles: [:stage] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres.sh', traject_env: 'folio_test'
 end
+
+every '*/5 * * * *', roles: [:prod] do
+  honeybadger_wrapped_ruby_script 'load_folio_postgres.sh', traject_env: 'folio_prod'
+end
