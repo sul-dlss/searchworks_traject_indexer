@@ -16,6 +16,9 @@ settings do
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
   elsif self['postgres.url']
     require './lib/traject/readers/folio_postgres_reader'
+    if self['catkey']
+      provide 'postgres.sql_filters', "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{self['catkey'].downcase}'"
+    end
     provide 'reader_class_name', 'Traject::FolioPostgresReader'
   elsif self['reader_class_name'] == 'Traject::FolioJsonReader'
     require './lib/traject/readers/folio_json_reader'
