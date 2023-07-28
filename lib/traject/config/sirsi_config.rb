@@ -2753,7 +2753,7 @@ to_field 'item_display_struct' do |_record, _accumulator, context|
   next if course_reserves.empty?
 
   context.output_hash['item_display_struct'].map! do |item_display_value|
-    row = course_reserves.reverse.find { |r| r[:barcode].strip == item_display_value[:barcode].strip }
+    row = course_reserves.reverse.find { |r| r[:barcode].strip == item_display_value[:barcode]&.strip }
 
     if row
       rez_desk = row[:rez_desk] || ''
@@ -2777,7 +2777,7 @@ to_field 'building_facet' do |_record, _accumulator, context|
   next if course_reserves.empty?
 
   new_building_facet_vals = context.output_hash['item_display_struct'].map do |item_display_value|
-    barcode = item_display_value[:barcode].strip
+    barcode = item_display_value[:barcode]&.strip
     reserves_for_item = course_reserves.select { |row| row[:barcode].strip == barcode }.first
 
     if reserves_for_item && REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
