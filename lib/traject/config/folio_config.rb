@@ -21,7 +21,7 @@ settings do
     require './lib/traject/readers/folio_json_reader'
   else
     provide 'reader_class_name', 'Traject::FolioReader'
-    provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', nil))
+    provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', ''))
   end
 
   provide 'skip_empty_item_display', -1
