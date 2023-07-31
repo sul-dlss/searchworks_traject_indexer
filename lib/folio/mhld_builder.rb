@@ -37,7 +37,7 @@ module Folio
         no_holding_statements = (holding.fetch('holdingsStatements') +
                                  holding.fetch('holdingsStatementsForIndexes') +
                                  holding.fetch('holdingsStatementsForSupplements')).compact.empty?
-        next if no_holding_statements || holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
+        next if no_holding_statements || holding['suppressFromDiscovery'] || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Electronic'
 
         note = holding.fetch('holdingsStatements').compact.find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
 

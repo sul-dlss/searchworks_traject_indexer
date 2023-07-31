@@ -248,6 +248,84 @@ RSpec.describe Folio::MhldBuilder do
         it { is_expected.to eq ['EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- '] }
       end
     end
+
+    context 'with Electronic holdings types' do
+      let(:holding) do
+        { 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+          'notes' => [],
+          'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'EAR-STACKS',
+              'name' => 'Earth Sciences Stacks',
+              'campusName' => 'Stanford Libraries',
+              'libraryName' => 'Branner Earth Sciences',
+              'institutionName' => 'Stanford University' },
+            'permanentLocation' =>
+            { 'code' => 'EAR-STACKS',
+              'name' => 'Earth Sciences Stacks',
+              'campusName' => 'Stanford Libraries',
+              'libraryName' => 'Branner Earth Sciences',
+              'institutionName' => 'Stanford University' },
+            'temporaryLocation' => {} },
+          'formerIds' => [],
+          'callNumber' => {},
+          'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Electronic', 'source' => 'folio' },
+          'electronicAccess' => [],
+          'receivingHistory' => { 'entries' => [] },
+          'statisticalCodes' => [],
+          'holdingsStatements' => holdings_statements,
+          'suppressFromDiscovery' => false,
+          'holdingsStatementsForIndexes' => index_statements,
+          'holdingsStatementsForSupplements' => supplement_statements }
+      end
+
+      let(:holdings_statements) do
+        [
+          { 'note' => 'Library has latest 10 yrs. only.' },
+          { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+        ]
+      end
+
+      it { is_expected.to be_empty }
+    end
+
+    context 'with Lane electronic statements' do
+      let(:holding) do
+        { 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+          'notes' => [],
+          'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'LANE-STACKS',
+              'name' => 'Lane Stacks',
+              'campusName' => 'Lane',
+              'libraryName' => 'Lane',
+              'institutionName' => 'Stanford University',
+              'details' => {
+                'holdingsTypeName' => 'Electronic'
+              } },
+            'permanentLocation' => {},
+            'temporaryLocation' => {} },
+          'formerIds' => [],
+          'callNumber' => {},
+          'holdingsType' => {},
+          'electronicAccess' => [],
+          'receivingHistory' => { 'entries' => [] },
+          'statisticalCodes' => [],
+          'holdingsStatements' => holdings_statements,
+          'suppressFromDiscovery' => false,
+          'holdingsStatementsForIndexes' => index_statements,
+          'holdingsStatementsForSupplements' => supplement_statements }
+      end
+
+      let(:holdings_statements) do
+        [
+          { 'note' => 'Library has latest 10 yrs. only.' },
+          { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+        ]
+      end
+
+      it { is_expected.to be_empty }
+    end
   end
 
   context 'when pieces is present and has no enumeration' do
