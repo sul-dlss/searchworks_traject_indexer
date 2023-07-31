@@ -2368,31 +2368,18 @@ to_field 'item_display_struct' do |record, accumulator, context|
       lopped_call_number = holding.call_number.to_s
     end
 
-    # item is on order if holding is on order
-    current_location = holding.current_location
-    if holding.on_order? && holding.current_location && !holding.current_location.empty? && holding.home_location != 'ON-ORDER' && holding.home_location != 'INPROCESS'
-      current_location = 'ON-ORDER'
-    end
-
-    accumulator << {
-      id: holding.id,
-      barcode: holding.barcode,
-      library: holding.library,
-      home_location: holding.home_location,
-      current_location:,
-      type: holding.type,
-      lopped_callnumber: (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      shelfkey: (shelfkey unless holding.lost_or_missing?),
-      reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
-      callnumber: (unless holding.ignored_call_number? && !holding.shelved_by_location?
-                     call_number
-                   end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
-                              call_number
-                            end),
-      full_shelfkey: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
-      note: holding.public_note,
-      scheme:
-    }
+    accumulator << holding.to_item_display_hash.merge({
+                                                        lopped_callnumber: (lopped_call_number unless holding.ignored_call_number? && !holding.shelved_by_location?),
+                                                        shelfkey: (shelfkey unless holding.lost_or_missing?),
+                                                        reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
+                                                        callnumber: (unless holding.ignored_call_number? && !holding.shelved_by_location?
+                                                                       call_number
+                                                                     end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
+                                                                                call_number
+                                                                              end),
+                                                        full_shelfkey: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
+                                                        scheme:
+                                                      })
   end
 end
 

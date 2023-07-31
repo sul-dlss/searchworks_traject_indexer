@@ -21,11 +21,11 @@ class SirsiHolding
                     TECHSHADOW TECH-UNIQ WEST-7B SUPERSEDE WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX'.freeze
 
-  attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag
+  attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag, :course_reserves
 
   # rubocop:disable Metrics/ParameterLists
   def initialize(id: nil, tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '',
-                 barcode: '', public_note: '')
+                 barcode: '', public_note: '', course_reserves: {})
     @id = id
     @call_number = call_number
     @current_location = current_location
@@ -36,6 +36,7 @@ class SirsiHolding
     @barcode = barcode
     @tag = tag
     @public_note = public_note
+    @course_reserves = course_reserves
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -128,6 +129,21 @@ class SirsiHolding
 
   def hash
     @call_number.hash ^ @current_location.hash ^ @home_location.hash ^ @library.hash ^ @scheme.hash ^ @type.hash ^ @barcode.hash
+  end
+
+  def to_item_display_hash
+    current_location = self.current_location
+    current_location = 'ON-ORDER' if on_order? && current_location && !current_location.empty? && home_location != 'ON-ORDER' && home_location != 'INPROCESS'
+
+    {
+      id:,
+      barcode:,
+      library:,
+      home_location:,
+      current_location:,
+      type:,
+      note: public_note
+    }.merge(course_reserves)
   end
 
   private
