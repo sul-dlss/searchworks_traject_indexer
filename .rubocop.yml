@@ -10,6 +10,8 @@ AllCops:
 Layout/LineLength:
   Max: 250
 
+Style/ArgumentsForwarding: # new in 1.1
+  Enabled: false
 Style/MultilineIfModifier:
   Enabled: false
 
@@ -92,8 +94,6 @@ Naming/BlockForwarding: # new in 1.24
 Security/CompoundHash: # new in 1.28
   Enabled: true
 Security/IoMethods: # new in 1.22
-  Enabled: true
-Style/ArgumentsForwarding: # new in 1.1
   Enabled: true
 Style/ArrayIntersect: # new in 1.40
   Enabled: true
