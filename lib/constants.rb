@@ -223,6 +223,7 @@ module Constants
 
   # Stripped from MARC when indexing
   JUNK_TAGS = %w[
+    852 853 863 866 867 868
     901 910 918 923 924 930 935 940 948 949 950 955 960 962 980 981 983 990 993 998
   ]
 end
