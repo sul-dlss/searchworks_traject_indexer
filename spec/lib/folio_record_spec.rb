@@ -454,7 +454,7 @@ RSpec.describe FolioRecord do
         expect(folio_record.sirsi_holdings.first).to have_attributes(
           barcode: '',
           current_location: 'ON-ORDER',
-          home_location: 'ON-ORDER',
+          home_location: 'STACKS',
           library: 'GREEN'
         )
       end

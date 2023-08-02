@@ -143,21 +143,19 @@ class FolioRecord
   def on_order_stub_holdings
     return [] if items.any?
 
-    on_order_only_holdings = holdings.select do |holding|
+    on_order_holdings = holdings.select do |holding|
       items.none? { |item| item['holdingRecordId'] == holding['id'] } && pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
     end
 
-    item_location_codes = on_order_only_holdings.map { |holding| holding.dig('location', 'effectiveLocation', 'code') }.uniq
-
-    item_location_codes.map do |item_location_code|
-      library_code, = LocationsMap.for(item_location_code)
+    on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
+      library_code, home_location_code = LocationsMap.for(holding.dig('location', 'effectiveLocation', 'code'))
 
       SirsiHolding.new(
         barcode: '',
-        call_number: '',
-        scheme: '',
+        call_number: holding['callNumber'],
+        scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         current_location: 'ON-ORDER',
-        home_location: 'ON-ORDER',
+        home_location: home_location_code,
         library: library_code,
         tag: {}
       )
