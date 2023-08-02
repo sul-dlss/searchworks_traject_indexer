@@ -27,7 +27,18 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   let(:marc_url) { "https://searchworks.stanford.edu/view/#{catkey.sub(/^a/, '')}.marcxml" }
 
   let(:marc_record) do
-    MARC::XMLReader.new(StringIO.new(HTTP.get(marc_url).body.to_s)).to_a.first
+    MARC::XMLReader.new(StringIO.new(HTTP.get(marc_url).body.to_s)).to_a.first.tap do |marc_record|
+      fields = marc_record.fields(true)
+      fields.delete_if { |field| folio_migration_junk_tags.include?(field.tag) }
+    end
+  end
+
+  let(:folio_migration_junk_tags) do
+    %w[
+      592 594 597 598 599 695 699 790 791 792 793 890 891 897 898 899 909 911 922 925 926 927 928 930
+      933 934 935 936 937 942 943 944 946 947 948 949 950 951 952 954 955 957 959 960 961 962
+      963 965 966 967 971 975 980 983 984 985 987 988 990 996
+    ]
   end
 
   shared_examples 'records match' do |*flags|
