@@ -452,7 +452,7 @@ RSpec.describe FolioRecord do
 
       it 'creates a stub on-order item' do
         expect(folio_record.sirsi_holdings.first).to have_attributes(
-          barcode: '',
+          barcode: nil,
           current_location: 'ON-ORDER',
           home_location: 'STACKS',
           library: 'GREEN'
