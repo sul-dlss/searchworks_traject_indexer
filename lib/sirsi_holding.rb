@@ -132,7 +132,7 @@ class SirsiHolding
   end
 
   def to_item_display_hash
-    current_location = self.current_location
+    current_location = self.current_location.presence
     current_location = 'ON-ORDER' if on_order? && current_location && !current_location.empty? && home_location != 'ON-ORDER' && home_location != 'INPROCESS'
 
     {
@@ -142,7 +142,7 @@ class SirsiHolding
       home_location:,
       current_location:,
       type:,
-      note: public_note
+      note: public_note.presence
     }.merge(course_reserves)
   end
 

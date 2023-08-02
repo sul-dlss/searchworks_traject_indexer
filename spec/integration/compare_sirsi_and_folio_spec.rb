@@ -71,6 +71,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         'marcxml', # FOLIO records have slightly different MARC records
         'all_search', # FOLIO records have slightly different MARC records
         'item_display', # handled separately because item types are mapped different
+        'item_display_struct',
         'building_location_facet_ssim', # item types are different; internal use only so this is fine.
         'date_cataloged', # Comes out of a 9xx field
         'context_marc_fields_ssim', # different 9xx fields
@@ -84,7 +85,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
 
     let(:unordered_fields) do
       [
-        'item_display', # the order of items is not guaranteed
         'barcode_search',
         'callnum_search',
         'reverse_shelfkey',
@@ -118,28 +118,31 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
                                                                                                           "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
         end
 
-        if sirsi_result['item_display'] || folio_result['item_display']
-          sirsi_item_display_fields = sirsi_result.fetch('item_display', []).map { |item_display| item_display.split('-|-').map(&:strip) }
-          folio_item_display_fields = folio_result.fetch('item_display', []).map { |item_display| item_display.split('-|-').map(&:strip) }
+        if sirsi_result['item_display_struct'] || folio_result['item_display_struct']
+          sirsi_item_display_fields = sirsi_result.fetch('item_display_struct', []).map { |item_display| JSON.parse(item_display) }
+          folio_item_display_fields = folio_result.fetch('item_display_struct', []).map { |item_display| JSON.parse(item_display) }
 
           sirsi_item_display_fields.each do |item_display_parts|
-            folio_display_parts = folio_item_display_fields.find { |item_displays| item_displays[0] == item_display_parts[0] }
+            folio_display_parts = folio_item_display_fields.find { |item_displays| item_displays['barcode'] == item_display_parts['barcode'] }
 
             if folio_display_parts.present?
               # INPROCESS and MISSING can be a location or current location
-              if %w[INPROCESS MISSING].include?(item_display_parts[2])
-                item_display_parts[3] = item_display_parts[2]
-                item_display_parts[2] = folio_display_parts[2]
+              if %w[INPROCESS MISSING].include?(item_display_parts['home_location'])
+                item_display_parts['current_location'] = item_display_parts['home_location'].presence
+                item_display_parts['home_location'] = folio_display_parts['home_location'].presence
               end
               # we're not mapping item types
-              item_display_parts[4] = folio_display_parts[4] = ''
+              item_display_parts['type'] = folio_display_parts['type'] = nil
 
               # The "ASIS" call number type is mapped to "OTHER" in Symphony, but "ALPHANUM" in FOLIO
-              item_display_parts[11] = 'ALPHANUM' if item_display_parts[11] == 'OTHER' && folio_display_parts[11] == 'ALPHANUM'
+              item_display_parts['scheme'] = 'ALPHANUM' if item_display_parts['scheme'] == 'OTHER' && folio_display_parts['scheme'] == 'ALPHANUM'
+
+              # Symphony doesn't have item ids
+              folio_display_parts['id'] = nil
 
               expect(folio_display_parts).to eq item_display_parts
             else
-              expect(folio_display_parts).to be_present, "could not find item with barcode #{item_display_parts[0]} in FOLIO record"
+              expect(folio_display_parts).to be_present, "could not find item with barcode #{item_display_parts['barcode']} in FOLIO record"
             end
           end
         end

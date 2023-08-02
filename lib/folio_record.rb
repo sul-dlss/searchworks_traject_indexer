@@ -91,13 +91,13 @@ class FolioRecord
       SirsiHolding.new(
         id: item['id'],
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
-        current_location: (current_location unless current_location == home_location_code),
+        current_location: (current_location unless current_location == home_location_code).presence,
         home_location: home_location_code,
         library: library_code,
         scheme: call_number_type_map(item.dig('callNumberType', 'name') || item.dig('callNumber', 'typeName')),
         type: item['materialType'],
         barcode: item['barcode'],
-        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),
+        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence,
         tag: item
       )
     end.concat(bound_with_holdings).concat(eresource_holdings).concat(on_order_stub_holdings)
@@ -125,7 +125,7 @@ class FolioRecord
         # parent item's current location or SEE-OTHER (SAL3)
         # For the SAL3 logic, see https://consul.stanford.edu/display/MD/Bound+withs
         # When the bound-with item is in SAL3, both the Home and Current Locations on the child records should always be SEE-OTHER.
-        current_location: library_code == 'SAL3' ? '' : (current_location unless current_location == home_location_code),
+        current_location: library_code == 'SAL3' ? nil : (current_location unless current_location == home_location_code).presence,
         # parent item's permanent location or SEE-OTHER (SAL3)
         home_location: library_code == 'SAL3' ? 'SEE-OTHER' : home_location_code,
         # parent item's library
@@ -151,7 +151,7 @@ class FolioRecord
       library_code, home_location_code = LocationsMap.for(holding.dig('location', 'effectiveLocation', 'code'))
 
       SirsiHolding.new(
-        barcode: '',
+        barcode: nil,
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         current_location: 'ON-ORDER',
