@@ -53,6 +53,10 @@ class FolioClient
         params: { limit: MAX_RESULTS_LIMIT, updatedAfter: updated_after })
   end
 
+  def libraries
+    get_json('/location-units/libraries', params: { limit: 2_147_483_647 }).fetch('loclibs', []).sort_by { |x| x['id'] }
+  end
+
   def items_and_holdings(instance_id:)
     body = {
       instanceIds: [instance_id],
