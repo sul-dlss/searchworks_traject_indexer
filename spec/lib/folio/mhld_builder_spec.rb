@@ -326,6 +326,40 @@ RSpec.describe Folio::MhldBuilder do
 
       it { is_expected.to be_empty }
     end
+
+    context 'with MIGRATE-ERR locations' do
+      let(:holding) do
+        { 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+          'notes' => [],
+          'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'SUL-MIGRATE-ERR',
+              'name' => 'Error during migration',
+              'campusName' => 'Lane',
+              'libraryName' => 'Lane',
+              'institutionName' => 'Stanford University' },
+            'permanentLocation' => {},
+            'temporaryLocation' => {} },
+          'formerIds' => [],
+          'callNumber' => {},
+          'holdingsType' => {},
+          'electronicAccess' => [],
+          'receivingHistory' => { 'entries' => [] },
+          'statisticalCodes' => [],
+          'holdingsStatements' => holdings_statements,
+          'suppressFromDiscovery' => false,
+          'holdingsStatementsForIndexes' => index_statements,
+          'holdingsStatementsForSupplements' => supplement_statements }
+      end
+
+      let(:holdings_statements) do
+        [
+          { 'statement' => 'v.1:no.18(1996:Jan.22)-v.1:no.50(1996:Sept.9),v.2:no.1(1996:Sep.16)-v.21:no.16(2015:Dec.28/2016:Jan.4)' }
+        ]
+      end
+
+      it { is_expected.to be_empty }
+    end
   end
 
   context 'when pieces is present and has no enumeration' do

@@ -31,13 +31,17 @@ module Folio
 
     private
 
-    # Remove suppressed records, electronic records, and records with no holdings statement
+    # Remove suppressed records, electronic records, records that have a location matching *-MIGRATE-ERR and
+    # records with no holdings statement
     def filtered_holdings
       holdings.filter_map do |holding|
         no_holding_statements = (holding.fetch('holdingsStatements') +
                                  holding.fetch('holdingsStatementsForIndexes') +
                                  holding.fetch('holdingsStatementsForSupplements')).compact.empty?
-        next if no_holding_statements || holding['suppressFromDiscovery'] || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Electronic'
+        next if no_holding_statements || holding['suppressFromDiscovery'] ||
+                (holding.dig('holdingsType', 'name') ||
+                 holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Electronic' ||
+                holding.dig('location', 'effectiveLocation', 'code').end_with?('MIGRATE-ERR')
 
         note = holding.fetch('holdingsStatements').compact.find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
 
