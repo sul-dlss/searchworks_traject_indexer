@@ -183,7 +183,9 @@ module Traject
                                     ELSE
                                        '[]'::jsonb
                                     END,
-                'administrativeNotes', '[]'::jsonb
+                'administrativeNotes', '[]'::jsonb,
+                'notes', COALESCE((SELECT jsonb_agg(e) FROM jsonb_array_elements(vi.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb)
+
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
