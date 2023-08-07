@@ -144,7 +144,7 @@ class FolioRecord
     return [] if items.any?
 
     on_order_holdings = holdings.select do |holding|
-      items.none? { |item| item['holdingRecordId'] == holding['id'] } && pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
+      pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
     end
 
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
