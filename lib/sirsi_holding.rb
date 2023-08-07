@@ -149,7 +149,7 @@ class SirsiHolding
   private
 
   # Call number normalization ported from solrmarc code
-  def normalize_call_number(call_number = '')
+  def normalize_call_number(call_number)
     return call_number unless %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
 
     call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
@@ -169,6 +169,7 @@ class SirsiHolding
 
     attr_reader :call_number
 
+    # NOTE: call_number may be nil (when used for an on-order item)
     def initialize(call_number)
       @call_number = call_number
     end
@@ -182,11 +183,11 @@ class SirsiHolding
     end
 
     def dewey?
-      call_number.match?(VALID_DEWEY_REGEX)
+      call_number&.match?(VALID_DEWEY_REGEX)
     end
 
     def valid_lc?
-      call_number.match?(VALID_LC_REGEX)
+      call_number&.match?(VALID_LC_REGEX)
     end
 
     def with_leading_zeros
