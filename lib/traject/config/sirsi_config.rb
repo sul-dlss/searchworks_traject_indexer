@@ -566,7 +566,7 @@ to_field 'geographic_facet' do |record, accumulator|
   accumulator.map! { |v| v.gsub(/([A-Za-z0-9]{2}|\))[\\,;.]\.?\s*$/, '\1') }
 end
 
-to_field 'era_facet', extract_marc('650y:651y', alternate_script: false) do |_record, accumulator|
+to_field 'era_facet', extract_marc('650y:651y:660y:661y', alternate_script: false) do |_record, accumulator|
   accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.map! { |v| trim_punctuation_custom(v, /([A-Za-z0-9]{2})\. *\Z/) }
 end
