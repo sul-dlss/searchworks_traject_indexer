@@ -87,6 +87,19 @@ class FolioRecord
       _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
       current_location ||= Folio::StatusCurrentLocation.new(item).current_location
 
+      # NOTE: we don't handle multiple courses for a single item, because it's beyond parity with how things worked for Symphony
+      course = courses.first { |course| course[:listing_id] == item['courseListingId'] }
+
+      # We use loan types as loan periods for course reserves so that we don't need to check circ rules
+      # Items on reserve in FOLIO usually have a temporary loan type that indicates the loan period
+      # "3-day reserve" -> "3-day loan"
+      course_reserves = {}
+      course_reserves = {
+        reserve_desk: course[:reserve_desk],
+        course_id: course[:course_id],
+        loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
+      } if course
+
       SirsiHolding.new(
         id: item['id'],
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
@@ -96,7 +109,8 @@ class FolioRecord
         scheme: call_number_type_map(item.dig('callNumberType', 'name') || item.dig('callNumber', 'typeName')),
         type: item['materialType'],
         barcode: item['barcode'],
-        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence
+        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence,
+        course_reserves:
       )
     end.concat(bound_with_holdings).concat(eresource_holdings).concat(on_order_stub_holdings)
   end
@@ -232,7 +246,9 @@ class FolioRecord
       {
         course_name: course['name'],
         course_id: course['courseNumber'],
-        instructors: course['instructorObjects'].pluck('name')
+        instructors: course['instructorObjects'].pluck('name'),
+        listing_id: course['courseListingId'],
+        reserve_desk: course.dig('location', 'code')
       }
     end
   end

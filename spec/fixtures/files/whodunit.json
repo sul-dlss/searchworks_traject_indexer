@@ -8,56 +8,8 @@
       ],
       "status": "Available",
       "barcode": "36105232609540",
+      "request": null,
       "_version": 1,
-      "location": {
-        "effectiveLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "permanentLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
-      },
       "metadata": {
         "createdDate": "2023-05-07T16:08:35.666Z",
         "updatedDate": "2023-05-07T16:08:35.666Z",
@@ -84,6 +36,7 @@
       },
       "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
       "numberOfPieces": "1",
+      "courseListingId": "97722041-31e7-4830-be5c-5a686783ca2c",
       "circulationNotes": [
 
       ],
@@ -93,7 +46,7 @@
       "holdingsRecordId": "d1125a4f-0cbd-5a4a-a248-d6ef47f67e78",
       "itemDamagedStatus": null,
       "permanentLoanType": "Can circulate",
-      "temporaryLoanType": null,
+      "temporaryLoanType": "2-hour reserve",
       "statisticalCodeIds": [
 
       ],
@@ -108,22 +61,12 @@
       "effectiveCallNumberComponents": {
         "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
         "callNumber": "HV6533 .H3 W55 2022"
-      }
-    },
-    {
-      "id": "c5f7c564-2d33-51b7-9198-daf18cf3247a",
-      "hrid": "ai14238203_2_5",
-      "notes": [
-
-      ],
-      "status": "Aged to lost",
-      "barcode": "36105232530696",
-      "_version": 3,
+      },
       "location": {
         "effectiveLocation": {
           "id": "4573e824-9273-4f13-972f-cff7bf504217",
           "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
+          "name": "Stacks",
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
             "code": "SUL",
@@ -134,7 +77,7 @@
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
             "code": "GREEN",
-            "name": "Cecil H. Green"
+            "name": "Green Library"
           },
           "isActive": true,
           "institution": {
@@ -146,7 +89,7 @@
         "permanentLocation": {
           "id": "4573e824-9273-4f13-972f-cff7bf504217",
           "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
+          "name": "Stacks",
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
             "code": "SUL",
@@ -157,7 +100,7 @@
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
             "code": "GREEN",
-            "name": "Cecil H. Green"
+            "name": "Green Library"
           },
           "isActive": true,
           "institution": {
@@ -165,9 +108,19 @@
             "code": "SU",
             "name": "Stanford University"
           }
-        },
-        "temporaryLocation": null
-      },
+        }
+      }
+    },
+    {
+      "id": "c5f7c564-2d33-51b7-9198-daf18cf3247a",
+      "hrid": "ai14238203_2_5",
+      "notes": [
+
+      ],
+      "status": "Aged to lost",
+      "barcode": "36105232530696",
+      "request": null,
+      "_version": 3,
       "metadata": {
         "createdDate": "2023-05-07T16:08:35.666Z",
         "updatedDate": "2023-07-08T07:52:04.936Z",
@@ -193,6 +146,7 @@
       },
       "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
       "numberOfPieces": "1",
+      "courseListingId": null,
       "circulationNotes": [
 
       ],
@@ -217,6 +171,54 @@
       "effectiveCallNumberComponents": {
         "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
         "callNumber": "HV6533 .H3 W55 2022"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
       }
     },
     {
@@ -227,54 +229,8 @@
       ],
       "status": "Available",
       "barcode": "36105232609045",
+      "request": null,
       "_version": 1,
-      "location": {
-        "effectiveLocation": {
-          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
-          "code": "GRE-BENDER",
-          "name": "Green Library Bender Room",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": null,
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "permanentLocation": {
-          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
-          "code": "GRE-BENDER",
-          "name": "Green Library Bender Room",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": null,
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
-      },
       "metadata": {
         "createdDate": "2023-05-07T16:08:35.666Z",
         "updatedDate": "2023-05-07T16:08:35.666Z",
@@ -301,6 +257,7 @@
       },
       "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
       "numberOfPieces": "1",
+      "courseListingId": null,
       "circulationNotes": [
 
       ],
@@ -325,6 +282,54 @@
       "effectiveCallNumberComponents": {
         "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
         "callNumber": "HV6533 .H3 W55 2022"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
+          "code": "GRE-BENDER",
+          "name": "Bender room",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
+          "code": "GRE-BENDER",
+          "name": "Bender room",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
       }
     },
     {
@@ -335,56 +340,8 @@
       ],
       "status": "Aged to lost",
       "barcode": "36105232609557",
+      "request": null,
       "_version": 5,
-      "location": {
-        "effectiveLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "permanentLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
-      },
       "metadata": {
         "createdDate": "2023-05-07T16:08:35.666Z",
         "updatedDate": "2023-07-08T09:13:33.743Z",
@@ -415,6 +372,7 @@
       },
       "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
       "numberOfPieces": "1",
+      "courseListingId": null,
       "circulationNotes": [
 
       ],
@@ -439,6 +397,54 @@
       "effectiveCallNumberComponents": {
         "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
         "callNumber": "HV6533 .H3 W55 2022"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
       }
     }
   ],
@@ -449,6 +455,7 @@
     {
       "id": "62724c26-182a-4455-8cde-056b3a28ab93",
       "name": "Stanford and Its Worlds: 1885-present",
+      "locationId": "4a911835-3488-4d26-9293-bdc625c9afce",
       "courseNumber": "HISTORY-58E-01",
       "courseListingId": "97722041-31e7-4830-be5c-5a686783ca2c",
       "instructorObjects": [
@@ -478,11 +485,35 @@
           },
           "courseListingId": "97722041-31e7-4830-be5c-5a686783ca2c"
         }
-      ]
+      ],
+      "location": {
+        "id": "4a911835-3488-4d26-9293-bdc625c9afce",
+        "code": "GRE-CRES",
+        "name": "On reserve: Ask at circulation desk",
+        "campus": {
+          "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+          "code": "SUL",
+          "name": "Stanford Libraries"
+        },
+        "details": {
+        },
+        "library": {
+          "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+          "code": "GREEN",
+          "name": "Green Library"
+        },
+        "isActive": true,
+        "institution": {
+          "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+          "code": "SU",
+          "name": "Stanford University"
+        }
+      }
     },
     {
       "id": "b1cb64b7-7c55-4375-87ad-c04470aea283",
       "name": "Stanford and Its Worlds: 1885-present",
+      "locationId": "4a911835-3488-4d26-9293-bdc625c9afce",
       "courseNumber": "EDUC-147-01",
       "courseListingId": "97722041-31e7-4830-be5c-5a686783ca2c",
       "instructorObjects": [
@@ -512,7 +543,30 @@
           },
           "courseListingId": "97722041-31e7-4830-be5c-5a686783ca2c"
         }
-      ]
+      ],
+      "location": {
+        "id": "4a911835-3488-4d26-9293-bdc625c9afce",
+        "code": "GRE-CRES",
+        "name": "On reserve: Ask at circulation desk",
+        "campus": {
+          "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+          "code": "SUL",
+          "name": "Stanford Libraries"
+        },
+        "details": {
+        },
+        "library": {
+          "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+          "code": "GREEN",
+          "name": "Green Library"
+        },
+        "isActive": true,
+        "institution": {
+          "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+          "code": "SU",
+          "name": "Stanford University"
+        }
+      }
     }
   ],
   "holdings": [
@@ -523,55 +577,6 @@
 
       ],
       "_version": 1,
-      "location": {
-        "effectiveLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "permanentLocation": {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "code": "GRE-STACKS",
-          "name": "Green Library Stacks",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL",
-            "name": "Stanford Libraries"
-          },
-          "details": {
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN",
-            "name": "Cecil H. Green"
-          },
-          "isActive": true,
-          "institution": {
-            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-            "code": "SU",
-            "name": "Stanford University"
-          }
-        },
-        "temporaryLocation": null
-      },
       "metadata": {
         "createdDate": "2023-05-07T16:01:11.347Z",
         "updatedDate": "2023-05-07T16:01:11.347Z",
@@ -579,6 +584,7 @@
         "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
       },
       "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "boundWith": null,
       "formerIds": [
 
       ],
@@ -623,30 +629,23 @@
       ],
       "holdingsStatementsForSupplements": [
 
-      ]
-    },
-    {
-      "id": "dd7980cc-7c74-58e5-a361-a5c727783f66",
-      "hrid": "ah14238203_1",
-      "notes": [
-
       ],
-      "_version": 1,
       "location": {
         "effectiveLocation": {
-          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
-          "code": "GRE-BENDER",
-          "name": "Green Library Bender Room",
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Stacks",
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
             "code": "SUL",
             "name": "Stanford Libraries"
           },
-          "details": null,
+          "details": {
+          },
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
             "code": "GREEN",
-            "name": "Cecil H. Green"
+            "name": "Green Library"
           },
           "isActive": true,
           "institution": {
@@ -656,19 +655,20 @@
           }
         },
         "permanentLocation": {
-          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
-          "code": "GRE-BENDER",
-          "name": "Green Library Bender Room",
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "code": "GRE-STACKS",
+          "name": "Stacks",
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
             "code": "SUL",
             "name": "Stanford Libraries"
           },
-          "details": null,
+          "details": {
+          },
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
             "code": "GREEN",
-            "name": "Cecil H. Green"
+            "name": "Green Library"
           },
           "isActive": true,
           "institution": {
@@ -676,9 +676,16 @@
             "code": "SU",
             "name": "Stanford University"
           }
-        },
-        "temporaryLocation": null
-      },
+        }
+      }
+    },
+    {
+      "id": "dd7980cc-7c74-58e5-a361-a5c727783f66",
+      "hrid": "ah14238203_1",
+      "notes": [
+
+      ],
+      "_version": 1,
       "metadata": {
         "createdDate": "2023-05-07T16:01:11.347Z",
         "updatedDate": "2023-05-07T16:01:11.347Z",
@@ -686,6 +693,7 @@
         "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
       },
       "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "boundWith": null,
       "formerIds": [
 
       ],
@@ -730,7 +738,55 @@
       ],
       "holdingsStatementsForSupplements": [
 
-      ]
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
+          "code": "GRE-BENDER",
+          "name": "Bender room",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "1af90de1-a5c0-4c46-bab1-2847d041f997",
+          "code": "GRE-BENDER",
+          "name": "Bender room",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN",
+            "name": "Green Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
     }
   ],
   "instance": {
@@ -882,7 +938,7 @@
 
     ],
     "administrativeNotes": [
-      "MONORECUnit/13 June 2022/nwy"
+
     ],
     "physicalDescriptions": [
       "xviii, 362 pages, 8 unnumbered pages of plates : illustrations ; 24 cm"
@@ -1875,9 +1931,6 @@
       ],
       "leader": "06880cam a22007578i 4500"
     }
-  ],
-  "boundWithParents": [
-
   ],
   "holdingSummaries": [
     {

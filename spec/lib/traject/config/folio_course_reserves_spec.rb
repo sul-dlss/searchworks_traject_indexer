@@ -34,4 +34,18 @@ RSpec.describe 'FOLIO course reserves config' do
       'EDUC-147-01 -|- Stanford and Its Worlds: 1885-present -|- Mitchell Stevens'
     ]
   end
+
+  describe 'the items in the item_display_struct field' do
+    # Filter to the item that's on reserve so we can check its item_display
+    subject(:item_display) do
+      item_displays = result['item_display_struct'].map { |item| JSON.parse(item) }
+      item_displays.find { |item| item['barcode'] == '36105232609540' }
+    end
+
+    it 'adds the course ID, reserve desk, and loan period' do
+      expect(item_display).to include('course_id' => 'HISTORY-58E-01',
+                                      'reserve_desk' => 'GRE-CRES',
+                                      'loan_period' => '2-hour loan')
+    end
+  end
 end
