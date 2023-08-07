@@ -39,10 +39,10 @@ each_record do |record, context|
   end
 end
 
+load_config_file(File.expand_path('sirsi_config.rb', __dir__))
+
 # Disable Sirsi reserves lookup from file in favor of FOLIO data
 def reserves_lookup = {}
-
-load_config_file(File.expand_path('sirsi_config.rb', __dir__))
 
 # Skip records that only have suppressed items
 each_record do |record, context|
