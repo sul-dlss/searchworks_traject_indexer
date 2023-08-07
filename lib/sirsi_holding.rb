@@ -24,8 +24,8 @@ class SirsiHolding
   attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag, :course_reserves
 
   # rubocop:disable Metrics/ParameterLists
-  def initialize(id: nil, tag: nil, call_number: '', current_location: '', home_location: '', library: '', scheme: '', type: '',
-                 barcode: '', public_note: '', course_reserves: {})
+  def initialize(tag:, call_number:, home_location:, library:, barcode:, scheme: nil, current_location: nil,
+                 id: nil, type: nil, public_note: nil, course_reserves: {})
     @id = id
     @call_number = call_number
     @current_location = current_location
