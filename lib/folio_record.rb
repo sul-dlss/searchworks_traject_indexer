@@ -82,7 +82,6 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       item_location_code = item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= holding.dig('location', 'effectiveLocation', 'code')
-      next if item_location_code&.end_with? 'MIGRATE-ERR'
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
@@ -184,7 +183,10 @@ class FolioRecord
   end
 
   def items
-    @items ||= load('items').reject { |item| item['suppressFromDiscovery'] }
+    @items ||= load('items').reject do |item|
+      loc = item.dig('location', 'permanentLocation', 'code')
+      item['suppressFromDiscovery'] || loc&.end_with?('MIGRATE-ERR')
+    end
   end
 
   def items_all_suppressed?
@@ -192,7 +194,10 @@ class FolioRecord
   end
 
   def holdings
-    @holdings ||= load('holdings').reject { |item| item['suppressFromDiscovery'] }
+    @holdings ||= load('holdings').reject do |holding|
+      loc = holding.dig('location', 'effectiveLocation', 'code')
+      holding['suppressFromDiscovery'] || loc&.end_with?('MIGRATE-ERR')
+    end
   end
 
   def holding_summaries
