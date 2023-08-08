@@ -7,7 +7,7 @@ RSpec.describe SirsiHolding do
     subject { holding.bad_lc_lane_call_number? }
 
     context 'when called on a holding without a call number' do
-      let(:holding) { described_class.new(call_number: nil) }
+      let(:holding) { described_class.new(call_number: nil, library: nil, home_location: nil, barcode: nil) }
       it { is_expected.to be false }
     end
   end
