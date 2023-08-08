@@ -24,7 +24,7 @@ class SirsiHolding
   attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :tag, :course_reserves
 
   # rubocop:disable Metrics/ParameterLists
-  def initialize(tag:, call_number:, home_location:, library:, barcode:, scheme: nil, current_location: nil,
+  def initialize(call_number:, home_location:, library:, barcode:, tag: nil, scheme: nil, current_location: nil,
                  id: nil, type: nil, public_note: nil, course_reserves: {})
     @id = id
     @call_number = call_number
@@ -150,7 +150,7 @@ class SirsiHolding
 
   # Call number normalization ported from solrmarc code
   def normalize_call_number(call_number)
-    return call_number unless %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
+    return call_number unless call_number && %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
 
     call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     call_number = call_number.gsub('. .', ' .') # reduce double periods to a single period
@@ -211,6 +211,8 @@ class SirsiHolding
     end
 
     def normalized_lc
+      return unless call_number
+
       call_number.gsub(/\s\s+/, ' ') # change all multiple whitespace chars to a single space
                  .gsub(/\s?\.\s?/, '.') # remove a space before or after a period
                  .gsub(/^([A-Z][A-Z]?[A-Z]?) ([0-9])/, '\1\2') # remove space between class letters and digits
