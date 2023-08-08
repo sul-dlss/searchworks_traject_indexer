@@ -61,6 +61,69 @@ RSpec.describe FolioRecord do
                                                                          ])
       end
     end
+
+    context 'when deriving from the instance record' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d',
+            'title' => 'The title',
+            'identifiers' => [
+              { 'value' => 'garbage' },
+              { 'value' => '(OCoLC-M)948533645' },
+              { 'value' => 'sn2021236856' },
+              { 'value' => '   68038902 //r84' },
+              { 'value' => '2381-5868' },
+              { 'value' => '1485631076 (paperback)' },
+              { 'value' => '9781485631071 (paperback)' }
+            ],
+            'languages' => [],
+            'contributors' => [],
+            'editions' => [],
+            'publication' => [],
+            'physicalDescriptions' => [],
+            'publicationFrequency' => [],
+            'publicationRange' => [],
+            'notes' => [],
+            'series' => [],
+            'subjects' => [],
+            'electronicAccess' => []
+          },
+          'holdings' => [],
+          'source_record' => []
+        }
+      end
+
+      it 'derives the ISBN from the identifiers' do
+        expect(folio_record.marc_record.fields('020').first.subfields).to match_array(
+          [have_attributes(code: 'a', value: '1485631076 (paperback)')]
+        )
+        expect(folio_record.marc_record.fields('020').last.subfields).to match_array(
+          [have_attributes(code: 'a', value: '9781485631071 (paperback)')]
+        )
+      end
+
+      it 'derives the LCCN from the identifiers' do
+        expect(folio_record.marc_record.fields('010').first.subfields).to match_array(
+          [have_attributes(code: 'a', value: 'sn2021236856')]
+        )
+        expect(folio_record.marc_record.fields('010').last.subfields).to match_array(
+          [have_attributes(code: 'a', value: '   68038902 //r84')]
+        )
+      end
+
+      it 'derives the ISSN from the identifiers' do
+        expect(folio_record.marc_record['022'].subfields).to match_array(
+          [have_attributes(code: 'a', value: '2381-5868')]
+        )
+      end
+
+      it 'derives the OCLC number from the identifiers' do
+        expect(folio_record.marc_record['035'].subfields).to match_array(
+          [have_attributes(code: 'a', value: '(OCoLC-M)948533645')]
+        )
+      end
+    end
   end
 
   describe 'the 590 field' do
