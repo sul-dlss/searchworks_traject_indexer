@@ -12,6 +12,16 @@ RSpec.describe SirsiHolding do
     end
   end
 
+  describe '#call_number' do
+    context 'with a nil call number' do
+      let(:holding) { described_class.new(call_number: nil, scheme: 'LC', library: nil, home_location: nil, barcode: nil) }
+
+      it 'returns an empty string' do
+        expect(holding.call_number.to_s).to be_blank
+      end
+    end
+  end
+
   describe SirsiHolding::CallNumber do
     describe '#dewey?' do
       it { expect(described_class.new('012.12 .W123')).to be_dewey }
