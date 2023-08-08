@@ -34,10 +34,10 @@ module Folio
         SirsiHolding.new(
           call_number: item['a'],
           barcode: item['i'],
+          current_location: item['k'],
           home_location: item['l'],
           library: item['m'],
-          type: item['t'],
-          tag: item
+          type: item['t']
         )
       end
     end
