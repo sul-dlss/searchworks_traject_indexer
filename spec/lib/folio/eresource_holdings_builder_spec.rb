@@ -48,7 +48,6 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   it { expect(holdings.first.library).to eq 'SUL' }
   it { expect(holdings.first.type).to eq 'ONLINE' }
   it { expect(holdings.first.barcode).to eq '12451243-1001' }
-  it { expect(holdings.first.tag).to be_a MARC::DataField }
 
   context 'record does not have any fulltext links (but does have an 856/956)' do
     let(:source_record_json) do

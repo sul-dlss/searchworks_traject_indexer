@@ -96,8 +96,7 @@ class FolioRecord
         scheme: call_number_type_map(item.dig('callNumberType', 'name') || item.dig('callNumber', 'typeName')),
         type: item['materialType'],
         barcode: item['barcode'],
-        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence,
-        tag: item
+        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence
       )
     end.concat(bound_with_holdings).concat(eresource_holdings).concat(on_order_stub_holdings)
   end
@@ -118,7 +117,6 @@ class FolioRecord
         id: parent_item['id'],
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
-        tag: {},
         # parent item's barcode
         barcode: parent_item['barcode'],
         # parent item's current location or SEE-OTHER (SAL3)
@@ -155,8 +153,7 @@ class FolioRecord
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         current_location: 'ON-ORDER',
         home_location: home_location_code,
-        library: library_code,
-        tag: {}
+        library: library_code
       )
     end
   end

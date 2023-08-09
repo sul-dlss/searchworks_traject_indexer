@@ -967,13 +967,11 @@ to_field 'access_facet' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
 
-    field = holding.tag
-
-    if online_locs.include?(field['k']) || online_locs.include?(field['l']) || holding.e_call_number?
+    if online_locs.include?(holding.current_location) || online_locs.include?(holding.home_location) || holding.e_call_number?
       accumulator << 'Online'
-    elsif field['a'] =~ /^XX/ && (field['k'] == 'ON-ORDER' || (!field['k'].nil? && !field['k'].empty? && (on_order_ignore_locs & [
-      field['k'], field['l']
-    ]).empty? && field['m'] != 'HV-ARCHIVE'))
+    elsif holding.call_number.call_number =~ /^XX/ && (holding.current_location == 'ON-ORDER' || (!holding.current_location.nil? && !holding.current_location.empty? && (on_order_ignore_locs & [
+      holding.current_location, holding.home_location
+    ]).empty? && holding.library != 'HV-ARCHIVE'))
       accumulator << 'On order'
     else
       accumulator << 'At the Library'
@@ -1816,8 +1814,7 @@ def holdings(record, context)
         scheme: item['w'],
         type: item['t'],
         barcode: item['i'],
-        public_note: (item['o'] if item['o']&.start_with?(/\.PUBLIC\./i)),
-        tag: item
+        public_note: (item['o'] if item['o']&.start_with?(/\.PUBLIC\./i))
       )
     end
     holdings
