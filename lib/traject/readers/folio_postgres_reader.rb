@@ -150,6 +150,10 @@ module Traject
               } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
             end
 
+            data['courses'].each do |course|
+              course['location'] = locations[course['locationId']]
+            end
+
             yield FolioRecord.new(data)
           end
         end
@@ -216,7 +220,8 @@ module Traject
                         'status', request.jsonb ->> 'status',
                         'pickupServicePointId', request.jsonb ->> 'pickupServicePointId'
                       )
-                    END
+                    END,
+                    'courseListingId', cl.id
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -285,7 +290,8 @@ module Traject
                     'name', cc.jsonb ->> 'name',
                     'courseNumber', cc.jsonb ->> 'courseNumber',
                     'courseListingId', cc.jsonb ->> 'courseListingId',
-                    'instructorObjects', cl.jsonb #> '{instructorObjects}'
+                    'instructorObjects', cl.jsonb #> '{instructorObjects}',
+                    'locationId', cl.jsonb ->> 'locationId'
                   )
                 ) FILTER (WHERE cc.id IS NOT NULL),
               '[]'::jsonb)
