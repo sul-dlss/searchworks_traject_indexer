@@ -273,12 +273,33 @@ class FolioRecord
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def instance_derived_marc_record
     MARC::Record.new.tap do |marc|
       marc.append(MARC::ControlField.new('001', hrid))
       # mode of issuance
       # identifiers
+      record.dig('instance', 'identifiers').each do |identifier|
+        id_value = identifier['value']
+
+        case id_value
+        # LCCN
+        when /^([ a-z]{3}\d{8} |[ a-z]{2}\d{10})/
+          field = MARC::DataField.new('010', ' ', ' ', ['a', id_value])
+        # ISBN
+        when /^\d{9}[\dX].*/, /^\d{12}[\dX].*/
+          field = MARC::DataField.new('020', ' ', ' ', ['a', id_value])
+        # ISSN
+        when /^\d{4}-\d{3}[X\d]\D*$/
+          field = MARC::DataField.new('022', ' ', ' ', ['a', id_value])
+        # OCLC
+        when /^\(OCoLC.*/
+          field = MARC::DataField.new('035', ' ', ' ', ['a', id_value])
+        end
+
+        marc.append(field) if field
+      end
+
       record.dig('instance', 'languages').each do |l|
         marc.append(MARC::DataField.new('041', ' ', ' ', ['a', l]))
       end
@@ -341,7 +362,7 @@ class FolioRecord
       # date updated
     end.to_hash
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def folio_electronic_access_marc_field(eresource)
     ind2 = case eresource['name']
