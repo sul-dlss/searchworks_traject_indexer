@@ -10,8 +10,21 @@ module Folio
         # mode of issuance
         # identifiers
         instance['identifiers'].each do |identifier|
-          field = MarcIdentifierMapper.for(identifier['value'])
-          marc.append(field) if field
+          case id_value
+          # LCCN
+          when /^([ a-z]{3}\d{8} |[ a-z]{2}\d{10})/
+            marc.append(MARC::DataField.new('010', ' ', ' ', ['a', id_value]))
+            build_data_field('010', id_value)
+          # ISBN
+          when /^\d{9}[\dX].*/, /^\d{12}[\dX].*/
+            marc.append(MARC::DataField.new('020', ' ', ' ', ['a', id_value]))
+          # ISSN
+          when /^\d{4}-\d{3}[X\d]\D*$/
+            marc.append(MARC::DataField.new('022', ' ', ' ', ['a', id_value]))
+          # OCLC
+          when /^\(OCoLC.*/
+            marc.append(MARC::DataField.new('035', ' ', ' ', ['a', id_value]))
+          end
         end
 
         instance['languages'].each do |l|
@@ -63,11 +76,37 @@ module Folio
 
         # 856 stuff
         instance['electronicAccess']&.each do |eresource|
-          marc.append(MarcElectronicAccess.build(eresource))
+          ind2 = case eresource['name']
+                when 'Resource'
+                  '0'
+                when 'Version of resource'
+                  '1'
+                when 'Related resource'
+                  '2'
+                when 'No display constant generated'
+                  '8'
+                else
+                  ''
+                end
+
+          marc.append(MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']]))
         end
 
         holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
-          marc.append(MarcElectronicAccess.build(eresource))
+          ind2 = case eresource['name']
+                when 'Resource'
+                  '0'
+                when 'Version of resource'
+                  '1'
+                when 'Related resource'
+                  '2'
+                when 'No display constant generated'
+                  '8'
+                else
+                  ''
+                end
+
+          marc.append(MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']]))
         end
 
         # nature of content

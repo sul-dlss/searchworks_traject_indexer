@@ -19,7 +19,20 @@ module Folio
         record.fields.delete_if { |field| field.tag == '856' }
 
         eholdings.each do |eresource|
-          record.append(MarcElectronicAccess.build(eresource))
+          ind2 = case eresource['name']
+            when 'Resource'
+              '0'
+            when 'Version of resource'
+              '1'
+            when 'Related resource'
+              '2'
+            when 'No display constant generated'
+              '8'
+            else
+              ''
+            end
+
+          record.append(MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']]))
         end
       end
 
