@@ -42,10 +42,10 @@ every '*/5 * * * *', roles: [:prod] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres.sh', traject_env: 'folio_prod'
 end
 
-every '0 3 [1-7] * 0', roles: [:stage] do
+every '0 3 1-7 * 0', roles: [:stage] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres_full.sh', traject_env: 'folio_test'
 end
 
-every '0 3 [8-14] * 0', roles: [:prod] do
+every '0 3 8-14 * 0', roles: [:prod] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres_full.sh', traject_env: 'folio_prod'
 end
