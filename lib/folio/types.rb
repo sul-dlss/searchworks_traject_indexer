@@ -3,7 +3,7 @@
 module Folio
   class Types
     class << self
-      delegate :libraries, to: :instance
+      delegate :library_store, to: :instance
     end
 
     def self.instance
@@ -25,11 +25,11 @@ module Folio
       end
     end
 
-    def libraries
-      @libraries ||= get_type('libraries').index_by { |p| p['id'] }
+    def library_store
+      @library_store ||= LibraryStore.new(load_cache('libraries'))
     end
 
-    def get_type(type)
+    def load_cache(type)
       raise "Unknown type #{type}" unless types_of_interest.include?(type.to_s)
 
       file = cache_dir.join("#{type}.json")
