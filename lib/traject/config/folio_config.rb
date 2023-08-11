@@ -118,6 +118,7 @@ def call_number_for_holding(record, holding, context)
 end
 # rubocop:enable Metrics/MethodLength
 
+# This overrides the method in sirsi_config.rb to provide holdings derived from Folio data
 def holdings(record, context)
   context.clipboard[:holdings] ||= record.sirsi_holdings
 end

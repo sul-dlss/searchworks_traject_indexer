@@ -188,3 +188,13 @@ export DATABASE_URL=postgres://[user]:[password]@localhost/okapi
 ```sh
 ./script/download_folio_record.rb a123456 > record.json
 ```
+
+#### Synching data
+##### Libraries
+If the name of a library in Folio has changed, you'll want to export the list of libraries with their labels and check it in here.  You can do this with the Rake command
+
+```shell
+OKAPI_URL="URL_HERE" bin/rake folio:update_types_cache
+```
+
+Then you'll want to reindex everything so as to avoid libaries who's labels have changed from showing both versions of the label in the `building_facet` in Searchworks.
