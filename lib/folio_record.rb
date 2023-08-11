@@ -41,40 +41,7 @@ class FolioRecord
   # to create parity with the data contained in the Symphony record.
   # @return [MARC::Record]
   def marc_record
-    @marc_record ||= begin
-      record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
-
-      record.fields.each do |field|
-        next unless field.respond_to? :subfields
-
-        field.subfields.delete_if { |subfield| subfield.code == '0' && subfield.value.start_with?('(SIRSI)') }
-      end
-
-      # Copy FOLIO Holdings electronic access data to an 856 (used by Lane)
-      # overwriting any existing 856 fields (to avoid having to reconcile/merge data)
-      eholdings = holdings.flat_map { |h| h['electronicAccess'] }
-
-      if eholdings.any?
-        record.fields.delete_if { |field| field.tag == '856' }
-
-        eholdings.each do |eresource|
-          record.append(folio_electronic_access_marc_field(eresource))
-        end
-      end
-
-      # Copy bound-with holdings to the 590 field, if one isn't already present:
-      # if 590 with Bound-with related subfields are present, return the record as is
-      unless record.fields('590').any? { |f| f['a'] && f['c'] }
-        # if 590 or one of its Bound-with related subfields is missing, and FOLIO says this record is Bound-with, append the relevant data from FOLIO
-        holdings.select { |holding| holding['boundWith'].present? }.each do |holding|
-          field590 = MARC::DataField.new('590', ' ', ' ')
-          field590.subfields << MARC::Subfield.new('a', "#{holding['callNumber']} bound with #{holding.dig('boundWith', 'instance', 'title')}")
-          field590.subfields << MARC::Subfield.new('c', "#{holding.dig('boundWith', 'instance', 'hrid')} (parent record)")
-          record.append(field590)
-        end
-      end
-      record
-    end
+    @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, holdings, instance)
   end
 
   def sirsi_holdings
@@ -273,112 +240,8 @@ class FolioRecord
     end
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def instance_derived_marc_record
-    MARC::Record.new.tap do |marc|
-      marc.append(MARC::ControlField.new('001', hrid))
-      # mode of issuance
-      # identifiers
-      record.dig('instance', 'identifiers').each do |identifier|
-        id_value = identifier['value']
-
-        case id_value
-        # LCCN
-        when /^([ a-z]{3}\d{8} |[ a-z]{2}\d{10})/
-          field = MARC::DataField.new('010', ' ', ' ', ['a', id_value])
-        # ISBN
-        when /^\d{9}[\dX].*/, /^\d{12}[\dX].*/
-          field = MARC::DataField.new('020', ' ', ' ', ['a', id_value])
-        # ISSN
-        when /^\d{4}-\d{3}[X\d]\D*$/
-          field = MARC::DataField.new('022', ' ', ' ', ['a', id_value])
-        # OCLC
-        when /^\(OCoLC.*/
-          field = MARC::DataField.new('035', ' ', ' ', ['a', id_value])
-        end
-
-        marc.append(field) if field
-      end
-
-      record.dig('instance', 'languages').each do |l|
-        marc.append(MARC::DataField.new('041', ' ', ' ', ['a', l]))
-      end
-
-      record.dig('instance', 'contributors').each do |contrib|
-        # personal name: 100/700
-        field = MARC::DataField.new(contrib['primary'] ? '100' : '700', '1', '')
-        # corp. name: 110/710, ind1: 2
-        # meeting name: 111/711, ind1: 2
-        field.append(MARC::Subfield.new('a', contrib['name']))
-
-        marc.append(field)
-      end
-
-      marc.append(MARC::DataField.new('245', '0', '0', ['a', record.dig('instance', 'title')]))
-
-      # alt titles
-      record.dig('instance', 'editions').each do |edition|
-        marc.append(MARC::DataField.new('250', '0', '', ['a', edition]))
-      end
-      # instanceTypeId
-      record.dig('instance', 'publication').each do |pub|
-        field = MARC::DataField.new('264', '0', '0')
-        field.append(MARC::Subfield.new('a', pub['place'])) if pub['place']
-        field.append(MARC::Subfield.new('b', pub['publisher'])) if pub['publisher']
-        field.append(MARC::Subfield.new('c', pub['dateOfPublication'])) if pub['dateOfPublication']
-        marc.append(field)
-      end
-      record.dig('instance', 'physicalDescriptions').each do |desc|
-        marc.append(MARC::DataField.new('300', '0', '0', ['a', desc]))
-      end
-      record.dig('instance', 'publicationFrequency').each do |freq|
-        marc.append(MARC::DataField.new('310', '0', '0', ['a', freq]))
-      end
-      record.dig('instance', 'publicationRange').each do |range|
-        marc.append(MARC::DataField.new('362', '0', '', ['a', range]))
-      end
-      record.dig('instance', 'notes').each do |note|
-        marc.append(MARC::DataField.new('500', '0', '', ['a', note['note']]))
-      end
-      record.dig('instance', 'series').each do |series|
-        marc.append(MARC::DataField.new('490', '0', '', ['a', series]))
-      end
-      record.dig('instance', 'subjects').each do |subject|
-        marc.append(MARC::DataField.new('653', '', '', ['a', subject]))
-      end
-
-      # 856 stuff
-      record.dig('instance', 'electronicAccess')&.each do |eresource|
-        marc.append(folio_electronic_access_marc_field(eresource))
-      end
-
-      holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
-        marc.append(folio_electronic_access_marc_field(eresource))
-      end
-
-      # nature of content
-      marc.append(MARC::DataField.new('999', '', '', ['i', record.dig('instance', 'id')]))
-      # date creaetd
-      # date updated
-    end.to_hash
-  end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
-
-  def folio_electronic_access_marc_field(eresource)
-    ind2 = case eresource['name']
-           when 'Resource'
-             '0'
-           when 'Version of resource'
-             '1'
-           when 'Related resource'
-             '2'
-           when 'No display constant generated'
-             '8'
-           else
-             ''
-           end
-
-    MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']])
+    Folio::MarcRecordInstanceMapper.build(instance, holdings)
   end
 end
 # rubocop:enable Metrics/ClassLength
