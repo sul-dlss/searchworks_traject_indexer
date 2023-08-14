@@ -83,7 +83,7 @@ module Traject
         end
       end
 
-      return return_text.join(' ') unless return_text.empty?
+      return_text.join(' ') unless return_text.empty?
     end
 
     ##
@@ -366,7 +366,7 @@ module Traject
         fields << text.join(' ') unless text.empty?
       end
 
-      return fields unless fields.empty?
+      fields unless fields.empty?
     end
 
     # INDEX-142 NOTE: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs
