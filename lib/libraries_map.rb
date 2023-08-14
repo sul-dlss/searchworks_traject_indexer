@@ -12,7 +12,9 @@ class LibrariesMap
     key = 'LANE' if key == 'LANE-MED' # If symphony codes are passed as input, we need to update to the folio code
 
     library = Folio::Types.libraries.values.find { |candidate| candidate.fetch('code') == key }
-    library&.fetch('name')
+
+    # We strip 'Library' from the name because it appears in a facet called 'Library'
+    library&.fetch('name')&.sub(' Library', '')
   end
 
   def self.translate_array(inputs)

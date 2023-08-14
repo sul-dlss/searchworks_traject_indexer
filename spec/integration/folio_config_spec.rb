@@ -160,7 +160,7 @@ RSpec.describe 'FOLIO indexing' do
               'holdingsStatementsForSupplements' => [] }] }
       end
 
-      it { expect(result['building_facet']).to eq ['Law Library (Crown)'] }
+      it { expect(result['building_facet']).to eq ['Law (Crown)'] }
     end
 
     context 'when the holding does not include an electronic location' do
