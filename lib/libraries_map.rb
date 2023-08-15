@@ -2,14 +2,26 @@
 
 # Map library codes to labels exported from Folio
 class LibrariesMap
-  # @param [String] key the Symphony library code
+  # @param [String] symphony_library_code the Symphony library code
   # @return [String,NilClass] if the library exists in the cache of records from folio, return the name.
   #                           It's possible to have a situation where the record we're processing has a library
   #                           code that hasn't yet been added to the cache.
-  def self.for(key)
-    return if key == 'SUL' # do not index building_facet on electronic resources
+  def self.for(symphony_library_code)
+    return if symphony_library_code == 'SUL' # do not index building_facet on electronic resources
 
-    key = 'LANE' if key == 'LANE-MED' # If symphony codes are passed as input, we need to update to the folio code
+    # If symphony codes are passed as input, we need to update to the folio code
+    key = case symphony_library_code
+          when 'LANE-MED'
+            'LANE'
+          when 'HOOVER'
+            'HILA'
+          when 'MEDIA-MTXT'
+            'MEDIA-CENTER'
+          when 'RUMSEYMAP'
+            'RUMSEY-MAP'
+          else
+            symphony_library_code
+          end
 
     library = Folio::Types.libraries.values.find { |candidate| candidate.fetch('code') == key }
 

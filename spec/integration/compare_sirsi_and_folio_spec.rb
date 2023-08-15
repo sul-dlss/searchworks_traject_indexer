@@ -48,7 +48,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
 
     let(:folio_record) do
       if ENV.key?('DATABASE_URL')
-        require 'traject/readers/folio_postgres_reader'
         Traject::FolioPostgresReader.find_by_catkey(catkey, 'postgres.url' => ENV.fetch('DATABASE_URL'))
       else
         client.source_record(instanceHrid: catkey)
