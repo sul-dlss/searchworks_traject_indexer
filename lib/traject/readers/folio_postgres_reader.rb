@@ -14,7 +14,7 @@ module Traject
       @updated_after = @settings['folio.updated_after']
       @statement_timeout = @settings.fetch('statement_timeout', 'DEFAULT') # Timeout value in milliseconds
 
-      @sql_filters = [@settings['postgres.sql_filters']].compact
+      @sql_filters = [@settings['postgres.sql_filters']].flatten.compact
       @addl_from = @settings['postgres.addl_from']
     end
 

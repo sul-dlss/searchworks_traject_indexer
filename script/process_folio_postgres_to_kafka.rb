@@ -7,18 +7,42 @@ require 'traject'
 require 'traject/readers/folio_postgres_reader'
 require 'traject/extractors/folio_kafka_extractor'
 require 'parallel'
+require 'slop'
 
-log_file = File.expand_path("../log/process_folio_postgres_to_kafka_#{Utils.env_config.kafka_topic}.log", __dir__)
-Utils.set_log_file(log_file)
+opts = Slop.parse do |o|
+  o.on '--help' do
+    puts o
+    exit
+  end
+  o.string '--kafka-topic', 'The kafka topic used for writing records', default: Utils.env_config.kafka_topic
+  o.bool '--verbose', default: false
+  o.int '--processes', 'Number of parallel processes to spawn to handle querying', default: nil
 
-state_file = ENV['STATE_FILE'] || File.expand_path(
-  "../tmp/searchworks_traject_folio_postgres_indexer_last_run_#{Utils.env_config.kafka_topic}", __dir__
-)
+  o.separator ''
+  o.separator 'State management'
+  o.string '--state-file', default: ENV.fetch('STATE_FILE', nil)
+  o.bool '--no-state-file', 'do not use the state file to track the current query time', default: false
+  o.bool '--full', 'enable full indexing (vs delta indexing, that uses the modified timestamp from the state file)', default: false
 
-full_dump = ARGV[0] == 'full'
+  o.separator ''
+  o.separator 'SQL query options'
+  o.array '--sql-query', 'a list of additional SQL filters to apply to the query'
+  o.string '--sql-join', 'an additional SQL join query to apply to the underlying query', default: nil
+end
+
+unless opt[:verbose]
+  log_file = File.expand_path("../log/process_folio_postgres_to_kafka_#{opts[:kafka_topic]}.log", __dir__)
+  Utils.set_log_file(log_file)
+end
+
+temp_state_file = Tempfile.new('searchworks_traject_folio_postgres_indexer') if opts[:no_state_file]
+
+state_file = opts[:state_file]
+state_file ||= File.expand_path("../tmp/searchworks_traject_folio_postgres_indexer_last_run_#{opts[:kafka_topic]}", __dir__)
+state_file = temp_state_file.path if temp_state_file
 
 # Make sure there's a state file
-File.open(state_file, 'w') { |f| f.puts '' } if !File.exist?(state_file) || full_dump
+File.open(state_file, 'w') { |f| f.puts '' } if !File.exist?(state_file) || opts[:full]
 
 File.open(state_file, 'r+') do |f|
   abort "Unable to acquire lock on #{state_file}" unless f.flock(File::LOCK_EX | File::LOCK_NB)
@@ -31,7 +55,8 @@ File.open(state_file, 'r+') do |f|
   last_response_date = Traject::FolioPostgresReader.new(nil,
                                                         'postgres.url': Utils.env_config.database_url).last_response_date
 
-  processes = Utils.env_config.full_dump_processes if full_dump
+  processes = opts[:processes]
+  processes ||= Utils.env_config.full_dump_processes if opts[:full]
   processes ||= Utils.env_config.processes
 
   shards = if processes.to_i > 1
@@ -48,8 +73,10 @@ File.open(state_file, 'r+') do |f|
     attempts ||= 1
     begin
       reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date&.utc&.iso8601,
-                                                     'postgres.url': Utils.env_config.database_url, 'postgres.sql_filters': sql_filter)
-      Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: Utils.env_config.kafka_topic).process!
+                                                     'postgres.url': Utils.env_config.database_url,
+                                                     'postgres.sql_filters': opts[:sql_query] + [sql_filter],
+                                                     'postgres.addl_from': opts[:sql_join])
+      Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: opts[:kafka_topic]).process!
     rescue PG::Error => e
       raise(e) if attempts > 5
 

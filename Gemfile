@@ -41,3 +41,4 @@ group :deployment do
 end
 
 gem 'activesupport', '~> 7.0'
+gem 'slop'
