@@ -6,6 +6,16 @@ require 'csv'
 class LocationsMap
   include Singleton
 
+  # FOLIO location codes that are mapped, but we want to handle as FOLIO codes in SearchWorks.
+  LOCATIONS_TO_SKIP = %w[SUL-TS-MAINTENANCE
+                         SUL-TS-PROCESSING
+                         SUL-TS-COLLECTIONCARE
+                         SUL-TS-CC-SPECIALPROJECTS
+                         SUL-TS-CC-REPAIR
+                         SUL-TS-CC-KASEMAKE
+                         SUL-TS-CC-BOOKJACKET
+                         SUL-TS-CC-BINDERYPREP].freeze
+
   # @return a tuple of library code and location code
   def self.for(key)
     instance.data[key]
@@ -24,6 +34,9 @@ class LocationsMap
               col_sep: "\t").each_with_object({}) do |(home_location, library_code, folio_code), hash|
       library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
 
+      # Skipping location codes that we want to handle as FOLIO codes in SearchWorks.
+      next if LOCATIONS_TO_SKIP.include?(folio_code)
+
       # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
       next if folio_code == 'SAL3-STACKS' && home_location != 'STACKS'
 
@@ -37,6 +50,9 @@ class LocationsMap
   def load_current_locations
     CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'temp_locations.tsv')),
               col_sep: "\t").each_with_object({}) do |(current_location, library_code, folio_code), hash|
+      # Skipping location codes that we want to handle as FOLIO codes in SearchWorks.
+      next if LOCATIONS_TO_SKIP.include?(folio_code)
+
       hash[folio_code] ||= [library_code, current_location]
     end
   end

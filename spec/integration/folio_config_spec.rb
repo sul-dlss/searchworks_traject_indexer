@@ -608,6 +608,203 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  describe 'item_display_struct' do
+    context 'FOLIO location code is one we want to exclude from mapping' do
+      let(:items) do
+        [{ 'id' => 'ee639ec0-0952-5ced-8465-5d4b170af20a',
+           'hrid' => 'ai12278435_1_1',
+           'tags' => { 'tagList' => [] },
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '36105229054783',
+           'request' => nil,
+           '_version' => 2,
+           'metadata' =>
+           { 'createdDate' => '2023-05-07T09:05:28.722Z',
+             'updatedDate' => '2023-07-28T17:57:09.418Z',
+             'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+             'updatedByUserId' => '0fd7a259-69cc-4e6a-8144-3215515e3fac' },
+           'formerIds' => [],
+           'callNumber' =>
+           { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+             'typeName' => 'Library of Congress classification',
+             'callNumber' => 'M452 .B223' },
+           'copyNumber' => '1',
+           'enumeration' => 'NO.1 2017',
+           'yearCaption' => [],
+           'materialType' => 'score',
+           'callNumberType' =>
+           { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+             'name' => 'Library of Congress classification',
+             'source' => 'folio' },
+           'materialTypeId' => '8cea2cd7-6a61-494e-a602-17045da7e3cb',
+           'numberOfPieces' => '5',
+           'courseListingId' => nil,
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => 'f64cd907-6747-5aa6-9b34-1839cfff5e47',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Can circulate',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '51d37aaa-dcb5-46ee-a9f1-9310f1737b55',
+           'permanentLoanTypeId' => '2b94c631-fca9-4892-a730-03ee529ffe27',
+           'permanentLocationId' => 'ec0d3f2e-c266-459e-8aaa-a44dea58255d',
+           'temporaryLocationId' => '51d37aaa-dcb5-46ee-a9f1-9310f1737b55',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'M 3452 B223 NO 11 42017 11',
+           'effectiveCallNumberComponents' =>
+           { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+             'callNumber' => 'M452 .B223' },
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => '51d37aaa-dcb5-46ee-a9f1-9310f1737b55',
+               'code' => 'SUL-TS-CC-REPAIR',
+               'name' => 'Out for repair',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'availabilityClass' => 'In_process' },
+               'library' =>
+               { 'id' => 'c1a86906-ced0-46cb-8f5b-8cef542bdd00',
+                 'code' => 'SUL',
+                 'name' => 'SUL' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'ec0d3f2e-c266-459e-8aaa-a44dea58255d',
+               'code' => 'MUS-SCORES',
+               'name' => 'Scores',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => {},
+               'library' =>
+               { 'id' => '45d4bfcc-439b-4ae3-8c62-a8f975be1d5b',
+                 'code' => 'MUSIC',
+                 'name' => 'Music Library' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'temporaryLocation' =>
+             { 'id' => '51d37aaa-dcb5-46ee-a9f1-9310f1737b55',
+               'code' => 'SUL-TS-CC-REPAIR',
+               'name' => 'Out for repair',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'availabilityClass' => 'In_process' },
+               'library' =>
+               { 'id' => 'c1a86906-ced0-46cb-8f5b-8cef542bdd00',
+                 'code' => 'SUL',
+                 'name' => 'SUL' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } } } }]
+      end
+
+      let(:holdings) do
+        [{ 'id' => 'f64cd907-6747-5aa6-9b34-1839cfff5e47',
+           'hrid' => 'ah12278435_1',
+           'notes' => [],
+           '_version' => 1,
+           'metadata' =>
+           { 'createdDate' => '2023-05-07T08:53:43.572Z',
+             'updatedDate' => '2023-05-07T08:53:43.572Z',
+             'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+             'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'sourceId' => 'f32d531e-df79-46b3-8932-cdd35f7a2264',
+           'boundWith' => nil,
+           'formerIds' => [],
+           'illPolicy' => nil,
+           'callNumber' => 'M452 .B223',
+           'instanceId' => 'ebeba477-dcf0-51b3-84c9-0f6c1ed3c279',
+           'holdingsType' =>
+           { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+             'name' => 'Monograph',
+             'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' =>
+           { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+             'name' => 'Library of Congress classification',
+             'source' => 'folio' },
+           'holdingsTypeId' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+           'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+           'electronicAccess' => [],
+           'bareHoldingsItems' => [],
+           'holdingsStatements' => [],
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => 'ec0d3f2e-c266-459e-8aaa-a44dea58255d',
+           'permanentLocationId' => 'ec0d3f2e-c266-459e-8aaa-a44dea58255d',
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [],
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'ec0d3f2e-c266-459e-8aaa-a44dea58255d',
+               'code' => 'MUS-SCORES',
+               'name' => 'Scores',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => {},
+               'library' =>
+               { 'id' => '45d4bfcc-439b-4ae3-8c62-a8f975be1d5b',
+                 'code' => 'MUSIC',
+                 'name' => 'Music Library' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'ec0d3f2e-c266-459e-8aaa-a44dea58255d',
+               'code' => 'MUS-SCORES',
+               'name' => 'Scores',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => {},
+               'library' =>
+               { 'id' => '45d4bfcc-439b-4ae3-8c62-a8f975be1d5b',
+                 'code' => 'MUSIC',
+                 'name' => 'Music Library' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } } } }]
+      end
+
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it 'does not populate the current location' do
+        expect(JSON.parse(result['item_display_struct'].first)['current_location']).to be_nil
+      end
+    end
+  end
+
   describe 'mhld_display' do
     subject(:mhld_display) { result.fetch('mhld_display') }
     let(:holding) do
