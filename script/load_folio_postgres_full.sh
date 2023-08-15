@@ -9,6 +9,6 @@ SCRIPT_FULL_PATH=$(dirname "$0")
 (
 flock -n 200 || exit 0
 
-bundle exec ruby script/process_folio_postgres_to_kafka.rb full > $LOG_FILE.log
+bundle exec ruby script/process_folio_postgres_to_kafka.rb --full > $LOG_FILE.log
 
 ) 200>tmp/.load_folio_postgres.lock
