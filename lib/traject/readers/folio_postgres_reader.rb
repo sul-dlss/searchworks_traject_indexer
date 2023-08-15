@@ -14,16 +14,13 @@ module Traject
       @updated_after = @settings['folio.updated_after']
       @statement_timeout = @settings.fetch('statement_timeout', 'DEFAULT') # Timeout value in milliseconds
 
-      @sql_filters = default_filters
+      @sql_filters = [@settings['postgres.sql_filters']].compact
+      @addl_from = @settings['postgres.addl_from']
     end
 
     # Return a single record by catkey by temporarily applying a SQL filter
     def self.find_by_catkey(catkey, settings = {})
       new(nil, settings.merge!('postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey.downcase}'")).first
-    end
-
-    def default_filters
-      [@settings['postgres.sql_filters']].compact
     end
 
     def queries
@@ -43,12 +40,12 @@ module Traject
 
         conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
           c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-          sql_query([c] + @sql_filters, addl_from: filter_join[table])
+          sql_query([c] + @sql_filters, addl_from: [filter_join[table], @addl_from].compact.join("\n"))
         end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter'])]
 
         conditions.join(') UNION (')
       else
-        sql_query(@sql_filters)
+        sql_query(@sql_filters, addl_from: @addl_from)
       end
     end
 
