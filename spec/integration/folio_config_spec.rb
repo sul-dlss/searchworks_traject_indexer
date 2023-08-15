@@ -481,6 +481,7 @@ RSpec.describe 'FOLIO indexing' do
       let(:items) do
         [{ 'id' => '7fdf7094-d30a-5f70-b23e-bc420a82a1d7',
            'hrid' => 'ai645341_1_1',
+           'holdingsRecordId' => '9c7b3dca-1619-5210-9bd1-6df775986b81',
            'notes' => [],
            'status' => 'Awaiting pickup',
            'barcode' => '36105080746311',
