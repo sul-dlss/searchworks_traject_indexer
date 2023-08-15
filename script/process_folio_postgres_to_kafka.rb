@@ -28,6 +28,7 @@ opts = Slop.parse do |o|
   o.separator 'SQL query options'
   o.array '--sql-query', 'a list of additional SQL filters to apply to the query'
   o.string '--sql-join', 'an additional SQL join query to apply to the underlying query', default: nil
+  o.bool '--sql-debug', 'print the SQL query'
 end
 
 unless opt[:verbose]
@@ -76,6 +77,8 @@ File.open(state_file, 'r+') do |f|
                                                      'postgres.url': Utils.env_config.database_url,
                                                      'postgres.sql_filters': opts[:sql_query] + [sql_filter],
                                                      'postgres.addl_from': opts[:sql_join])
+
+      Utils.logger.info reader.queries if opts[:sql_debug]
       Traject::FolioKafkaExtractor.new(reader:, kafka: Utils.kafka, topic: opts[:kafka_topic]).process!
     rescue PG::Error => e
       raise(e) if attempts > 5
