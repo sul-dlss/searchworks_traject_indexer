@@ -30,7 +30,7 @@ opts = Slop.parse do |o|
   o.string '--sql-join', 'an additional SQL join query to apply to the underlying query', default: nil
 end
 
-unless opt[:verbose]
+unless opts[:verbose]
   log_file = File.expand_path("../log/process_folio_postgres_to_kafka_#{opts[:kafka_topic]}.log", __dir__)
   Utils.set_log_file(log_file)
 end
