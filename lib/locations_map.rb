@@ -34,7 +34,7 @@ class LocationsMap
               col_sep: "\t").each_with_object({}) do |(home_location, library_code, folio_code), hash|
       library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
 
-      # Skipping location codes that we want handle as FOLIO codes in SearchWorks.
+      # Skipping location codes that we want to handle as FOLIO codes in SearchWorks.
       next if LOCATIONS_TO_SKIP.include?(folio_code)
 
       # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
@@ -50,7 +50,7 @@ class LocationsMap
   def load_current_locations
     CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'temp_locations.tsv')),
               col_sep: "\t").each_with_object({}) do |(current_location, library_code, folio_code), hash|
-      # Skipping location codes that we want handle as FOLIO codes in SearchWorks.
+      # Skipping location codes that we want to handle as FOLIO codes in SearchWorks.
       next if LOCATIONS_TO_SKIP.include?(folio_code)
 
       hash[folio_code] ||= [library_code, current_location]
