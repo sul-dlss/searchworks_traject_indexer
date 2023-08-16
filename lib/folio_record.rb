@@ -49,7 +49,8 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
-      item_location_code = item.dig('location', 'permanentLocation', 'code')
+      item_location_code = item.dig('location', 'temporaryLocation', 'code') if item.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
+      item_location_code ||= item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= holding.dig('location', 'effectiveLocation', 'code')
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
@@ -90,7 +91,9 @@ class FolioRecord
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? }.map do |holding|
       parent_item = holding.dig('boundWith', 'item')
       parent_holding = holding.dig('boundWith', 'holding')
-      item_location_code = parent_item.dig('location', 'permanentLocation', 'code')
+
+      item_location_code = parent_item.dig('location', 'temporaryLocation', 'code') if parent_item.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
+      item_location_code ||= parent_item.dig('location', 'permanentLocation', 'code')
       item_location_code ||= parent_holding.dig('location', 'effectiveLocation', 'code')
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
