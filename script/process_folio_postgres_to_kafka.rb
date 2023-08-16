@@ -29,6 +29,11 @@ opts = Slop.parse do |o|
   o.array '--sql-query', 'a list of additional SQL filters to apply to the query'
   o.string '--sql-join', 'an additional SQL join query to apply to the underlying query', default: nil
   o.bool '--sql-debug', 'print the SQL query'
+
+  o.separator ''
+  o.separator 'Reading IDs from a file'
+  o.string '--ids-file', 'A file containing a list of IDs to process', default: nil
+  o.int '--chunk-size', 'Number of IDs to process per query', default: 100
 end
 
 unless opts[:verbose]
@@ -60,7 +65,13 @@ File.open(state_file, 'r+') do |f|
   processes ||= Utils.env_config.full_dump_processes if opts[:full]
   processes ||= Utils.env_config.processes
 
-  shards = if processes.to_i > 1
+  shards = if opts[:ids_file]
+             File.open(opts[:ids_file]).each_line.each_slice(opts[:chunk_size]).lazy.map do |slice|
+               # FOLIO's native identifier exports are quoted, so we should to strip the quotes :shrug:
+               ids = slice.map { |x| x.strip.delete_prefix('"').delete_suffix('"') }.map { |x| "'#{PG::Connection.escape_string(x)}'::uuid" }.join(', ')
+               "vi.id IN (#{ids})"
+             end
+           elsif processes.to_i > 1
              step = Utils.env_config.step_size || 0x0100
              ranges = (0x0000..0xffff).step(step).each_cons(2).map { |(min, max)| min...max }
              ranges << (ranges.last.max..0xffff)
