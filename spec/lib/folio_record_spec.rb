@@ -344,7 +344,7 @@ RSpec.describe FolioRecord do
             'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'temporaryLocation' => {
-                'code' => 'GRE-CRES'
+                'code' => 'GRE-SSRC'
               }
             }
           }],
@@ -358,8 +358,53 @@ RSpec.describe FolioRecord do
 
       it 'uses the temp location as the current location' do
         expect(folio_record.sirsi_holdings.first).to have_attributes(
-          current_location: 'GRE-CRES',
+          current_location: 'SSRC',
           home_location: 'STACKS',
+          library: 'GREEN'
+        )
+      end
+    end
+
+    context 'with an item with a courese reserves-like location' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
+                         'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+                         'receivingStatus' => 'Expected',
+                         'displayOnHolding' => false }],
+          'holdings' => [{
+            'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+            'location' => {
+              'effectiveLocation' => {
+                'code' => 'SAL3-STACKS'
+              }
+            }
+          }],
+          'items' => [{
+            'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+            'location' => {
+              'temporaryLocation' => {
+                'code' => 'GRE-CRES',
+                'details' => {
+                  'searchworksTreatTemporaryLocationAsPermanentLocation' => 'true'
+                }
+              }
+            }
+          }],
+          'source_record' => [{
+            'fields' => [
+              { '001' => 'a14154194' }
+            ]
+          }]
+        }
+      end
+
+      it 'uses the temp location as the home location' do
+        expect(folio_record.sirsi_holdings.first).to have_attributes(
+          home_location: 'GRE-CRES',
           library: 'GREEN'
         )
       end

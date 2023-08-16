@@ -25,8 +25,12 @@ class LibrariesMap
 
     library = Folio::Types.libraries.values.find { |candidate| candidate.fetch('code') == key }
 
-    # We strip 'Library' from the name because it appears in a facet called 'Library'
-    library&.fetch('name')&.sub(' Library', '')
+    folio_name = library&.fetch('name')
+
+    # We strip 'Library' from the name because it appears in a facet called 'Library'.. except Hoover
+    return folio_name if folio_name&.match?(/Hoover/)
+
+    folio_name&.sub(' Library', '')
   end
 
   def self.translate_array(inputs)
