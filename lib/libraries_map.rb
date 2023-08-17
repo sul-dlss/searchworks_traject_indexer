@@ -15,6 +15,8 @@ class LibrariesMap
             'LANE'
           when 'HOOVER'
             'HILA'
+          when 'HOPKINS'
+            'MARINE-BIO'
           when 'MEDIA-MTXT'
             'MEDIA-CENTER'
           when 'RUMSEYMAP'
