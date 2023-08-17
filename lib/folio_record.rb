@@ -67,7 +67,7 @@ class FolioRecord
       course_reserves = {
         reserve_desk: course[:reserve_desk],
         course_id: course[:course_id],
-        loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
+        loan_period: (item['temporaryLoanType']&.gsub('reserve', 'loan') if item['temporaryLoanType'] != item['permanentLoanType'])
       } if course
 
       SirsiHolding.new(
