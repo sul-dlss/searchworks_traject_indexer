@@ -167,7 +167,7 @@ to_field 'date_cataloged' do |record, accumulator|
   timestamp = record.instance['catalogedDate']
   begin
     accumulator << Time.parse(timestamp).utc.at_beginning_of_day.iso8601 if timestamp =~ /^\d{4}-\d{2}-\d{2}/
-  rescue StandardError
+  rescue ArgumentError
     nil
   end
 end
