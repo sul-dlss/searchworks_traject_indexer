@@ -55,6 +55,7 @@ class FolioRecord
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
+      current_location ||= item.dig('location', 'temporaryLocation', 'code') if item.dig('location', 'temporaryLocation', 'details', 'availabilityClass')
       current_location ||= Folio::StatusCurrentLocation.new(item).current_location
 
       # NOTE: we don't handle multiple courses for a single item, because it's beyond parity with how things worked for Symphony
