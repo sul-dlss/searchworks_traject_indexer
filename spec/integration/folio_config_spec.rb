@@ -894,4 +894,76 @@ RSpec.describe 'FOLIO indexing' do
       it { is_expected.to eq ['Music score'] }
     end
   end
+
+  describe 'callnum_facet_hsim' do
+    context 'when the location has searchworksGovDocsClassification' do
+      let(:items) do
+        [{ 'id' => 'fe7e0573-1812-5957-ba3a-0e41d7717abe',
+           'hrid' => 'ai1039075_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '001AEY7183',
+           'request' => nil,
+           '_version' => 1,
+           'metadata' =>
+           { 'createdDate' => '2023-05-06T05:45:36.582Z',
+             'updatedDate' => '2023-05-06T05:45:36.582Z',
+             'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+             'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'formerIds' => [],
+           'callNumber' =>
+           { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'J301 .K63' },
+           'copyNumber' => '1',
+           'enumeration' => 'SESS 1924-25 V.30',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'courseListingId' => nil,
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '1ac11924-dc29-51b8-bb40-0316e5cb62ba',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Non-circulating',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+           'permanentLoanTypeId' => '52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd',
+           'permanentLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'J 3301 K63 SESS 41924 225 V 230 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'J301 .K63' },
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+               'code' => 'GRE-BRIT-DOCS',
+               'name' => 'British Government Documents',
+               'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+               'details' => { 'searchworksGovDocsClassification' => 'British' },
+               'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+               'isActive' => true,
+               'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+               'code' => 'GRE-BRIT-DOCS',
+               'name' => 'British Government Documents',
+               'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+               'details' => {},
+               'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+               'isActive' => true,
+               'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } } } }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it { expect(result['callnum_facet_hsim']).to include 'Government Document|British' }
+    end
+  end
 end
