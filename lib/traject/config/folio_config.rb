@@ -165,7 +165,11 @@ end
 # guard against dates with 'u' coming out of MARC 008 fields
 to_field 'date_cataloged' do |record, accumulator|
   timestamp = record.instance['catalogedDate']
-  accumulator << Time.parse(timestamp).utc.at_beginning_of_day.iso8601 if timestamp =~ /\d{4}-\d{2}-\d{2}/
+  begin
+    accumulator << Time.parse(timestamp).utc.at_beginning_of_day.iso8601 if timestamp =~ /^\d{4}-\d{2}-\d{2}/
+  rescue ArgumentError
+    nil
+  end
 end
 
 # add folio to the collection list; searchworks has some dependencies on this value,
