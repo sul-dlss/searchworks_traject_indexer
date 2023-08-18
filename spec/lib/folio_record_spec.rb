@@ -365,7 +365,7 @@ RSpec.describe FolioRecord do
       end
     end
 
-    context 'with an item with a courese reserves-like location' do
+    context 'with an item with a course reserves-like location' do
       let(:record) do
         {
           'instance' => {
@@ -488,6 +488,53 @@ RSpec.describe FolioRecord do
           current_location: nil,
           home_location: 'STACKS',
           library: 'GREEN'
+        )
+      end
+    end
+
+    context 'with an item with a temporary location that implies availability' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
+                         'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+                         'receivingStatus' => 'Expected',
+                         'displayOnHolding' => false }],
+          'holdings' => [{
+            'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+            'location' => {
+              'effectiveLocation' => {
+                'code' => 'SAL3-STACKS'
+              }
+            }
+          }],
+          'items' => [{
+            'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+            'status' => 'In transit',
+            'location' => {
+              'temporaryLocation' => {
+                'code' => 'SUL-TS-PROCESSING',
+                'details' => {
+                  'availabilityClass' => 'In_process'
+                }
+              }
+            }
+          }],
+          'source_record' => [{
+            'fields' => [
+              { '001' => 'a14154194' }
+            ]
+          }]
+        }
+      end
+
+      it 'uses the FOLIO location code as the current location' do
+        expect(folio_record.sirsi_holdings.first).to have_attributes(
+          home_location: 'STACKS',
+          library: 'SAL3',
+          current_location: 'SUL-TS-PROCESSING'
         )
       end
     end
