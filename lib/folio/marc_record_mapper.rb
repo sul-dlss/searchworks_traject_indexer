@@ -32,7 +32,14 @@ module Folio
                    ''
                  end
 
-          record.append(MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']]))
+          subfields = {
+            '3' => eresource['materialsSpecification'],
+            'u' => eresource['uri'],
+            'y' => eresource['linkText'],
+            'z' => eresource['publicNote']
+          }.reject { |_k, v| v.blank? }
+
+          record.append(MARC::DataField.new('856', '4', ind2, *subfields.to_a))
         end
       end
 
