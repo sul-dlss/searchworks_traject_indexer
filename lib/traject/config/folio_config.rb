@@ -238,6 +238,16 @@ to_field 'format_main_ssim' do |record, accumulator, _context|
   accumulator << 'Database' if record.statistical_codes.any? { |stat_code| stat_code['name'] == 'Database' }
 end
 
+to_field 'callnum_facet_hsim' do |record, accumulator, _context|
+  gov_doc_values = record.items.filter_map do |item|
+    item.dig('location', 'effectiveLocation', 'details', 'searchworksGovDocsClassification')
+  end
+
+  gov_doc_values.uniq.each do |gov_doc_value|
+    accumulator << ['Government Document', gov_doc_value].join('|')
+  end
+end
+
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|
