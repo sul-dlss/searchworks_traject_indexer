@@ -2,7 +2,6 @@
 [![CI status](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml/badge.svg)](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml)
 [![Current release](https://img.shields.io/github/v/release/sul-dlss/searchworks_traject_indexer)](https://github.com/sul-dlss/searchwork_traject_indexer/releases)
 ![tested on ruby 3.1](https://img.shields.io/badge/ruby-v3.1-red)
-![tested on jruby 9.3](https://img.shields.io/badge/jruby-v9.3-red)
 
 indexing MARC, MODS, and more for [SearchWorks](https://github.com/sul-dlss/SearchWorks).
 <img src="preview.png" alt="solr index fields displayed overlaid on SearchWorks catalog preview for a book">

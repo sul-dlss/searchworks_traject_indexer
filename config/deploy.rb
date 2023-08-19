@@ -48,23 +48,6 @@ append :linked_dirs, 'tmp', 'run', 'log', 'config/settings'
 
 set :whenever_roles, [:app]
 
-task :jruby_bundle_install do
-  on fetch(:bundle_servers) do
-    within release_path do
-      with fetch(:bundle_env_variables) do
-        options = []
-        options << "--gemfile #{fetch(:bundle_gemfile)}" if fetch(:bundle_gemfile)
-        options << "--path #{fetch(:bundle_path)}" if fetch(:bundle_path)
-        options << "--binstubs #{fetch(:bundle_binstubs)}" if fetch(:bundle_binstubs)
-        options << "--jobs #{fetch(:bundle_jobs)}" if fetch(:bundle_jobs)
-        options << "--without #{fetch(:bundle_without)}" if fetch(:bundle_without)
-        options << "#{fetch(:bundle_flags)}" if fetch(:bundle_flags)
-        execute "#{fetch(:rvm_path)}/bin/rvm", 'jruby-9.4.1.0', 'do', :bundle, :install, *options
-      end
-    end
-  end
-end
-
 namespace :deploy do
   desc "config for monitoring the deployment's traject workers"
   before :cleanup, :start_workers do
@@ -83,5 +66,3 @@ namespace :deploy do
     end
   end
 end
-
-before 'bundler:install', 'jruby_bundle_install'

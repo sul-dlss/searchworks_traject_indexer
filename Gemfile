@@ -3,7 +3,6 @@
 source 'https://rubygems.org'
 
 gem 'traject', '~> 3.0'
-gem 'traject-marc4j_reader', platform: :jruby
 gem 'traject_plus'
 
 group :development, :test do
@@ -21,7 +20,6 @@ gem 'honeybadger'
 gem 'http'
 gem 'i18n'
 gem 'iso-639'
-gem 'manticore', platform: :jruby
 gem 'mods_display', '~> 1.0'
 gem 'parallel'
 gem 'pg', platform: :mri

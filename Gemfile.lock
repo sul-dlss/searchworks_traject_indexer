@@ -127,16 +127,12 @@ GEM
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    manticore (0.9.1-java)
-      openssl_pkcs8_pure
     marc (1.2.0)
       rexml
       scrub_rb (>= 1.0.1, < 2)
       unf
     marc-fastxmlwriter (1.1.0)
       marc (~> 1.0)
-    marc-marc4j (1.0.0-java)
-      marc (~> 1)
     method_source (1.0.0)
     minitest (5.19.0)
     mods (3.0.3)
@@ -161,7 +157,6 @@ GEM
     nom-xml (1.2.0)
       i18n
       nokogiri
-    openssl_pkcs8_pure (0.0.0.2)
     parallel (1.23.0)
     parser (3.2.2.3)
       ast (~> 2.4.1)
@@ -234,9 +229,6 @@ GEM
       nokogiri (~> 1.9)
       slop (~> 4.0)
       yell
-    traject-marc4j_reader (1.1.0-java)
-      marc (~> 1.0)
-      marc-marc4j (~> 1.0)
     traject_plus (2.0.0)
       activesupport
       deprecation
@@ -286,7 +278,6 @@ DEPENDENCIES
   http
   i18n
   iso-639
-  manticore
   mods_display (~> 1.0)
   parallel
   pg
@@ -300,7 +291,6 @@ DEPENDENCIES
   stanford-mods (~> 3.0)
   statsd-ruby
   traject (~> 3.0)
-  traject-marc4j_reader
   traject_plus
   webmock
   whenever

@@ -58,14 +58,7 @@ settings do
     indexer.send(:default_mapping_rescue).call(context, e)
   end)
 
-  if defined?(JRUBY_VERSION)
-    require 'traject/marc4j_reader'
-    provide 'marc4j_reader.permissive', true
-    require 'traject/manticore_http_client'
-    provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
-  else
-    provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
-  end
+  provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 end
 
