@@ -2847,5 +2847,5 @@ each_record do |_record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
-  logger.debug('sirsi_config.rb') { "Processed #{context.source_record_id} (#{(t1 - t0).round(3)}s)" }
+  logger.debug('marc_config.rb') { "Processed #{context.source_record_id} (#{(t1 - t0).round(3)}s)" }
 end

@@ -20,7 +20,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
 
   let(:sirsi_indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/marc_config.rb')
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     let(:sirsi_result) { sirsi_indexer.map_record(marc_record) }
     let(:folio_result) { folio_indexer.map_record(folio_record) }
     let(:mapped_fields) do
-      path = File.expand_path('../../lib/traject/config/sirsi_config.rb', __dir__)
+      path = File.expand_path('../../lib/traject/config/marc_config.rb', __dir__)
       File.read(path).scan(/to_field ["']([^"']+)["']/).map(&:first).uniq
     end
     before(:each) do

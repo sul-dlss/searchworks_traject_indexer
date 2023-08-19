@@ -6,7 +6,7 @@ RSpec.describe 'Format main config' do
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/marc_config.rb')
     end
   end
   subject(:result) { indexer.map_record(record) }

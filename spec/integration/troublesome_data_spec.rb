@@ -6,7 +6,7 @@ RSpec.describe 'Troublesome real-world data config' do
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/marc_config.rb')
     end
   end
   let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }

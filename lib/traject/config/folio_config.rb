@@ -39,7 +39,7 @@ each_record do |record, context|
   end
 end
 
-load_config_file(File.expand_path('sirsi_config.rb', __dir__))
+load_config_file(File.expand_path('marc_config.rb', __dir__))
 
 # Disable Sirsi reserves lookup from file in favor of FOLIO data
 def reserves_lookup = {}
@@ -118,7 +118,7 @@ def call_number_for_holding(record, holding, context)
 end
 # rubocop:enable Metrics/MethodLength
 
-# This overrides the method in sirsi_config.rb to provide holdings derived from Folio data
+# This overrides the method in marc_config.rb to provide holdings derived from Folio data
 def holdings(record, context)
   context.clipboard[:holdings] ||= record.sirsi_holdings
 end
@@ -176,7 +176,7 @@ end
 # so for now, we're just appending 'folio' to the list.
 to_field 'collection', literal('folio')
 
-# sirsi_config sets this to 'sirsi'; we need to remove that and set our own value:
+# marc_config sets this to 'sirsi'; we need to remove that and set our own value:
 to_field 'context_source_ssi' do |_record, _accumulator, context|
   context.output_hash['context_source_ssi'] = ['folio']
 end

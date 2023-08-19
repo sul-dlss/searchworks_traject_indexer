@@ -6,7 +6,7 @@ RSpec.describe 'IIIF Manifest config' do
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/marc_config.rb')
     end
   end
   let(:fixture_name) { '10448954.marc' }

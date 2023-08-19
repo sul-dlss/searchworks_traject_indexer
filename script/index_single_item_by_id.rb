@@ -5,7 +5,7 @@ require 'json'
 require 'traject'
 
 indexer = Traject::Indexer.new.tap do |i|
-  i.load_config_file('./lib/traject/config/sirsi_config.rb')
+  i.load_config_file('./lib/traject/config/marc_config.rb')
 end
 base = ENV.fetch('SOLRMARC_STORED_FIELDS_SOLR_BASE_URL')
 query = ENV.fetch('q', '*:*')
