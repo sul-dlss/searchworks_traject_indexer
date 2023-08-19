@@ -6,6 +6,8 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 3.1
   SuggestExtensions: false
+  Exclude:
+    - 'lib/traject/config/sirsi_config.rb'
 
 Layout/LineLength:
   Max: 250
