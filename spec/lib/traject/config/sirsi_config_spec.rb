@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -14,7 +13,7 @@ RSpec.describe 'Sirsi config' do
   let(:record) { records.first }
 
   describe 'id' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     it do
       expect(results).to include hash_including('id' => ['001suba'])
       expect(results).to include hash_including('id' => ['001subaAnd004nosub'])
@@ -28,7 +27,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'hashed_id_ssi' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     it do
       expect(results).to include hash_including('id' => ['001suba'],
                                                 'hashed_id_ssi' => ['f00f2f3999440420ee1cb0fbfaf6dd25'])
@@ -58,7 +57,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'context_marc_fields_ssim' do
-    subject(:result) { indexer.map_record(record) }
+    subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
     it 'indexes field counts' do
       expect(result['context_marc_fields_ssim']).to include '008', '245'

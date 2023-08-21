@@ -4,28 +4,28 @@ require 'sirsi_holding'
 
 # rubocop:disable Metrics/ParameterLists
 def record_with_999(call_number:, scheme:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
-  indexer.map_record(
-    MARC::Record.new.tap do |r|
-      r.append(
-        MARC::DataField.new(
-          '999',
-          ' ',
-          ' ',
-          MARC::Subfield.new('a', call_number),
-          MARC::Subfield.new('l', home_location),
-          MARC::Subfield.new('m', library),
-          MARC::Subfield.new('t', type),
-          MARC::Subfield.new('w', scheme)
-        )
-      )
-      yield r if block_given?
-    end
-  )
+  indexer.map_record(stub_record_from_marc(
+                       MARC::Record.new.tap do |r|
+                         r.append(
+                           MARC::DataField.new(
+                             '999',
+                             ' ',
+                             ' ',
+                             MARC::Subfield.new('a', call_number),
+                             MARC::Subfield.new('l', home_location),
+                             MARC::Subfield.new('m', library),
+                             MARC::Subfield.new('t', type),
+                             MARC::Subfield.new('w', scheme)
+                           )
+                         )
+                         yield r if block_given?
+                       end
+                     ))
 end
 # rubocop:enable Metrics/ParameterLists
 
 RSpec.describe 'Call Number Facet' do
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|

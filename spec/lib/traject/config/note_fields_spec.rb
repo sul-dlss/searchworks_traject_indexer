@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -13,7 +12,7 @@ RSpec.describe 'Sirsi config' do
   let(:record) { records.first }
 
   describe 'toc_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'toc_search' }
 
@@ -46,7 +45,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_toc_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'vern_toc_search' }
 
@@ -76,7 +75,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'toc_struct' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'toc_struct' }
 
@@ -470,7 +469,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'context_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'context_search' }
 
@@ -483,7 +482,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_context_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'vern_context_search' }
 
@@ -496,7 +495,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'summary_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'summary_search' }
 
@@ -529,7 +528,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_summary_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'vern_summary_search' }
 
@@ -559,7 +558,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'summary_struct' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'summaryTests.mrc' }
     let(:field) { 'summary_struct' }
 
@@ -602,7 +601,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with a link in a $u' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -623,7 +622,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with Nielsen-sourced data' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -642,7 +641,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with content advice' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -666,7 +665,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'award_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'nielsenTests.mrc' }
     let(:field) { 'award_search' }
 

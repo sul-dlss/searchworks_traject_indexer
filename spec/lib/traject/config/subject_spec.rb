@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Subject config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/marc_config.rb')
@@ -13,7 +10,8 @@ RSpec.describe 'Subject config' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { 'subjectSearchTests.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
   describe 'topic_search' do
     let(:field) { 'topic_search' }

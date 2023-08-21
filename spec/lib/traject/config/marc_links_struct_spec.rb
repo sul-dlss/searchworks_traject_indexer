@@ -6,7 +6,7 @@ RSpec.describe 'marc_links_struct' do
       i.load_config_file('./lib/traject/config/marc_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:record) { MARC::XMLReader.new(StringIO.new(marc)).to_a.first }
   let(:field) { 'marc_links_struct' }
   let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }

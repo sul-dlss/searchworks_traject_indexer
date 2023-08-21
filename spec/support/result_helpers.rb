@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module ResultHelpers
+  def stub_record_from_marc(marc_data)
+    marc_data
+  end
+
   def select_by_id(id)
     results.select { |r| r['id'] == [id] }.first
   end

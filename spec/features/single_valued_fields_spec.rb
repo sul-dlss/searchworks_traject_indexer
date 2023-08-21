@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Single valued fields' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|

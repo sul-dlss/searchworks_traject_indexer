@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Standard Numbers' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/marc_config.rb')
@@ -13,7 +10,7 @@ RSpec.describe 'Standard Numbers' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
 
   describe 'oclc' do
     let(:fixture_name) { 'oclcNumTests.mrc' }

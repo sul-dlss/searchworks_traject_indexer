@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Access config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/marc_config.rb')
@@ -12,7 +9,8 @@ RSpec.describe 'Access config' do
 
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { 'onlineFormat.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:field) { 'access_facet' }
 
   describe 'with fulltext URLs in bib' do
@@ -104,7 +102,7 @@ RSpec.describe 'Access config' do
   end
 
   describe 'updating looseleef' do
-    subject(:result) { indexer.map_record(record) }
+    subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
     context 'based on 9335774' do
       let(:record) do
