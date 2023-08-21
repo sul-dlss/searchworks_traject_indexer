@@ -15,7 +15,7 @@ SimpleCov.start
 # in spec/support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-ENV['SKIP_EMPTY_ITEM_DISPLAY'] = '-1'
+ENV['SKIP_EMPTY_ITEM_DISPLAY'] = '-2'
 
 def file_fixture_path
   File.join(__dir__, 'fixtures', 'files')

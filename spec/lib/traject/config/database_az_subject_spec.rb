@@ -4,7 +4,7 @@ RSpec.describe 'Sirsi config' do
   subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
   let(:record) { records.first }

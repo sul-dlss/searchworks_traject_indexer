@@ -194,7 +194,7 @@ class FolioRecord
 
   def statistical_codes
     @statistical_codes ||= instance.fetch('statisticalCodes') do
-      my_ids = client.instance(instance_id:).fetch('statisticalCodeIds')
+      my_ids = client.instance(instance_id:).fetch('statisticalCodeIds', [])
       client.statistical_codes.select { |code| my_ids.include?(code['id']) }
     end
   end
