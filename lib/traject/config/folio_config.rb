@@ -2719,9 +2719,9 @@ end
 
 to_field 'holdings_json_struct' do |record, accumulator|
   accumulator << {
-                   holdings: record.holdings,
-                   items: record.items
-                 }
+    holdings: record.holdings,
+    items: record.items
+  }
 end
 
 to_field 'courses_json_struct' do |record, accumulator|
