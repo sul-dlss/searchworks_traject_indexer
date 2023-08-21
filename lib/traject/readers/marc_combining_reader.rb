@@ -20,30 +20,13 @@ class Traject::MarcCombiningReader
   attr_reader :settings, :input_stream, :marc_reader
 
   def initialize(input_stream, settings)
-    if defined?(JRUBY_VERSION)
-      require 'traject/marc4j_reader'
-      @marc_reader = Traject::Marc4JReader.new(input_stream, settings)
-    else
-      @marc_reader = Traject::MarcReader.new(input_stream, settings)
-    end
+    @marc_reader = Traject::MarcReader.new(input_stream, settings)
   end
 
   def combinable_records(&)
     return enum_for(:combinable_records) unless block_given?
 
-    # See https://github.com/jruby/jruby/issues/5275;
-    enumerable = if defined?(JRUBY_VERSION)
-                   peek = marc_reader.each.first(2)
-                   if peek.length == 1
-                     peek
-                   else
-                     CombiningEnumerable.new(peek, marc_reader)
-                   end
-                 else
-                   marc_reader
-                 end
-
-    enumerable.each.slice_when { |i, j| i['001'].value != j['001'].value }.each(&)
+    marc_reader.each.slice_when { |i, j| i['001'].value != j['001'].value }.each(&)
   end
 
   def each

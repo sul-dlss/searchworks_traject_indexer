@@ -93,12 +93,7 @@ settings do
   provide 'purl_fetcher.skip_catkey', false
 
   provide 'solr_writer.commit_on_close', true
-  if defined?(JRUBY_VERSION)
-    require 'traject/manticore_http_client'
-    provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
-  else
-    provide 'solr_json_writer.http_client', (HTTPClient.new.tap { |x| x.receive_timeout = 600 })
-  end
+  provide 'solr_json_writer.http_client', (HTTPClient.new.tap { |x| x.receive_timeout = 600 })
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 
   provide 'mapping_rescue', (lambda do |context, e|

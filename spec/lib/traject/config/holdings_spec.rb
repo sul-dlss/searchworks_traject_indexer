@@ -6,23 +6,10 @@ RSpec.describe 'Holdings config' do
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/marc_config.rb')
     end
   end
-  ##
-  # Custom jRuby setup needed here to create the Traject::MarcCombiningReader
-  # with the needed settings and argument type (IO / String:IO)
-  if defined? JRUBY_VERSION
-    let(:records) do
-      Traject::MarcCombiningReader.new(
-        File.open(file_fixture(fixture_name).to_s),
-        'marc_source.type' => 'binary',
-        'marc4j_reader.permissive' => true
-      ).to_a
-    end
-  else
-    let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).to_s, {}).to_a }
-  end
+  let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).to_s, {}).to_a }
   let(:record) { records.first }
   let(:fixture_name) { '44794.marc' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }

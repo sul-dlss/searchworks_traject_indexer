@@ -10,13 +10,8 @@ class PublicXmlRecord
   attr_reader :druid, :purl_url
 
   def self.fetch(url)
-    if defined?(JRUBY_VERSION)
-      response = Manticore.get(url)
-      response.body if response.code == 200
-    else
-      response = HTTP.get(url)
-      response.body if response.status.ok?
-    end
+    response = HTTP.get(url)
+    response.body if response.status.ok?
   end
 
   def initialize(druid, purl_url: 'https://purl.stanford.edu')

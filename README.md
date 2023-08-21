@@ -2,7 +2,6 @@
 [![CI status](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml/badge.svg)](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml)
 [![Current release](https://img.shields.io/github/v/release/sul-dlss/searchworks_traject_indexer)](https://github.com/sul-dlss/searchwork_traject_indexer/releases)
 ![tested on ruby 3.1](https://img.shields.io/badge/ruby-v3.1-red)
-![tested on jruby 9.3](https://img.shields.io/badge/jruby-v9.3-red)
 
 indexing MARC, MODS, and more for [SearchWorks](https://github.com/sul-dlss/SearchWorks).
 <img src="preview.png" alt="solr index fields displayed overlaid on SearchWorks catalog preview for a book">
@@ -96,7 +95,7 @@ processes:
       SOLR_URL: http://sul-solr.stanford.edu/solr/searchworks-prod
       KAFKA_CONSUMER_GROUP_ID: traject_marc_bodoni_prod
     config:
-      start_command: '/usr/local/rvm/bin/rvm jruby-9.3.2.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/sirsi_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
+      start_command: '/usr/local/rvm/bin/rvm jruby-9.3.2.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/marc_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
 ```
 
 You can use `sudo systemctl list-dependencies traject.target` to view status information:

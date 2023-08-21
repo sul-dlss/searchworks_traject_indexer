@@ -2,10 +2,6 @@ kafka:
   hosts: localhost:9092
 
 environments:
-  bodoni:
-    kafka_topic: marc_bodoni
-  morison:
-    kafka_topic: marc_morison
   folio_test:
     database_url: <%= ENV['DATABASE_URL'] %>
     processes: 1

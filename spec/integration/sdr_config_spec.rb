@@ -7,25 +7,15 @@ describe 'SDR indexing' do
 
   def stub_purl_request(druid, body)
     without_partial_double_verification do
-      if defined?(JRUBY_VERSION)
-        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(code: 200,
-                                                                                                           body:))
-      else
-        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body:,
-                                                                                                      status: double(ok?: true)))
-      end
+      allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body:,
+                                                                                                    status: double(ok?: true)))
     end
   end
 
   def stub_mods_request(druid, body)
     without_partial_double_verification do
-      if defined?(JRUBY_VERSION)
-        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(code: 200,
-                                                                                                            body:))
-      else
-        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(body:,
-                                                                                                       status: double(ok?: true)))
-      end
+      allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(body:,
+                                                                                                     status: double(ok?: true)))
     end
   end
 
@@ -38,11 +28,7 @@ describe 'SDR indexing' do
   context 'with a missing object' do
     before do
       without_partial_double_verification do
-        if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(code: 404))
-        else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(status: double(ok?: false)))
-        end
+        allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(status: double(ok?: false)))
       end
     end
 
