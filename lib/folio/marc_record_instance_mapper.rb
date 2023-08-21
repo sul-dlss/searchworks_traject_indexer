@@ -89,7 +89,14 @@ module Folio
                    ''
                  end
 
-          marc.append(MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']]))
+          subfields = {
+            '3' => eresource['materialsSpecification'],
+            'u' => eresource['uri'],
+            'y' => eresource['linkText'],
+            'z' => eresource['publicNote']
+          }.reject { |_k, v| v.blank? }
+
+          marc.append(MARC::DataField.new('856', '4', ind2, *subfields.to_a))
         end
 
         holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
@@ -106,7 +113,14 @@ module Folio
                    ''
                  end
 
-          marc.append(MARC::DataField.new('856', '4', ind2, ['u', eresource['uri']], ['y', eresource['linkText']], ['z', eresource['publicNote']]))
+          subfields = {
+            '3' => eresource['materialsSpecification'],
+            'u' => eresource['uri'],
+            'y' => eresource['linkText'],
+            'z' => eresource['publicNote']
+          }.reject { |_k, v| v.blank? }
+
+          marc.append(MARC::DataField.new('856', '4', ind2, *subfields.to_a))
         end
 
         # nature of content
