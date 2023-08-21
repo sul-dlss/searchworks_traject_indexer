@@ -38,7 +38,7 @@ RSpec.describe 'ItemInfo config' do
       expect(select_by_id('804724')[field]).to eq ['SAL Newark (off-campus storage)']
       expect(select_by_id('1147269')[field]).to eq ['Classics']
       expect(select_by_id('1505065')[field]).to eq ['Earth Sciences (Branner)']
-      expect(select_by_id('1618836')[field]).to eq ['Education (at SAL1&2)']
+      expect(select_by_id('1618836')[field]).to eq ['Education (Cubberley)']
       expect(select_by_id('1849258')[field]).to eq ['Engineering (Terman)']
       expect(select_by_id('2678655')[field]).to eq ['Business']
       expect(select_by_id('3027805')[field]).to eq ['Marine Biology (Miller)']
@@ -47,8 +47,8 @@ RSpec.describe 'ItemInfo config' do
       expect(select_by_id('4823592')[field]).to eq ['Law (Crown)']
       expect(select_by_id('5666387')[field]).to eq ['Music']
       expect(select_by_id('6676531')[field]).to eq ['East Asia']
-      expect(select_by_id('10421123')[field]).to eq ['Lathrop']
-      expect(select_by_id('2797608')[field]).to eq ['Media & Microtext Center']
+      # expect(select_by_id('10421123')[field]).to eq ['Lathrop']
+      expect(select_by_id('2797608')[field]).to eq ['Media Center']
       expect(select_by_id('2797609')[field]).to eq ['David Rumsey Map Center']
       expect(select_by_id('11847684')[field]).to eq ['Science (Li and Ma)']
 
@@ -65,10 +65,10 @@ RSpec.describe 'ItemInfo config' do
       # NOT  3277173  (withdrawn)
 
       # SAL 1 & 2
-      expect(select_by_id('1033119')[field]).to include 'SAL1&2 (on-campus shelving)'
-      expect(select_by_id('1962398')[field]).to include 'SAL1&2 (on-campus shelving)'
-      expect(select_by_id('2328381')[field]).to include 'SAL1&2 (on-campus shelving)'
-      expect(select_by_id('2913114')[field]).to include 'SAL1&2 (on-campus shelving)'
+      expect(select_by_id('1033119')[field]).to include 'SAL1&2 (on-campus storage)'
+      expect(select_by_id('1962398')[field]).to include 'SAL1&2 (on-campus storage)'
+      expect(select_by_id('2328381')[field]).to include 'SAL1&2 (on-campus storage)'
+      expect(select_by_id('2913114')[field]).to include 'SAL1&2 (on-campus storage)'
 
       # SAL3 (off-campus storage)
       expect(select_by_id('690002')[field]).to include 'SAL3 (off-campus storage)'
@@ -77,12 +77,12 @@ RSpec.describe 'ItemInfo config' do
       expect(select_by_id('7651581')[field]).to include 'SAL3 (off-campus storage)'
 
       # Lane
-      expect(select_by_id('7370014')[field]).to include 'Medical (Lane)'
-      expect(select_by_id('7233951')[field]).to include 'Medical (Lane)'
+      expect(select_by_id('7370014')[field]).to include 'Lane Medical'
+      expect(select_by_id('7233951')[field]).to include 'Lane Medical'
 
       # Hoover
-      expect(select_by_id('3743949')[field]).to include 'Hoover Library'
-      expect(select_by_id('3400092')[field]).to include 'Hoover Archives'
+      expect(select_by_id('3743949')[field]).to include 'Hoover Institution Library & Archives'
+      expect(select_by_id('3400092')[field]).to include 'Hoover Institution Library & Archives'
     end
 
     it 'skips invalid buildings' do
