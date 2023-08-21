@@ -4,15 +4,15 @@ RSpec.describe 'Sirsi course reserves config' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.settings('reserves_file' => 'spec/fixtures/files/multmult.csv')
-      i.load_config_file('./lib/traject/config/folio_config.rb')
+      i.load_config_file('./lib/traject/config/sirsi_config.rb')
     end
   end
 
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { '666.marc' }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:result) { indexer.map_record(record) }
 
   describe 'crez_instructor_search' do
     let(:field) { 'crez_instructor_search' }
@@ -64,7 +64,7 @@ RSpec.describe 'Sirsi course reserves config' do
     let(:indexer) do
       Traject::Indexer.new.tap do |i|
         i.settings('reserves_file' => 'spec/fixtures/files/rezdeskbldg.csv')
-        i.load_config_file('./lib/traject/config/folio_config.rb')
+        i.load_config_file('./lib/traject/config/sirsi_config.rb')
       end
     end
     let(:field) { 'building_facet' }

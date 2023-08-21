@@ -12,7 +12,7 @@ describe 'Skips records' do
     end
   end
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:results) { indexer.process_with(records, Traject::ArrayWriter.new).values }
+  let(:results) { indexer.process_with(records.map { |r| stub_record_from_marc(r) }, Traject::ArrayWriter.new).values }
   let(:fixture_name) { 'buildingTests.mrc' }
   it 'without an item_display field' do
     expect(results.count).to eq 42

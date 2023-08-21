@@ -39,10 +39,10 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'collection' }
 
     it 'maps the right data' do
-      expect(select_by_id('managedPurlItem1Collection')[field]).to eq %w[sirsi folio 9615156 ]
-      expect(select_by_id('managedPurlItem3Collections')[field]).to eq %w[sirsi folio 9615156 123456789 yy000zz1111]
-      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq %w[sirsi folio]
-      expect(select_by_id('NoManagedPurlItem')[field]).to eq %w[sirsi folio]
+      expect(select_by_id('managedPurlItem1Collection')[field]).to contain_exactly 'sirsi', 'folio', '9615156'
+      expect(select_by_id('managedPurlItem3Collections')[field]).to contain_exactly 'sirsi', 'folio', '9615156', '123456789', 'yy000zz1111'
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to contain_exactly 'sirsi', 'folio'
+      expect(select_by_id('NoManagedPurlItem')[field]).to contain_exactly 'sirsi', 'folio'
     end
   end
 

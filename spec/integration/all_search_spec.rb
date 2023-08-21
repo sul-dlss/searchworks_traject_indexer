@@ -3,13 +3,13 @@
 RSpec.describe 'All_search integration' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/folio_config.rb')
+      i.load_config_file('./lib/traject/config/sirsi_config.rb')
     end
   end
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { '100017.marc' }
   let(:record) { records.first }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
 
   describe 'all_search' do
     let(:field) { 'all_search' }
