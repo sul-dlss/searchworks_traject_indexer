@@ -38,12 +38,15 @@ cap prod deploy:update_systemd_scripts
 Or manually from the server:
 
 ```
-# either
+rvm use 3.1.2 # Because foreman export doesn't work on ruby 3.2
+bundle
+
+# Then either
 script/export_proc_files_to_systemd_stage.sh
 # or
 script/export_proc_files_to_systemd_prod.sh
 
-# and then:
+# and finally:
 script/reload_systemd_indexers.sh
 ```
 
