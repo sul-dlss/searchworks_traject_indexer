@@ -63,7 +63,9 @@ end
 
 def mods_xpath(xpath)
   lambda do |resource, accumulator, _context|
-    accumulator << resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3')
+    # Convert the xpath result (a Nokogiri nodeset) to a plain array.
+    # This allows traject methods like first_only to work properly.
+    accumulator.concat(resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3'))
   end
 end
 
