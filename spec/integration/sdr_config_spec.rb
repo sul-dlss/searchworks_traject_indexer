@@ -501,6 +501,24 @@ describe 'SDR indexing' do
         expect(result['copyright_year_isi']).to eq ['1923']
       end
     end
+
+    describe 'copyright_year_isi with multiple potential years' do
+      let(:mods_fragment) do
+        <<-XML
+        <originInfo>
+          <copyrightDate encoding="w3cdtf" keyDate="yes">1980</copyrightDate>
+        <publisher>Stoneware Inc.</publisher>
+        </originInfo>
+        <originInfo>
+          <copyrightDate encoding="w3cdtf" qualifier="inferred" point="start">1982</copyrightDate>
+          <copyrightDate encoding="w3cdtf" qualifier="inferred" point="end">1984</copyrightDate>
+        </originInfo>
+        XML
+      end
+      it 'maps the right data' do
+        expect(result['copyright_year_isi']).to eq ['1980']
+      end
+    end
   end
 
   context 'pub_country' do
