@@ -2,12 +2,9 @@
 
 require 'spec_helper'
 RSpec.describe 'All_search config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
   let(:fixture_name) { 'allfieldsTests.mrc' }
@@ -17,7 +14,7 @@ RSpec.describe 'All_search config' do
       r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
     end
   end
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:field) { 'preferred_barcode' }
 
   describe 'preferred_barcode' do

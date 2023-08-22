@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Managed purl config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
 
   let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { 'managedPurlTests.xml' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
 
   describe 'managed_purl_urls' do
     let(:field) { 'managed_purl_urls' }
@@ -42,10 +39,10 @@ RSpec.describe 'Managed purl config' do
     let(:field) { 'collection' }
 
     it 'maps the right data' do
-      expect(select_by_id('managedPurlItem1Collection')[field]).to eq %w[sirsi 9615156]
-      expect(select_by_id('managedPurlItem3Collections')[field]).to eq %w[sirsi 9615156 123456789 yy000zz1111]
-      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq ['sirsi']
-      expect(select_by_id('NoManagedPurlItem')[field]).to eq ['sirsi']
+      expect(select_by_id('managedPurlItem1Collection')[field]).to contain_exactly 'sirsi', 'folio', '9615156'
+      expect(select_by_id('managedPurlItem3Collections')[field]).to contain_exactly 'sirsi', 'folio', '9615156', '123456789', 'yy000zz1111'
+      expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to contain_exactly 'sirsi', 'folio'
+      expect(select_by_id('NoManagedPurlItem')[field]).to contain_exactly 'sirsi', 'folio'
     end
   end
 

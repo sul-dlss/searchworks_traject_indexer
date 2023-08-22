@@ -1,6 +1,37 @@
 # frozen_string_literal: true
 
 module ResultHelpers
+  def stub_record_from_marc(marc_record, client: stub_folio_client)
+    FolioRecord.new({
+                      'source_record' => [marc_record.to_hash],
+                      'instance' => {
+                        'id' => marc_record['001']&.value
+                      }
+                    }, client).tap do |record|
+      if marc_record['999']
+        stub_sirsi_holdings = []
+
+        marc_record.each_by_tag('999') do |item|
+          stub_sirsi_holdings << SirsiHolding.new(
+            call_number: (item['a'] || '').strip,
+            current_location: item['k'],
+            home_location: item['l'],
+            library: item['m'],
+            scheme: item['w'],
+            type: item['t'],
+            barcode: item['i'],
+            public_note: (item['o'] if item['o']&.start_with?(/\.PUBLIC\./i))
+          )
+        end
+        allow(record).to receive(:sirsi_holdings).and_return(stub_sirsi_holdings)
+      end
+    end
+  end
+
+  def stub_folio_client
+    instance_double(FolioClient, instance: {}, items_and_holdings: {}, statistical_codes: [])
+  end
+
   def select_by_id(id)
     results.select { |r| r['id'] == [id] }.first
   end

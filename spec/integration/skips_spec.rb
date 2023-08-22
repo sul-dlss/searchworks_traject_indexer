@@ -8,11 +8,11 @@ describe 'Skips records' do
         'writer_class_name' => 'Traject::ArrayWriter',
         'skip_empty_item_display' => 1
       )
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:results) { indexer.process_with(records, Traject::ArrayWriter.new).values }
+  let(:results) { indexer.process_with(records.map { |r| stub_record_from_marc(r) }, Traject::ArrayWriter.new).values }
   let(:fixture_name) { 'buildingTests.mrc' }
   it 'without an item_display field' do
     expect(results.count).to eq 42

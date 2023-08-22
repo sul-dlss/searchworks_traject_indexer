@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Publication config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
 
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { 'publicationTests.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
 
   describe 'pub_search' do
     let(:field) { 'pub_search' }
@@ -41,7 +38,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with a record with a 264' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -62,7 +59,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with a record with a 260 and a 264' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -85,7 +82,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with unknown-ish phrases' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -108,7 +105,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with unknown-ish phrases' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -140,7 +137,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with some linked fields' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -179,7 +176,7 @@ RSpec.describe 'Publication config' do
     let(:fixture_name) { 'pubDateTests.mrc' }
 
     context 'with unknown dates' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -208,7 +205,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with dates greater than the current year + 10' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -236,7 +233,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with dates greater than the current year + 10' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('264', ' ', ' ',
@@ -275,7 +272,7 @@ RSpec.describe 'Publication config' do
       '[1940?]' => '1940'
     }.each do |data_264c, expected|
       context 'with a year in the 264' do
-        subject(:result) { indexer.map_record(record) }
+        subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
         let(:record) do
           MARC::Record.new.tap do |r|
             r.append(MARC::DataField.new('264', ' ', ' ',
@@ -296,7 +293,7 @@ RSpec.describe 'Publication config' do
       %w[1560 1564] => '1560'
     }.each do |data_264c, expected|
       context 'with a garbage value in the 008, and year in the 264' do
-        subject(:result) { indexer.map_record(record) }
+        subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
         let(:record) do
           MARC::Record.new.tap do |r|
             Array(data_264c).each do |v|
@@ -312,7 +309,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with garbage in both the 008 and 264c' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('008', '       0000'))
@@ -325,7 +322,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with both 260 and 264' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('008', '       0000'))
@@ -401,7 +398,7 @@ RSpec.describe 'Publication config' do
     }.each do |fields, expected|
       context 'with a single value in a 260c' do
         let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
-        subject(:result) { indexer.map_record(record) }
+        subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
         it 'populates correctly' do
           expect(result[field]).to eq [expected]
@@ -412,7 +409,7 @@ RSpec.describe 'Publication config' do
     context 'without a 008 or 260c usable value' do
       let(:fields) { [{ '250' => { 'subfields' => [{ 'c' => '[19--]' }] } }] }
       let(:record) { MARC::Record.new_from_hash('leader' => '', 'fields' => fields) }
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
       it 'is not populated' do
         expect(result[field]).to be_nil
@@ -444,7 +441,7 @@ RSpec.describe 'Publication config' do
     let(:field) { 'imprint_display' }
 
     context 'with both 250 + 260' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -462,7 +459,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with 250 alone' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -477,7 +474,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with 250a alone' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -491,7 +488,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with both 250 + 260' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -508,7 +505,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with 250 linked' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -526,7 +523,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with 260 linked' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('260', ' ', ' ',
@@ -550,7 +547,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with 260 linked (CJK)' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('260', ' ', ' ',
@@ -572,7 +569,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with 250 + 260 both linked' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -600,7 +597,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with a 264' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -620,7 +617,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with a 264 that is just a copyright or other date' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::DataField.new('250', ' ', ' ',
@@ -689,7 +686,7 @@ RSpec.describe 'Publication config' do
     end
 
     context 'with garbage in the 008' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(MARC::ControlField.new('008', '800124d1uuu99uuru'))

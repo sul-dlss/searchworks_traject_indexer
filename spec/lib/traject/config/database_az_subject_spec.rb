@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
   let(:record) { records.first }
   let(:field) { 'db_az_subject' }
 
   describe 'db_az_subject' do
-    subject(:result) { indexer.map_record(record) }
+    subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
     context 'with a record with multiple 099 fields with values for all' do
       let(:record) do
@@ -102,7 +100,7 @@ RSpec.describe 'Sirsi config' do
 
     context 'with real-world data' do
       let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
-      subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+      subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
       let(:fixture_name) { 'databasesAZsubjectTests.xml' }
 
       it 'indexes the right data' do

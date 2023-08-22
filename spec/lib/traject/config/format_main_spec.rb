@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Format main config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:field) { 'format_main_ssim' }
 
   describe 'format_main_ssim' do

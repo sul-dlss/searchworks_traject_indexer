@@ -27,7 +27,8 @@ settings do
     provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', ''))
   end
 
-  provide 'skip_empty_item_display', -1
+  provide 'skip_empty_item_display', ENV.fetch('SKIP_EMPTY_ITEM_DISPLAY', nil)
+  self['skip_empty_item_display'] = self['skip_empty_item_display'].to_i
 end
 
 ##
@@ -251,7 +252,7 @@ end
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|
-  if context.output_hash['item_display'].blank? && context.output_hash['url_fulltext'].blank?
+  if context.output_hash['item_display'].blank? && context.output_hash['url_fulltext'].blank? && settings['skip_empty_item_display'] > -2
     context.skip!('No item_display or url_fulltext field')
   end
 end

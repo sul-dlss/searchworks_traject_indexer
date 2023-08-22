@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/marc_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
   describe 'physical' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'physicalTests.mrc' }
     let(:field) { 'physical' }
 
@@ -48,7 +47,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_physical' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_physical' }
 

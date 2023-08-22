@@ -342,7 +342,7 @@
       <subfield code="w">LC</subfield>
       <subfield code="i">36105041442281</subfield>
       <subfield code="l">STACKS</subfield>
-      <subfield code="m">GOV-DOCS</subfield>
+      <subfield code="m">GREEN</subfield>
       <subfield code="t">STKS-MONO</subfield>
     </datafield>
   </record>
@@ -445,7 +445,7 @@
       <subfield code="w">SUDOC</subfield>
       <subfield code="i">001ANE5736</subfield>
       <subfield code="l">STACKS</subfield>
-      <subfield code="m">JACKSON</subfield>
+      <subfield code="m">BUSINESS</subfield>
       <subfield code="t">GOVSTKS</subfield>
     </datafield>
   </record>
@@ -541,7 +541,7 @@
       <subfield code="w">LC</subfield>
       <subfield code="i">36105020376997</subfield>
       <subfield code="l">STACKS</subfield>
-      <subfield code="m">HV-ARCHIVE</subfield>
+      <subfield code="m">HOOVER</subfield>
       <subfield code="t">STKS-MONO</subfield>
     </datafield>
   </record>
