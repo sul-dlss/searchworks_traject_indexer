@@ -168,19 +168,13 @@ class FolioRecord
 
   def items
     @items ||= load('items').reject do |item|
-      loc = item.dig('location', 'permanentLocation', 'code')
-      item['suppressFromDiscovery'] || loc&.end_with?('MIGRATE-ERR')
+      item['suppressFromDiscovery']
     end
-  end
-
-  def items_all_suppressed?
-    load('items').any? && load('items').all? { |item| item['suppressFromDiscovery'] }
   end
 
   def holdings
     @holdings ||= load('holdings').reject do |holding|
-      loc = holding.dig('location', 'effectiveLocation', 'code')
-      holding['suppressFromDiscovery'] || loc&.end_with?('MIGRATE-ERR')
+      holding['suppressFromDiscovery']
     end
   end
 
