@@ -172,10 +172,6 @@ class FolioRecord
     end
   end
 
-  def items_all_suppressed?
-    load('items').any? && load('items').all? { |item| item['suppressFromDiscovery'] }
-  end
-
   def holdings
     @holdings ||= load('holdings').reject do |holding|
       holding['suppressFromDiscovery']

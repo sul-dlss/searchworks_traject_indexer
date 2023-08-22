@@ -120,11 +120,6 @@ each_record do |record, context|
   end
 end
 
-# Skip records that only have suppressed items
-each_record do |record, context|
-  context.skip!('Only suppressed items') if record.items_all_suppressed?
-end
-
 each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
