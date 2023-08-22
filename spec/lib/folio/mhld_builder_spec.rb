@@ -327,7 +327,7 @@ RSpec.describe Folio::MhldBuilder do
       it { is_expected.to be_empty }
     end
 
-    context 'with MIGRATE-ERR locations' do
+    context 'when the holding is suppressed from discovery' do
       let(:holding) do
         { 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
           'notes' => [],
@@ -347,7 +347,7 @@ RSpec.describe Folio::MhldBuilder do
           'receivingHistory' => { 'entries' => [] },
           'statisticalCodes' => [],
           'holdingsStatements' => holdings_statements,
-          'suppressFromDiscovery' => false,
+          'suppressFromDiscovery' => true,
           'holdingsStatementsForIndexes' => index_statements,
           'holdingsStatementsForSupplements' => supplement_statements }
       end
