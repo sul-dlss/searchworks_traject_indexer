@@ -30,15 +30,7 @@ module Folio
       fields = electronic_location_fields.first(1) if fields.empty?
 
       fields.map.with_index do |_url, index|
-        item = marc_item(index)
-        SirsiHolding.new(
-          call_number: item['a'],
-          barcode: item['i'],
-          current_location: item['k'],
-          home_location: item['l'],
-          library: item['m'],
-          type: item['t']
-        )
+        sirsi_holding(index)
       end
     end
 
@@ -55,13 +47,14 @@ module Folio
       (marc_record || []).select { |field| %w[856 956].include?(field.tag) && field.codes.include?('u') }
     end
 
-    def marc_item(index)
-      MARC::DataField.new('999', ' ', ' ',
-                          ['a', CALL_NUMBER],
-                          ['i', barcode(index)],
-                          ['l', home_location_code],
-                          ['m', library_code],
-                          ['t', TYPE])
+    def sirsi_holding(index)
+      SirsiHolding.new(
+        call_number: CALL_NUMBER,
+        barcode: barcode(index),
+        home_location: home_location_code,
+        library: library_code,
+        type: TYPE
+      )
     end
 
     def barcode(index)
