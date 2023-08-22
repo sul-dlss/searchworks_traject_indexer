@@ -32,6 +32,10 @@ settings do
   if self['kafka.topic']
     require './lib/traject/readers/kafka_folio_reader'
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
+
+    consumer = Utils.kafka.consumer(group_id: self['kafka.consumer_group_id'] || 'traject')
+    consumer.subscribe(self['kafka.topic'])
+    provide 'kafka.consumer', consumer
   elsif self['postgres.url']
     require './lib/traject/readers/folio_postgres_reader'
     if self['catkey']
