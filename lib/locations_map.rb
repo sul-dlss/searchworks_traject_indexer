@@ -16,6 +16,36 @@ class LocationsMap
                          SUL-TS-CC-BOOKJACKET
                          SUL-TS-CC-BINDERYPREP].freeze
 
+  # Symphony location codes to definitely not map to; these are
+  # often locations that have been consolidated in FOLIO and these
+  # are the less-prefered mappings for backwards compatibility because
+  # they carry additional implications (e.g. being shadowed)
+  SYMPHONY_CODES_TO_SKIP = [
+    %w[ENG SHELBYTITL],
+    %w[GREEN SSRC-FIC-S],
+    %w[GREEN FED-DOCS-S],
+    %w[GREEN HAS-DIGIT],
+    %w[GREEN STAFF],
+    %w[HOOVER TURKISH],
+    %w[HOOVER PERSIAN],
+    %w[HOOVER ARABIC],
+    %w[LANE LANE-NEW],
+    %w[LAW LAW-ARCHIV],
+    %w[LAW LAW-STAFSHADOW],
+    %w[MUS MEMLIBMUS],
+    %w[RUMSEYMAP RUMXEMPLAR],
+    %w[SAL3 INPROCESS],
+    %w[SAL3 CDL],
+    %w[SAL3 ON-ORDER],
+    %w[SPEC-COLL SPECMED-S],
+    %w[SPEC-COLL SPECM-S],
+    %w[SPEC-COLL SPECB-S],
+    %w[SPEC-COLL UARCHX-30],
+    %w[SPEC-COLL SPECA-S],
+    %w[SUL UNKNOWN],
+    %w[RUMSEYMAP W7-STKS]
+  ].freeze
+
   # @return a tuple of library code and location code
   def self.for(key)
     instance.data[key]
@@ -35,7 +65,7 @@ class LocationsMap
       library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
 
       # Skipping location codes that we want to handle as FOLIO codes in SearchWorks.
-      next if LOCATIONS_TO_SKIP.include?(folio_code)
+      next if LOCATIONS_TO_SKIP.include?(folio_code) || SYMPHONY_CODES_TO_SKIP.include?([library_code, home_location])
 
       # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
       next if folio_code == 'SAL3-STACKS' && home_location != 'STACKS'
