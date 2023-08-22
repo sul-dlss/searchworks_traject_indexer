@@ -177,49 +177,6 @@ RSpec.describe 'Call Number Facet' do
   end
 
   context 'LC Call Numbers' do
-    #
-    # 	/**
-    # 	 * when all items are online and/or all items have ignored callnums,
-    # 	 *  then we look for an LC call number first in 050, then in 090 and
-    # 	 *  if we find a good one, we use it for facet and browsing
-    # 	 */
-    # @Test
-    # 	public void hasSeparateBrowseCallnum()
-    # 	{
-    # 		// 1 item online, type LC:  no 050 or 090
-    # 		Record record = getRecordWith999("INTERNET RESOURCE", CallNumberType.LC);
-    # 		solrFldMapTest.assertNoSolrFld(record, fldName);
-    # 		// add 090 - get value from 090
-    # 		DataField df090 = factory.newDataField("090", ' ', ' ');
-    # 		df090.addSubfield(factory.newSubfield('a', "QM142"));
-    # 		df090.addSubfield(factory.newSubfield('b', ".A84 2010"));
-    # 		record.addVariableField(df090);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QM - Human Anatomy");
-    # 		// add 050 - get value from 050 instead of 090
-    # 		DataField df050 = factory.newDataField("050", '1', '4');
-    # 		df050.addSubfield(factory.newSubfield('a', "QA76.76.C672"));
-    # 		record.addVariableField(df050);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QA - Mathematics");
-    # 		solrFldMapTest.assertSolrFldHasNumValues(record, fldName, 1);
-    #
-    # 		// 1 item ignored callnum, type ASIS:  no 050 or 090
-    # 		record = getRecordWith999(StanfordIndexer.SKIPPED_CALLNUMS.toArray()[0].toString(), "ASIS");
-    # 		solrFldMapTest.assertNoSolrFld(record, fldName);
-    # 		// add 090 - get value from 090
-    # 		df090 = factory.newDataField("090", ' ', ' ');
-    # 		df090.addSubfield(factory.newSubfield('a', "QM142"));
-    # 		df090.addSubfield(factory.newSubfield('b', ".A84 2010"));
-    # 		record.addVariableField(df090);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QM - Human Anatomy");
-    # 		// add 050 - get value from 050 instead of 090
-    # 		df050 = factory.newDataField("050", '1', '4');
-    # 		df050.addSubfield(factory.newSubfield('a', "QA76.76.C672"));
-    # 		record.addVariableField(df050);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QA - Mathematics");
-    # 		solrFldMapTest.assertSolrFldHasNumValues(record, fldName, 1);
-    # 	}
-    #
-
     it 'handles single letter LC call numbers' do
       expect(record_with_999(call_number: 'D764.7 .K72 1990', scheme: 'LC', indexer:)[field]).to eq(
         ['LC Classification|D - History (General)|D - History (General)']
