@@ -16,6 +16,9 @@ Style/ArgumentsForwarding: # new in 1.1
   Enabled: false
 Style/MultilineIfModifier:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
 
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true
