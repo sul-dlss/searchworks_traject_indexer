@@ -56,7 +56,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     let(:sirsi_result) { sirsi_indexer.map_record(marc_record) }
     let(:folio_result) { folio_indexer.map_record(folio_record) }
     let(:mapped_fields) do
-      path = File.expand_path('../../lib/traject/config/marc_config.rb', __dir__)
+      path = File.expand_path('../../lib/traject/config/folio_config.rb', __dir__)
       File.read(path).scan(/to_field ["']([^"']+)["']/).map(&:first).uniq
     end
     before(:each) do
@@ -78,7 +78,11 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         'url_restricted', # FOLIO has ezproxy prefixes
         'marc_links_struct', # FOLIO has ezproxy prefixes
         'marc_json_struct',
-        'context_source_ssi' # sirsi_config sets this to 'sirsi', and folio sets it to 'folio'
+        'context_source_ssi', # sirsi_config sets this to 'sirsi', and folio sets it to 'folio',
+        'uuid_ssi',
+        'folio_json_struct',
+        'holdings_json_struct',
+        'building_facet'
       ]
     end
 
@@ -88,8 +92,8 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         'callnum_search',
         'reverse_shelfkey',
         'shelfkey',
-        'mhld_display', # derived from the mhlds
-        'building_facet' # derived from the item list
+        'callnum_facet_hsim',
+        'mhld_display' # derived from the mhlds
       ]
     end
     it 'matches' do
@@ -108,6 +112,19 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
                                          "expected #{key} to match \n\nSIRSI:\n#{sirsi_result[key].inspect}\nFOLIO:\n#{folio_result[key].inspect}"
           end
         end
+
+        # Some buildings change display names in FOLIO
+        expect(folio_result['building_facet']).to contain_exactly(*((sirsi_result['building_facet'] || []).map do |x|
+          case x
+          when 'SAL1&2 (on-campus shelving)' then 'SAL1&2 (on-campus storage)'
+          when 'Medical (Lane)' then 'Lane Medical'
+          when 'Media & Microtext Center' then 'Media Center'
+          when /^Hoover/ then 'Hoover Institution Library & Archives'
+          when /^Education/ then 'Education (Cubberley)'
+          else
+            x
+          end
+        end))
 
         %w[url_fulltext url_restricted marc_links_struct].each do |key|
           # we can treat nil and an empty array as equivalent (but not e.g. nil and an empty string)
@@ -171,6 +188,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a304635',
     'a12451243',
     'a13288549',
+    'a6535458', # MHLD punctuation
     'a13295747', # electronic
     'a12709561', # electronic
     'a10690790', # ezproxy prefix
@@ -200,7 +218,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a13652131', # electronic only, missing physical holding?
     'a282409', # MARC 699 field
     'a2492166', # bound-with call numbers missing
-    'a6535458', # MHLD punctuation
     'a5814693', # MHLD ordering
     'a6517994' # has unexpected MHLD statements
   ].each do |catkey|

@@ -58,9 +58,13 @@ RSpec.describe 'FOLIO indexing' do
   end
 
   it 'includes folio-specific fields' do
-    expect(result).to include 'uuid_ssi' => ['b2fe7336-33d1-5553-86cb-a15af14c7348'],
-                              'folio_json_struct' => [start_with('{')],
-                              'holdings_json_struct' => [start_with('{')]
+    aggregate_failures do
+      expect(result).to include 'uuid_ssi' => ['b2fe7336-33d1-5553-86cb-a15af14c7348']
+      expect(result).to include 'folio_json_struct', 'holdings_json_struct'
+
+      expect(JSON.parse(result['folio_json_struct'].first)).to include 'instance'
+      expect(JSON.parse(result['holdings_json_struct'].first)).to include 'holdings', 'items'
+    end
   end
 
   context 'when the record is suppressed' do
