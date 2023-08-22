@@ -114,7 +114,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
         end
 
         # Some buildings change display names in FOLIO
-        expect(folio_result['building_facet']).to contain_exactly(*((sirsi_result['building_facet'] || []).map do |x|
+        expect(folio_result['building_facet'] || []).to contain_exactly(*((sirsi_result['building_facet'] || []).map do |x|
           case x
           when 'SAL1&2 (on-campus shelving)' then 'SAL1&2 (on-campus storage)'
           when 'Medical (Lane)' then 'Lane Medical'
