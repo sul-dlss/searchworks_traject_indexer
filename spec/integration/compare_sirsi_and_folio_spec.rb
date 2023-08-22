@@ -28,7 +28,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
 
   let(:marc_record) do
     MARC::XMLReader.new(StringIO.new(HTTP.get(marc_url).body.to_s)).to_a.first.tap do |marc_record|
-      fields = marc_record.fields(true)
+      fields = marc_record.fields(false)
       fields.delete_if { |field| folio_migration_junk_tags.include?(field.tag) }
     end
   end
