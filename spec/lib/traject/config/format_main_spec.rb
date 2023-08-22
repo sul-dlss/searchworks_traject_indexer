@@ -6,7 +6,8 @@ RSpec.describe 'Format main config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  let(:instance) { {} }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record, instance:)) }
   let(:field) { 'format_main_ssim' }
 
   describe 'format_main_ssim' do
@@ -276,9 +277,9 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a database' do
-      pending('Needs to be fixed up to use stat codes')
+    let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
+    it 'is a database' do
       expect(result[field]).to eq ['Software/Multimedia', 'Database']
     end
   end
@@ -2231,9 +2232,9 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
-      pending('Needs to be fixed up to use stat codes')
+    let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
+    it 'is a serial' do
       expect(result[field]).to eq ['Journal/Periodical', 'Database']
     end
   end
@@ -2280,9 +2281,9 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
-      pending('Needs to be fixed up to use stat codes')
+    let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
+    it 'is a  serial' do
       expect(result[field]).to eq ['Journal/Periodical', 'Database']
     end
   end
@@ -2370,9 +2371,9 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a book' do
-      pending('Needs to be fixed up to use stat codes')
+    let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
+    it 'is a book' do
       expect(result[field]).to eq %w[Book Database]
     end
   end
@@ -2419,9 +2420,9 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a book' do
-      pending('Needs to be fixed up to use stat codes')
+    let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
+    it 'is a book' do
       expect(result[field]).to eq %w[Book Database]
     end
   end
