@@ -188,6 +188,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a304635',
     'a12451243',
     'a13288549',
+    'a6535458', # MHLD punctuation
     'a13295747', # electronic
     'a12709561', # electronic
     'a10690790', # ezproxy prefix
@@ -217,7 +218,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a13652131', # electronic only, missing physical holding?
     'a282409', # MARC 699 field
     'a2492166', # bound-with call numbers missing
-    'a6535458', # MHLD punctuation
     'a5814693', # MHLD ordering
     'a6517994' # has unexpected MHLD statements
   ].each do |catkey|
