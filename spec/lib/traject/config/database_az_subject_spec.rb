@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
+  let(:instance) { {} }
+  subject(:result) { indexer.map_record(stub_record_from_marc(record, instance:)) }
   let(:record) { records.first }
   let(:field) { 'db_az_subject' }
 
   describe 'db_az_subject' do
-    subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
-
     context 'with a record with multiple 099 fields with values for all' do
       let(:record) do
         MARC::Record.new.tap do |r|
@@ -30,9 +29,9 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
-      it 'maps the right data' do
-        pending('Needs to be updated to use stat codes')
+      let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
+      it 'maps the right data' do
         expect(result[field]).to eq ['News', 'Science (General)']
       end
     end

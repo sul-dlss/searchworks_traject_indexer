@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 module ResultHelpers
-  def stub_record_from_marc(marc_record, client: stub_folio_client)
+  def stub_record_from_marc(marc_record, client: stub_folio_client, instance: {})
     FolioRecord.new({
                       'source_record' => [marc_record.to_hash],
-                      'instance' => {
-                        'id' => marc_record['001']&.value
-                      }
+                      'instance' => instance.merge({ 'id' => marc_record['001']&.value })
                     }, client).tap do |record|
       if marc_record['999']
         stub_sirsi_holdings = []
