@@ -3,39 +3,32 @@
 require 'sirsi_holding'
 
 # rubocop:disable Metrics/ParameterLists
-def record_with_999(call_number:, scheme:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
-  indexer.map_record(stub_record_from_marc(
-                       MARC::Record.new.tap do |r|
-                         r.append(
-                           MARC::DataField.new(
-                             '999',
-                             ' ',
-                             ' ',
-                             MARC::Subfield.new('a', call_number),
-                             MARC::Subfield.new('l', home_location),
-                             MARC::Subfield.new('m', library),
-                             MARC::Subfield.new('t', type),
-                             MARC::Subfield.new('w', scheme)
-                           )
-                         )
-                         yield r if block_given?
-                       end
-                     ))
+def record_with_holdings(call_number:, scheme:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
+  holdings = [
+    SirsiHolding.new(
+      call_number:,
+      home_location:,
+      library:,
+      scheme:,
+      type:,
+      barcode: ''
+    )
+  ]
+  yield(holdings) if block_given?
+  allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+  indexer.map_record(folio_record)
 end
 # rubocop:enable Metrics/ParameterLists
 
 RSpec.describe 'Call Number Facet' do
   subject(:result) { indexer.map_record(folio_record) }
-  # Legacy
-  let(:folio_record) { stub_record_from_marc(marc_record) }
 
-  # The future (when we remove calls to record_with_999)
-  # let(:folio_record) do
-  #   FolioRecord.new({
-  #                     'source_record' => source_record,
-  #                     'instance' => {}
-  #                   }, stub_folio_client)
-  # end
+  let(:folio_record) do
+    FolioRecord.new({
+                      'source_record' => source_record,
+                      'instance' => {}
+                    }, stub_folio_client)
+  end
 
   let(:source_record) do
     [{ 'leader' => '          22        4500', 'fields' => [] }]
@@ -51,134 +44,134 @@ RSpec.describe 'Call Number Facet' do
 
   describe 'call numbers excluded for various reasons' do
     it 'handles unexpected callnum type (by not including them)' do
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'HARVYENCH', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'OTHER', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'THESIS', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'XX', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'ASIS', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'M123 .M234', scheme: 'AUTO', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'HARVYENCH', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'OTHER', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'THESIS', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'XX', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'ASIS', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'AUTO', indexer:)[field]).to be_nil
     end
 
     it 'handles skipped items (by not including them)' do
       # skipped location
-      expect(record_with_999(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC',
-                             indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC',
+                                  indexer:)[field]).to be_nil
     end
 
     it 'handles weird LC callnum from Lane-Med (by not including them)' do
       # invalid LC from Lane
-      expect(record_with_999(call_number: 'notLC', scheme: 'LC', library: 'LANE-MED',
-                             indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'notLC', scheme: 'LC', library: 'LANE-MED',
+                                  indexer:)[field]).to be_nil
 
       # valid LC from Lane
-      expect(record_with_999(call_number: 'M123 .M456', scheme: 'LC', indexer:)[field]).to eq(
+      expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', indexer:)[field]).to eq(
         ['LC Classification|M - Music|M - Music']
       )
 
       #  invalid LC not from Lane
-      expect(record_with_999(call_number: 'notLC', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'notLC', scheme: 'LC', indexer:)[field]).to be_nil
     end
 
     it 'assigns value for valid LC even if it is a shelve by location' do
       SirsiHolding::SHELBY_LOCS.each do |loc|
         # valid LC
         # FIXME: we DO want a value if there is valid LC for shelby location
-        # expect(record_with_999(call_number: 'M123 .M456', scheme: 'LC', home_location: loc, indexer: indexer)[field]).to eq(
+        # expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', home_location: loc, indexer: indexer)[field]).to eq(
         #   ['LC Classification|M - Music|M - Music']
         # )
 
         # invalid LC
-        expect(record_with_999(call_number: 'not valid!', scheme: 'LC', home_location: loc,
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: 'not valid!', scheme: 'LC', home_location: loc,
+                                    indexer:)[field]).to be_nil
         # invalid Dewey
-        expect(record_with_999(call_number: 'not valid!', scheme: 'DEWEY', home_location: loc,
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: 'not valid!', scheme: 'DEWEY', home_location: loc,
+                                    indexer:)[field]).to be_nil
         # Hopkins weird Shelby
-        expect(record_with_999(call_number: ' 1976', scheme: 'LCPER', home_location: loc,
-                               indexer:)[field]).to be_nil
-        expect(record_with_999(call_number: '1976', scheme: 'LCPER', home_location: loc,
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: ' 1976', scheme: 'LCPER', home_location: loc,
+                                    indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: '1976', scheme: 'LCPER', home_location: loc,
+                                    indexer:)[field]).to be_nil
       end
     end
 
     it 'handles missing or lost call numbers (by not including them)' do
       SirsiHolding::LOST_OR_MISSING_LOCS.each do |loc|
         # valid LC
-        expect(record_with_999(call_number: 'M123 .M456', home_location: loc, scheme: 'LC',
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: 'M123 .M456', home_location: loc, scheme: 'LC',
+                                    indexer:)[field]).to be_nil
         # invalid LC
-        expect(record_with_999(call_number: 'not valid!', home_location: loc, scheme: 'LC',
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: 'not valid!', home_location: loc, scheme: 'LC',
+                                    indexer:)[field]).to be_nil
         # valid Dewey
-        expect(record_with_999(call_number: '123.4 .B45', home_location: loc, scheme: 'DEWEY',
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: '123.4 .B45', home_location: loc, scheme: 'DEWEY',
+                                    indexer:)[field]).to be_nil
         # invalid Dewey
-        expect(record_with_999(call_number: 'not valid!', home_location: loc, scheme: 'DEWEY',
-                               indexer:)[field]).to be_nil
+        expect(record_with_holdings(call_number: 'not valid!', home_location: loc, scheme: 'DEWEY',
+                                    indexer:)[field]).to be_nil
       end
     end
 
     it 'handles ignored call numbers (by not including them)' do
       # LC
-      expect(record_with_999(call_number: 'INTERNET RESOURCE stuff', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XX stuff', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'NO CALL NUMBER', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'INTERNET RESOURCE stuff', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'XX stuff', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'NO CALL NUMBER', scheme: 'LC', indexer:)[field]).to be_nil
 
       # Dewey
-      expect(record_with_999(call_number: 'INTERNET RESOURCE stuff', scheme: 'DEWEY',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XX stuff', scheme: 'DEWEY', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'NO CALL NUMBER', scheme: 'DEWEY', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'INTERNET RESOURCE stuff', scheme: 'DEWEY',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'XX stuff', scheme: 'DEWEY', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'NO CALL NUMBER', scheme: 'DEWEY', indexer:)[field]).to be_nil
     end
 
     it 'handles empty call numbers (by not returning them)' do
       # LC
-      expect(record_with_999(call_number: nil, scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: ' ', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '. . ', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: nil, scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: ' ', scheme: 'LC', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '. . ', scheme: 'LC', indexer:)[field]).to be_nil
 
       # Dewey
-      expect(record_with_999(call_number: nil, scheme: 'DEWEY', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '', scheme: 'DEWEY', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: ' ', scheme: 'DEWEY', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '. . ', scheme: 'DEWEY', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: nil, scheme: 'DEWEY', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '', scheme: 'DEWEY', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: ' ', scheme: 'DEWEY', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '. . ', scheme: 'DEWEY', indexer:)[field]).to be_nil
     end
 
     it 'does not return call nubmers typed as Alphanum, and clearly not LC or Dewey' do
-      expect(record_with_999(call_number: '71 15446 V.1', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4488.301 0300 2001 CD-ROM', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '8291.209 .A963 V.5 1971/1972', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '"NEW BEGINNING" INVESTMENT RESERVE FUND', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '"21" BRANDS, INCORPORATED', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: ' "LA CONSOLIDADA", S.A', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(THE) NWNL COMPANIES, INC.', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'ISHII SPRING 2009', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'OYER WINTER 2012', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: "O'REILLY FALL 2006", scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XV 852', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'YUGOSLAV SERIAL 1963 NO.5-6', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'SUSEL-69048', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'MFICHE 3239', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '71 15446 V.1', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '4488.301 0300 2001 CD-ROM', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '8291.209 .A963 V.5 1971/1972', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '"NEW BEGINNING" INVESTMENT RESERVE FUND', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '"21" BRANDS, INCORPORATED', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: ' "LA CONSOLIDADA", S.A', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '(THE) NWNL COMPANIES, INC.', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'ISHII SPRING 2009', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'OYER WINTER 2012', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: "O'REILLY FALL 2006", scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'XV 852', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'YUGOSLAV SERIAL 1963 NO.5-6', scheme: 'ALPHANUM',
+                                  indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'SUSEL-69048', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'MFICHE 3239', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
     end
 
     it 'does not return call numbers w/ the scheme ASIS' do
-      expect(record_with_999(call_number: '(ADL4044.1)XX', scheme: 'ASIS', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '134776', scheme: 'ASIS', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'INTERNET RESOURCE', scheme: 'ASIS', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '(ADL4044.1)XX', scheme: 'ASIS', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: '134776', scheme: 'ASIS', indexer:)[field]).to be_nil
+      expect(record_with_holdings(call_number: 'INTERNET RESOURCE', scheme: 'ASIS', indexer:)[field]).to be_nil
     end
   end
 
   describe 'LC Call Numbers' do
-    let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+    let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
     subject(:value) { result[field] }
 
     context 'with one letter call number' do
@@ -244,14 +237,15 @@ RSpec.describe 'Call Number Facet' do
 
     context 'with multiple holding records with the same LC class' do
       let(:result) do
-        record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
-          marc_record.append(
-            MARC::DataField.new(
-              '999',
-              ' ',
-              ' ',
-              MARC::Subfield.new('a', 'M2 .C17 L3 2005'),
-              MARC::Subfield.new('w', 'LC')
+        record_with_holdings(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |holdings|
+          holdings.append(
+            SirsiHolding.new(
+              call_number: 'M2 .C17 L3 2005',
+              home_location: 'STACKS',
+              library: 'GREEN',
+              scheme: 'LC',
+              type: '',
+              barcode: ''
             )
           )
         end
@@ -266,14 +260,15 @@ RSpec.describe 'Call Number Facet' do
 
     context 'with multiple holding records with the different LC classes' do
       let(:result) do
-        record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
-          marc_record.append(
-            MARC::DataField.new(
-              '999',
-              ' ',
-              ' ',
-              MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-              MARC::Subfield.new('w', 'LC')
+        record_with_holdings(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |holdings|
+          holdings.append(
+            SirsiHolding.new(
+              call_number: 'QE538.8 .N36 1975-1977',
+              home_location: 'STACKS',
+              library: 'GREEN',
+              scheme: 'LC',
+              type: '',
+              barcode: ''
             )
           )
         end
@@ -347,14 +342,14 @@ RSpec.describe 'Call Number Facet' do
       ]
     bad_callnumbers.each do |call_number|
       context "when call number is #{call_number}" do
-        let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+        let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
         it { is_expected.to be_nil }
       end
     end
   end
 
   describe 'dewey call numbers' do
-    let(:result) { record_with_999(call_number:, scheme: 'DEWEY', indexer:) }
+    let(:result) { record_with_holdings(call_number:, scheme: 'DEWEY', indexer:) }
     subject(:value) { result[field] }
 
     context 'with 159.32 .W211' do
@@ -389,14 +384,15 @@ RSpec.describe 'Call Number Facet' do
 
     context 'with duplicate call numbers' do
       let(:result) do
-        record_with_999(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer:) do |marc_record|
-          marc_record.append(
-            MARC::DataField.new(
-              '999',
-              ' ',
-              ' ',
-              MARC::Subfield.new('a', '370.6 .N28 V.113:PT.1'),
-              MARC::Subfield.new('w', 'DEWEY')
+        record_with_holdings(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer:) do |holdings|
+          holdings.append(
+            SirsiHolding.new(
+              call_number: '370.6 .N28 V.113:PT.1',
+              home_location: 'STACKS',
+              library: 'GREEN',
+              scheme: 'DEWEY',
+              type: '',
+              barcode: ''
             )
           )
         end
@@ -407,14 +403,15 @@ RSpec.describe 'Call Number Facet' do
 
     context 'with multiple call numbers' do
       let(:result) do
-        record_with_999(call_number: '518 .M161', scheme: 'DEWEY', indexer:) do |marc_record|
-          marc_record.append(
-            MARC::DataField.new(
-              '999',
-              ' ',
-              ' ',
-              MARC::Subfield.new('a', '061 .R496 V.39:NO.4'),
-              MARC::Subfield.new('w', 'DEWEY')
+        record_with_holdings(call_number: '518 .M161', scheme: 'DEWEY', indexer:) do |holdings|
+          holdings.append(
+            SirsiHolding.new(
+              call_number: '061 .R496 V.39:NO.4',
+              home_location: 'STACKS',
+              library: 'GREEN',
+              scheme: 'DEWEY',
+              type: '',
+              barcode: ''
             )
           )
         end
@@ -435,7 +432,7 @@ RSpec.describe 'Call Number Facet' do
   end
 
   context 'with items typed as DEWEYPER' do
-    let(:result) { record_with_999(call_number:, scheme: 'DEWEYPER', indexer:) }
+    let(:result) { record_with_holdings(call_number:, scheme: 'DEWEYPER', indexer:) }
     subject(:value) { result[field] }
 
     let(:call_number) { '550.6 .U58O 92-600' }
@@ -445,14 +442,15 @@ RSpec.describe 'Call Number Facet' do
   context 'with both dewey and LC call numbers' do
     subject(:value) { result[field] }
     let(:result) do
-      record_with_999(call_number: 'PR5190 .P3 Z48 2011', scheme: 'LC', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', '968.006 .V274 SER.2:NO.42'),
-            MARC::Subfield.new('w', 'DEWEY')
+      record_with_holdings(call_number: 'PR5190 .P3 Z48 2011', scheme: 'LC', indexer:) do |holdings|
+        holdings.append(
+          SirsiHolding.new(
+            call_number: '968.006 .V274 SER.2:NO.42',
+            home_location: 'STACKS',
+            library: 'GREEN',
+            scheme: 'DEWEY',
+            type: '',
+            barcode: ''
           )
         )
       end
@@ -465,7 +463,7 @@ RSpec.describe 'Call Number Facet' do
   end
 
   context 'with call numbers that dewey but listed as LC' do
-    let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+    let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
     subject(:value) { result[field] }
 
     let(:call_number) { '180.8 D25 V.1' }
