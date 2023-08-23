@@ -60,7 +60,7 @@ RSpec.describe 'Call Number Facet' do
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'AUTO', indexer:)[field]).to be_nil
     end
 
-    it 'handles skipped items (by not includeing them)' do
+    it 'handles skipped items (by not including them)' do
       # skipped location
       expect(record_with_999(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC',
                              indexer:)[field]).to be_nil
