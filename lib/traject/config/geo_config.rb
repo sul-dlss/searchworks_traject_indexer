@@ -5,7 +5,6 @@
 
 require_relative '../../../config/boot'
 require 'digest/md5'
-require 'active_support'
 
 # Mappings for Dublin Core field values
 class GeoAuthorities

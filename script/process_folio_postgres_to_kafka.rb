@@ -2,10 +2,6 @@
 
 require_relative '../config/boot'
 
-require 'folio_client'
-require 'traject'
-require 'traject/readers/folio_postgres_reader'
-require 'traject/extractors/folio_kafka_extractor'
 require 'parallel'
 require 'slop'
 

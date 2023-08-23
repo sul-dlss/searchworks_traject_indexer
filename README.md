@@ -158,7 +158,7 @@ The indexing machines also have scheduled cron tasks for loading data from purl-
 Data is read directly from the postgres database underlying FOLIO, using a custom SQL query stored in the `FolioPostgresReader`. To mimic this activity in local development, one can SSH tunnel to the FOLIO database and use the `#find_by_catkey` helper method:
 ```rb
 # after SSH tunneling to the FOLIO database
-require 'traject/readers/folio_postgres_reader'
+bin/console
 Traject::FolioPostgresReader.find_by_catkey('a123456, 'postgres.url' => 'postgres://[user]:[password]@localhost/okapi')
 ```
 There is also a helper script for fetching single records at a time. You need to set the `DATABASE_URL` environment variable:

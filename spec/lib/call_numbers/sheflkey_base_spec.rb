@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'call_numbers/shelfkey_base'
+require 'spec_helper'
 
-describe CallNumbers::ShelfkeyBase do
+RSpec.describe CallNumbers::ShelfkeyBase do
   describe 'class methods' do
     describe '#pad_cutter' do
       it 'handles normal cutters' do

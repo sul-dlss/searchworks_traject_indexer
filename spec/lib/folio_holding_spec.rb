@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'folio_holding'
+require 'spec_helper'
 
 RSpec.describe FolioHolding do
   describe '#display_location' do

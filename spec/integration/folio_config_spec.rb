@@ -2,9 +2,6 @@
 
 require 'spec_helper'
 
-require 'folio_client'
-require 'folio_record'
-
 RSpec.describe 'FOLIO indexing' do
   subject(:result) { indexer.map_record(folio_record) }
 
