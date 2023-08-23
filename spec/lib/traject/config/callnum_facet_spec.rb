@@ -306,83 +306,62 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'invalid LC call numbers' do
-    it 'are not included' do
-      # bad Cutter
-      expect(record_with_999(call_number: 'QE538.8 .NB36 1975-1977', scheme: 'DEWEY',
-                             indexer:)[field]).to be_nil
-
-      # paren start char
-      expect(record_with_999(call_number: '(V) JN6695 .I28 1999 COPY', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '???', scheme: 'LC', indexer:)[field]).to be_nil
-
-      # weird callnums
-      expect(record_with_999(call_number: '158613F868 .C45 N37 2000', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '5115126059 A17 2004', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '70 03126', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles LC call numbers starting with illegal letters correctly (by not including them)' do
-      expect(record_with_999(call_number: 'INTERNET RESOURCE KF3400 .S36 2009', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # FIXME: we DO want a value for INTERNET or NO CALLNUM, either from the bib, or if there is a valid callnum after INTERNET RESOURCE");
-      # expect(record_with_999(call_number: 'INTERNET RESOURCE KF3400 .S36 2009', scheme: 'LC', indexer: indexer)[field]).to eq(
-      #   ['LC Classification|K - Law|KF - Law of the U.S.']
-      # )
-
-      expect(record_with_999(call_number: 'INTERNET RESOURCE GALE EZPROXY', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # should be govdoc
-      expect(record_with_999(call_number: 'ICAO DOC 4444/15TH ED', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'ORNL-6371', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'X X', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XM98-1 NO.1', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XX(6661112.1)', scheme: 'LC', indexer:)[field]).to be_nil
-
-      expect(record_with_999(call_number: 'YBP1834690', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles call numbers that are alphanum, but have scheme listed as LC (by not including them)' do
-      expect(record_with_999(call_number: '1ST AMERICAN BANCORP, INC.', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '2 B SYSTEM INC.', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '202 DATA SYSTEMS, INC.', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles unusual Lane (med school) call numbers (by not including them)' do
-      expect(record_with_999(call_number: '1.1', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '20.44', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4.15[C]', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '6.4C-CZ[BC]', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles Harvard Yenching call numbers (by not including them)' do
-      expect(record_with_999(call_number: '6.4C-CZ[BC]', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '2345 5861 V.3', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '2061 4246 NO.5-6 1936-1937', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4362 .S12P2 1965 .C3', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4861.1 3700 1989:NO.4-6', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4488.301 0300 2005 CD-ROM', scheme: 'LCPER',
-                             indexer:)[field]).to be_nil
-    end
-
-    it 'handles weird in process call numbers (by not including them)' do
-      expect(record_with_999(call_number: '001AQJ5818', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(XX.4300523)', scheme: 'AUTO', indexer:)[field]).to be_nil
-      # EDI in process
-      expect(record_with_999(call_number: '427331959', scheme: 'LC', indexer:)[field]).to be_nil
-      # Japanese
-      expect(record_with_999(call_number: '7926635', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '7890569-1001', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '7885324-1001-2', scheme: 'LC', indexer:)[field]).to be_nil
-      # Rare
-      expect(record_with_999(call_number: '741.5 F', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(ADL4044.1)XX', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(XX.4300523)', scheme: 'LC', indexer:)[field]).to be_nil
-      # math-cs tech-reports  (home Loc TECH-RPTS)
-      expect(record_with_999(call_number: '134776', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '262198', scheme: 'LC', indexer:)[field]).to be_nil
+    subject(:value) { result[field] }
+    bad_callnumbers =
+      [
+        'QE538.8 .NB36 1975-1977', # bad Cutter
+        '(V) JN6695 .I28 1999 COPY', # paren start char
+        '???',
+        # weird callnums
+        '158613F868 .C45 N37 2000',
+        '5115126059 A17 2004',
+        '70 03126',
+        # starting with illegal letters
+        'INTERNET RESOURCE KF3400 .S36 2009',
+        'INTERNET RESOURCE GALE EZPROXY',
+        # should be govdoc
+        'ICAO DOC 4444/15TH ED',
+        'ORNL-6371',
+        'X X',
+        'XM98-1 NO.1',
+        'XX(6661112.1)',
+        'YBP1834690',
+        # alphanum but have scheme listed as LC (by not including them)
+        '1ST AMERICAN BANCORP, INC.',
+        '2 B SYSTEM INC.',
+        '202 DATA SYSTEMS, INC.',
+        # unusual Lane (med school) call numbers
+        '1.1',
+        '20.44',
+        '4.15[C]',
+        # Harvard Yenching call numbers
+        '6.4C-CZ[BC]',
+        '2345 5861 V.3',
+        '2061 4246 NO.5-6 1936-1937',
+        '4362 .S12P2 1965 .C3',
+        '4861.1 3700 1989:NO.4-6',
+        '4488.301 0300 2005 CD-ROM',
+        # weird in process call numbers
+        '001AQJ5818',
+        '(XX.4300523)',
+        # EDI in process
+        '427331959',
+        # Japanese
+        '7926635',
+        '7890569-1001',
+        '7885324-1001-2',
+        # Rare
+        '741.5 F',
+        '(ADL4044.1)XX',
+        # math-cs tech-reports  (home Loc TECH-RPTS)
+        '134776',
+        '262198'
+      ]
+    bad_callnumbers.each do |call_number|
+      context "when call number is #{call_number}" do
+        let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+        it { is_expected.to be_nil }
+      end
     end
   end
 
