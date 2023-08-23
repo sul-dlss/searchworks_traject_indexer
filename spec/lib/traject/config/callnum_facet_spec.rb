@@ -67,9 +67,6 @@ RSpec.describe 'Call Number Facet' do
       # skipped type
       expect(record_with_999(call_number: 'M123 .M234', type: 'EDI-REMOVE', scheme: 'LC',
                              indexer:)[field]).to be_nil
-      # Closed Library
-      expect(record_with_999(call_number: 'M123 .M234', library: 'MATH-CS', scheme: 'LC',
-                             indexer:)[field]).to be_nil
     end
 
     it 'handles weird LC callnum from Lane-Med (by not including them)' do

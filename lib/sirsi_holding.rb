@@ -8,7 +8,6 @@ class SirsiHolding
   delegate %i[dewey? valid_lc?] => :call_number
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
-  CLOSED_LIBS = %w[BIOLOGY CHEMCHMENG MATH-CS].freeze
   ECALLNUM = 'INTERNET RESOURCE'.freeze
   GOV_DOCS_LOCS = %w[BRIT-DOCS CALIF-DOCS FED-DOCS INTL-DOCS SSRC-DOCS SSRC-FICHE SSRC-NWDOC].freeze
   LOST_OR_MISSING_LOCS = %w[ASSMD-LOST LOST-ASSUM LOST-CLAIM LOST-PAID MISSING].freeze
@@ -45,8 +44,7 @@ class SirsiHolding
 
   def skipped?
     ([home_location, current_location] & SKIPPED_LOCS).any? ||
-      type == 'EDI-REMOVE' ||
-      CLOSED_LIBS.include?(library)
+      type == 'EDI-REMOVE'
   end
 
   def shelved_by_location?
