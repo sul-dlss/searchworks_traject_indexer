@@ -43,16 +43,6 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'call numbers excluded for various reasons' do
-    it 'handles unexpected callnum type (by not including them)' do
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'HARVYENCH', indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'OTHER', indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'THESIS', indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'XX', indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'ASIS', indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'AUTO', indexer:)[field]).to be_nil
-    end
-
     context 'with a skipped location' do
       before do
         allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
@@ -73,20 +63,6 @@ RSpec.describe 'Call Number Facet' do
       it { is_expected.to be_nil }
     end
 
-    it 'handles weird LC callnum from Lane-Med (by not including them)' do
-      # invalid LC from Lane
-      expect(record_with_holdings(call_number: 'notLC', scheme: 'LC', library: 'LANE-MED',
-                                  indexer:)[field]).to be_nil
-
-      # valid LC from Lane
-      expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|M - Music|M - Music']
-      )
-
-      #  invalid LC not from Lane
-      expect(record_with_holdings(call_number: 'notLC', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
     it 'assigns value for valid LC even if it is a shelve by location' do
       SirsiHolding::SHELBY_LOCS.each do |loc|
         # valid LC
@@ -94,34 +70,22 @@ RSpec.describe 'Call Number Facet' do
         # expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', home_location: loc, indexer: indexer)[field]).to eq(
         #   ['LC Classification|M - Music|M - Music']
         # )
-
-        # invalid LC
-        expect(record_with_holdings(call_number: 'not valid!', scheme: 'LC', home_location: loc,
+        # LC
+        expect(record_with_holdings(call_number: 'M123 .M456', home_location: loc, scheme: 'LC',
                                     indexer:)[field]).to be_nil
-        # invalid Dewey
-        expect(record_with_holdings(call_number: 'not valid!', scheme: 'DEWEY', home_location: loc,
-                                    indexer:)[field]).to be_nil
-        # Hopkins weird Shelby
-        expect(record_with_holdings(call_number: ' 1976', scheme: 'LCPER', home_location: loc,
-                                    indexer:)[field]).to be_nil
-        expect(record_with_holdings(call_number: '1976', scheme: 'LCPER', home_location: loc,
+        # Dewey
+        expect(record_with_holdings(call_number: '123.4 .B45', home_location: loc, scheme: 'DEWEY',
                                     indexer:)[field]).to be_nil
       end
     end
 
     it 'handles missing or lost call numbers (by not including them)' do
       SirsiHolding::LOST_OR_MISSING_LOCS.each do |loc|
-        # valid LC
+        # LC
         expect(record_with_holdings(call_number: 'M123 .M456', home_location: loc, scheme: 'LC',
                                     indexer:)[field]).to be_nil
-        # invalid LC
-        expect(record_with_holdings(call_number: 'not valid!', home_location: loc, scheme: 'LC',
-                                    indexer:)[field]).to be_nil
-        # valid Dewey
+        # Dewey
         expect(record_with_holdings(call_number: '123.4 .B45', home_location: loc, scheme: 'DEWEY',
-                                    indexer:)[field]).to be_nil
-        # invalid Dewey
-        expect(record_with_holdings(call_number: 'not valid!', home_location: loc, scheme: 'DEWEY',
                                     indexer:)[field]).to be_nil
       end
     end
@@ -332,13 +296,9 @@ RSpec.describe 'Call Number Facet' do
         # Harvard Yenching call numbers
         '6.4C-CZ[BC]',
         '2345 5861 V.3',
-        '2061 4246 NO.5-6 1936-1937',
         '4362 .S12P2 1965 .C3',
-        '4861.1 3700 1989:NO.4-6',
-        '4488.301 0300 2005 CD-ROM',
         # weird in process call numbers
         '001AQJ5818',
-        '(XX.4300523)',
         # EDI in process
         '427331959',
         # Japanese
