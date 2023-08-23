@@ -25,14 +25,13 @@ class LibrariesMap
             symphony_library_code
           end
 
-    library = Folio::Types.libraries.values.find { |candidate| candidate.fetch('code') == key }
-
-    folio_name = library&.fetch('name')
+    folio_name = Folio::Types.library_store.find_by(code: key)&.name
+    return unless folio_name
 
     # We strip 'Library' from the name because it appears in a facet called 'Library'.. except Hoover
-    return folio_name if folio_name&.match?(/Hoover/)
+    return folio_name if folio_name.match?(/Hoover/)
 
-    folio_name&.sub(' Library', '')
+    folio_name.sub(' Library', '')
   end
 
   def self.translate_array(inputs)
