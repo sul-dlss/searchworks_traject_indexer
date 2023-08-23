@@ -43,8 +43,7 @@ class SirsiHolding
   end
 
   def skipped?
-    ([home_location, current_location] & SKIPPED_LOCS).any? ||
-      type == 'EDI-REMOVE'
+    ([home_location, current_location] & SKIPPED_LOCS).any?
   end
 
   def shelved_by_location?

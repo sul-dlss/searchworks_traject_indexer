@@ -64,9 +64,6 @@ RSpec.describe 'Call Number Facet' do
       # skipped location
       expect(record_with_999(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC',
                              indexer:)[field]).to be_nil
-      # skipped type
-      expect(record_with_999(call_number: 'M123 .M234', type: 'EDI-REMOVE', scheme: 'LC',
-                             indexer:)[field]).to be_nil
     end
 
     it 'handles weird LC callnum from Lane-Med (by not including them)' do
