@@ -67,12 +67,6 @@ RSpec.describe 'Call Number Facet' do
       # skipped type
       expect(record_with_999(call_number: 'M123 .M234', type: 'EDI-REMOVE', scheme: 'LC',
                              indexer:)[field]).to be_nil
-      # Physics
-      expect(record_with_999(call_number: 'M123 .M234', library: 'PHYSICS', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # Includes PHYSTEMP Physics
-      expect(record_with_999(call_number: 'M123 .M234', library: 'PHYSICS', home_location: 'PHYSTEMP', scheme: 'LC',
-                             indexer:)[field]).not_to be_nil
       # Closed Library
       expect(record_with_999(call_number: 'M123 .M234', library: 'MATH-CS', scheme: 'LC',
                              indexer:)[field]).to be_nil

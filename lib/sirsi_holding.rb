@@ -46,7 +46,6 @@ class SirsiHolding
   def skipped?
     ([home_location, current_location] & SKIPPED_LOCS).any? ||
       type == 'EDI-REMOVE' ||
-      physics_not_temp? ||
       CLOSED_LIBS.include?(library)
   end
 
@@ -155,10 +154,6 @@ class SirsiHolding
     call_number = call_number.gsub('. .', ' .') # reduce double periods to a single period
     call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
     call_number.sub(/\.$/, '') # remove trailing period
-  end
-
-  def physics_not_temp?
-    library == 'PHYSICS' && ![home_location, current_location].include?('PHYSTEMP')
   end
 
   class CallNumber
