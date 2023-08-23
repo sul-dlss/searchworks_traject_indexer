@@ -1764,6 +1764,7 @@ each_record do |record, context|
   context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type] = result
 end
 
+# For LC call numbers
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
@@ -1791,6 +1792,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
   end
 end
 
+# For Dewey call numbers, or ones that are coded as LC, but are infact valid Dewey
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
@@ -1818,6 +1820,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
   accumulator.uniq!
 end
 
+# For MARC 050 LC Classification
 to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, context|
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
@@ -1841,6 +1844,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
   accumulator.replace([accumulator.compact.first])
 end
 
+# For locally assigned LC (MARC 090)
 to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, context|
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
@@ -1864,6 +1868,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
   accumulator.replace([accumulator.compact.first])
 end
 
+# Gov docs value based on location details
 to_field 'callnum_facet_hsim' do |record, accumulator, _context|
   gov_doc_values = record.items.filter_map do |item|
     item.dig('location', 'effectiveLocation', 'details', 'searchworksGovDocsClassification')
@@ -1874,6 +1879,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, _context|
   end
 end
 
+# Gov docs value based on marc 086
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   marc_086 = record.fields('086')
 
@@ -1893,6 +1899,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
   end
 end
 
+# Gov docs value based on SUDOC call number scheme
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   next if context.output_hash['callnum_facet_hsim']&.any? { |x| x.start_with?('Government Document|') }
 
