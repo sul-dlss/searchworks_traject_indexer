@@ -1794,7 +1794,7 @@ end
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
-    unless holding.call_number_type == 'DEWEY' || (holding.call_number_type == 'LC' && holding.call_number.to_s =~ /^\d{1,3}(\.\d+)? *\.?[A-Z]\d{1,3} *[A-Z]*+.*/)
+    unless holding.call_number_type == 'DEWEY' || (holding.call_number_type == 'LC' && holding.call_number.dewey?)
       next
     end
     next unless holding.dewey?
