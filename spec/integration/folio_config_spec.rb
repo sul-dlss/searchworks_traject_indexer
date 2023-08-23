@@ -88,9 +88,19 @@ RSpec.describe 'FOLIO indexing' do
       end
     end
 
-    context 'bad date from MARC' do
+    context 'MARC date does match correct format because it has letters' do
       before do
         folio_record.instance['catalogedDate'] = '19uu-uu-uu'
+      end
+
+      it 'is not indexed' do
+        expect(result).not_to include 'date_cataloged'
+      end
+    end
+
+    context 'MARC date not parseable due to incorrect month' do
+      before do
+        folio_record.instance['catalogedDate'] = '2023-00-03'
       end
 
       it 'is not indexed' do
