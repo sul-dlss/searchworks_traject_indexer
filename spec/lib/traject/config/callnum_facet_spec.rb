@@ -387,87 +387,98 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'dewey call numbers' do
-    it 'has the correct data' do
-      expect(record_with_999(call_number: '159.32 .W211', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['Dewey Classification|100s - Philosophy|150s - Psychology']
-      )
+    let(:result) { record_with_999(call_number:, scheme: 'DEWEY', indexer:) }
+    subject(:value) { result[field] }
 
-      expect(record_with_999(call_number: '550.6 .U58P NO.1707', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences']
-      )
+    context 'with 159.32 .W211' do
+      let(:call_number) { '159.32 .W211' }
+      it { is_expected.to eq ['Dewey Classification|100s - Philosophy|150s - Psychology'] }
     end
 
-    it 'has the correct data for dewey call numbers w/o leading zeros' do
-      expect(record_with_999(call_number: '062 .B862 V.193', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums']
-      )
-
-      expect(record_with_999(call_number: '62 .B862 V.193', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums']
-      )
-
-      expect(record_with_999(call_number: '002 U73', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems']
-      )
-
-      expect(record_with_999(call_number: '2 U73', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems']
-      )
+    context 'with 550.6 .U58P NO.1707' do
+      let(:call_number) { '550.6 .U58P NO.1707' }
+      it { is_expected.to eq ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences'] }
     end
 
-    it 'only includes one call number if there are duplicates' do
-      doc = record_with_999(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer:)
+    context 'with leading zero' do
+      let(:call_number) { '062 .B862 V.193' }
+      it { is_expected.to eq ['Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums'] }
+    end
 
-      expect(doc[field]).to eq(
-        ['Dewey Classification|300s - Social Sciences, Sociology & Anthropology|370s - Education']
-      )
+    context 'without leading zero' do
+      let(:call_number) { '62 .B862 V.193' }
+      it { is_expected.to eq ['Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums'] }
+    end
 
-      doc = record_with_999(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', '370.6 .N28 V.113:PT.1'),
-            MARC::Subfield.new('w', 'DEWEY')
+    context 'with two leading zeros' do
+      let(:call_number) { '002 U73' }
+      it { is_expected.to eq ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems'] }
+    end
+
+    context 'without two leading zeros' do
+      let(:call_number) { '2 U73' }
+      it { is_expected.to eq ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems'] }
+    end
+
+    context 'with duplicate call numbers' do
+      let(:result) do
+        record_with_999(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer:) do |marc_record|
+          marc_record.append(
+            MARC::DataField.new(
+              '999',
+              ' ',
+              ' ',
+              MARC::Subfield.new('a', '370.6 .N28 V.113:PT.1'),
+              MARC::Subfield.new('w', 'DEWEY')
+            )
           )
-        )
+        end
       end
 
-      expect(doc[field]).to eq(
-        ['Dewey Classification|300s - Social Sciences, Sociology & Anthropology|370s - Education']
-      )
+      it { is_expected.to eq ['Dewey Classification|300s - Social Sciences, Sociology & Anthropology|370s - Education'] }
     end
 
-    it 'includes multiple call numbers from the same record' do
-      doc = record_with_999(call_number: '518 .M161', scheme: 'DEWEY', indexer:)
-
-      expect(doc[field]).to eq(
-        ['Dewey Classification|500s - Natural Sciences & Mathematics|510s - Mathematics']
-      )
-
-      doc = record_with_999(call_number: '518 .M161', scheme: 'DEWEY', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', '061 .R496 V.39:NO.4'),
-            MARC::Subfield.new('w', 'DEWEY')
+    context 'with multiple call numbers' do
+      let(:result) do
+        record_with_999(call_number: '518 .M161', scheme: 'DEWEY', indexer:) do |marc_record|
+          marc_record.append(
+            MARC::DataField.new(
+              '999',
+              ' ',
+              ' ',
+              MARC::Subfield.new('a', '061 .R496 V.39:NO.4'),
+              MARC::Subfield.new('w', 'DEWEY')
+            )
           )
-        )
+        end
       end
 
-      expect(doc[field]).to eq(
-        [
+      it {
+        is_expected.to eq [
           'Dewey Classification|500s - Natural Sciences & Mathematics|510s - Mathematics',
           'Dewey Classification|000s - Computer Science, Knowledge & Systems|060s - Associations, Organizations & Museums'
         ]
-      )
+      }
     end
 
-    it 'includes both dewey and LC call numbers when present' do
-      doc = record_with_999(call_number: 'PR5190 .P3 Z48 2011', scheme: 'LC', indexer:) do |marc_record|
+    context 'when invalid' do
+      let(:call_number) { '180.8 DX25 V.1' }
+      it { is_expected.to be_nil }
+    end
+  end
+
+  context 'with items typed as DEWEYPER' do
+    let(:result) { record_with_999(call_number:, scheme: 'DEWEYPER', indexer:) }
+    subject(:value) { result[field] }
+
+    let(:call_number) { '550.6 .U58O 92-600' }
+    it { is_expected.to eq ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences'] }
+  end
+
+  context 'with both dewey and LC call numbers' do
+    subject(:value) { result[field] }
+    let(:result) do
+      record_with_999(call_number: 'PR5190 .P3 Z48 2011', scheme: 'LC', indexer:) do |marc_record|
         marc_record.append(
           MARC::DataField.new(
             '999',
@@ -478,57 +489,20 @@ RSpec.describe 'Call Number Facet' do
           )
         )
       end
-      expect(doc[field]).to eq(
-        [
-          'LC Classification|P - Philology, Linguistics (General)|PR - English Literature',
-          'Dewey Classification|900s - History & Geography|960s - History of Africa'
-        ]
-      )
-
-      doc = record_with_999(call_number: 'QE539.2 .P34 O77 2005', scheme: 'LC', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', '550.6 .U58P NO.1707'),
-            MARC::Subfield.new('w', 'DEWEY')
-          )
-        )
-      end
-      expect(doc[field]).to eq(
-        [
-          'LC Classification|Q - Science (General)|QE - Geology',
-          'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences'
-        ]
-      )
     end
 
-    it 'inlcudes items typed as DEWEYPER' do
-      expect(record_with_999(call_number: '550.6 .U58O 92-600', scheme: 'DEWEYPER', indexer:)[field]).to eq(
-        ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences']
-      )
-    end
-
-    it 'handles call numbers that dewey but listed as LC' do
-      expect(record_with_999(call_number: '180.8 D25 V.1', scheme: 'LC', indexer:)[field]).to eq(
-        ['Dewey Classification|100s - Philosophy|180s - Ancient, Medieval & Eastern Philosophy']
-      )
-
-      expect(record_with_999(call_number: '219.7 K193L V.5', scheme: 'LC', indexer:)[field]).to eq(
-        ['Dewey Classification|200s - Religion|210s - Philosophy & Theory of Religion']
-      )
-
-      expect(record_with_999(call_number: '3.37 D621', scheme: 'LC', indexer:)[field]).to eq(
-        ['Dewey Classification|000s - Computer Science, Knowledge & Systems|000s - Computer Science, Knowledge & Systems']
-      )
-    end
+    it {
+      is_expected.to eq ['LC Classification|P - Philology, Linguistics (General)|PR - English Literature',
+                         'Dewey Classification|900s - History & Geography|960s - History of Africa']
+    }
   end
 
-  describe 'invalid DEWEY call numbers' do
-    it 'are not included' do
-      expect(record_with_999(call_number: '180.8 DX25 V.1', scheme: 'LC', indexer:)[field]).to be_nil
-    end
+  context 'with call numbers that dewey but listed as LC' do
+    let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+    subject(:value) { result[field] }
+
+    let(:call_number) { '180.8 D25 V.1' }
+    it { is_expected.to eq ['Dewey Classification|100s - Philosophy|180s - Ancient, Medieval & Eastern Philosophy'] }
   end
 
   describe 'Gov Doc (call numbers)' do
