@@ -190,106 +190,118 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'LC Call Numbers' do
-    it 'handles single letter LC call numbers' do
-      expect(record_with_999(call_number: 'D764.7 .K72 1990', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|D - History (General)|D - History (General)']
-      )
+    let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+    subject(:value) { result[field] }
 
-      expect(record_with_999(call_number: 'F1356 .M464 2005', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)|F - United States, British, Dutch, French, Latin America (Local History)']
-      )
-
-      expect(record_with_999(call_number: ' M2 .C17 L3 2005', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|M - Music|M - Music']
-      )
-
-      expect(record_with_999(call_number: 'U897 .C87 Z55 2001', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|U - Military Science (General)|U - Military Science (General)']
-      )
-
-      expect(record_with_999(call_number: 'Z3871.Z8', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|Z - Bibliography, Library Science, Information Resources|Z - Bibliography, Library Science, Information Resources']
-      )
-    end
-
-    it 'handles two letter LC call numbers' do
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-
-      expect(record_with_999(call_number: 'BX4659 .E85 W44', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|B - Philosophy, Psychology, Religion|BX - Christian Denominations']
-      )
-
-      expect(record_with_999(call_number: 'HG6046 .V28 1986', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|H - Social Sciences (General)|HG - Finance']
-      )
-    end
-
-    it 'handles three letter LC call numbers' do
-      # 6830340
-      expect(record_with_999(call_number: 'KKX500 .S98 2005', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|K - Law|KKX - Law of Turkey']
-      )
-
-      expect(record_with_999(call_number: 'KJV4189 .A67 A15 2014', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|K - Law|KJV - Law of France']
-      )
-    end
-
-    it 'includes the classification when it is not available in the map' do
-      expect(record_with_999(call_number: 'KFC1050 .C35 2014', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|K - Law|KFC - Law of California, Colorado, Connecticut']
-      )
-    end
-
-    it 'handles multiple 999s with the same LC class appropriately' do
-      doc = record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', 'M2 .C17 L3 2005'),
-            MARC::Subfield.new('w', 'LC')
-          )
-        )
+    context 'with one letter call number' do
+      context 'with D call' do
+        let(:call_number) { 'D764.7 .K72 1990' }
+        it { is_expected.to eq ['LC Classification|D - History (General)|D - History (General)'] }
       end
 
-      expect(doc[field].sort).to eq(
-        [
+      context 'with F call' do
+        let(:call_number) { 'F1356 .M464 2005' }
+        it { is_expected.to eq ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)|F - United States, British, Dutch, French, Latin America (Local History)'] }
+      end
+
+      context 'with M call' do
+        let(:call_number) { ' M2 .C17 L3 2005' }
+        it { is_expected.to eq ['LC Classification|M - Music|M - Music'] }
+      end
+
+      context 'with U call' do
+        let(:call_number) { 'U897 .C87 Z55 2001' }
+        it { is_expected.to eq ['LC Classification|U - Military Science (General)|U - Military Science (General)'] }
+      end
+
+      context 'with Z call' do
+        let(:call_number) { 'Z3871.Z8' }
+        it { is_expected.to eq ['LC Classification|Z - Bibliography, Library Science, Information Resources|Z - Bibliography, Library Science, Information Resources'] }
+      end
+    end
+
+    context 'with two letter call number' do
+      context 'with QE call' do
+        let(:call_number) { 'QE538.8 .N36 1975-1977' }
+        it { is_expected.to eq ['LC Classification|Q - Science (General)|QE - Geology'] }
+      end
+
+      context 'with BX call' do
+        let(:call_number) { 'BX4659 .E85 W44' }
+        it { is_expected.to eq ['LC Classification|B - Philosophy, Psychology, Religion|BX - Christian Denominations'] }
+      end
+
+      context 'with HG call' do
+        let(:call_number) { 'HG6046 .V28 1986' }
+        it { is_expected.to eq ['LC Classification|H - Social Sciences (General)|HG - Finance'] }
+      end
+    end
+
+    context 'with three letter call number' do
+      context 'with KKX call' do # 6830340
+        let(:call_number) { 'KKX500 .S98 2005' }
+        it { is_expected.to eq ['LC Classification|K - Law|KKX - Law of Turkey'] }
+      end
+
+      context 'with KJV call' do
+        let(:call_number) { 'KJV4189 .A67 A15 2014' }
+        it { is_expected.to eq ['LC Classification|K - Law|KJV - Law of France'] }
+      end
+    end
+
+    context 'with a classification that is not available in the map' do
+      let(:call_number) { 'KFC1050 .C35 2014' }
+      it { is_expected.to eq ['LC Classification|K - Law|KFC - Law of California, Colorado, Connecticut'] }
+    end
+
+    context 'with multiple holding records with the same LC class' do
+      let(:result) do
+        record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
+          marc_record.append(
+            MARC::DataField.new(
+              '999',
+              ' ',
+              ' ',
+              MARC::Subfield.new('a', 'M2 .C17 L3 2005'),
+              MARC::Subfield.new('w', 'LC')
+            )
+          )
+        end
+      end
+      it {
+        is_expected.to match_array [
           'LC Classification|M - Music|M - Music',
           'LC Classification|M - Music|ML - Literature on Music'
         ]
-      )
+      }
     end
 
-    it 'handles multiple 999s with different LC classes appropriately' do
-      doc = record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-            MARC::Subfield.new('w', 'LC')
+    context 'with multiple holding records with the different LC classes' do
+      let(:result) do
+        record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
+          marc_record.append(
+            MARC::DataField.new(
+              '999',
+              ' ',
+              ' ',
+              MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
+              MARC::Subfield.new('w', 'LC')
+            )
           )
-        )
+        end
       end
-
-      expect(doc[field]).to eq(
-        [
+      it {
+        is_expected.to eq [
           'LC Classification|M - Music|ML - Literature on Music',
           'LC Classification|Q - Science (General)|QE - Geology'
         ]
-      )
+      }
     end
 
-    it 'handles lane LC call numbers' do
-      expect(record_with_999(call_number: 'Q603 .H47 1960', library: 'LANE-MED', scheme: 'LC',
-                             indexer:)[field]).to eq(
-                               ['LC Classification|Q - Science (General)|Q - Science (General)']
-                             )
+    context 'with Lane LC call numbers' do
+      let(:call_number) { 'Q603 .H47 1960' }
+
+      it { is_expected.to eq ['LC Classification|Q - Science (General)|Q - Science (General)'] }
     end
   end
 
