@@ -278,22 +278,6 @@ RSpec.describe 'Call Number Facet' do
                                ['LC Classification|Q - Science (General)|Q - Science (General)']
                              )
     end
-
-    it 'handles LC call numbers that have a scheme listed something else' do
-      skip 'This test was marked as TODO in SolrMarc'
-
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'ALPHANUM', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'OTHER', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-    end
   end
 
   context 'invalid LC call numbers' do
