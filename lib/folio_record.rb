@@ -145,6 +145,7 @@ class FolioRecord
     end
   end
 
+  # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type_map(name)
     case name
     when /dewey/i

@@ -25,7 +25,21 @@ end
 # rubocop:enable Metrics/ParameterLists
 
 RSpec.describe 'Call Number Facet' do
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(folio_record) }
+  # Legacy
+  let(:folio_record) { stub_record_from_marc(marc_record) }
+
+  # The future (when we remove calls to record_with_999)
+  # let(:folio_record) do
+  #   FolioRecord.new({
+  #                     'source_record' => source_record,
+  #                     'instance' => {}
+  #                   }, stub_folio_client)
+  # end
+
+  let(:source_record) do
+    [{ 'leader' => '          22        4500', 'fields' => [] }]
+  end
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -34,9 +48,8 @@ RSpec.describe 'Call Number Facet' do
   end
 
   let(:field) { 'callnum_facet_hsim' }
-  let(:record) { record_with_999(call_number:, scheme:) }
 
-  context 'call numbers excluded for various reasons' do
+  describe 'call numbers excluded for various reasons' do
     it 'handles unexpected callnum type (by not including them)' do
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'HARVYENCH', indexer:)[field]).to be_nil
@@ -47,21 +60,9 @@ RSpec.describe 'Call Number Facet' do
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'AUTO', indexer:)[field]).to be_nil
     end
 
-    it 'handles skipped items (by not includeing them)' do
+    it 'handles skipped items (by not including them)' do
       # skipped location
       expect(record_with_999(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # skipped type
-      expect(record_with_999(call_number: 'M123 .M234', type: 'EDI-REMOVE', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # Physics
-      expect(record_with_999(call_number: 'M123 .M234', library: 'PHYSICS', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # Includes PHYSTEMP Physics
-      expect(record_with_999(call_number: 'M123 .M234', library: 'PHYSICS', home_location: 'PHYSTEMP', scheme: 'LC',
-                             indexer:)[field]).not_to be_nil
-      # Closed Library
-      expect(record_with_999(call_number: 'M123 .M234', library: 'MATH-CS', scheme: 'LC',
                              indexer:)[field]).to be_nil
     end
 
@@ -176,251 +177,183 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  context 'LC Call Numbers' do
-    #
-    # 	/**
-    # 	 * when all items are online and/or all items have ignored callnums,
-    # 	 *  then we look for an LC call number first in 050, then in 090 and
-    # 	 *  if we find a good one, we use it for facet and browsing
-    # 	 */
-    # @Test
-    # 	public void hasSeparateBrowseCallnum()
-    # 	{
-    # 		// 1 item online, type LC:  no 050 or 090
-    # 		Record record = getRecordWith999("INTERNET RESOURCE", CallNumberType.LC);
-    # 		solrFldMapTest.assertNoSolrFld(record, fldName);
-    # 		// add 090 - get value from 090
-    # 		DataField df090 = factory.newDataField("090", ' ', ' ');
-    # 		df090.addSubfield(factory.newSubfield('a', "QM142"));
-    # 		df090.addSubfield(factory.newSubfield('b', ".A84 2010"));
-    # 		record.addVariableField(df090);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QM - Human Anatomy");
-    # 		// add 050 - get value from 050 instead of 090
-    # 		DataField df050 = factory.newDataField("050", '1', '4');
-    # 		df050.addSubfield(factory.newSubfield('a', "QA76.76.C672"));
-    # 		record.addVariableField(df050);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QA - Mathematics");
-    # 		solrFldMapTest.assertSolrFldHasNumValues(record, fldName, 1);
-    #
-    # 		// 1 item ignored callnum, type ASIS:  no 050 or 090
-    # 		record = getRecordWith999(StanfordIndexer.SKIPPED_CALLNUMS.toArray()[0].toString(), "ASIS");
-    # 		solrFldMapTest.assertNoSolrFld(record, fldName);
-    # 		// add 090 - get value from 090
-    # 		df090 = factory.newDataField("090", ' ', ' ');
-    # 		df090.addSubfield(factory.newSubfield('a', "QM142"));
-    # 		df090.addSubfield(factory.newSubfield('b', ".A84 2010"));
-    # 		record.addVariableField(df090);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QM - Human Anatomy");
-    # 		// add 050 - get value from 050 instead of 090
-    # 		df050 = factory.newDataField("050", '1', '4');
-    # 		df050.addSubfield(factory.newSubfield('a', "QA76.76.C672"));
-    # 		record.addVariableField(df050);
-    # 		solrFldMapTest.assertSolrFldValue(record, fldName, "LC Classification|Q - Science|QA - Mathematics");
-    # 		solrFldMapTest.assertSolrFldHasNumValues(record, fldName, 1);
-    # 	}
-    #
+  describe 'LC Call Numbers' do
+    let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+    subject(:value) { result[field] }
 
-    it 'handles single letter LC call numbers' do
-      expect(record_with_999(call_number: 'D764.7 .K72 1990', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|D - History (General)|D - History (General)']
-      )
-
-      expect(record_with_999(call_number: 'F1356 .M464 2005', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)|F - United States, British, Dutch, French, Latin America (Local History)']
-      )
-
-      expect(record_with_999(call_number: ' M2 .C17 L3 2005', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|M - Music|M - Music']
-      )
-
-      expect(record_with_999(call_number: 'U897 .C87 Z55 2001', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|U - Military Science (General)|U - Military Science (General)']
-      )
-
-      expect(record_with_999(call_number: 'Z3871.Z8', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|Z - Bibliography, Library Science, Information Resources|Z - Bibliography, Library Science, Information Resources']
-      )
-    end
-
-    it 'handles two letter LC call numbers' do
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-
-      expect(record_with_999(call_number: 'BX4659 .E85 W44', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|B - Philosophy, Psychology, Religion|BX - Christian Denominations']
-      )
-
-      expect(record_with_999(call_number: 'HG6046 .V28 1986', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|H - Social Sciences (General)|HG - Finance']
-      )
-    end
-
-    it 'handles three letter LC call numbers' do
-      # 6830340
-      expect(record_with_999(call_number: 'KKX500 .S98 2005', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|K - Law|KKX - Law of Turkey']
-      )
-
-      expect(record_with_999(call_number: 'KJV4189 .A67 A15 2014', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|K - Law|KJV - Law of France']
-      )
-    end
-
-    it 'includes the classification when it is not available in the map' do
-      expect(record_with_999(call_number: 'KFC1050 .C35 2014', scheme: 'LC', indexer:)[field]).to eq(
-        ['LC Classification|K - Law|KFC - Law of California, Colorado, Connecticut']
-      )
-    end
-
-    it 'handles multiple 999s with the same LC class appropriately' do
-      doc = record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', 'M2 .C17 L3 2005'),
-            MARC::Subfield.new('w', 'LC')
-          )
-        )
+    context 'with one letter call number' do
+      context 'with D call' do
+        let(:call_number) { 'D764.7 .K72 1990' }
+        it { is_expected.to eq ['LC Classification|D - History (General)|D - History (General)'] }
       end
 
-      expect(doc[field].sort).to eq(
-        [
+      context 'with F call' do
+        let(:call_number) { 'F1356 .M464 2005' }
+        it { is_expected.to eq ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)|F - United States, British, Dutch, French, Latin America (Local History)'] }
+      end
+
+      context 'with M call' do
+        let(:call_number) { ' M2 .C17 L3 2005' }
+        it { is_expected.to eq ['LC Classification|M - Music|M - Music'] }
+      end
+
+      context 'with U call' do
+        let(:call_number) { 'U897 .C87 Z55 2001' }
+        it { is_expected.to eq ['LC Classification|U - Military Science (General)|U - Military Science (General)'] }
+      end
+
+      context 'with Z call' do
+        let(:call_number) { 'Z3871.Z8' }
+        it { is_expected.to eq ['LC Classification|Z - Bibliography, Library Science, Information Resources|Z - Bibliography, Library Science, Information Resources'] }
+      end
+    end
+
+    context 'with two letter call number' do
+      context 'with QE call' do
+        let(:call_number) { 'QE538.8 .N36 1975-1977' }
+        it { is_expected.to eq ['LC Classification|Q - Science (General)|QE - Geology'] }
+      end
+
+      context 'with BX call' do
+        let(:call_number) { 'BX4659 .E85 W44' }
+        it { is_expected.to eq ['LC Classification|B - Philosophy, Psychology, Religion|BX - Christian Denominations'] }
+      end
+
+      context 'with HG call' do
+        let(:call_number) { 'HG6046 .V28 1986' }
+        it { is_expected.to eq ['LC Classification|H - Social Sciences (General)|HG - Finance'] }
+      end
+    end
+
+    context 'with three letter call number' do
+      context 'with KKX call' do # 6830340
+        let(:call_number) { 'KKX500 .S98 2005' }
+        it { is_expected.to eq ['LC Classification|K - Law|KKX - Law of Turkey'] }
+      end
+
+      context 'with KJV call' do
+        let(:call_number) { 'KJV4189 .A67 A15 2014' }
+        it { is_expected.to eq ['LC Classification|K - Law|KJV - Law of France'] }
+      end
+    end
+
+    context 'with a classification that is not available in the map' do
+      let(:call_number) { 'KFC1050 .C35 2014' }
+      it { is_expected.to eq ['LC Classification|K - Law|KFC - Law of California, Colorado, Connecticut'] }
+    end
+
+    context 'with multiple holding records with the same LC class' do
+      let(:result) do
+        record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
+          marc_record.append(
+            MARC::DataField.new(
+              '999',
+              ' ',
+              ' ',
+              MARC::Subfield.new('a', 'M2 .C17 L3 2005'),
+              MARC::Subfield.new('w', 'LC')
+            )
+          )
+        end
+      end
+      it {
+        is_expected.to match_array [
           'LC Classification|M - Music|M - Music',
           'LC Classification|M - Music|ML - Literature on Music'
         ]
-      )
+      }
     end
 
-    it 'handles multiple 999s with different LC classes appropriately' do
-      doc = record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-            MARC::Subfield.new('w', 'LC')
+    context 'with multiple holding records with the different LC classes' do
+      let(:result) do
+        record_with_999(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |marc_record|
+          marc_record.append(
+            MARC::DataField.new(
+              '999',
+              ' ',
+              ' ',
+              MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
+              MARC::Subfield.new('w', 'LC')
+            )
           )
-        )
+        end
       end
-
-      expect(doc[field]).to eq(
-        [
+      it {
+        is_expected.to eq [
           'LC Classification|M - Music|ML - Literature on Music',
           'LC Classification|Q - Science (General)|QE - Geology'
         ]
-      )
+      }
     end
 
-    it 'handles lane LC call numbers' do
-      expect(record_with_999(call_number: 'Q603 .H47 1960', library: 'LANE-MED', scheme: 'LC',
-                             indexer:)[field]).to eq(
-                               ['LC Classification|Q - Science (General)|Q - Science (General)']
-                             )
-    end
+    context 'with Lane LC call numbers' do
+      let(:call_number) { 'Q603 .H47 1960' }
 
-    it 'handles LC call numbers that have a scheme listed something else' do
-      skip 'This test was marked as TODO in SolrMarc'
-
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'DEWEY', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'ALPHANUM', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
-
-      expect(record_with_999(call_number: 'QE538.8 .N36 1975-1977', scheme: 'OTHER', indexer:)[field]).to eq(
-        ['LC Classification|Q - Science (General)|QE - Geology']
-      )
+      it { is_expected.to eq ['LC Classification|Q - Science (General)|Q - Science (General)'] }
     end
   end
 
-  context 'invalid LC call numbers' do
-    it 'are not included' do
-      # bad Cutter
-      expect(record_with_999(call_number: 'QE538.8 .NB36 1975-1977', scheme: 'DEWEY',
-                             indexer:)[field]).to be_nil
-
-      # paren start char
-      expect(record_with_999(call_number: '(V) JN6695 .I28 1999 COPY', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '???', scheme: 'LC', indexer:)[field]).to be_nil
-
-      # weird callnums
-      expect(record_with_999(call_number: '158613F868 .C45 N37 2000', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '5115126059 A17 2004', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '70 03126', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles LC call numbers starting with illegal letters correctly (by not including them)' do
-      expect(record_with_999(call_number: 'INTERNET RESOURCE KF3400 .S36 2009', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # FIXME: we DO want a value for INTERNET or NO CALLNUM, either from the bib, or if there is a valid callnum after INTERNET RESOURCE");
-      # expect(record_with_999(call_number: 'INTERNET RESOURCE KF3400 .S36 2009', scheme: 'LC', indexer: indexer)[field]).to eq(
-      #   ['LC Classification|K - Law|KF - Law of the U.S.']
-      # )
-
-      expect(record_with_999(call_number: 'INTERNET RESOURCE GALE EZPROXY', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      # should be govdoc
-      expect(record_with_999(call_number: 'ICAO DOC 4444/15TH ED', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'ORNL-6371', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'X X', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XM98-1 NO.1', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: 'XX(6661112.1)', scheme: 'LC', indexer:)[field]).to be_nil
-
-      expect(record_with_999(call_number: 'YBP1834690', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles call numbers that are alphanum, but have scheme listed as LC (by not including them)' do
-      expect(record_with_999(call_number: '1ST AMERICAN BANCORP, INC.', scheme: 'LC',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '2 B SYSTEM INC.', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '202 DATA SYSTEMS, INC.', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles unusual Lane (med school) call numbers (by not including them)' do
-      expect(record_with_999(call_number: '1.1', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '20.44', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4.15[C]', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '6.4C-CZ[BC]', scheme: 'LC', indexer:)[field]).to be_nil
-    end
-
-    it 'handles Harvard Yenching call numbers (by not including them)' do
-      expect(record_with_999(call_number: '6.4C-CZ[BC]', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '2345 5861 V.3', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '2061 4246 NO.5-6 1936-1937', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4362 .S12P2 1965 .C3', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4861.1 3700 1989:NO.4-6', scheme: 'ALPHANUM',
-                             indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '4488.301 0300 2005 CD-ROM', scheme: 'LCPER',
-                             indexer:)[field]).to be_nil
-    end
-
-    it 'handles weird in process call numbers (by not including them)' do
-      expect(record_with_999(call_number: '001AQJ5818', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(XX.4300523)', scheme: 'AUTO', indexer:)[field]).to be_nil
-      # EDI in process
-      expect(record_with_999(call_number: '427331959', scheme: 'LC', indexer:)[field]).to be_nil
-      # Japanese
-      expect(record_with_999(call_number: '7926635', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '7890569-1001', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '7885324-1001-2', scheme: 'LC', indexer:)[field]).to be_nil
-      # Rare
-      expect(record_with_999(call_number: '741.5 F', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(ADL4044.1)XX', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '(XX.4300523)', scheme: 'LC', indexer:)[field]).to be_nil
-      # math-cs tech-reports  (home Loc TECH-RPTS)
-      expect(record_with_999(call_number: '134776', scheme: 'LC', indexer:)[field]).to be_nil
-      expect(record_with_999(call_number: '262198', scheme: 'LC', indexer:)[field]).to be_nil
+  describe 'invalid LC call numbers' do
+    subject(:value) { result[field] }
+    bad_callnumbers =
+      [
+        'QE538.8 .NB36 1975-1977', # bad Cutter
+        '(V) JN6695 .I28 1999 COPY', # paren start char
+        '???',
+        # weird callnums
+        '158613F868 .C45 N37 2000',
+        '5115126059 A17 2004',
+        '70 03126',
+        # starting with illegal letters
+        'INTERNET RESOURCE KF3400 .S36 2009',
+        'INTERNET RESOURCE GALE EZPROXY',
+        # should be govdoc
+        'ICAO DOC 4444/15TH ED',
+        'ORNL-6371',
+        'X X',
+        'XM98-1 NO.1',
+        'XX(6661112.1)',
+        'YBP1834690',
+        # alphanum but have scheme listed as LC (by not including them)
+        '1ST AMERICAN BANCORP, INC.',
+        '2 B SYSTEM INC.',
+        '202 DATA SYSTEMS, INC.',
+        # unusual Lane (med school) call numbers
+        '1.1',
+        '20.44',
+        '4.15[C]',
+        # Harvard Yenching call numbers
+        '6.4C-CZ[BC]',
+        '2345 5861 V.3',
+        '2061 4246 NO.5-6 1936-1937',
+        '4362 .S12P2 1965 .C3',
+        '4861.1 3700 1989:NO.4-6',
+        '4488.301 0300 2005 CD-ROM',
+        # weird in process call numbers
+        '001AQJ5818',
+        '(XX.4300523)',
+        # EDI in process
+        '427331959',
+        # Japanese
+        '7926635',
+        '7890569-1001',
+        '7885324-1001-2',
+        # Rare
+        '741.5 F',
+        '(ADL4044.1)XX',
+        # math-cs tech-reports  (home Loc TECH-RPTS)
+        '134776',
+        '262198'
+      ]
+    bad_callnumbers.each do |call_number|
+      context "when call number is #{call_number}" do
+        let(:result) { record_with_999(call_number:, scheme: 'LC', indexer:) }
+        it { is_expected.to be_nil }
+      end
     end
   end
 
-  context 'dewey call numbers' do
+  describe 'dewey call numbers' do
     it 'has the correct data' do
       expect(record_with_999(call_number: '159.32 .W211', scheme: 'DEWEY', indexer:)[field]).to eq(
         ['Dewey Classification|100s - Philosophy|150s - Psychology']
@@ -559,79 +492,233 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  context 'invalid DEWEY call numbers' do
+  describe 'invalid DEWEY call numbers' do
     it 'are not included' do
       expect(record_with_999(call_number: '180.8 DX25 V.1', scheme: 'LC', indexer:)[field]).to be_nil
     end
   end
 
-  context 'Gov Doc (call numbers)' do
-    it 'has the correct data based on home location' do
-      pending('Needs to be fixed up to use location details')
+  describe 'Gov Doc (call numbers)' do
+    subject(:value) { result[field] }
+    let(:folio_record) do
+      FolioRecord.new({
+                        'source_record' => source_record,
+                        'instance' => {}
+                      }, folio_client)
+    end
 
-      SirsiHolding::GOV_DOCS_LOCS.each do |_loc|
-        record_with_999(call_number: 'ICAO DOC 4444/15TH ED', scheme: 'ALPHANUM', home_location: 'BRIT-DOCS',
-                        indexer:)[field].each do |val|
-          expect(val).to start_with('Government Document|')
+    let(:folio_client) { instance_double(FolioClient, instance: {}, items_and_holdings:, statistical_codes: []) }
+    let(:items_and_holdings) { {} }
+    let(:sirsi_holdings) { [] }
+
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
+    end
+
+    context 'with a SUDOC scheme' do
+      let(:sirsi_holdings) do
+        [
+          SirsiHolding.new(
+            call_number: 'I 19.76:98-600-B',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'SUDOC',
+            type: '',
+            barcode: ''
+          )
+        ]
+      end
+
+      it { is_expected.to eq ['Government Document|Other'] }
+    end
+
+    context 'when it has an 086' do
+      let(:source_record) do
+        [{ 'leader' => '          22        4500', 'fields' => [{ '086' => { 'ind1' => ' ', 'ind2' => ' ', 'subfields' => [] } }] }]
+      end
+
+      it { is_expected.to eq ['Government Document|Other'] }
+    end
+
+    context 'when the location has searchworksGovDocsClassification' do
+      let(:items) do
+        [{ 'id' => 'fe7e0573-1812-5957-ba3a-0e41d7717abe',
+           'hrid' => 'ai1039075_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '001AEY7183',
+           'request' => nil,
+           '_version' => 1,
+           'metadata' =>
+           { 'createdDate' => '2023-05-06T05:45:36.582Z',
+             'updatedDate' => '2023-05-06T05:45:36.582Z',
+             'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+             'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'formerIds' => [],
+           'callNumber' =>
+           { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'J301 .K63' },
+           'copyNumber' => '1',
+           'enumeration' => 'SESS 1924-25 V.30',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'courseListingId' => nil,
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '1ac11924-dc29-51b8-bb40-0316e5cb62ba',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Non-circulating',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+           'permanentLoanTypeId' => '52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd',
+           'permanentLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'J 3301 K63 SESS 41924 225 V 230 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'J301 .K63' },
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+               'code' => 'GRE-BRIT-DOCS',
+               'name' => 'British Government Documents',
+               'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+               'details' => { 'searchworksGovDocsClassification' => 'British' },
+               'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+               'isActive' => true,
+               'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+               'code' => 'GRE-BRIT-DOCS',
+               'name' => 'British Government Documents',
+               'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+               'details' => {},
+               'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+               'isActive' => true,
+               'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } } } }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items }
+      end
+
+      it { is_expected.to eq ['Government Document|British'] }
+    end
+
+    context 'when it has an LC and Dewey and SUDOC call numbers' do
+      let(:sirsi_holdings) do
+        [
+          SirsiHolding.new(
+            call_number: 'I 19.76:98-600-B',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'SUDOC',
+            type: '',
+            barcode: ''
+          ),
+          SirsiHolding.new(
+            call_number: '550.6 .U58O 00-600',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'DEWEYPER',
+            type: '',
+            barcode: ''
+          ),
+          SirsiHolding.new(
+            call_number: 'QE538.8 .N36 1985:APR.',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'LCPER',
+            # type: '',
+            barcode: ''
+          )
+        ]
+      end
+
+      it 'handles LC and Dewey and the SUDOC becomes "Government Document|Other"' do
+        expect(value).to eq(
+          [
+            'LC Classification|Q - Science (General)|QE - Geology',
+            'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
+            'Government Document|Other'
+          ]
+        )
+      end
+
+      context 'when it has location details also' do
+        let(:items) do
+          [{ 'id' => 'fe7e0573-1812-5957-ba3a-0e41d7717abe',
+             'hrid' => 'ai1039075_1_1',
+             'notes' => [],
+             'status' => 'Available',
+             'barcode' => '001AEY7183',
+             'request' => nil,
+             '_version' => 1,
+             'metadata' =>
+             { 'createdDate' => '2023-05-06T05:45:36.582Z',
+               'updatedDate' => '2023-05-06T05:45:36.582Z',
+               'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+               'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+             'formerIds' => [],
+             'callNumber' =>
+             { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'J301 .K63' },
+             'copyNumber' => '1',
+             'enumeration' => 'SESS 1924-25 V.30',
+             'yearCaption' => [],
+             'materialType' => 'book',
+             'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+             'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+             'numberOfPieces' => '1',
+             'courseListingId' => nil,
+             'circulationNotes' => [],
+             'electronicAccess' => [],
+             'holdingsRecordId' => '1ac11924-dc29-51b8-bb40-0316e5cb62ba',
+             'itemDamagedStatus' => nil,
+             'permanentLoanType' => 'Non-circulating',
+             'temporaryLoanType' => nil,
+             'statisticalCodeIds' => [],
+             'administrativeNotes' => [],
+             'effectiveLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+             'permanentLoanTypeId' => '52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd',
+             'permanentLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+             'suppressFromDiscovery' => false,
+             'effectiveShelvingOrder' => 'J 3301 K63 SESS 41924 225 V 230 11',
+             'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'J301 .K63' },
+             'location' =>
+             { 'effectiveLocation' =>
+               { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+                 'code' => 'GRE-BRIT-DOCS',
+                 'name' => 'British Government Documents',
+                 'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+                 'details' => { 'searchworksGovDocsClassification' => 'British' },
+                 'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+                 'isActive' => true,
+                 'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+               'permanentLocation' =>
+               { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+                 'code' => 'GRE-BRIT-DOCS',
+                 'name' => 'British Government Documents',
+                 'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+                 'details' => {},
+                 'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+                 'isActive' => true,
+                 'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } } } }]
+        end
+        let(:items_and_holdings) do
+          { 'items' => items }
+        end
+
+        it 'skips the SUDOC' do
+          expect(value).to eq(
+            [
+              'LC Classification|Q - Science (General)|QE - Geology',
+              'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
+              'Government Document|British'
+            ]
+          )
         end
       end
-    end
-
-    it 'has the correct data based on call number scheme' do
-      expect(record_with_999(call_number: 'something', scheme: 'SUDOC', indexer:)[field]).to eq(
-        ['Government Document|Other']
-      )
-    end
-
-    it 'has the correct data based on the presence of 086' do
-      expect(record_with_999(call_number: 'something', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-
-      doc = record_with_999(call_number: 'something', scheme: 'ALPHANUM', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '086',
-            ' ',
-            ' '
-          )
-        )
-      end
-
-      expect(doc[field]).to eq(['Government Document|Other'])
-    end
-
-    it 'handles both GovDocs, LC, and Dewey' do
-      pending('Needs to be fixed up to use location details')
-
-      doc = record_with_999(call_number: 'I 19.76:98-600-B', scheme: 'SUDOC', home_location: 'SSRC-FICHE',
-                            indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', '550.6 .U58O 00-600'),
-            MARC::Subfield.new('w', 'DEWEYPER')
-          )
-        )
-
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', 'QE538.8 .N36 1985:APR.'),
-            MARC::Subfield.new('w', 'LCPER')
-          )
-        )
-      end
-
-      expect(doc[field]).to eq(
-        [
-          'LC Classification|Q - Science (General)|QE - Geology',
-          'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
-          'Government Document|Federal'
-        ]
-      )
     end
   end
 end

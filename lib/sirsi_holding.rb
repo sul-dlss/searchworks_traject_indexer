@@ -8,7 +8,6 @@ class SirsiHolding
   delegate %i[dewey? valid_lc?] => :call_number
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
-  CLOSED_LIBS = %w[BIOLOGY CHEMCHMENG MATH-CS].freeze
   ECALLNUM = 'INTERNET RESOURCE'.freeze
   GOV_DOCS_LOCS = %w[BRIT-DOCS CALIF-DOCS FED-DOCS INTL-DOCS SSRC-DOCS SSRC-FICHE SSRC-NWDOC].freeze
   LOST_OR_MISSING_LOCS = %w[ASSMD-LOST LOST-ASSUM LOST-CLAIM LOST-PAID MISSING].freeze
@@ -44,10 +43,7 @@ class SirsiHolding
   end
 
   def skipped?
-    ([home_location, current_location] & SKIPPED_LOCS).any? ||
-      type == 'EDI-REMOVE' ||
-      physics_not_temp? ||
-      CLOSED_LIBS.include?(library)
+    ([home_location, current_location] & SKIPPED_LOCS).any?
   end
 
   def shelved_by_location?
@@ -155,10 +151,6 @@ class SirsiHolding
     call_number = call_number.gsub('. .', ' .') # reduce double periods to a single period
     call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
     call_number.sub(/\.$/, '') # remove trailing period
-  end
-
-  def physics_not_temp?
-    library == 'PHYSICS' && ![home_location, current_location].include?('PHYSTEMP')
   end
 
   class CallNumber
