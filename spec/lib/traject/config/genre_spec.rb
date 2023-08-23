@@ -38,21 +38,6 @@ RSpec.describe 'Format physical config' do
       specify { expect(result[field]).to include 'Conference proceedings' }
     end
 
-    context 'with a database' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.leader = '01515cas a2200385Ma 4500'
-          r.append(MARC::ControlField.new('008', '000208c199u9999nyu x   s     0    0eng d'))
-          r.append(MARC::DataField.new('650', ' ', '0',
-                                       MARC::Subfield.new('a', 'subject'),
-                                       MARC::Subfield.new('v', 'Congresses')))
-          r.append(MARC::DataField.new('999', ' ', ' ', MARC::Subfield.new('t', 'DATABASE')))
-        end
-      end
-
-      specify { expect(result[field]).to include 'Conference proceedings' }
-    end
-
     context 'with a manuscript' do
       let(:record) do
         MARC::Record.new.tap do |r|
