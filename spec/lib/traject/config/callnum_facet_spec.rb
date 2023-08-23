@@ -25,7 +25,21 @@ end
 # rubocop:enable Metrics/ParameterLists
 
 RSpec.describe 'Call Number Facet' do
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(folio_record) }
+  # Legacy
+  let(:folio_record) { stub_record_from_marc(marc_record) }
+
+  # The future (when we remove calls to record_with_999)
+  # let(:folio_record) do
+  #   FolioRecord.new({
+  #                     'source_record' => source_record,
+  #                     'instance' => {}
+  #                   }, stub_folio_client)
+  # end
+
+  let(:source_record) do
+    [{ 'leader' => '          22        4500', 'fields' => [] }]
+  end
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -34,9 +48,8 @@ RSpec.describe 'Call Number Facet' do
   end
 
   let(:field) { 'callnum_facet_hsim' }
-  let(:record) { record_with_999(call_number:, scheme:) }
 
-  context 'call numbers excluded for various reasons' do
+  describe 'call numbers excluded for various reasons' do
     it 'handles unexpected callnum type (by not including them)' do
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
       expect(record_with_999(call_number: 'M123 .M234', scheme: 'HARVYENCH', indexer:)[field]).to be_nil
@@ -176,7 +189,7 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  context 'LC Call Numbers' do
+  describe 'LC Call Numbers' do
     it 'handles single letter LC call numbers' do
       expect(record_with_999(call_number: 'D764.7 .K72 1990', scheme: 'LC', indexer:)[field]).to eq(
         ['LC Classification|D - History (General)|D - History (General)']
@@ -280,7 +293,7 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  context 'invalid LC call numbers' do
+  describe 'invalid LC call numbers' do
     it 'are not included' do
       # bad Cutter
       expect(record_with_999(call_number: 'QE538.8 .NB36 1975-1977', scheme: 'DEWEY',
@@ -361,7 +374,7 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  context 'dewey call numbers' do
+  describe 'dewey call numbers' do
     it 'has the correct data' do
       expect(record_with_999(call_number: '159.32 .W211', scheme: 'DEWEY', indexer:)[field]).to eq(
         ['Dewey Classification|100s - Philosophy|150s - Psychology']
@@ -500,79 +513,233 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  context 'invalid DEWEY call numbers' do
+  describe 'invalid DEWEY call numbers' do
     it 'are not included' do
       expect(record_with_999(call_number: '180.8 DX25 V.1', scheme: 'LC', indexer:)[field]).to be_nil
     end
   end
 
-  context 'Gov Doc (call numbers)' do
-    it 'has the correct data based on home location' do
-      pending('Needs to be fixed up to use location details')
+  describe 'Gov Doc (call numbers)' do
+    subject(:value) { result[field] }
+    let(:folio_record) do
+      FolioRecord.new({
+                        'source_record' => source_record,
+                        'instance' => {}
+                      }, folio_client)
+    end
 
-      SirsiHolding::GOV_DOCS_LOCS.each do |_loc|
-        record_with_999(call_number: 'ICAO DOC 4444/15TH ED', scheme: 'ALPHANUM', home_location: 'BRIT-DOCS',
-                        indexer:)[field].each do |val|
-          expect(val).to start_with('Government Document|')
+    let(:folio_client) { instance_double(FolioClient, instance: {}, items_and_holdings:, statistical_codes: []) }
+    let(:items_and_holdings) { {} }
+    let(:sirsi_holdings) { [] }
+
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
+    end
+
+    context 'with a SUDOC scheme' do
+      let(:sirsi_holdings) do
+        [
+          SirsiHolding.new(
+            call_number: 'I 19.76:98-600-B',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'SUDOC',
+            type: '',
+            barcode: ''
+          )
+        ]
+      end
+
+      it { is_expected.to eq ['Government Document|Other'] }
+    end
+
+    context 'when it has an 086' do
+      let(:source_record) do
+        [{ 'leader' => '          22        4500', 'fields' => [{ '086' => { 'ind1' => ' ', 'ind2' => ' ', 'subfields' => [] } }] }]
+      end
+
+      it { is_expected.to eq ['Government Document|Other'] }
+    end
+
+    context 'when the location has searchworksGovDocsClassification' do
+      let(:items) do
+        [{ 'id' => 'fe7e0573-1812-5957-ba3a-0e41d7717abe',
+           'hrid' => 'ai1039075_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '001AEY7183',
+           'request' => nil,
+           '_version' => 1,
+           'metadata' =>
+           { 'createdDate' => '2023-05-06T05:45:36.582Z',
+             'updatedDate' => '2023-05-06T05:45:36.582Z',
+             'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+             'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'formerIds' => [],
+           'callNumber' =>
+           { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'J301 .K63' },
+           'copyNumber' => '1',
+           'enumeration' => 'SESS 1924-25 V.30',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'courseListingId' => nil,
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '1ac11924-dc29-51b8-bb40-0316e5cb62ba',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Non-circulating',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+           'permanentLoanTypeId' => '52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd',
+           'permanentLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'J 3301 K63 SESS 41924 225 V 230 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'J301 .K63' },
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+               'code' => 'GRE-BRIT-DOCS',
+               'name' => 'British Government Documents',
+               'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+               'details' => { 'searchworksGovDocsClassification' => 'British' },
+               'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+               'isActive' => true,
+               'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+               'code' => 'GRE-BRIT-DOCS',
+               'name' => 'British Government Documents',
+               'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+               'details' => {},
+               'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+               'isActive' => true,
+               'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } } } }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items }
+      end
+
+      it { is_expected.to eq ['Government Document|British'] }
+    end
+
+    context 'when it has an LC and Dewey and SUDOC call numbers' do
+      let(:sirsi_holdings) do
+        [
+          SirsiHolding.new(
+            call_number: 'I 19.76:98-600-B',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'SUDOC',
+            type: '',
+            barcode: ''
+          ),
+          SirsiHolding.new(
+            call_number: '550.6 .U58O 00-600',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'DEWEYPER',
+            type: '',
+            barcode: ''
+          ),
+          SirsiHolding.new(
+            call_number: 'QE538.8 .N36 1985:APR.',
+            home_location: '',
+            library: 'GREEN',
+            scheme: 'LCPER',
+            # type: '',
+            barcode: ''
+          )
+        ]
+      end
+
+      it 'handles LC and Dewey and the SUDOC becomes "Government Document|Other"' do
+        expect(value).to eq(
+          [
+            'LC Classification|Q - Science (General)|QE - Geology',
+            'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
+            'Government Document|Other'
+          ]
+        )
+      end
+
+      context 'when it has location details also' do
+        let(:items) do
+          [{ 'id' => 'fe7e0573-1812-5957-ba3a-0e41d7717abe',
+             'hrid' => 'ai1039075_1_1',
+             'notes' => [],
+             'status' => 'Available',
+             'barcode' => '001AEY7183',
+             'request' => nil,
+             '_version' => 1,
+             'metadata' =>
+             { 'createdDate' => '2023-05-06T05:45:36.582Z',
+               'updatedDate' => '2023-05-06T05:45:36.582Z',
+               'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+               'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+             'formerIds' => [],
+             'callNumber' =>
+             { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'J301 .K63' },
+             'copyNumber' => '1',
+             'enumeration' => 'SESS 1924-25 V.30',
+             'yearCaption' => [],
+             'materialType' => 'book',
+             'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+             'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+             'numberOfPieces' => '1',
+             'courseListingId' => nil,
+             'circulationNotes' => [],
+             'electronicAccess' => [],
+             'holdingsRecordId' => '1ac11924-dc29-51b8-bb40-0316e5cb62ba',
+             'itemDamagedStatus' => nil,
+             'permanentLoanType' => 'Non-circulating',
+             'temporaryLoanType' => nil,
+             'statisticalCodeIds' => [],
+             'administrativeNotes' => [],
+             'effectiveLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+             'permanentLoanTypeId' => '52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd',
+             'permanentLocationId' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+             'suppressFromDiscovery' => false,
+             'effectiveShelvingOrder' => 'J 3301 K63 SESS 41924 225 V 230 11',
+             'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'J301 .K63' },
+             'location' =>
+             { 'effectiveLocation' =>
+               { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+                 'code' => 'GRE-BRIT-DOCS',
+                 'name' => 'British Government Documents',
+                 'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+                 'details' => { 'searchworksGovDocsClassification' => 'British' },
+                 'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+                 'isActive' => true,
+                 'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+               'permanentLocation' =>
+               { 'id' => 'cb0275a1-ac7a-4d3b-843a-62e77952f5d2',
+                 'code' => 'GRE-BRIT-DOCS',
+                 'name' => 'British Government Documents',
+                 'campus' => { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5', 'code' => 'SUL', 'name' => 'Stanford Libraries' },
+                 'details' => {},
+                 'library' => { 'id' => 'f6b5519e-88d9-413e-924d-9ed96255f72e', 'code' => 'GREEN', 'name' => 'Green Library' },
+                 'isActive' => true,
+                 'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } } } }]
+        end
+        let(:items_and_holdings) do
+          { 'items' => items }
+        end
+
+        it 'skips the SUDOC' do
+          expect(value).to eq(
+            [
+              'LC Classification|Q - Science (General)|QE - Geology',
+              'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
+              'Government Document|British'
+            ]
+          )
         end
       end
-    end
-
-    it 'has the correct data based on call number scheme' do
-      expect(record_with_999(call_number: 'something', scheme: 'SUDOC', indexer:)[field]).to eq(
-        ['Government Document|Other']
-      )
-    end
-
-    it 'has the correct data based on the presence of 086' do
-      expect(record_with_999(call_number: 'something', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
-
-      doc = record_with_999(call_number: 'something', scheme: 'ALPHANUM', indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '086',
-            ' ',
-            ' '
-          )
-        )
-      end
-
-      expect(doc[field]).to eq(['Government Document|Other'])
-    end
-
-    it 'handles both GovDocs, LC, and Dewey' do
-      pending('Needs to be fixed up to use location details')
-
-      doc = record_with_999(call_number: 'I 19.76:98-600-B', scheme: 'SUDOC', home_location: 'SSRC-FICHE',
-                            indexer:) do |marc_record|
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', '550.6 .U58O 00-600'),
-            MARC::Subfield.new('w', 'DEWEYPER')
-          )
-        )
-
-        marc_record.append(
-          MARC::DataField.new(
-            '999',
-            ' ',
-            ' ',
-            MARC::Subfield.new('a', 'QE538.8 .N36 1985:APR.'),
-            MARC::Subfield.new('w', 'LCPER')
-          )
-        )
-      end
-
-      expect(doc[field]).to eq(
-        [
-          'LC Classification|Q - Science (General)|QE - Geology',
-          'Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences',
-          'Government Document|Federal'
-        ]
-      )
     end
   end
 end
