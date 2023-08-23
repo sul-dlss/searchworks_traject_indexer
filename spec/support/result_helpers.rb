@@ -31,7 +31,7 @@ module ResultHelpers
   end
 
   def select_by_id(id)
-    results.select { |r| r['id'] == [id] }.first
+    results.find { |r| r['id'] == [id] }
   end
 
   def select_by_field(results, field, value)
