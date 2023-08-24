@@ -119,7 +119,7 @@ class FolioRecord
   end
 
   def eresource_holdings
-    return [] if items.any?
+    return [] if items.any? || holdings.select { |holding| holding['boundWith'].present? }
 
     Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
   end
