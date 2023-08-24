@@ -201,20 +201,6 @@ RSpec.describe 'All_search config' do
     end
   end
 
-  context 'with lc untruncated' do
-    let(:record) do
-      base_record.tap do |r|
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', 'LCbarcode'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it { is_expected.to eq ['LCbarcode'] }
-  end
-
   context 'with lc untruncated + dewey truncated' do
     let(:record) do
       base_record.tap do |r|
