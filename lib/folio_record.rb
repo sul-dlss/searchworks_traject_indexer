@@ -45,7 +45,18 @@ class FolioRecord
   end
 
   def sirsi_holdings
-    @sirsi_holdings ||= items.filter_map do |item|
+    @sirsi_holdings ||= begin
+      holdings = item_holdings.concat(bound_with_holdings)
+      holdings = eresource_holdings if holdings.empty?
+      holdings = on_order_holdings if holdings.empty?
+      holdings = on_order_stub_holdings if holdings.empty?
+
+      holdings
+    end
+  end
+
+  def item_holdings
+    items.filter_map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
@@ -83,7 +94,7 @@ class FolioRecord
         public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence,
         course_reserves:
       )
-    end.concat(bound_with_holdings).concat(eresource_holdings).concat(on_order_stub_holdings)
+    end
   end
 
   # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
@@ -119,14 +130,10 @@ class FolioRecord
   end
 
   def eresource_holdings
-    return [] if items.any? || holdings.select { |holding| holding['boundWith'].present? }
-
     Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
   end
 
-  def on_order_stub_holdings
-    return [] if all_items.any? || eresource_holdings
-
+  def on_order_holdings
     on_order_holdings = holdings.select do |holding|
       pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
     end
@@ -141,6 +148,25 @@ class FolioRecord
         current_location: 'ON-ORDER',
         home_location: home_location_code,
         library: library_code
+      )
+    end
+  end
+
+  def on_order_stub_holdings
+    order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(marc_record)
+    translation_map = Traject::TranslationMap.new('library_on_order_map')
+
+    lib_codes = order_libs.flat_map(&:split).map { |order_lib| translation_map[order_lib] }.uniq
+    # exclude generic SUL if there's a more specific library
+    lib_codes -= ['SUL'] if lib_codes.length > 1
+    lib_codes.map do |lib|
+      SirsiHolding.new(
+        barcode: nil,
+        call_number: nil,
+        scheme: nil,
+        library: lib,
+        home_location: 'ON-ORDER',
+        current_location: 'ON-ORDER'
       )
     end
   end
