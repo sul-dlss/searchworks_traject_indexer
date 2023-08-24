@@ -88,6 +88,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
 
     let(:unordered_fields) do
       [
+        'access_facet',
         'barcode_search',
         'callnum_search',
         'reverse_shelfkey',
