@@ -7,7 +7,7 @@ RSpec.describe 'Date config' do
     end
   end
   let(:fixture_name) { 'idTests.mrc' }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   describe 'pub_year_ss' do
     let(:field) { 'pub_year_ss' }
@@ -541,7 +541,7 @@ RSpec.describe 'Date config' do
   end
 
   context 'a blank record (particularly without an 008 field)' do
-    subject(:result) { |_rec| indexer.map_record(stub_record_from_marc(record)) }
+    subject(:result) { |_rec| indexer.map_record(marc_to_folio(record)) }
     let(:record) { MARC::Record.new }
 
     it 'indexes fine' do

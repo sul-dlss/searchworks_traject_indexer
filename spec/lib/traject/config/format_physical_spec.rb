@@ -6,7 +6,7 @@ RSpec.describe 'Format physical config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
   let(:field) { 'format_physical_ssim' }
 
   context 'with 007/00 = m (Film)' do

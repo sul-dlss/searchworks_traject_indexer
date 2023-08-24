@@ -9,7 +9,7 @@ RSpec.describe 'Author config' do
 
   let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { 'linked_related_works_fixture.xml' }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'works_struct' do
     let(:field) { 'works_struct' }

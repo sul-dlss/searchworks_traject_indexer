@@ -9,7 +9,7 @@ RSpec.describe 'Access config' do
 
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { 'onlineFormat.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'url_sfx' do
     let(:field) { 'url_sfx' }

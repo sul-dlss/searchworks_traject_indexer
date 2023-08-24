@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -12,7 +12,7 @@ RSpec.describe 'Sirsi config' do
   let(:record) { records.first }
 
   describe 'physical' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'physicalTests.mrc' }
     let(:field) { 'physical' }
 
@@ -47,7 +47,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_physical' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_physical' }
 

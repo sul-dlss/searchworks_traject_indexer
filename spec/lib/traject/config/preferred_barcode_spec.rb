@@ -15,7 +15,7 @@ RSpec.describe 'All_search config' do
       r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
     end
   end
-  let(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  let(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
   let(:field) { 'preferred_barcode' }
 
   describe 'preferred_barcode' do

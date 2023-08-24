@@ -9,7 +9,7 @@ RSpec.describe 'IIIF Manifest config' do
   let(:fixture_name) { '10448954.marc' }
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   describe 'iiif_manifest_url_ssim' do
     it '' do

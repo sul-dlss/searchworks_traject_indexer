@@ -7,7 +7,7 @@ RSpec.describe 'Sirsi config' do
     end
   end
   let(:instance) { {} }
-  let(:result) { indexer.map_record(stub_record_from_marc(record, instance:)) }
+  let(:result) { indexer.map_record(marc_to_folio(record, instance:)) }
   let(:record) { records.first }
   let(:field) { 'db_az_subject' }
   subject(:value) { result[field] }
@@ -66,7 +66,7 @@ RSpec.describe 'Sirsi config' do
 
     context 'with real-world data' do
       let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
-      subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+      subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
       let(:fixture_name) { 'databasesAZsubjectTests.xml' }
 
       it 'indexes the right data' do

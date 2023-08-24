@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Single valued fields' do
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|

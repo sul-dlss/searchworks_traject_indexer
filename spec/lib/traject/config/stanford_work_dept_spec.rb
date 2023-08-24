@@ -6,7 +6,7 @@ RSpec.describe 'Stanford work and department config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
   let(:work_field) { 'stanford_work_facet_hsim' }
   let(:dept_field) { 'stanford_dept_sim' }
 

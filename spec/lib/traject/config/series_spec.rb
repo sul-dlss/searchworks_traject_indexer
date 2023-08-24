@@ -8,7 +8,7 @@ RSpec.describe 'Series config' do
   end
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'series_search' do
     let(:field) { 'series_search' }
