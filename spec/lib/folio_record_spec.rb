@@ -302,28 +302,23 @@ RSpec.describe FolioRecord do
     end
   end
 
-  describe '#bound_with_holdings' do
-    context 'when the holding is not a bound-with child' do
-      let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_basic.json'))), client) }
-      it 'does not return any bound-with holdings' do
-        expect(folio_record.bound_with_holdings).to be_empty
-      end
-    end
-    context 'when the bound with child is not in SAL3' do
-      let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child.json'))), client) }
-      it 'does not add SEE-OTHER as the home_location' do
-        expect(folio_record.bound_with_holdings.first.home_location).not_to eq('SEE-OTHER')
-      end
-    end
-    context 'when the bound with child is in SAL3' do
-      let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child_see-other.json'))), client) }
-      it 'adds SEE-OTHER as the home_location' do
-        expect(folio_record.bound_with_holdings.first.home_location).to eq('SEE-OTHER')
-      end
-    end
-  end
-
   describe '#sirsi_holdings' do
+    context 'bound-withs' do
+      context 'when the bound with child is not in SAL3' do
+        let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child.json'))), client) }
+        it 'does not add SEE-OTHER as the home_location' do
+          expect(folio_record.sirsi_holdings.first.home_location).not_to eq('SEE-OTHER')
+        end
+      end
+
+      context 'when the bound with child is in SAL3' do
+        let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child_see-other.json'))), client) }
+        it 'adds SEE-OTHER as the home_location' do
+          expect(folio_record.sirsi_holdings.first.home_location).to eq('SEE-OTHER')
+        end
+      end
+    end
+
     context 'with an item with a temporary location' do
       let(:record) do
         {

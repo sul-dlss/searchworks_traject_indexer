@@ -55,6 +55,84 @@ class FolioRecord
     end
   end
 
+  # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
+  def call_number_type_map(name)
+    case name
+    when /dewey/i
+      'DEWEY'
+    when /congress/i, /LC/i
+      'LC'
+    when /superintendent/i
+      'SUDOC'
+    when /title/i, /shelving/i
+      'ALPHANUM'
+    else
+      'OTHER'
+    end
+  end
+
+  # Creates the mhld_display value. This drives the holding display in searchworks.
+  # This packed format mimics how we indexed this data when we used Symphony.
+  def mhld
+    holdings.present? ? Folio::MhldBuilder.build(holdings, holding_summaries, pieces) : []
+  end
+
+  def items
+    all_items.reject do |item|
+      item['suppressFromDiscovery']
+    end
+  end
+
+  def holdings
+    @holdings ||= load('holdings').reject do |holding|
+      holding['suppressFromDiscovery']
+    end
+  end
+
+  def holding_summaries
+    record['holdingSummaries'] || []
+  end
+
+  def pieces
+    @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
+  end
+
+  def statistical_codes
+    @statistical_codes ||= instance.fetch('statisticalCodes') do
+      my_ids = client.instance(instance_id:).fetch('statisticalCodeIds', [])
+      client.statistical_codes.select { |code| my_ids.include?(code['id']) }
+    end
+  end
+
+  def instance
+    record['instance'] || {}
+  end
+
+  # hash representation of the record
+  def as_json
+    record
+  end
+
+  def to_honeybadger_context
+    { hrid:, instance_id: }
+  end
+
+  # Course information for any courses that have this record's items on reserve
+  # @return [Array<Hash>] course information
+  def courses
+    record.fetch('courses', []).map do |course|
+      {
+        course_name: course['name'],
+        course_id: course['courseNumber'],
+        instructors: course['instructorObjects'].pluck('name'),
+        listing_id: course['courseListingId'],
+        reserve_desk: course.dig('location', 'code')
+      }
+    end
+  end
+
+  private
+
   def item_holdings
     items.filter_map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
@@ -171,92 +249,14 @@ class FolioRecord
     end
   end
 
-  # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
-  def call_number_type_map(name)
-    case name
-    when /dewey/i
-      'DEWEY'
-    when /congress/i, /LC/i
-      'LC'
-    when /superintendent/i
-      'SUDOC'
-    when /title/i, /shelving/i
-      'ALPHANUM'
-    else
-      'OTHER'
-    end
-  end
-
-  # Creates the mhld_display value. This drives the holding display in searchworks.
-  # This packed format mimics how we indexed this data when we used Symphony.
-  def mhld
-    holdings.present? ? Folio::MhldBuilder.build(holdings, holding_summaries, pieces) : []
-  end
-
-  def items
-    all_items.reject do |item|
-      item['suppressFromDiscovery']
-    end
-  end
-
-  def all_items
-    @all_items ||= load('items')
-  end
-
-  def holdings
-    @holdings ||= load('holdings').reject do |holding|
-      holding['suppressFromDiscovery']
-    end
-  end
-
-  def holding_summaries
-    record['holdingSummaries'] || []
-  end
-
-  def pieces
-    @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
-  end
-
-  def statistical_codes
-    @statistical_codes ||= instance.fetch('statisticalCodes') do
-      my_ids = client.instance(instance_id:).fetch('statisticalCodeIds', [])
-      client.statistical_codes.select { |code| my_ids.include?(code['id']) }
-    end
-  end
-
-  def instance
-    record['instance'] || {}
-  end
-
-  # hash representation of the record
-  def as_json
-    record
-  end
-
-  def to_honeybadger_context
-    { hrid:, instance_id: }
-  end
-
-  # Course information for any courses that have this record's items on reserve
-  # @return [Array<Hash>] course information
-  def courses
-    record.fetch('courses', []).map do |course|
-      {
-        course_name: course['name'],
-        course_id: course['courseNumber'],
-        instructors: course['instructorObjects'].pluck('name'),
-        listing_id: course['courseListingId'],
-        reserve_desk: course.dig('location', 'code')
-      }
-    end
-  end
-
-  private
-
   # @param [String] type either 'items' or 'holdings'
   # @return [Array] list of records, of the specified type
   def load(type)
     (record[type] || items_and_holdings&.dig(type) || []).compact
+  end
+
+  def all_items
+    @all_items ||= load('items')
   end
 
   def items_and_holdings
