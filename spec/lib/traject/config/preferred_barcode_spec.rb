@@ -15,186 +15,112 @@ RSpec.describe 'All_search config' do
       r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
     end
   end
-  let(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+  let(:result) { indexer.map_record(folio_record) }
+  let(:folio_record) { marc_to_folio_with_stubbed_holdings(record) }
   let(:field) { 'preferred_barcode' }
 
   describe 'preferred_barcode' do
+    let(:record) { base_record }
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
+    end
+
     context 'with lc only' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                       MARC::Subfield.new('w', 'LC'),
-                                       MARC::Subfield.new('i', 'LCbarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:lc_holding, barcode: 'LCbarcode')
+        ]
       end
 
       it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                       MARC::Subfield.new('w', 'LC'),
-                                       MARC::Subfield.new('i', 'LCbarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', '159.32 .W211'),
-                                       MARC::Subfield.new('w', 'DEWEY'),
-                                       MARC::Subfield.new('i', 'DeweyBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:lc_holding, barcode: 'LCbarcode'),
+          build(:dewey_holding, barcode: 'DeweyBarcode')
+        ]
       end
 
       it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey + sudoc' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                       MARC::Subfield.new('w', 'LC'),
-                                       MARC::Subfield.new('i', 'LCbarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', '159.32 .W211'),
-                                       MARC::Subfield.new('w', 'DEWEY'),
-                                       MARC::Subfield.new('i', 'DeweyBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'I 19.76:98-600-B'),
-                                       MARC::Subfield.new('w', 'SUDOC'),
-                                       MARC::Subfield.new('i', 'SudocBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:lc_holding, barcode: 'LCbarcode'),
+          build(:dewey_holding, barcode: 'DeweyBarcode'),
+          build(:sudoc_holding, barcode: 'SudocBarcode')
+        ]
       end
 
       it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey + sudoc + alphanum' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                       MARC::Subfield.new('w', 'LC'),
-                                       MARC::Subfield.new('i', 'LCbarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', '159.32 .W211'),
-                                       MARC::Subfield.new('w', 'DEWEY'),
-                                       MARC::Subfield.new('i', 'DeweyBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'I 19.76:98-600-B'),
-                                       MARC::Subfield.new('w', 'SUDOC'),
-                                       MARC::Subfield.new('i', 'SudocBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'ISHII SPRING 2009'),
-                                       MARC::Subfield.new('w', 'ALPHANUM'),
-                                       MARC::Subfield.new('i', 'AlphanumBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:lc_holding, barcode: 'LCbarcode'),
+          build(:dewey_holding, barcode: 'DeweyBarcode'),
+          build(:sudoc_holding, barcode: 'SudocBarcode'),
+          build(:alphanum_holding, barcode: 'AlphanumBarcode')
+        ]
       end
 
       it { is_expected.to eq ['LCbarcode'] }
     end
 
-    context 'with lc + dewey + sudoc + alphanum' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', '159.32 .W211'),
-                                       MARC::Subfield.new('w', 'DEWEY'),
-                                       MARC::Subfield.new('i', 'DeweyBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'I 19.76:98-600-B'),
-                                       MARC::Subfield.new('w', 'SUDOC'),
-                                       MARC::Subfield.new('i', 'SudocBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'ISHII SPRING 2009'),
-                                       MARC::Subfield.new('w', 'ALPHANUM'),
-                                       MARC::Subfield.new('i', 'AlphanumBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+    context 'with dewey + sudoc + alphanum' do
+      let(:sirsi_holdings) do
+        [
+          build(:dewey_holding, barcode: 'DeweyBarcode'),
+          build(:sudoc_holding, barcode: 'SudocBarcode'),
+          build(:alphanum_holding, barcode: 'AlphanumBarcode')
+        ]
       end
 
       it { is_expected.to eq ['DeweyBarcode'] }
     end
 
     context 'with sudoc + alphanum' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'I 19.76:98-600-B'),
-                                       MARC::Subfield.new('w', 'SUDOC'),
-                                       MARC::Subfield.new('i', 'SudocBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'ISHII SPRING 2009'),
-                                       MARC::Subfield.new('w', 'ALPHANUM'),
-                                       MARC::Subfield.new('i', 'AlphanumBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:sudoc_holding, barcode: 'SudocBarcode'),
+          build(:alphanum_holding, barcode: 'AlphanumBarcode')
+        ]
       end
 
       it { is_expected.to eq ['SudocBarcode'] }
     end
 
     context 'with alphanum' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'ISHII SPRING 2009'),
-                                       MARC::Subfield.new('w', 'ALPHANUM'),
-                                       MARC::Subfield.new('i', 'AlphanumBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:alphanum_holding, barcode: 'AlphanumBarcode')
+        ]
       end
 
       it { is_expected.to eq ['AlphanumBarcode'] }
     end
 
     context 'with dewey + alphanum' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', '159.32 .W211'),
-                                       MARC::Subfield.new('w', 'DEWEY'),
-                                       MARC::Subfield.new('i', 'DeweyBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'ISHII SPRING 2009'),
-                                       MARC::Subfield.new('w', 'ALPHANUM'),
-                                       MARC::Subfield.new('i', 'AlphanumBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:dewey_holding, barcode: 'DeweyBarcode'),
+          build(:alphanum_holding, barcode: 'AlphanumBarcode')
+        ]
       end
 
       it { is_expected.to eq ['DeweyBarcode'] }
     end
 
     context 'with lc + alphanum' do
-      let(:record) do
-        base_record.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                       MARC::Subfield.new('w', 'LC'),
-                                       MARC::Subfield.new('i', 'LCbarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'ISHII SPRING 2009'),
-                                       MARC::Subfield.new('w', 'ALPHANUM'),
-                                       MARC::Subfield.new('i', 'AlphanumBarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
-        end
+      let(:sirsi_holdings) do
+        [
+          build(:lc_holding, barcode: 'LCbarcode'),
+          build(:alphanum_holding, barcode: 'AlphanumBarcode')
+        ]
       end
 
       it { is_expected.to eq ['LCbarcode'] }
