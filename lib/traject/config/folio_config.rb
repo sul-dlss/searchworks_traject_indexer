@@ -2341,27 +2341,6 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
-to_field 'item_display_struct' do |record, accumulator, context|
-  next if holdings(record, context).any?
-
-  # If there are no items, but this item appears to be a bound-with, we don't want to add the placeholder
-  next if record.fields('590').any? { |f| f['a'] && f['c'] }
-
-  order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(record)
-  translation_map = Traject::TranslationMap.new('library_on_order_map')
-
-  lib_codes = order_libs.flat_map { |l| l.split(' ') }.map { |order_lib| translation_map[order_lib] }.uniq
-  # exclude generic SUL if there's a more specific library
-  lib_codes -= ['SUL'] if lib_codes.length > 1
-  lib_codes.each do |lib|
-    accumulator << {
-      library: lib,
-      home_location: 'ON-ORDER',
-      current_location: 'ON-ORDER'
-    }
-  end
-end
-
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|
