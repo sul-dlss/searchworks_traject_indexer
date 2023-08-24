@@ -296,7 +296,6 @@ RSpec.describe FolioRecord do
 
     it 'replaces any 856 field data with a derived values from the electronic access statement in the FOLIO holdings' do
       expect(folio_record.marc_record.fields('856').length).to eq(1)
-      puts folio_record.marc_record['856'].subfields.inspect
       expect(folio_record.marc_record['856'].subfields).to include(have_attributes(code: '3', value: 'Provider'), have_attributes(code: 'u', value: 'http://example.com/2'))
       expect(folio_record.marc_record['856'].subfields).not_to include(have_attributes(code: 'y'), have_attributes(code: 'z'))
     end
