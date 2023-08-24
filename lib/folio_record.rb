@@ -131,6 +131,10 @@ class FolioRecord
     end
   end
 
+  def eresource?
+    eresource_holdings.any?
+  end
+
   private
 
   def item_holdings
@@ -208,7 +212,7 @@ class FolioRecord
   end
 
   def eresource_holdings
-    Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
+    @eresource_holdings ||= Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
   end
 
   def on_order_holdings

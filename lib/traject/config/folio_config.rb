@@ -994,30 +994,20 @@ to_field 'oclc' do |record, accumulator|
 end
 
 to_field 'access_facet' do |record, accumulator, context|
-  online_locs = %w[E-RECVD E-RESV ELECTR-LOC INTERNET KIOST ONLINE-TXT RESV-URL WORKSTATN]
-  on_order_ignore_locs = %w[ENDPROCESS INPROCESS LAC SPEC-INPRO]
-  holdings(record, context).each do |holding|
-    next if holding.skipped?
+  # E-resources are online
+  accumulator << 'Online' if record.eresource?
 
-    if online_locs.include?(holding.current_location) || online_locs.include?(holding.home_location) || holding.e_call_number?
-      accumulator << 'Online'
-    elsif holding.call_number.call_number =~ /^XX/ && (holding.current_location == 'ON-ORDER' || (!holding.current_location.nil? && !holding.current_location.empty? && (on_order_ignore_locs & [
-      holding.current_location, holding.home_location
-    ]).empty? && holding.library != 'HV-ARCHIVE'))
-      accumulator << 'On order'
-    else
-      accumulator << 'At the Library'
-    end
-  end
+  # Holdings that aren't electronic and aren't on-order must be at the library
+  accumulator << 'At the Library' if holdings(record, context).any? { |holding| !holding.e_call_number? && holding.current_location != 'ON-ORDER' }
 
-  # Bound-withs are, by definition, at the library
-  accumulator << 'At the Library' if accumulator.empty? && record.fields('590').any? { |f| f['a'] && f['c'] }
+  # Actual on-order PO line
+  accumulator << 'On order' if holdings(record, context).any? { |holding| holding.current_location == 'ON-ORDER' && holding.home_location != 'ON-ORDER' }
 
+  # Stub on-order records
+  accumulator << 'On order' if accumulator.empty? && holdings(record, context).any? { |holding| holding.current_location == 'ON-ORDER' }
+
+  # Fall-back on on-order
   accumulator << 'On order' if accumulator.empty?
-  accumulator << 'Online' if context.output_hash['url_fulltext']
-  accumulator << 'Online' if context.output_hash['url_sfx']
-
-  accumulator.uniq!
 end
 
 ##
