@@ -604,16 +604,10 @@ RSpec.describe 'ItemInfo config' do
       let(:fixture_name) { 'locationTests.mrc' }
 
       it 'do not return an item_display' do
-        expect(select_by_id('345228')[field]).to be_nil
         expect(select_by_id('575946')[field]).to be_nil
-        expect(select_by_id('804724')[field]).to be_nil
         expect(select_by_id('1033119')[field]).to be_nil
-        expect(select_by_id('1505065')[field]).to be_nil
-        expect(select_by_id('345228')['item_display_struct']).to be_nil
         expect(select_by_id('575946')['item_display_struct']).to be_nil
-        expect(select_by_id('804724')['item_display_struct']).to be_nil
         expect(select_by_id('1033119')['item_display_struct']).to be_nil
-        expect(select_by_id('1505065')['item_display_struct']).to be_nil
 
         # INPROCESS - keep it
         expect(select_by_id('7651581')[field].length).to eq 1

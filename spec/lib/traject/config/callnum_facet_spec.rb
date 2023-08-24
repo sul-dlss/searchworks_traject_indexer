@@ -21,7 +21,9 @@ end
 # rubocop:enable Metrics/ParameterLists
 
 RSpec.describe 'Call Number Facet' do
-  subject(:result) { indexer.map_record(folio_record) }
+  let(:result) { indexer.map_record(folio_record) }
+  let(:field) { 'callnum_facet_hsim' }
+  subject(:value) { result[field] }
 
   let(:folio_record) do
     FolioRecord.new({
@@ -40,8 +42,6 @@ RSpec.describe 'Call Number Facet' do
     end
   end
 
-  let(:field) { 'callnum_facet_hsim' }
-
   describe 'call numbers excluded for various reasons' do
     it 'handles unexpected callnum type (by not including them)' do
       expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'ALPHANUM', indexer:)[field]).to be_nil
@@ -53,10 +53,24 @@ RSpec.describe 'Call Number Facet' do
       expect(record_with_holdings(call_number: 'M123 .M234', scheme: 'AUTO', indexer:)[field]).to be_nil
     end
 
-    it 'handles skipped items (by not including them)' do
-      # skipped location
-      expect(record_with_holdings(call_number: 'M123 .M234', home_location: 'BENDER-S', scheme: 'LC',
-                                  indexer:)[field]).to be_nil
+    context 'with a skipped location' do
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
+      end
+
+      let(:sirsi_holdings) do
+        [
+          SirsiHolding.new(
+            call_number: 'M123 .M234',
+            home_location: 'SHADOW',
+            library: 'ART',
+            scheme: 'LC',
+            type: '',
+            barcode: ''
+          )
+        ]
+      end
+      it { is_expected.to be_nil }
     end
 
     it 'handles weird LC callnum from Lane-Med (by not including them)' do
@@ -172,7 +186,6 @@ RSpec.describe 'Call Number Facet' do
 
   describe 'LC Call Numbers' do
     let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
-    subject(:value) { result[field] }
 
     context 'with one letter call number' do
       context 'with D call' do
@@ -289,7 +302,6 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'invalid LC call numbers' do
-    subject(:value) { result[field] }
     bad_callnumbers =
       [
         'QE538.8 .NB36 1975-1977', # bad Cutter
@@ -350,7 +362,6 @@ RSpec.describe 'Call Number Facet' do
 
   describe 'dewey call numbers' do
     let(:result) { record_with_holdings(call_number:, scheme: 'DEWEY', indexer:) }
-    subject(:value) { result[field] }
 
     context 'with 159.32 .W211' do
       let(:call_number) { '159.32 .W211' }
@@ -433,14 +444,12 @@ RSpec.describe 'Call Number Facet' do
 
   context 'with items typed as DEWEYPER' do
     let(:result) { record_with_holdings(call_number:, scheme: 'DEWEYPER', indexer:) }
-    subject(:value) { result[field] }
 
     let(:call_number) { '550.6 .U58O 92-600' }
     it { is_expected.to eq ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences'] }
   end
 
   context 'with both dewey and LC call numbers' do
-    subject(:value) { result[field] }
     let(:result) do
       record_with_holdings(call_number: 'PR5190 .P3 Z48 2011', scheme: 'LC', indexer:) do |holdings|
         holdings.append(
@@ -464,14 +473,12 @@ RSpec.describe 'Call Number Facet' do
 
   context 'with call numbers that dewey but listed as LC' do
     let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
-    subject(:value) { result[field] }
 
     let(:call_number) { '180.8 D25 V.1' }
     it { is_expected.to eq ['Dewey Classification|100s - Philosophy|180s - Ancient, Medieval & Eastern Philosophy'] }
   end
 
   describe 'Gov Doc (call numbers)' do
-    subject(:value) { result[field] }
     let(:folio_record) do
       FolioRecord.new({
                         'source_record' => source_record,
