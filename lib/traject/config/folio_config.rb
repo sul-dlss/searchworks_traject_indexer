@@ -1005,9 +1005,6 @@ to_field 'access_facet' do |record, accumulator, context|
 
   # Stub on-order records
   accumulator << 'On order' if accumulator.empty? && holdings(record, context).any? { |holding| holding.current_location == 'ON-ORDER' }
-
-  # Fall-back on on-order
-  accumulator << 'On order' if accumulator.empty?
 end
 
 ##

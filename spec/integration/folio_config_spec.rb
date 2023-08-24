@@ -170,6 +170,7 @@ RSpec.describe 'FOLIO indexing' do
     context 'when the holding does not include an electronic location' do
       let(:items) do
         [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
            'crez' => [],
            'hrid' => 'ai1755834_1_1',
            'notes' => [],
