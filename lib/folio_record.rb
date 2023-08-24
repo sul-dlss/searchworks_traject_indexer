@@ -125,7 +125,7 @@ class FolioRecord
   end
 
   def on_order_stub_holdings
-    return [] if items.any?
+    return [] if all_items.any? || eresource_holdings
 
     on_order_holdings = holdings.select do |holding|
       pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
@@ -168,9 +168,13 @@ class FolioRecord
   end
 
   def items
-    @items ||= load('items').reject do |item|
+    all_items.reject do |item|
       item['suppressFromDiscovery']
     end
+  end
+
+  def all_items
+    @all_items ||= load('items')
   end
 
   def holdings
