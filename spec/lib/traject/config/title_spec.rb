@@ -8,8 +8,8 @@ RSpec.describe 'Title spec' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:fixture_name) { 'titleTests.mrc' }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:fixture_name) { 'titleTests.jsonl' }
   let(:record) { records.first }
 
   describe 'title_245a_search' do
@@ -27,7 +27,7 @@ RSpec.describe 'Title spec' do
       expect(result).to eq ['2xx fields']
     end
     context 'linked fields' do
-      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      let(:fixture_name) { 'vernacularSearchTests.jsonl' }
       it 'are not included' do
         expect(select_by_id('2xxVernSearch')[field]).not_to eq ['vern245a']
         expect(select_by_id('2xxVernSearch')[field]).to eq ['2xx title search fields for vernacular, except for 240 -- all subfields']
@@ -35,7 +35,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_245a_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_title_245a_search' }
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
@@ -66,14 +66,14 @@ RSpec.describe 'Title spec' do
       expect(result.first).to include 'humanities'
     end
     context 'linked fields' do
-      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      let(:fixture_name) { 'vernacularSearchTests.jsonl' }
       it 'are not included' do
         expect(select_by_id('2xxVernSearch')[field]).to eq ['2xx title search fields for vernacular, except for 240 -- all subfields']
       end
     end
   end
   describe 'vern_title_245_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_title_245_search' }
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
@@ -98,7 +98,7 @@ RSpec.describe 'Title spec' do
       expect(results).not_to include hash_including(field => ['130'])
     end
     context 'linked fields' do
-      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+      let(:fixture_name) { 'vernacularSearchTests.jsonl' }
       it '130 are not included' do
         expect(select_by_id('2xxVernSearch')[field]).not_to eq ['2nd 130a',
                                                                 'vern130a',
@@ -134,7 +134,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_uniform_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_title_uniform_search' }
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
@@ -163,7 +163,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_variant_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_title_variant_search' }
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
@@ -239,14 +239,14 @@ RSpec.describe 'Title spec' do
     let(:field) { 'vern_title_related_search' }
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     context 'with summaryTests' do
-      let(:fixture_name) { 'summaryTests.mrc' }
+      let(:fixture_name) { 'summaryTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('505')[field]).to eq ['vern505t']
         expect(results).not_to include hash_including(field => ['nope'])
       end
     end
-    context 'with vernacularSearchTests.mrc' do
-      let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    context 'with vernacularSearchTests.jsonl' do
+      let(:fixture_name) { 'vernacularSearchTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('7xxLowVernSearch')[field][0]).to eq 'vern700f ver' \
                                                                  'n700g vern700k vern700l vern700m vern700n vern700o vern700p vern700' \
@@ -332,7 +332,7 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n']
     end
     context 'trailing punctuation' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('2451')[field]).to eq ['Heritage Books archives']
         expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia']
@@ -342,7 +342,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'vern_title_245a_display' do
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     let(:field) { 'vern_title_245a_display' }
     it 'has the correct titles' do
       expect(select_by_id('allVern')[field]).to eq ['vernacular title 245']
@@ -356,7 +356,7 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('245NoNorP')[field]).to eq ['by John Sandford']
     end
     context 'trailing punctuation' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('2451')[field]).to eq ['Laverne Galeener-Moore']
         expect(select_by_id('2453')[field]).to eq ['...']
@@ -365,7 +365,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'vern_title_245c_display' do
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     let(:field) { 'vern_title_245c_display' }
     it 'has the correct titles' do
       expect(select_by_id('RtoL')[field]).to eq ['crocodile for is c']
@@ -387,7 +387,7 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('245nNotp')[field]).to eq ['245 n but no p Part one.']
     end
     context 'trailing punctuation' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('2451')[field]).to eq ['Heritage Books archives. Underwood biographical dictionary. Volumes 1 & 2 revised [electronic resource]']
         expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia : mythistorema']
@@ -417,7 +417,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'vern_title_display' do
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     let(:field) { 'vern_title_display' }
     it 'has the correct titles' do
       expect(select_by_id('trailingPunct')[field]).to eq ['vernacular ends in slash']
@@ -434,7 +434,7 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('245multpn')[field]).to eq ['245 multiple p, n first p subfield first n subfield second p subfield second n subfield']
     end
     context 'display field tests' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('2451')[field]).to eq ['Heritage Books archives. Underwood biographical dictionary. Volumes 1 & 2 revised [electronic resource] / Laverne Galeener-Moore.']
         expect(select_by_id('2452')[field]).to eq ['Ton meionoteton eunoia : mythistorema / Spyrou Gkrintzou.']
@@ -442,7 +442,7 @@ RSpec.describe 'Title spec' do
       end
     end
     context 'vernacular tests' do
-      let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+      let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('hebrew1')[field]).to include 'Alef bet shel Yahadut.'
         expect(select_by_id('RtoL')[field]).to include 'a is for alligator / c is for crocodile, 1980'
@@ -451,7 +451,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'vern_title_full_display' do
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     let(:field) { 'vern_title_full_display' }
     it 'has the correct titles' do
       skip 'No tests in solrmarc-sw actually run / pass'
@@ -485,7 +485,7 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('24025')[field]).to eq ['la di dah']
     end
     context 'display field tests' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('2401')[field]).to eq ['Variations, piano, 4 hands, K. 501, G major']
         expect(select_by_id('2402')[field]).to eq ['Treaties, etc. Poland, 1948 Mar. 2. Protocols, etc., 1951 Mar. 6']
@@ -496,14 +496,14 @@ RSpec.describe 'Title spec' do
   end
   describe 'vern_title_uniform_display' do
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     let(:field) { 'vern_title_uniform_display' }
     it 'has the correct titles' do
       expect(select_by_id('130only')[field]).to eq ['vernacular main entry uniform title']
       expect(select_by_id('240only')[field]).to eq ['vernacular uniform title']
     end
     context 'unmatched 800' do
-      let(:fixture_name) { 'unmatched880sTests.mrc' }
+      let(:fixture_name) { 'unmatched880sTests.jsonl' }
       it 'has the correct titles' do
         expect(select_by_id('4')[field]).to eq ['vern130a']
         expect(select_by_id('5')[field]).to eq ['vern240a']

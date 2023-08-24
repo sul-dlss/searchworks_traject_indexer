@@ -7,9 +7,9 @@ RSpec.describe 'Language config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'langTests.mrc' }
+  let(:fixture_name) { 'langTests.jsonl' }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
   let(:field) { 'language' }
 

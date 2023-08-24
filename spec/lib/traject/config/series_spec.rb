@@ -6,13 +6,13 @@ RSpec.describe 'Series config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'series_search' do
     let(:field) { 'series_search' }
-    let(:fixture_name) { 'seriesTests.mrc' }
+    let(:fixture_name) { 'seriesTests.jsonl' }
 
     it do
       # include 490v per Vitus email of 2011-03-10
@@ -78,7 +78,7 @@ RSpec.describe 'Series config' do
   end
   describe 'vern_series_search' do
     let(:field) { 'vern_series_search' }
-    let(:fixture_name) { 'vernSeriesTests.mrc' }
+    let(:fixture_name) { 'vernSeriesTests.jsonl' }
 
     it 'does not map vernacular data into the series or series_exact fields' do
       expect(select_by_id('vern490')['series_search']).to eq ['490a']
@@ -101,7 +101,7 @@ RSpec.describe 'Series config' do
   end
   describe 'series_exact_search' do
     let(:field) { 'series_exact_search' }
-    let(:fixture_name) { 'seriesTests.mrc' }
+    let(:fixture_name) { 'seriesTests.jsonl' }
     it do
       # Made up test, there are no legacy tests
       expect(select_by_id('1964873')[field]).to eq ['Lecture notes in computer science ;']

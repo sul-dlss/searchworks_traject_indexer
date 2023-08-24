@@ -6,8 +6,8 @@ RSpec.describe 'All_search config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:fixture_name) { 'allfieldsTests.mrc' }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:fixture_name) { 'allfieldsTests.jsonl' }
   let(:record) { records.first }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
   let(:field) { 'all_search' }

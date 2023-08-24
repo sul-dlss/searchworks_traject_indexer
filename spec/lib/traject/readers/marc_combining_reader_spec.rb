@@ -3,9 +3,8 @@
 require 'spec_helper'
 
 describe Traject::MarcCombiningReader do
-  subject(:reader) { described_class.new(File.open(file, 'r'), 'marc_source.type' => 'binary') }
-  let(:file) { file_fixture(fixture_name).to_s }
-  let(:fixture_name) { 'splitItemsTest.mrc' }
+  subject(:reader) { described_class.new(file_fixture(fixture_name).open, 'marc_source.type' => 'json') }
+  let(:fixture_name) { 'splitItemsTest.jsonl' }
   let(:results) { reader.each.to_a }
 
   describe '#each' do

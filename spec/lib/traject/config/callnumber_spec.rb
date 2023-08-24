@@ -7,8 +7,8 @@ RSpec.describe 'Call Numbers' do
     end
   end
 
-  let(:fixture_name) { 'callNumberTests.mrc' }
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:fixture_name) { 'callNumberTests.jsonl' }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }

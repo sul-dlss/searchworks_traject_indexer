@@ -1,0 +1,6 @@
+{"leader":"00048ca  a22000373  4500","fields":[{"001":"a852-3noZ"}]}
+{"leader":"00093cy  a22000493  4500","fields":[{"001":"a852-3noZ"},{"852":{"ind1":" ","ind2":" ","subfields":[{"3":"sub 3"},{"a":"CSt"},{"b":"GREEN"},{"c":"STACKS"},{"t":"1"}]}}]}
+{"leader":"00048ca  a22000373  4500","fields":[{"001":"a852zAnd3"}]}
+{"leader":"00100cy  a22000493  4500","fields":[{"001":"a852zAnd3"},{"852":{"ind1":" ","ind2":" ","subfields":[{"3":"sub 3"},{"a":"CSt"},{"b":"GREEN"},{"c":"STACKS"},{"t":"1"},{"z":"sub z"}]}}]}
+{"leader":"00047ca  a22000373  4500","fields":[{"001":"a852zNo3"}]}
+{"leader":"00092cy  a22000493  4500","fields":[{"001":"a852zNo3"},{"852":{"ind1":" ","ind2":" ","subfields":[{"a":"CSt"},{"b":"GREEN"},{"c":"STACKS"},{"t":"1"},{"z":"sub z"}]}}]}

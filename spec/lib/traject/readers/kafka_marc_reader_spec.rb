@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe Traject::KafkaMarcReader do
-  subject(:reader) { described_class.new(nil, 'kafka.consumer' => consumer, 'marc_source.type' => 'binary') }
+RSpec.describe Traject::KafkaMarcReader do
+  subject(:reader) { described_class.new(nil, 'kafka.consumer' => consumer, 'marc_source.type' => 'json') }
   let(:consumer) { double }
 
   before do
@@ -23,7 +23,7 @@ describe Traject::KafkaMarcReader do
     end
 
     context 'with marc records' do
-      let(:marc_message) { double(key: '123', value: File.read(file_fixture('444.marc'))) }
+      let(:marc_message) { double(key: '123', value: File.read(file_fixture('444.json'))) }
       before do
         allow(consumer).to receive(:each_message).and_yield marc_message
       end

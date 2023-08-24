@@ -8,9 +8,9 @@ RSpec.describe 'Sirsi course reserves config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { '666.marc' }
+  let(:fixture_name) { '666.json' }
   subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
   subject(:result) { indexer.map_record(record) }
 
@@ -53,7 +53,7 @@ RSpec.describe 'Sirsi course reserves config' do
     end
   end
   describe 'item_display' do
-    let(:fixture_name) { '444.marc' }
+    let(:fixture_name) { '444.json' }
     let(:field) { 'item_display' }
     it 'updates item_display with crez info' do
       expect(result[field]).to eq ['36105041844338 -|- MUSIC -|- SCORES -|- GREEN-RESV -|- SCORE -|- M1048 .B41 C7 1973 -|- lc m   1048.000000 b0.410000 c0.700000 001973 -|- en~d~~~yzvr}zzzzzz~oz}vyzzzz~nz}szzzzz~zzyqsw~~~~~ -|- M1048 .B41 C7 1973 -|- lc m   1048.000000 b0.410000 c0.700000 001973 -|-  -|- LC -|- AMSTUD-214 -|- GREEN-RESV -|- 2-hour loan'] # rubocop:disable Layout/LineLength
@@ -70,7 +70,7 @@ RSpec.describe 'Sirsi course reserves config' do
     let(:field) { 'building_facet' }
 
     describe 'uses the Course Reserve rez_desk value instead of the item_display library value' do
-      let(:fixture_name) { '9262146.marc' }
+      let(:fixture_name) { '9262146.json' }
       it 'updates building_facet with crez info' do
         expect(result[field].length).to eq 2
         expect(result[field]).to include(
@@ -79,7 +79,7 @@ RSpec.describe 'Sirsi course reserves config' do
         )
       end
       context 'retain the library loc if only some items with that loc are overridden' do
-        let(:fixture_name) { '8834492.marc' }
+        let(:fixture_name) { '8834492.json' }
         it do
           expect(result[field].length).to eq 3
           expect(result[field]).to include(
@@ -90,7 +90,7 @@ RSpec.describe 'Sirsi course reserves config' do
         end
       end
       context 'retain the library if the crez location is for the same library' do
-        let(:fixture_name) { '9423045.marc' }
+        let(:fixture_name) { '9423045.json' }
         it do
           expect(result[field].length).to eq 1
           expect(result[field]).to include(
@@ -99,7 +99,7 @@ RSpec.describe 'Sirsi course reserves config' do
         end
       end
       context 'ignore a crez loc with no translation (use the library from item_display)' do
-        let(:fixture_name) { '888.marc' }
+        let(:fixture_name) { '888.json' }
         it do
           expect(result[field].length).to eq 1
           expect(result[field]).to include(
@@ -108,7 +108,7 @@ RSpec.describe 'Sirsi course reserves config' do
         end
       end
       context 'no building_facet' do
-        let(:fixture_name) { '9434391.marc' }
+        let(:fixture_name) { '9434391.json' }
         it do
           expect(result[field]).to be_nil
         end
