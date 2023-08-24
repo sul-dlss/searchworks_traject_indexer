@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 RSpec.describe 'All_search config' do
+  subject { result[field] }
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/folio_config.rb')
@@ -14,7 +15,7 @@ RSpec.describe 'All_search config' do
       r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
     end
   end
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  let(:result) { indexer.map_record(stub_record_from_marc(record)) }
   let(:field) { 'preferred_barcode' }
 
   describe 'preferred_barcode' do
@@ -29,7 +30,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['LCbarcode'] }
+      it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey' do
@@ -48,7 +49,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['LCbarcode'] }
+      it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey + sudoc' do
@@ -72,7 +73,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['LCbarcode'] }
+      it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey + sudoc + alphanum' do
@@ -101,7 +102,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['LCbarcode'] }
+      it { is_expected.to eq ['LCbarcode'] }
     end
 
     context 'with lc + dewey + sudoc + alphanum' do
@@ -125,7 +126,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['DeweyBarcode'] }
+      it { is_expected.to eq ['DeweyBarcode'] }
     end
 
     context 'with sudoc + alphanum' do
@@ -144,7 +145,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['SudocBarcode'] }
+      it { is_expected.to eq ['SudocBarcode'] }
     end
 
     context 'with alphanum' do
@@ -158,7 +159,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['AlphanumBarcode'] }
+      it { is_expected.to eq ['AlphanumBarcode'] }
     end
 
     context 'with dewey + alphanum' do
@@ -177,7 +178,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['DeweyBarcode'] }
+      it { is_expected.to eq ['DeweyBarcode'] }
     end
 
     context 'with lc + alphanum' do
@@ -196,7 +197,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['LCbarcode'] }
+      it { is_expected.to eq ['LCbarcode'] }
     end
   end
 
@@ -211,7 +212,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['LCbarcode'] }
+    it { is_expected.to eq ['LCbarcode'] }
   end
 
   context 'with lc untruncated + dewey truncated' do
@@ -235,7 +236,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['LCbarcode'] }
+    it { is_expected.to eq ['LCbarcode'] }
   end
 
   context 'with lc untruncated + dewey truncated + sudoc truncated' do
@@ -269,7 +270,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['LCbarcode'] }
+    it { is_expected.to eq ['LCbarcode'] }
   end
 
   context 'with lc untruncated + dewey truncated + sudoc truncated + alphanum truncated' do
@@ -313,7 +314,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['LCbarcode'] }
+    it { is_expected.to eq ['LCbarcode'] }
   end
 
   context 'with dewey untruncated + sudoc truncated + alphanum truncated' do
@@ -347,7 +348,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['Dewey1'] }
+    it { is_expected.to eq ['Dewey1'] }
   end
 
   context 'with sudoc untruncated + alphanum truncated' do
@@ -371,7 +372,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['Sudoc1'] }
+    it { is_expected.to eq ['Sudoc1'] }
   end
 
   context 'with dewey untruncated + alphanum truncated' do
@@ -395,7 +396,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['Dewey1'] }
+    it { is_expected.to eq ['Dewey1'] }
   end
 
   describe 'prefers the shorted non-truncated callnumber' do
@@ -415,7 +416,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['777'] }
+      it { is_expected.to eq ['777'] }
     end
 
     context 'with dewey ' do
@@ -435,7 +436,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['Dewey1'] }
+      it { is_expected.to eq ['Dewey1'] }
     end
 
     context 'with sudoc' do
@@ -455,7 +456,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['Sudoc2'] }
+      it { is_expected.to eq ['Sudoc2'] }
     end
 
     context 'with alphanum' do
@@ -475,7 +476,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['Alpha1'] }
+      it { is_expected.to eq ['Alpha1'] }
     end
   end
 
@@ -538,7 +539,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['dewey4'] }
+      it { is_expected.to eq ['dewey4'] }
     end
 
     context 'with sudoc only' do
@@ -569,7 +570,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['sudoc1'] }
+      it { is_expected.to eq ['sudoc1'] }
     end
 
     context 'with alphanum only' do
@@ -638,7 +639,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['lc5'] }
+      it { is_expected.to eq ['lc5'] }
     end
 
     context 'with dewey only' do
@@ -672,7 +673,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['dewey5'] }
+      it { is_expected.to eq ['dewey5'] }
     end
 
     context 'with sudoc only' do
@@ -709,7 +710,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['sudoc3'] }
+      it { is_expected.to eq ['sudoc3'] }
     end
 
     context 'with alphanum only' do
@@ -746,7 +747,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['alpha3'] }
+      it { is_expected.to eq ['alpha3'] }
     end
   end
 
@@ -767,7 +768,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['alpha1'] }
+      it { is_expected.to eq ['alpha1'] }
     end
 
     context 'libraries prioritized in alpha order by code' do
@@ -786,7 +787,7 @@ RSpec.describe 'All_search config' do
         end
       end
 
-      specify { expect(result[field]).to eq ['ArtBarcode'] }
+      it { is_expected.to eq ['ArtBarcode'] }
     end
   end
 
@@ -801,7 +802,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq nil }
+    it { is_expected.to eq nil }
   end
 
   context 'with an online item with a bib callnumber' do
@@ -818,7 +819,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['onlineByCallnum'] }
+    it { is_expected.to eq ['onlineByCallnum'] }
   end
 
   context 'with an item with an INTERNET location' do
@@ -833,7 +834,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['onlineByLoc'] }
+    it { is_expected.to eq ['onlineByLoc'] }
   end
 
   context 'with an item with an online item with callnum matches another group' do
@@ -853,7 +854,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['notOnline'] }
+    it { is_expected.to eq ['notOnline'] }
   end
 
   context 'with an ignored call number' do
@@ -867,7 +868,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq nil }
+    it { is_expected.to eq nil }
   end
 
   context 'with a shelby location' do
@@ -882,7 +883,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['shelby'] }
+    it { is_expected.to eq ['shelby'] }
   end
 
   context 'with a missing location' do
@@ -897,7 +898,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['missing'] }
+    it { is_expected.to eq ['missing'] }
   end
 
   context 'with a missing location' do
@@ -912,7 +913,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['lost'] }
+    it { is_expected.to eq ['lost'] }
   end
 
   context 'with no items' do
@@ -920,7 +921,7 @@ RSpec.describe 'All_search config' do
       base_record
     end
 
-    specify { expect(result[field]).to eq nil }
+    it { is_expected.to eq nil }
   end
 
   context 'with ignored callnums with no browsable callnum' do
@@ -934,7 +935,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq nil }
+    it { is_expected.to eq nil }
   end
 
   context 'with a bad lane lc callnum' do
@@ -949,7 +950,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq nil }
+    it { is_expected.to eq nil }
   end
 
   context 'with bad LCDewey' do
@@ -963,7 +964,7 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['badLc'] }
+    it { is_expected.to eq ['badLc'] }
   end
 
   context 'with bad LCDewey' do
@@ -977,6 +978,6 @@ RSpec.describe 'All_search config' do
       end
     end
 
-    specify { expect(result[field]).to eq ['badDewey'] }
+    it { is_expected.to eq ['badDewey'] }
   end
 end
