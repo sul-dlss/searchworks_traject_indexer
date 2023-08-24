@@ -53,6 +53,7 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd'))
+        # The 999 is necessary to get into a branch where it looks for context.output_hash['access_facet'] == ['At the Library']
         r.append(MARC::DataField.new('999', ' ', ' ',
                                      MARC::Subfield.new('a', 'F152 .A28'),
                                      MARC::Subfield.new('w', 'LC'),
