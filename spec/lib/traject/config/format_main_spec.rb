@@ -241,13 +241,6 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '02441cms a2200517 a 4500'
         r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -414,12 +407,6 @@ RSpec.describe 'Format main config' do
         r.leader = '02441cms a2200517 a 4500'
         r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
         r.append(MARC::DataField.new('914', ' ', ' ', MARC::Subfield.new('a', 'EQUIP')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -434,16 +421,10 @@ RSpec.describe 'Format main config' do
         r.leader = '02808cas a22005778a 4500'
         r.append(MARC::ControlField.new('008', '050127c20149999enkfr p       |   a0eng c'))
         r.append(MARC::DataField.new('914', ' ', ' ', MARC::Subfield.new('a', 'JUNK')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
-    it 'is equipment' do
+    it 'is not equipment' do
       expect(result[field]).not_to include 'Equipment'
     end
   end
@@ -453,16 +434,10 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '02808cas a22005778a 4500'
         r.append(MARC::ControlField.new('008', '050127c20149999enkfr p       |   a0eng c'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
-    it 'is equipment' do
+    it 'is not equipment' do
       expect(result[field]).not_to include 'Equipment'
     end
   end
@@ -1167,36 +1142,11 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'format serial publication:  leader/07 s and 008/21 blank (ignore LCPER in 999w)' do
+  context 'format serial publication:  leader/07 s and 008/21 blank' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01247cas a2200337 a 4500'
         r.append(MARC::ControlField.new('008', '830415c19809999vauuu    a    0    0eng  '))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
-                                     MARC::Subfield.new('w', 'LCPER'),
-                                     MARC::Subfield.new('i', '36105007402873'),
-                                     MARC::Subfield.new('l', 'STACKS'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is an journal' do
-      expect(result[field]).to eq ['Journal/Periodical']
-    end
-  end
-
-  context 'format serial publication:  leader/07 s and 008/21 blank (ignore DEWEYPER in 999w)' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01247cas a2200337 a 4500'
-        r.append(MARC::ControlField.new('008', '830415c19809999vauuu    a    0    0eng  '))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
-                                     MARC::Subfield.new('w', 'DEWEYPER'),
-                                     MARC::Subfield.new('i', '36105007402873'),
-                                     MARC::Subfield.new('l', 'STACKS'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
@@ -1246,19 +1196,13 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'format Other should be access online leader/07 s, 006/00 m, 008/21 we are favoring anything in 008/21  over  006/00' do
+  context 'format Other should be access online leader/07 s, 006/00 m, 008/21 we are favoring anything in 008/21 over 006/00' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '00988nas a2200193z  4500'
         r.append(MARC::ControlField.new('006', 'm        d        '))
         r.append(MARC::ControlField.new('008', '071214uuuuuuuuuxx uu |ss    u|    |||| d'))
         r.append(MARC::DataField.new('956', '4', '0', MARC::Subfield.new('u', ' http://library.stanford.edu/sfx?stuff')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '7117119-1001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('t', 'SUL')))
       end
     end
 
@@ -1348,143 +1292,93 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'Leader/06 = a and Leader/07 = d and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952cad  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
+  context 'when library is LANE-MED' do
+    context 'when leader/06 is a' do
+      context 'when leader/07 is d' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '01952cad  2200457Ia 4500'
+            r.append(MARC::DataField.new('999', ' ', ' ',
+                                         MARC::Subfield.new('m', 'LANE-MED')))
+          end
+        end
+
+        it 'is a Book and not Archive/Manuscript' do
+          expect(result[field]).to eq ['Book']
+        end
+      end
+
+      context 'Leader/07 = c' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '01952cac  2200457Ia 4500'
+            r.append(MARC::DataField.new('999', ' ', ' ',
+                                         MARC::Subfield.new('m', 'LANE-MED')))
+          end
+        end
+
+        it 'is a Book and not Archive/Manuscript' do
+          expect(result[field]).to eq ['Book']
+        end
       end
     end
 
-    it 'is a Book and not Archive/Manuscript' do
-      expect(result[field]).to eq ['Book']
+    context 'when leader/06 is t' do
+      context 'when leader/07 is d' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '01952ctd  2200457Ia 4500'
+            r.append(MARC::DataField.new('999', ' ', ' ',
+                                         MARC::Subfield.new('m', 'LANE-MED')))
+          end
+        end
+
+        it 'is a Book and not Archive/Manuscript' do
+          expect(result[field]).to eq ['Book']
+        end
+      end
+
+      context 'when leader/07 is c' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '01952ctc  2200457Ia 4500'
+            r.append(MARC::DataField.new('999', ' ', ' ',
+                                         MARC::Subfield.new('m', 'LANE-MED')))
+          end
+        end
+
+        it 'is a Book and not Archive/Manuscript' do
+          expect(result[field]).to eq ['Book']
+        end
+      end
     end
   end
 
-  context 'Leader/06 = a and Leader/07 = c and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952cac  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
+  context 'when leader/06 is a' do
+    context 'when leader/07 is c' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01952cac  2200457Ia 4500'
+        end
       end
-    end
 
-    it 'is a Book and not Archive/Manuscript' do
-      expect(result[field]).to eq ['Book']
+      it 'is a Archive/Manuscript' do
+        expect(result[field]).to eq ['Archive/Manuscript']
+      end
     end
   end
 
-  context 'Leader/06 = t and Leader/07 = d and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952ctd  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
+  context 'when leader/06 is t' do
+    context 'when leader/07 is c' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01952cac  2200457Ia 4500'
+        end
       end
-    end
 
-    it 'is a Book and not Archive/Manuscript' do
-      expect(result[field]).to eq ['Book']
-    end
-  end
-
-  context 'Leader/06 = t and Leader/07 = c and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952ctc  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
+      it 'is a Archive/Manuscript' do
+        expect(result[field]).to eq ['Archive/Manuscript']
       end
-    end
-
-    it 'is a Book and not Archive/Manuscript' do
-      expect(result[field]).to eq ['Book']
-    end
-  end
-
-  context 'Leader/06 = a and Leader/07 = c and 999m not LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952cac  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is a Archive/Manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context 'Leader/06 = t and Leader/07 = c and 999m not LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952cac  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is a Archive/Manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context 'Leader/06 not a and not t and Leader/07 = c and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c c  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
-      end
-    end
-
-    it 'is has no format' do
-      expect(result[field]).to eq nil
-    end
-  end
-
-  context 'Leader/06 not a and not t and Leader/07 = d and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
-      end
-    end
-
-    it 'is has no format' do
-      expect(result[field]).to eq nil
-    end
-  end
-
-  context 'Leader/06 = a and Leader/07 not c  and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952ca   2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
-      end
-    end
-
-    it 'is has no format' do
-      expect(result[field]).to eq nil
-    end
-  end
-
-  context 'Leader/06 = t and Leader/07 not c  and 999m = LANE-MED' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952ct   2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('m', 'LANE-MED')))
-      end
-    end
-
-    it 'is has no format' do
-      expect(result[field]).to eq nil
     end
   end
 
@@ -1522,272 +1416,42 @@ RSpec.describe 'Format main config' do
   #     the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
   #      */
 
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'A0015'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
+  context 'when the call number prefix is for Archive/Manuscript items' do
+    callnums = [
+      'A0015',
+      'F0110',
+      'M1810',
+      'MISC 1773',
+      'MSS CODEX 0335',
+      'MSS MEDIA 0025',
+      'MSS PHOTO 0463',
+      'MSS PRINTS 0417',
+      'PC0012',
+      'SC1076',
+      'SCD0012',
+      'SCM0348',
+      'V0321'
+    ]
+    callnums.each do |callnum|
+      context "when the callnumber is #{callnum}" do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '01952c d  2200457Ia 4500'
+            r.append(MARC::DataField.new('999', ' ', ' ',
+                                         MARC::Subfield.new('a', callnum),
+                                         MARC::Subfield.new('w', 'ALPHANUM'),
+                                         MARC::Subfield.new('m', 'SPEC-COLL')))
+          end
+        end
 
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
+        it 'is an archive/manuscript' do
+          expect(result[field]).to eq ['Archive/Manuscript']
+        end
+      end
     end
   end
 
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F0110'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'M1810'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MISC 1773'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MSS CODEX 0335'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MSS MEDIA 0025'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MSS PHOTO 0463'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MSS PRINTS 0417'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'PC0012'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'SC1076'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'SCD0012'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'SCM0348'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '???' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01952c d  2200457Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'V0321'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is an archive/manuscript' do
-      expect(result[field]).to eq ['Archive/Manuscript']
-    end
-  end
-
-  context '999 ALPHANUM starting with MFLIM  but not SPEC-COLL' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01669nam a2200289ua 4500'
-        r.append(MARC::ControlField.new('008', '870715r19741700ctu     a     000 0 eng d'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFILM N.S. 1350 REEL 230 NO. 3741'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '001AFX2969'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is a book' do
-      expect(result[field]).to eq ['Book']
-    end
-  end
-
-  context '999 ALPHANUM starting with MFICHE  but not SPEC-COLL' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01879cam a2200409 i 4500'
-        r.append(MARC::ControlField.new('008', '101015q20092010fr a    bbm   000 0 fre c'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFICHE 3239'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '8729402-1001'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is a book' do
-      expect(result[field]).to eq ['Book']
-    end
-  end
-
-  context '999 ALPHANUM starting with MFICHE and SPEC-COLL' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01879cam a2200409 i 4500'
-        r.append(MARC::ControlField.new('008', '101015q20092010fr a    bbm   000 0 fre c'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFICHE 3239'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '8729402-1001'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'SPEC-COLL')))
-      end
-    end
-
-    it 'is a book' do
-      expect(result[field]).to eq ['Book']
-    end
-  end
-
-  context 'manuscript or manuscript/digital in 245h' do
+  context 'when manuscript is in 245h' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
@@ -1803,7 +1467,7 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'manuscript or manuscript/digital in 245h' do
+  context 'when manuscript/digital is in 245h' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01952c d  2200457Ia 4500'
@@ -1929,44 +1593,6 @@ RSpec.describe 'Format main config' do
 
     it 'is an other' do
       expect(result[field]).to eq ['Music score', 'Archive/Manuscript']
-    end
-  end
-
-  context '999 ALPHANUM starting with MFLIM' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01669nam a2200289ua 4500'
-        r.append(MARC::ControlField.new('008', '870715r19741700ctu     a     000 0 eng d'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFILM N.S. 1350 REEL 230 NO. 3741'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '001AFX2969'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is an other' do
-      expect(result[field]).to eq ['Book']
-    end
-  end
-
-  context '999 ALPHANUM starting with MFICHE' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '01879cam a2200409 i 4500'
-        r.append(MARC::ControlField.new('008', '101015q20092010fr a    bbm   000 0 fre c'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFICHE 3239'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '8729402-1001'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
-    end
-
-    it 'is an other' do
-      expect(result[field]).to eq ['Book']
     end
   end
 
@@ -2102,13 +1728,6 @@ RSpec.describe 'Format main config' do
         r.leader = '01622cai a2200397 a 4500'
         r.append(MARC::ControlField.new('008', '061227c20069999vau x dss    f0    2eng c'))
         r.append(MARC::DataField.new('956', '4', '0', MARC::Subfield.new('u', ' http://library.stanford.edu/sfx?stuff')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2149,13 +1768,6 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01548cas a2200361Ia 4500'
         r.append(MARC::ControlField.new('008', '061227c20069999vau x dss    f0    2eng c'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2185,7 +1797,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
+    it 'is a Book' do
       expect(result[field]).to eq ['Book']
     end
   end
@@ -2199,7 +1811,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
+    it 'is a Journal/Periodical' do
       expect(result[field]).to eq ['Journal/Periodical']
     end
   end
@@ -2212,7 +1824,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
+    it 'is a Journal/Periodical' do
       expect(result[field]).to eq ['Journal/Periodical']
     end
   end
@@ -2222,19 +1834,12 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01548cai a2200361Ia 4500'
         r.append(MARC::ControlField.new('008', '040730d19uu2012dcuar w os   f0    2eng d'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
     let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
-    it 'is a serial' do
+    it 'is a Journal/Periodical and a Database' do
       expect(result[field]).to eq ['Journal/Periodical', 'Database']
     end
   end
@@ -2248,7 +1853,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
+    it 'is a Journal/Periodical' do
       expect(result[field]).to eq ['Journal/Periodical']
     end
   end
@@ -2261,7 +1866,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a  serial' do
+    it 'is a Journal/Periodical' do
       expect(result[field]).to eq ['Journal/Periodical']
     end
   end
@@ -2271,19 +1876,12 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01548cas a2200361Ia 4500'
         r.append(MARC::ControlField.new('008', '040730d19uu2012dcuar w os   f0    2eng d'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
     let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
-    it 'is a  serial' do
+    it 'is a Journal/Periodical and a Database' do
       expect(result[field]).to eq ['Journal/Periodical', 'Database']
     end
   end
@@ -2361,13 +1959,6 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '01579cai a2200337Ia 4500'
         r.append(MARC::ControlField.new('008', '081215c200u9999xx         a        eng d'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
@@ -2410,13 +2001,6 @@ RSpec.describe 'Format main config' do
       MARC::Record.new.tap do |r|
         r.leader = '02085cas a2200325 a 4500'
         r.append(MARC::ControlField.new('008', '111014c20119999enk|| q o     |    2eng c'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
       end
     end
 
