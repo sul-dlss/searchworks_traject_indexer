@@ -2143,7 +2143,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   preferred_callnumber_holdings_by_call_number = preferred_callnumber_scheme_holdings.group_by do |holding|
     call_number_object = call_number_for_holding(record, holding, context)
 
-    if preferred_callnumber_scheme_holdings.count { |y| y.home_location == holding.home_location } > 1
+    if preferred_callnumber_scheme_holdings.many? { |y| y.home_location == holding.home_location }
       call_number_object.lopped
     else
       call_number_object.call_number
