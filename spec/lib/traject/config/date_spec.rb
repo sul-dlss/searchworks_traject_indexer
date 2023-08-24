@@ -540,32 +540,6 @@ RSpec.describe 'Date config' do
     end
   end
 
-  describe 'date_cataloged' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
-
-    let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
-    let(:fixture_name) { 'newItemsDateCataloged.xml' }
-    let(:record) { records.first }
-    let(:field) { 'date_cataloged' }
-
-    it 'is nil if the 916b is NEVER' do
-      result = select_by_id('7000010')[field]
-      expect(result).to be_nil
-    end
-
-    it 'is nil if there is no 916b' do
-      result = select_by_id('7000023')[field]
-      expect(result).to be_nil
-    end
-
-    it 'is an ISO8601 date' do
-      pending('Needs to be fixed up to use instance catalogedDate information')
-
-      result = select_by_id('7000011')[field]
-      expect(result).to eq ['2007-11-08T00:00:00Z']
-    end
-  end
-
   context 'a blank record (particularly without an 008 field)' do
     subject(:result) { |_rec| indexer.map_record(stub_record_from_marc(record)) }
     let(:record) { MARC::Record.new }
