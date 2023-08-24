@@ -10,7 +10,7 @@ RSpec.describe 'ItemInfo config' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { 'subjectSearchTests.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
+  let(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
   subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
 
   describe 'barcode_search' do
@@ -1081,14 +1081,13 @@ RSpec.describe 'ItemInfo config' do
         end
       end
 
-      context 'ASIS' do
+      context 'when the call number is "INTERNET RESOURCE"' do
         let(:record) do
           MARC::Record.new.tap do |record|
             record.append(
               MARC::DataField.new(
                 '999', ' ', ' ',
-                MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                MARC::Subfield.new('w', 'ASIS')
+                MARC::Subfield.new('a', 'INTERNET RESOURCE')
               )
             )
           end

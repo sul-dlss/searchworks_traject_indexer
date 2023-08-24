@@ -347,7 +347,7 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'based on 8833535' do
+  context 'when acccess_facet is "At the library" (based on 8833535)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02229cjm a2200409Ia 4500'
@@ -366,21 +366,15 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'based on 8833535, but online' do
+  context 'when acccess_facet is not "At the library" (based on 8833535)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd fungnnmmneu'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is not a CD, since it is online-only' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
@@ -526,7 +520,7 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'recording 78' do
+  context 'recording 78 and acccess_facet is "At the library"' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01002cjm a2200313Ma 4500'
@@ -545,26 +539,20 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'recording 78, but online' do
+  context 'when it is a 78 rpm, but acccess_facet is not "At the library"' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01002cjm a2200313Ma 4500'
         r.append(MARC::ControlField.new('007', 'sd dmsdnnmslne'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is no longer a shellac 78' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
 
-  context 'based on 309570' do
+  context 'when acccess_facet is "At the library" (based on 309570)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
@@ -583,21 +571,15 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'based on 309570, but online' do
+  context 'when acccess_facet is not "At the library" (based on 309570)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::ControlField.new('007', 'sdubsmennmplue'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is no longer a vinyl' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
@@ -730,7 +712,7 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'with 007: based on 4730355' do
+  context 'when access_facet is "At the library" and with 007 based on 4730355' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01205cim a2200337Ia 4500'
@@ -749,21 +731,15 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'with 007: based on 4730355 not if online only' do
+  context 'when acccess_facet is not "At the library" and with 007: based on 4730355' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01205cim a2200337Ia 4500'
         r.append(MARC::ControlField.new('007', 'ss lunjlc-----'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is undetermined' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
