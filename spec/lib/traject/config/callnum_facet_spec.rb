@@ -41,25 +41,16 @@ RSpec.describe 'Call Number Facet' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
+  let(:holdings) { [] }
+
+  before do
+    allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+  end
 
   describe 'call numbers excluded for various reasons' do
     context 'with a skipped location' do
-      before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
-      end
+      let(:holdings) { [build(:lc_holding, home_location: 'SHADOW', library: 'ART')] }
 
-      let(:sirsi_holdings) do
-        [
-          SirsiHolding.new(
-            call_number: 'M123 .M234',
-            home_location: 'SHADOW',
-            library: 'ART',
-            scheme: 'LC',
-            type: '',
-            barcode: ''
-          )
-        ]
-      end
       it { is_expected.to be_nil }
     end
 
@@ -149,7 +140,7 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'LC Call Numbers' do
-    let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
+    let(:holdings) { [build(:lc_holding, call_number:)] }
 
     context 'with one letter call number' do
       context 'with D call' do
@@ -213,20 +204,13 @@ RSpec.describe 'Call Number Facet' do
     end
 
     context 'with multiple holding records with the same LC class' do
-      let(:result) do
-        record_with_holdings(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |holdings|
-          holdings.append(
-            SirsiHolding.new(
-              call_number: 'M2 .C17 L3 2005',
-              home_location: 'STACKS',
-              library: 'GREEN',
-              scheme: 'LC',
-              type: '',
-              barcode: ''
-            )
-          )
-        end
+      let(:holdings) do
+        [
+          build(:lc_holding, call_number: 'ML171 .L38 2005'),
+          build(:lc_holding, call_number: 'M2 .C17 L3 2005')
+        ]
       end
+
       it {
         is_expected.to match_array [
           'LC Classification|M - Music|M - Music',
@@ -236,20 +220,13 @@ RSpec.describe 'Call Number Facet' do
     end
 
     context 'with multiple holding records with the different LC classes' do
-      let(:result) do
-        record_with_holdings(call_number: 'ML171 .L38 2005', scheme: 'LC', indexer:) do |holdings|
-          holdings.append(
-            SirsiHolding.new(
-              call_number: 'QE538.8 .N36 1975-1977',
-              home_location: 'STACKS',
-              library: 'GREEN',
-              scheme: 'LC',
-              type: '',
-              barcode: ''
-            )
-          )
-        end
+      let(:holdings) do
+        [
+          build(:lc_holding, call_number: 'ML171 .L38 2005'),
+          build(:lc_holding, call_number: 'QE538.8 .N36 1975-1977')
+        ]
       end
+
       it {
         is_expected.to eq [
           'LC Classification|M - Music|ML - Literature on Music',
@@ -314,14 +291,15 @@ RSpec.describe 'Call Number Facet' do
       ]
     bad_callnumbers.each do |call_number|
       context "when call number is #{call_number}" do
-        let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
+        let(:holdings) { [build(:lc_holding, call_number:)] }
+
         it { is_expected.to be_nil }
       end
     end
   end
 
   describe 'dewey call numbers' do
-    let(:result) { record_with_holdings(call_number:, scheme: 'DEWEY', indexer:) }
+    let(:holdings) { [build(:dewey_holding, call_number:)] }
 
     context 'with 159.32 .W211' do
       let(:call_number) { '159.32 .W211' }
@@ -354,38 +332,22 @@ RSpec.describe 'Call Number Facet' do
     end
 
     context 'with duplicate call numbers' do
-      let(:result) do
-        record_with_holdings(call_number: '370.6 .N28 V.113:PT.1', scheme: 'DEWEY', indexer:) do |holdings|
-          holdings.append(
-            SirsiHolding.new(
-              call_number: '370.6 .N28 V.113:PT.1',
-              home_location: 'STACKS',
-              library: 'GREEN',
-              scheme: 'DEWEY',
-              type: '',
-              barcode: ''
-            )
-          )
-        end
+      let(:holdings) do
+        [
+          build(:dewey_holding, call_number: '370.6 .N28 V.113:PT.1'),
+          build(:dewey_holding, call_number: '370.6 .N28 V.113:PT.1')
+        ]
       end
 
       it { is_expected.to eq ['Dewey Classification|300s - Social Sciences, Sociology & Anthropology|370s - Education'] }
     end
 
     context 'with multiple call numbers' do
-      let(:result) do
-        record_with_holdings(call_number: '518 .M161', scheme: 'DEWEY', indexer:) do |holdings|
-          holdings.append(
-            SirsiHolding.new(
-              call_number: '061 .R496 V.39:NO.4',
-              home_location: 'STACKS',
-              library: 'GREEN',
-              scheme: 'DEWEY',
-              type: '',
-              barcode: ''
-            )
-          )
-        end
+      let(:holdings) do
+        [
+          build(:dewey_holding, call_number: '518 .M161'),
+          build(:dewey_holding, call_number: '061 .R496 V.39:NO.4')
+        ]
       end
 
       it {
@@ -410,19 +372,11 @@ RSpec.describe 'Call Number Facet' do
   end
 
   context 'with both dewey and LC call numbers' do
-    let(:result) do
-      record_with_holdings(call_number: 'PR5190 .P3 Z48 2011', scheme: 'LC', indexer:) do |holdings|
-        holdings.append(
-          SirsiHolding.new(
-            call_number: '968.006 .V274 SER.2:NO.42',
-            home_location: 'STACKS',
-            library: 'GREEN',
-            scheme: 'DEWEY',
-            type: '',
-            barcode: ''
-          )
-        )
-      end
+    let(:holdings) do
+      [
+        build(:lc_holding, call_number: 'PR5190 .P3 Z48 2011'),
+        build(:dewey_holding, call_number: '968.006 .V274 SER.2:NO.42')
+      ]
     end
 
     it {
@@ -432,7 +386,7 @@ RSpec.describe 'Call Number Facet' do
   end
 
   context 'with call numbers that dewey but listed as LC' do
-    let(:result) { record_with_holdings(call_number:, scheme: 'LC', indexer:) }
+    let(:holdings) { [build(:lc_holding, call_number:)] }
 
     let(:call_number) { '180.8 D25 V.1' }
     it { is_expected.to eq ['Dewey Classification|100s - Philosophy|180s - Ancient, Medieval & Eastern Philosophy'] }
