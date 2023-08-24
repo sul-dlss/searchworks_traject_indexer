@@ -171,7 +171,30 @@ RSpec.describe 'Access config' do
     specify { expect(field).to contain_exactly 'On order' }
   end
 
+  context 'for a suppressed item' do
+    let(:holdings) do
+      [{
+        'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+        'location' => {
+          'effectiveLocation' => {
+            'code' => 'GRE-STACKS'
+          }
+        }
+      }]
+    end
+
+    let(:items) do
+      [{
+        'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+        'location' => {},
+        'suppressFromDiscovery' => true
+      }]
+    end
+
+    specify { expect(field).to be_nil }
+  end
+
   context 'by default' do
-    specify { expect(field).to contain_exactly 'On order' }
+    specify { expect(field).to be_nil }
   end
 end

@@ -48,8 +48,11 @@ class FolioRecord
     @sirsi_holdings ||= begin
       holdings = item_holdings.concat(bound_with_holdings)
       holdings = eresource_holdings if holdings.empty?
-      holdings = on_order_holdings if holdings.empty?
-      holdings = on_order_stub_holdings if holdings.empty?
+
+      unless all_items.any?
+        holdings = on_order_holdings if holdings.empty?
+        holdings = on_order_stub_holdings if holdings.empty?
+      end
 
       holdings
     end
