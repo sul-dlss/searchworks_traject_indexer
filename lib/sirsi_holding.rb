@@ -84,8 +84,6 @@ class SirsiHolding
   end
 
   def temp_call_number?
-    return false if library == 'HV-ARCHIVE' # Call numbers in HV-ARCHIVE are not temporary
-
     call_number.to_s.blank? || call_number.to_s.start_with?(TEMP_CALLNUM_PREFIX)
   end
 
