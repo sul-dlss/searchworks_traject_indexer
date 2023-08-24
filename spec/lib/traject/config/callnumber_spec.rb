@@ -11,8 +11,8 @@ RSpec.describe 'Call Numbers' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
+  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
 
   describe 'lc_assigned_callnum_ssim' do
     let(:record) do

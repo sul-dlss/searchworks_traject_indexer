@@ -9,8 +9,8 @@ RSpec.describe 'Holdings config' do
   let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).to_s, {}).to_a }
   let(:record) { records.first }
   let(:fixture_name) { '44794.marc' }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
+  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
 
   describe 'on_order_library_ssim' do
     let(:field) { 'on_order_library_ssim' }

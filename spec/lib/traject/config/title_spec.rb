@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Title spec' do
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -14,7 +14,7 @@ RSpec.describe 'Title spec' do
 
   describe 'title_245a_search' do
     let(:field) { 'title_245a_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       result = select_by_id('245allSubs')[field]
       expect(result).to eq ['245a']
@@ -37,7 +37,7 @@ RSpec.describe 'Title spec' do
   describe 'vern_title_245a_search' do
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_title_245a_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('2xxVernSearch')[field].first).to match(/vern245a/)
       expect(results).not_to include hash_including(field => ['vern245b'])
@@ -49,7 +49,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'title_245_search' do
     let(:field) { 'title_245_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       result = select_by_id('245allSubs')[field]
       expect(result).to eq [
@@ -75,7 +75,7 @@ RSpec.describe 'Title spec' do
   describe 'vern_title_245_search' do
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_title_245_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('2xxVernSearch')[field])
         .to eq ['vern245a vern245b vern245f vern245g vern245k vern245n vern245p vern245s']
@@ -89,7 +89,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'title_uniform_search' do
     let(:field) { 'title_uniform_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('130240')[field]).to eq ['Hoos Foos']
       expect(select_by_id('130')[field]).to eq ['The Snimm.']
@@ -136,7 +136,7 @@ RSpec.describe 'Title spec' do
   describe 'vern_title_uniform_search' do
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_title_uniform_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('2xxVernSearch')[field].first)
         .to eq 'vern130a vern130d vern130f vern130g vern130k vern130l vern130m ' \
@@ -149,7 +149,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'title_variant_search' do
     let(:field) { 'title_variant_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('2xx')[field][0]).to eq '210a 210b'
       expect(select_by_id('2xx')[field][1]).to eq '222a 222b'
@@ -165,7 +165,7 @@ RSpec.describe 'Title spec' do
   describe 'vern_title_variant_search' do
     let(:fixture_name) { 'vernacularSearchTests.mrc' }
     let(:field) { 'vern_title_variant_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('2xxVernSearch')[field][0]).to eq 'vern210a vern210b'
       expect(select_by_id('2xxVernSearch')[field][1]).to eq 'vern222a vern222b'
@@ -185,7 +185,7 @@ RSpec.describe 'Title spec' do
   end
   describe 'title_related_search' do
     let(:field) { 'title_related_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it 'has the correct titles' do
       expect(select_by_id('505')[field]).to eq ['505t']
       expect(results).not_to include hash_including(field => ['nope'])
@@ -234,9 +234,10 @@ RSpec.describe 'Title spec' do
       expect(select_by_id('785aNott')[field]).to be_nil
     end
   end
+
   describe 'vern_title_related_search' do
     let(:field) { 'vern_title_related_search' }
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     context 'with summaryTests' do
       let(:fixture_name) { 'summaryTests.mrc' }
       it 'has the correct titles' do
@@ -323,7 +324,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'title_245a_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_245a_display' }
     it 'has the correct titles' do
       expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p']
@@ -340,7 +341,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_245a_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
     let(:field) { 'vern_title_245a_display' }
     it 'has the correct titles' do
@@ -349,7 +350,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'title_245c_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_245c_display' }
     it 'has the correct titles' do
       expect(select_by_id('245NoNorP')[field]).to eq ['by John Sandford']
@@ -363,7 +364,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_245c_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
     let(:field) { 'vern_title_245c_display' }
     it 'has the correct titles' do
@@ -376,7 +377,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'title_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_display' }
     it 'has the correct titles' do
       expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p [electronic resource]']
@@ -415,7 +416,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
     let(:field) { 'vern_title_display' }
     it 'has the correct titles' do
@@ -423,7 +424,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'title_full_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_full_display' }
     it 'has the correct titles' do
       expect(select_by_id('245NoNorP')[field]).to eq ['245 no subfield n or p [electronic resource] / by John Sandford.']
@@ -449,7 +450,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_full_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
     let(:field) { 'vern_title_full_display' }
     it 'has the correct titles' do
@@ -457,7 +458,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'title_uniform_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_uniform_display' }
     it 'has the correct titles' do
       # no 240 or 130
@@ -494,7 +495,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'vern_title_uniform_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
     let(:field) { 'vern_title_uniform_display' }
     it 'has the correct titles' do
@@ -510,7 +511,7 @@ RSpec.describe 'Title spec' do
     end
   end
   describe 'title_sort' do
-    subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_sort' }
     it 'has the correct titles' do
       # 130 (with non-filing)
@@ -528,7 +529,7 @@ RSpec.describe 'Title spec' do
   end
 
   describe 'uniform_title_display_struct' do
-    subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+    subject(:result) { indexer.map_record(marc_to_folio(record)) }
     let(:field) { 'uniform_title_display_struct' }
     let(:record) { MARC::XMLReader.new(StringIO.new(marcxml)).to_a.first }
     let(:parsed_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
@@ -573,7 +574,7 @@ RSpec.describe 'Title spec' do
     end
 
     context 'with subfield 0 + 1 data' do
-      subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+      subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
       let(:records) { [record] }
       let(:record) do
         MARC::Record.new.tap do |r|

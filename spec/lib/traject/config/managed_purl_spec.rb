@@ -10,7 +10,7 @@ RSpec.describe 'Managed purl config' do
   let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { 'managedPurlTests.xml' }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'managed_purl_urls' do
     let(:field) { 'managed_purl_urls' }

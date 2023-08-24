@@ -10,8 +10,8 @@ RSpec.describe 'Subject config' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
   let(:fixture_name) { 'subjectSearchTests.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record)) }
+  let(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   describe 'topic_search' do
     let(:field) { 'topic_search' }
@@ -737,6 +737,7 @@ RSpec.describe 'Subject config' do
 
   describe 'Lane Blacklists' do
     let(:fixture_name) { 'subjectLaneBlacklistTests.mrc' }
+    let(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
 
     it 'removes 650a/655a "nomesh", "nomesh." and "nomeshx" from topic_search and topic_facet' do
       expect(results).not_to include hash_including('topic_search' => include(/nomesh/))

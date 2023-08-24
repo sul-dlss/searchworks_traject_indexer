@@ -9,7 +9,7 @@ RSpec.describe 'All_search config' do
   let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
   let(:fixture_name) { 'allfieldsTests.mrc' }
   let(:record) { records.first }
-  subject(:results) { records.map { |rec| indexer.map_record(stub_record_from_marc(rec)) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
   let(:field) { 'all_search' }
 
   describe 'all_search' do
