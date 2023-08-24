@@ -7,9 +7,10 @@ RSpec.describe 'Sirsi config' do
     end
   end
   let(:instance) { {} }
-  subject(:result) { indexer.map_record(stub_record_from_marc(record, instance:)) }
+  let(:result) { indexer.map_record(stub_record_from_marc(record, instance:)) }
   let(:record) { records.first }
   let(:field) { 'db_az_subject' }
+  subject(:value) { result[field] }
 
   describe 'db_az_subject' do
     context 'with a record with multiple 099 fields with values for all' do
@@ -24,9 +25,7 @@ RSpec.describe 'Sirsi config' do
 
       let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
 
-      it 'maps the right data' do
-        expect(result[field]).to eq ['News', 'Science (General)']
-      end
+      it { is_expected.to eq ['News', 'Science (General)'] }
     end
 
     context 'with a record with data in wrong subfield' do
@@ -38,9 +37,7 @@ RSpec.describe 'Sirsi config' do
         end
       end
 
-      it 'ignores the data' do
-        expect(result[field]).to be_nil
-      end
+      it { is_expected.to be_nil }
     end
   end
 
@@ -54,9 +51,7 @@ RSpec.describe 'Sirsi config' do
       end
     end
 
-    it 'gets both their values' do
-      expect(result[field]).to eq ['American History', 'Political Science', 'Government Information: United States']
-    end
+    it { is_expected.to eq ['American History', 'Political Science', 'Government Information: United States'] }
   end
 
   context 'with a record that has no 099 gets uncategorized topic facet value' do
@@ -67,9 +62,7 @@ RSpec.describe 'Sirsi config' do
       end
     end
 
-    it 'gets both their values' do
-      expect(result[field]).to eq ['Uncategorized']
-    end
+    it { is_expected.to eq ['Uncategorized'] }
 
     context 'with real-world data' do
       let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
