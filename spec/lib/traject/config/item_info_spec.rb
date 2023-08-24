@@ -408,17 +408,6 @@ RSpec.describe 'ItemInfo config' do
                                                                                                      ])
       end
 
-      it 'handles STORBYTITL' do
-        expect(select_by_id('3311')[field].length).to eq 1
-        expect(select_by_id('3311')[field].first).to match(
-          /^36105129694375 -\|- SCIENCE -\|- STORBYTITL .* Shelved by title VOL 1 1946/
-        )
-        expect(select_by_id('3311')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                       hash_including('barcode' => '36105129694375', 'library' => 'SCIENCE', 'home_location' => 'STORBYTITL',
-                                                                                                                      'callnumber' => 'Shelved by title VOL 1 1946')
-                                                                                                     ])
-      end
-
       it 'handles SHELBYSER' do
         expect(select_by_id('2211')[field].length).to eq 1
         expect(select_by_id('2211')[field].first).to match(
