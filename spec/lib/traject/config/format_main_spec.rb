@@ -242,19 +242,6 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'online copy only of a Software/Multimedia and database' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '02441cms a2200517 a 4500'
-        r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
-      end
-    end
-
-    xit 'is only a database' do
-      expect(result[field]).to eq ['Database']
-    end
-  end
-
   context 'both physical copy and online copy of a Software/Multimedia and database' do
     let(:folio_record) do
       FolioRecord.new({

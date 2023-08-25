@@ -708,7 +708,7 @@ RSpec.describe 'All_search config' do
       base_record.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
                                      MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('w', 'LC'),
                                      MARC::Subfield.new('i', 'onlineByCallnum'),
                                      MARC::Subfield.new('m', 'GREEN')))
       end
@@ -722,7 +722,7 @@ RSpec.describe 'All_search config' do
       base_record.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
                                      MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('w', 'LC'),
                                      MARC::Subfield.new('i', 'onlineByCallnum'),
                                      MARC::Subfield.new('m', 'GREEN')))
         r.append(MARC::DataField.new('050', ' ', ' ',
@@ -739,7 +739,7 @@ RSpec.describe 'All_search config' do
       base_record.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
                                      MARC::Subfield.new('a', 'AB123 .C45'),
-                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('w', 'LC'),
                                      MARC::Subfield.new('i', 'onlineByLoc'),
                                      MARC::Subfield.new('m', 'GREEN'),
                                      MARC::Subfield.new('l', 'INTERNET')))
@@ -754,7 +754,7 @@ RSpec.describe 'All_search config' do
       base_record.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
                                      MARC::Subfield.new('a', 'AB123 .C45'),
-                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('w', 'LC'),
                                      MARC::Subfield.new('i', 'onlineByLoc'),
                                      MARC::Subfield.new('m', 'GREEN'),
                                      MARC::Subfield.new('l', 'INTERNET')))
@@ -841,7 +841,7 @@ RSpec.describe 'All_search config' do
       base_record.tap do |r|
         r.append(MARC::DataField.new('999', ' ', ' ',
                                      MARC::Subfield.new('a', 'NO CALL NUMBER'),
-                                     MARC::Subfield.new('w', 'ASIS'),
+                                     MARC::Subfield.new('w', 'OTHER'),
                                      MARC::Subfield.new('i', 'nocallnum'),
                                      MARC::Subfield.new('m', 'GREEN')))
       end
