@@ -28,5 +28,10 @@ FactoryBot.define do
       call_number { 'ISHII SPRING 2009' }
       scheme { 'ALPHANUM' }
     end
+
+    factory :internet_holding do
+      call_number { SirsiHolding::ECALLNUM }
+      scheme { 'SUDOC' }
+    end
   end
 end

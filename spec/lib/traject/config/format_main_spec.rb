@@ -7,8 +7,14 @@ RSpec.describe 'Format main config' do
     end
   end
   let(:instance) { {} }
-  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record, instance:)) }
+  subject(:result) { indexer.map_record(folio_record) }
+  let(:folio_record) { marc_to_folio_with_stubbed_holdings(record, instance:) }
   let(:field) { 'format_main_ssim' }
+
+  before do
+    allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+  end
+  let(:holdings) { [] }
 
   describe 'format_main_ssim' do
     context 'with leader/06 i - audio non-music' do
@@ -250,27 +256,22 @@ RSpec.describe 'Format main config' do
   end
 
   context 'both physical copy and online copy of a Software/Multimedia and database' do
-    let(:record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '02441cms a2200517 a 4500'
-        r.append(MARC::ControlField.new('008', '920901d19912002pauuu1n    m  0   a0eng  '))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL'),
-                                     MARC::Subfield.new('t', 'DATABASE')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
-      end
+    let(:folio_record) do
+      FolioRecord.new({
+                        'source_record' => source_record,
+                        'instance' => { 'statisticalCodes' => [{ 'name' => 'Database' }] }
+                      }, stub_folio_client)
     end
-
-    let(:instance) { { 'statisticalCodes' => [{ 'name' => 'Database' }] } }
+    let(:source_record) do
+      [{ 'leader' => '02441cms a2200517 a 4500',
+         'fields' => [{ '008' => '920901d19912002pauuu1n    m  0   a0eng  ' }] }]
+    end
+    let(:holdings) do
+      [
+        build(:internet_holding),
+        build(:lc_holding)
+      ]
+    end
 
     it 'is a database' do
       expect(result[field]).to eq ['Software/Multimedia', 'Database']
@@ -1293,15 +1294,18 @@ RSpec.describe 'Format main config' do
   end
 
   context 'when library is LANE-MED' do
+    let(:folio_record) do
+      FolioRecord.new({
+                        'source_record' => source_record,
+                        'instance' => {}
+                      }, stub_folio_client)
+    end
+    let(:source_record) { [{ 'leader' => leader, 'fields' => [] }] }
+    let(:holdings) { [build(:lc_holding, library: 'LANE-MED')] }
+
     context 'when leader/06 is a' do
       context 'when leader/07 is d' do
-        let(:record) do
-          MARC::Record.new.tap do |r|
-            r.leader = '01952cad  2200457Ia 4500'
-            r.append(MARC::DataField.new('999', ' ', ' ',
-                                         MARC::Subfield.new('m', 'LANE-MED')))
-          end
-        end
+        let(:leader) { '01952cad  2200457Ia 4500' }
 
         it 'is a Book and not Archive/Manuscript' do
           expect(result[field]).to eq ['Book']
@@ -1309,13 +1313,7 @@ RSpec.describe 'Format main config' do
       end
 
       context 'Leader/07 = c' do
-        let(:record) do
-          MARC::Record.new.tap do |r|
-            r.leader = '01952cac  2200457Ia 4500'
-            r.append(MARC::DataField.new('999', ' ', ' ',
-                                         MARC::Subfield.new('m', 'LANE-MED')))
-          end
-        end
+        let(:leader) { '01952cac  2200457Ia 4500' }
 
         it 'is a Book and not Archive/Manuscript' do
           expect(result[field]).to eq ['Book']
@@ -1325,13 +1323,7 @@ RSpec.describe 'Format main config' do
 
     context 'when leader/06 is t' do
       context 'when leader/07 is d' do
-        let(:record) do
-          MARC::Record.new.tap do |r|
-            r.leader = '01952ctd  2200457Ia 4500'
-            r.append(MARC::DataField.new('999', ' ', ' ',
-                                         MARC::Subfield.new('m', 'LANE-MED')))
-          end
-        end
+        let(:leader) { '01952ctd  2200457Ia 4500' }
 
         it 'is a Book and not Archive/Manuscript' do
           expect(result[field]).to eq ['Book']
@@ -1339,13 +1331,7 @@ RSpec.describe 'Format main config' do
       end
 
       context 'when leader/07 is c' do
-        let(:record) do
-          MARC::Record.new.tap do |r|
-            r.leader = '01952ctc  2200457Ia 4500'
-            r.append(MARC::DataField.new('999', ' ', ' ',
-                                         MARC::Subfield.new('m', 'LANE-MED')))
-          end
-        end
+        let(:leader) { '01952ctc  2200457Ia 4500' }
 
         it 'is a Book and not Archive/Manuscript' do
           expect(result[field]).to eq ['Book']
@@ -1417,6 +1403,14 @@ RSpec.describe 'Format main config' do
   #      */
 
   context 'when the call number prefix is for Archive/Manuscript items' do
+    let(:folio_record) do
+      FolioRecord.new({
+                        'source_record' => source_record,
+                        'instance' => {}
+                      }, stub_folio_client)
+    end
+    let(:source_record) { [{ 'leader' => '01952c d  2200457Ia 4500', 'fields' => [] }] }
+
     callnums = [
       'A0015',
       'F0110',
@@ -1432,17 +1426,9 @@ RSpec.describe 'Format main config' do
       'SCM0348',
       'V0321'
     ]
-    callnums.each do |callnum|
-      context "when the callnumber is #{callnum}" do
-        let(:record) do
-          MARC::Record.new.tap do |r|
-            r.leader = '01952c d  2200457Ia 4500'
-            r.append(MARC::DataField.new('999', ' ', ' ',
-                                         MARC::Subfield.new('a', callnum),
-                                         MARC::Subfield.new('w', 'ALPHANUM'),
-                                         MARC::Subfield.new('m', 'SPEC-COLL')))
-          end
-        end
+    callnums.each do |call_number|
+      context "when the callnumber is #{call_number}" do
+        let(:holdings) { [build(:alphanum_holding, call_number:, library: 'SPEC-COLL')] }
 
         it 'is an archive/manuscript' do
           expect(result[field]).to eq ['Archive/Manuscript']
