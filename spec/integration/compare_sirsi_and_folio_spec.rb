@@ -7,13 +7,18 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     WebMock.enable_net_connect!
   end
 
+  before(:all) do
+    @pgclient = PG.connect(ENV.fetch('DATABASE_URL')) if ENV.key?('DATABASE_URL')
+  end
+
+  let(:settings) do
+    {
+      'postgres.client' => @pgclient
+    }
+  end
+
   let(:folio_indexer) do
-    Traject::Indexer.new.tap do |i|
-      if ENV.key?('DATABASE_URL')
-        i.settings do
-          provide 'postgres.url', ENV.fetch('DATABASE_URL')
-        end
-      end
+    Traject::Indexer.new(settings).tap do |i|
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
@@ -48,7 +53,9 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
 
     let(:folio_record) do
       if ENV.key?('DATABASE_URL')
-        Traject::FolioPostgresReader.find_by_catkey(catkey, 'postgres.url' => ENV.fetch('DATABASE_URL'))
+        Timeout.timeout(10) do
+          Traject::FolioPostgresReader.find_by_catkey(catkey, 'postgres.client' => @pgclient)
+        end
       else
         client.source_record(instanceHrid: catkey)
       end
