@@ -170,11 +170,31 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   context 'catkey provided as envvar', if: ENV['catkey'] do # rubocop:disable Style/FetchEnvVar
     let(:catkey) { ENV.fetch('catkey') }
 
+    before(:each) do
+      skip('Lane record') if Array(sirsi_result['building_facet']).include? 'Medical (Lane)'
+      pending('Bound with') if Array(sirsi_result['marc_json_struct']).to_s.match? 'BW-CHILD'
+    end
+
     before do
       puts 'FOLIO record: '
       pp folio_record
     end
     it_behaves_like 'records match'
+  end
+
+  context 'file provided as envvar', if: ENV['file'] do # rubocop:disable Style/FetchEnvVar
+    File.read(ENV.fetch('file', nil)).each_line.map(&:strip).sample(500).each do |catkey|
+      context "catkey #{catkey}" do
+        let(:catkey) { "a#{catkey}" }
+
+        before(:each) do
+          skip('Lane record') if Array(sirsi_result['building_facet']).include? 'Medical (Lane)'
+          pending('Bound with') if Array(sirsi_result['marc_json_struct']).to_s.match? 'BW-CHILD'
+        end
+
+        it_behaves_like 'records match'
+      end
+    end if ENV['file']
   end
 
   # working
