@@ -149,6 +149,8 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
           sirsi_item_display_fields.each do |item_display_parts|
             folio_display_parts = folio_item_display_fields.find { |item_displays| item_displays['barcode'] == item_display_parts['barcode'] }
 
+            item_display_parts['library'] = 'HOOVER' if item_display_parts['library'] == 'HV-ARCHIVE'
+
             if folio_display_parts.present?
               # INPROCESS and MISSING can be a location or current location
               if %w[INPROCESS MISSING].include?(item_display_parts['home_location'])
