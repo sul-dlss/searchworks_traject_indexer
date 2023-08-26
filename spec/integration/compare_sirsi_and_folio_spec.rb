@@ -42,7 +42,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   shared_examples 'records match' do |*flags|
-    before { pending } if flags.include?(:pending)
+    before { pending(flags[:pending]) } if flags.include?(:pending)
 
     let(:client) { FolioClient.new }
 
@@ -196,6 +196,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a81622', # missing status
     'a14644326', # in-process status
     'a3118108', # missing status
+    'a282409', # MARC 699 field
     'a10146027' # SUL/SDR instead of SUL/INTERNET
   ].each do |catkey|
     context "catkey #{catkey}" do
@@ -205,10 +206,42 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     end
   end
 
+  # good changes
+  [
+    'a11418750', # used to be access_facet "On order" now "At the Library"... but it's actually LOST-ASSUM
+    'a76118', #  bound-with using an actual barcode in FOLIO
+    'a14718056', # better callnumber lopping?
+    'a14804590' # was a stub ON-ORDER record, now has a little more data
+  ].each do |catkey|
+    context "catkey #{catkey}" do
+      let(:catkey) { catkey }
+
+      it_behaves_like 'records match', pending: 'expected change (for the better)'
+    end
+  end
+
   # pending
   [
     'a576562',
     'a10151431',
+    'a3184189', # sudoc call number changed formatting
+    'a91273', # bound-with with missing item data
+    'a1649793', # used to be govdoc
+    'a400248', # missing latest received, see also a8589317
+    'a2725653', # used to be LOST-ASSUM?
+    'a13420376', # used to have an LC call num
+    'a10291248', # missing MHLD data
+    'a4808878', # extra MHLD data, see also a6513560
+    'a10444184', # extra e-resource barcodes
+    'a2727161', # MHLD lost library info
+    'a8572051', # bound-with turned on-order
+    'a14450720', # B&F-HOLD
+    'a75306', # different lopping
+    'a11852997', # LAW-BIND
+    'a36259', # super different BW, see also a153955
+    'a105784', # bound-with building facet changed
+    'a140576', # current location used to be SEE-LOAN, see also a117415, a227909
+    'a233811', # checkedout vs lost-assum, see also a231762, a154314
     'a515836', # funky call-number problems
     'a6634796', # missing call number in item_display
     'a1553634', # migration error holdings
@@ -217,7 +250,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a14461522', # ???
     'a4084116', # call number changed?
     'a13652131', # electronic only, missing physical holding?
-    'a282409', # MARC 699 field
     'a2492166', # bound-with call numbers missing
     'a5814693', # MHLD ordering
     'a6517994' # has unexpected MHLD statements
@@ -225,7 +257,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
 
-      it_behaves_like 'records match', :pending
+      it_behaves_like 'records match', pending: 'expected failure'
     end
   end
 end
