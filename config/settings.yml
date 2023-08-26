@@ -5,7 +5,7 @@ environments:
   folio_test:
     database_url: <%= ENV['DATABASE_URL'] %>
     processes: 1
-    full_dump_processes: 24
+    full_dump_processes: 12
     kafka_topic: marc_folio_test
   folio_prod:
     database_url: <%= ENV['FOLIO_PROD_DATABASE_URL'] %>
