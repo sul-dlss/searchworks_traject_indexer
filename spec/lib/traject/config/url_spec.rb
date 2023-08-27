@@ -82,6 +82,27 @@ RSpec.describe 'Access config' do
       end
     end
 
+    describe 'Blank subfield u' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                nil,
+                MARC::Subfield.new('u', '')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are not considered full text' do
+        expect(results.first[field]).to be_blank
+      end
+    end
+
     describe '2nd indicators of 3' do
       let(:records) do
         [
