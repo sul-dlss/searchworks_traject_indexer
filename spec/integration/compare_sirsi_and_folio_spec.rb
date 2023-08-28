@@ -226,6 +226,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a14644326', # in-process status
     'a3118108', # missing status
     'a282409', # MARC 699 field
+    'a8572051', # bound-with without items
     'a10146027' # SUL/SDR instead of SUL/INTERNET
   ].each do |catkey|
     context "catkey #{catkey}" do
@@ -264,7 +265,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a4808878', # extra MHLD data, see also a6513560
     'a10444184', # extra e-resource barcodes
     'a2727161', # MHLD lost library info
-    'a8572051', # bound-with turned on-order
     'a14450720', # B&F-HOLD
     'a75306', # different lopping
     'a11852997', # LAW-BIND
