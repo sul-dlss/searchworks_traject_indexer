@@ -47,7 +47,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   shared_examples 'records match' do |*flags|
-    before { pending(flags[:pending]) } if flags.include?(:pending)
+    before { pending(pending_reason) } if flags.include?(:pending)
 
     let(:client) { FolioClient.new }
 
@@ -243,9 +243,10 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a14804590' # was a stub ON-ORDER record, now has a little more data
   ].each do |catkey|
     context "catkey #{catkey}" do
+      let(:pending_reason) { 'expected change (for the better)' }
       let(:catkey) { catkey }
 
-      it_behaves_like 'records match', pending: 'expected change (for the better)'
+      it_behaves_like 'records match', :pending
     end
   end
 
@@ -285,8 +286,9 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
+      let(:pending_reason) { 'expected failure' }
 
-      it_behaves_like 'records match', pending: 'expected failure'
+      it_behaves_like 'records match', :pending
     end
   end
 end
