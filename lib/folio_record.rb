@@ -87,7 +87,7 @@ class FolioRecord
   end
 
   def holdings
-    @holdings ||= load('holdings').reject do |holding|
+    @holdings ||= all_holdings.reject do |holding|
       holding['suppressFromDiscovery']
     end
   end
@@ -182,12 +182,14 @@ class FolioRecord
     end
   end
 
-  # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding
+  # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding,
+  # or, if there is no parent item, we generate a stub SirsiHolding from the original bound-with holding.
   # TODO: remove this when we stop using SirsiHoldings
   def bound_with_holdings
-    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? }.map do |holding|
-      parent_item = holding.dig('boundWith', 'item')
+    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
+      parent_item = holding.dig('boundWith', 'item') || {}
       parent_holding = holding.dig('boundWith', 'holding')
+      parent_holding ||= holding
 
       item_location_code = parent_item.dig('location', 'temporaryLocation', 'code') if parent_item.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
       item_location_code ||= parent_item.dig('location', 'permanentLocation', 'code')
@@ -196,12 +198,13 @@ class FolioRecord
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
       current_location ||= Folio::StatusCurrentLocation.new(parent_item).current_location
+
       SirsiHolding.new(
         id: parent_item['id'],
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         # parent item's barcode
-        barcode: parent_item['barcode'],
+        barcode: parent_item['barcode'] || "#{hrid.sub(/^a/, '')}-#{(all_holdings.index(holding) + 1).to_s.ljust(3, '0')}1",
         # parent item's current location or SEE-OTHER (SAL3)
         # For the SAL3 logic, see https://consul.stanford.edu/display/MD/Bound+withs
         # When the bound-with item is in SAL3, both the Home and Current Locations on the child records should always be SEE-OTHER.
@@ -264,6 +267,10 @@ class FolioRecord
 
   def all_items
     @all_items ||= load('items')
+  end
+
+  def all_holdings
+    @all_holdings ||= load('holdings')
   end
 
   def items_and_holdings

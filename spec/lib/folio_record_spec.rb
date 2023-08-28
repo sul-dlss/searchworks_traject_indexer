@@ -316,6 +316,41 @@ RSpec.describe FolioRecord do
           expect(folio_record.sirsi_holdings.first.home_location).to eq('SEE-OTHER')
         end
       end
+
+      context 'with Symphony migrated data without the right linkages between the bound-with holding and item' do
+        let(:record) do
+          {
+            'instance' => {
+              'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d',
+              'hrid' => 'a14154194'
+            },
+            'holdings' => [{
+              'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+              'holdingsType' => { 'name' => 'Bound-with' },
+              'location' => {
+                'effectiveLocation' => {
+                  'code' => 'EAR-SEE-OTHER'
+                }
+              }
+            }],
+            'items' => [],
+            'source_record' => [{
+              'fields' => [
+                { '001' => 'a14154194' }
+              ]
+            }]
+          }
+        end
+
+        it 'creates a stub bound-with item' do
+          expect(folio_record.sirsi_holdings.first).to have_attributes(
+            id: nil,
+            barcode: '14154194-1001',
+            home_location: 'SEE-OTHER',
+            library: 'EARTH-SCI'
+          )
+        end
+      end
     end
 
     context 'with an item with a temporary location' do
