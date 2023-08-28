@@ -922,7 +922,7 @@ to_field 'url_fulltext' do |record, accumulator|
     accumulator.concat extractor.collect_subfields(field, spec)
   end
 
-  accumulator.reject! { |v| MarcLinks::GSB_URL_REGEX.match?(v) }
+  accumulator.reject! { |v| v.blank? || MarcLinks::GSB_URL_REGEX.match?(v) }
 end
 
 # returns the URLs for supplementary information (rather than fulltext)
