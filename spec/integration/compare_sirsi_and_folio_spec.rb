@@ -47,7 +47,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   end
 
   shared_examples 'records match' do |*flags|
-    before { pending(flags[:pending]) } if flags.include?(:pending)
+    before { pending(pending_reason) } if flags.include?(:pending)
 
     let(:client) { FolioClient.new }
 
@@ -226,6 +226,7 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a14644326', # in-process status
     'a3118108', # missing status
     'a282409', # MARC 699 field
+    'a8572051', # bound-with without items
     'a10146027' # SUL/SDR instead of SUL/INTERNET
   ].each do |catkey|
     context "catkey #{catkey}" do
@@ -243,9 +244,10 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a14804590' # was a stub ON-ORDER record, now has a little more data
   ].each do |catkey|
     context "catkey #{catkey}" do
+      let(:pending_reason) { 'expected change (for the better)' }
       let(:catkey) { catkey }
 
-      it_behaves_like 'records match', pending: 'expected change (for the better)'
+      it_behaves_like 'records match', :pending
     end
   end
 
@@ -263,7 +265,6 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
     'a4808878', # extra MHLD data, see also a6513560
     'a10444184', # extra e-resource barcodes
     'a2727161', # MHLD lost library info
-    'a8572051', # bound-with turned on-order
     'a14450720', # B&F-HOLD
     'a75306', # different lopping
     'a11852997', # LAW-BIND
@@ -285,8 +286,9 @@ RSpec.describe 'comparing records from sirsi and folio', if: ENV['OKAPI_URL'] ||
   ].each do |catkey|
     context "catkey #{catkey}" do
       let(:catkey) { catkey }
+      let(:pending_reason) { 'expected failure' }
 
-      it_behaves_like 'records match', pending: 'expected failure'
+      it_behaves_like 'records match', :pending
     end
   end
 end
