@@ -9,7 +9,7 @@ module Traject
 
     def initialize(_input_stream, settings)
       @settings = Traject::Indexer::Settings.new settings
-      @connection = PG.connect(@settings['postgres.url'])
+      @connection = @settings['postgres.client'] || PG.connect(@settings['postgres.url'])
       @page_size = @settings['postgres.page_size'] || 100
       @updated_after = @settings['folio.updated_after']
       @statement_timeout = @settings.fetch('statement_timeout', 'DEFAULT') # Timeout value in milliseconds
