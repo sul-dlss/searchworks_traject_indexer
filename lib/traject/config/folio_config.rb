@@ -2537,15 +2537,15 @@ to_field 'iiif_manifest_url_ssim' do |record, accumulator|
 end
 
 to_field 'crez_instructor_search' do |record, _accumulator, context|
-  context.output_hash['crez_instructor_search'] = record.courses.flat_map { |course| course[:instructors] }.compact.uniq
+  context.output_hash['crez_instructor_search'] = record.courses.flat_map { |course| course[:instructors] }.compact.sort.uniq
 end
 
 to_field 'crez_course_name_search' do |record, _accumulator, context|
-  context.output_hash['crez_course_name_search'] = record.courses.map { |course| course[:course_name] }.compact.uniq
+  context.output_hash['crez_course_name_search'] = record.courses.map { |course| course[:course_name] }.compact.sort.uniq
 end
 
 to_field 'crez_course_id_search' do |record, _accumulator, context|
-  context.output_hash['crez_course_id_search'] = record.courses.map { |course| course[:course_id] }.compact.uniq
+  context.output_hash['crez_course_id_search'] = record.courses.map { |course| course[:course_id] }.compact.sort.uniq
 end
 
 # TODO: included for parity; refactor SW to use courses_json_struct instead
@@ -2554,7 +2554,7 @@ to_field 'crez_course_info' do |record, _accumulator, context|
     [course[:course_id]].product(course[:instructors]).map do |course_id, instructor|
       [course_id, course[:course_name], instructor].join(' -|- ')
     end
-  end
+  end.sort { |ca, cb| ca.split(' -|- ').first <=> cb.split(' -|- ').first }
 end
 
 each_record do |_record, context|
