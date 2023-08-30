@@ -71,19 +71,6 @@ settings do
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 end
 
-# Change the XMLNS to match how solrmarc handles this
-class SolrMarcStyleFastXMLWriter < MARC::FastXMLWriter
-  class << self
-    def open_collection(use_ns)
-      if use_ns
-        %(<collection xmlns="http://www.loc.gov/MARC21/slim">).dup
-      else
-        '<collection>'.dup
-      end
-    end
-  end
-end
-
 # Monkey-patch MarcExtractor in order to add logic to strip subfields before
 # joining them, for parity with solrmarc.
 class Traject::MarcExtractor
@@ -214,10 +201,6 @@ to_field 'hashed_id_ssi' do |_record, accumulator, context|
   next unless context.output_hash['id']
 
   accumulator << Digest::MD5.hexdigest(context.output_hash['id'].first)
-end
-
-to_field 'marcxml' do |record, accumulator|
-  accumulator << (SolrMarcStyleFastXMLWriter.single_record_document(record, include_namespace: true) + "\n")
 end
 
 to_field 'marc_json_struct' do |record, accumulator|
@@ -2673,7 +2656,6 @@ end
 
 ## QUESTIONS / ISSUES
 # - change hashed_id to use uuid_ssi, since it's already a hash of some other fields?
-# - use marc JSON (marc_json_struct) instead of marcxml?
 # - what's in the 9XX fields set as keep_fields for all_search coming out of FOLIO?
 # - why did we subclass MARC::FastXMLWriter and is the behavior in SolrMarcStyleFastXMLWriter still required?
 # - is "materialType" the correct field for the item type in FOLIO?
