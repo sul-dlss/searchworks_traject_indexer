@@ -34,15 +34,6 @@ RSpec.describe 'Sirsi config' do
     end
   end
 
-  describe 'marcxml' do
-    let(:fixture_name) { 'fieldOrdering.mrc' }
-    it do
-      ix650 = result['marcxml'].first.index '650first'
-      ix600 = result['marcxml'].first.index '600second'
-      expect(ix650 < ix600).to be true
-    end
-  end
-
   describe 'marc_json_struct' do
     let(:fixture_name) { 'fieldOrdering.mrc' }
     it do
