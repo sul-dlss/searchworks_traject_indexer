@@ -133,6 +133,10 @@ module Traject
               }.compact
 
               item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
+
+              item['courses'].each do |course|
+                course['locationCode'] = locations[course['locationId']]['code']
+              end
             end
 
             data['holdings'].each do |holding|
@@ -145,10 +149,6 @@ module Traject
               holding['boundWith']['holding']['location'] = {
                 'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
               } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
-            end
-
-            data['courses'].each do |course|
-              course['location'] = locations[course['locationId']]
             end
 
             yield FolioRecord.new(data)
@@ -218,7 +218,23 @@ module Traject
                         'pickupServicePointId', request.jsonb ->> 'pickupServicePointId'
                       )
                     END,
-                    'courseListingId', cl.id
+                    'courses', COALESCE(
+                      (SELECT
+                        jsonb_agg(
+                          jsonb_build_object(
+                            'id', cc.id,
+                            'name', cc.jsonb ->> 'name',
+                            'locationId', cl.jsonb ->> 'locationId',
+                            'courseNumber', cc.jsonb ->> 'courseNumber',
+                            'instructorNames', (SELECT jsonb_agg(instructor ->> 'name') FROM jsonb_array_elements(cl.jsonb #> '{instructorObjects}') AS instructor)
+                          )
+                        )
+                      FROM sul_mod_courses.coursereserves_reserves cr
+                        LEFT JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
+                        LEFT JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
+                      WHERE (cr.jsonb ->> 'itemId')::uuid = item.id),
+                      '[]'::jsonb
+                    )
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
@@ -278,19 +294,6 @@ module Traject
                     'orderSentDate', purchase_order.jsonb ->> 'dateOrdered',
                     'orderCloseReason', purchase_order.jsonb #> '{closeReason}'
                   )),
-              '[]'::jsonb),
-            'courses',
-              COALESCE(
-                jsonb_agg(
-                  DISTINCT jsonb_build_object(
-                    'id', cc.id,
-                    'name', cc.jsonb ->> 'name',
-                    'courseNumber', cc.jsonb ->> 'courseNumber',
-                    'courseListingId', cc.jsonb ->> 'courseListingId',
-                    'instructorObjects', cl.jsonb #> '{instructorObjects}',
-                    'locationId', cl.jsonb ->> 'locationId'
-                  )
-                ) FILTER (WHERE cc.id IS NOT NULL),
               '[]'::jsonb)
             )
       FROM sul_mod_inventory_storage.instance vi
@@ -298,13 +301,6 @@ module Traject
           ON hr.instanceid = vi.id
       LEFT JOIN sul_mod_inventory_storage.item item
           ON item.holdingsrecordid = hr.id
-      -- Course information related to items on reserve
-      LEFT JOIN sul_mod_courses.coursereserves_reserves cr
-          ON (cr.jsonb ->> 'itemId')::uuid = item.id
-      LEFT JOIN sul_mod_courses.coursereserves_courselistings cl
-          ON cl.id = cr.courselistingid
-      LEFT JOIN sul_mod_courses.coursereserves_courses cc
-          ON cc.courselistingid = cl.id
       -- Item's Material type relation
       LEFT JOIN sul_mod_inventory_storage.material_type mt
           ON item.materialtypeid = mt.id

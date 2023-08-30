@@ -123,15 +123,18 @@ class FolioRecord
   # Course information for any courses that have this record's items on reserve
   # @return [Array<Hash>] course information
   def courses
-    record.fetch('courses', []).map do |course|
-      {
-        course_name: course['name'],
-        course_id: course['courseNumber'],
-        instructors: course['instructorObjects'].pluck('name'),
-        listing_id: course['courseListingId'],
-        reserve_desk: course.dig('location', 'code')
-      }
+    item_courses = items.flat_map do |item|
+      item.fetch('courses', []).map do |course|
+        {
+          course_name: course['name'],
+          course_id: course['courseNumber'],
+          instructors: course['instructorNames'],
+          reserve_desk: course['locationCode']
+        }
+      end
     end
+
+    item_courses.uniq { |c| c[:course_id] }
   end
 
   def eresource?

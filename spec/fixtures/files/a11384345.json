@@ -1,0 +1,2966 @@
+{
+  "items": [
+    {
+      "id": "12073498-b8b4-5ed4-90b1-7cec27ab5d4d",
+      "hrid": "ai11384345_1_25",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231124087",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "4",
+      "enumeration": "2019-2020",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42019 42020 14",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "36469c47-54f1-58c4-97af-fa095068d481",
+      "hrid": "ai11384345_2_1",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "11384345-5005",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "5",
+      "enumeration": "2019-2020",
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "ad41ec5e-be02-5ff0-b8af-24ada91e4699",
+      "discoverySuppress": true,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "908d68ff-4e1d-4235-ba1a-6cfb88480c67",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "suppressFromDiscovery": true,
+      "effectiveShelvingOrder": "KF 3240 L4425 42019 42020 15",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "908d68ff-4e1d-4235-ba1a-6cfb88480c67",
+          "code": "LAW-SHADOW",
+          "name": "Ask at circulation desk",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "41d05c3a-21d8-5278-b458-505c737b84f5",
+      "hrid": "ai11384345_1_11",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231115390",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "1",
+      "enumeration": "2018-2019",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42018 42019 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "47b25ad9-2982-5f5b-8200-dbb1ae9f7705",
+      "hrid": "ai11384345_1_13",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231115408",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "2",
+      "enumeration": "2018-2019",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42018 42019 12",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "4de56972-e5fd-5680-8ddc-070e438cea2e",
+      "hrid": "ai11384345_1_17",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231115424",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "4",
+      "enumeration": "2018-2019",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42018 42019 14",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "58c12592-edd7-5cb9-83be-40da6e8ef276",
+      "hrid": "ai11384345_1_9",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105228771387",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "2",
+      "enumeration": "2017-2018",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42017 42018 12",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "5f6ca219-4e12-5684-b072-a03cb3afbacd",
+      "hrid": "ai11384345_1_23",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231124079",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "3",
+      "enumeration": "2019-2020",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42019 42020 13",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "65e28380-b82a-5274-acf4-e1013b6c0996",
+      "hrid": "ai11384345_1_15",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231115416",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "3",
+      "enumeration": "2018-2019",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42018 42019 13",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "6e08dbc8-89e6-5cea-b872-a39164a5530e",
+      "hrid": "ai11384345_1_3",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105064164473",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "2",
+      "enumeration": "2015-2016",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42015 42016 12",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "a66e7b19-9736-5533-86bb-bb0672536790",
+      "hrid": "ai11384345_1_21",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231124061",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "2",
+      "enumeration": "2019-2020",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42019 42020 12",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "c46236d3-ecec-5925-9794-65772d14b830",
+      "hrid": "ai11384345_1_19",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105231124053",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "1",
+      "enumeration": "2019-2020",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42019 42020 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "c858ef0b-718f-5403-b8e1-5b693b788a5c",
+      "hrid": "ai11384345_1_5",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105063959980",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "1",
+      "enumeration": "2016-2017",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42016 42017 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "ceb1fdf3-c142-5e28-a663-a55287275aeb",
+      "hrid": "ai11384345_1_1",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105064164465",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "1",
+      "enumeration": "2015-2016",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42015 42016 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "f61e11fc-f884-58c9-b8bc-2fae5b186331",
+      "hrid": "ai11384345_1_7",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105228771379",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-21T16:52:25.793Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "1",
+      "enumeration": "2017-2018",
+      "yearCaption": [
+
+      ],
+      "materialType": "periodical",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "d934e614-215d-4667-b231-aed97887f289",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Non-circulating",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42017 42018 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "15426d08-8b79-5f7f-9cc0-8a6ce38a064e",
+      "hrid": "ai11384345_1_27",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105230980877",
+      "courses": [
+        {
+          "id": "32f1eff1-8560-4854-b8dc-82ad06da6377",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-04",
+          "instructorNames": [
+            "Brandi Lupo"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "edee91dc-7617-45fc-bf8d-705468378ac6",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-05",
+          "instructorNames": [
+            "Seema Patel"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "f3b772be-5d5e-4823-a624-ff23150e66d3",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-01",
+          "instructorNames": [
+            "Marc Fagel",
+            "Tyler Valeska"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "af56597c-afe8-4e71-8645-a520807d2dec",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-06",
+          "instructorNames": [
+            "Susan Yorke"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "86b00ffa-d126-4069-8b99-0c08e3ee1335",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-02",
+          "instructorNames": [
+            "Nicholas Handler",
+            "Robin Linsenmayer"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "b72594a9-8d48-40e6-9190-f994d8000517",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-03",
+          "instructorNames": [
+            "Alicia Thesing"
+          ],
+          "locationCode": "LAW-CRES"
+        }
+      ],
+      "request": null,
+      "_version": 10,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-28T17:36:37.832Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "03634ab5-4883-47e6-b700-13555644d178"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "1",
+      "enumeration": "2021",
+      "lastCheckIn": {
+        "dateTime": "2023-08-28T16:27:46.966+00:00",
+        "staffMemberId": "9007cc44-2095-44ac-9520-4a2c7eab8905",
+        "servicePointId": "ef1ea792-b2bb-49a2-8747-94376b64a74d"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": "2-hour reserve",
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "temporaryLoanTypeId": "698f6361-d552-4cb8-8e01-f74fa8cc73e0",
+      "temporaryLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42021 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "temporaryLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "47dbb834-d192-5dcc-bd13-7f915e24eb6f",
+      "hrid": "ai11384345_1_29",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105230980885",
+      "courses": [
+        {
+          "id": "32f1eff1-8560-4854-b8dc-82ad06da6377",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-04",
+          "instructorNames": [
+            "Brandi Lupo"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "f3b772be-5d5e-4823-a624-ff23150e66d3",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-01",
+          "instructorNames": [
+            "Marc Fagel",
+            "Tyler Valeska"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "edee91dc-7617-45fc-bf8d-705468378ac6",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-05",
+          "instructorNames": [
+            "Seema Patel"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "af56597c-afe8-4e71-8645-a520807d2dec",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-06",
+          "instructorNames": [
+            "Susan Yorke"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "86b00ffa-d126-4069-8b99-0c08e3ee1335",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-02",
+          "instructorNames": [
+            "Nicholas Handler",
+            "Robin Linsenmayer"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "b72594a9-8d48-40e6-9190-f994d8000517",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-03",
+          "instructorNames": [
+            "Alicia Thesing"
+          ],
+          "locationCode": "LAW-CRES"
+        }
+      ],
+      "request": null,
+      "_version": 10,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-28T17:36:37.904Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "03634ab5-4883-47e6-b700-13555644d178"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "2",
+      "enumeration": "2021",
+      "lastCheckIn": {
+        "dateTime": "2023-08-28T16:28:04.357+00:00",
+        "staffMemberId": "9007cc44-2095-44ac-9520-4a2c7eab8905",
+        "servicePointId": "ef1ea792-b2bb-49a2-8747-94376b64a74d"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": "2-hour reserve",
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "temporaryLoanTypeId": "698f6361-d552-4cb8-8e01-f74fa8cc73e0",
+      "temporaryLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42021 12",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "temporaryLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "8ed9877b-d465-5707-802b-292603bd126e",
+      "hrid": "ai11384345_1_31",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105230980893",
+      "courses": [
+        {
+          "id": "f3b772be-5d5e-4823-a624-ff23150e66d3",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-01",
+          "instructorNames": [
+            "Marc Fagel",
+            "Tyler Valeska"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "32f1eff1-8560-4854-b8dc-82ad06da6377",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-04",
+          "instructorNames": [
+            "Brandi Lupo"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "edee91dc-7617-45fc-bf8d-705468378ac6",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-05",
+          "instructorNames": [
+            "Seema Patel"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "af56597c-afe8-4e71-8645-a520807d2dec",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-06",
+          "instructorNames": [
+            "Susan Yorke"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "86b00ffa-d126-4069-8b99-0c08e3ee1335",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-02",
+          "instructorNames": [
+            "Nicholas Handler",
+            "Robin Linsenmayer"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "b72594a9-8d48-40e6-9190-f994d8000517",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-03",
+          "instructorNames": [
+            "Alicia Thesing"
+          ],
+          "locationCode": "LAW-CRES"
+        }
+      ],
+      "request": null,
+      "_version": 10,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-28T17:36:37.811Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "03634ab5-4883-47e6-b700-13555644d178"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "3",
+      "enumeration": "2021",
+      "lastCheckIn": {
+        "dateTime": "2023-08-28T16:27:55.778+00:00",
+        "staffMemberId": "9007cc44-2095-44ac-9520-4a2c7eab8905",
+        "servicePointId": "ef1ea792-b2bb-49a2-8747-94376b64a74d"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": "2-hour reserve",
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "temporaryLoanTypeId": "698f6361-d552-4cb8-8e01-f74fa8cc73e0",
+      "temporaryLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42021 13",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "temporaryLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "e3c28539-6a20-5744-a8bb-a90eb86a89af",
+      "hrid": "ai11384345_1_33",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105230980901",
+      "courses": [
+        {
+          "id": "32f1eff1-8560-4854-b8dc-82ad06da6377",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-04",
+          "instructorNames": [
+            "Brandi Lupo"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "f3b772be-5d5e-4823-a624-ff23150e66d3",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-01",
+          "instructorNames": [
+            "Marc Fagel",
+            "Tyler Valeska"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "edee91dc-7617-45fc-bf8d-705468378ac6",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-05",
+          "instructorNames": [
+            "Seema Patel"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "af56597c-afe8-4e71-8645-a520807d2dec",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-06",
+          "instructorNames": [
+            "Susan Yorke"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "86b00ffa-d126-4069-8b99-0c08e3ee1335",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-02",
+          "instructorNames": [
+            "Nicholas Handler",
+            "Robin Linsenmayer"
+          ],
+          "locationCode": "LAW-CRES"
+        },
+        {
+          "id": "b72594a9-8d48-40e6-9190-f994d8000517",
+          "name": "Legal Writing",
+          "locationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "courseNumber": "LAW-219-03",
+          "instructorNames": [
+            "Alicia Thesing"
+          ],
+          "locationCode": "LAW-CRES"
+        }
+      ],
+      "request": null,
+      "_version": 10,
+      "metadata": {
+        "createdDate": "2023-08-21T16:52:25.793Z",
+        "updatedDate": "2023-08-28T17:36:37.857Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "03634ab5-4883-47e6-b700-13555644d178"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "KF240 .L4425"
+      },
+      "copyNumber": "4",
+      "enumeration": "2021",
+      "lastCheckIn": {
+        "dateTime": "2023-08-28T16:27:37.426+00:00",
+        "staffMemberId": "9007cc44-2095-44ac-9520-4a2c7eab8905",
+        "servicePointId": "ef1ea792-b2bb-49a2-8747-94376b64a74d"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": "2-hour reserve",
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "temporaryLoanTypeId": "698f6361-d552-4cb8-8e01-f74fa8cc73e0",
+      "temporaryLocationId": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "KF 3240 L4425 42021 14",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "KF240 .L4425"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "temporaryLocation": {
+          "id": "d7dbee55-c788-4dd3-806e-8028ccaf01a4",
+          "code": "LAW-CRES",
+          "name": "On reserve: Teaming room",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    }
+  ],
+  "pieces": [
+    null
+  ],
+  "holdings": [
+    {
+      "id": "ad41ec5e-be02-5ff0-b8af-24ada91e4699",
+      "hrid": "ah11384345_2",
+      "notes": [
+
+      ],
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:51:44.207Z",
+        "updatedDate": "2023-08-21T16:51:44.207Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "boundWith": null,
+      "formerIds": [
+
+      ],
+      "illPolicy": null,
+      "callNumber": "KF240 .L4425",
+      "instanceId": "b7f12f1c-03ff-5d66-bf8c-5ccaa59005a1",
+      "holdingsType": {
+        "id": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+        "name": "Serial",
+        "source": "folio"
+      },
+      "holdingsItems": [
+
+      ],
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "holdingsTypeId": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+      "callNumberTypeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+      "electronicAccess": [
+
+      ],
+      "bareHoldingsItems": [
+
+      ],
+      "holdingsStatements": [
+
+      ],
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "908d68ff-4e1d-4235-ba1a-6cfb88480c67",
+      "permanentLocationId": "908d68ff-4e1d-4235-ba1a-6cfb88480c67",
+      "suppressFromDiscovery": false,
+      "holdingsStatementsForIndexes": [
+
+      ],
+      "holdingsStatementsForSupplements": [
+
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "908d68ff-4e1d-4235-ba1a-6cfb88480c67",
+          "code": "LAW-SHADOW",
+          "name": "Ask at circulation desk",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "908d68ff-4e1d-4235-ba1a-6cfb88480c67",
+          "code": "LAW-SHADOW",
+          "name": "Ask at circulation desk",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "5e602f07-71d5-545e-9ec9-239ec7bc25fc",
+      "hrid": "ah11384345_1",
+      "notes": [
+
+      ],
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:51:44.207Z",
+        "updatedDate": "2023-08-21T16:51:44.207Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "boundWith": null,
+      "formerIds": [
+
+      ],
+      "illPolicy": null,
+      "callNumber": "KF240 .L4425",
+      "instanceId": "b7f12f1c-03ff-5d66-bf8c-5ccaa59005a1",
+      "holdingsType": {
+        "id": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+        "name": "Serial",
+        "source": "folio"
+      },
+      "holdingsItems": [
+
+      ],
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "holdingsTypeId": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+      "callNumberTypeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+      "electronicAccess": [
+
+      ],
+      "bareHoldingsItems": [
+
+      ],
+      "discoverySuppress": false,
+      "holdingsStatements": [
+
+      ],
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "suppressFromDiscovery": false,
+      "holdingsStatementsForIndexes": [
+
+      ],
+      "holdingsStatementsForSupplements": [
+
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "d0fdccf8-7226-54eb-8159-555750f77874",
+      "hrid": "ah11384345_3",
+      "notes": [
+
+      ],
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-08-21T16:51:33.481Z",
+        "updatedDate": "2023-08-21T16:51:33.481Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "sourceId": "036ee84a-6afd-4c3c-9ad3-4a12ab875f59",
+      "boundWith": null,
+      "formerIds": [
+
+      ],
+      "illPolicy": null,
+      "callNumber": "MARC Holdings",
+      "instanceId": "b7f12f1c-03ff-5d66-bf8c-5ccaa59005a1",
+      "holdingsType": {
+        "id": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+        "name": "Serial",
+        "source": "folio"
+      },
+      "holdingsItems": [
+
+      ],
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "holdingsTypeId": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+      "callNumberTypeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+      "electronicAccess": [
+
+      ],
+      "bareHoldingsItems": [
+
+      ],
+      "discoverySuppress": false,
+      "holdingsStatements": [
+        {
+          "statement": "2015/2016-"
+        }
+      ],
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "permanentLocationId": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+      "suppressFromDiscovery": false,
+      "holdingsStatementsForIndexes": [
+
+      ],
+      "holdingsStatementsForSupplements": [
+
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "4897efd8-759f-43eb-b282-ab9f97fefcb8",
+          "code": "LAW-STACKS2",
+          "name": "2nd floor stacks",
+          "campus": {
+            "id": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+            "code": "LAW",
+            "name": "Law School"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+            "code": "LAW",
+            "name": "Law Library (Crown)"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    }
+  ],
+  "instance": {
+    "id": "b7f12f1c-03ff-5d66-bf8c-5ccaa59005a1",
+    "hrid": "a11384345",
+    "notes": [
+      {
+        "note": "Selections from various publications",
+        "staffOnly": false,
+        "instanceNoteTypeId": "6a2533a7-4de2-4e64-8466-074c2fa9308c"
+      },
+      {
+        "note": "Year designation dropped: <2021->",
+        "staffOnly": false,
+        "instanceNoteTypeId": "cf635f41-29e7-4dd0-8598-33f230157074"
+      }
+    ],
+    "title": "Legal research and writing program.",
+    "series": [
+      "Aspen custom publishing series"
+    ],
+    "source": "MARC",
+    "_version": 1,
+    "editions": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-21T16:49:23.498Z",
+      "updatedDate": "2023-08-21T16:49:23.498Z",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    },
+    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
+    "subjects": [
+      "Legal research United States",
+      "Legal composition"
+    ],
+    "languages": [
+      "eng"
+    ],
+    "indexTitle": "Legal research and writing program.",
+    "identifiers": [
+      {
+        "value": "(Sirsi) a11384345",
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
+      },
+      {
+        "value": "(OCoLC-M)919266664",
+        "identifierTypeId": "439bfbae-75bc-4f74-9fc7-b2a2d47ce3ef"
+      },
+      {
+        "value": "(OCoLC-I)919346489",
+        "identifierTypeId": "439bfbae-75bc-4f74-9fc7-b2a2d47ce3ef"
+      },
+      {
+        "value": "(Sirsi) ocn919266664",
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
+      }
+    ],
+    "publication": [
+      {
+        "role": "Publication",
+        "place": "New York",
+        "publisher": "Wolters Kluwer",
+        "dateOfPublication": "[2015]"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "Stanford University. School of Law",
+        "primary": false,
+        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
+        "contributorNameTypeId": "2e48e713-17f3-4c13-a9f8-23845bb210aa"
+      }
+    ],
+    "catalogedDate": "2015-08-27",
+    "staffSuppress": false,
+    "instanceTypeId": "6312d172-f0cf-40f6-b27d-9fa8feaf332f",
+    "previouslyHeld": false,
+    "classifications": [
+      {
+        "classificationNumber": "KF240 .L4425",
+        "classificationTypeId": "ce176ace-a53e-4b4d-aa89-725ed7b2edac"
+      }
+    ],
+    "instanceFormats": [
+
+    ],
+    "electronicAccess": [
+
+    ],
+    "holdingsRecords2": [
+
+    ],
+    "modeOfIssuanceId": "068b5344-e2a6-40df-9186-1829e13cd344",
+    "publicationRange": [
+      "Began with 2015-2016"
+    ],
+    "statisticalCodes": [
+
+    ],
+    "alternativeTitles": [
+      {
+        "alternativeTitle": "Stanford Law School, Legal Research and Writing Program",
+        "alternativeTitleTypeId": "35bbe7f2-1a49-11ed-861d-0242ac120002"
+      }
+    ],
+    "discoverySuppress": false,
+    "instanceFormatIds": [
+      "8d511d33-5e85-4c5d-9bce-6e3c9cd0c324"
+    ],
+    "publicationPeriod": {
+      "start": 2015
+    },
+    "statusUpdatedDate": "2023-08-21T16:49:22.492+0000",
+    "statisticalCodeIds": [
+
+    ],
+    "administrativeNotes": [
+
+    ],
+    "physicalDescriptions": [
+      "volumes : illustrations ; 26 cm."
+    ],
+    "publicationFrequency": [
+
+    ],
+    "suppressFromDiscovery": false,
+    "natureOfContentTermIds": [
+
+    ]
+  },
+  "source_record": [
+    {
+      "fields": [
+        {
+          "001": "a11384345"
+        },
+        {
+          "003": "SIRSI"
+        },
+        {
+          "005": "20150829111023.0"
+        },
+        {
+          "008": "150827c20159999nyuuu         0    0eng d"
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(Sirsi) a11384345"
+              }
+            ]
+          }
+        },
+        {
+          "040": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "RCJ"
+              },
+              {
+                "b": "eng"
+              },
+              {
+                "e": "rda"
+              },
+              {
+                "c": "RCJ"
+              },
+              {
+                "d": "UtOrBLW"
+              }
+            ]
+          }
+        },
+        {
+          "043": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "n-us---"
+              }
+            ]
+          }
+        },
+        {
+          "049": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "RCJL"
+              }
+            ]
+          }
+        },
+        {
+          "050": {
+            "ind1": " ",
+            "ind2": "4",
+            "subfields": [
+              {
+                "a": "KF240"
+              },
+              {
+                "b": ".L4425"
+              }
+            ]
+          }
+        },
+        {
+          "245": {
+            "ind1": "0",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Legal research and writing program."
+              }
+            ]
+          }
+        },
+        {
+          "246": {
+            "ind1": "3",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Stanford Law School, Legal Research and Writing Program"
+              }
+            ]
+          }
+        },
+        {
+          "264": {
+            "ind1": " ",
+            "ind2": "1",
+            "subfields": [
+              {
+                "a": "New York :"
+              },
+              {
+                "b": "Wolters Kluwer,"
+              },
+              {
+                "c": "[2015]-"
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "volumes :"
+              },
+              {
+                "b": "illustrations ;"
+              },
+              {
+                "c": "26 cm."
+              }
+            ]
+          }
+        },
+        {
+          "336": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "text"
+              },
+              {
+                "b": "txt"
+              },
+              {
+                "2": "rdacontent"
+              }
+            ]
+          }
+        },
+        {
+          "337": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "unmediated"
+              },
+              {
+                "b": "n"
+              },
+              {
+                "2": "rdamedia"
+              }
+            ]
+          }
+        },
+        {
+          "338": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "volume"
+              },
+              {
+                "b": "nc"
+              },
+              {
+                "2": "rdacarrier"
+              }
+            ]
+          }
+        },
+        {
+          "362": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Began with 2015-2016."
+              }
+            ]
+          }
+        },
+        {
+          "490": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Aspen custom publishing series"
+              }
+            ]
+          }
+        },
+        {
+          "500": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Selections from various publications."
+              }
+            ]
+          }
+        },
+        {
+          "515": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Year designation dropped: <2021->."
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Legal research"
+              },
+              {
+                "z": "United States."
+              },
+              {
+                "0": "(SIRSI)2101979"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Legal composition."
+              },
+              {
+                "0": "(SIRSI)1034002"
+              }
+            ]
+          }
+        },
+        {
+          "710": {
+            "ind1": "2",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Stanford University."
+              },
+              {
+                "b": "School of Law."
+              },
+              {
+                "0": "(SIRSI)264843"
+              }
+            ]
+          }
+        },
+        {
+          "830": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Aspen custom publishing series."
+              },
+              {
+                "0": "(SIRSI)3233733"
+              }
+            ]
+          }
+        },
+        {
+          "994": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "C0"
+              },
+              {
+                "b": "RCJ"
+              }
+            ]
+          }
+        },
+        {
+          "596": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "24"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-M)919266664"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-I)919346489"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve fall 2019"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve summer 2021"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve fall 2021"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve winter 2022"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve spring 2022"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve fall 2022"
+              }
+            ]
+          }
+        },
+        {
+          "919": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "exclude from BorrowDirect"
+              },
+              {
+                "b": "reserve winter 2023"
+              }
+            ]
+          }
+        },
+        {
+          "918": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "11384345"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(Sirsi) ocn919266664"
+              }
+            ]
+          }
+        },
+        {
+          "999": {
+            "ind1": "f",
+            "ind2": "f",
+            "subfields": [
+              {
+                "i": "b7f12f1c-03ff-5d66-bf8c-5ccaa59005a1"
+              },
+              {
+                "s": "8a7548a2-fbe1-5af0-8b7e-f846342ab2fb"
+              }
+            ]
+          }
+        }
+      ],
+      "leader": "01692cas a2200469Ii 4500"
+    }
+  ],
+  "holdingSummaries": [
+    {
+      "poLineId": null,
+      "orderType": null,
+      "orderStatus": null,
+      "poLineNumber": null,
+      "orderSentDate": null,
+      "orderCloseReason": null,
+      "polReceiptStatus": null
+    }
+  ]
+}
