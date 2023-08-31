@@ -8,61 +8,97 @@ class FolioHolding
   delegate %i[dewey? valid_lc?] => :call_number
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
-  ECALLNUM = 'INTERNET RESOURCE'.freeze
+  ECALLNUM = 'INTERNET RESOURCE'
   GOV_DOCS_LOCS = %w[BRIT-DOCS CALIF-DOCS FED-DOCS INTL-DOCS SSRC-DOCS SSRC-FICHE SSRC-NWDOC].freeze
   LOST_OR_MISSING_LOCS = %w[MISSING].freeze
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA SHELBYTITL SHELBYSER].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
   SKIPPED_LOCS = %w[BORROWDIR CDPSHADOW SHADOW SSRC-FIC-S STAFSHADOW TECHSHADOW WITHDRAWN].freeze
-  TEMP_CALLNUM_PREFIX = 'XX'.freeze
+  TEMP_CALLNUM_PREFIX = 'XX'
 
-  attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :course_reserves
+  attr_reader :item, :holding, :bound_with_holding, :id, :scheme, :type, :barcode, :course_reserves
 
   # rubocop:disable Metrics/ParameterLists
-  def initialize(call_number:, home_location:, library:, barcode:, scheme: nil, current_location: nil,
-                 id: nil, type: nil, public_note: nil, course_reserves: {})
-    @id = id
-    @call_number = call_number
+  def initialize(item: nil, holding: nil, bound_with_holding: nil, course_reserves: [],
+                 call_number: nil, barcode: nil, type: nil,
+                 library: nil, home_location: nil, current_location: nil)
+    @item = item
+    @holding = holding
+    @bound_with_holding = bound_with_holding
+    @id = id || @item&.dig('id')
+    @provided_call_number = call_number || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @bound_with_holding&.dig('callNumber') || @holding&.dig('callNumber')
     @current_location = current_location
     @home_location = home_location
     @library = library
     @scheme = scheme
-    @type = type
-    @barcode = barcode
+    @type = type || @item&.dig('materialType')
+    @barcode = barcode || @item&.dig('barcode')
     @public_note = public_note
     @course_reserves = course_reserves
   end
   # rubocop:enable Metrics/ParameterLists
 
+  def library
+    @library ||= symphony_location_codes[0]
+  end
+
+  def home_location
+    @home_location ||= symphony_location_codes[1]
+  end
+
+  def current_location
+    @current_location ||= symphony_location_codes[2]
+  end
+
+  def symphony_location_codes
+    @symphony_location_codes ||= begin
+      item_location_code = item&.dig('location', 'temporaryLocation', 'code') if item&.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
+      item_location_code ||= item&.dig('location', 'permanentLocation', 'code')
+      item_location_code ||= holding&.dig('location', 'effectiveLocation', 'code')
+
+      library_code, home_location_code = LocationsMap.for(item_location_code)
+      _current_library, current_location = LocationsMap.for(item&.dig('location', 'temporaryLocation', 'code'))
+      current_location ||= item&.dig('location', 'temporaryLocation', 'code') if item&.dig('location', 'temporaryLocation', 'details', 'availabilityClass')
+      current_location ||= Folio::StatusCurrentLocation.new(item).current_location if item
+
+      [library_code, home_location_code, (current_location unless current_location == home_location_code)]
+    end
+  end
+
+  def public_note
+    @public_note ||= item&.dig('notes')&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence
+  end
+
   def call_number
-    @call_number_obj ||= CallNumber.new(normalize_call_number(@call_number))
+    @call_number ||= CallNumber.new(normalize_call_number(@provided_call_number))
   end
 
   def skipped?
-    ([home_location, current_location] & SKIPPED_LOCS).any?
+    [home_location, current_location].intersect?(SKIPPED_LOCS)
   end
 
   def shelved_by_location?
     if library == 'BUSINESS'
-      ([home_location, current_location] & BUSINESS_SHELBY_LOCS).any?
+      [home_location, current_location].intersect?(BUSINESS_SHELBY_LOCS)
     else
-      ([home_location, current_location] & SHELBY_LOCS).any?
+      [home_location, current_location].intersect?(SHELBY_LOCS)
     end
   end
 
+  # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type
-    case scheme
-    when /^LC/
-      'LC'
-    when /^DEWEY/
-      'DEWEY'
-    when 'SUDOC'
-      'SUDOC'
-    when 'ALPHANUM'
-      'ALPHANUM'
-    else
-      'OTHER'
-    end
+    @call_number_type ||= case scheme || item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || bound_with_holding&.dig('callNumberType', 'name') || holding&.dig('callNumberType', 'name')
+                          when /dewey/i
+                            'DEWEY'
+                          when /congress/i, /LC/i
+                            'LC'
+                          when /superintendent/i
+                            'SUDOC'
+                          when /title/i, /shelving/i
+                            'ALPHANUM'
+                          else
+                            'OTHER'
+                          end
   end
 
   def bad_lc_lane_call_number?
@@ -90,11 +126,11 @@ class FolioHolding
   end
 
   def lost_or_missing?
-    ([home_location, current_location] & LOST_OR_MISSING_LOCS).any?
+    [home_location, current_location].intersect?(LOST_OR_MISSING_LOCS)
   end
 
   def gov_doc_loc?
-    ([home_location, current_location] & GOV_DOCS_LOCS).any?
+    [home_location, current_location].intersect?(GOV_DOCS_LOCS)
   end
 
   def in_process?
@@ -119,7 +155,7 @@ class FolioHolding
   alias eql? ==
 
   def hash
-    @call_number.hash ^ @current_location.hash ^ @home_location.hash ^ @library.hash ^ @scheme.hash ^ @type.hash ^ @barcode.hash
+    [@item, @holding, @bound_with_holding, @id, @barcode].hash
   end
 
   def to_item_display_hash
@@ -134,7 +170,23 @@ class FolioHolding
       current_location:,
       type:,
       note: public_note.presence
-    }.merge(course_reserves)
+    }.merge(course_reserves_data)
+  end
+
+  def course_reserves_data
+    # NOTE: we don't handle multiple courses for a single item, because it's beyond parity with how things worked for Symphony
+    course = course_reserves.first
+
+    return {} unless course && item
+
+    # We use loan types as loan periods for course reserves so that we don't need to check circ rules
+    # Items on reserve in FOLIO usually have a temporary loan type that indicates the loan period
+    # "3-day reserve" -> "3-day loan"
+    {
+      reserve_desk: course[:reserve_desk],
+      course_id: course[:course_id],
+      loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
+    }
   end
 
   private
@@ -181,7 +233,7 @@ class FolioHolding
       raise ArgumentError unless dewey?
 
       decimal_index = before_cutter.index('.') || 0
-      call_number_class = if decimal_index > 0
+      call_number_class = if decimal_index.positive?
                             call_number[0, decimal_index].strip
                           else
                             before_cutter

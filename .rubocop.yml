@@ -20,6 +20,11 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
 
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/folio_holding.rb'
+    - 'lib/sirsi_holding.rb'
+
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true
 Gemspec/DevelopmentDependencies: # new in 1.44

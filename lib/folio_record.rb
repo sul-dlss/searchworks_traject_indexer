@@ -2,6 +2,7 @@
 
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/enumerable'
+require 'folio_holding'
 
 # rubocop:disable Metrics/ClassLength
 class FolioRecord
@@ -148,39 +149,10 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
-      item_location_code = item.dig('location', 'temporaryLocation', 'code') if item.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
-      item_location_code ||= item.dig('location', 'permanentLocation', 'code')
-      item_location_code ||= holding.dig('location', 'effectiveLocation', 'code')
-
-      library_code, home_location_code = LocationsMap.for(item_location_code)
-      _current_library, current_location = LocationsMap.for(item.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= item.dig('location', 'temporaryLocation', 'code') if item.dig('location', 'temporaryLocation', 'details', 'availabilityClass')
-      current_location ||= Folio::StatusCurrentLocation.new(item).current_location
-
-      # NOTE: we don't handle multiple courses for a single item, because it's beyond parity with how things worked for Symphony
-      course = courses.first { |course| course[:listing_id] == item['courseListingId'] }
-
-      # We use loan types as loan periods for course reserves so that we don't need to check circ rules
-      # Items on reserve in FOLIO usually have a temporary loan type that indicates the loan period
-      # "3-day reserve" -> "3-day loan"
-      course_reserves = {}
-      course_reserves = {
-        reserve_desk: course[:reserve_desk],
-        course_id: course[:course_id],
-        loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
-      } if course
-
       FolioHolding.new(
-        id: item['id'],
-        call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
-        current_location: (current_location unless current_location == home_location_code).presence,
-        home_location: home_location_code,
-        library: library_code,
-        scheme: call_number_type_map(item.dig('callNumberType', 'name') || item.dig('callNumber', 'typeName')),
-        type: item['materialType'],
-        barcode: item['barcode'],
-        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence,
-        course_reserves:
+        item:,
+        holding:,
+        course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] }
       )
     end
   end
@@ -191,31 +163,12 @@ class FolioRecord
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
-      parent_holding = holding.dig('boundWith', 'holding')
-      parent_holding ||= holding
-
-      item_location_code = parent_item.dig('location', 'temporaryLocation', 'code') if parent_item.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
-      item_location_code ||= parent_item.dig('location', 'permanentLocation', 'code')
-      item_location_code ||= parent_holding.dig('location', 'effectiveLocation', 'code')
-
-      library_code, home_location_code = LocationsMap.for(item_location_code)
-      _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= Folio::StatusCurrentLocation.new(parent_item).current_location
+      parent_holding = holding.dig('boundWith', 'holding') || holding
 
       FolioHolding.new(
-        id: parent_item['id'],
-        call_number: holding['callNumber'],
-        scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
-        # parent item's barcode
-        barcode: parent_item['barcode'] || "#{hrid.sub(/^a/, '')}-#{(all_holdings.index(holding) + 1).to_s.ljust(3, '0')}1",
-        # parent item's current location or SEE-OTHER (SAL3)
-        # For the SAL3 logic, see https://consul.stanford.edu/display/MD/Bound+withs
-        # When the bound-with item is in SAL3, both the Home and Current Locations on the child records should always be SEE-OTHER.
-        current_location: library_code == 'SAL3' ? nil : (current_location unless current_location == home_location_code).presence,
-        # parent item's permanent location or SEE-OTHER (SAL3)
-        home_location: library_code == 'SAL3' ? 'SEE-OTHER' : home_location_code,
-        # parent item's library
-        library: library_code
+        item: parent_item,
+        holding: parent_holding,
+        bound_with_holding: holding
       )
     end
   end
@@ -230,15 +183,9 @@ class FolioRecord
     end
 
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
-      library_code, home_location_code = LocationsMap.for(holding.dig('location', 'effectiveLocation', 'code'))
-
       FolioHolding.new(
-        barcode: nil,
-        call_number: holding['callNumber'],
-        scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
-        current_location: 'ON-ORDER',
-        home_location: home_location_code,
-        library: library_code
+        holding:,
+        current_location: 'ON-ORDER'
       )
     end
   end
@@ -252,9 +199,6 @@ class FolioRecord
     lib_codes -= ['SUL'] if lib_codes.length > 1
     lib_codes.map do |lib|
       FolioHolding.new(
-        barcode: nil,
-        call_number: nil,
-        scheme: nil,
         library: lib,
         home_location: 'ON-ORDER',
         current_location: 'ON-ORDER'
