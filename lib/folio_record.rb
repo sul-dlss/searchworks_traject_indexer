@@ -170,7 +170,7 @@ class FolioRecord
         loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
       } if course
 
-      SirsiHolding.new(
+      FolioHolding.new(
         id: item['id'],
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
         current_location: (current_location unless current_location == home_location_code).presence,
@@ -202,7 +202,7 @@ class FolioRecord
       _current_library, current_location = LocationsMap.for(parent_item.dig('location', 'temporaryLocation', 'code'))
       current_location ||= Folio::StatusCurrentLocation.new(parent_item).current_location
 
-      SirsiHolding.new(
+      FolioHolding.new(
         id: parent_item['id'],
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
@@ -232,7 +232,7 @@ class FolioRecord
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
       library_code, home_location_code = LocationsMap.for(holding.dig('location', 'effectiveLocation', 'code'))
 
-      SirsiHolding.new(
+      FolioHolding.new(
         barcode: nil,
         call_number: holding['callNumber'],
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
@@ -251,7 +251,7 @@ class FolioRecord
     # exclude generic SUL if there's a more specific library
     lib_codes -= ['SUL'] if lib_codes.length > 1
     lib_codes.map do |lib|
-      SirsiHolding.new(
+      FolioHolding.new(
         barcode: nil,
         call_number: nil,
         scheme: nil,

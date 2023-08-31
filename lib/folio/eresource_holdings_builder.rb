@@ -48,7 +48,7 @@ module Folio
     end
 
     def sirsi_holding(index)
-      SirsiHolding.new(
+      FolioHolding.new(
         call_number: CALL_NUMBER,
         barcode: barcode(index),
         home_location: home_location_code,
