@@ -135,7 +135,7 @@ module Traject
               item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
 
               item['courses'].each do |course|
-                course['locationCode'] = locations[course['locationId']]['code']
+                course['locationCode'] = locations.dig(course['locationId'], 'code')
               end
             end
 
