@@ -11,40 +11,44 @@ RSpec.describe 'FOLIO course reserves config' do
     end
   end
 
-  let(:fixture_name) { 'whodunit.json' }
+  let(:fixture_name) { 'a11384345.json' }
   let(:record) { FolioRecord.new(JSON.parse(file_fixture(fixture_name).read)) }
 
   it 'indexes instructor names for searching' do
-    expect(result['crez_instructor_search']).to eq ['Emily Levine', 'Mitchell Stevens']
+    expect(result['crez_instructor_search']).to eq ['Alicia Thesing', 'Brandi Lupo', 'Marc Fagel', 'Nicholas Handler', 'Robin Linsenmayer', 'Seema Patel', 'Susan Yorke', 'Tyler Valeska']
   end
 
   it 'indexes course names for searching' do
-    expect(result['crez_course_name_search']).to eq ['Stanford and Its Worlds: 1885-present']
+    expect(result['crez_course_name_search']).to eq ['Legal Writing']
   end
 
   it 'indexes course IDs for searching' do
-    expect(result['crez_course_id_search']).to eq %w[HISTORY-58E-01 EDUC-147-01]
+    expect(result['crez_course_id_search']).to eq %w[LAW-219-01 LAW-219-02 LAW-219-03 LAW-219-04 LAW-219-05 LAW-219-06]
   end
 
   it 'indexes course info by individual instructor and ID' do
     expect(result['crez_course_info']).to eq [
-      'HISTORY-58E-01 -|- Stanford and Its Worlds: 1885-present -|- Emily Levine',
-      'HISTORY-58E-01 -|- Stanford and Its Worlds: 1885-present -|- Mitchell Stevens',
-      'EDUC-147-01 -|- Stanford and Its Worlds: 1885-present -|- Emily Levine',
-      'EDUC-147-01 -|- Stanford and Its Worlds: 1885-present -|- Mitchell Stevens'
+      'LAW-219-01 -|- Legal Writing -|- Marc Fagel',
+      'LAW-219-01 -|- Legal Writing -|- Tyler Valeska',
+      'LAW-219-02 -|- Legal Writing -|- Nicholas Handler',
+      'LAW-219-02 -|- Legal Writing -|- Robin Linsenmayer',
+      'LAW-219-03 -|- Legal Writing -|- Alicia Thesing',
+      'LAW-219-04 -|- Legal Writing -|- Brandi Lupo',
+      'LAW-219-05 -|- Legal Writing -|- Seema Patel',
+      'LAW-219-06 -|- Legal Writing -|- Susan Yorke'
     ]
   end
 
   describe 'the items in the item_display_struct field' do
-    # Filter to the item that's on reserve so we can check its item_display
+    # Filter to an item that's on reserve so we can check its item_display
     subject(:item_display) do
       item_displays = result['item_display_struct'].map { |item| JSON.parse(item) }
-      item_displays.find { |item| item['barcode'] == '36105232609540' }
+      item_displays.find { |item| item['barcode'] == '36105230980901' }
     end
 
     it 'adds the course ID, reserve desk, and loan period' do
-      expect(item_display).to include('course_id' => 'HISTORY-58E-01',
-                                      'reserve_desk' => 'GRE-CRES',
+      expect(item_display).to include('course_id' => 'LAW-219-04',
+                                      'reserve_desk' => 'LAW-CRES',
                                       'loan_period' => '2-hour loan')
     end
   end
