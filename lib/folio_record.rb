@@ -128,7 +128,7 @@ class FolioRecord
         {
           course_name: course['name'],
           course_id: course['courseNumber'],
-          instructors: course['instructorNames'],
+          instructors: Array(course['instructorNames']), # NOTE: we've seen cases where instructorNames is nil.
           reserve_desk: course['locationCode']
         }
       end
