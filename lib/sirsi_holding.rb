@@ -14,7 +14,7 @@ class SirsiHolding
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA SHELBYTITL SHELBYSER].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
   SKIPPED_LOCS = %w[BORROWDIR CDPSHADOW SHADOW SSRC-FIC-S STAFSHADOW TECHSHADOW WITHDRAWN].freeze
-  TEMP_CALLNUM_PREFIX = 'XX'.freeze
+  TEMP_CALLNUM_PREFIX = 'XX('.freeze
 
   attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :course_reserves
 
@@ -80,8 +80,6 @@ class SirsiHolding
   end
 
   def temp_call_number?
-    return false if library == 'HV-ARCHIVE' # Call numbers in HV-ARCHIVE are not temporary
-
     call_number.to_s.blank? || call_number.to_s.start_with?(TEMP_CALLNUM_PREFIX)
   end
 
