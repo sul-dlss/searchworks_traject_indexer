@@ -3,27 +3,13 @@
 RSpec.describe 'Location facet config' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
   let(:field) { 'location_facet' }
 
   describe 'Curriculum Collection' do
-    context 'with 852 subfield c' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(MARC::DataField.new('852', ' ', ' ',
-                                       MARC::Subfield.new('a', 'CSt'),
-                                       MARC::Subfield.new('b', 'EDUCATION'),
-                                       MARC::Subfield.new('c', 'CURRICULUM')))
-        end
-      end
-      it 'is in the curriculum collection' do
-        expect(result[field]).to eq ['Curriculum Collection']
-      end
-    end
-
     context 'with 999 subfield l (home location) CURRICULUM' do
       let(:record) do
         MARC::Record.new.tap do |r|
@@ -52,20 +38,6 @@ RSpec.describe 'Location facet config' do
   end
 
   describe 'Art Locked Stacks' do
-    context 'with 852 subfield c' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(MARC::DataField.new('852', ' ', ' ',
-                                       MARC::Subfield.new('a', 'CSt'),
-                                       MARC::Subfield.new('b', 'MATH-CS'),
-                                       MARC::Subfield.new('c', 'ARTLCKL')))
-        end
-      end
-      it 'is in the locked stacks' do
-        expect(result[field]).to eq ['Art Locked Stacks']
-      end
-    end
-
     context 'with 999 subfield l (home location) CURRICULUM' do
       let(:record) do
         MARC::Record.new.tap do |r|
