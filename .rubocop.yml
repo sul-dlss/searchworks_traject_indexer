@@ -19,6 +19,10 @@ Style/MultilineIfModifier:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
+Style/RedundantConstantBase:  # new in 1.40
+  Enabled: true
+  Exclude:
+    - 'lib/traject/config/**/*.rb'
 
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true
@@ -167,8 +171,6 @@ Style/OperatorMethodCall: # new in 1.37
 Style/QuotedSymbols: # new in 1.16
   Enabled: true
 Style/RedundantArgument: # new in 1.4
-  Enabled: true
-Style/RedundantConstantBase: # new in 1.40
   Enabled: true
 Style/RedundantDoubleSplatHashBraces: # new in 1.41
   Enabled: true

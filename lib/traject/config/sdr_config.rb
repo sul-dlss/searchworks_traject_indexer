@@ -24,7 +24,7 @@ settings do
   # provide 'kafka.topic'
   # provide 'kafka.consumer_group_id'
   if self['kafka.topic']
-    provide 'kafka.hosts', Settings.kafka.hosts
+    provide 'kafka.hosts', ::Settings.kafka.hosts
     provide 'kafka.client', Kafka.new(self['kafka.hosts'], logger: Utils.logger)
     provide 'reader_class_name', 'Traject::KafkaPurlFetcherReader'
     consumer = self['kafka.client'].consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 15)

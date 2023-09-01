@@ -33,7 +33,7 @@ settings do
     require './lib/traject/readers/kafka_folio_reader'
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
 
-    provide 'kafka.hosts', Settings.kafka.hosts
+    provide 'kafka.hosts', ::Settings.kafka.hosts
     provide 'kafka.client', Kafka.new(self['kafka.hosts'], logger: Utils.logger)
     consumer = self['kafka.client'].consumer(group_id: self['kafka.consumer_group_id'] || 'traject')
     consumer.subscribe(self['kafka.topic'])
