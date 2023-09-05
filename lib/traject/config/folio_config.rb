@@ -2323,7 +2323,7 @@ end
 # Skip records for missing `item_display` field
 each_record do |_record, context|
   if context.output_hash['item_display_struct'].blank? && context.output_hash['url_fulltext'].blank? && settings['skip_empty_item_display'] > -1
-    context.skip!('No item_display or url_fulltext field')
+    context.skip!('No item_display_struct or url_fulltext field')
   end
 end
 
@@ -2639,25 +2639,6 @@ to_field 'context_marc_fields_ssim' do |record, accumulator|
       ['?', field.tag, code].flatten.join
     end
   end.flatten.uniq)
-end
-
-to_field 'item_display' do |_record, accumulator, context|
-  context.output_hash['item_display_struct']&.each do |item|
-    accumulator << ([
-      item[:barcode],
-      item[:library],
-      item[:home_location],
-      item[:current_location],
-      item[:type],
-      item[:lopped_callnumber],
-      item[:shelfkey],
-      item[:reverse_shelfkey],
-      item[:callnumber],
-      item[:full_shelfkey],
-      item[:note],
-      item[:scheme]
-    ] + (item[:course_id] ? [item[:course_id], item[:reserve_desk], item[:loan_period]] : [])).join(' -|- ')
-  end
 end
 
 ## FOLIO specific fields
