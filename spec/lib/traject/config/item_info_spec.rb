@@ -33,6 +33,7 @@ RSpec.describe 'ItemInfo config' do
     let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
     let(:fixture_name) { 'buildingTests.xml' }
     let(:field) { 'building_facet' }
+    subject(:value) { result[field] }
 
     it 'has data' do
       expect(select_by_id('229800')[field]).to eq ['Archive of Recorded Sound']
@@ -88,24 +89,9 @@ RSpec.describe 'ItemInfo config' do
     end
 
     it 'skips invalid buildings' do
-      buildings = []
-      results.map do |result|
-        buildings << result[field]
-      end
-
-      expect(buildings.flatten).not_to include(
-        'APPLIEDPHY', # Applied Physics Department
-        'CPM', # 1391080 GREEN - Current Periodicals & Microtext
-        'GRN-REF', # 2442876, GREEN - Reference - Obsolete
-        'ILB', # 1111, Inter-Library Borrowing
-        'SPEC-DESK', # GREEN (Humanities & Social Sciences)
-        'SUL',
-        'PHYSICS', # Physics Library
-        'MEYER', # INDEX-168 Meyer
-        'BIOLOGY', # closed
-        'CHEMCHMENG', # closed
-        'MATH-CS' # closed
-      )
+      invalid_buildings = results.select { |item| item[field].nil? }
+      ids_for_invalid_buildings = invalid_buildings.map { |n| n['id'].first }
+      expect(ids_for_invalid_buildings).to eq %w[1111 2222 115472 460947 919006 1391080 1732616 2442876 2797607 3142611 3277173 6493823 7117119 10421123]
     end
   end
 
@@ -121,8 +107,10 @@ RSpec.describe 'ItemInfo config' do
     end
   end
 
-  describe 'item_display' do
+  describe 'item_display_struct' do
     let(:field) { 'item_display' }
+    let(:item_display) { result['item_display'] }
+    subject(:item_display_struct) { result['item_display_struct'].map { |x| JSON.parse(x) } }
 
     context 'when an item is on-order' do
       let(:record) do
@@ -136,8 +124,8 @@ RSpec.describe 'ItemInfo config' do
         end
       end
 
-      it { expect(result[field]).to match_array([match('-|- GREEN -|-'), match('-|- ART -|-')]) }
-      it { expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([hash_including('library' => 'GREEN'), hash_including('library' => 'ART')]) }
+      it { expect(item_display).to match_array([match('-|- GREEN -|-'), match('-|- ART -|-')]) }
+      it { expect(item_display_struct).to match_array([hash_including('library' => 'GREEN'), hash_including('library' => 'ART')]) }
     end
 
     context 'when an item is bound-with' do
@@ -154,7 +142,7 @@ RSpec.describe 'ItemInfo config' do
       end
 
       it 'omits the on-order placeholder' do
-        expect(result[field]).to be_nil
+        expect(item_display).to be_nil
         expect(result['item_display_struct']).to be_nil
       end
     end
@@ -437,7 +425,7 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'is shelved by title' do
-          expect(result[field].first.split(' -|- ')).to contain_exactly(
+          expect(item_display.first.split(' -|- ')).to contain_exactly(
             '36105111222333',
             'BUSINESS',
             'NEWS-STKS',
@@ -451,10 +439,10 @@ RSpec.describe 'ItemInfo config' do
             '',
             'LC'
           )
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946',
-                                                                                                          'scheme' => 'LC')
-                                                                                         ])
+          expect(item_display_struct).to match_array([
+                                                       hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946',
+                                                                      'scheme' => 'LC')
+                                                     ])
         end
       end
 
@@ -466,7 +454,7 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'is shelved by title' do
-          expect(result[field].first.split(' -|- ')).to contain_exactly(
+          expect(item_display.first.split(' -|- ')).to contain_exactly(
             '20504037816',
             'BUSINESS',
             'NEWS-STKS',
@@ -480,10 +468,10 @@ RSpec.describe 'ItemInfo config' do
             '',
             'ALPHANUM'
           )
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
-                                                                                                          'scheme' => 'ALPHANUM')
-                                                                                         ])
+          expect(item_display_struct).to match_array([
+                                                       hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
+                                                                      'scheme' => 'ALPHANUM')
+                                                     ])
         end
       end
 
@@ -495,7 +483,7 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'does nothing special ' do
-          expect(result[field].first.split(' -|- ')).to contain_exactly(
+          expect(item_display.first.split(' -|- ')).to contain_exactly(
             '36105444555666',
             'GREEN',
             'NEWS-STKS',
@@ -509,9 +497,9 @@ RSpec.describe 'ItemInfo config' do
             '',
             'LC'
           )
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('barcode' => '36105444555666', 'library' => 'GREEN', 'home_location' => 'NEWS-STKS', 'callnumber' => 'E184.S75 R47A V.1 1980', 'scheme' => 'LC')
-                                                                                         ])
+          expect(item_display_struct).to match_array([
+                                                       hash_including('barcode' => '36105444555666', 'library' => 'GREEN', 'home_location' => 'NEWS-STKS', 'callnumber' => 'E184.S75 R47A V.1 1980', 'scheme' => 'LC')
+                                                     ])
         end
       end
 
@@ -523,10 +511,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'retains the O.S. designation before the volume number' do
-          expect(result[field].first.split(' -|- ')[8]).to include('O.S:V.1 1909/1910')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('callnumber' => end_with('O.S:V.1 1909/1910'))
-                                                                                         ])
+          expect(item_display.first.split(' -|- ')[8]).to include('O.S:V.1 1909/1910')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('callnumber' => end_with('O.S:V.1 1909/1910'))
+                                                     ])
         end
       end
 
@@ -538,10 +526,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'retains the N.S. designation before the volume number' do
-          expect(result[field].first.split(' -|- ')[8]).to include('N.S:V.1 1909/1910')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('callnumber' => end_with('N.S:V.1 1909/1910'))
-                                                                                         ])
+          expect(item_display.first.split(' -|- ')[8]).to include('N.S:V.1 1909/1910')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('callnumber' => end_with('N.S:V.1 1909/1910'))
+                                                     ])
         end
       end
     end
@@ -749,9 +737,9 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'is included' do
-          expect(result[field].length).to eq 1
-          expect(result[field].first).to include('-|- .PUBLIC. Note -|-')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.PUBLIC. Note'
+          expect(item_display.length).to eq 1
+          expect(item_display.first).to include('-|- .PUBLIC. Note -|-')
+          expect(item_display_struct.first['note']).to eq '.PUBLIC. Note'
         end
       end
 
@@ -763,9 +751,9 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'is included' do
-          expect(result[field].length).to eq 1
-          expect(result[field].first).to include('-|- .public. Note -|-')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.public. Note'
+          expect(item_display.length).to eq 1
+          expect(item_display.first).to include('-|- .public. Note -|-')
+          expect(item_display_struct.first['note']).to eq '.public. Note'
         end
       end
 
@@ -777,9 +765,9 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'is included' do
-          expect(result[field].length).to eq 1
-          expect(result[field].first).to include('-|- .PuBlIc. Note -|-')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.PuBlIc. Note'
+          expect(item_display.length).to eq 1
+          expect(item_display.first).to include('-|- .PuBlIc. Note -|-')
+          expect(item_display_struct.first['note']).to eq '.PuBlIc. Note'
         end
       end
     end
@@ -831,10 +819,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- ALPHANUM')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('ALPHANUM'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- ALPHANUM')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('ALPHANUM'))
+                                                     ])
         end
       end
 
@@ -846,10 +834,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- DEWEY')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('DEWEY'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- DEWEY')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('DEWEY'))
+                                                     ])
         end
       end
 
@@ -861,10 +849,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- LC')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('LC'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- LC')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('LC'))
+                                                     ])
         end
       end
 
@@ -876,10 +864,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- SUDOC')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('SUDOC'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- SUDOC')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('SUDOC'))
+                                                     ])
         end
       end
 
@@ -891,10 +879,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- OTHER')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- OTHER')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('OTHER'))
+                                                     ])
         end
       end
 
@@ -906,10 +894,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- OTHER')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- OTHER')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('OTHER'))
+                                                     ])
         end
       end
 
@@ -921,10 +909,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- ALPHANUM')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('ALPHANUM'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- ALPHANUM')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('ALPHANUM'))
+                                                     ])
         end
       end
 
@@ -936,10 +924,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- OTHER')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- OTHER')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('OTHER'))
+                                                     ])
         end
       end
 
@@ -951,10 +939,10 @@ RSpec.describe 'ItemInfo config' do
         end
 
         it 'includes the correct data' do
-          expect(result[field].first).to end_with('-|- OTHER')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                                         ])
+          expect(item_display.first).to end_with('-|- OTHER')
+          expect(item_display_struct).to match_array([
+                                                       hash_including('scheme' => end_with('OTHER'))
+                                                     ])
         end
       end
     end
@@ -1032,9 +1020,9 @@ RSpec.describe 'ItemInfo config' do
           # this is potentially incidental since we don't fall back for non-valid DEWEY
           it 'are handled' do
             expect(result['item_display'].first).to include('-|- dewey 443.21000000 a3 -|-')
-            expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                             hash_including('shelfkey' => 'dewey 443.21000000 a3')
-                                                                                           ])
+            expect(item_display_struct).to match_array([
+                                                         hash_including('shelfkey' => 'dewey 443.21000000 a3')
+                                                       ])
           end
         end
       end
