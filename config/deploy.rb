@@ -81,6 +81,7 @@ namespace :deploy do
               User=#{host.user}
               WorkingDirectory=#{current_path}
               Environment=PS=#{service[:key]}.#{i + 1}
+              Environment=LANG=en_US.UTF-8
               ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm ruby-3.2.2 do bundle exec traject -c #{service[:config]} #{fetch(:default_settings).merge(service[:settings]).map { |k, v| "-s #{k}=#{v}" }.join(' ')}'
               Restart=always
               RestartSec=14s
