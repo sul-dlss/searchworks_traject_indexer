@@ -55,7 +55,7 @@ set :indexers, [
       'kafka.topic' => 'marc_folio_prod',
       'kafka.consumer_group_id' => 'traject_sw_gryphonsearch_indexer',
       'reader_class_name' => 'Traject::KafkaFolioReader',
-      'kafka.hosts' => 'sul-kafka-prod.stanford.edu:9092',
+      'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-gryphon-search'
     }
   },
@@ -67,7 +67,7 @@ set :indexers, [
       'log.file' => 'log/traject_sw_gryphonsearch_sdr_indexer.log',
       'kafka.topic' => 'purl_fetcher_prod',
       'kafka.consumer_group_id' => 'traject_sw_gryphonsearch_indexer',
-      'kafka.hosts' => 'sul-kafka-prod.stanford.edu:9092',
+      'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-gryphon-search'
     }
   }
