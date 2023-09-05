@@ -78,7 +78,9 @@ module Folio
 
     # @return [String] the latest received piece for a holding
     def latest_received(location_id)
-      latest_piece = Holdings.find_latest(pieces_per_location.fetch(location_id, []))
+      pieces = pieces_per_location.fetch(location_id, [])
+      received_pieces = pieces.select { |piece| piece['receivingStatus'] == 'Received' }
+      latest_piece = Holdings.find_latest(received_pieces)
 
       return unless latest_piece && order_is_ongoing_and_open?(latest_piece)
 
