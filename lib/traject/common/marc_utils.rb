@@ -147,7 +147,7 @@ module Traject
 
     def linked_author_struct(record, tag)
       Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, _spec, _extractor|
-        subfields = field.subfields.reject { |subfield| Constants::EXCLUDE_FIELDS.include?(subfield.code) }
+        subfields = field.subfields.reject { |subfield| (Constants::EXCLUDE_FIELDS + ['7']).include?(subfield.code) }
         {
           link: subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
           search: subfields.select do |subfield|
@@ -218,7 +218,7 @@ module Traject
       extra_text = []
       before_text = []
       field.each do |subfield|
-        next if Constants::EXCLUDE_FIELDS.include?(subfield.code)
+        next if (Constants::EXCLUDE_FIELDS + ['7']).include?(subfield.code)
 
         if subfield.code == 'e'
           relator_text << subfield.value
