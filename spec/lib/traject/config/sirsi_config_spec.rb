@@ -48,14 +48,14 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'context_marc_fields_ssim' do
-    subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+    subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record))['context_marc_fields_ssim'] }
 
     it 'indexes field counts' do
-      expect(result['context_marc_fields_ssim']).to include '008', '245'
+      expect(result).to include '008', '245'
     end
 
     it 'index subfield counts' do
-      expect(result['context_marc_fields_ssim']).to include '245a'
+      expect(result).to include '245a'
     end
 
     context 'for a record with multiple subfields' do
@@ -63,15 +63,13 @@ RSpec.describe 'Sirsi config' do
         MARC::Record.new.tap do |r|
           r.leader = '01952cas  2200457Ia 4500'
           r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('a', 'QE538.8 .N36 1975-1977'),
-                                       MARC::Subfield.new('w', 'LC'),
-                                       MARC::Subfield.new('i', 'LCbarcode'),
-                                       MARC::Subfield.new('m', 'GREEN')))
+          r.append(MARC::DataField.new('245', ' ', ' ', MARC::Subfield.new('a', 'Hazayot sipuaḥ')))
+          r.append(MARC::DataField.new('245', ' ', ' ', MARC::Subfield.new('b', 'ʻovrim kol gevul be-Mizraḥ ha-tikhon /')))
+          r.append(MARC::DataField.new('245', ' ', ' ', MARC::Subfield.new('c', 'Ḥagai Erlikh')))
         end
       end
       it 'indexes individual subfields' do
-        expect(result['context_marc_fields_ssim']).to include '?999a', '?999w', '?999i', '?999m'
+        expect(result).to include '?245a', '?245b', '?245c'
       end
     end
   end
