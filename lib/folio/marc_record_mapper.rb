@@ -13,7 +13,7 @@ module Folio
 
       # Copy FOLIO Holdings electronic access data to an 856 (used by Lane)
       # overwriting any existing 856 fields (to avoid having to reconcile/merge data)
-      eholdings = holdings.flat_map { |h| h['electronicAccess'] }
+      eholdings = holdings.flat_map { |h| h['electronicAccess'] }.compact
 
       if eholdings.any?
         record.fields.delete_if { |field| field.tag == '856' }

@@ -299,6 +299,34 @@ RSpec.describe FolioRecord do
       expect(folio_record.marc_record['856'].subfields).to include(have_attributes(code: '3', value: 'Provider'), have_attributes(code: 'u', value: 'http://example.com/2'))
       expect(folio_record.marc_record['856'].subfields).not_to include(have_attributes(code: 'y'), have_attributes(code: 'z'))
     end
+
+    context 'with nil electronicAccess data' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'holdings' => [{
+            'electronicAccess' => nil
+          }],
+          'source_record' => [{
+            'fields' => [
+              { '001' => 'a14154194' },
+              { '856' => {
+                'subfields' => [
+                  { 'u' => 'http://example.com/1' }
+                ]
+              } }
+            ]
+          }]
+        }
+      end
+
+      it 'does nothing with the 856 field data' do
+        expect(folio_record.marc_record.fields('856').length).to eq(1)
+        expect(folio_record.marc_record['856'].subfields).to include(have_attributes(code: 'u', value: 'http://example.com/1'))
+      end
+    end
   end
 
   describe '#sirsi_holdings' do
