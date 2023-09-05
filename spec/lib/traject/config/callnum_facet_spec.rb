@@ -5,14 +5,13 @@ require 'sirsi_holding'
 # rubocop:disable Metrics/ParameterLists
 def record_with_holdings(call_number:, scheme:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
   holdings = [
-    SirsiHolding.new(
-      call_number:,
-      home_location:,
-      library:,
-      scheme:,
-      type:,
-      barcode: ''
-    )
+    build(:holding,
+          call_number:,
+          home_location:,
+          library:,
+          scheme:,
+          type:,
+          barcode: '')
   ]
   yield(holdings) if block_given?
   allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
@@ -411,14 +410,7 @@ RSpec.describe 'Call Number Facet' do
     context 'with a SUDOC scheme' do
       let(:sirsi_holdings) do
         [
-          SirsiHolding.new(
-            call_number: 'I 19.76:98-600-B',
-            home_location: '',
-            library: 'GREEN',
-            scheme: 'SUDOC',
-            type: '',
-            barcode: ''
-          )
+          build(:sudoc_holding, call_number: 'I 19.76:98-600-B')
         ]
       end
 
@@ -502,30 +494,9 @@ RSpec.describe 'Call Number Facet' do
     context 'when it has an LC and Dewey and SUDOC call numbers' do
       let(:sirsi_holdings) do
         [
-          SirsiHolding.new(
-            call_number: 'I 19.76:98-600-B',
-            home_location: '',
-            library: 'GREEN',
-            scheme: 'SUDOC',
-            type: '',
-            barcode: ''
-          ),
-          SirsiHolding.new(
-            call_number: '550.6 .U58O 00-600',
-            home_location: '',
-            library: 'GREEN',
-            scheme: 'DEWEYPER',
-            type: '',
-            barcode: ''
-          ),
-          SirsiHolding.new(
-            call_number: 'QE538.8 .N36 1985:APR.',
-            home_location: '',
-            library: 'GREEN',
-            scheme: 'LCPER',
-            # type: '',
-            barcode: ''
-          )
+          build(:sudoc_holding, call_number: 'I 19.76:98-600-B'),
+          build(:holding, scheme: 'DEWEYPER', call_number: '550.6 .U58O 00-600'),
+          build(:holding, scheme: 'LCPER', call_number: 'QE538.8 .N36 1985:APR.')
         ]
       end
 

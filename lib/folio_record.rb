@@ -175,6 +175,8 @@ class FolioRecord
         call_number: [item.dig('callNumber', 'callNumber'), item['volume'], item['enumeration'], item['chronology']].compact.join(' '),
         current_location: (current_location unless current_location == home_location_code).presence,
         home_location: home_location_code,
+        location: item_location_code,
+        status: item['status'],
         library: library_code,
         scheme: call_number_type_map(item.dig('callNumberType', 'name') || item.dig('callNumber', 'typeName')),
         type: item['materialType'],
@@ -208,6 +210,8 @@ class FolioRecord
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         # parent item's barcode
         barcode: parent_item['barcode'] || "#{hrid.sub(/^a/, '')}-#{(all_holdings.index(holding) + 1).to_s.ljust(3, '0')}1",
+        location: item_location_code,
+        status: parent_item['status'],
         # parent item's current location or SEE-OTHER (SAL3)
         # For the SAL3 logic, see https://consul.stanford.edu/display/MD/Bound+withs
         # When the bound-with item is in SAL3, both the Home and Current Locations on the child records should always be SEE-OTHER.
@@ -230,7 +234,8 @@ class FolioRecord
     end
 
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
-      library_code, home_location_code = LocationsMap.for(holding.dig('location', 'effectiveLocation', 'code'))
+      location = holding.dig('location', 'effectiveLocation', 'code')
+      library_code, home_location_code = LocationsMap.for(location)
 
       SirsiHolding.new(
         barcode: nil,
@@ -238,6 +243,8 @@ class FolioRecord
         scheme: call_number_type_map(holding.dig('callNumberType', 'name')),
         current_location: 'ON-ORDER',
         home_location: home_location_code,
+        location:,
+        status: 'On order',
         library: library_code
       )
     end
@@ -256,6 +263,8 @@ class FolioRecord
         call_number: nil,
         scheme: nil,
         library: lib,
+        status: 'On order',
+        location: nil,
         home_location: 'ON-ORDER',
         current_location: 'ON-ORDER'
       )

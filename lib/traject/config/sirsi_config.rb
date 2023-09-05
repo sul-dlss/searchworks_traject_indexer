@@ -1803,6 +1803,8 @@ def holdings(record, context)
         call_number: (item['a'] || '').strip,
         current_location: item['k'],
         home_location: item['l'],
+        location: nil,
+        status: nil,
         library: item['m'],
         scheme: item['w'],
         type: item['t'],

@@ -5,6 +5,8 @@ FactoryBot.define do
     current_location { '' }
     home_location { '' }
     library { 'GREEN' }
+    location { 'GRE-STACKS' }
+    status { 'Available' }
     type { '' }
     barcode { 'barcode' }
     initialize_with { new(**attributes) }

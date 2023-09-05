@@ -16,15 +16,20 @@ class SirsiHolding
   SKIPPED_LOCS = %w[BORROWDIR CDPSHADOW SHADOW SSRC-FIC-S STAFSHADOW TECHSHADOW WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX('.freeze
 
-  attr_reader :id, :current_location, :home_location, :library, :scheme, :type, :barcode, :public_note, :course_reserves
+  attr_reader :id, :current_location, :home_location, :location, :status, :library, :scheme, :type, :barcode, :public_note, :course_reserves
 
+  # @param [String] location the folio code for location
+  # @param [Status] status the folio status
+  # @param [String] current_location Legacy parameter to be replaced by "location" and "status"
   # rubocop:disable Metrics/ParameterLists
-  def initialize(call_number:, home_location:, library:, barcode:, scheme: nil, current_location: nil,
+  def initialize(call_number:, home_location:, library:, barcode:, location:, status:, scheme: nil, current_location: nil,
                  id: nil, type: nil, public_note: nil, course_reserves: {})
     @id = id
     @call_number = call_number
     @current_location = current_location
     @home_location = home_location
+    @location = location
+    @status = status
     @library = library
     @scheme = scheme
     @type = type

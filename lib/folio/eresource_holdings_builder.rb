@@ -51,6 +51,8 @@ module Folio
       SirsiHolding.new(
         call_number: CALL_NUMBER,
         barcode: barcode(index),
+        location:,
+        status: 'Available',
         home_location: home_location_code,
         library: library_code,
         type: TYPE
@@ -70,7 +72,11 @@ module Folio
     end
 
     def mapped_location_codes
-      @mapped_location_codes ||= LocationsMap.for(electronic_holding_location.dig('location', 'effectiveLocation', 'code'))
+      @mapped_location_codes ||= LocationsMap.for(location)
+    end
+
+    def location
+      electronic_holding_location.dig('location', 'effectiveLocation', 'code')
     end
 
     # This finds the first holding matching an online location code.
