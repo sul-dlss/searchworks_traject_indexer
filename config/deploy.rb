@@ -31,7 +31,7 @@ set :honeybadger_env, "#{fetch(:stage)}"
 append :linked_files, 'config/settings.local.yml'
 
 # Default value for linked_dirs is []
-append :linked_dirs, 'tmp', 'run', 'log', 'service_templates', 'config/settings'
+append :linked_dirs, 'tmp', 'log', 'config/settings'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -53,47 +53,51 @@ namespace :deploy do
   namespace :systemd do
     task :generate do
       on roles(:app) do |host|
-        str = <<~SYSTEMD
-          [Unit]
-          Wants=#{fetch(:indexers).map { |service| "traject-#{service[:key]}.target" }.join(' ')}
+        within release_path do
+          execute 'mkdir -p ./service_templates'
 
-          [Install]
-          WantedBy=multi-user.target
-        SYSTEMD
-        upload! StringIO.new(str), '/opt/app/indexer/service_templates/traject.target'
-
-        fetch(:indexers).each do |service|
           str = <<~SYSTEMD
             [Unit]
-            PartOf=traject.target
-            StopWhenUnneeded=yes
-            Wants=#{service[:count].times.map { |i| "traject-#{service[:key]}.#{i + 1}.service" }.join(' ')}
-          SYSTEMD
-          upload! StringIO.new(str), "/opt/app/indexer/service_templates/traject-#{service[:key]}.target"
+            Wants=#{fetch(:indexers).map { |service| "traject-#{service[:key]}.target" }.join(' ')}
 
-          service[:count].times do |i|
+            [Install]
+            WantedBy=multi-user.target
+          SYSTEMD
+          upload! StringIO.new(str), 'service_templates/traject.target'
+
+          fetch(:indexers).each do |service|
             str = <<~SYSTEMD
               [Unit]
-              PartOf=traject-#{service[:key]}.target
+              PartOf=traject.target
               StopWhenUnneeded=yes
-
-              [Service]
-              User=#{host.user}
-              WorkingDirectory=#{current_path}
-              Environment=PS=#{service[:key]}.#{i + 1}
-              Environment=LANG=en_US.UTF-8
-              ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm ruby-3.2.2 do bundle exec traject -c #{service[:config]} #{fetch(:default_settings).merge(service[:settings]).map { |k, v| "-s #{k}=#{v}" }.join(' ')}'
-              Restart=always
-              RestartSec=14s
-              StandardInput=null
-              StandardOutput=syslog
-              StandardError=syslog
-              SyslogIdentifier=%n
-              KillMode=mixed
-              TimeoutStopSec=5
+              Wants=#{service[:count].times.map { |i| "traject-#{service[:key]}.#{i + 1}.service" }.join(' ')}
             SYSTEMD
+            upload! StringIO.new(str), "service_templates/traject-#{service[:key]}.target"
 
-            upload! StringIO.new(str), "/opt/app/indexer/service_templates/traject-#{service[:key]}.#{i + 1}.service"
+            service[:count].times do |i|
+              str = <<~SYSTEMD
+                [Unit]
+                PartOf=traject-#{service[:key]}.target
+                StopWhenUnneeded=yes
+
+                [Service]
+                User=#{host.user}
+                WorkingDirectory=#{current_path}
+                Environment=PS=#{service[:key]}.#{i + 1}
+                Environment=LANG=en_US.UTF-8
+                ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm ruby-3.2.2 do bundle exec traject -c #{service[:config]} #{fetch(:default_settings).merge(service[:settings]).map { |k, v| "-s #{k}=#{v}" }.join(' ')}'
+                Restart=always
+                RestartSec=14s
+                StandardInput=null
+                StandardOutput=syslog
+                StandardError=syslog
+                SyslogIdentifier=%n
+                KillMode=mixed
+                TimeoutStopSec=5
+              SYSTEMD
+
+              upload! StringIO.new(str), "service_templates/traject-#{service[:key]}.#{i + 1}.service"
+            end
           end
         end
       end
@@ -102,9 +106,14 @@ namespace :deploy do
     task :reload do
       on roles(:app) do
         within release_path do
-          execute 'script/reload_systemd_indexers.sh'
+          execute 'systemctl --user stop traject.target'
+          execute 'systemctl --user disable traject.target'
 
-          sudo :systemctl, 'restart', 'traject.target', raise_on_non_zero_exit: false
+          execute 'mkdir -p /opt/app/indexer/.config/systemd/user'
+          execute 'cp service_templates/* /opt/app/indexer/.config/systemd/user'
+
+          execute 'systemctl --user enable traject.target'
+          execute 'systemctl --user start traject.target'
         end
       end
     end
