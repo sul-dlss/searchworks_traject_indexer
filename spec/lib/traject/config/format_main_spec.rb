@@ -255,7 +255,7 @@ RSpec.describe 'Format main config' do
     end
     let(:holdings) do
       [
-        build(:internet_holding),
+        build(:sudoc_holding, :internet_holding),
         build(:lc_holding)
       ]
     end
