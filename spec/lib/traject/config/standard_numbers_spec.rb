@@ -7,13 +7,13 @@ RSpec.describe 'Standard Numbers' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'oclc' do
-    let(:fixture_name) { 'oclcNumTests.mrc' }
+    let(:fixture_name) { 'oclcNumTests.jsonl' }
     let(:field) { 'oclc' }
 
     it 'has the right data' do
@@ -54,7 +54,7 @@ RSpec.describe 'Standard Numbers' do
   end
 
   describe 'isbn_display [the ISBNs used for external lookups (e.g. Google Book Search)]' do
-    let(:fixture_name) { 'isbnTests.mrc' }
+    let(:fixture_name) { 'isbnTests.jsonl' }
     let(:field) { 'isbn_display' }
 
     it 'has the correct data' do #
@@ -116,7 +116,7 @@ RSpec.describe 'Standard Numbers' do
   end
 
   describe 'isbn_search' do
-    let(:fixture_name) { 'isbnTests.mrc' }
+    let(:fixture_name) { 'isbnTests.jsonl' }
     let(:field) { 'isbn_search' }
 
     it 'has the correct data' do
@@ -136,7 +136,7 @@ RSpec.describe 'Standard Numbers' do
   end
 
   describe 'issn_display' do
-    let(:fixture_name) { 'issnTests.mrc' }
+    let(:fixture_name) { 'issnTests.jsonl' }
     let(:field) { 'issn_display' }
 
     it 'has the correct data' do
@@ -182,7 +182,7 @@ RSpec.describe 'Standard Numbers' do
   end
 
   describe 'issn_search' do
-    let(:fixture_name) { 'issnTests.mrc' }
+    let(:fixture_name) { 'issnTests.jsonl' }
     let(:field) { 'issn_search' }
 
     it 'has the right data' do
@@ -204,7 +204,7 @@ RSpec.describe 'Standard Numbers' do
   end
 
   describe 'lccn' do
-    let(:fixture_name) { 'lccnTests.mrc' }
+    let(:fixture_name) { 'lccnTests.jsonl' }
     let(:field) { 'lccn' }
 
     it 'has the correct data' do

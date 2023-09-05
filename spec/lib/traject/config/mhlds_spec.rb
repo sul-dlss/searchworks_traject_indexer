@@ -6,16 +6,16 @@ RSpec.describe 'Holdings config' do
       i.load_config_file('./lib/traject/config/sirsi_config.rb')
     end
   end
-  let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).to_s, {}).to_a }
+  let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).open, { 'marc_source.type' => 'json' }).to_a }
+
   let(:record) { records.first }
-  let(:fixture_name) { '44794.marc' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  let(:results) { records.map { |rec| indexer.map_record(rec) }.to_a } # used by select_by_id
   subject(:result) { indexer.map_record(record) }
 
   describe 'mhld_display' do
     let(:field) { 'mhld_display' }
     describe 'real data' do
-      let(:fixture_name) { '2499.marc' }
+      let(:fixture_name) { '2499.json' }
 
       it do
         expect(select_by_id('2499')[field]).to eq [
@@ -24,15 +24,17 @@ RSpec.describe 'Holdings config' do
         ]
       end
       context do
-        let(:fixture_name) { '9012.marc' }
+        let(:fixture_name) { '9012.json' }
+
         it do
           expect(select_by_id('9012')[field]).to eq [
             'SAL3 -|- STACKS -|-  -|- 1948,1965-1967,1974-1975 -|- '
           ]
         end
       end
+
       context do
-        let(:fixture_name) { '1572.marc' }
+        let(:fixture_name) { '1572.json' }
         it do
           expect(select_by_id('1572')[field]).to eq [
             'SAL3 -|- STACKS -|-  -|- Heft 1-2 <v.568-569 in series> -|- '
@@ -40,7 +42,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       context do
-        let(:fixture_name) { '7770475.marc' }
+        let(:fixture_name) { '7770475.json' }
         it do
           expect { select_by_id('7770475')[field] }.not_to raise_error
         end
@@ -327,7 +329,7 @@ RSpec.describe 'Holdings config' do
     end
     describe 'mapping tests' do
       describe 'test 852 output' do
-        let(:fixture_name) { 'mhldDisplay852only.mrc' }
+        let(:fixture_name) { 'mhldDisplay852only.jsonl' }
         it do
           expect(select_by_id('358041')[field].length).to eq 3
           expect(select_by_id('358041')[field][0]).to eq 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
@@ -338,7 +340,7 @@ RSpec.describe 'Holdings config' do
       describe 'skip mhlds' do
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD is skipped
         # if 852 sub z  says "All holdings transfered"
-        let(:fixture_name) { 'mhldDisplay852only.mrc' }
+        let(:fixture_name) { 'mhldDisplay852only.jsonl' }
         it do
           expect(select_by_id('3974376')[field]).to be_nil
         end
@@ -346,14 +348,14 @@ RSpec.describe 'Holdings config' do
       describe 'skip skipped locations' do
         # if an 852 has a location in the locations_skipped_list.properties, then
         # it should not be included.
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           expect(select_by_id('SkippedLocs')[field]).to be_blank
         end
       end
       describe 'number of separators' do
         # ensure output with and without 86x have same number of separators
-        let(:fixture_name) { 'mhldDisplay852only.mrc' }
+        let(:fixture_name) { 'mhldDisplay852only.jsonl' }
         it '852 alone without comment' do
           expect(select_by_id('358041')[field]).not_to include 'SAL3 -|- STACKS -|-  -|-  -|- '
         end
@@ -361,21 +363,21 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- '
         end
         describe '852 w/ 866' do
-          let(:fixture_name) { 'mhldDisplay868.mrc' }
+          let(:fixture_name) { 'mhldDisplay868.jsonl' }
           it do
             expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- v.194(2006)- -|- '
             expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- Index: keep me (868) -|- '
           end
         end
         describe '852 w/ 867' do
-          let(:fixture_name) { 'mhldDisplay867.mrc' }
+          let(:fixture_name) { 'mhldDisplay867.jsonl' }
           it do
             expect(select_by_id('keep867ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- '
           end
         end
       end
       describe 'ensure all (non-skipped) 866s are output correctly' do
-        let(:fixture_name) { 'mhldDisplay86x.mrc' }
+        let(:fixture_name) { 'mhldDisplay86x.jsonl' }
         it do
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- 2009- -|- '
           expect(select_by_id('358041')[field]).to include 'SAL3 -|- STACKS -|-  -|- v.151(1972)-v.152(1972) -|- '
@@ -386,7 +388,7 @@ RSpec.describe 'Holdings config' do
       describe 'multiple 866' do
         # when there are multiple 866s in a record, the "latest received" should
         # only attach to the open holdings statement
-        let(:fixture_name) { 'mhldDisplayEasy2.mrc' }
+        let(:fixture_name) { 'mhldDisplayEasy2.jsonl' }
         it do
           expect(select_by_id('111')[field].length).to eq 4
           expect(select_by_id('111')[field][0]).to eq 'lib1 -|- loc1 -|- comment1 -|- 866a1open- -|- v.417:no.11 (2011:March 25)'
@@ -398,7 +400,7 @@ RSpec.describe 'Holdings config' do
       describe '866 and 867' do
         # the "latest received" should only attach to the open holdings statement
         # when there are multiple 866s, or combination of 866 and 867 or 868
-        let(:fixture_name) { 'mhldDisplayEasy2.mrc' }
+        let(:fixture_name) { 'mhldDisplayEasy2.jsonl' }
         it do
           expect(select_by_id('222')[field].length).to eq 2
           expect(select_by_id('222')[field][0]).to eq 'lib1 -|- loc1 -|-  -|- 866a1open- -|- no.322 (2011:March)'
@@ -411,7 +413,7 @@ RSpec.describe 'Holdings config' do
         # previously:
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
         #  is skipped if 866 has ind2 of 0 and 852 has a sub =
-        let(:fixture_name) { 'mhldDisplay86x.mrc' }
+        let(:fixture_name) { 'mhldDisplay86x.jsonl' }
         it do
           expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 1A (JAN 2011) -|- '
           expect(select_by_id('362573')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- V. 417 NO. 4A (FEB 2011) -|- '
@@ -423,7 +425,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'ensure all (non-skipped) 867s are output correctly' do
-        let(:fixture_name) { 'mhldDisplay867.mrc' }
+        let(:fixture_name) { 'mhldDisplay867.jsonl' }
         it do
           expect(select_by_id('keep867ind0')[field]).to eq ['GREEN -|- CURRENTPER -|- keep 867 -|- Supplement: keep me (867) -|- ']
           expect(select_by_id('multKeep867ind0')[field][0]).to eq 'GREEN -|- STACKS -|- Supplement -|- Supplement: keep me 1 (867) -|- '
@@ -433,7 +435,7 @@ RSpec.describe 'Holdings config' do
       describe '867 no 866' do
         # ensure there is a "Latest Received" value when there is an 867 without
         # an 866, and there are 863s
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- Supplement: COUNTRY LIFE ABROAD (WIN 2001), (JUL 14, 2005) -|- v.205:no.22 (2011:June 1)'
         end
@@ -445,7 +447,7 @@ RSpec.describe 'Holdings config' do
         # previously:
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
         #  is skipped if 867 has ind2 of 0 and 852 has a sub =
-        let(:fixture_name) { 'mhldDisplay867.mrc' }
+        let(:fixture_name) { 'mhldDisplay867.jsonl' }
         it do
           start = 'GREEN -|- STACKS -|-  -|- Supplement: '
           expect(select_by_id('skip867ind0')[field]).to eq ["#{start}skip me (867) -|- "]
@@ -457,7 +459,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'ensure all (non-skipped) 867s are output correctly' do
-        let(:fixture_name) { 'mhldDisplay868.mrc' }
+        let(:fixture_name) { 'mhldDisplay868.jsonl' }
         # keep if 2nd indicator "0" and no 852 sub =
         it do
           expect(select_by_id('keep868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- keep 868 -|- v.194(2006)- -|- '
@@ -466,7 +468,7 @@ RSpec.describe 'Holdings config' do
           expect(select_by_id('multKeep868ind0')[field]).to include 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: keep me 2 (868) -|- '
         end
         context 'mhldDisplay86x' do
-          let(:fixture_name) { 'mhldDisplay86x.mrc' }
+          let(:fixture_name) { 'mhldDisplay86x.jsonl' }
           it do
             expect(select_by_id('484112')[field]).to include 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: annee.188(1999) -|- '
             expect(select_by_id('484112')[field]).to include 'MUSIC -|- MUS-NOCIRC -|-  -|- Index: MICROFICHE (MAY/DEC 2000) -|- '
@@ -480,7 +482,7 @@ RSpec.describe 'Holdings config' do
         # previously:
         # per spec in email by Naomi Dushay on July 12, 2011, an MHLD summary holdings section
         #  is skipped if 868 has ind2 of 0 and 852 has a sub =
-        let(:fixture_name) { 'mhldDisplay868.mrc' }
+        let(:fixture_name) { 'mhldDisplay868.jsonl' }
         it do
           expect(select_by_id('skip868ind0')[field]).to include 'GREEN -|- CURRENTPER -|- skip 868 -|- v.194(2006)- -|- '
           expect(select_by_id('skip868ind0')[field]).to include 'GREEN -|- CURRENTPER -|-  -|- Index: skip me (868) -|- '
@@ -490,7 +492,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe '852 subfield 3 should be included in the comment' do
-        let(:fixture_name) { 'mhldDisplay852sub3.mrc' }
+        let(:fixture_name) { 'mhldDisplay852sub3.jsonl' }
         it do
           expect(select_by_id('852zNo3')[field]).to eq ['GREEN -|- STACKS -|- sub z -|-  -|- ']
           expect(select_by_id('852-3noZ')[field]).to eq ['GREEN -|- STACKS -|- sub 3 -|-  -|- ']
@@ -500,7 +502,7 @@ RSpec.describe 'Holdings config' do
       describe 'latest received' do
         # if the 866 field is open (ends with a hyphen), then use the most recent
         # 863, formatted per matching 853
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           expect(select_by_id('latestRecdPatterns')[field]).to include 'lib -|- loc -|-  -|-  -|- v.106:pt.3:no.482 (2010:WIN)'
           expect(select_by_id('latestRecdPatterns')[field]).to include 'lib -|- loc -|-  -|-  -|- v.105 (2009)'
@@ -511,7 +513,7 @@ RSpec.describe 'Holdings config' do
       describe 'closed holdings' do
         # there should be no "Latest Received" portion when the 866 is closed
         # (doesn't end with a hyphen)
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           # 866 doesn't end with hyphen, and there are 863 - do not include 863 as Latest Received
           expect(select_by_id('484112')[field]).to include 'MUSIC -|- MUS-NOCIRC -|-  -|- v.188(1999) -|- '
@@ -521,7 +523,7 @@ RSpec.describe 'Holdings config' do
       describe 'no 866' do
         # if there is no 866, then
         # if the 852 has a sub = , then display the most recent 863
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           # 852 has sub =  and no 866:  use most recent 863
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE TRAVEL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|-  -|- 2010/2011:Winter'
@@ -531,7 +533,7 @@ RSpec.describe 'Holdings config' do
       end
       describe 'multiple 852z' do
         # if an 852 has multiple subfield z, they should be concatenated with a " "
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           expect(select_by_id('852multz')[field]).to include 'LANE -|- STACKS -|- z4 z5 z6 -|-  -|- '
           expect(select_by_id('852multz')[field]).to include 'CROWN -|- STACKS -|- z1 z2 -|- 866a -|- '
@@ -540,13 +542,13 @@ RSpec.describe 'Holdings config' do
       end
       describe 'single 852z' do
         # if an 852 has only one 866, with 853/863, ensure only one field is output.
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           expect(select_by_id('866before863')[field]).to eq ['lib -|- loc -|- comment -|- 1, 1977- -|- v.23:no.1 (1999:January)']
         end
       end
       describe '358041' do
-        let(:fixture_name) { 'mhldDisplay.mrc' }
+        let(:fixture_name) { 'mhldDisplay.jsonl' }
         it do
           # 852 has sub =  and no 866:  use most recent 863
           expect(select_by_id('358041')[field]).to include 'GREEN -|- CURRENTPER -|- COUNTRY LIFE INTERNATIONAL. Latest yr. (or vol.) in CURRENT PERIODICALS; earlier in SAL -|- 2009- -|- 2011:Summer'
@@ -558,7 +560,7 @@ RSpec.describe 'Holdings config' do
         end
       end
       describe 'test the expected values for a record with easier text strings' do
-        let(:fixture_name) { 'mhldDisplayEasy.mrc' }
+        let(:fixture_name) { 'mhldDisplayEasy.jsonl' }
         it do
           expect(select_by_id('358041')[field]).to include 'lib1 -|- loc1 -|- comment1 -|- 866a1open- -|- 2011:Summer'
           expect(select_by_id('358041')[field]).to include 'lib2 -|- loc2 -|-  -|- 866a2 -|- '

@@ -7,9 +7,9 @@ RSpec.describe 'Publication config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'publicationTests.mrc' }
+  let(:fixture_name) { 'publicationTests.jsonl' }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'pub_search' do
@@ -173,7 +173,7 @@ RSpec.describe 'Publication config' do
 
   describe 'pub_date' do
     let(:field) { 'pub_date' }
-    let(:fixture_name) { 'pubDateTests.mrc' }
+    let(:fixture_name) { 'pubDateTests.jsonl' }
 
     context 'with unknown dates' do
       subject(:result) { indexer.map_record(marc_to_folio(record)) }
@@ -339,7 +339,7 @@ RSpec.describe 'Publication config' do
     end
 
     describe 'pub_date' do
-      let(:fixture_name) { 'pubDateTests.mrc' }
+      let(:fixture_name) { 'pubDateTests.jsonl' }
 
       it 'maps the right data' do
         expect(select_by_id('firstDateOnly008')[field]).to eq ['2000']
@@ -379,7 +379,7 @@ RSpec.describe 'Publication config' do
   end
 
   describe 'pub_year_tisim' do
-    let(:fixture_name) { 'pubDateTests.mrc' }
+    let(:fixture_name) { 'pubDateTests.jsonl' }
     let(:field) { 'pub_year_tisim' }
 
     {
@@ -636,7 +636,7 @@ RSpec.describe 'Publication config' do
   end
 
   describe 'pub_date_sort' do
-    let(:fixture_name) { 'pubDateTests.mrc' }
+    let(:fixture_name) { 'pubDateTests.jsonl' }
     let(:field) { 'pub_date_sort' }
 
     specify do

@@ -1,0 +1,3 @@
+{"leader":"00157cam a2200073 i 4500","fields":[{"001":"a1"},{"008":"770207r19771901gw       b    001 0 ger d"},{"245":{"ind1":"1","ind2":"0","subfields":[{"a":"650 lower case"}]}},{"650":{"ind1":"1","ind2":" ","subfields":[{"a":"what case am i?"}]}}]}
+{"leader":"00157cam a2200073 i 4500","fields":[{"001":"a2"},{"008":"770207r19771901gw       b    001 0 ger d"},{"245":{"ind1":"1","ind2":"0","subfields":[{"a":"650 upper case"}]}},{"650":{"ind1":"1","ind2":" ","subfields":[{"a":"WHAT CASE AM I?"}]}}]}
+{"leader":"00157cam a2200073 i 4500","fields":[{"001":"a3"},{"008":"770207r19771901gw       b    001 0 ger d"},{"245":{"ind1":"1","ind2":"0","subfields":[{"a":"650 mixed case"}]}},{"650":{"ind1":"1","ind2":" ","subfields":[{"a":"What case am I?"}]}}]}

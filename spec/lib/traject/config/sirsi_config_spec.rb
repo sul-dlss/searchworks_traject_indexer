@@ -8,8 +8,8 @@ RSpec.describe 'Sirsi config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:fixture_name) { 'idTests.mrc' }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:fixture_name) { 'idTests.jsonl' }
   let(:record) { records.first }
 
   describe 'id' do
@@ -35,7 +35,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'marc_json_struct' do
-    let(:fixture_name) { 'fieldOrdering.mrc' }
+    let(:fixture_name) { 'fieldOrdering.jsonl' }
     it do
       ix650 = result['marc_json_struct'].first.index '650first'
       ix600 = result['marc_json_struct'].first.index '600second'

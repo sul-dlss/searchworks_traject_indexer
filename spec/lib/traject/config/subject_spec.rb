@@ -7,9 +7,9 @@ RSpec.describe 'Subject config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'subjectSearchTests.mrc' }
+  let(:fixture_name) { 'subjectSearchTests.jsonl' }
   let(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
   subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
@@ -73,7 +73,7 @@ RSpec.describe 'Subject config' do
     end
 
     context 'real data' do
-      let(:fixture_name) { 'subjectTests.mrc' }
+      let(:fixture_name) { 'subjectTests.jsonl' }
 
       it 'has the right transforms' do
         result = select_by_id('1261173')[field]
@@ -220,7 +220,7 @@ RSpec.describe 'Subject config' do
     end
 
     context 'real(ish) data' do
-      let(:fixture_name) { 'subjectTests.mrc' }
+      let(:fixture_name) { 'subjectTests.jsonl' }
 
       it 'has the right transforms' do
         result = select_by_id('651a')[field]
@@ -487,7 +487,7 @@ RSpec.describe 'Subject config' do
     end
 
     context 'real data' do
-      let(:fixture_name) { 'subjectTests.mrc' }
+      let(:fixture_name) { 'subjectTests.jsonl' }
 
       it 'has the right transforms' do
         result = select_by_id('3743949')[field]
@@ -672,7 +672,7 @@ RSpec.describe 'Subject config' do
       expect(results).not_to include hash_including(field => /a$/)
     end
     context 'real data' do
-      let(:fixture_name) { 'subjectTests.mrc' }
+      let(:fixture_name) { 'subjectTests.jsonl' }
 
       it 'has the right transforms' do
         # 651v
@@ -682,7 +682,7 @@ RSpec.describe 'Subject config' do
     end
 
     context 'real era data' do
-      let(:fixture_name) { 'eraTests.mrc' }
+      let(:fixture_name) { 'eraTests.jsonl' }
 
       it 'has the right transforms' do
         result = select_by_id('650y')[field]
@@ -736,7 +736,7 @@ RSpec.describe 'Subject config' do
   end
 
   describe 'Lane Blacklists' do
-    let(:fixture_name) { 'subjectLaneBlacklistTests.mrc' }
+    let(:fixture_name) { 'subjectLaneBlacklistTests.jsonl' }
     let(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
 
     it 'removes 650a/655a "nomesh", "nomesh." and "nomeshx" from topic_search and topic_facet' do
@@ -772,7 +772,7 @@ RSpec.describe 'Subject config' do
 
   describe 'topic_facet' do
     let(:field) { 'topic_facet' }
-    let(:fixture_name) { 'subjectTests.mrc' }
+    let(:fixture_name) { 'subjectTests.jsonl' }
 
     it 'has the right transforms' do
       # 600a, trailing period removed
@@ -822,7 +822,7 @@ RSpec.describe 'Subject config' do
   end
 
   describe 'geographic_facet' do
-    let(:fixture_name) { 'subjectTests.mrc' }
+    let(:fixture_name) { 'subjectTests.jsonl' }
     let(:field) { 'geographic_facet' }
 
     context 'a record with multiple 6xx subfield z' do
@@ -859,7 +859,7 @@ RSpec.describe 'Subject config' do
   end
 
   describe 'era_facet' do
-    let(:fixture_name) { 'eraTests.mrc' }
+    let(:fixture_name) { 'eraTests.jsonl' }
     let(:field) { 'era_facet' }
 
     it 'removes trailing periods' do

@@ -6,9 +6,9 @@ RSpec.describe 'Holdings config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { Traject::MarcCombiningReader.new(file_fixture(fixture_name).to_s, {}).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { '44794.marc' }
+  let(:fixture_name) { '44794.json' }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
   subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
 

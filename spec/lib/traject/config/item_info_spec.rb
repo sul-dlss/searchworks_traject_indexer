@@ -7,14 +7,14 @@ RSpec.describe 'ItemInfo config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'subjectSearchTests.mrc' }
   let(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
   subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
 
   describe 'barcode_search' do
-    let(:fixture_name) { 'locationTests.mrc' }
+    let(:fixture_name) { 'locationTests.jsonl' }
+
     let(:field) { 'barcode_search' }
 
     it 'has data' do
@@ -157,7 +157,7 @@ RSpec.describe 'ItemInfo config' do
       end
     end
     describe 'field is populated correctly, focusing on building/library' do
-      let(:fixture_name) { 'buildingTests.mrc' }
+      let(:fixture_name) { 'buildingTests.jsonl' }
 
       it 'APPLIEDPHY ignored for building facet, but not here' do
         expect(select_by_id('115472')[field].length).to eq 1
@@ -230,7 +230,7 @@ RSpec.describe 'ItemInfo config' do
       end
 
       describe 'with item display fixture' do
-        let(:fixture_name) { 'itemDisplayTests.mrc' }
+        let(:fixture_name) { 'itemDisplayTests.jsonl' }
 
         it 'handles materials in LANE' do
           expect(select_by_id('6661112')[field].length).to eq 1
@@ -300,7 +300,7 @@ RSpec.describe 'ItemInfo config' do
         end
 
         context 'with a different fixture' do
-          let(:fixture_name) { 'itemDisplayTests.mrc' }
+          let(:fixture_name) { 'itemDisplayTests.jsonl' }
 
           it 'handles on order locations' do
             data = select_by_id('460947')[field]
@@ -370,7 +370,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'displays home location' do
-      let(:fixture_name) { 'buildingTests.mrc' }
+      let(:fixture_name) { 'buildingTests.jsonl' }
 
       it 'CHECKEDOUT as current location, STACKS as home location' do
         expect(select_by_id('575946')[field].length).to eq 2
@@ -395,7 +395,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'location implies item is shelved by title' do
-      let(:fixture_name) { 'callNumberLCSortTests.mrc' }
+      let(:fixture_name) { 'callNumberLCSortTests.jsonl' }
 
       it 'handles SHELBYTITL' do
         expect(select_by_id('1111')[field].length).to eq 1
@@ -590,7 +590,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'locations should not be displayed' do
-      let(:fixture_name) { 'locationTests.mrc' }
+      let(:fixture_name) { 'locationTests.jsonl' }
 
       it 'do not return an item_display' do
         expect(select_by_id('575946')[field]).to be_nil
@@ -610,7 +610,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
-      let(:fixture_name) { 'mediaLocTests.mrc' }
+      let(:fixture_name) { 'mediaLocTests.jsonl' }
 
       it 'has the correct data' do
         expect(select_by_id('7652182')[field].length).to eq 3
@@ -633,7 +633,7 @@ RSpec.describe 'ItemInfo config' do
 
     # rubocop:disable Layout/LineLength
     describe 'lopped call numbers' do
-      let(:fixture_name) { 'itemDisplayTests.mrc' }
+      let(:fixture_name) { 'itemDisplayTests.jsonl' }
 
       it 'has the right data' do
         item_display = select_by_id('460947000')[field]
@@ -760,7 +760,7 @@ RSpec.describe 'ItemInfo config' do
     # rubocop:enable Layout/LineLength
 
     describe 'forward sort key (shelfkey)' do
-      let(:fixture_name) { 'buildingTests.mrc' }
+      let(:fixture_name) { 'buildingTests.jsonl' }
 
       it 'has the shelfkey for the lopped call number' do
         item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
@@ -900,7 +900,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'reverse shelfkeys' do
-      let(:fixture_name) { 'buildingTests.mrc' }
+      let(:fixture_name) { 'buildingTests.jsonl' }
 
       it 'has the reversed shelfkey for the lopped call number' do
         item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
@@ -918,7 +918,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'full call numbers' do
-      let(:fixture_name) { 'buildingTests.mrc' }
+      let(:fixture_name) { 'buildingTests.jsonl' }
 
       it 'are populated' do
         expect(select_by_id('460947')[field].length).to eq 2
@@ -1125,7 +1125,7 @@ RSpec.describe 'ItemInfo config' do
 
     describe 'volsort/full shelfkey' do
       context 'LC' do
-        let(:fixture_name) { 'buildingTests.mrc' }
+        let(:fixture_name) { 'buildingTests.jsonl' }
 
         it 'is included' do
           expect(select_by_id('460947')[field].length).to eq 2
@@ -1155,9 +1155,9 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'DEWEY' do
-        let(:fixture_name) { 'shelfkeyMatchItemDispTests.mrc' }
+        let(:fixture_name) { 'shelfkeyMatchItemDispTests.jsonl' }
 
-        it 'is inlcuded' do
+        it 'is included' do
           expect(select_by_id('373245')[field].length).to eq 2
           expect(select_by_id('373245')[field].first).to include(
             '-|- 553.2805 .P187 V.1-2 1916-1918 -|-'
@@ -1209,7 +1209,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'shefkey field data is the same as the field in the item_display' do
-      let(:fixture_name) { 'shelfkeyMatchItemDispTests.mrc' }
+      let(:fixture_name) { 'shelfkeyMatchItemDispTests.jsonl' }
 
       it 'has the same shelfkey in the field as it does in the item_display' do
         item_display = select_by_id('5788269')[field].first.split('-|-').map(&:strip)
@@ -1245,7 +1245,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     context 'when a record has multiple copies' do
-      let(:fixture_name) { 'multipleCopies.mrc' }
+      let(:fixture_name) { 'multipleCopies.jsonl' }
 
       it 'results in multiple fields' do
         expect(select_by_id('1')[field].length).to eq 2

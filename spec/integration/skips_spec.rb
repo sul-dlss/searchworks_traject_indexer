@@ -11,9 +11,9 @@ RSpec.describe 'Skips records' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:results) { indexer.process_with(records.map { |r| marc_to_folio_with_stubbed_holdings(r) }, Traject::ArrayWriter.new).values }
-  let(:fixture_name) { 'buildingTests.mrc' }
+  let(:fixture_name) { 'buildingTests.jsonl' }
   it 'without an item_display field' do
     expect(results.count).to eq 45
     expect(records.count).to eq 46

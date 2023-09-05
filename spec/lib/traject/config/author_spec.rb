@@ -7,9 +7,9 @@ RSpec.describe 'Author config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'authorTests.mrc' }
+  let(:fixture_name) { 'authorTests.jsonl' }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'author_1xx_search' do
@@ -52,7 +52,7 @@ RSpec.describe 'Author config' do
   end
 
   describe 'vern_author_1xx_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_author_1xx_search' }
     it 'has all subfields from linked 100' do
       result = select_by_id('100VernSearch')[field]
@@ -92,7 +92,7 @@ RSpec.describe 'Author config' do
   end
 
   describe 'vern_author_7xx_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_author_7xx_search' }
 
     context 'personal name fields' do
@@ -184,7 +184,7 @@ RSpec.describe 'Author config' do
   end
 
   describe 'vern_author_8xx_search' do
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_author_8xx_search' }
 
     context 'personal name fields' do
@@ -399,7 +399,7 @@ RSpec.describe 'Author config' do
   end
 
   describe 'vern_author_person_display' do
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     let(:field) { 'vern_author_person_display' }
     it 'has correct vernacular author display' do
       result = select_by_id('trailingPunct')[field]
@@ -415,7 +415,7 @@ RSpec.describe 'Author config' do
     end
 
     context 'display fields test file' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has correct display for 100ac' do
         result = select_by_id('1001')[field]
         expect(result).to eq ['Seuss, Dr.']
@@ -438,7 +438,7 @@ RSpec.describe 'Author config' do
     end
 
     context 'vernacular non search test file' do
-      let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+      let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
       it 'has correct display for RTL script' do
         result = select_by_id('RtoL2')[field]
         expect(result).to eq ['LTR a : LTR b, LTR c']
@@ -448,7 +448,7 @@ RSpec.describe 'Author config' do
 
   describe 'vern_author_person_full_display' do
     let(:field) { 'vern_author_person_full_display' }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     it 'has correct display for RTL script' do
       pending 'legacy test doesn\'t run but solrmarc-sw returns incorrect display too'
       # "vern_author_person_display":"vern (RTL?) a (first) : vern (RTL?) b (second), vern (RTL?) c (third)"
@@ -475,7 +475,7 @@ RSpec.describe 'Author config' do
     end
 
     context 'display fields test file' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
       it 'has correct display for 110abndb' do
         result = select_by_id('110')[field]
         expect(result).to eq ['United States. Congress (97th, 2nd session : 1982). House.']
@@ -506,7 +506,7 @@ RSpec.describe 'Author config' do
 
   describe 'vern_author_meeting_display' do
     let(:field) { 'vern_author_meeting_display' }
-    let(:fixture_name) { 'vernacularNonSearchTests.mrc' }
+    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
     it 'has correct display for linked 111a' do
       result = select_by_id('MeetingAuthorVern')[field]
       expect(result).to eq ['vernacular mtg name author']

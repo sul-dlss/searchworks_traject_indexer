@@ -7,9 +7,9 @@ RSpec.describe 'Author-title config' do
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'authorTitleMappingTests.mrc' }
+  let(:fixture_name) { 'authorTitleMappingTests.jsonl' }
   let(:field) { 'author_title_search' }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 

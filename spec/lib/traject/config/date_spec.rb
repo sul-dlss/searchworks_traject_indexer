@@ -6,7 +6,7 @@ RSpec.describe 'Date config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:fixture_name) { 'idTests.mrc' }
+  let(:fixture_name) { 'idTests.jsonl' }
   subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   describe 'pub_year_ss' do
