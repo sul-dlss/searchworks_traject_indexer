@@ -28,24 +28,6 @@ bundle exec rake
 ```
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
 
-## Building services
-For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd. This can be done using a capistrano task:
-```
-cap prod deploy:update_systemd_scripts
-```
-
-Or manually from the server:
-
-```
-# either
-script/export_proc_files_to_systemd_stage.sh
-# or
-script/export_proc_files_to_systemd_prod.sh
-
-# and then:
-script/reload_systemd_indexers.sh
-```
-
 ## Monitor logs
 ```
 ksu
