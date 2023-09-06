@@ -8,7 +8,7 @@ RSpec.describe 'Format main config' do
   end
   let(:instance) { {} }
   subject(:result) { indexer.map_record(folio_record) }
-  let(:folio_record) { marc_to_folio_with_stubbed_holdings(record, instance:) }
+  let(:folio_record) { marc_to_folio(record, instance:) }
   let(:field) { 'format_main_ssim' }
 
   before do

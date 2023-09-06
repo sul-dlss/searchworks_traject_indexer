@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Sirsi config' do
-  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -13,7 +13,7 @@ RSpec.describe 'Sirsi config' do
   let(:record) { records.first }
 
   describe 'id' do
-    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it do
       expect(results).to include hash_including('id' => ['001suba'])
       expect(results).to include hash_including('id' => ['001subaAnd004nosub'])
@@ -27,7 +27,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'hashed_id_ssi' do
-    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     it do
       expect(results).to include hash_including('id' => ['001suba'],
                                                 'hashed_id_ssi' => ['f00f2f3999440420ee1cb0fbfaf6dd25'])
@@ -48,7 +48,7 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'context_marc_fields_ssim' do
-    subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record))['context_marc_fields_ssim'] }
+    subject(:result) { indexer.map_record(marc_to_folio(record))['context_marc_fields_ssim'] }
 
     it 'indexes field counts' do
       expect(result).to include '008', '245'
