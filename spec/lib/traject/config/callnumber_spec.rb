@@ -8,11 +8,11 @@ RSpec.describe 'Call Numbers' do
   end
 
   let(:fixture_name) { 'callNumberTests.jsonl' }
-  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:record) { records.first }
+  # let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:record) { MARC::Record.new }
+  let(:folio_record) { marc_to_folio(record) }
 
-  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
-  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+  subject(:result) { indexer.map_record(folio_record) }
 
   describe 'lc_assigned_callnum_ssim' do
     let(:record) do
@@ -39,32 +39,124 @@ RSpec.describe 'Call Numbers' do
 
   describe 'callnum_search' do
     let(:field) { 'callnum_search' }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+    end
+    let(:holdings) { [] }
 
-    it 'has the correct data' do
-      expect(select_by_id('690002')[field]).to eq(['159.32 .W211'])
-      expect(select_by_id('2328381')[field]).to include('827.5 .S97TG')
-      expect(select_by_id('1849258')[field]).to include('352.042 .C594 ED.2')
-      expect(select_by_id('2214009')[field]).to eq(['370.1 .S655'])
-      expect(select_by_id('1')[field]).to eq(['1 .N44'])
-      expect(select_by_id('11')[field]).to eq(['1.123 .N44'])
-      expect(select_by_id('2')[field]).to eq(['22 .N47'])
-      expect(select_by_id('22')[field]).to eq(['22.456 .S655'])
-      expect(select_by_id('3')[field]).to eq(['999 .F67'])
-      expect(select_by_id('31')[field]).to eq(['999.85 .P84'])
+    context 'for 690002' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '159.32 .W211')]
+      end
+
+      it { is_expected.to eq ['159.32 .W211'] }
     end
 
-    it 'does not get forbidden call numbers' do
-      bad_callnumbers = [
-        'NO CALL NUMBER',
-        'IN PROCESS',
-        'INTERNET RESOURCE',
-        'WITHDRAWN',
-        'X*', # X call nums (including XX)
-        '"Government Document"'
-      ]
-      all_callnumbers = results.map { |res| res[field] }.flatten
-      expect(all_callnumbers).to include('159.32 .W211')
-      expect(all_callnumbers).not_to include(*bad_callnumbers)
+    context 'when the call numbers are not unique (2328381)' do
+      let(:holdings) do
+        [
+          build(:lc_holding, call_number: 'PR3724.T3', barcode: '36105003934432', home_location: 'STACKS', library: 'SAL'),
+          build(:lc_holding, call_number: 'PR3724.T3', barcode: '36105003934424', home_location: 'STACKS', library: 'SAL'),
+          build(:dewey_holding, call_number: '827.5 .S97TG', barcode: '36105048104132', home_location: 'STACKS', library: 'SAL3')
+        ]
+      end
+
+      it { is_expected.to eq ['PR3724.T3', '827.5 .S97TG'] }
+    end
+
+    context 'when there are two call numbers with the same barcode (1849258)' do
+      let(:holdings) do
+        [
+          build(:dewey_holding, call_number: '352.042 .C594 ED.2', barcode: '36105047516096', home_location: 'STACKS', library: 'SAL3'),
+          build(:dewey_holding, call_number: '352.042 .C594 ED.3', barcode: '36105047516096', home_location: 'STACKS', library: 'SAL3')
+        ]
+      end
+
+      it { is_expected.to eq ['352.042 .C594 ED.2', '352.042 .C594 ED.3'] }
+    end
+
+    context 'when there is a withdrawn record (2214009)' do
+      let(:holdings) do
+        [
+          build(:dewey_holding, call_number: '370.1 .S655', barcode: '36105033336798', home_location: 'WITHDRAWN', library: 'EDUCATION'),
+          build(:dewey_holding, call_number: '370.1 .S655', barcode: '36105033336780', home_location: 'STACKS', library: 'SAL3')
+        ]
+      end
+
+      it { is_expected.to eq ['370.1 .S655'] }
+    end
+
+    context 'when call number is a dewey with one digit' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '1 .N44')]
+      end
+
+      it { is_expected.to eq ['1 .N44'] }
+    end
+
+    context 'when call number is a dewey with two digits' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '22 .N47')]
+      end
+
+      it { is_expected.to eq ['22 .N47'] }
+    end
+
+    context 'when call number is a dewey with three digits' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '999 .F67')]
+      end
+
+      it { is_expected.to eq ['999 .F67'] }
+    end
+
+    context 'when call number is a dewey with one digit and decimal' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '1.123 .N44')]
+      end
+
+      it { is_expected.to eq ['1.123 .N44'] }
+    end
+
+    context 'when call number is a dewey with two digits and decimal' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '22.456 .S655')]
+      end
+
+      it { is_expected.to eq ['22.456 .S655'] }
+    end
+
+    context 'when call number is a dewey with three digits and decimal' do
+      let(:holdings) do
+        [build(:dewey_holding, call_number: '999.85 .P84')]
+      end
+
+      it { is_expected.to eq ['999.85 .P84'] }
+    end
+
+    context 'when call number is NO CALL NUMBER' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'NO CALL NUMBER')]
+      end
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'when call number is INTERNET RESOURCE' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'INTERNET RESOURCE')]
+      end
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'when current location is WITHDRAWN' do
+      let(:holdings) do
+        [build(:lc_holding, current_location: 'WITHDRAWN')]
+      end
+
+      it { is_expected.to be_nil }
     end
   end
 end
