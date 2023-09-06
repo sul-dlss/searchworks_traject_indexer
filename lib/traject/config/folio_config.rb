@@ -24,6 +24,12 @@ CJK_RANGE = /(\p{Han}|\p{Hangul}|\p{Hiragana}|\p{Katakana})/
 
 indexer = self
 
+configure do
+  @source_record_id_proc = lambda do |source_record|
+    "#{source_record.instance_id} (#{source_record.hrid})" if source_record.is_a? FolioRecord
+  end
+end
+
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV.fetch('SOLR_URL', nil)
@@ -2694,5 +2700,5 @@ each_record do |_record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
-  logger.debug('marc_config.rb') { "Processed #{context.source_record_id} (#{(t1 - t0).round(3)}s)" }
+  logger.debug('folio_config.rb') { "Processed #{context.source_record_id} (#{(t1 - t0).round(3)}s)" }
 end
