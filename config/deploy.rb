@@ -54,7 +54,7 @@ namespace :deploy do
     task :generate do
       on roles(:app) do |host|
         within release_path do
-          execute 'mkdir -p ./service_templates'
+          execute "mkdir -p #{release_path}/service_templates"
 
           str = <<~SYSTEMD
             [Unit]
