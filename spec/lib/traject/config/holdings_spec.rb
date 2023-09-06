@@ -6,18 +6,17 @@ RSpec.describe 'Holdings config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:record) { records.first }
-  let(:fixture_name) { '44794.json' }
-  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
-  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   describe 'on_order_library_ssim' do
     let(:field) { 'on_order_library_ssim' }
+    let(:fixture_name) { '44794.json' }
+    let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
+    let(:record) { records.first }
 
-    it do
-      expect(select_by_id('44794')[field]).to eq ['SAL3']
-    end
+    subject(:value) { result[field] }
+    it { is_expected.to eq ['SAL3'] }
   end
 
   describe 'bookplates_display' do
