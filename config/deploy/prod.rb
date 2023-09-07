@@ -6,17 +6,6 @@ Capistrano::OneTimeKey.generate_one_time_key!
 
 set :indexers, [
   {
-    key: 'sdr_prod_indexer_catchup',
-    count: 2,
-    config: './lib/traject/config/sdr_config.rb',
-    settings: {
-      'log.file' => 'log/traject_sdr_prod_indexer_catchup.log',
-      'kafka.topic' => 'purl_fetcher_prod',
-      'kafka.consumer_group_id' => 'traject_catchup',
-      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod'
-    }
-  },
-  {
     key: 'sdr_preview_indexer',
     count: 2,
     config: './lib/traject/config/sdr_config.rb',
@@ -61,6 +50,29 @@ set :indexers, [
       'kafka.topic' => 'purl_fetcher_prod',
       'kafka.consumer_group_id' => 'traject_sdr_folio_prod',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-folio-prod'
+    }
+  },
+  {
+    key: 'folio_searchworks_prod_next_indexer',
+    count: 4,
+    config: './lib/traject/config/folio_config.rb',
+    settings: {
+      'log.file' => 'log/traject_searchworks_prod_next_indexer.log',
+      'kafka.topic' => 'marc_folio_prod',
+      'kafka.consumer_group_id' => 'traject_searchworks_next_prod',
+      'reader_class_name' => 'Traject::KafkaFolioReader',
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-next'
+    }
+  },
+  {
+    key: 'sdr_searchworks_prod_next_indexer',
+    count: 4,
+    config: './lib/traject/config/sdr_config.rb',
+    settings: {
+      'log.file' => 'log/traject_sdr_searchworks_prod_next_indexer.log',
+      'kafka.topic' => 'purl_fetcher_prod',
+      'kafka.consumer_group_id' => 'traject_searchworks_next_prod',
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-next'
     }
   }
 ]
