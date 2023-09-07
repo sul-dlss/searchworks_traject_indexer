@@ -52,7 +52,7 @@ namespace :deploy do
 
   namespace :systemd do
     task :generate do
-      on roles(:app) do |host|
+      on roles(:app) do
         within release_path do
           execute "mkdir -p #{release_path}/service_templates"
 
@@ -81,7 +81,6 @@ namespace :deploy do
                 StopWhenUnneeded=yes
 
                 [Service]
-                User=#{host.user}
                 WorkingDirectory=#{current_path}
                 Environment=PS=#{service[:key]}.#{i + 1}
                 Environment=LANG=en_US.UTF-8
