@@ -6,17 +6,6 @@ Capistrano::OneTimeKey.generate_one_time_key!
 
 set :indexers, [
   {
-    key: 'sdr_prod_indexer_catchup',
-    count: 2,
-    config: './lib/traject/config/sdr_config.rb',
-    settings: {
-      'log.file' => 'log/traject_sdr_prod_indexer_catchup.log',
-      'kafka.topic' => 'purl_fetcher_prod',
-      'kafka.consumer_group_id' => 'traject_catchup',
-      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod'
-    }
-  },
-  {
     key: 'sdr_preview_indexer',
     count: 2,
     config: './lib/traject/config/sdr_config.rb',
