@@ -1,0 +1,961 @@
+{
+  "items": [
+    {
+      "id": "3017c217-3021-5106-8bc8-a45f2b756706",
+      "hrid": "ai2499_1_3",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105004284639",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-05-06T02:16:54.474Z",
+        "updatedDate": "2023-05-06T02:16:54.474Z",
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "ML96.4 .B415"
+      },
+      "copyNumber": "1",
+      "enumeration": "NO.6:V.2",
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "a4edea95-a663-5529-b610-35ff2ac518a4",
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+        "e6f1059b-4ab2-4bb2-adcb-af66acb6f4fa"
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "permanentLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "ML 296.4 B415 NO 16 V 12 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "ML96.4 .B415"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "be8c6024-7730-59e9-8111-d987feb9a297",
+      "hrid": "ai2499_1_1",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105041862777",
+      "courses": [
+
+      ],
+      "request": null,
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-05-06T02:16:54.474Z",
+        "updatedDate": "2023-05-06T02:16:54.474Z",
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "ML96.4 .B415"
+      },
+      "copyNumber": "1",
+      "enumeration": "NO.6:V.1",
+      "yearCaption": [
+
+      ],
+      "materialType": "book",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "a4edea95-a663-5529-b610-35ff2ac518a4",
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+        "e6f1059b-4ab2-4bb2-adcb-af66acb6f4fa"
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "permanentLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "ML 296.4 B415 NO 16 V 11 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "ML96.4 .B415"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    }
+  ],
+  "pieces": [
+    null
+  ],
+  "holdings": [
+    {
+      "id": "0f0e9522-5ff7-51ff-b322-c2a69fc9b17c",
+      "hrid": "ah2499_2",
+      "notes": [
+
+      ],
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-05-06T02:15:25.436Z",
+        "updatedDate": "2023-05-06T02:15:25.436Z",
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+      },
+      "sourceId": "036ee84a-6afd-4c3c-9ad3-4a12ab875f59",
+      "boundWith": null,
+      "formerIds": [
+
+      ],
+      "illPolicy": null,
+      "instanceId": "0ce73233-310b-5720-8588-2269ffc9b3ce",
+      "holdingsType": {
+        "id": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+        "name": "Serial",
+        "source": "folio"
+      },
+      "holdingsItems": [
+
+      ],
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "holdingsTypeId": "e6da6c98-6dd0-41bc-8b4b-cfd4bbd9c3ae",
+      "callNumberTypeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+      "electronicAccess": [
+
+      ],
+      "bareHoldingsItems": [
+
+      ],
+      "discoverySuppress": false,
+      "holdingsStatements": [
+        {
+          "statement": "v.1"
+        },
+        {
+          "statement": "v.2"
+        }
+      ],
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "permanentLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "suppressFromDiscovery": false,
+      "holdingsStatementsForIndexes": [
+
+      ],
+      "holdingsStatementsForSupplements": [
+
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    },
+    {
+      "id": "a4edea95-a663-5529-b610-35ff2ac518a4",
+      "hrid": "ah2499_1",
+      "notes": [
+
+      ],
+      "_version": 1,
+      "metadata": {
+        "createdDate": "2023-05-06T02:12:54.926Z",
+        "updatedDate": "2023-05-06T02:12:54.926Z",
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+      },
+      "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "boundWith": null,
+      "formerIds": [
+
+      ],
+      "illPolicy": null,
+      "callNumber": "ML96.4 .B415",
+      "instanceId": "0ce73233-310b-5720-8588-2269ffc9b3ce",
+      "holdingsType": {
+        "id": "03c9c400-b9e3-4a07-ac0e-05ab470233ed",
+        "name": "Monograph",
+        "source": "folio"
+      },
+      "holdingsItems": [
+
+      ],
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "holdingsTypeId": "03c9c400-b9e3-4a07-ac0e-05ab470233ed",
+      "callNumberTypeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+      "electronicAccess": [
+
+      ],
+      "bareHoldingsItems": [
+
+      ],
+      "holdingsStatements": [
+
+      ],
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "permanentLocationId": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+      "suppressFromDiscovery": false,
+      "holdingsStatementsForIndexes": [
+
+      ],
+      "holdingsStatementsForSupplements": [
+
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "00ae4182-8c62-47d7-a27a-1b23fc931d77",
+          "code": "MUS-STACKS",
+          "name": "Stacks",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    }
+  ],
+  "instance": {
+    "id": "0ce73233-310b-5720-8588-2269ffc9b3ce",
+    "hrid": "a2499",
+    "notes": [
+      {
+        "note": "\"Transcriptions\": v. 2, p. 3-201",
+        "staffOnly": false,
+        "instanceNoteTypeId": "6a2533a7-4de2-4e64-8466-074c2fa9308c"
+      },
+      {
+        "note": "Bibliography: v.1, p. [511]-516",
+        "staffOnly": false,
+        "instanceNoteTypeId": "86b6e817-e1bc-42fb-bab0-70e7547de6c1"
+      }
+    ],
+    "title": "Beethoven's early sketches in the \"Fischhof miscellany,\" Berlin Autograph 28 / by Douglas Porter Johnson.",
+    "series": [
+
+    ],
+    "source": "MARC",
+    "_version": 1,
+    "editions": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-05-06T02:07:04.968Z",
+      "updatedDate": "2023-05-06T02:07:04.968Z",
+      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+    },
+    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
+    "subjects": [
+      "Beethoven, Ludwig van, 1770-1827. Works. Selections (Sketches)",
+      "Musical sketches"
+    ],
+    "languages": [
+      "eng"
+    ],
+    "indexTitle": "Beethoven's early sketches in the \"fischhof miscellany,\" berlin autograph 28",
+    "identifiers": [
+      {
+        "value": "80022474/MN",
+        "identifierTypeId": "c858e4f2-2b6b-4385-842b-60732ee14abb"
+      },
+      {
+        "value": "0835711374 (set) : $59.95",
+        "identifierTypeId": "8261054f-be78-422d-bd51-4ed9f33c3422"
+      },
+      {
+        "value": "0835711390 (v. 2)",
+        "identifierTypeId": "8261054f-be78-422d-bd51-4ed9f33c3422"
+      },
+      {
+        "value": "9780835711371 (set)",
+        "identifierTypeId": "8261054f-be78-422d-bd51-4ed9f33c3422"
+      },
+      {
+        "value": "9780835711395 (v. 2)",
+        "identifierTypeId": "8261054f-be78-422d-bd51-4ed9f33c3422"
+      },
+      {
+        "value": "(OCoLC-M)268710340",
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
+      },
+      {
+        "value": "(OCoLC-I)268823295",
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
+      }
+    ],
+    "publication": [
+      {
+        "place": "Ann Arbor, Mich",
+        "publisher": "UMI Research Press",
+        "dateOfPublication": "c1980"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "Johnson, Douglas Porter",
+        "primary": true,
+        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
+        "contributorTypeText": "Contributor",
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a"
+      },
+      {
+        "name": "Beethoven, Ludwig van, 1770-1827. Works. Selections (Sketches)",
+        "primary": false,
+        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
+        "contributorTypeText": "Contributor",
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a"
+      }
+    ],
+    "catalogedDate": "1990-09-27",
+    "staffSuppress": false,
+    "instanceTypeId": "30fffe0e-e985-4144-b2e2-1e8179bdb41f",
+    "previouslyHeld": false,
+    "classifications": [
+      {
+        "classificationNumber": "ML96.4 .B4",
+        "classificationTypeId": "ce176ace-a53e-4b4d-aa89-725ed7b2edac"
+      },
+      {
+        "classificationNumber": "780.81",
+        "classificationTypeId": "42471af9-7d25-4f3a-bf78-60d29dcf463b"
+      }
+    ],
+    "instanceFormats": [
+
+    ],
+    "electronicAccess": [
+
+    ],
+    "holdingsRecords2": [
+
+    ],
+    "modeOfIssuanceId": "9d18a02f-5897-4c31-9106-c9abb5c7ae8b",
+    "publicationRange": [
+
+    ],
+    "statisticalCodes": [
+
+    ],
+    "alternativeTitles": [
+
+    ],
+    "discoverySuppress": false,
+    "instanceFormatIds": [
+
+    ],
+    "publicationPeriod": {
+      "start": 1980
+    },
+    "statusUpdatedDate": "2023-05-06T02:07:00.680+0000",
+    "statisticalCodeIds": [
+
+    ],
+    "administrativeNotes": [
+
+    ],
+    "physicalDescriptions": [
+      "2 v. : ill. ; 24-29 cm."
+    ],
+    "publicationFrequency": [
+
+    ],
+    "suppressFromDiscovery": false,
+    "natureOfContentTermIds": [
+
+    ]
+  },
+  "source_record": [
+    {
+      "fields": [
+        {
+          "001": "a2499"
+        },
+        {
+          "003": "SIRSI"
+        },
+        {
+          "005": "19900820141050.0"
+        },
+        {
+          "008": "820518s1980    miua          000 0 eng  "
+        },
+        {
+          "010": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "   80022474/MN"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "0835711374 (set) :"
+              },
+              {
+                "c": "$59.95"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "0835711390 (v. 2)"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "9780835711371 (set)"
+              }
+            ]
+          }
+        },
+        {
+          "020": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "9780835711395 (v. 2)"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-M)268710340"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-I)268823295"
+              }
+            ]
+          }
+        },
+        {
+          "040": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "d": "OrLoB"
+              }
+            ]
+          }
+        },
+        {
+          "050": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "ML96.4"
+              },
+              {
+                "b": ".B4"
+              }
+            ]
+          }
+        },
+        {
+          "082": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "780.8/1"
+              },
+              {
+                "2": "19"
+              }
+            ]
+          }
+        },
+        {
+          "100": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Johnson, Douglas Porter."
+              },
+              {
+                "=": "^A190525"
+              }
+            ]
+          }
+        },
+        {
+          "245": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Beethoven's early sketches in the \"Fischhof miscellany,\" Berlin Autograph 28 /"
+              },
+              {
+                "c": "by Douglas Porter Johnson."
+              }
+            ]
+          }
+        },
+        {
+          "260": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Ann Arbor, Mich. :"
+              },
+              {
+                "b": "UMI Research Press,"
+              },
+              {
+                "c": "c1980-"
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "2 v. :"
+              },
+              {
+                "b": "ill. ;"
+              },
+              {
+                "c": "24-29 cm."
+              }
+            ]
+          }
+        },
+        {
+          "500": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "\"Transcriptions\": v. 2, p. 3-201."
+              }
+            ]
+          }
+        },
+        {
+          "504": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Bibliography: v.1, p. [511]-516."
+              }
+            ]
+          }
+        },
+        {
+          "596": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "18"
+              }
+            ]
+          }
+        },
+        {
+          "600": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Beethoven, Ludwig van,"
+              },
+              {
+                "d": "1770-1827."
+              },
+              {
+                "t": "Works."
+              },
+              {
+                "k": "Selections (Sketches)"
+              },
+              {
+                "=": "^A958635"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Musical sketches."
+              },
+              {
+                "=": "^A1041892"
+              }
+            ]
+          }
+        },
+        {
+          "700": {
+            "ind1": "1",
+            "ind2": "2",
+            "subfields": [
+              {
+                "a": "Beethoven, Ludwig van,"
+              },
+              {
+                "d": "1770-1827."
+              },
+              {
+                "t": "Works."
+              },
+              {
+                "k": "Selections (Sketches)."
+              },
+              {
+                "=": "^A958635"
+              }
+            ]
+          }
+        },
+        {
+          "740": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Fischhof miscellany."
+              }
+            ]
+          }
+        },
+        {
+          "998": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "SCORE"
+              }
+            ]
+          }
+        },
+        {
+          "918": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "2499"
+              }
+            ]
+          }
+        },
+        {
+          "999": {
+            "ind1": "f",
+            "ind2": "f",
+            "subfields": [
+              {
+                "i": "0ce73233-310b-5720-8588-2269ffc9b3ce"
+              },
+              {
+                "s": "7ca732aa-df65-5c15-9341-5a1acb23474f"
+              }
+            ]
+          }
+        }
+      ],
+      "leader": "01181ncm a2200349 i 4500"
+    }
+  ],
+  "holdingSummaries": [
+    {
+      "poLineId": null,
+      "orderType": null,
+      "orderStatus": null,
+      "poLineNumber": null,
+      "orderSentDate": null,
+      "orderCloseReason": null,
+      "polReceiptStatus": null
+    }
+  ]
+}
