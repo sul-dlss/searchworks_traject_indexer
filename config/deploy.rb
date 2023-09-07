@@ -109,7 +109,7 @@ namespace :deploy do
           execute 'systemctl --user disable traject.target'
 
           execute 'mkdir -p /opt/app/indexer/.config/systemd/user'
-          execute 'cp service_templates/* /opt/app/indexer/.config/systemd/user'
+          execute "cp #{release_path}/service_templates/* /opt/app/indexer/.config/systemd/user"
 
           execute 'systemctl --user enable traject.target'
           execute 'systemctl --user start traject.target'
