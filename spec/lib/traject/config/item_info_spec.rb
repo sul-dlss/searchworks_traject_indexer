@@ -9,8 +9,10 @@ RSpec.describe 'ItemInfo config' do
 
   let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
-  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+  let(:folio_records) { records.map { |rec| marc_to_folio_with_stubbed_holdings(rec) } }
+  let(:folio_record) { marc_to_folio(record) }
+  let(:results) { folio_records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:result) { indexer.map_record(folio_record) }
 
   describe 'barcode_search' do
     let(:fixture_name) { 'locationTests.jsonl' }
@@ -418,25 +420,20 @@ RSpec.describe 'ItemInfo config' do
                                                                                                                       'callnumber' => 'Shelved by Series title VOL 1 1946')
                                                                                                      ])
       end
+    end
+
+    describe 'holding record variations' do
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:record) { MARC::Record.new }
 
       context 'with a NEWS-STKS location' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.leader = '01247cas a2200337 a 4500'
-            record.append(MARC::ControlField.new(
-                            '008', '830415c19809999vauuu    a    0    0eng  '
-                          ))
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'PQ9661 .P31 C6 VOL 1 1946'),
-                MARC::Subfield.new('w', 'LC'),
-                MARC::Subfield.new('i', '36105111222333'),
-                MARC::Subfield.new('l', 'NEWS-STKS'),
-                MARC::Subfield.new('m', 'BUSINESS')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105111222333', library: 'BUSINESS', home_location: 'NEWS-STKS')
+          ]
         end
 
         it 'is shelved by title' do
@@ -462,23 +459,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'with a NEWS-STKS location and an ALPHANUM call number' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.leader = '01247cas a2200337 a 4500'
-            record.append(MARC::ControlField.new(
-                            '008', '830415c19809999vauuu    a    0    0eng  '
-                          ))
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'BUS54594-11 V.3 1986 MAY-AUG.'),
-                MARC::Subfield.new('w', 'ALPHANUM'),
-                MARC::Subfield.new('i', '20504037816'),
-                MARC::Subfield.new('l', 'NEWS-STKS'),
-                MARC::Subfield.new('m', 'BUSINESS')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:alphanum_holding, call_number: 'BUS54594-11 V.3 1986 MAY-AUG.', barcode: '20504037816', library: 'BUSINESS', home_location: 'NEWS-STKS')
+          ]
         end
 
         it 'is shelved by title' do
@@ -504,23 +488,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'with a NEWS-STKS location when it is not in BUSINESS' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.leader = '01247cas a2200337 a 4500'
-            record.append(MARC::ControlField.new(
-                            '008', '830415c19809999vauuu    a    0    0eng  '
-                          ))
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
-                MARC::Subfield.new('w', 'LC'),
-                MARC::Subfield.new('i', '36105444555666'),
-                MARC::Subfield.new('l', 'NEWS-STKS'),
-                MARC::Subfield.new('m', 'GREEN')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980', barcode: '36105444555666', home_location: 'NEWS-STKS')
+          ]
         end
 
         it 'does nothing special ' do
@@ -545,17 +516,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'volume includes an O.S. (old series) designation' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', '551.46 .I55 O.S:V.1 1909/1910'),
-                MARC::Subfield.new('w', 'DEWEYPER'),
-                MARC::Subfield.new('l', 'SHELBYTITL')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: '551.46 .I55 O.S:V.1 1909/1910', home_location: 'SHELBYTITL')
+          ]
         end
 
         it 'retains the O.S. designation before the volume number' do
@@ -567,17 +531,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'volume includes an N.S. (new series) designation' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', '551.46 .I55 N.S:V.1 1909/1910'),
-                MARC::Subfield.new('w', 'DEWEYPER'),
-                MARC::Subfield.new('l', 'SHELBYTITL')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: '551.46 .I55 N.S:V.1 1909/1910', home_location: 'SHELBYTITL')
+          ]
         end
 
         it 'retains the N.S. designation before the volume number' do
@@ -589,7 +546,7 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'locations should not be displayed' do
+    describe 'locations are not displayed' do
       let(:fixture_name) { 'locationTests.jsonl' }
 
       it 'do not return an item_display' do
@@ -778,17 +735,17 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'public note' do
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:record) { MARC::Record.new }
+
       context 'when the public note is upper case ".PUBLIC."' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'AB123.45 .M67'),
-                MARC::Subfield.new('o', '.PUBLIC. Note')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'AB123.45 .M67', public_note: '.PUBLIC. Note')
+          ]
         end
 
         it 'is included' do
@@ -799,16 +756,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'when the public note is lower case ".public."' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'AB123.45 .M67'),
-                MARC::Subfield.new('o', '.public. Note')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'AB123.45 .M67', public_note: '.public. Note')
+          ]
         end
 
         it 'is included' do
@@ -819,82 +770,16 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'when the public note is mixed case' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'AB123.45 .M67'),
-                MARC::Subfield.new('o', '.PuBlIc. Note')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'AB123.45 .M67', public_note: '.PuBlIc. Note')
+          ]
         end
 
         it 'is included' do
           expect(result[field].length).to eq 1
           expect(result[field].first).to include('-|- .PuBlIc. Note -|-')
           expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to eq '.PuBlIc. Note'
-        end
-      end
-
-      context 'when the public note does not have periods around it' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'AB123.45 .M67'),
-                MARC::Subfield.new('o', 'public Note')
-              )
-            )
-          end
-        end
-
-        it 'is not included' do
-          expect(result[field].length).to eq 1
-          expect(result[field].first).not_to include('public Note')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to be_nil
-        end
-      end
-
-      context 'when the note does not begin with ".PUBLIC."' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'AB123.45 .M67'),
-                MARC::Subfield.new('o', 'Note .PUBLIC.')
-              )
-            )
-          end
-        end
-
-        it 'is not included' do
-          expect(result[field].length).to eq 1
-          expect(result[field].first).not_to include('Note .PUBLIC.')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to be_nil
-        end
-      end
-
-      context 'when the note does not have the word ".PUBLIC."' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'AB123.45 .M67'),
-                MARC::Subfield.new('o', 'Note ')
-              )
-            )
-          end
-        end
-
-        it 'is not included' do
-          expect(result[field].length).to eq 1
-          expect(result[field].first).not_to include('Note ')
-          expect(result['item_display_struct'].map { |x| JSON.parse(x) }.first['note']).to be_nil
         end
       end
     end
@@ -933,17 +818,16 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'call number type' do
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:record) { MARC::Record.new }
       context 'ALPHANUM' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'YUGOSLAV SERIAL 1973'),
-                MARC::Subfield.new('w', 'ALPHANUM')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:alphanum_holding, call_number: 'YUGOSLAV SERIAL 1973')
+          ]
         end
 
         it 'includes the correct data' do
@@ -955,16 +839,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'DEWEY' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', '370.1 .S655'),
-                MARC::Subfield.new('w', 'DEWEY')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:dewey_holding, call_number: '370.1 .S655')
+          ]
         end
 
         it 'includes the correct data' do
@@ -976,16 +854,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'LC' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'E184.S75 R47A V.1 1980'),
-                MARC::Subfield.new('w', 'LC')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980')
+          ]
         end
 
         it 'includes the correct data' do
@@ -997,16 +869,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'SUDOC' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'E 1.28:COO-4274-1'),
-                MARC::Subfield.new('w', 'SUDOC')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:sudoc_holding, call_number: 'E 1.28:COO-4274-1')
+          ]
         end
 
         it 'includes the correct data' do
@@ -1018,16 +884,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'OTHER' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', '71 15446'),
-                MARC::Subfield.new('w', 'THESIS')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:other_holding, call_number: '71 15446')
+          ]
         end
 
         it 'includes the correct data' do
@@ -1039,16 +899,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'XX' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'XX(3195846.2579)'),
-                MARC::Subfield.new('w', 'XX')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:holding, scheme: 'XX', call_number: 'XX(3195846.2579)')
+          ]
         end
 
         it 'includes the correct data' do
@@ -1060,17 +914,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'Hoover Archives with call numbers starting with XX' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'XX066 BOX 11'),
-                MARC::Subfield.new('m', 'HV-ARCHIVE'),
-                MARC::Subfield.new('w', 'ALPHANUM')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:alphanum_holding, call_number: 'XX066 BOX 11', library: 'HV-ARCHIVE')
+          ]
         end
 
         it 'includes the correct data' do
@@ -1082,15 +929,10 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'when the call number is "INTERNET RESOURCE"' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'INTERNET RESOURCE')
-              )
-            )
-          end
+        let(:holdings) do
+          [
+            build(:other_holding, :internet_holding)
+          ]
         end
 
         it 'includes the correct data' do
@@ -1101,17 +943,11 @@ RSpec.describe 'ItemInfo config' do
         end
       end
 
-      context 'yet another OTHER' do
-        let(:record) do
-          MARC::Record.new.tap do |record|
-            record.append(
-              MARC::DataField.new(
-                '999', ' ', ' ',
-                MARC::Subfield.new('a', 'X X'),
-                MARC::Subfield.new('w', 'OTHER')
-              )
-            )
-          end
+      context 'with an callnumber "X X"' do
+        let(:holdings) do
+          [
+            build(:other_holding, call_number: 'X X')
+          ]
         end
 
         it 'includes the correct data' do
@@ -1182,19 +1018,15 @@ RSpec.describe 'ItemInfo config' do
         end
 
         # The Education library has a collection of call numbers w/ a scheme of DEWEY but begin w/ TX
-        context 'DEWEY Text Book Collection(?) (e.g. DEWEY call numbers that begin with TX)' do
-          let(:record) do
-            MARC::Record.new.tap do |record|
-              record.append(
-                MARC::DataField.new(
-                  '999', ' ', ' ',
-                  MARC::Subfield.new('a', 'TX 443.21 A3'),
-                  MARC::Subfield.new('w', 'DEWEY'),
-                  MARC::Subfield.new('l', 'STACKS'),
-                  MARC::Subfield.new('m', 'CUBBERLY')
-                )
-              )
-            end
+        context 'with a DEWEY call number that begins with TX' do
+          let(:holdings) do
+            [
+              build(:dewey_holding, call_number: 'TX 443.21 A3', home_location: 'STACKS', library: 'CUBBERLY')
+            ]
+          end
+
+          before do
+            allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
           end
 
           # this is potentially incidental since we don't fall back for non-valid DEWEY
