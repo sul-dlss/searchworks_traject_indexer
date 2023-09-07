@@ -3,7 +3,7 @@ kafka:
 
 environments:
   folio_test:
-    database_url: <%= ENV['DATABASE_URL'] %>
+    database_url: <%= ENV['FOLIO_TEST_DATABASE_URL'] || ENV['DATABASE_URL'] %>
     processes: 1
     full_dump_processes: 12
     kafka_topic: marc_folio_test
