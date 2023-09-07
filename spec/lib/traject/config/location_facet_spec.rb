@@ -6,62 +6,28 @@ RSpec.describe 'Location facet config' do
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(marc_to_folio_with_stubbed_holdings(record)) }
+  let(:folio_record) { marc_to_folio(MARC::Record.new) }
+  let(:result) { indexer.map_record(folio_record) }
   let(:field) { 'location_facet' }
+  let(:holdings) { [build(:lc_holding, home_location:)] }
+  subject(:value) { result[field] }
 
-  describe 'Curriculum Collection' do
-    context 'with 999 subfield l (home location) CURRICULUM' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('m', 'EDUCATION'),
-                                       MARC::Subfield.new('l', 'CURRICULUM')))
-        end
-      end
-      it 'is in the curriculum collection' do
-        expect(result[field]).to eq ['Curriculum Collection']
-      end
-    end
-
-    context 'with 999 subfield l (home location) REFERENCE' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('m', 'EDUCATION'),
-                                       MARC::Subfield.new('l', 'REFERENCE')))
-        end
-      end
-      it 'is not in the curriculum collection' do
-        expect(result[field]).to be_nil
-      end
-    end
+  before do
+    allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
   end
 
-  describe 'Art Locked Stacks' do
-    context 'with 999 subfield l (home location) CURRICULUM' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('m', 'ART'),
-                                       MARC::Subfield.new('l', 'ARTLCKL-R')))
-        end
-      end
-      it 'is in the locked stacks' do
-        expect(result[field]).to eq ['Art Locked Stacks']
-      end
-    end
+  context 'with home location CURRICULUM' do
+    let(:home_location) { 'CURRICULUM' }
+    it { is_expected.to eq ['Curriculum Collection'] }
+  end
 
-    context 'with 999 subfield l (home location) REFERENCE' do
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(MARC::DataField.new('999', ' ', ' ',
-                                       MARC::Subfield.new('m', 'ART'),
-                                       MARC::Subfield.new('l', 'NOTLOCKED')))
-        end
-      end
-      it 'is not in the locked stacks' do
-        expect(result[field]).to be_nil
-      end
-    end
+  context 'with home location ARTLCKL-R' do
+    let(:home_location) { 'ARTLCKL-R' }
+    it { is_expected.to eq ['Art Locked Stacks'] }
+  end
+
+  context 'with any other home location' do
+    let(:home_location) { 'REFERENCE' }
+    it { is_expected.to be_nil }
   end
 end
