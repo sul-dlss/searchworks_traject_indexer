@@ -15,17 +15,24 @@ RSpec.describe 'ItemInfo config' do
   subject(:result) { indexer.map_record(folio_record) }
 
   describe 'barcode_search' do
-    let(:fixture_name) { 'locationTests.jsonl' }
-
     let(:field) { 'barcode_search' }
+    let(:record) { MARC::Record.new }
+    subject { result[field] }
 
-    it 'has data' do
-      # Single barcode
-      result = select_by_id('115472')[field]
-      expect(result).to eq ['36105033811451']
-      # many barcodes
-      result = select_by_id('1033119')[field]
-      expect(result).to eq %w[36105037439663 36105001623284]
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+    end
+
+    context 'with one barcode' do
+      let(:holdings) { [build(:lc_holding, barcode: '36105033811451')] }
+
+      it { is_expected.to eq ['36105033811451'] }
+    end
+
+    context 'with many barcodes' do
+      let(:holdings) { [build(:lc_holding, barcode: '36105037439663'), build(:lc_holding, barcode: '36105001623284')] }
+
+      it { is_expected.to eq %w[36105037439663 36105001623284] }
     end
   end
 
@@ -225,7 +232,6 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'field is populated correctly, focusing on building/library' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
       let(:record) { MARC::Record.new }
       subject { result[field].first }
       let(:holdings) { [build(:lc_holding, library: 'ART')] }
