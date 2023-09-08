@@ -223,215 +223,351 @@ RSpec.describe 'ItemInfo config' do
         expect(result['item_display_struct']).to be_nil
       end
     end
+
     describe 'field is populated correctly, focusing on building/library' do
       let(:fixture_name) { 'buildingTests.jsonl' }
+      let(:record) { MARC::Record.new }
+      subject { result[field].first }
+      let(:holdings) { [build(:lc_holding, library: 'ART')] }
 
-      it 'APPLIEDPHY ignored for building facet, but not here' do
-        expect(select_by_id('115472')[field].length).to eq 1
-        expect(select_by_id('115472')[field].first).to include('-|- APPLIEDPHY -|-')
-        expect(select_by_id('115472')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                         hash_including('barcode' => '36105033811451', 'library' => 'APPLIEDPHY')
-                                                                                                       ])
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
       end
 
-      it 'inlcudes various libraries' do
-        sample_libs_and_ids = {
-          ART: '345228',
-          CLASSICS: '1147269',
-          ENG: '1849258',
-          'GOV-DOCS': '2099904',
-          GREEN: '1261173',
-          HOOVER: '3743949',
-          SAL3: '690002',
-          SCIENCE: '460947',
-          'SPEC-COLL': '4258089'
-        }
+      context 'when library is APPLIEDPHY' do
+        let(:holdings) { [build(:lc_holding, library: 'APPLIEDPHY')] }
 
-        sample_libs_and_ids.each do |library, id|
-          expect(select_by_id(id)[field].length).to be >= 1
-          expect(select_by_id(id)[field]).to be_any do |field|
-            field.include?("-|- #{library} -|-")
+        it { is_expected.to include '-|- APPLIEDPHY -|-' }
+      end
+
+      context 'when library is ART' do
+        let(:holdings) { [build(:lc_holding, library: 'ART')] }
+
+        it { is_expected.to include '-|- ART -|-' }
+      end
+
+      context 'when library is CLASSICS' do
+        let(:holdings) { [build(:lc_holding, library: 'CLASSICS')] }
+
+        it { is_expected.to include '-|- CLASSICS -|-' }
+      end
+
+      context 'when library is ENG' do
+        let(:holdings) { [build(:lc_holding, library: 'ENG')] }
+
+        it { is_expected.to include '-|- ENG -|-' }
+      end
+
+      context 'when library is GOV-DOCS' do
+        let(:holdings) { [build(:lc_holding, library: 'GOV-DOCS')] }
+
+        it { is_expected.to include '-|- GOV-DOCS -|-' }
+      end
+
+      context 'when library is GREEN' do
+        let(:holdings) { [build(:lc_holding, library: 'GREEN')] }
+
+        it { is_expected.to include '-|- GREEN -|-' }
+      end
+
+      context 'when library is HOOVER' do
+        let(:holdings) { [build(:lc_holding, library: 'HOOVER')] }
+
+        it { is_expected.to include '-|- HOOVER -|-' }
+      end
+
+      context 'when library is SAL3' do
+        let(:holdings) { [build(:lc_holding, library: 'SAL3')] }
+
+        it { is_expected.to include '-|- SAL3 -|-' }
+      end
+
+      context 'when library is SCIENCE' do
+        let(:holdings) { [build(:lc_holding, library: 'SCIENCE')] }
+
+        it { is_expected.to include '-|- SCIENCE -|-' }
+      end
+
+      context 'when library is SPEC-COLL' do
+        let(:holdings) { [build(:lc_holding, library: 'SPEC-COLL')] }
+
+        it { is_expected.to include '-|- SPEC-COLL -|-' }
+      end
+
+      context 'for item_display_struct' do
+        let(:field) { 'item_display_struct' }
+        subject { result[field].map { |x| JSON.parse(x) } }
+
+        context 'when library is APPLIEDPHY' do
+          let(:holdings) { [build(:lc_holding, library: 'APPLIEDPHY')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'APPLIEDPHY')]) }
+        end
+
+        context 'when library is ART' do
+          let(:holdings) { [build(:lc_holding, library: 'ART')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'ART')]) }
+        end
+
+        context 'when library is CLASSICS' do
+          let(:holdings) { [build(:lc_holding, library: 'CLASSICS')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'CLASSICS')]) }
+        end
+
+        context 'when library is ENG' do
+          let(:holdings) { [build(:lc_holding, library: 'ENG')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'ENG')]) }
+        end
+
+        context 'when library is GOV-DOCS' do
+          let(:holdings) { [build(:lc_holding, library: 'GOV-DOCS')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'GOV-DOCS')]) }
+        end
+
+        context 'when library is GREEN' do
+          let(:holdings) { [build(:lc_holding, library: 'GREEN')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'GREEN')]) }
+        end
+
+        context 'when library is HOOVER' do
+          let(:holdings) { [build(:lc_holding, library: 'HOOVER')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'HOOVER')]) }
+        end
+
+        context 'when library is SAL3' do
+          let(:holdings) { [build(:lc_holding, library: 'SAL3')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'SAL3')]) }
+        end
+
+        context 'when library is SCIENCE' do
+          let(:holdings) { [build(:lc_holding, library: 'SCIENCE')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'SCIENCE')]) }
+        end
+
+        context 'when library is SPEC-COLL' do
+          let(:holdings) { [build(:lc_holding, library: 'SPEC-COLL')] }
+
+          it { is_expected.to match_array([hash_including('library' => 'SPEC-COLL')]) }
+        end
+
+        context 'when library is LANE-MED' do
+          let(:holdings) { [build(:lc_holding, barcode: '36105082101390', call_number: 'Z3871.Z8 V.22 1945', library: 'LANE-MED')] }
+
+          it { is_expected.to match_array([hash_including('barcode' => '36105082101390', 'library' => 'LANE-MED', 'callnumber' => 'Z3871.Z8 V.22 1945')]) }
+        end
+
+        context 'with multiple holdings in single record, diff buildings' do
+          let(:holdings) do
+            [build(:lc_holding, call_number: 'BX4659.E85 W44', barcode: '36105037439663', library: 'GREEN'),
+             build(:lc_holding, call_number: 'BX4659 .E85 W44 1982', barcode: '36105001623284', library: 'SAL')]
           end
-          expect(select_by_id(id)['item_display_struct'].map { |x| JSON.parse(x) }).to be_any do |field|
-            field['library'] == library.to_s
-          end
-        end
-      end
-
-      it 'handles multiple items in single record, diff buildings' do
-        expect(select_by_id('1033119')[field].length).to eq 2
-
-        expect(select_by_id('1033119')[field].first).to match(
-          /^36105037439663 -\|- GREEN -\|- .*BX4659\.E85 W44/
-        )
-
-        expect(select_by_id('1033119')[field].last).to match(
-          /^36105001623284 -\|- SAL -\|- .*BX4659 \.E85 W44 1982/
-        )
-
-        expect(select_by_id('1033119')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('barcode' => '36105037439663', 'library' => 'GREEN', 'callnumber' => 'BX4659.E85 W44'),
-                                                                                                          hash_including('barcode' => '36105001623284', 'library' => 'SAL', 'callnumber' => 'BX4659 .E85 W44 1982')
-                                                                                                        ])
-      end
-
-      it 'handles same build, same loc, same callnum, one in another building' do
-        expect(select_by_id('2328381')[field].length).to eq 3
-
-        expect(select_by_id('2328381')[field][0]).to match(
-          /^36105003934432 -\|- SAL -\|- .*PR3724\.T3/
-        )
-        expect(select_by_id('2328381')[field][1]).to match(
-          /^36105003934424 -\|- SAL -\|- .*PR3724\.T3/
-        )
-
-        expect(select_by_id('2328381')[field][2]).to match(
-          /^36105048104132 -\|- SAL3 -\|- .*827\.5 \.S97TG/
-        )
-
-        expect(select_by_id('2328381')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('barcode' => '36105003934432', 'library' => 'SAL', 'callnumber' => 'PR3724.T3'),
-                                                                                                          hash_including('barcode' => '36105003934424', 'library' => 'SAL', 'callnumber' => 'PR3724.T3'),
-                                                                                                          hash_including('barcode' => '36105048104132', 'library' => 'SAL3', 'callnumber' => '827.5 .S97TG')
-                                                                                                        ])
-      end
-
-      describe 'with item display fixture' do
-        let(:fixture_name) { 'itemDisplayTests.jsonl' }
-
-        it 'handles materials in LANE' do
-          expect(select_by_id('6661112')[field].length).to eq 1
-          expect(select_by_id('6661112')[field].first).to match(
-            /^36105082101390 -\|- LANE-MED -\|- .*Z3871\.Z8 V\.22 1945/
-          )
-          expect(select_by_id('6661112')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                            hash_including('barcode' => '36105082101390', 'library' => 'LANE-MED', 'callnumber' => 'Z3871.Z8 V.22 1945')
-                                                                                                          ])
-        end
-
-        it 'handles mult items same build, diff loc' do
-          expect(select_by_id('2328381')[field].length).to eq 3
-
-          expect(select_by_id('2328381')[field][0]).to match(
-            /^36105003934432 -\|- GREEN -\|- .*PR3724\.T3/
-          )
-          expect(select_by_id('2328381')[field][1]).to match(
-            /^36105003934424 -\|- GREEN -\|- .*PR3724\.T3/
-          )
-
-          expect(select_by_id('2328381')[field][2]).to match(
-            /^36105048104132 -\|- GRN-REF -\|- .*827\.5 \.S97TG/
-          )
-
-          expect(select_by_id('2328381')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                            hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'callnumber' => 'PR3724.T3'),
-                                                                                                            hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'callnumber' => 'PR3724.T3 A2'),
-                                                                                                            hash_including('barcode' => '36105048104132', 'library' => 'GRN-REF', 'callnumber' => '827.5 .S97TG')
-                                                                                                          ])
-        end
-      end
-
-      describe 'field is populated correctly, focusing on locations' do
-        it 'includes valious locations' do
-          sample_ids_and_locs = {
-            '229800': %w[STACKS],
-            '3941911': %w[STACKS BENDER],
-            '6676531': %w[JAPANESE],
-            '1261173': %w[MEDIA-MTXT],
-            '7233951': %w[ASK@LANE],
-            '1962398': %w[SAL-PAGE],
-            '2913114': %w[SAL-PAGE],
-            '7651581': %w[INPROCESS],
-            '2557826': %w[FED-DOCS]
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105037439663', 'library' => 'GREEN', 'callnumber' => 'BX4659.E85 W44'),
+                                         hash_including('barcode' => '36105001623284', 'library' => 'SAL', 'callnumber' => 'BX4659 .E85 W44 1982')
+                                       ])
           }
-
-          sample_ids_and_locs.each do |id, locations|
-            data = select_by_id(id.to_s)[field]
-            expect(data.length).to be >= 1
-            locations.each do |location|
-              expect(data).to be_any do |field|
-                field.include?("-|- #{location} -|-")
-              end
-            end
-            expect(select_by_id(id.to_s)['item_display_struct'].map { |x| JSON.parse(x) }).to be_any do |field|
-              locations.include?(field['home_location'])
-            end
-          end
         end
 
-        it 'handles one withdrawn location, one valid properly' do
-          data = select_by_id('2214009')[field]
-          # 36105033336798 is WITHDRAWN and should not be returned
-          expect(data.length).to eq 1
-          expect(data.first).to match(/^36105033336780 -\|- SAL3 -\|- STACKS/)
+        context 'withsame build, same loc, same callnum, one in another building' do
+          let(:holdings) do
+            [build(:lc_holding, barcode: '36105003934432', call_number: 'PR3724.T3', library: 'SAL'),
+             build(:lc_holding, barcode: '36105003934424', call_number: 'PR3724.T3', library: 'SAL'),
+             build(:lc_holding, barcode: '36105048104132', call_number: '827.5 .S97TG', library: 'SAL3')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105003934432', 'library' => 'SAL', 'callnumber' => 'PR3724.T3'),
+                                         hash_including('barcode' => '36105003934424', 'library' => 'SAL', 'callnumber' => 'PR3724.T3'),
+                                         hash_including('barcode' => '36105048104132', 'library' => 'SAL3', 'callnumber' => '827.5 .S97TG')
+                                       ])
+          }
         end
 
-        context 'with a different fixture' do
-          let(:fixture_name) { 'itemDisplayTests.jsonl' }
+        context 'when location is STACKS' do
+          let(:holdings) { [build(:lc_holding, home_location: 'STACKS')] }
 
-          it 'handles on order locations' do
-            data = select_by_id('460947')[field]
-            expect(data.length).to eq 2
-            expect(data.first).to match(
-              /^36105007402873 -\|- GREEN -\|- ON-ORDER .* E184\.S75 R47A V\.1 1980/
-            )
-            expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
-              'barcode' => '36105007402873', 'library' => 'GREEN', 'home_location' => 'ON-ORDER', 'callnumber' => 'E184.S75 R47A V.1 1980'
-            )
+          it { is_expected.to match_array([hash_including('home_location' => 'STACKS')]) }
+        end
+
+        context 'when location is ASK@LANE' do
+          let(:holdings) { [build(:lc_holding, home_location: 'ASK@LANE')] }
+
+          it { is_expected.to match_array([hash_including('home_location' => 'ASK@LANE')]) }
+        end
+
+        context 'when there are multiple holdings with different locations' do
+          let(:holdings) { [build(:lc_holding, home_location: 'STACKS'), build(:lc_holding, home_location: 'BENDER')] }
+
+          it { is_expected.to match_array([hash_including('home_location' => 'STACKS'), hash_including('home_location' => 'BENDER')]) }
+        end
+
+        context 'with an on order location' do
+          let(:holdings) do
+            [build(:lc_holding, barcode: '36105007402873', home_location: 'ON-ORDER', call_number: 'E184.S75 R47A V.1 1980'),
+             build(:lc_holding)]
           end
 
-          it 'handles reserve locations' do
-            expect(select_by_id('690002')[field].length).to eq 1
-            expect(select_by_id('690002')[field].first).to match(
-              /^36105046693508 -\|- EARTH-SCI -\|- BRAN-RESV/
-            )
-
-            expect(select_by_id('690002')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                             hash_including('barcode' => '36105046693508', 'library' => 'EARTH-SCI', 'home_location' => 'BRAN-RESV')
-                                                                                                           ])
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105007402873', 'library' => 'GREEN', 'home_location' => 'ON-ORDER', 'callnumber' => 'E184.S75 R47A V.1 1980'),
+                                         hash_including('barcode' => 'barcode')
+                                       ])
+          }
+        end
+        context 'with an reserve location' do
+          let(:holdings) do
+            [build(:lc_holding, barcode: '36105046693508', home_location: 'BRAN-RESV', library: 'EARTH-SCI')]
           end
 
-          it 'handles mult items same build, diff loc' do
-            expect(select_by_id('2328381')[field].length).to eq 3
-            expect(select_by_id('2328381')[field][0]).to match(
-              /^36105003934432 -\|- GREEN -\|- STACKS/
-            )
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105046693508', 'library' => 'EARTH-SCI', 'home_location' => 'BRAN-RESV')
+                                       ])
+          }
+        end
 
-            expect(select_by_id('2328381')[field][1]).to match(
-              /^36105003934424 -\|- GREEN -\|- BINDERY/
-            )
-
-            expect(select_by_id('2328381')[field][2]).to match(
-              /^36105048104132 -\|- GRN-REF -\|- STACKS/
-            )
-
-            expect(select_by_id('2328381')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                              hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'home_location' => 'STACKS'),
-                                                                                                              hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'home_location' => 'BINDERY'),
-                                                                                                              hash_including('barcode' => '36105048104132', 'library' => 'GRN-REF', 'home_location' => 'STACKS')
-                                                                                                            ])
+        context 'with multiple items in the same library / location and with a different callnum' do
+          let(:holdings) do
+            [build(:lc_holding, barcode: '36105003934432', home_location: 'STACKS', call_number: 'PR3724.T3'),
+             build(:lc_holding, barcode: '36105003934424', home_location: 'STACKS', call_number: 'PR3724.T3 A2 V.1'),
+             build(:lc_holding, barcode: '36105048104132', home_location: 'STACKS', call_number: 'PR3724.T3 A2 V.2')]
           end
 
-          it 'hanldes multiple items for single bib with same library / location, diff callnum' do
-            expect(select_by_id('666')[field].length).to eq 3
-            expect(select_by_id('666')[field][0]).to match(
-              /^36105003934432 -\|- GREEN -\|- STACKS/
-            )
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'home_location' => 'STACKS'),
+                                         hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'home_location' => 'STACKS'),
+                                         hash_including('barcode' => '36105048104132', 'library' => 'GREEN', 'home_location' => 'STACKS')
+                                       ])
+          }
+        end
+      end
 
-            expect(select_by_id('666')[field][1]).to match(
-              /^36105003934424 -\|- GREEN -\|- STACKS/
-            )
+      context 'with multiple holdings in single record, diff buildings' do
+        let(:holdings) do
+          [build(:lc_holding, call_number: 'BX4659.E85 W44', barcode: '36105037439663', library: 'GREEN'),
+           build(:lc_holding, call_number: 'BX4659 .E85 W44 1982', barcode: '36105001623284', library: 'SAL')]
+        end
+        subject(:value) { result[field] }
 
-            expect(select_by_id('666')[field][2]).to match(
-              /^36105048104132 -\|- GREEN -\|- STACKS/
-            )
+        it 'has two rows' do
+          expect(value.length).to eq 2
 
-            expect(select_by_id('666')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'home_location' => 'STACKS'),
-                                                                                                          hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'home_location' => 'STACKS'),
-                                                                                                          hash_including('barcode' => '36105048104132', 'library' => 'GREEN', 'home_location' => 'STACKS')
-                                                                                                        ])
-          end
+          expect(value.first).to match(
+            /^36105037439663 -\|- GREEN -\|- .*BX4659\.E85 W44/
+          )
+
+          expect(value.last).to match(
+            /^36105001623284 -\|- SAL -\|- .*BX4659 \.E85 W44 1982/
+          )
+        end
+      end
+
+      context 'withsame build, same loc, same callnum, one in another building' do
+        let(:holdings) do
+          [build(:lc_holding, barcode: '36105003934432', call_number: 'PR3724.T3', library: 'SAL'),
+           build(:lc_holding, barcode: '36105003934424', call_number: 'PR3724.T3', library: 'SAL'),
+           build(:lc_holding, barcode: '36105048104132', call_number: '827.5 .S97TG', library: 'SAL3')]
+        end
+        subject(:value) { result[field] }
+
+        it 'has three rows' do
+          expect(value.length).to eq 3
+
+          expect(value[0]).to match(/^36105003934432 -\|- SAL -\|- .*PR3724\.T3/)
+          expect(value[1]).to match(/^36105003934424 -\|- SAL -\|- .*PR3724\.T3/)
+          expect(value[2]).to match(/^36105048104132 -\|- SAL3 -\|- .*827\.5 \.S97TG/)
+        end
+      end
+
+      context 'when library is LANE-MED' do
+        let(:holdings) { [build(:lc_holding, library: 'LANE-MED')] }
+
+        it { is_expected.to include '-|- LANE-MED -|-' }
+      end
+
+      context 'when location is STACKS' do
+        let(:holdings) { [build(:lc_holding, home_location: 'STACKS')] }
+
+        it { is_expected.to include '-|- STACKS -|-' }
+      end
+
+      context 'when location is ASK@LANE' do
+        let(:holdings) { [build(:lc_holding, home_location: 'ASK@LANE')] }
+
+        it { is_expected.to include '-|- ASK@LANE -|-' }
+      end
+
+      context 'when there are multiple holdings with different locations' do
+        let(:holdings) { [build(:lc_holding, home_location: 'STACKS'), build(:lc_holding, home_location: 'BENDER')] }
+        subject(:value) { result[field] }
+
+        it 'has two rows' do
+          expect(value.length).to eq 2
+
+          expect(value[0]).to include '-|- STACKS -|-'
+          expect(value[1]).to include '-|- BENDER -|-'
+        end
+      end
+
+      context 'with one withdrawn location, one valid' do
+        let(:holdings) { [build(:lc_holding, barcode: '36105033336780', library: 'SAL3', home_location: 'STACKS'), build(:lc_holding, home_location: 'WITHDRAWN')] }
+        subject(:value) { result[field] }
+
+        it 'excludes the withdrawn location' do
+          expect(value.length).to eq 1
+
+          expect(value[0]).to match(/^36105033336780 -\|- SAL3 -\|- STACKS/)
+        end
+      end
+
+      context 'with an on order location' do
+        let(:holdings) do
+          [build(:lc_holding, barcode: '36105007402873', home_location: 'ON-ORDER', call_number: 'E184.S75 R47A V.1 1980'),
+           build(:lc_holding)]
+        end
+        subject(:value) { result[field] }
+
+        it 'includes them' do
+          expect(value.length).to eq 2
+
+          expect(value[0]).to match(/^36105007402873 -\|- GREEN -\|- ON-ORDER .* E184\.S75 R47A V\.1 1980/)
+        end
+      end
+
+      context 'with an reserve location' do
+        let(:holdings) do
+          [build(:lc_holding, barcode: '36105046693508', home_location: 'BRAN-RESV', library: 'EARTH-SCI')]
+        end
+        subject(:value) { result[field].first }
+
+        it { is_expected.to match(/^36105046693508 -\|- EARTH-SCI -\|- BRAN-RESV/) }
+      end
+
+      context 'with multiple items in the same library / location and with a different callnum' do
+        let(:holdings) do
+          [build(:lc_holding, barcode: '36105003934432', home_location: 'STACKS', call_number: 'PR3724.T3'),
+           build(:lc_holding, barcode: '36105003934424', home_location: 'STACKS', call_number: 'PR3724.T3 A2 V.1'),
+           build(:lc_holding, barcode: '36105048104132', home_location: 'STACKS', call_number: 'PR3724.T3 A2 V.2')]
+        end
+        subject(:value) { result[field] }
+
+        it 'includes them' do
+          expect(value.length).to eq 3
+
+          expect(value[0]).to match(/^36105003934432 -\|- GREEN -\|- STACKS/)
+          expect(value[1]).to match(/^36105003934424 -\|- GREEN -\|- STACKS/)
+          expect(value[2]).to match(/^36105048104132 -\|- GREEN -\|- STACKS/)
         end
       end
     end
