@@ -41,7 +41,7 @@ settings do
 
     provide 'kafka.hosts', ::Settings.kafka.hosts
     provide 'kafka.client', Kafka.new(self['kafka.hosts'], logger: Utils.logger)
-    consumer = self['kafka.client'].consumer(group_id: self['kafka.consumer_group_id'] || 'traject')
+    consumer = self['kafka.client'].consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 25)
     consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   elsif self['postgres.url']
