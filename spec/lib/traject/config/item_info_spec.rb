@@ -462,28 +462,47 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'location implies item is shelved by title' do
-      let(:fixture_name) { 'callNumberLCSortTests.jsonl' }
+      let(:record) { MARC::Record.new }
+      subject { result[field] }
 
-      it 'handles SHELBYTITL' do
-        expect(select_by_id('1111')[field].length).to eq 1
-        expect(select_by_id('1111')[field].first).to match(
-          /^36105129694373 -\|- SCIENCE -\|- SHELBYTITL .* Shelved by title VOL 1 1946/
-        )
-        expect(select_by_id('1111')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                       hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'home_location' => 'SHELBYTITL',
-                                                                                                                      'callnumber' => 'Shelved by title VOL 1 1946')
-                                                                                                     ])
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
       end
 
-      it 'handles SHELBYSER' do
-        expect(select_by_id('2211')[field].length).to eq 1
-        expect(select_by_id('2211')[field].first).to match(
-          /^36105129694374 -\|- SCIENCE -\|- SHELBYSER .* Shelved by Series title VOL 1 1946/
-        )
-        expect(select_by_id('2211')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                       hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'home_location' => 'SHELBYSER',
-                                                                                                                      'callnumber' => 'Shelved by Series title VOL 1 1946')
-                                                                                                     ])
+      context 'with SHELBYTITL' do
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', home_location: 'SHELBYTITL', type: 'STKS-MONO')] }
+        subject { result[field].first }
+
+        it { is_expected.to match(/^36105129694373 -\|- SCIENCE -\|- SHELBYTITL .* Shelved by title VOL 1 1946/) }
+
+        context 'for item_display_struct' do
+          let(:field) { 'item_display_struct' }
+          subject { result[field].map { |x| JSON.parse(x) } }
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'home_location' => 'SHELBYTITL',
+                                                        'callnumber' => 'Shelved by title VOL 1 1946')
+                                       ])
+          }
+        end
+      end
+
+      context 'with SHELBYSER' do
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', home_location: 'SHELBYSER', type: 'STKS-MONO')] }
+        subject { result[field].first }
+
+        it { is_expected.to match(/^36105129694374 -\|- SCIENCE -\|- SHELBYSER .* Shelved by Series title VOL 1 1946/) }
+
+        context 'for item_display_struct' do
+          let(:field) { 'item_display_struct' }
+          subject { result[field].map { |x| JSON.parse(x) } }
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'home_location' => 'SHELBYSER',
+                                                        'callnumber' => 'Shelved by Series title VOL 1 1946')
+                                       ])
+          }
+        end
       end
     end
 
