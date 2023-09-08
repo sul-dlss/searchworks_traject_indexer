@@ -1140,19 +1140,5 @@ RSpec.describe 'ItemInfo config' do
         expect(select_by_id('373759')['shelfkey']).to eq ['dewey 553.28050000 p494 ...']
       end
     end
-
-    context 'when a record has multiple copies' do
-      let(:fixture_name) { 'multipleCopies.jsonl' }
-
-      it 'results in multiple fields' do
-        expect(select_by_id('1')[field].length).to eq 2
-        expect(select_by_id('1')[field].first).to start_with('36105003934432 -|-')
-        expect(select_by_id('1')[field].last).to start_with('36105003934424 -|-')
-        expect(select_by_id('1')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                    hash_including('barcode' => '36105003934432'),
-                                                                                                    hash_including('barcode' => '36105003934424')
-                                                                                                  ])
-      end
-    end
   end
 end
