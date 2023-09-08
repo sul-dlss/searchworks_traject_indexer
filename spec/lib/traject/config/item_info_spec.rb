@@ -30,94 +30,159 @@ RSpec.describe 'ItemInfo config' do
   end
 
   describe 'building_facet' do
-    let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
-    let(:fixture_name) { 'buildingTests.xml' }
     let(:field) { 'building_facet' }
-
-    it 'has data' do
-      expect(select_by_id('229800')[field]).to eq ['Archive of Recorded Sound']
-      expect(select_by_id('345228')[field]).to eq ['Art & Architecture (Bowes)']
-      expect(select_by_id('804724')[field]).to eq ['SAL Newark (off-campus storage)']
-      expect(select_by_id('1147269')[field]).to eq ['Classics']
-      expect(select_by_id('1505065')[field]).to eq ['Earth Sciences (Branner)']
-      expect(select_by_id('1618836')[field]).to eq ['Education (Cubberley)']
-      expect(select_by_id('1849258')[field]).to eq ['Engineering (Terman)']
-      expect(select_by_id('2678655')[field]).to eq ['Business']
-      expect(select_by_id('3027805')[field]).to eq ['Marine Biology (Miller)']
-      expect(select_by_id('4258089')[field]).to eq ['Special Collections']
-      expect(select_by_id('4428936')[field]).to eq ['Philosophy (Tanner)']
-      expect(select_by_id('4823592')[field]).to eq ['Law (Crown)']
-      expect(select_by_id('5666387')[field]).to eq ['Music']
-      expect(select_by_id('6676531')[field]).to eq ['East Asia']
-      # expect(select_by_id('10421123')[field]).to eq ['Lathrop']
-      expect(select_by_id('2797608')[field]).to eq ['Media Center']
-      expect(select_by_id('2797609')[field]).to eq ['David Rumsey Map Center']
-      expect(select_by_id('11847684')[field]).to eq ['Science (Li and Ma)']
-
-      # Green
-
-      expect(select_by_id('1033119')[field]).to include 'Green'
-      expect(select_by_id('1261173')[field]).to include 'Green'
-      expect(select_by_id('2557826')[field]).to include 'Green'
-      expect(select_by_id('3941911')[field]).to include 'Green'
-      expect(select_by_id('4114632')[field]).to include 'Green'
-      expect(select_by_id('2099904')[field]).to include 'Green'
-      # checked out
-      expect(select_by_id('575946')[field]).to include 'Green'
-      # NOT  3277173  (withdrawn)
-
-      # SAL 1 & 2
-      expect(select_by_id('1033119')[field]).to include 'SAL1&2 (on-campus storage)'
-      expect(select_by_id('1962398')[field]).to include 'SAL1&2 (on-campus storage)'
-      expect(select_by_id('2328381')[field]).to include 'SAL1&2 (on-campus storage)'
-      expect(select_by_id('2913114')[field]).to include 'SAL1&2 (on-campus storage)'
-
-      # SAL3 (off-campus storage)
-      expect(select_by_id('690002')[field]).to include 'SAL3 (off-campus storage)'
-      expect(select_by_id('2328381')[field]).to include 'SAL3 (off-campus storage)'
-      expect(select_by_id('3941911')[field]).to include 'SAL3 (off-campus storage)'
-      expect(select_by_id('7651581')[field]).to include 'SAL3 (off-campus storage)'
-
-      # Lane
-      expect(select_by_id('7370014')[field]).to include 'Lane Medical'
-      expect(select_by_id('7233951')[field]).to include 'Lane Medical'
-
-      # Hoover
-      expect(select_by_id('3743949')[field]).to include 'Hoover Institution Library & Archives'
-      expect(select_by_id('3400092')[field]).to include 'Hoover Institution Library & Archives'
+    let(:record) { MARC::Record.new }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
     end
 
-    it 'skips invalid buildings' do
-      buildings = []
-      results.map do |result|
-        buildings << result[field]
-      end
+    context 'with ARS' do
+      let(:holdings) { [build(:lc_holding, library: 'ARS')] }
 
-      expect(buildings.flatten).not_to include(
-        'APPLIEDPHY', # Applied Physics Department
-        'CPM', # 1391080 GREEN - Current Periodicals & Microtext
-        'GRN-REF', # 2442876, GREEN - Reference - Obsolete
-        'ILB', # 1111, Inter-Library Borrowing
-        'SPEC-DESK', # GREEN (Humanities & Social Sciences)
-        'SUL',
-        'PHYSICS', # Physics Library
-        'MEYER', # INDEX-168 Meyer
-        'BIOLOGY', # closed
-        'CHEMCHMENG', # closed
-        'MATH-CS' # closed
-      )
+      it { is_expected.to eq ['Archive of Recorded Sound'] }
+    end
+
+    context 'with ART' do
+      let(:holdings) { [build(:lc_holding, library: 'ART')] }
+
+      it { is_expected.to eq ['Art & Architecture (Bowes)'] }
+    end
+
+    context 'with SAL-NEWARK' do
+      let(:holdings) { [build(:lc_holding, library: 'SAL-NEWARK')] }
+
+      it { is_expected.to eq ['SAL Newark (off-campus storage)'] }
+    end
+
+    context 'with CLASSICS' do
+      let(:holdings) { [build(:lc_holding, library: 'CLASSICS')] }
+
+      it { is_expected.to eq ['Classics'] }
+    end
+
+    context 'with EARTH-SCI' do
+      let(:holdings) { [build(:lc_holding, library: 'EARTH-SCI')] }
+
+      it { is_expected.to eq ['Earth Sciences (Branner)'] }
+    end
+
+    context 'with EDUCATION' do
+      let(:holdings) { [build(:lc_holding, library: 'EDUCATION')] }
+
+      it { is_expected.to eq ['Education (Cubberley)'] }
+    end
+
+    context 'with ENG' do
+      let(:holdings) { [build(:lc_holding, library: 'ENG')] }
+
+      it { is_expected.to eq ['Engineering (Terman)'] }
+    end
+
+    context 'with BUSINESS' do
+      let(:holdings) { [build(:lc_holding, library: 'BUSINESS')] }
+
+      it { is_expected.to eq ['Business'] }
+    end
+
+    context 'with HOPKINS' do
+      let(:holdings) { [build(:lc_holding, library: 'HOPKINS')] }
+
+      it { is_expected.to eq ['Marine Biology (Miller)'] }
+    end
+
+    context 'with SPEC-COLL' do
+      let(:holdings) { [build(:lc_holding, library: 'SPEC-COLL')] }
+
+      it { is_expected.to eq ['Special Collections'] }
+    end
+
+    context 'with TANNER' do
+      let(:holdings) { [build(:lc_holding, library: 'TANNER')] }
+
+      it { is_expected.to eq ['Philosophy (Tanner)'] }
+    end
+
+    context 'with LAW' do
+      let(:holdings) { [build(:lc_holding, library: 'LAW')] }
+
+      it { is_expected.to eq ['Law (Crown)'] }
+    end
+
+    context 'with MUSIC' do
+      let(:holdings) { [build(:lc_holding, library: 'MUSIC')] }
+
+      it { is_expected.to eq ['Music'] }
+    end
+
+    context 'with EAST-ASIA' do
+      let(:holdings) { [build(:lc_holding, library: 'EAST-ASIA')] }
+
+      it { is_expected.to eq ['East Asia'] }
+    end
+
+    context 'with MEDIA-MTXT' do
+      let(:holdings) { [build(:lc_holding, library: 'MEDIA-MTXT')] }
+
+      it { is_expected.to eq ['Media Center'] }
+    end
+
+    context 'with RUMSEYMAP' do
+      let(:holdings) { [build(:lc_holding, library: 'RUMSEYMAP')] }
+
+      it { is_expected.to eq ['David Rumsey Map Center'] }
+    end
+
+    context 'with SCIENCE' do
+      let(:holdings) { [build(:lc_holding, library: 'SCIENCE')] }
+
+      it { is_expected.to eq ['Science (Li and Ma)'] }
+    end
+
+    context 'with SAL3' do
+      let(:holdings) { [build(:lc_holding, library: 'SAL3')] }
+
+      it { is_expected.to eq ['SAL3 (off-campus storage)'] }
+    end
+
+    context 'with LANE' do
+      let(:holdings) { [build(:lc_holding, library: 'LANE')] }
+
+      it { is_expected.to eq ['Lane Medical'] }
+    end
+
+    context 'with HOOVER' do
+      let(:holdings) { [build(:lc_holding, library: 'HOOVER')] }
+
+      it { is_expected.to eq ['Hoover Institution Library & Archives'] }
+    end
+
+    context 'with multiple holdings' do
+      let(:holdings) { [build(:lc_holding, library: 'GREEN'), build(:lc_holding, library: 'SAL')] }
+
+      it { is_expected.to eq ['Green', 'SAL1&2 (on-campus storage)'] }
     end
   end
 
   describe 'building_location_facet_ssim' do
-    let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
-    let(:fixture_name) { 'buildingTests.xml' }
     let(:field) { 'building_location_facet_ssim' }
+    let(:record) { MARC::Record.new }
+    subject { result[field] }
 
-    it 'has data' do
-      expect(select_by_id('229800')[field]).to include 'ARS/STACKS', 'ARS/STACKS/type/STKS-MONO', 'ARS/*/type/STKS-MONO'
-      expect(select_by_id('575946')[field]).to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO',
-                                                       'GREEN/*/type/STKS-MONO'
+    before do
+      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+    end
+
+    context 'with ARS/STACKS' do
+      let(:holdings) { [build(:lc_holding, library: 'ARS', home_location: 'STACKS', type: 'STKS-MONO')] }
+
+      it { is_expected.to include 'ARS/STACKS', 'ARS/STACKS/type/STKS-MONO', 'ARS/*/type/STKS-MONO' }
+    end
+
+    context 'with GREEN/STACKS' do
+      let(:holdings) { [build(:lc_holding, library: 'GREEN', home_location: 'STACKS', type: 'STKS-MONO')] }
+
+      it { is_expected.to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO', 'GREEN/*/type/STKS-MONO' }
     end
   end
 
