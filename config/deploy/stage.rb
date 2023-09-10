@@ -36,7 +36,7 @@ set :indexers, [
   },
   {
     key: 'folio_dev_indexer',
-    count: 8,
+    count: 4,
     config: './lib/traject/config/folio_config.rb',
     settings: {
       'log.file' => 'log/traject_folio_dev_indexer.log',
@@ -48,7 +48,7 @@ set :indexers, [
   },
   {
     key: 'sw_gryphonsearch_indexer',
-    count: 8,
+    count: 4,
     config: './lib/traject/config/folio_config.rb',
     settings: {
       'log.file' => 'log/traject_sw_gryphonsearch_indexer.log',
