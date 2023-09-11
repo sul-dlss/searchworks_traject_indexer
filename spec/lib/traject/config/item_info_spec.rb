@@ -457,6 +457,130 @@ RSpec.describe 'ItemInfo config' do
                                        ])
           }
         end
+
+        context 'when holdings are checked out' do
+          let(:holdings) do
+            [build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087092'),
+             build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087093')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT'),
+                                         hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT')
+                                       ])
+          }
+        end
+
+        context 'when there are locations that are shadowed' do
+          let(:holdings) do
+            [build(:lc_holding, home_location: 'CDPSHADOW', barcode: '36105037439663')]
+          end
+          subject { result[field] }
+
+          it { is_expected.to be_nil }
+        end
+
+        context 'when there are locations that are inprocess' do
+          let(:holdings) do
+            [build(:lc_holding, home_location: 'INPROCESS', library: 'SAL3', barcode: '36105129694373')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105129694373', 'library' => 'SAL3', 'home_location' => 'INPROCESS')
+                                       ])
+          }
+        end
+
+        context 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
+          let(:holdings) do
+            [build(:lc_holding, home_location: 'PERM-RES', library: 'EARTH-SCI', barcode: '36105130436541'),
+             build(:lc_holding, home_location: 'REFERENCE', library: 'EARTH-SCI', barcode: '36105130436848'),
+             build(:lc_holding, home_location: 'MEDIA', library: 'EARTH-SCI', barcode: '36105130437192')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'home_location' => 'PERM-RES'),
+                                         hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'home_location' => 'REFERENCE'),
+                                         hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'home_location' => 'MEDIA')
+                                       ])
+          }
+        end
+
+        context 'with loppable call numbers' do
+          let(:holdings) do
+            [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+             build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
+                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                       ])
+          }
+        end
+
+        context 'when call numbers have SUPPL.' do
+          let(:holdings) do
+            [build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.31'),
+             build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.32')]
+          end
+
+          # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
+          it {
+            is_expected.to match_array([
+                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...'),
+                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...')
+                                       ])
+          }
+        end
+
+        describe 'forward sort key (shelfkey)' do
+          let(:holdings) do
+            [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+             build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'),
+                                         hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...')
+                                       ])
+          }
+        end
+
+        describe 'full call numbers' do
+          let(:holdings) do
+            [
+              build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+              build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')
+            ]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('callnumber' => 'E184.S75 R47A V.1 1980'),
+                                         hash_including('callnumber' => 'E184.S75 R47A V.2 1980')
+                                       ])
+          }
+        end
+
+        describe 'reverse shelfkeys' do
+          let(:holdings) do
+            [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+             build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+          end
+
+          it {
+            is_expected.to match_array([
+                                         hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~'),
+                                         hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~')
+                                       ])
+          }
+        end
       end
 
       context 'with multiple holdings in single record, diff buildings' do
@@ -551,7 +675,7 @@ RSpec.describe 'ItemInfo config' do
         end
       end
 
-      context 'with an reserve location' do
+      context 'with a reserve location' do
         let(:holdings) do
           [build(:lc_holding, barcode: '36105046693508', home_location: 'BRAN-RESV', library: 'EARTH-SCI')]
         end
@@ -578,28 +702,30 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'displays home location' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
+    context 'when holdings are checked-out' do
+      let(:record) { MARC::Record.new }
 
-      it 'CHECKEDOUT as current location, STACKS as home location' do
-        expect(select_by_id('575946')[field].length).to eq 2
-        expect(select_by_id('575946')[field].first).to match(
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:holdings) do
+        [build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087092'),
+         build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087093')]
+      end
+
+      subject(:value) { result[field] }
+
+      it 'has two rows' do
+        expect(value.length).to eq 2
+
+        expect(value.first).to match(
           /^36105035087092 -\|- GREEN -\|- STACKS -\|- CHECKEDOUT -/
         )
 
-        expect(select_by_id('575946')[field].last).to match(
+        expect(value.last).to match(
           /^36105035087093 -\|- GREEN -\|- STACKS -\|- CHECKEDOUT -/
         )
-
-        expect(select_by_id('575946')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                         hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT'),
-                                                                                                         hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT')
-                                                                                                       ])
-      end
-
-      it 'WITHDRAWN as current location implies item is skipped' do
-        expect(select_by_id('3277173')[field]).to be_nil
-        expect(select_by_id('3277173')['item_display_struct']).to be_nil
       end
     end
 
@@ -772,191 +898,119 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'locations are not displayed' do
-      let(:fixture_name) { 'locationTests.jsonl' }
+    context 'when there are locations that are shadowed' do
+      let(:record) { MARC::Record.new }
 
-      it 'do not return an item_display' do
-        expect(select_by_id('575946')[field]).to be_nil
-        expect(select_by_id('1033119')[field]).to be_nil
-        expect(select_by_id('575946')['item_display_struct']).to be_nil
-        expect(select_by_id('1033119')['item_display_struct']).to be_nil
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
 
-        # INPROCESS - keep it
-        expect(select_by_id('7651581')[field].length).to eq 1
-        expect(select_by_id('7651581')[field].first).to match(
-          /^36105129694373 -\|- SAL3 -\|- INPROCESS/
-        )
-        expect(select_by_id('7651581')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('barcode' => '36105129694373', 'library' => 'SAL3', 'home_location' => 'INPROCESS')
-                                                                                                        ])
+      let(:holdings) do
+        [build(:lc_holding, home_location: 'CDPSHADOW', barcode: '36105037439663')]
+      end
+
+      subject { result[field] }
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'when there are locations that are inprocess' do
+      let(:record) { MARC::Record.new }
+
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:holdings) do
+        [build(:lc_holding, home_location: 'INPROCESS', library: 'SAL3', barcode: '36105129694373')]
+      end
+
+      subject(:value) { result[field] }
+
+      it 'has one row' do
+        expect(value.length).to eq 1
+        expect(value.first).to match(/^36105129694373 -\|- SAL3 -\|- INPROCESS/)
       end
     end
 
-    describe 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
-      let(:fixture_name) { 'mediaLocTests.jsonl' }
+    context 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
+      let(:record) { MARC::Record.new }
 
-      it 'has the correct data' do
-        expect(select_by_id('7652182')[field].length).to eq 3
-        expect(select_by_id('7652182')[field][0]).to match(
-          /^36105130436541 -\|- EARTH-SCI -\|- PERM-RES/
-        )
-        expect(select_by_id('7652182')[field][1]).to match(
-          /^36105130436848 -\|- EARTH-SCI -\|- REFERENCE/
-        )
-        expect(select_by_id('7652182')[field][2]).to match(
-          /^36105130437192 -\|- EARTH-SCI -\|- MEDIA/
-        )
-        expect(select_by_id('7652182')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'home_location' => 'PERM-RES'),
-                                                                                                          hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'home_location' => 'REFERENCE'),
-                                                                                                          hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'home_location' => 'MEDIA')
-                                                                                                        ])
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      subject(:value) { result[field] }
+
+      let(:holdings) do
+        [build(:lc_holding, home_location: 'PERM-RES', library: 'EARTH-SCI', barcode: '36105130436541'),
+         build(:lc_holding, home_location: 'REFERENCE', library: 'EARTH-SCI', barcode: '36105130436848'),
+         build(:lc_holding, home_location: 'MEDIA', library: 'EARTH-SCI', barcode: '36105130437192')]
+      end
+
+      it 'has three rows' do
+        expect(value.length).to eq 3
+        expect(value[0]).to match(/^36105130436541 -\|- EARTH-SCI -\|- PERM-RES/)
+        expect(value[1]).to match(/^36105130436848 -\|- EARTH-SCI -\|- REFERENCE/)
+        expect(value[2]).to match(/^36105130437192 -\|- EARTH-SCI -\|- MEDIA/)
       end
     end
 
-    # rubocop:disable Layout/LineLength
     describe 'lopped call numbers' do
-      let(:fixture_name) { 'itemDisplayTests.jsonl' }
+      subject(:value) { result[field] }
 
-      it 'has the right data' do
-        item_display = select_by_id('460947000')[field]
-        expect(item_display).to eq [
-          '36105007402873 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC',
-          '36105007402874 -|- SCIENCE -|- STACKS -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.2 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
-        ]
+      let(:record) { MARC::Record.new }
 
-        expect(select_by_id('460947000')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                            hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                                                                                            hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
-                                                                                                          ])
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
 
-        # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
-        item_display = select_by_id('575946')[field]
-        expect(item_display).to eq [
-          '36105035087092 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.31 -|- lc cb  0003.000000 a0.600000 suppl. v.000031 -|-  -|- LC',
-          '36105035087093 -|- GREEN -|- STACKS -|- CHECKEDOUT -|- STKS-MONO -|- CB3 .A6 SUPPL. ... -|- lc cb  0003.000000 a0.600000 suppl. ... -|- en~no~~zzzw}zzzzzz~pz}tzzzzz~75aae}~}}}~~~~~~~~~~~ -|- CB3 .A6 SUPPL. V.32 -|- lc cb  0003.000000 a0.600000 suppl. v.000032 -|-  -|- LC'
-        ]
-        expect(select_by_id('575946')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...'),
-                                                                                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...')
-                                                                                                       ])
+      context 'with loppable call numbers' do
+        let(:holdings) do
+          [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+           build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+        end
 
-        item_display = select_by_id('690002000')[field]
-        expect(item_display).to eq [
-          '36105046693508 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|- ml3l1~yuq}wxzzzzzz~3xyy~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 159.32 .W211 -|- dewey 159.32000000 w211 -|-  -|- DEWEY'
-        ]
-        expect(select_by_id('690002000')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                            hash_including('lopped_callnumber' => '159.32 .W211')
-                                                                                                          ])
+        it 'has two rows' do
+          expect(value.length).to eq 2
+          expect(value[0]).to match(/-|- E184.S75 R47A ... -|-/)
+          expect(value[1]).to match(/-|- E184.S75 R47A ... -|-/)
+        end
+      end
 
-        item_display = select_by_id('2557826')[field]
-        expect(item_display).to eq [
-          '001AMR5851 -|- GREEN -|- FED-DOCS -|-  -|- GOVSTKS -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|- 75mbn~l~zzzzzy}zzzzxr~nbb~zzvxsv~zzzzzy~~~~~~~~~~~ -|- E 1.28:COO-4274-1 -|- sudoc e 000001.000028:coo-004274-000001 -|-  -|- SUDOC'
-        ]
-        expect(select_by_id('2557826')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('lopped_callnumber' => 'E 1.28:COO-4274-1')
-                                                                                                        ])
+      context 'when call numbers have SUPPL.' do
+        let(:holdings) do
+          [build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.31'),
+           build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.32')]
+        end
 
-        item_display = select_by_id('460947')[field]
-        expect(item_display).to eq [
-          '36105007402873 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.1 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC',
-          '36105007402872 -|- GREEN -|- ON-ORDER -|-  -|- STKS-MONO -|- E184.S75 R47A ... -|- lc e   0184.000000 s0.750000 r0.470000a ... -|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|- E184.S75 R47A V.2 1980 -|- lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|-  -|- LC'
-        ]
-        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                                                                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
-                                                                                                       ])
-
-        item_display = select_by_id('446688')[field]
-        expect(item_display).to eq [
-          '36105007402873 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|- ml3l1~ttt}xszzzzzz~kxx~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- 666.27 .F22 -|- dewey 666.27000000 f22 -|-  -|- DEWEY'
-        ]
-        expect(select_by_id('446688')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                         hash_including('lopped_callnumber' => '666.27 .F22')
-                                                                                                       ])
-
-        item_display = select_by_id('4578538')[field]
-        expect(item_display).to eq [
-          '36105046377987 -|- SAL3 -|- STACKS -|-  -|- STKS-MONO -|- SUSEL-69048 -|- other susel-069048 -|- b6il8~757le~ztqzvr~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -|- SUSEL-69048 -|- other susel-069048 -|-  -|- ALPHANUM'
-        ]
-        expect(select_by_id('4578538')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('lopped_callnumber' => 'SUSEL-69048')
-                                                                                                        ])
-
-        item_display = select_by_id('1261173')[field]
-        expect(item_display).to eq [
-          '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|- b6il8~dkhed~c}7}~zzywuz~8lle~zzzxwz~cb}~zzwsvy~~~~ -|- MFILM N.S. 1350 REEL 230 NO. 3741 -|- other mfilm n.s. 001350 reel 000230 no. 003741 -|-  -|- ALPHANUM'
-        ]
-        expect(select_by_id('1261173')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('lopped_callnumber' => 'MFILM N.S. 1350 REEL 230 NO. 3741')
-                                                                                                        ])
-
-        item_display = select_by_id('1234673')[field]
-        expect(item_display).to eq [
-          '001AFX2969 -|- GREEN -|- MEDIA-MTXT -|-  -|- NH-MICR -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|- b6il8~dnm~o8lcmle~aep17~oll6ib4lc~7~l8bhnp~4p8hp6hbc7 -|- MCD Brendel Plays Beethoven\'s Eroica variations -|- other mcd brendel plays beethoven\'s eroica variations -|-  -|- ALPHANUM'
-        ]
-        expect(select_by_id('1234673')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('lopped_callnumber' => 'MCD Brendel Plays Beethoven\'s Eroica variations')
-                                                                                                        ])
-
-        item_display = select_by_id('3941911')[field]
-        expect(item_display).to eq [
-          '36105025373064 -|- GREEN -|- BENDER -|-  -|- NONCIRC -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC',
-          '36105019748495 -|- GREEN -|- BENDER -|-  -|- STKS-MONO -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|- en~a7~~wuus}zzzzzz~bz}urxqzz~fz}wzzzzz~zzyqqr~~~~~ -|- PS3557 .O5829 K3 1998 -|- lc ps  3557.000000 o0.582900 k0.300000 001998 -|-  -|- LC'
-        ]
-        expect(select_by_id('3941911')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('lopped_callnumber' => 'PS3557 .O5829 K3 1998'),
-                                                                                                          hash_including('lopped_callnumber' => 'PS3557 .O5829 K3 1998')
-                                                                                                        ])
-
-        item_display = select_by_id('111')[field]
-        expect(item_display).to eq [
-          '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.12 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000012 -|-  -|- LC',
-          '36105003934424 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.1 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000001 -|-  -|- LC',
-          '36105048104132 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 A2 ... -|- lc pr  3724.000000 t0.300000 a0.200000 ... -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~pz}xzzzzz~}}}~~~~~~~~ -|- PR3724.T3 A2 V.2 -|- lc pr  3724.000000 t0.300000 a0.200000 v.000002 -|-  -|- LC'
-        ]
-        expect(select_by_id('111')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...'),
-                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...'),
-                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...')
-                                                                                                    ])
-
-        item_display = select_by_id('222')[field]
-        expect(item_display).to eq [
-          '36105003934432 -|- GREEN -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~4z}xzzzzz~~~~~~~~~~~~ -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|-  -|- LC',
-          '36105003934424 -|- SAL -|- STACKS -|-  -|- STKS-MONO -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|- en~a8~~wsxv}zzzzzz~6z}wzzzzz~4z}xzzzzz~~~~~~~~~~~~ -|- PR3724.T3 V2 -|- lc pr  3724.000000 t0.300000 v0.200000 -|-  -|- LC'
-        ]
-        expect(select_by_id('222')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 V2'),
-                                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 V2')
-                                                                                                    ])
-
-        item_display = select_by_id('4823592')[field]
-        expect(item_display).to eq [
-          '36105063104488 -|- LAW -|- BASEMENT -|-  -|- LAW-STKS -|- Y 4.G 74/7:G 21/10 -|- other y 000004.g 000074/000007:g 000021/000010 -|- b6il8~1~zzzzzv}j~zzzzsv~zzzzzs~j~zzzzxy~zzzzyz~~~~ -|- Y 4.G 74/7:G 21/10 -|- other y 000004.g 000074/000007:g 000021/000010 -|-  -|- OTHER'
-        ]
-        expect(select_by_id('4823592')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                          hash_including('lopped_callnumber' => 'Y 4.G 74/7:G 21/10')
-                                                                                                        ])
+        it 'has two rows' do
+          expect(value.length).to eq 2
+          # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
+          expect(value[0]).to match(/-|- CB3 .A6 SUPPL. ... -|-/)
+          expect(value[1]).to match(/-|- CB3 .A6 SUPPL. ... -|-/)
+        end
       end
     end
-    # rubocop:enable Layout/LineLength
 
     describe 'forward sort key (shelfkey)' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
+      subject(:value) { result[field] }
 
-      it 'has the shelfkey for the lopped call number' do
-        item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
-        expect(item_display).to eq [
-          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
-          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...',
-          'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~', 'E184.S75 R47A V.1 1980',
-          'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-          '', 'LC'
-        ]
-        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
-          'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'
-        )
+      let(:record) { MARC::Record.new }
+
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+      end
+
+      it 'has two rows' do
+        expect(value.length).to eq 2
+        expect(value[0]).to match(/-|- lc e   0184.000000 s0.750000 r0.470000a ... -|-/)
+        expect(value[1]).to match(/-|- lc e   0184.000000 s0.750000 r0.470000a ... -|-/)
       end
     end
 
@@ -1011,35 +1065,46 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'reverse shelfkeys' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
+      subject(:value) { result[field] }
 
-      it 'has the reversed shelfkey for the lopped call number' do
-        item_display = select_by_id('460947')[field].first.split('-|-').map(&:strip)
-        expect(item_display).to eq [
-          '36105007402873', 'SCIENCE', 'STACKS', '', 'STKS-MONO',
-          'E184.S75 R47A ...', 'lc e   0184.000000 s0.750000 r0.470000a ...', 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
-          'E184.S75 R47A V.1 1980', 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', '', 'LC'
-        ]
-        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }.first).to include(
-          'barcode' => '36105007402873', 'library' => 'SCIENCE', 'home_location' => 'STACKS', 'type' => 'STKS-MONO',
-          'lopped_callnumber' => 'E184.S75 R47A ...', 'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...', 'reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
-          'callnumber' => 'E184.S75 R47A V.1 1980', 'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'scheme' => 'LC'
-        )
+      let(:record) { MARC::Record.new }
+
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+      end
+
+      it 'has two rows' do
+        expect(value.length).to eq 2
+        expect(value[0]).to match(/-|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|-/)
+        expect(value[1]).to match(/-|- en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~ -|-/)
       end
     end
 
     describe 'full call numbers' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
+      subject(:value) { result[field] }
 
-      it 'are populated' do
-        expect(select_by_id('460947')[field].length).to eq 2
-        expect(select_by_id('460947')[field].first).to include('-|- E184.S75 R47A V.1 1980 -|-')
-        expect(select_by_id('460947')[field].last).to include('-|- E184.S75 R47A V.2 1980 -|-')
+      let(:record) { MARC::Record.new }
 
-        expect(select_by_id('460947')['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
-                                                                                                         hash_including('callnumber' => 'E184.S75 R47A V.1 1980'),
-                                                                                                         hash_including('callnumber' => 'E184.S75 R47A V.2 1980')
-                                                                                                       ])
+      before do
+        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      end
+
+      let(:holdings) do
+        [
+          build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+          build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')
+        ]
+      end
+
+      it 'is included' do
+        expect(result[field].length).to eq 2
+        expect(result[field].first).to include('-|- E184.S75 R47A V.1 1980 -|-')
+        expect(result[field].last).to include('-|- E184.S75 R47A V.2 1980 -|-')
       end
     end
 
