@@ -43,7 +43,7 @@ set :indexers, [
   },
   {
     key: 'sdr_prod_indexer',
-    count: 8,
+    count: 4,
     config: './lib/traject/config/sdr_config.rb',
     settings: {
       'log.file' => 'log/traject_sdr_folio_prod_indexer.log',
@@ -66,7 +66,7 @@ set :indexers, [
   },
   {
     key: 'sdr_searchworks_prod_next_indexer',
-    count: 4,
+    count: 2,
     config: './lib/traject/config/sdr_config.rb',
     settings: {
       'log.file' => 'log/traject_sdr_searchworks_prod_next_indexer.log',
