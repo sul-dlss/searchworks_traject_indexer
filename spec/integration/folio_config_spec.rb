@@ -139,6 +139,7 @@ RSpec.describe 'FOLIO indexing' do
             'holdingsStatementsForIndexes' => [],
             'holdingsStatementsForSupplements' => [] }] }
     end
+    subject(:value) { JSON.parse(result['item_display_struct'].first) }
 
     before do
       folio_record.instance['hrid'] = 'a12451243'
@@ -146,10 +147,17 @@ RSpec.describe 'FOLIO indexing' do
     end
 
     it {
-      expect(result['item_display']).to eq(
-        ['12451243-1001 -|- SUL -|- INTERNET -|-  -|- ONLINE -|-  -|- ' \
-         'lc pr  3562.000000 l0.385000 002014 -|- ' \
-         'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~ -|-  -|-  -|-  -|- LC']
+      expect(value).to eq(
+        { 'id' => nil, 'barcode' => '12451243-1001',
+          'library' => 'SUL',
+          'home_location' => 'INTERNET',
+          'current_location' => nil, 'type' => 'ONLINE',
+          'note' => nil, 'lopped_callnumber' => nil,
+          'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
+          'reverse_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
+          'callnumber' => nil,
+          'full_shelfkey' => nil,
+          'scheme' => 'LC' }
       )
     }
 
@@ -243,11 +251,11 @@ RSpec.describe 'FOLIO indexing' do
           'holdings' => holdings }
       end
 
-      it { expect(result['item_display'].find { |h| h.match?(/INTERNET/) }).to be_nil }
+      it { expect(result['item_display_struct'].find { |h| h.match?(/INTERNET/) }).to be_nil }
     end
   end
 
-  describe 'item_display' do
+  describe 'item_display_struct' do
     context 'item status is checked out' do
       let(:items) do
         [{ 'id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
@@ -364,7 +372,7 @@ RSpec.describe 'FOLIO indexing' do
         allow(client).to receive(:pieces).and_return([])
       end
 
-      it { expect(result['item_display'].find { |h| h.match?(/CHECKEDOUT/) }).to be_present }
+      it { expect(result['item_display_struct'].find { |h| h.match?(/CHECKEDOUT/) }).to be_present }
 
       it 'includes the item UUID in the item_display_struct field' do
         expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
@@ -489,7 +497,7 @@ RSpec.describe 'FOLIO indexing' do
         allow(client).to receive(:pieces).and_return([])
       end
 
-      it { expect(result['item_display'].find { |h| h.match?(/INTRANSIT/) }).to be_present }
+      it { expect(result['item_display_struct'].find { |h| h.match?(/INTRANSIT/) }).to be_present }
     end
 
     context 'item is awaiting pickup' do
@@ -618,7 +626,7 @@ RSpec.describe 'FOLIO indexing' do
       end
 
       it 'uses the pickup location of the request to generate a current location value' do
-        expect(result['item_display'].find { |h| h.match?(/RUM-LOAN/) }).to be_present
+        expect(result['item_display_struct'].find { |h| h.match?(/RUM-LOAN/) }).to be_present
       end
     end
   end
