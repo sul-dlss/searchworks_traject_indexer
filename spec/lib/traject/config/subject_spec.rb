@@ -737,7 +737,14 @@ RSpec.describe 'Subject config' do
 
   describe 'Lane Blacklists' do
     let(:fixture_name) { 'subjectLaneBlacklistTests.jsonl' }
-    let(:results) { records.map { |rec| indexer.map_record(marc_to_folio_with_stubbed_holdings(rec)) }.to_a }
+    let(:folio_records) { records.map { |rec| marc_to_folio(rec) } }
+    let(:results) { folio_records.map { |rec| indexer.map_record(rec) }.to_a }
+    before do
+      # Give a LANE-MED holding to all of the records except for a655keepme
+      folio_records.each do |folio_record|
+        allow(folio_record).to receive(:sirsi_holdings).and_return([build(:lc_holding, library: 'LANE-MED')]) if folio_record['001'].value != 'a655keepme'
+      end
+    end
 
     it 'removes 650a/655a "nomesh", "nomesh." and "nomeshx" from topic_search and topic_facet' do
       expect(results).not_to include hash_including('topic_search' => include(/nomesh/))
