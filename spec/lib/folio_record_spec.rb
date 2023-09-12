@@ -313,7 +313,7 @@ RSpec.describe FolioRecord do
       context 'when the bound with child is in SAL3' do
         let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child_see-other.json'))), client) }
         it 'adds SEE-OTHER as the home_location' do
-          skip('Nah')
+          skip('Unclear whether we need to preserve this behavior in FOLIO')
           expect(folio_record.sirsi_holdings.first.home_location).to eq('SEE-OTHER')
         end
       end
