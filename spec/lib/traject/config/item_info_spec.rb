@@ -7,21 +7,19 @@ RSpec.describe 'ItemInfo config' do
     end
   end
 
-  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:folio_records) { records.map { |rec| marc_to_folio_with_stubbed_holdings(rec) } }
   let(:folio_record) { marc_to_folio(record) }
-  let(:results) { folio_records.map { |rec| indexer.map_record(rec) }.to_a }
-  subject(:result) { indexer.map_record(folio_record) }
+  let(:result) { indexer.map_record(folio_record) }
+  let(:record) { MARC::Record.new }
+  let(:holdings) { [] }
+  subject(:value) { result[field] }
+
+  before do
+    allow(folio_record).to receive(:item_holdings).and_return(holdings)
+  end
 
   describe 'barcode_search' do
     let(:field) { 'barcode_search' }
-    let(:record) { MARC::Record.new }
-    subject { result[field] }
-
-    before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-    end
 
     context 'with one barcode' do
       let(:holdings) { [build(:lc_holding, barcode: '36105033811451')] }
@@ -38,11 +36,6 @@ RSpec.describe 'ItemInfo config' do
 
   describe 'building_facet' do
     let(:field) { 'building_facet' }
-    let(:record) { MARC::Record.new }
-    subject { result[field] }
-    before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-    end
 
     context 'with ARS' do
       let(:holdings) { [build(:lc_holding, library: 'ARS')] }
@@ -173,12 +166,6 @@ RSpec.describe 'ItemInfo config' do
 
   describe 'building_location_facet_ssim' do
     let(:field) { 'building_location_facet_ssim' }
-    let(:record) { MARC::Record.new }
-    subject { result[field] }
-
-    before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-    end
 
     context 'with ARS/STACKS' do
       let(:holdings) { [build(:lc_holding, library: 'ARS', home_location: 'STACKS', type: 'STKS-MONO')] }
@@ -198,6 +185,7 @@ RSpec.describe 'ItemInfo config' do
     subject(:value) { result[field].map { |x| JSON.parse(x) } }
 
     context 'when an item is on-order' do
+      # NOTE: This test exercises on_order_stub_holdings
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -231,12 +219,6 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'field is populated correctly, focusing on building/library' do
-      let(:record) { MARC::Record.new }
-
-      before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-      end
-
       context 'when library is APPLIEDPHY' do
         let(:holdings) { [build(:lc_holding, library: 'APPLIEDPHY')] }
 
@@ -392,33 +374,33 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'displays home location' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
-
-      it 'CHECKEDOUT as current location, STACKS as home location' do
-        expect(select_by_id('575946')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                         hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT'),
-                                                                                         hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT')
-                                                                                       ])
+    context 'when holdings are checked-out' do
+      let(:holdings) do
+        [build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087092'),
+         build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087093')]
       end
 
-      it 'WITHDRAWN as current location implies item is skipped' do
-        expect(select_by_id('3277173')[field]).to be_nil
+      it {
+        is_expected.to match_array([
+                                     hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT'),
+                                     hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT')
+                                   ])
+      }
+    end
+
+    context 'when holdings are withdrawn' do
+      let(:holdings) do
+        [build(:lc_holding, current_location: 'WITHDRAWN', home_location: 'STACKS', barcode: '36105035087092')]
       end
+      subject(:value) { result[field] }
+
+      it { is_expected.to be_nil }
     end
 
     describe 'location implies item is shelved by title' do
-      let(:record) { MARC::Record.new }
-      subject { result[field] }
-
-      before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-      end
-
       context 'with SHELBYTITL' do
         let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', home_location: 'SHELBYTITL', type: 'STKS-MONO')] }
-        let(:field) { 'item_display_struct' }
-        subject { result[field].map { |x| JSON.parse(x) } }
+
         it {
           is_expected.to match_array([
                                        hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'home_location' => 'SHELBYTITL',
@@ -430,8 +412,6 @@ RSpec.describe 'ItemInfo config' do
       context 'with SHELBYSER' do
         let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', home_location: 'SHELBYSER', type: 'STKS-MONO')] }
 
-        let(:field) { 'item_display_struct' }
-        subject { result[field].map { |x| JSON.parse(x) } }
         it {
           is_expected.to match_array([
                                        hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'home_location' => 'SHELBYSER',
@@ -442,12 +422,6 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'holding record variations' do
-      before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-      end
-
-      let(:record) { MARC::Record.new }
-
       context 'with a NEWS-STKS location' do
         let(:holdings) do
           [
@@ -521,114 +495,88 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'locations are not displayed' do
-      let(:fixture_name) { 'locationTests.jsonl' }
-
-      it 'do not return an item_display' do
-        expect(select_by_id('575946')[field]).to be_nil
-        expect(select_by_id('1033119')[field]).to be_nil
-
-        # INPROCESS - keep it
-        expect(select_by_id('7651581')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('barcode' => '36105129694373', 'library' => 'SAL3', 'home_location' => 'INPROCESS')
-                                                                                        ])
+    context 'when there are locations that are shadowed' do
+      let(:holdings) do
+        [build(:lc_holding, home_location: 'CDPSHADOW', barcode: '36105037439663')]
       end
+
+      subject { result[field] }
+
+      it { is_expected.to be_nil }
     end
 
-    describe 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
-      let(:fixture_name) { 'mediaLocTests.jsonl' }
-
-      it 'has the correct data' do
-        expect(select_by_id('7652182')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'home_location' => 'PERM-RES'),
-                                                                                          hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'home_location' => 'REFERENCE'),
-                                                                                          hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'home_location' => 'MEDIA')
-                                                                                        ])
+    context 'when there are locations that are inprocess' do
+      let(:holdings) do
+        [build(:lc_holding, home_location: 'INPROCESS', library: 'SAL3', barcode: '36105129694373')]
       end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('barcode' => '36105129694373', 'library' => 'SAL3', 'home_location' => 'INPROCESS')
+                                   ])
+      }
     end
 
-    describe 'lopped call numbers' do
-      let(:fixture_name) { 'itemDisplayTests.jsonl' }
-
-      it 'has the right data' do
-        expect(select_by_id('460947000')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                            hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                                                                            hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
-                                                                                          ])
-
-        # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
-        expect(select_by_id('575946')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...'),
-                                                                                         hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...')
-                                                                                       ])
-
-        expect(select_by_id('690002000')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                            hash_including('lopped_callnumber' => '159.32 .W211')
-                                                                                          ])
-
-        expect(select_by_id('2557826')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('lopped_callnumber' => 'E 1.28:COO-4274-1')
-                                                                                        ])
-
-        expect(select_by_id('460947')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                                                                         hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
-                                                                                       ])
-
-        expect(select_by_id('446688')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                         hash_including('lopped_callnumber' => '666.27 .F22')
-                                                                                       ])
-
-        expect(select_by_id('4578538')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('lopped_callnumber' => 'SUSEL-69048')
-                                                                                        ])
-
-        expect(select_by_id('1261173')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('lopped_callnumber' => 'MFILM N.S. 1350 REEL 230 NO. 3741')
-                                                                                        ])
-
-        expect(select_by_id('1234673')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('lopped_callnumber' => 'MCD Brendel Plays Beethoven\'s Eroica variations')
-                                                                                        ])
-
-        expect(select_by_id('3941911')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('lopped_callnumber' => 'PS3557 .O5829 K3 1998'),
-                                                                                          hash_including('lopped_callnumber' => 'PS3557 .O5829 K3 1998')
-                                                                                        ])
-
-        expect(select_by_id('111')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...'),
-                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...'),
-                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 A2 ...')
-                                                                                    ])
-
-        expect(select_by_id('222')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 V2'),
-                                                                                      hash_including('lopped_callnumber' => 'PR3724.T3 V2')
-                                                                                    ])
-
-        expect(select_by_id('4823592')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                          hash_including('lopped_callnumber' => 'Y 4.G 74/7:G 21/10')
-                                                                                        ])
+    context 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
+      let(:holdings) do
+        [build(:lc_holding, home_location: 'PERM-RES', library: 'EARTH-SCI', barcode: '36105130436541'),
+         build(:lc_holding, home_location: 'REFERENCE', library: 'EARTH-SCI', barcode: '36105130436848'),
+         build(:lc_holding, home_location: 'MEDIA', library: 'EARTH-SCI', barcode: '36105130437192')]
       end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'home_location' => 'PERM-RES'),
+                                     hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'home_location' => 'REFERENCE'),
+                                     hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'home_location' => 'MEDIA')
+                                   ])
+      }
     end
+
+    context 'with loppable call numbers' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+      end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                   ])
+      }
+    end
+
+    context 'when call numbers have SUPPL.' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.31'),
+         build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.32')]
+      end
+
+      # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
+      it {
+        is_expected.to match_array([
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...'),
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...')
+                                   ])
+      }
+    end
+
     describe 'forward sort key (shelfkey)' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
-
-      it 'has the shelfkey for the lopped call number' do
-        expect(select_by_id('460947')[field].map { |x| JSON.parse(x) }.first).to include(
-          'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'
-        )
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
       end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'),
+                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...')
+                                   ])
+      }
     end
 
     describe 'public note' do
-      before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-      end
-
-      let(:record) { MARC::Record.new }
-
       context 'when the public note is upper case ".PUBLIC."' do
         let(:holdings) do
           [
@@ -667,34 +615,36 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'reverse shelfkeys' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
-
-      it 'has the reversed shelfkey for the lopped call number' do
-        expect(select_by_id('460947')[field].map { |x| JSON.parse(x) }.first).to include(
-          'barcode' => '36105007402873', 'library' => 'SCIENCE', 'home_location' => 'STACKS', 'type' => 'STKS-MONO',
-          'lopped_callnumber' => 'E184.S75 R47A ...', 'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...', 'reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~',
-          'callnumber' => 'E184.S75 R47A V.1 1980', 'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'scheme' => 'LC'
-        )
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
       end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~'),
+                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~')
+                                   ])
+      }
     end
 
     describe 'full call numbers' do
-      let(:fixture_name) { 'buildingTests.jsonl' }
-
-      it 'are populated' do
-        expect(select_by_id('460947')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                         hash_including('callnumber' => 'E184.S75 R47A V.1 1980'),
-                                                                                         hash_including('callnumber' => 'E184.S75 R47A V.2 1980')
-                                                                                       ])
+      let(:holdings) do
+        [
+          build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+          build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')
+        ]
       end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('callnumber' => 'E184.S75 R47A V.1 1980'),
+                                     hash_including('callnumber' => 'E184.S75 R47A V.2 1980')
+                                   ])
+      }
     end
 
     describe 'call number type' do
-      before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
-      end
-
-      let(:record) { MARC::Record.new }
       context 'ALPHANUM' do
         let(:holdings) do
           [
@@ -824,30 +774,47 @@ RSpec.describe 'ItemInfo config' do
 
     describe 'volsort/full shelfkey' do
       context 'LC' do
-        let(:fixture_name) { 'buildingTests.jsonl' }
-
-        it 'is included' do
-          # Note that the previous shelfkey had "r0.470000 a" instead of "r0.470000a"
-          expect(select_by_id('460947')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('callnumber' => 'E184.S75 R47A V.1 1980',
-                                                                                                          'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
-                                                                                           hash_including('callnumber' => 'E184.S75 R47A V.2 1980',
-                                                                                                          'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-                                                                                         ])
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '00332cas a2200085 a 4500'
+            r.append(MARC::ControlField.new('008', '830415c19809999vauuu    a    0    0eng  '))
+          end
         end
+        let(:holdings) do
+          [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
+           build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+        end
+        it {
+          is_expected.to match_array([
+                                       hash_including('callnumber' => 'E184.S75 R47A V.1 1980',
+                                                      'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
+                                       hash_including('callnumber' => 'E184.S75 R47A V.2 1980',
+                                                      'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                                     ])
+        }
       end
 
       context 'DEWEY' do
-        let(:fixture_name) { 'shelfkeyMatchItemDispTests.jsonl' }
-
-        it 'is included' do
-          expect(select_by_id('373245')[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                                           hash_including('callnumber' => '553.2805 .P187 V.1-2 1916-1918',
-                                                                                                          'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~'),
-                                                                                           hash_including('callnumber' => '553.2805 .P187 V.1-2 1919-1920',
-                                                                                                          'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
-                                                                                         ])
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '00332cas a2200085   4500'
+            r.append(MARC::ControlField.new('008', '790219d19161918causu         0   a0eng u'))
+          end
         end
+
+        let(:holdings) do
+          [build(:dewey_holding, call_number: '553.2805 .P187 V.1-2 1916-1918'),
+           build(:dewey_holding, call_number: '553.2805 .P187 V.1-2 1919-1920')]
+        end
+
+        it {
+          is_expected.to match_array([
+                                       hash_including('callnumber' => '553.2805 .P187 V.1-2 1916-1918',
+                                                      'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~'),
+                                       hash_including('callnumber' => '553.2805 .P187 V.1-2 1919-1920',
+                                                      'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
+                                     ])
+        }
 
         # The Education library has a collection of call numbers w/ a scheme of DEWEY but begin w/ TX
         context 'with a DEWEY call number that begins with TX' do
@@ -855,10 +822,6 @@ RSpec.describe 'ItemInfo config' do
             [
               build(:dewey_holding, call_number: 'TX 443.21 A3', home_location: 'STACKS', library: 'CUBBERLY')
             ]
-          end
-
-          before do
-            allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
           end
 
           # this is potentially incidental since we don't fall back for non-valid DEWEY
@@ -873,23 +836,17 @@ RSpec.describe 'ItemInfo config' do
 
     describe 'shefkey field data is the same as the field in the item_display_struct' do
       let(:fixture_name) { 'shelfkeyMatchItemDispTests.jsonl' }
+      let(:item_display_shelfkey) { subject.first.fetch('shelfkey') }
+      let(:shelfkey) { result['shelfkey'] }
+
+      let(:holdings) do
+        [build(:alphanum_holding, call_number: 'CALIF A125 .A34 2002'),
+         build(:alphanum_holding, call_number: 'CALIF A125 .A34 2003')]
+      end
 
       it 'has the same shelfkey in the field as it does in the item_display' do
-        item_display_key = JSON.parse(select_by_id('5788269')[field].first).fetch('shelfkey')
-        expect(item_display_key).to eq 'other calif a000125 .a000034 ...'
-        expect(select_by_id('5788269')['shelfkey']).to eq ['other calif a000125 .a000034 ...']
-
-        item_display_key = JSON.parse(select_by_id('409752')[field].first).fetch('shelfkey')
-        expect(item_display_key).to eq 'other calif a000125 .b000009 ...'
-        expect(select_by_id('409752')['shelfkey']).to eq ['other calif a000125 .b000009 ...']
-
-        item_display_key = JSON.parse(select_by_id('373245')[field].first).fetch('shelfkey')
-        expect(item_display_key).to eq 'dewey 553.28050000 p187 ...'
-        expect(select_by_id('373245')['shelfkey']).to eq ['dewey 553.28050000 p187 ...']
-
-        item_display_key = JSON.parse(select_by_id('373759')[field].first).fetch('shelfkey')
-        expect(item_display_key).to eq 'dewey 553.28050000 p494 ...'
-        expect(select_by_id('373759')['shelfkey']).to eq ['dewey 553.28050000 p494 ...']
+        expect(item_display_shelfkey).to eq 'other calif a000125 .a000034 ...'
+        expect(shelfkey).to eq ['other calif a000125 .a000034 ...']
       end
     end
   end
