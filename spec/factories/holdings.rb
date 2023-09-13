@@ -35,7 +35,7 @@ FactoryBot.define do
     end
 
     trait :internet_holding do
-      call_number { SirsiHolding::ECALLNUM }
+      call_number { FolioHolding::ECALLNUM }
     end
   end
 end

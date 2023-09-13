@@ -18,7 +18,7 @@ RSpec.describe 'Skips records' do
 
   context 'when holdings are withdrawn (causing item_display_struct to be nil)' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      allow(folio_record).to receive(:folio_holdings).and_return(holdings)
     end
 
     let(:holdings) do

@@ -41,7 +41,7 @@ RSpec.describe 'Call Numbers' do
     let(:field) { 'callnum_search' }
     subject { result[field] }
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+      allow(folio_record).to receive(:folio_holdings).and_return(holdings)
     end
     let(:holdings) { [] }
 

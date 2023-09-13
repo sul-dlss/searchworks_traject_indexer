@@ -137,7 +137,7 @@ def call_number_for_holding(record, holding, context)
 
       Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
         separate_browse_call_num << CallNumbers::LC.new(item_050,
-                                                        serial:) if SirsiHolding::CallNumber.new(item_050).valid_lc?
+                                                        serial:) if FolioHolding::CallNumber.new(item_050).valid_lc?
       end
     end
 
@@ -190,7 +190,7 @@ end
 
 # This overrides the method in marc_config.rb to provide holdings derived from Folio data
 def holdings(record, context)
-  context.clipboard[:holdings] ||= record.sirsi_holdings
+  context.clipboard[:holdings] ||= record.folio_holdings
 end
 
 to_field 'id', extract_marc('001') do |_record, accumulator|
@@ -1755,7 +1755,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
 
     translation_map = Traject::TranslationMap.new('call_number')
     cn = holding.call_number.normalized_lc
-    next unless SirsiHolding::CallNumber.new(cn).valid_lc?
+    next unless FolioHolding::CallNumber.new(cn).valid_lc?
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1803,7 +1803,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
+    next unless cn =~ FolioHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1827,7 +1827,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX
+    next unless cn =~ FolioHolding::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1912,7 +1912,7 @@ to_field 'callnum_search' do |record, accumulator, context|
 end
 
 to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, accumulator, _context|
-  accumulator.select! { |cn| cn =~ SirsiHolding::CallNumber::VALID_LC_REGEX }
+  accumulator.select! { |cn| cn =~ FolioHolding::CallNumber::VALID_LC_REGEX }
 end
 
 # shelfkey = custom, getShelfkeys
@@ -2310,7 +2310,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
                                                         reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
                                                         callnumber: (unless holding.ignored_call_number? && !holding.shelved_by_location?
                                                                        call_number
-                                                                     end) || (if holding.e_call_number? && call_number.to_s != SirsiHolding::ECALLNUM && !call_number_object.call_number
+                                                                     end) || (if holding.e_call_number? && call_number.to_s != FolioHolding::ECALLNUM && !call_number_object.call_number
                                                                                 call_number
                                                                               end),
                                                         full_shelfkey: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
