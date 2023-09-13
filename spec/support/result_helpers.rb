@@ -7,7 +7,7 @@ module ResultHelpers
         stub_sirsi_holdings = []
 
         marc_record.each_by_tag('999') do |item|
-          stub_sirsi_holdings << SirsiHolding.new(
+          stub_sirsi_holdings << FolioHolding.new(
             call_number: (item['a'] || '').strip,
             current_location: item['k'],
             home_location: item['l'],

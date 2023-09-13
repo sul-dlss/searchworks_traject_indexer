@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Folio
-  # Folio::EresourceHoldingsBuilder builds an array of SirsiHolding
+  # Folio::EresourceHoldingsBuilder builds an array of FolioHolding
   # instances for electronic resources from FOLIO record components,
   # matching what we would expect to see in a Sirsi record.
   class EresourceHoldingsBuilder
@@ -30,7 +30,7 @@ module Folio
       fields = electronic_location_fields.first(1) if fields.empty?
 
       fields.map.with_index do |_url, index|
-        sirsi_holding(index)
+        folio_holding(index)
       end
     end
 
@@ -47,7 +47,7 @@ module Folio
       (marc_record || []).select { |field| %w[856 956].include?(field.tag) && field.codes.include?('u') }
     end
 
-    def sirsi_holding(index)
+    def folio_holding(index)
       FolioHolding.new(
         call_number: CALL_NUMBER,
         barcode: barcode(index),

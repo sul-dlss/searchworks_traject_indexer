@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :holding, class: 'SirsiHolding' do
+  factory :holding, class: 'FolioHolding' do
     current_location { '' }
     home_location { '' }
     library { 'GREEN' }
@@ -35,7 +35,7 @@ FactoryBot.define do
     end
 
     trait :internet_holding do
-      call_number { SirsiHolding::ECALLNUM }
+      call_number { FolioHolding::ECALLNUM }
     end
   end
 end

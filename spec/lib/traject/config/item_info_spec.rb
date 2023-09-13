@@ -447,7 +447,7 @@ RSpec.describe 'ItemInfo config' do
         it 'is shelved by title' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
                                                                            hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
-                                                                                          'scheme' => 'ALPHANUM')
+                                                                                          'scheme' => 'OTHER')
                                                                          ])
         end
       end
@@ -645,7 +645,7 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'call number type' do
-      context 'ALPHANUM' do
+      context 'ALPHANUM => OTHER' do
         let(:holdings) do
           [
             build(:alphanum_holding, call_number: 'YUGOSLAV SERIAL 1973')
@@ -654,7 +654,7 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('ALPHANUM'))
+                                                                           hash_including('scheme' => end_with('OTHER'))
                                                                          ])
         end
       end
@@ -738,7 +738,7 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('ALPHANUM'))
+                                                                           hash_including('scheme' => end_with('OTHER'))
                                                                          ])
         end
       end
