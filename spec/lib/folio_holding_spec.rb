@@ -58,5 +58,50 @@ RSpec.describe FolioHolding do
         )
       end
     end
+
+    context 'with a bound-with holding' do
+      subject(:hash) { described_class.new(item:, holding:, instance:, bound_with_holding:).to_item_display_hash }
+      let(:item) do
+        {
+          id: 'uuid',
+          barcode: '36105000',
+          status: 'Available',
+          materialTypeId: 'mt-uuid',
+          temporaryLoanTypeId: 'tlt-uuid',
+          permanentLoanTypeId: 'plt-uuid',
+          location: {
+            temporaryLocation: { code: 'GRE-STACKS' }
+          }
+        }.with_indifferent_access
+      end
+      let(:holding) do
+        {
+          location: {
+            effectiveLocation: { code: 'SAL3-STACKS' }
+          }
+        }.with_indifferent_access
+      end
+      let(:instance) do
+        {
+          id: 'instance-uuid',
+          hrid: 'instance-hrid'
+        }.with_indifferent_access
+      end
+      let(:bound_with_holding) do
+        {
+          callNumber: 'bound-with-callnumber'
+        }.with_indifferent_access
+      end
+
+      it 'maps the available holdings data' do
+        expect(hash).to include(
+          barcode: '36105000',
+          permanent_location_code: 'SAL3-STACKS',
+          temporary_location_code: 'GRE-STACKS',
+          instance_id: 'instance-uuid',
+          instance_hrid: 'instance-hrid'
+        )
+      end
+    end
   end
 end

@@ -152,6 +152,7 @@ class FolioRecord
       FolioHolding.new(
         item:,
         holding:,
+        instance:,
         course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] }
       )
     end
@@ -169,6 +170,7 @@ class FolioRecord
       FolioHolding.new(
         item: parent_item,
         holding: parent_holding,
+        instance: holding.dig('boundWith', 'instance'),
         bound_with_holding: holding
       )
     end
@@ -186,6 +188,7 @@ class FolioRecord
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
       FolioHolding.new(
         holding:,
+        instance:,
         current_location: 'ON-ORDER'
       )
     end
@@ -200,6 +203,7 @@ class FolioRecord
     lib_codes -= ['SUL'] if lib_codes.length > 1
     lib_codes.map do |lib|
       FolioHolding.new(
+        instance:,
         library: lib,
         home_location: 'ON-ORDER',
         current_location: 'ON-ORDER'

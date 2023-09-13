@@ -16,19 +16,23 @@ class FolioHolding
   SKIPPED_LOCS = %w[BORROWDIR CDPSHADOW SHADOW SSRC-FIC-S STAFSHADOW TECHSHADOW WITHDRAWN].freeze
   TEMP_CALLNUM_PREFIX = 'XX('
 
-  attr_reader :item, :holding, :bound_with_holding, :id, :scheme, :type, :barcode, :course_reserves
+  attr_reader :item, :holding, :instance, :bound_with_holding,
+              :id, :scheme, :type, :barcode, :course_reserves
 
   # rubocop:disable Metrics/ParameterLists
-  def initialize(item: nil, holding: nil, bound_with_holding: nil, course_reserves: [],
+  def initialize(item: nil, holding: nil, instance: nil,
+                 bound_with_holding: nil,
+                 course_reserves: [],
                  call_number: nil, type: nil,
                  library: nil, home_location: nil, current_location: nil,
                  # to deprecate
                  scheme: nil, barcode: nil, public_note: nil)
     @item = item
     @holding = holding
+    @instance = instance
     @bound_with_holding = bound_with_holding
     @id = id || @item&.dig('id')
-    @provided_call_number = call_number || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @bound_with_holding&.dig('callNumber') || @holding&.dig('callNumber')
+    @provided_call_number = call_number || @bound_with_holding&.dig('callNumber') || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @holding&.dig('callNumber')
     @current_location = current_location
     @home_location = home_location
     @library = library
@@ -171,6 +175,8 @@ class FolioHolding
       current_location:,
       type:,
       note: public_note.presence,
+      instance_id: instance&.dig('id'),
+      instance_hrid: instance&.dig('hrid'),
       # FOLIO item data to replace library/home_location/current_location some day
       temporary_location_code: temporary_location&.dig('code'),
       permanent_location_code: permanent_location&.dig('code'),
