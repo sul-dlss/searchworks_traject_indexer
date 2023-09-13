@@ -52,13 +52,12 @@ class FolioHolding
 
   def symphony_location_codes
     @symphony_location_codes ||= begin
-      item_location_code = item&.dig('location', 'temporaryLocation', 'code') if item&.dig('location', 'temporaryLocation', 'details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
-      item_location_code ||= item&.dig('location', 'permanentLocation', 'code')
-      item_location_code ||= holding&.dig('location', 'effectiveLocation', 'code')
+      item_location_code = temporary_location&.dig('code') if temporary_location&.dig('details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
+      item_location_code ||= permanent_location&.dig('code')
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
-      _current_library, current_location = LocationsMap.for(item&.dig('location', 'temporaryLocation', 'code'))
-      current_location ||= item&.dig('location', 'temporaryLocation', 'code') if item&.dig('location', 'temporaryLocation', 'details', 'availabilityClass')
+      _current_library, current_location = LocationsMap.for(temporary_location&.dig('code'))
+      current_location ||= temporary_location&.dig('code') if temporary_location&.dig('details', 'availabilityClass')
       current_location ||= Folio::StatusCurrentLocation.new(item).current_location if item
 
       [library_code, home_location_code, (current_location unless current_location == home_location_code)]
@@ -169,7 +168,15 @@ class FolioHolding
       home_location:,
       current_location:,
       type:,
-      note: public_note.presence
+      note: public_note.presence,
+      # FOLIO item data to replace library/home_location/current_location some day
+      temporary_location_code: temporary_location&.dig('code'),
+      permanent_location_code: permanent_location&.dig('code'),
+      status: item&.dig('status'),
+      # FOLIO data used to drive circulation rules
+      effective_location_id: temporary_location&.dig('id') || permanent_location&.dig('id'),
+      material_type_id: item&.dig('materialTypeId'),
+      loan_type_id: item&.dig('temporaryLoanTypeId') || item&.dig('permanentLoanTypeId')
     }.merge(course_reserves_data)
   end
 
@@ -190,6 +197,15 @@ class FolioHolding
   end
 
   private
+
+  def temporary_location
+    item&.dig('location', 'temporaryLocation')
+  end
+
+  def permanent_location
+    item&.dig('location', 'permanentLocation') ||
+      holding&.dig('location', 'effectiveLocation')
+  end
 
   # Call number normalization ported from solrmarc code
   def normalize_call_number(call_number)
