@@ -48,29 +48,16 @@ module Folio
     end
 
     def sirsi_holding(index)
-      SirsiHolding.new(
+      FolioHolding.new(
         call_number: CALL_NUMBER,
         barcode: barcode(index),
-        home_location: home_location_code,
-        library: library_code,
+        holding: electronic_holding_location,
         type: TYPE
       )
     end
 
     def barcode(index)
       "#{hrid.sub(/^a/, '')}-#{(1000 + index + 1).to_s.rjust(4, '0')}"
-    end
-
-    def home_location_code
-      mapped_location_codes.last
-    end
-
-    def library_code
-      mapped_location_codes.first
-    end
-
-    def mapped_location_codes
-      @mapped_location_codes ||= LocationsMap.for(electronic_holding_location.dig('location', 'effectiveLocation', 'code'))
     end
 
     # This finds the first holding matching an online location code.

@@ -42,7 +42,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   end
 
   it { expect(holdings.count).to eq 1 }
-  it { expect(holdings.first).to be_a SirsiHolding }
+  it { expect(holdings.first).to be_a FolioHolding }
   it { expect(holdings.first.call_number.call_number).to eq 'INTERNET RESOURCE' }
   it { expect(holdings.first.home_location).to eq 'INTERNET' }
   it { expect(holdings.first.library).to eq 'SUL' }
