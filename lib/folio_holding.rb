@@ -14,7 +14,7 @@ class FolioHolding
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA SHELBYTITL SHELBYSER].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
   SKIPPED_LOCS = %w[BORROWDIR CDPSHADOW SHADOW SSRC-FIC-S STAFSHADOW TECHSHADOW WITHDRAWN].freeze
-  TEMP_CALLNUM_PREFIX = 'XX'
+  TEMP_CALLNUM_PREFIX = 'XX('
 
   attr_reader :item, :holding, :bound_with_holding, :id, :scheme, :type, :barcode, :course_reserves
 
