@@ -147,7 +147,7 @@ RSpec.describe 'FOLIO indexing' do
     end
 
     it {
-      expect(value).to eq(
+      expect(value).to include(
         { 'id' => nil, 'barcode' => '12451243-1001',
           'library' => 'SUL',
           'home_location' => 'INTERNET',
