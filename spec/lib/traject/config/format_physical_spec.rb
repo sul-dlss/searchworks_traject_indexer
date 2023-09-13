@@ -59,7 +59,7 @@ RSpec.describe 'Format physical config' do
 
     before do
       # The holding is necessary to get into a branch where it looks for context.output_hash['access_facet'] == ['At the Library']
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -80,7 +80,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -101,7 +101,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -122,7 +122,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -365,7 +365,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -403,7 +403,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -428,7 +428,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -450,7 +450,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -546,7 +546,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -580,7 +580,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -615,7 +615,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -639,7 +639,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -661,7 +661,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -747,7 +747,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]
@@ -864,7 +864,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFILM N.S. 17443', home_location: 'MEDIA-MTXT', type: 'NH-MICR')
         ]
@@ -956,7 +956,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFICHE 1183 N.5.1.7205', home_location: 'MEDIA-MTXT', type: 'NH-MICR')
         ]
@@ -1013,7 +1013,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ZDVD')
         ]
@@ -1033,7 +1033,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ZDVD')
         ]
@@ -1053,7 +1053,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'MDVD')
         ]
@@ -1073,7 +1073,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ADVD')
         ]
@@ -1133,7 +1133,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ZDVD 12345 BLU-RAY')
         ]
@@ -1203,7 +1203,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ZVC')
         ]
@@ -1221,7 +1221,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ARTVC')
         ]
@@ -1239,7 +1239,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'MVC')
         ]
@@ -1257,7 +1257,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'AVC')
         ]
@@ -1414,7 +1414,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'ZVD')
         ]
@@ -1434,7 +1434,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:alphanum_holding, call_number: 'MVD')
         ]
@@ -1680,7 +1680,7 @@ RSpec.describe 'Format physical config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
         ]

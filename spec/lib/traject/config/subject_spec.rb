@@ -742,7 +742,7 @@ RSpec.describe 'Subject config' do
     before do
       # Give a LANE-MED holding to all of the records except for a655keepme
       folio_records.each do |folio_record|
-        allow(folio_record).to receive(:sirsi_holdings).and_return([build(:lc_holding, library: 'LANE-MED')]) if folio_record['001'].value != 'a655keepme'
+        allow(folio_record).to receive(:folio_holdings).and_return([build(:lc_holding, library: 'LANE-MED')]) if folio_record['001'].value != 'a655keepme'
       end
     end
 

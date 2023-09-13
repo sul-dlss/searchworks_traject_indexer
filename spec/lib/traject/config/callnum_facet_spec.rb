@@ -15,7 +15,7 @@ def record_with_holdings(call_number:, scheme:, indexer:, home_location: 'STACKS
     )
   ]
   yield(holdings) if block_given?
-  allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+  allow(folio_record).to receive(:folio_holdings).and_return(holdings)
   indexer.map_record(folio_record)
 end
 # rubocop:enable Metrics/ParameterLists
@@ -44,7 +44,7 @@ RSpec.describe 'Call Number Facet' do
   let(:holdings) { [] }
 
   before do
-    allow(folio_record).to receive(:sirsi_holdings).and_return(holdings)
+    allow(folio_record).to receive(:folio_holdings).and_return(holdings)
   end
 
   describe 'call numbers excluded for various reasons' do
@@ -55,7 +55,7 @@ RSpec.describe 'Call Number Facet' do
     end
 
     it 'assigns value for valid LC even if it is a shelve by location' do
-      SirsiHolding::SHELBY_LOCS.each do |loc|
+      FolioHolding::SHELBY_LOCS.each do |loc|
         # valid LC
         # FIXME: we DO want a value if there is valid LC for shelby location
         # expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', home_location: loc, indexer: indexer)[field]).to eq(
@@ -71,7 +71,7 @@ RSpec.describe 'Call Number Facet' do
     end
 
     it 'handles missing or lost call numbers (by not including them)' do
-      SirsiHolding::LOST_OR_MISSING_LOCS.each do |loc|
+      FolioHolding::LOST_OR_MISSING_LOCS.each do |loc|
         # LC
         expect(record_with_holdings(call_number: 'M123 .M456', home_location: loc, scheme: 'LC',
                                     indexer:)[field]).to be_nil
@@ -402,16 +402,16 @@ RSpec.describe 'Call Number Facet' do
 
     let(:folio_client) { instance_double(FolioClient, instance: {}, items_and_holdings:, statistical_codes: []) }
     let(:items_and_holdings) { {} }
-    let(:sirsi_holdings) { [] }
+    let(:folio_holdings) { [] }
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
+      allow(folio_record).to receive(:folio_holdings).and_return(folio_holdings)
     end
 
     context 'with a SUDOC scheme' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
-          SirsiHolding.new(
+          FolioHolding.new(
             call_number: 'I 19.76:98-600-B',
             home_location: '',
             library: 'GREEN',
@@ -500,9 +500,9 @@ RSpec.describe 'Call Number Facet' do
     end
 
     context 'when it has an LC and Dewey and SUDOC call numbers' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
-          SirsiHolding.new(
+          FolioHolding.new(
             call_number: 'I 19.76:98-600-B',
             home_location: '',
             library: 'GREEN',
@@ -510,7 +510,7 @@ RSpec.describe 'Call Number Facet' do
             type: '',
             barcode: ''
           ),
-          SirsiHolding.new(
+          FolioHolding.new(
             call_number: '550.6 .U58O 00-600',
             home_location: '',
             library: 'GREEN',
@@ -518,7 +518,7 @@ RSpec.describe 'Call Number Facet' do
             type: '',
             barcode: ''
           ),
-          SirsiHolding.new(
+          FolioHolding.new(
             call_number: 'QE538.8 .N36 1985:APR.',
             home_location: '',
             library: 'GREEN',

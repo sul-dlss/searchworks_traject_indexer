@@ -1,28 +1,6 @@
 # frozen_string_literal: true
 
 module ResultHelpers
-  def marc_to_folio_with_stubbed_holdings(marc_record, client: stub_folio_client, instance: {})
-    marc_to_folio(marc_record, client:, instance:).tap do |record|
-      if marc_record['999']
-        stub_sirsi_holdings = []
-
-        marc_record.each_by_tag('999') do |item|
-          stub_sirsi_holdings << SirsiHolding.new(
-            call_number: (item['a'] || '').strip,
-            current_location: item['k'],
-            home_location: item['l'],
-            library: item['m'],
-            scheme: item['w'],
-            type: item['t'],
-            barcode: item['i'],
-            public_note: (item['o'] if item['o']&.start_with?(/\.PUBLIC\./i))
-          )
-        end
-        allow(record).to receive(:sirsi_holdings).and_return(stub_sirsi_holdings)
-      end
-    end
-  end
-
   def marc_to_folio(marc_record, client: stub_folio_client, instance: {})
     FolioRecord.new({
                       'source_record' => [marc_record.to_hash],

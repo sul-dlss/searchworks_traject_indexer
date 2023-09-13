@@ -45,8 +45,8 @@ class FolioRecord
     @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, holdings, instance)
   end
 
-  def sirsi_holdings
-    @sirsi_holdings ||= begin
+  def folio_holdings
+    @folio_holdings ||= begin
       holdings = item_holdings.concat(bound_with_holdings)
       holdings = eresource_holdings if holdings.empty?
 
@@ -157,9 +157,10 @@ class FolioRecord
     end
   end
 
-  # since FOLIO Bound-with records don't have items, we generate a SirsiHolding using data from the parent item and child holding,
-  # or, if there is no parent item, we generate a stub SirsiHolding from the original bound-with holding.
-  # TODO: remove this when we stop using SirsiHoldings
+  # since FOLIO Bound-with records don't have items, we generate a FolioHolding using data from the parent
+  # item and child holding, # or, if there is no parent item, we generate a stub FolioHolding from the original
+  # bound-with holding.
+  # TODO: remove this when we stop using FolioHolding
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}

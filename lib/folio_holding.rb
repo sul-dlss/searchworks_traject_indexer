@@ -20,8 +20,10 @@ class FolioHolding
 
   # rubocop:disable Metrics/ParameterLists
   def initialize(item: nil, holding: nil, bound_with_holding: nil, course_reserves: [],
-                 call_number: nil, barcode: nil, type: nil,
-                 library: nil, home_location: nil, current_location: nil)
+                 call_number: nil, type: nil,
+                 library: nil, home_location: nil, current_location: nil,
+                 # to deprecate
+                 scheme: nil, barcode: nil, public_note: nil)
     @item = item
     @holding = holding
     @bound_with_holding = bound_with_holding

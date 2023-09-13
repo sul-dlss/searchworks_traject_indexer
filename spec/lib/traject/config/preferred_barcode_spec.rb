@@ -22,11 +22,11 @@ RSpec.describe 'All_search config' do
 
   describe 'preferred_barcode' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(sirsi_holdings)
+      allow(folio_record).to receive(:folio_holdings).and_return(folio_holdings)
     end
 
     context 'with lc only' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:lc_holding, barcode: 'LCbarcode')
         ]
@@ -36,7 +36,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with lc + dewey' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:lc_holding, barcode: 'LCbarcode'),
           build(:dewey_holding, barcode: 'DeweyBarcode')
@@ -47,7 +47,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with lc + dewey + sudoc' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:lc_holding, barcode: 'LCbarcode'),
           build(:dewey_holding, barcode: 'DeweyBarcode'),
@@ -59,7 +59,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with lc + dewey + sudoc + alphanum' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:lc_holding, barcode: 'LCbarcode'),
           build(:dewey_holding, barcode: 'DeweyBarcode'),
@@ -72,7 +72,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with dewey + sudoc + alphanum' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:dewey_holding, barcode: 'DeweyBarcode'),
           build(:sudoc_holding, barcode: 'SudocBarcode'),
@@ -84,7 +84,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with sudoc + alphanum' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:sudoc_holding, barcode: 'SudocBarcode'),
           build(:alphanum_holding, barcode: 'AlphanumBarcode')
@@ -95,7 +95,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with alphanum' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:alphanum_holding, barcode: 'AlphanumBarcode')
         ]
@@ -105,7 +105,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with dewey + alphanum' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:dewey_holding, barcode: 'DeweyBarcode'),
           build(:alphanum_holding, barcode: 'AlphanumBarcode')
@@ -116,7 +116,7 @@ RSpec.describe 'All_search config' do
     end
 
     context 'with lc + alphanum' do
-      let(:sirsi_holdings) do
+      let(:folio_holdings) do
         [
           build(:lc_holding, barcode: 'LCbarcode'),
           build(:alphanum_holding, barcode: 'AlphanumBarcode')
@@ -129,7 +129,7 @@ RSpec.describe 'All_search config' do
 
   context 'with lc untruncated + dewey truncated' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'LCbarcode', call_number: 'QE538.8 .N36 1975-1977'),
           build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
@@ -143,7 +143,7 @@ RSpec.describe 'All_search config' do
 
   context 'with lc untruncated + dewey truncated + sudoc truncated' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'LCbarcode', call_number: 'QE538.8 .N36 1975-1977'),
           build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
@@ -159,7 +159,7 @@ RSpec.describe 'All_search config' do
 
   context 'with lc untruncated + dewey truncated + sudoc truncated + alphanum truncated' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'LCbarcode', call_number: 'QE538.8 .N36 1975-1977'),
           build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
@@ -176,7 +176,7 @@ RSpec.describe 'All_search config' do
 
   context 'with dewey untruncated + sudoc truncated + alphanum truncated' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
           build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
@@ -192,7 +192,7 @@ RSpec.describe 'All_search config' do
 
   context 'with sudoc untruncated + alphanum truncated' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
           build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
@@ -206,7 +206,7 @@ RSpec.describe 'All_search config' do
 
   context 'with dewey untruncated + alphanum truncated' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
           build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
@@ -220,7 +220,7 @@ RSpec.describe 'All_search config' do
   describe 'prefers the shorted non-truncated callnumber' do
     context 'with lc only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:lc_holding, barcode: '666', call_number: 'QE538.8 .N36 1975-1977'),
             build(:lc_holding, barcode: '777', call_number: 'D764.7 .K72 1990')
@@ -233,7 +233,7 @@ RSpec.describe 'All_search config' do
 
     context 'with dewey' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
             build(:dewey_holding, barcode: 'Dewey2', call_number: '505 .N285B V.241-245 1973', home_location: 'LOCATION')
@@ -245,7 +245,7 @@ RSpec.describe 'All_search config' do
 
     context 'with sudoc' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
             build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'A 13.78:NC-315', home_location: 'LOCATION')
@@ -257,7 +257,7 @@ RSpec.describe 'All_search config' do
 
     context 'with alphanum' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
             build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2', home_location: 'LOCATION')
@@ -271,7 +271,7 @@ RSpec.describe 'All_search config' do
   describe 'picking the shortest truncated callnumber when the number of items is the same' do
     context 'with lc only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36 1975-1977'),
             build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36 1978-1980'),
@@ -288,7 +288,7 @@ RSpec.describe 'All_search config' do
 
     context 'with dewey only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788 V.5'),
             build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788 V.6'),
@@ -302,7 +302,7 @@ RSpec.describe 'All_search config' do
 
     context 'with sudoc only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:sudoc_holding, barcode: 'sudoc1', call_number: 'Y 4.G 74/7-11:110'),
             build(:sudoc_holding, barcode: 'sudoc2', call_number: 'Y 4.G 74/7-11:222'),
@@ -317,7 +317,7 @@ RSpec.describe 'All_search config' do
 
     context 'with alphanum only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
             build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791 DISC 2'),
@@ -335,7 +335,7 @@ RSpec.describe 'All_search config' do
   describe 'prefer more items over a shorter key' do
     context 'with lc only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36 1975-1977'),
             build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36 1978-1980'),
@@ -350,7 +350,7 @@ RSpec.describe 'All_search config' do
 
     context 'with dewey only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788 V.5'),
             build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788 V.6'),
@@ -365,7 +365,7 @@ RSpec.describe 'All_search config' do
 
     context 'with sudoc only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:sudoc_holding, barcode: 'sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
             build(:sudoc_holding, barcode: 'sudoc2', call_number: 'Y 4.G 74/7-11:222'),
@@ -380,7 +380,7 @@ RSpec.describe 'All_search config' do
 
     context 'with alphanum only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
             build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791 DISC 2'),
@@ -398,7 +398,7 @@ RSpec.describe 'All_search config' do
   describe 'with non-Green locations' do
     context 'with lc only' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
             build(:lc_holding, barcode: 'ArsLC1', call_number: 'QE538.8 .N36 V.7', library: 'ARS')
@@ -411,7 +411,7 @@ RSpec.describe 'All_search config' do
 
     context 'libraries prioritized in alpha order by code' do
       before do
-        allow(folio_record).to receive(:sirsi_holdings).and_return(
+        allow(folio_record).to receive(:folio_holdings).and_return(
           [
             build(:lc_holding, barcode: 'ArtBarcode', call_number: 'M57 .N4', library: 'ART'),
             build(:lc_holding, barcode: 'EngBarcode', call_number: 'M57 .N42', library: 'ENG')
@@ -424,7 +424,7 @@ RSpec.describe 'All_search config' do
 
   context 'with an online item' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'onlineByCallnum', call_number: 'INTERNET RESOURCE')
         ]
@@ -447,7 +447,7 @@ RSpec.describe 'All_search config' do
     end
 
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'onlineByCallnum', call_number: 'INTERNET RESOURCE')
         ]
@@ -459,7 +459,7 @@ RSpec.describe 'All_search config' do
 
   context 'with an item with an INTERNET location' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', home_location: 'INTERNET')
         ]
@@ -470,7 +470,7 @@ RSpec.describe 'All_search config' do
 
   context 'with an item with an online item with callnum matches another group' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', home_location: 'INTERNET'),
           build(:lc_holding, barcode: 'notOnline', call_number: 'AB123 .C45')
@@ -482,7 +482,7 @@ RSpec.describe 'All_search config' do
 
   context 'with an ignored call number' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:holding, scheme: 'OTHER', barcode: 'noCallNum', call_number: 'NO CALL NUMBER')
         ]
@@ -493,7 +493,7 @@ RSpec.describe 'All_search config' do
 
   context 'with a shelby location' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', current_location: 'SHELBYTITL')
         ]
@@ -505,7 +505,7 @@ RSpec.describe 'All_search config' do
 
   context 'with a missing location' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'missing', call_number: 'AB123 C45', home_location: 'MISSING')
         ]
@@ -517,7 +517,7 @@ RSpec.describe 'All_search config' do
 
   context 'with a lost location' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'lost', call_number: 'AB123 C45', home_location: 'LOST-PAID')
         ]
@@ -533,7 +533,7 @@ RSpec.describe 'All_search config' do
 
   context 'with ignored callnums with no browsable callnum' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:holding, scheme: 'OTHER', barcode: 'nocallnum', call_number: 'NO CALL NUMBER')
         ]
@@ -545,7 +545,7 @@ RSpec.describe 'All_search config' do
 
   context 'with a bad lane lc callnum' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'lane', call_number: 'XX13413', library: 'LANE-MED', home_location: 'ASK@LANE')
         ]
@@ -557,7 +557,7 @@ RSpec.describe 'All_search config' do
 
   context 'with bad LCDewey' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:lc_holding, barcode: 'badLc', call_number: 'BAD')
         ]
@@ -569,7 +569,7 @@ RSpec.describe 'All_search config' do
 
   context 'with bad LCDewey' do
     before do
-      allow(folio_record).to receive(:sirsi_holdings).and_return(
+      allow(folio_record).to receive(:folio_holdings).and_return(
         [
           build(:dewey_holding, barcode: 'badDewey', call_number: '1234.5 .D6')
         ]

@@ -329,12 +329,14 @@ RSpec.describe FolioRecord do
     end
   end
 
-  describe '#sirsi_holdings' do
+  describe '#folio_holdings' do
+    subject(:folio_holdings) { folio_record.folio_holdings }
+
     context 'bound-withs' do
       context 'when the bound with child is not in SAL3' do
         let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child.json'))), client) }
         it 'does not add SEE-OTHER as the home_location' do
-          expect(folio_record.sirsi_holdings.first.home_location).not_to eq('SEE-OTHER')
+          expect(folio_holdings.first.home_location).not_to eq('SEE-OTHER')
         end
       end
 
@@ -342,7 +344,7 @@ RSpec.describe FolioRecord do
         let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_child_see-other.json'))), client) }
         it 'adds SEE-OTHER as the home_location' do
           skip('Unclear whether we need to preserve this behavior in FOLIO')
-          expect(folio_record.sirsi_holdings.first.home_location).to eq('SEE-OTHER')
+          expect(folio_holdings.first.home_location).to eq('SEE-OTHER')
         end
       end
 
@@ -372,7 +374,7 @@ RSpec.describe FolioRecord do
         end
 
         it 'creates a stub bound-with item' do
-          expect(folio_record.sirsi_holdings.first).to have_attributes(
+          expect(folio_holdings.first).to have_attributes(
             id: nil,
             # barcode: '14154194-1001',
             # home_location: 'SEE-OTHER',
@@ -417,7 +419,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'uses the temp location as the current location' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           current_location: 'SSRC',
           home_location: 'STACKS',
           library: 'GREEN'
@@ -463,7 +465,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'uses the temp location as the home location' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           home_location: 'GRE-CRES',
           library: 'GREEN'
         )
@@ -505,7 +507,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'uses the permanent location of the item as the home location' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           current_location: nil,
           home_location: 'MAGAZINE',
           library: 'GREEN'
@@ -544,7 +546,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'uses the effective location of the holding as the home location' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           current_location: nil,
           home_location: 'STACKS',
           library: 'GREEN'
@@ -591,7 +593,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'uses the FOLIO location code as the current location' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           home_location: 'STACKS',
           library: 'SAL3',
           current_location: 'SUL-TS-PROCESSING'
@@ -631,7 +633,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'uses the item status of the holding as the current location' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           current_location: 'INPROCESS',
           home_location: 'STACKS',
           library: 'GREEN'
@@ -666,7 +668,7 @@ RSpec.describe FolioRecord do
       end
 
       it 'creates a stub on-order item' do
-        expect(folio_record.sirsi_holdings.first).to have_attributes(
+        expect(folio_holdings.first).to have_attributes(
           barcode: nil,
           current_location: 'ON-ORDER',
           home_location: 'STACKS',
