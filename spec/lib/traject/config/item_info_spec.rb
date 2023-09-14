@@ -718,7 +718,7 @@ RSpec.describe 'ItemInfo config' do
       context 'XX' do
         let(:holdings) do
           [
-            build(:holding, scheme: 'XX', call_number: 'XX(3195846.2579)')
+            build(:holding, item: { 'callNumberType' => { 'name' => 'XX' } }, call_number: 'XX(3195846.2579)')
           ]
         end
 
