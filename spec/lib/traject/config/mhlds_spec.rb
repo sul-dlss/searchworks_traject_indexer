@@ -62,10 +62,11 @@ RSpec.describe 'Holdings config' do
       let(:fixture_file) { 'a2499.json' }
 
       it {
-        is_expected.to match_array([
-                                     hash_including('library' => 'MUSIC', 'location' => 'STACKS', 'library_has' => 'v.1'),
-                                     hash_including('library' => 'MUSIC', 'location' => 'STACKS', 'library_has' => 'v.2')
-                                   ])
+        is_expected.to eq([{ 'MUSIC' =>
+           { 'STACKS' => [
+             { 'library_has' => 'v.1' },
+             { 'library_has' => 'v.2' }
+           ] } }])
       }
     end
 
@@ -73,9 +74,11 @@ RSpec.describe 'Holdings config' do
       let(:fixture_file) { 'a9012.json' }
 
       it {
-        is_expected.to match_array([
-                                     hash_including('library' => 'SAL3', 'location' => 'STACKS', 'library_has' => '1948,1965-1967,1974-1975')
-                                   ])
+        is_expected.to eq([{ 'SAL3' => {
+                            'STACKS' => [
+                              { 'library_has' => '1948,1965-1967,1974-1975' }
+                            ]
+                          } }])
       }
     end
 
@@ -83,9 +86,11 @@ RSpec.describe 'Holdings config' do
       let(:fixture_file) { 'a1572.json' }
 
       it {
-        is_expected.to match_array([
-                                     hash_including('library' => 'SAL3', 'location' => 'STACKS', 'library_has' => 'Heft 1-2 <v.568-569 in series>')
-                                   ])
+        is_expected.to eq([{ 'SAL3' => {
+                            'STACKS' => [
+                              { 'library_has' => 'Heft 1-2 <v.568-569 in series>' }
+                            ]
+                          } }])
       }
     end
 
