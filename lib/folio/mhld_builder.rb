@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Folio
+  Mhld = Data.define(:library, :location, :public_note, :library_has, :latest)
+
   class MhldBuilder
     def self.build(holdings, holding_summaries, pieces)
       new(holdings, holding_summaries, pieces).build
@@ -20,9 +22,9 @@ module Folio
         public_note = holding.fetch(:note)
         # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
         # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
-        library_has = holding.fetch(:library_has)
+        library_has = holding.fetch(:library_has).presence
         latest = latest_received(holding.fetch(:location).fetch('code'))
-        [library, location, public_note, library_has, latest].join(' -|- ') if public_note || library_has.present? || latest
+        Mhld.new(library:, location:, public_note:, library_has:, latest:) if public_note || library_has || latest
       end
     end
 
