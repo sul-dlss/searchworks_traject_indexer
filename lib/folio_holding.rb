@@ -17,7 +17,7 @@ class FolioHolding
   TEMP_CALLNUM_PREFIX = 'XX('
 
   attr_reader :item, :holding, :instance, :bound_with_holding,
-              :id, :scheme, :type, :barcode, :course_reserves
+              :id, :type, :barcode, :course_reserves
 
   # rubocop:disable Metrics/ParameterLists
   def initialize(item: nil, holding: nil, instance: nil,
@@ -26,7 +26,7 @@ class FolioHolding
                  call_number: nil, type: nil,
                  library: nil, home_location: nil, current_location: nil,
                  # to deprecate
-                 scheme: nil, barcode: nil, public_note: nil)
+                 barcode: nil, public_note: nil)
     @item = item
     @holding = holding
     @instance = instance
@@ -36,7 +36,6 @@ class FolioHolding
     @current_location = current_location
     @home_location = home_location
     @library = library
-    @scheme = scheme
     @type = type || @item&.dig('materialType')
     @barcode = barcode || @item&.dig('barcode')
     @public_note = public_note
@@ -92,7 +91,7 @@ class FolioHolding
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type
-    @call_number_type ||= case scheme || item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || bound_with_holding&.dig('callNumberType', 'name') || holding&.dig('callNumberType', 'name')
+    @call_number_type ||= case item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || bound_with_holding&.dig('callNumberType', 'name') || holding&.dig('callNumberType', 'name')
                           when /dewey/i
                             'DEWEY'
                           when /congress/i, /LC/i

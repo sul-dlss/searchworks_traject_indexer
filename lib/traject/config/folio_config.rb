@@ -1145,7 +1145,7 @@ end
 #  */
 to_field 'format_main_ssim' do |record, accumulator, context|
   if holdings(record, context).any? do |holding|
-       holding.library == 'SPEC-COLL' && holding.scheme == 'ALPHANUM' && holding.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
+       holding.library == 'SPEC-COLL' && holding.call_number_type == 'ALPHANUM' && holding.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
      end
     accumulator << 'Archive/Manuscript'
   end
@@ -1881,7 +1881,7 @@ end
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   next if context.output_hash['callnum_facet_hsim']&.any? { |x| x.start_with?('Government Document|') }
 
-  if holdings(record, context).any? { |x| x.scheme == 'SUDOC' }
+  if holdings(record, context).any? { |x| x.call_number_type == 'SUDOC' }
     accumulator << 'Government Document|Other'
   end
 end

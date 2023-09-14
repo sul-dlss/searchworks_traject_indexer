@@ -484,7 +484,7 @@ RSpec.describe 'All_search config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:holding, scheme: 'OTHER', barcode: 'noCallNum', call_number: 'NO CALL NUMBER')
+          build(:other_holding, barcode: 'noCallNum', call_number: 'NO CALL NUMBER')
         ]
       )
     end
@@ -535,7 +535,7 @@ RSpec.describe 'All_search config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:holding, scheme: 'OTHER', barcode: 'nocallnum', call_number: 'NO CALL NUMBER')
+          build(:other_holding, barcode: 'nocallnum', call_number: 'NO CALL NUMBER')
         ]
       )
     end
