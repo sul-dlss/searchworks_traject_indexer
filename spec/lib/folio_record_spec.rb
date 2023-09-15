@@ -2,7 +2,6 @@
 
 require 'folio_client'
 require 'folio_record'
-require 'sirsi_holding'
 
 RSpec.describe FolioRecord do
   subject(:folio_record) { described_class.new(record, client) }
