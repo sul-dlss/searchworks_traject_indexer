@@ -640,15 +640,19 @@ RSpec.describe 'FOLIO indexing' do
         { 'effectiveLocation' =>
           { 'code' => 'EAR-STACKS',
             'name' => 'Earth Sciences Stacks',
-            'campusName' => 'Stanford Libraries',
-            'libraryName' => 'Branner Earth Sciences',
-            'institutionName' => 'Stanford University' },
+            'library' => {
+              'id' => '96630997-201d-49b3-b8d5-e4ba43a6cde8',
+              'code' => 'EARTH-SCI',
+              'name' => 'Earth Sciences Library (Branner)'
+            } },
           'permanentLocation' =>
           { 'code' => 'EAR-STACKS',
             'name' => 'Earth Sciences Stacks',
-            'campusName' => 'Stanford Libraries',
-            'libraryName' => 'Branner Earth Sciences',
-            'institutionName' => 'Stanford University' },
+            'library' => {
+              'id' => '96630997-201d-49b3-b8d5-e4ba43a6cde8',
+              'code' => 'EARTH-SCI',
+              'name' => 'Earth Sciences Library (Branner)'
+            } },
           'temporaryLocation' => {} },
         'formerIds' => [],
         'callNumber' => {},
@@ -801,15 +805,19 @@ RSpec.describe 'FOLIO indexing' do
           { 'effectiveLocation' =>
             { 'code' => 'EAR-STACKS',
               'name' => 'Earth Sciences Stacks',
-              'campusName' => 'Stanford Libraries',
-              'libraryName' => 'Branner Earth Sciences',
-              'institutionName' => 'Stanford University' },
+              'library' => {
+                'id' => '96630997-201d-49b3-b8d5-e4ba43a6cde8',
+                'code' => 'EARTH-SCI',
+                'name' => 'Earth Sciences Library (Branner)'
+              } },
             'permanentLocation' =>
             { 'code' => 'EAR-STACKS',
               'name' => 'Earth Sciences Stacks',
-              'campusName' => 'Stanford Libraries',
-              'libraryName' => 'Branner Earth Sciences',
-              'institutionName' => 'Stanford University' },
+              'library' => {
+                'id' => '96630997-201d-49b3-b8d5-e4ba43a6cde8',
+                'code' => 'EARTH-SCI',
+                'name' => 'Earth Sciences Library (Branner)'
+              } },
             'temporaryLocation' => {} },
           'formerIds' => [],
           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },

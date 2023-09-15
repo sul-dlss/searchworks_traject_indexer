@@ -2330,10 +2330,10 @@ end
 to_field 'on_order_library_ssim', extract_marc('596a', translation_map: 'library_on_order_map')
 
 to_field 'mhld_display' do |record, accumulator, _context|
-  record.mhld.each do |library, library_holdings|
-    library_holdings.each do |location, location_holdings|
-      location_holdings.each do |holding|
-        accumulator << [library, location, holding['public_note'], holding['library_has'], holding['latest']].join(' -|- ')
+  record.mhld.each do |_library, library_holdings|
+    library_holdings[:location_holdings].each do |_location, location_holdings|
+      location_holdings[:holdings].each do |holding|
+        accumulator << [library_holdings[:symphony_library], location_holdings[:symphony_location], holding[:note], holding[:library_has], location_holdings[:latest]].join(' -|- ')
       end
     end
   end

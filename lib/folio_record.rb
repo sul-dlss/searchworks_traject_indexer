@@ -2,7 +2,6 @@
 
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/enumerable'
-require 'folio_holding'
 
 # rubocop:disable Metrics/ClassLength
 class FolioRecord

@@ -20,16 +20,20 @@ RSpec.describe Folio::MhldBuilder do
         'location' =>
         { 'effectiveLocation' =>
           { 'code' => 'EAR-STACKS',
-            'name' => 'Earth Sciences Stacks',
-            'campusName' => 'Stanford Libraries',
-            'libraryName' => 'Branner Earth Sciences',
-            'institutionName' => 'Stanford University' },
+            'name' => 'Stacks',
+            'library' => {
+              'id' => '96630997-201d-49b3-b8d5-e4ba43a6cde8',
+              'code' => 'EARTH-SCI',
+              'name' => 'Earth Sciences Library (Branner)'
+            } },
           'permanentLocation' =>
           { 'code' => 'EAR-STACKS',
-            'name' => 'Earth Sciences Stacks',
-            'campusName' => 'Stanford Libraries',
-            'libraryName' => 'Branner Earth Sciences',
-            'institutionName' => 'Stanford University' },
+            'name' => 'Stacks',
+            'library' => {
+              'id' => '96630997-201d-49b3-b8d5-e4ba43a6cde8',
+              'code' => 'EARTH-SCI',
+              'name' => 'Earth Sciences Library (Branner)'
+            } },
           'temporaryLocation' => {} },
         'formerIds' => [],
         'callNumber' => {},
@@ -69,10 +73,22 @@ RSpec.describe Folio::MhldBuilder do
       end
 
       it {
-        is_expected.to eq({ 'EARTH-SCI' =>
-        { 'STACKS' => [
-          { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
-        ] } })
+        is_expected.to eq(
+          {
+            'EARTH-SCI' => {
+              location_holdings: {
+                'EAR-STACKS' => {
+                  holdings: [
+                    { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                  ],
+                  latest: nil,
+                  symphony_location: 'STACKS'
+                }
+              },
+              symphony_library: 'EARTH-SCI'
+            }
+          }
+        )
       }
 
       context 'with pieces having a MON YYYY cronology' do
@@ -111,10 +127,22 @@ RSpec.describe Folio::MhldBuilder do
         end
 
         it {
-          is_expected.to eq({ 'EARTH-SCI' =>
-          { 'STACKS' => [
-            { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-', 'latest' => 'v.243:no.10 (OCT 2023)' }
-          ] } })
+          is_expected.to eq(
+            {
+              'EARTH-SCI' => {
+                location_holdings: {
+                  'EAR-STACKS' => {
+                    holdings: [
+                      { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                    ],
+                    latest: 'v.243:no.10 (OCT 2023)',
+                    symphony_location: 'STACKS'
+                  }
+                },
+                symphony_library: 'EARTH-SCI'
+              }
+            }
+          )
         }
       end
 
@@ -154,10 +182,22 @@ RSpec.describe Folio::MhldBuilder do
         end
 
         it {
-          is_expected.to eq({ 'EARTH-SCI' =>
-          { 'STACKS' => [
-            { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-', 'latest' => 'v.243:no.10 (OCT 2023)' }
-          ] } })
+          is_expected.to eq(
+            {
+              'EARTH-SCI' => {
+                location_holdings: {
+                  'EAR-STACKS' => {
+                    holdings: [
+                      { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                    ],
+                    latest: 'v.243:no.10 (OCT 2023)',
+                    symphony_location: 'STACKS'
+                  }
+                },
+                symphony_library: 'EARTH-SCI'
+              }
+            }
+          )
         }
       end
 
@@ -197,10 +237,22 @@ RSpec.describe Folio::MhldBuilder do
         end
 
         it {
-          is_expected.to eq({ 'EARTH-SCI' =>
-          { 'STACKS' => [
-            { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-', 'latest' => 'v.244 (2023)' }
-          ] } })
+          is_expected.to eq(
+            {
+              'EARTH-SCI' => {
+                location_holdings: {
+                  'EAR-STACKS' => {
+                    holdings: [
+                      { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                    ],
+                    latest: 'v.244 (2023)',
+                    symphony_location: 'STACKS'
+                  }
+                },
+                symphony_library: 'EARTH-SCI'
+              }
+            }
+          )
         }
       end
 
@@ -234,10 +286,22 @@ RSpec.describe Folio::MhldBuilder do
         end
 
         it {
-          is_expected.to eq({ 'EARTH-SCI' =>
-          { 'STACKS' => [
-            { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
-          ] } })
+          is_expected.to eq(
+            {
+              'EARTH-SCI' => {
+                location_holdings: {
+                  'EAR-STACKS' => {
+                    holdings: [
+                      { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                    ],
+                    latest: nil,
+                    symphony_location: 'STACKS'
+                  }
+                },
+                symphony_library: 'EARTH-SCI'
+              }
+            }
+          )
         }
       end
 
@@ -271,10 +335,22 @@ RSpec.describe Folio::MhldBuilder do
         end
 
         it {
-          is_expected.to eq({ 'EARTH-SCI' =>
-          { 'STACKS' => [
-            { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
-          ] } })
+          is_expected.to eq(
+            {
+              'EARTH-SCI' => {
+                location_holdings: {
+                  'EAR-STACKS' => {
+                    holdings: [
+                      { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                    ],
+                    latest: nil,
+                    symphony_location: 'STACKS'
+                  }
+                },
+                symphony_library: 'EARTH-SCI'
+              }
+            }
+          )
         }
       end
 
@@ -314,10 +390,22 @@ RSpec.describe Folio::MhldBuilder do
         end
 
         it {
-          is_expected.to eq({ 'EARTH-SCI' =>
-          { 'STACKS' => [
-            { 'public_note' => 'Library has latest 10 yrs. only.', 'library_has' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-', 'latest' => 'v.243:no.9 (SEP 2023)' }
-          ] } })
+          is_expected.to eq(
+            {
+              'EARTH-SCI' => {
+                location_holdings: {
+                  'EAR-STACKS' => {
+                    holdings: [
+                      { note: 'Library has latest 10 yrs. only.', library_has: 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
+                    ],
+                    latest: 'v.243:no.9 (SEP 2023)',
+                    symphony_location: 'STACKS'
+                  }
+                },
+                symphony_library: 'EARTH-SCI'
+              }
+            }
+          )
         }
       end
     end
@@ -513,10 +601,22 @@ RSpec.describe Folio::MhldBuilder do
     end
 
     it {
-      is_expected.to eq({ 'GREEN' =>
-      { 'CURRENTPER' => [
-        { 'public_note' => 'Latest issues in CURRENT PERIODICALS; earlier issues in STACKS', 'library_has' => '2018', 'latest' => 'JUN 2022' }
-      ] } })
+      is_expected.to eq(
+        {
+          'GREEN' => {
+            location_holdings: {
+              'GRE-CURRENTPER' => {
+                holdings: [
+                  { note: 'Latest issues in CURRENT PERIODICALS; earlier issues in STACKS', library_has: '2018' }
+                ],
+                latest: 'JUN 2022',
+                symphony_location: 'CURRENTPER'
+              }
+            },
+            symphony_library: 'GREEN'
+          }
+        }
+      )
     }
   end
 
@@ -601,10 +701,22 @@ RSpec.describe Folio::MhldBuilder do
     end
 
     it {
-      is_expected.to eq({ 'LAW' =>
-      { 'STACKS-1' => [
-        { 'public_note' => 'Library has latest full year only' }
-      ] } })
+      is_expected.to eq(
+        {
+          'LAW' => {
+            location_holdings: {
+              'LAW-STACKS1' => {
+                holdings: [
+                  { note: 'Library has latest full year only' }
+                ],
+                latest: nil,
+                symphony_location: 'STACKS-1'
+              }
+            },
+            symphony_library: 'LAW'
+          }
+        }
+      )
     }
   end
 end

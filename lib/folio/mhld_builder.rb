@@ -16,17 +16,19 @@ module Folio
 
     def build
       filtered_holdings.flatten.each_with_object({}) do |holding, result|
-        library, location = LocationsMap.for(holding.fetch(:location).fetch('code'))
-        public_note = holding.fetch(:note)
+        holding_location_code = holding.fetch(:location).fetch('code')
+        library = holding.fetch(:location).fetch('library').fetch('code')
+        symphony_library, symphony_location = LocationsMap.for(holding_location_code)
+        note = holding.fetch(:note)
         # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
         # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
         library_has = holding.fetch(:library_has).presence
-        latest = latest_received(holding.fetch(:location).fetch('code'))
-        next unless public_note || library_has || latest
+        latest = latest_received(holding_location_code)
+        next unless note || library_has || latest
 
-        result[library] ||= {}
-        result[library][location] ||= []
-        result[library][location] << { 'public_note' => public_note, 'library_has' => library_has, 'latest' => latest }.compact
+        result[library] ||= { location_holdings: {}, symphony_library: }
+        result[library][:location_holdings][holding_location_code] ||= { holdings: [], symphony_location:, latest: }
+        result[library][:location_holdings][holding_location_code][:holdings] << { note:, library_has: }.compact
       end
     end
 
