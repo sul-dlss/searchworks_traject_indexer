@@ -24,21 +24,18 @@ class FolioHolding
                  bound_with_holding: nil,
                  course_reserves: [],
                  call_number: nil, type: nil,
-                 library: nil, home_location: nil, current_location: nil,
-                 # to deprecate
-                 barcode: nil, public_note: nil)
+                 library: nil, home_location: nil, current_location: nil)
     @item = item
     @holding = holding
     @instance = instance
     @bound_with_holding = bound_with_holding
-    @id = id || @item&.dig('id')
+    @id = @item&.dig('id')
     @provided_call_number = call_number || @bound_with_holding&.dig('callNumber') || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @holding&.dig('callNumber')
     @current_location = current_location
     @home_location = home_location
     @library = library
     @type = type || @item&.dig('materialType')
-    @barcode = barcode || @item&.dig('barcode')
-    @public_note = public_note
+    @barcode = @item&.dig('barcode')
     @course_reserves = course_reserves
   end
   # rubocop:enable Metrics/ParameterLists

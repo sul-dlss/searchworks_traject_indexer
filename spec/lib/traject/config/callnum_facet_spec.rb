@@ -492,30 +492,9 @@ RSpec.describe 'Call Number Facet' do
     context 'when it has an LC and Dewey and SUDOC call numbers' do
       let(:folio_holdings) do
         [
-          FolioHolding.new(
-            call_number: 'I 19.76:98-600-B',
-            home_location: '',
-            library: 'GREEN',
-            item: { 'callNumberType' => { 'name' => 'Superintendent of Documents classification' } },
-            type: '',
-            barcode: ''
-          ),
-          FolioHolding.new(
-            call_number: '550.6 .U58O 00-600',
-            home_location: '',
-            library: 'GREEN',
-            item: { 'callNumberType' => { 'name' => 'DEWEY' } },
-            type: '',
-            barcode: ''
-          ),
-          FolioHolding.new(
-            call_number: 'QE538.8 .N36 1985:APR.',
-            home_location: '',
-            library: 'GREEN',
-            item: { 'callNumberType' => { 'name' => 'LC' } },
-            # type: '',
-            barcode: ''
-          )
+          build(:sudoc_holding, call_number: 'I 19.76:98-600-B'),
+          build(:dewey_holding, call_number: '550.6 .U58O 00-600'),
+          build(:lc_holding, call_number: 'QE538.8 .N36 1985:APR.')
         ]
       end
 

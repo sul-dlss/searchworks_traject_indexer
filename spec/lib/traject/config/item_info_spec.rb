@@ -576,40 +576,16 @@ RSpec.describe 'ItemInfo config' do
       }
     end
 
-    describe 'public note' do
-      context 'when the public note is upper case ".PUBLIC."' do
+    describe 'item notes' do
+      context 'when the notes is title case "Public"' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: 'AB123.45 .M67', public_note: '.PUBLIC. Note')
+            build(:lc_holding, notes: [{ 'note' => 'Note', 'itemNoteTypeName' => 'Public' }])
           ]
         end
 
         it 'is included' do
           expect(result[field].map { |x| JSON.parse(x) }.first['note']).to eq '.PUBLIC. Note'
-        end
-      end
-
-      context 'when the public note is lower case ".public."' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: 'AB123.45 .M67', public_note: '.public. Note')
-          ]
-        end
-
-        it 'is included' do
-          expect(result[field].map { |x| JSON.parse(x) }.first['note']).to eq '.public. Note'
-        end
-      end
-
-      context 'when the public note is mixed case' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: 'AB123.45 .M67', public_note: '.PuBlIc. Note')
-          ]
-        end
-
-        it 'is included' do
-          expect(result[field].map { |x| JSON.parse(x) }.first['note']).to eq '.PuBlIc. Note'
         end
       end
     end
