@@ -49,7 +49,7 @@ module Folio
     def folio_holding(index)
       FolioHolding.new(
         call_number: CALL_NUMBER,
-        barcode: barcode(index),
+        item: { 'barcode' => barcode(index) },
         holding: electronic_holding_location,
         type: TYPE
       )
