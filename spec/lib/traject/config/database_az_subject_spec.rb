@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Sirsi config' do
+RSpec.describe 'Folio config' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/folio_config.rb')

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Sirsi config' do
+RSpec.describe 'Folio config' do
   subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
