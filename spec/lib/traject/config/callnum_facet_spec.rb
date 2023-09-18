@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'sirsi_holding'
-
 # rubocop:disable Metrics/ParameterLists
 def record_with_holdings(call_number:, item:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
   holdings = [

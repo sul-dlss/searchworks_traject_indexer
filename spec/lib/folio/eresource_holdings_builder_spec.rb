@@ -6,7 +6,6 @@ require 'folio_client'
 require 'folio/eresource_holdings_builder'
 require 'folio_record'
 require 'marc_links'
-require 'sirsi_holding'
 
 RSpec.describe Folio::EresourceHoldingsBuilder do
   subject(:holdings) { described_class.build(folio_record.hrid, folio_record.holdings, folio_record.marc_record) }
