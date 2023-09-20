@@ -40,6 +40,12 @@ class FolioHolding
   end
   # rubocop:enable Metrics/ParameterLists
 
+  def display_location
+    return temporary_location if temporary_location&.dig('details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
+
+    permanent_location
+  end
+
   def library
     @library ||= symphony_location_codes[0]
   end
@@ -54,8 +60,7 @@ class FolioHolding
 
   def symphony_location_codes
     @symphony_location_codes ||= begin
-      item_location_code = temporary_location&.dig('code') if temporary_location&.dig('details', 'searchworksTreatTemporaryLocationAsPermanentLocation') == 'true'
-      item_location_code ||= permanent_location&.dig('code')
+      item_location_code = display_location&.dig('code')
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
       _current_library, current_location = LocationsMap.for(temporary_location&.dig('code'))

@@ -119,6 +119,78 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  describe 'location codes' do
+    before do
+      folio_record.instance['hrid'] = 'a12451243'
+      allow(client).to receive(:pieces).and_return([])
+    end
+
+    context 'when the holding library is Law' do
+      let(:items) do
+        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'crez' => [],
+           'hrid' => 'ai1755834_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '36105043687818',
+           '_version' => 1,
+           'location' => {} }]
+      end
+
+      let(:holdings) do
+        [{ 'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'LAW-BASEMENT', 'library' => { 'code' => 'LAW' } } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [],
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      it { expect(result['library_code_facet_ssim']).to eq ['LAW'] }
+      it { expect(result['location_code_facet_ssim']).to eq ['LAW-BASEMENT'] }
+    end
+
+    context 'when the location provides additional library codes (e.g. PAGE-AR)' do
+      let(:items) do
+        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'crez' => [],
+           'hrid' => 'ai1755834_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '36105043687818',
+           '_version' => 1,
+           'location' => {} }]
+      end
+
+      let(:holdings) do
+        [{ 'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'SAL3-PAGE-AR', 'library' => { 'code' => 'SAL3' }, 'details' => { 'searchworksAdditionalLibraryCodeFacetValues' => 'ART' } } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [],
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      it { expect(result['library_code_facet_ssim']).to contain_exactly 'SAL3', 'ART' }
+    end
+  end
+
   describe 'electronic resources' do
     let(:source_record_json) do
       JSON.parse(File.read(file_fixture('a12451243.json')))
