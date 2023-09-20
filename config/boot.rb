@@ -35,6 +35,7 @@ require 'call_numbers/dewey_shelfkey'
 
 require 'constants'
 require 'folio_client'
+require 'folio_holding'
 require 'folio_record'
 require 'folio/eresource_holdings_builder'
 require 'folio/holdings'
