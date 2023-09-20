@@ -3,6 +3,52 @@
 require 'folio_holding'
 
 RSpec.describe FolioHolding do
+  describe '#display_location' do
+    context 'with an item' do
+      subject(:display_location) { described_class.new(item:, holding:).display_location }
+      let(:item) do
+        {
+          location: {
+            temporaryLocation: { code: 'GRE-STACKS' }
+          }
+        }.with_indifferent_access
+      end
+      let(:holding) do
+        {
+          location: {
+            effectiveLocation: { code: 'SAL3-STACKS' }
+          }
+        }.with_indifferent_access
+      end
+
+      it 'is the holdings effective location' do
+        expect(display_location['code']).to eq 'SAL3-STACKS'
+      end
+    end
+
+    context 'with an item in a location that we treat as the permanent location for display purposes' do
+      subject(:display_location) { described_class.new(item:, holding:).display_location }
+      let(:item) do
+        {
+          location: {
+            temporaryLocation: { code: 'GRE-CRES', details: { searchworksTreatTemporaryLocationAsPermanentLocation: 'true' } }
+          }
+        }.with_indifferent_access
+      end
+      let(:holding) do
+        {
+          location: {
+            effectiveLocation: { code: 'SAL3-STACKS' }
+          }
+        }.with_indifferent_access
+      end
+
+      it 'is the holdings effective location' do
+        expect(display_location['code']).to eq 'GRE-CRES'
+      end
+    end
+  end
+
   describe '#to_item_display_hash' do
     context 'with an item' do
       subject(:hash) { described_class.new(item:, holding:).to_item_display_hash }

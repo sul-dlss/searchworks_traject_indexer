@@ -2181,6 +2181,21 @@ library_map = case settings['reader_class_name']
               end
 resv_locs = Traject::TranslationMap.new('locations_reserves_list')
 
+to_field 'library_code_facet_ssim' do |record, accumulator, context|
+  holdings(record, context).reject(&:skipped?).each do |holding|
+    next unless holding.display_location&.dig('library')
+
+    accumulator << holding.display_location.dig('library', 'code')
+    accumulator.concat holding.display_location.dig('details', 'searchworksAdditionalLibraryCodeFacetValues')&.split(',')&.map(&:strip) || []
+  end
+end
+
+to_field 'location_code_facet_ssim' do |record, accumulator, context|
+  holdings(record, context).reject(&:skipped?).each do |holding|
+    accumulator << holding.display_location&.dig('code')
+  end
+end
+
 to_field 'building_facet' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
