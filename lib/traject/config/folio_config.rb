@@ -2216,13 +2216,6 @@ to_field 'building_facet' do |record, accumulator|
   end
 end
 
-to_field 'building_facet',
-         extract_marc('596a', translation_map: 'library_on_order_map') do |record, accumulator, context|
-  accumulator.replace([]) if holdings(record, context).any?
-
-  accumulator.replace library_map.translate_array(accumulator)
-end
-
 to_field 'building_location_facet_ssim' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
