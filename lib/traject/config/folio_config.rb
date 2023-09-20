@@ -95,9 +95,6 @@ class Traject::MarcExtractor
   end
 end
 
-# Disable Sirsi reserves lookup from file in favor of FOLIO data
-def reserves_lookup = {}
-
 each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
@@ -197,12 +194,6 @@ to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
     v.sub(/^a/, '')
   end
-end
-
-# Look up course reserves data once per record for reference later
-each_record do |_record, context|
-  id = context.output_hash['id']&.first
-  context.clipboard[:crez_data] = reserves_lookup[id] || []
 end
 
 to_field 'hashed_id_ssi' do |_record, accumulator, context|
@@ -2558,52 +2549,6 @@ each_record do |_record, context|
 
     v.uniq!
   end
-end
-
-# We update item_display once we have crez info
-to_field 'item_display_struct' do |_record, _accumulator, context|
-  course_reserves = context.clipboard[:crez_data]
-  next if course_reserves.empty?
-
-  context.output_hash['item_display_struct'].map! do |item_display_value|
-    row = course_reserves.reverse.find { |r| r[:barcode].strip == item_display_value[:barcode]&.strip }
-
-    if row
-      rez_desk = row[:rez_desk] || ''
-      loan_period = LOAN_CODE_2_USER_STR[row[:loan_period]] || ''
-      course_id = row[:course_id] || ''
-
-      item_display_value.merge(
-        current_location: rez_desk,
-        course_id:,
-        reserve_desk: rez_desk,
-        loan_period:
-      )
-    else
-      item_display_value
-    end
-  end.flatten!
-end
-
-to_field 'building_facet' do |_record, _accumulator, context|
-  course_reserves = context.clipboard[:crez_data]
-  next if course_reserves.empty?
-
-  new_building_facet_vals = context.output_hash['item_display_struct'].map do |item_display_value|
-    barcode = item_display_value[:barcode]&.strip
-    reserves_for_item = course_reserves.select { |row| row[:barcode].strip == barcode }.first
-
-    if reserves_for_item && REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
-      REZ_DESK_2_BLDG_FACET[reserves_for_item[:rez_desk]]
-    else
-      # This is not dissimilar to the original building_facet mapping:
-      # Try the current location first, in case it has an overridden library, and then
-      # fall back on the library code.
-      library_map[item_display_value[:current_location]] || library_map[item_display_value[:library]]
-    end
-  end
-
-  context.output_hash['building_facet'] = new_building_facet_vals.uniq if new_building_facet_vals.any?
 end
 
 to_field 'context_source_ssi', literal('folio')
