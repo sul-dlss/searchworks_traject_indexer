@@ -1074,8 +1074,8 @@ RSpec.describe 'Subject config' do
     end
 
     it 'includes the collection title and subtitle' do
-      expect(result[field]).to eq [{ title: 'Main title A subtitle', source: 'sirsi' },
-                                   { source: 'sirsi', vernacular: 'Vernacular title' }].map(&:to_json)
+      expect(result[field]).to eq [{ title: 'Main title A subtitle', source: 'marc' },
+                                   { source: 'marc', vernacular: 'Vernacular title' }].map(&:to_json)
     end
   end
 end

@@ -2373,7 +2373,7 @@ to_field 'collection_struct' do |record, accumulator|
                              alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
     struct = {
       title: extractor.collect_subfields(field, spec).join(' '),
-      source: 'sirsi'
+      source: 'marc'
     }
 
     if field['6']
@@ -2388,7 +2388,7 @@ to_field 'collection_struct' do |record, accumulator|
 
   vern_fields.select { |f| parse_linkage(f)[:number] == '00' }.each do |f|
     accumulator << {
-      source: 'sirsi',
+      source: 'marc',
       vernacular: f.select { |sub| sub.code == 'a' || sub.code == 'p' }.map(&:value).join(' ')
     }
   end
