@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Format physical config' do
+RSpec.describe 'Genre config' do
   subject(:value) { result[field] }
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
@@ -723,6 +723,20 @@ RSpec.describe 'Format physical config' do
 
     it 'has no noGenre' do
       expect(select_by_id('NoGenre')).not_to include(field)
+    end
+  end
+
+  context 'with a 655a NoExport value' do
+    let(:marc_record) do
+      MARC::Record.new.tap do |r|
+        r.leader = '04473cam a2200313Ia 4500'
+        r.append(MARC::DataField.new('655', ' ', ' ',
+                                     MARC::Subfield.new('a', 'NoExport')))
+      end
+    end
+
+    it 'does not include NoExport' do
+      expect(result[field]).to be_nil
     end
   end
 end
