@@ -39,17 +39,14 @@ RSpec.describe 'FOLIO course reserves config' do
     ]
   end
 
-  describe 'the items in the item_display_struct field' do
-    # Filter to an item that's on reserve so we can check its item_display
-    subject(:item_display) do
-      item_displays = result['item_display_struct'].map { |item| JSON.parse(item) }
-      item_displays.find { |item| item['barcode'] == '36105230980901' }
-    end
-
-    it 'adds the course ID, reserve desk, and loan period' do
-      expect(item_display).to include('course_id' => 'LAW-219-04',
-                                      'reserve_desk' => 'LAW-CRES',
-                                      'loan_period' => '2-hour loan')
-    end
+  it 'indexes course info as a structured field' do
+    expect(result['courses_json_struct']).to match_array [
+      { 'course_name' => 'Legal Writing', 'course_id' => 'LAW-219-01', 'instructors' => ['Marc Fagel', 'Tyler Valeska'], 'reserve_desk' => 'LAW-CRES' }.to_json,
+      { 'course_name' => 'Legal Writing', 'course_id' => 'LAW-219-02', 'instructors' => ['Nicholas Handler', 'Robin Linsenmayer'], 'reserve_desk' => 'LAW-CRES' }.to_json,
+      { 'course_name' => 'Legal Writing', 'course_id' => 'LAW-219-03', 'instructors' => ['Alicia Thesing'], 'reserve_desk' => 'LAW-CRES' }.to_json,
+      { 'course_name' => 'Legal Writing', 'course_id' => 'LAW-219-04', 'instructors' => ['Brandi Lupo'], 'reserve_desk' => 'LAW-CRES' }.to_json,
+      { 'course_name' => 'Legal Writing', 'course_id' => 'LAW-219-05', 'instructors' => ['Seema Patel'], 'reserve_desk' => 'LAW-CRES' }.to_json,
+      { 'course_name' => 'Legal Writing', 'course_id' => 'LAW-219-06', 'instructors' => ['Susan Yorke'], 'reserve_desk' => 'LAW-CRES' }.to_json
+    ]
   end
 end
