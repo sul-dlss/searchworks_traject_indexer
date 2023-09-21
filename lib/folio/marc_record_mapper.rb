@@ -9,6 +9,10 @@ module Folio
         next unless field.respond_to? :subfields
 
         field.subfields.delete_if { |subfield| subfield.code == '0' && subfield.value.start_with?('(SIRSI)') }
+
+        # Scrub any "NoExport" subfields; currently only used by Lane?
+        # See: https://searchworks.stanford.edu/view/L81154
+        field.subfields.delete_if { |subfield| subfield.value == 'NoExport' }
       end
 
       # Copy FOLIO Holdings electronic access data to an 856 (used by Lane)
