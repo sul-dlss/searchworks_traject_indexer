@@ -62,7 +62,13 @@ class LocationsMap
   def load_home_locations
     CSV.parse(File.read(File.join(__dir__, 'translation_maps', 'locations.tsv')),
               col_sep: "\t").each_with_object({}) do |(home_location, library_code, folio_code), hash|
-      library_code = { 'LANE' => 'LANE-MED' }.fetch(library_code, library_code)
+      library_code = {
+        'LANE' => 'LANE-MED',
+        # Handle mapping of MEDIA-CRES to MEDIA-CENTER, which was MEDIA-MTXT in Symphony
+        # https://github.com/sul-dlss/folio_migration/blob/63166e3163bcee0562dd0c9b96d313e1adf968ac/mapping_files/temp_locations.tsv#L19
+        # https://stanfordlib.slack.com/archives/G018TJ20XGE/p1695672377659539
+        'MEDIA-CENTER' => 'MEDIA-MTXT'
+      }.fetch(library_code, library_code)
 
       # Skipping location codes that we want to handle as FOLIO codes in SearchWorks.
       next if LOCATIONS_TO_SKIP.include?(folio_code) || SYMPHONY_CODES_TO_SKIP.include?([library_code, home_location])
