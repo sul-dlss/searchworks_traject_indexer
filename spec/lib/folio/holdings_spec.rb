@@ -88,5 +88,42 @@ RSpec.describe Folio::Holdings do
         expect(latest).to include(target)
       end
     end
+
+    # Multiple dates in chronology field
+    context 'when chronology has a MON YYYY/YYYY pattern' do
+      let(:target) { { 'chronology' => 'Sep 2020/2021' } }
+      let(:options) { [{ 'chronology' => 'Dec 2016/2017' }, target, { 'chronology' => 'Feb 2018/2019' }] }
+
+      it 'selects the target by correctly parsing mon yyyy/yyyy' do
+        expect(latest).to include(target)
+      end
+    end
+
+    context 'when chronology has a MON/MON YYYY pattern' do
+      let(:target) { { 'chronology' => 'Aug/Sep 2021' } }
+      let(:options) { [{ 'chronology' => 'Nov/Dec 2017' }, target, { 'chronology' => 'Feb/Mar 2019' }] }
+
+      it 'selects the target by correctly parsing mon/mon yyyy' do
+        expect(latest).to include(target)
+      end
+    end
+
+    context 'when chronology has a MON/MON YYYY/YYYY pattern' do
+      let(:target) { { 'chronology' => 'Aug/Sep 2021/2022' } }
+      let(:options) { [{ 'chronology' => 'Nov/Dec 2017/2018' }, target, { 'chronology' => 'Feb/Mar 2018/2019' }] }
+
+      it 'selects the target by correctly parsing mon/mon yyyy/yyyy' do
+        expect(latest).to include(target)
+      end
+    end
+
+    context 'when chronology has a mon dd/dd YYYY pattern' do
+      let(:target) { { 'chronology' => 'Aug 20/25 2022' } }
+      let(:options) { [{ 'chronology' => 'Aug 10/11 2022' }, target, { 'chronology' => 'Feb 2/3 2022' }] }
+
+      it 'selects the target by correctly parsing mon/mon yyyy/yyyy' do
+        expect(latest).to include(target)
+      end
+    end
   end
 end
