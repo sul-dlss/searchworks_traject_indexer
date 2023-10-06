@@ -48,10 +48,12 @@ class FolioHolding
 
   def library
     @library ||= symphony_location_codes[0]
+    @library ||= LibrariesMap.symphony_code_for(display_location&.dig('library', 'code'))
   end
 
   def home_location
     @home_location ||= symphony_location_codes[1]
+    @home_location ||= display_location&.dig('code')
   end
 
   def current_location
@@ -63,6 +65,7 @@ class FolioHolding
       item_location_code = display_location&.dig('code')
 
       library_code, home_location_code = LocationsMap.for(item_location_code)
+      library_code ||= LibrariesMap.symphony_code_for(display_location&.dig('library', 'code'))
       _current_library, current_location = LocationsMap.for(temporary_location&.dig('code'))
       current_location ||= temporary_location&.dig('code') if temporary_location&.dig('details', 'availabilityClass')
       current_location ||= Folio::StatusCurrentLocation.new(item).current_location if item
