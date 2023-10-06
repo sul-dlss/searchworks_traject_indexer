@@ -49,6 +49,50 @@ RSpec.describe FolioHolding do
     end
   end
 
+  describe '#library' do
+    subject(:library) { described_class.new(item:, holding:).library }
+
+    context 'with a location without a symphony equivalent' do
+      let(:item) do
+        {
+          location: {}
+        }.with_indifferent_access
+      end
+
+      let(:holding) do
+        {
+          location: {
+            effectiveLocation: { code: 'SPEC-SAL-TAUBE', library: { code: 'SPEC-COLL' } }
+          }
+        }.with_indifferent_access
+      end
+
+      it 'is the Symphony code' do
+        expect(library).to eq 'SPEC-COLL'
+      end
+    end
+
+    context 'with a location that maps to a Symphony location' do
+      let(:item) do
+        {
+          location: {}
+        }.with_indifferent_access
+      end
+
+      let(:holding) do
+        {
+          location: {
+            effectiveLocation: { code: 'ART-LOCKED-OVERSIZE' }
+          }
+        }.with_indifferent_access
+      end
+
+      it 'is the Symphony code' do
+        expect(library).to eq 'ART'
+      end
+    end
+  end
+
   describe '#to_item_display_hash' do
     context 'with an item' do
       subject(:hash) { described_class.new(item:, holding:).to_item_display_hash }
