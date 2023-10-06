@@ -125,6 +125,5 @@ RSpec.describe Folio::Holdings do
         expect(latest).to include(target)
       end
     end
-
   end
 end

@@ -4,7 +4,7 @@ module Folio
   class Holdings
     # This regex expression is used in scanning strings for years
     YEAR_REGEX = /(?:18|19|20)\d{2}/
-    
+
     # We've seen chronologies that looks like full dates, MON YYYY, WIN YYYY, and nil
     # We've also seen chronologies with slashes designating a range
     def self.find_latest(holdings)
