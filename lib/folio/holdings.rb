@@ -2,8 +2,11 @@
 
 module Folio
   class Holdings
-    YEAR_REGEX = /(?:19|20)\d{2}/
+    # This regex expression is used in scanning strings for years
+    YEAR_REGEX = /(?:18|19|20)\d{2}/
+
     # We've seen chronologies that looks like full dates, MON YYYY, WIN YYYY, and nil
+    # We've also seen chronologies with slashes designating a range
     def self.find_latest(holdings)
       # NOTE: We saw some piece records without 'chronology'. Was this just test data?
       pieces = holdings.filter_map do |piece|
@@ -15,8 +18,8 @@ module Folio
 
     # @return [Date] a date derived from chronology, enumeration or a really old date (sorts to back) if none are found
     def self.sortable_date(piece)
-      extract_sortable_date(piece['chronology']) ||
-        extract_sortable_date(piece['enumeration']) ||
+      SortableDateParser.extract_sortable_date(piece['chronology']) ||
+        SortableDateParser.extract_sortable_date(piece['enumeration']) ||
         Date.parse('1000-01-01')
     end
 
@@ -26,22 +29,6 @@ module Folio
         extract_sortable_tokens(piece['chronology']) ||
           extract_sortable_tokens(piece['enumeration'])
       )
-    end
-
-    # Find any dates that are present in the fields
-    def self.extract_sortable_date(date_str)
-      return unless date_str
-
-      begin
-        return Date.parse(date_str) # handles MON YYYY
-      rescue Date::Error
-        nil
-      end
-
-      return unless (years = date_str.scan(YEAR_REGEX).presence)
-
-      max_year = years.map(&:to_i).max
-      Date.parse("#{max_year}-01-01")
     end
 
     # Look for other tokens, which are not dates, that can be used to sort.
