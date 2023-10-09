@@ -1,10 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.8)
+    activesupport (7.1.0)
+      base64
+      bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
+      mutex_m
       tzinfo (~> 2.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
@@ -12,6 +17,8 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.2)
     base64 (0.1.1)
+    bigdecimal (3.1.4)
+    bigdecimal (3.1.4-java)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
@@ -37,6 +44,7 @@ GEM
     config (4.2.1)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
+    connection_pool (2.4.1)
     crack (0.4.5)
       rexml
     debouncer (0.2.2)
@@ -61,6 +69,8 @@ GEM
       nokogiri
     dot-properties (0.1.4)
       bundler (>= 2.2.33)
+    drb (2.1.1)
+      ruby2_keywords
     dry-configurable (1.1.0)
       dry-core (~> 1.0, < 2)
       zeitwerk (~> 2.6)
@@ -97,8 +107,8 @@ GEM
       activesupport (>= 3.0, < 8.0)
     factory_bot (6.3.0)
       activesupport (>= 5.0.0)
-    ffi (1.16.2)
-    ffi (1.16.2-java)
+    ffi (1.16.3)
+    ffi (1.16.3-java)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -149,6 +159,7 @@ GEM
       stanford-mods (~> 3.3)
       view_component
     multi_json (1.15.0)
+    mutex_m (0.1.2)
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
     net-ssh (7.2.0)
@@ -162,7 +173,7 @@ GEM
       i18n
       nokogiri
     parallel (1.23.0)
-    parser (3.2.2.3)
+    parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
@@ -178,7 +189,7 @@ GEM
     rdoc (6.5.0)
       psych (>= 4.0.0)
     regexp_parser (2.8.1)
-    reline (0.3.8)
+    reline (0.3.9)
       io-console (~> 0.5)
     retriable (3.1.2)
     rexml (3.2.6)
@@ -212,6 +223,7 @@ GEM
     ruby-kafka (1.5.0)
       digest-crc
     ruby-progressbar (1.13.0)
+    ruby2_keywords (0.0.5)
     scrub_rb (1.0.1)
     simplecov (0.22.0)
       docile (~> 1.1)
