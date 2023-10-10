@@ -53,4 +53,87 @@ RSpec.describe 'Holdings config' do
       end
     end
   end
+
+  describe 'mhld_display_struct' do
+    let(:field) { 'mhld_display_struct' }
+    subject(:value) { result[field].map { |row| JSON.parse(row) } }
+
+    context 'for a2499' do
+      let(:fixture_file) { 'a2499.json' }
+
+      it {
+        is_expected.to eq [
+          {
+            'MUSIC' => {
+              'location_holdings' => {
+                'MUS-STACKS' => {
+                  'holdings' => [
+                    { 'library_has' => 'v.1' },
+                    { 'library_has' => 'v.2' }
+                  ],
+                  'latest' => nil,
+                  'symphony_location' => 'STACKS'
+                }
+              },
+              'symphony_library' => 'MUSIC'
+            }
+          }
+        ]
+      }
+    end
+
+    context 'for a9012' do
+      let(:fixture_file) { 'a9012.json' }
+
+      it {
+        is_expected.to eq [
+          {
+            'SAL3' => {
+              'location_holdings' => {
+                'SAL3-STACKS' => {
+                  'holdings' => [
+                    { 'library_has' => '1948,1965-1967,1974-1975' }
+                  ],
+                  'latest' => nil,
+                  'symphony_location' => 'STACKS'
+                }
+              },
+              'symphony_library' => 'SAL3'
+            }
+          }
+        ]
+      }
+    end
+
+    context 'for a1572' do
+      let(:fixture_file) { 'a1572.json' }
+
+      it {
+        is_expected.to eq [
+          {
+            'SAL3' => {
+              'location_holdings' => {
+                'SAL3-STACKS' => {
+                  'holdings' => [
+                    { 'library_has' => 'Heft 1-2 <v.568-569 in series>' }
+                  ],
+                  'latest' => nil,
+                  'symphony_location' => 'STACKS'
+                }
+              },
+              'symphony_library' => 'SAL3'
+            }
+          }
+        ]
+      }
+    end
+
+    context 'for a7770475' do
+      let(:fixture_file) { 'a7770475.json' }
+
+      it "doesn't raise an error" do
+        expect { value }.not_to raise_error
+      end
+    end
+  end
 end
