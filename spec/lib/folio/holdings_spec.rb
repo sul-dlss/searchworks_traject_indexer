@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'folio/holdings'
 
 RSpec.describe Folio::Holdings do
   describe '.find_latest' do

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'utils'
 
 RSpec.describe Traject::KafkaPurlFetcherReader do
   subject(:reader) { described_class.new('', settings) }

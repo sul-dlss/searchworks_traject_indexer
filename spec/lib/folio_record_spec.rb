@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'folio_client'
-require 'folio_record'
+require 'spec_helper'
 
 RSpec.describe FolioRecord do
   subject(:folio_record) { described_class.new(record, client) }

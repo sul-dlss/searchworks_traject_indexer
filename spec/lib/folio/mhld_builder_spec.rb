@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'folio/mhld_builder'
 
 RSpec.describe Folio::MhldBuilder do
   subject(:mhld_display) { described_class.build(holdings, holding_summaries, pieces) }

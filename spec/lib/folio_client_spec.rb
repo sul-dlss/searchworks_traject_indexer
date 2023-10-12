@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'folio_client'
+require 'spec_helper'
 
 RSpec.describe FolioClient do
   subject(:client) { described_class.new(url:) }

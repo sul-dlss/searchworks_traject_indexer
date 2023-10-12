@@ -5,8 +5,6 @@ require 'traject/macros/marc21_semantics'
 require 'csv'
 require 'i18n'
 require 'digest/md5'
-require 'active_support'
-require 'active_support/core_ext/enumerable'
 require 'active_support/core_ext/time'
 
 I18n.available_locales = [:en]
@@ -36,7 +34,6 @@ settings do
 
   # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
-    require './lib/traject/readers/kafka_folio_reader'
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
 
     provide 'kafka.hosts', ::Settings.kafka.hosts
@@ -45,14 +42,11 @@ settings do
     consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   elsif self['postgres.url']
-    require './lib/traject/readers/folio_postgres_reader'
     if self['catkey']
       provide 'postgres.sql_filters', "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{self['catkey'].downcase}'"
     end
     provide 'reader_class_name', 'Traject::FolioPostgresReader'
-  elsif self['reader_class_name'] == 'Traject::FolioJsonReader'
-    require './lib/traject/readers/folio_json_reader'
-  else
+  elsif self['reader_class_name'] != 'Traject::FolioJsonReader'
     provide 'reader_class_name', 'Traject::FolioReader'
     provide 'folio.client', FolioClient.new(url: self['okapi.url'] || ENV.fetch('OKAPI_URL', ''))
   end

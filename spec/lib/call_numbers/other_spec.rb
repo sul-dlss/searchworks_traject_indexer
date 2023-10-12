@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'call_numbers/other'
+require 'spec_helper'
 
-describe CallNumbers::Other do
+RSpec.describe CallNumbers::Other do
   describe '#to_shelfkey' do
     let(:shelfkey) { described_class.new('ZDVD 1234').to_shelfkey }
 

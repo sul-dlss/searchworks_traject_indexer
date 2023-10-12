@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 require 'benchmark'
-require 'traject/readers/folio_postgres_reader'
 
 # These test enables us to benchmark the query speed.
 RSpec.describe Traject::FolioPostgresReader, if: ENV.key?('DATABASE_URL') do

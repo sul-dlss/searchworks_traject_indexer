@@ -2,7 +2,6 @@
 
 require 'kafka'
 require 'kafka/statsd'
-require 'active_support'
 
 # Produces kafka messages with data read from Folio
 class Traject::FolioKafkaExtractor

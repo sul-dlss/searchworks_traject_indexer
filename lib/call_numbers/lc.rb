@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'call_numbers/shelfkey'
-require 'call_numbers/call_number_base'
-
 module CallNumbers
   class LC < CallNumberBase
     attr_reader :call_number, :serial,
