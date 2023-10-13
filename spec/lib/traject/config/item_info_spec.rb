@@ -85,8 +85,8 @@ RSpec.describe 'ItemInfo config' do
       it { is_expected.to eq ['Business'] }
     end
 
-    context 'with HOPKINS' do
-      let(:holdings) { [build(:lc_holding, library: 'HOPKINS')] }
+    context 'with MARINE-BIO' do
+      let(:holdings) { [build(:lc_holding, library: 'MARINE-BIO')] }
 
       it { is_expected.to eq ['Marine Biology (Miller)'] }
     end
@@ -121,14 +121,14 @@ RSpec.describe 'ItemInfo config' do
       it { is_expected.to eq ['East Asia'] }
     end
 
-    context 'with MEDIA-MTXT' do
-      let(:holdings) { [build(:lc_holding, library: 'MEDIA-MTXT')] }
+    context 'with MEDIA-CENTER' do
+      let(:holdings) { [build(:lc_holding, library: 'MEDIA-CENTER')] }
 
       it { is_expected.to eq ['Media Center'] }
     end
 
-    context 'with RUMSEYMAP' do
-      let(:holdings) { [build(:lc_holding, library: 'RUMSEYMAP')] }
+    context 'with RUMSEY-MAP' do
+      let(:holdings) { [build(:lc_holding, library: 'RUMSEY-MAP')] }
 
       it { is_expected.to eq ['David Rumsey Map Center'] }
     end
@@ -151,8 +151,8 @@ RSpec.describe 'ItemInfo config' do
       it { is_expected.to eq ['Lane Medical'] }
     end
 
-    context 'with HOOVER' do
-      let(:holdings) { [build(:lc_holding, library: 'HOOVER')] }
+    context 'with HILA' do
+      let(:holdings) { [build(:lc_holding, library: 'HILA')] }
 
       it { is_expected.to eq ['Hoover Institution Library & Archives'] }
     end
@@ -255,10 +255,10 @@ RSpec.describe 'ItemInfo config' do
         it { is_expected.to match_array([hash_including('library' => 'GREEN')]) }
       end
 
-      context 'when library is HOOVER' do
-        let(:holdings) { [build(:lc_holding, library: 'HOOVER')] }
+      context 'when library is HILA' do
+        let(:holdings) { [build(:lc_holding, library: 'HILA')] }
 
-        it { is_expected.to match_array([hash_including('library' => 'HOOVER')]) }
+        it { is_expected.to match_array([hash_including('library' => 'HILA')]) }
       end
 
       context 'when library is SAL3' do
@@ -279,10 +279,10 @@ RSpec.describe 'ItemInfo config' do
         it { is_expected.to match_array([hash_including('library' => 'SPEC-COLL')]) }
       end
 
-      context 'when library is LANE-MED' do
-        let(:holdings) { [build(:lc_holding, barcode: '36105082101390', call_number: 'Z3871.Z8 V.22 1945', library: 'LANE-MED')] }
+      context 'when library is LANE' do
+        let(:holdings) { [build(:lc_holding, barcode: '36105082101390', call_number: 'Z3871.Z8 V.22 1945', library: 'LANE')] }
 
-        it { is_expected.to match_array([hash_including('barcode' => '36105082101390', 'library' => 'LANE-MED', 'callnumber' => 'Z3871.Z8 V.22 1945')]) }
+        it { is_expected.to match_array([hash_including('barcode' => '36105082101390', 'library' => 'LANE', 'callnumber' => 'Z3871.Z8 V.22 1945')]) }
       end
 
       context 'with multiple holdings in single record, diff buildings' do
@@ -708,7 +708,7 @@ RSpec.describe 'ItemInfo config' do
       context 'Hoover Archives with call numbers starting with XX' do
         let(:holdings) do
           [
-            build(:alphanum_holding, call_number: 'XX066 BOX 11', library: 'HV-ARCHIVE')
+            build(:alphanum_holding, call_number: 'XX066 BOX 11', library: 'HILA')
           ]
         end
 

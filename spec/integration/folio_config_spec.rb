@@ -204,7 +204,7 @@ RSpec.describe 'FOLIO indexing' do
           { 'permanentLocation' =>
             { 'code' => 'SUL-ELECTRONIC' },
             'effectiveLocation' =>
-            { 'code' => 'SUL-ELECTRONIC' } },
+            { 'code' => 'SUL-ELECTRONIC', 'library' => { 'code' => 'SUL' } } },
             'suppressFromDiscovery' => false,
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [],
@@ -222,7 +222,7 @@ RSpec.describe 'FOLIO indexing' do
       expect(value).to include(
         { 'id' => nil, 'barcode' => '12451243-1001',
           'library' => 'SUL',
-          'home_location' => 'INTERNET',
+          'home_location' => 'SUL-ELECTRONIC',
           'current_location' => nil, 'type' => 'ONLINE',
           'note' => nil, 'lopped_callnumber' => nil,
           'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
@@ -246,7 +246,7 @@ RSpec.describe 'FOLIO indexing' do
             { 'permanentLocation' =>
               { 'code' => 'LAW-ELECTRONIC' },
               'effectiveLocation' =>
-              { 'code' => 'LAW-ELECTRONIC' } },
+              { 'code' => 'LAW-ELECTRONIC', 'library' => { 'code' => 'LAW' } } },
               'suppressFromDiscovery' => false,
               'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
               'holdingsStatements' => [],

@@ -490,7 +490,7 @@ RSpec.describe 'All_search config' do
   context 'with a bad lane lc callnum' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'lane', call_number: 'XX13413', library: 'LANE-MED', home_location: 'ASK@LANE')
+        build(:lc_holding, barcode: 'lane', call_number: 'XX13413', library: 'LANE', home_location: 'ASK@LANE')
       ]
     end
 

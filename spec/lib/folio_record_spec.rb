@@ -359,7 +359,8 @@ RSpec.describe FolioRecord do
               'holdingsType' => { 'name' => 'Bound-with' },
               'location' => {
                 'effectiveLocation' => {
-                  'code' => 'EAR-SEE-OTHER'
+                  'code' => 'EAR-SEE-OTHER',
+                  'library' => { 'code' => 'EARTH-SCI' }
                 }
               }
             }],
@@ -376,7 +377,7 @@ RSpec.describe FolioRecord do
           expect(folio_holdings.first).to have_attributes(
             id: nil,
             # barcode: '14154194-1001',
-            # home_location: 'SEE-OTHER',
+            home_location: 'EAR-SEE-OTHER',
             library: 'EARTH-SCI'
           )
         end
@@ -397,7 +398,8 @@ RSpec.describe FolioRecord do
             'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'effectiveLocation' => {
-                'code' => 'GRE-STACKS'
+                'code' => 'GRE-STACKS',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -405,7 +407,8 @@ RSpec.describe FolioRecord do
             'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'temporaryLocation' => {
-                'code' => 'GRE-SSRC'
+                'code' => 'GRE-SSRC',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -419,8 +422,8 @@ RSpec.describe FolioRecord do
 
       it 'uses the temp location as the current location' do
         expect(folio_holdings.first).to have_attributes(
-          current_location: 'SSRC',
-          home_location: 'STACKS',
+          current_location: 'GRE-SSRC',
+          home_location: 'GRE-STACKS',
           library: 'GREEN'
         )
       end
@@ -449,6 +452,7 @@ RSpec.describe FolioRecord do
             'location' => {
               'temporaryLocation' => {
                 'code' => 'GRE-CRES',
+                'library' => { 'code' => 'GREEN' },
                 'details' => {
                   'searchworksTreatTemporaryLocationAsPermanentLocation' => 'true'
                 }
@@ -485,7 +489,8 @@ RSpec.describe FolioRecord do
             'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'effectiveLocation' => {
-                'code' => 'GRE-STACKS'
+                'code' => 'GRE-STACKS',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -493,7 +498,8 @@ RSpec.describe FolioRecord do
             'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'permanentLocation' => {
-                'code' => 'GRE-HH-MAGAZINE'
+                'code' => 'GRE-HH-MAGAZINE',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -508,7 +514,7 @@ RSpec.describe FolioRecord do
       it 'uses the permanent location of the item as the home location' do
         expect(folio_holdings.first).to have_attributes(
           current_location: nil,
-          home_location: 'MAGAZINE',
+          home_location: 'GRE-HH-MAGAZINE',
           library: 'GREEN'
         )
       end
@@ -528,7 +534,8 @@ RSpec.describe FolioRecord do
             'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'effectiveLocation' => {
-                'code' => 'GRE-STACKS'
+                'code' => 'GRE-STACKS',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -547,7 +554,7 @@ RSpec.describe FolioRecord do
       it 'uses the effective location of the holding as the home location' do
         expect(folio_holdings.first).to have_attributes(
           current_location: nil,
-          home_location: 'STACKS',
+          home_location: 'GRE-STACKS',
           library: 'GREEN'
         )
       end
@@ -567,7 +574,8 @@ RSpec.describe FolioRecord do
             'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'effectiveLocation' => {
-                'code' => 'SAL3-STACKS'
+                'code' => 'SAL3-STACKS',
+                'library' => { 'code' => 'SAL3' }
               }
             }
           }],
@@ -593,7 +601,7 @@ RSpec.describe FolioRecord do
 
       it 'uses the FOLIO location code as the current location' do
         expect(folio_holdings.first).to have_attributes(
-          home_location: 'STACKS',
+          home_location: 'SAL3-STACKS',
           library: 'SAL3',
           current_location: 'SUL-TS-PROCESSING'
         )
@@ -614,7 +622,8 @@ RSpec.describe FolioRecord do
             'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'effectiveLocation' => {
-                'code' => 'GRE-STACKS'
+                'code' => 'GRE-STACKS',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -634,7 +643,7 @@ RSpec.describe FolioRecord do
       it 'uses the item status of the holding as the current location' do
         expect(folio_holdings.first).to have_attributes(
           current_location: 'INPROCESS',
-          home_location: 'STACKS',
+          home_location: 'GRE-STACKS',
           library: 'GREEN'
         )
       end
@@ -653,7 +662,8 @@ RSpec.describe FolioRecord do
             'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {
               'effectiveLocation' => {
-                'code' => 'GRE-STACKS'
+                'code' => 'GRE-STACKS',
+                'library' => { 'code' => 'GREEN' }
               }
             }
           }],
@@ -670,7 +680,7 @@ RSpec.describe FolioRecord do
         expect(folio_holdings.first).to have_attributes(
           barcode: nil,
           current_location: 'ON-ORDER',
-          home_location: 'STACKS',
+          home_location: 'GRE-STACKS',
           library: 'GREEN'
         )
       end

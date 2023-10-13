@@ -28,7 +28,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
           { 'permanentLocation' =>
             { 'code' => 'SUL-ELECTRONIC' },
             'effectiveLocation' =>
-            { 'code' => 'SUL-ELECTRONIC' } },
+            { 'code' => 'SUL-ELECTRONIC', 'library' => { 'code' => 'SUL' } } },
           'suppressFromDiscovery' => false,
           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
           'holdingsStatements' => [] }] }
@@ -43,7 +43,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   it { expect(holdings.count).to eq 1 }
   it { expect(holdings.first).to be_a FolioHolding }
   it { expect(holdings.first.call_number.call_number).to eq 'INTERNET RESOURCE' }
-  it { expect(holdings.first.home_location).to eq 'INTERNET' }
+  it { expect(holdings.first.home_location).to eq 'SUL-ELECTRONIC' }
   it { expect(holdings.first.library).to eq 'SUL' }
   it { expect(holdings.first.type).to eq 'ONLINE' }
   it { expect(holdings.first.barcode).to eq '12451243-1001' }
@@ -55,7 +55,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
 
     it { expect(holdings.count).to eq 1 }
     it { expect(holdings.first.call_number.call_number).to eq 'INTERNET RESOURCE' }
-    it { expect(holdings.first.home_location).to eq 'INTERNET' }
+    it { expect(holdings.first.home_location).to eq 'SUL-ELECTRONIC' }
   end
 
   context 'the holding library is Law' do
@@ -67,7 +67,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
           { 'permanentLocation' =>
             { 'code' => 'LAW-ELECTRONIC' },
             'effectiveLocation' =>
-            { 'code' => 'LAW-ELECTRONIC' } },
+            { 'code' => 'LAW-ELECTRONIC', 'library' => { 'code' => 'LAW' } } },
             'suppressFromDiscovery' => false,
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [] }] }
@@ -99,7 +99,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [] }] }
     end
-    it { expect(holdings.first.home_location).to eq 'INTERNET' }
+    it { expect(holdings.first.home_location).to eq 'SUL-SDR' }
   end
 
   context 'the holding library is Lane (without a explicit holdingsType)' do
@@ -110,12 +110,12 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
           { 'permanentLocation' =>
             { 'code' => 'LANE-EDATA' },
             'effectiveLocation' =>
-            { 'code' => 'LANE-EDATA',  'details' => { 'holdingsTypeName' => 'Electronic' } } },
+            { 'code' => 'LANE-EDATA', 'library' => { 'code' => 'LANE' }, 'details' => { 'holdingsTypeName' => 'Electronic' } } },
             'suppressFromDiscovery' => false,
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [] }] }
     end
 
-    it { expect(holdings.first.library).to eq 'LANE-MED' }
+    it { expect(holdings.first.library).to eq 'LANE' }
   end
 end
