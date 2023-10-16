@@ -2,16 +2,17 @@
 
 module Folio
   class MhldBuilder
-    def self.build(holdings, pieces)
-      new(holdings, pieces).build
+    def self.build(holdings, holding_summaries, pieces)
+      new(holdings, holding_summaries, pieces).build
     end
 
-    def initialize(holdings, pieces)
+    def initialize(holdings, holding_summaries, pieces)
       @holdings = holdings
+      @holding_summaries = holding_summaries
       @pieces = pieces
     end
 
-    attr_reader :holdings, :pieces
+    attr_reader :holdings, :holding_summaries, :pieces
 
     def build
       filtered_holdings.flatten.map do |holding|
@@ -20,19 +21,24 @@ module Folio
         # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
         # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
         library_has = holding.fetch(:library_has)
-        latest = latest_received(holding.fetch(:id))
+        latest = latest_received(holding.fetch(:location).fetch('code'))
         [library, location, public_note, library_has, latest].join(' -|- ') if public_note || library_has.present? || latest
       end
     end
 
     private
 
-    # Remove suppressed record and electronic records
+    # Remove suppressed records, electronic records, and records with no holdings statement
     def filtered_holdings
       holdings.filter_map do |holding|
-        next if holding['suppressFromDiscovery'] || holding['holdingsType'] == 'Electronic'
+        no_holding_statements = (holding.fetch('holdingsStatements') +
+                                 holding.fetch('holdingsStatementsForIndexes') +
+                                 holding.fetch('holdingsStatementsForSupplements')).compact.empty?
+        next if no_holding_statements || holding['suppressFromDiscovery'] ||
+                (holding.dig('holdingsType', 'name') ||
+                 holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Electronic'
 
-        note = holding.fetch('holdingsStatements').find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
+        note = holding.fetch('holdingsStatements').compact.find { |statement| statement.key?('note') && !statement.key?('statement') }&.fetch('note')
 
         library_has_for_holding(holding).map do |library_has|
           {
@@ -53,35 +59,49 @@ module Folio
 
     # @return [Array<String>] the list of statements
     def statements_for_holding(holding)
-      holding.fetch('holdingsStatements').select { |statement| statement.key?('statement') }.map do |statement|
-        if statement['note'].present?
-          "#{statement.fetch('statement')} #{statement.fetch('note')}"
-        else
-          statement.fetch('statement')
-        end
+      holding.fetch('holdingsStatements').compact.select { |statement| statement.key?('statement') }.filter_map do |statement|
+        display_statement(statement)
       end + statments_for_index(holding) + statements_for_supplements(holding)
     end
 
     def statments_for_index(holding)
-      holding.fetch('holdingsStatementsForIndexes').map { |statement| "Index: #{statement.fetch('statement')}" }
+      holding.fetch('holdingsStatementsForIndexes').compact.filter_map { |statement| display_statement(statement) }.map { |v| "Index: #{v}" }
     end
 
     def statements_for_supplements(holding)
-      holding.fetch('holdingsStatementsForSupplements').map { |statement| "Supplement: #{statement.fetch('statement')}" }
+      holding.fetch('holdingsStatementsForSupplements').compact.filter_map { |statement| display_statement(statement) }.map { |v| "Supplement: #{v}" }
+    end
+
+    def display_statement(statement)
+      [statement['statement'], statement['note']].reject(&:blank?).join(' ').presence
     end
 
     # @return [String] the latest received piece for a holding
-    def latest_received(holding_id)
-      # NOTE: We saw some piece records without 'chronology'. Was this just test data?
-      pieces = pieces_per_holding.fetch(holding_id, []).filter_map { |piece| piece.merge(date: Date.parse(piece.fetch('chronology'))) if piece['chronology'] }
-      latest_piece = pieces.max_by { |piece| piece.fetch(:date) }
-      "#{latest_piece.fetch('enumeration')} (#{latest_piece.fetch('chronology')})" if latest_piece
+    def latest_received(location_id)
+      pieces = pieces_per_location.fetch(location_id, [])
+      received_pieces = pieces.select { |piece| piece['receivingStatus'] == 'Received' }
+      latest_piece = Holdings.find_latest(received_pieces)
+
+      return unless latest_piece && order_is_ongoing_and_open?(latest_piece)
+
+      enumeration = latest_piece['enumeration'].presence # may not be present
+      chronology = latest_piece['chronology'].presence # may not be present
+      enumeration && chronology ? "#{enumeration} (#{chronology})" : enumeration || chronology
+    end
+
+    def order_is_ongoing_and_open?(latest_piece)
+      holding_summary = holding_summaries.find { |summary| summary['poLineId'] == latest_piece['poLineId'] }
+      holding_summary && holding_summary['orderType'] == 'Ongoing' && holding_summary['orderStatus'] == 'Open'
     end
 
     # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
     # hrid: a567006 has > 1000 on test.
-    def pieces_per_holding
-      @pieces_per_holding ||= pieces.group_by { |piece| piece['holdingId'] }
+    def pieces_per_location
+      @pieces_per_location ||= pieces.group_by { |piece| holdings_by_id[piece['holdingId']]&.dig('location', 'effectiveLocation', 'code') }
+    end
+
+    def holdings_by_id
+      @holdings_by_id ||= holdings.index_by { |holding| holding['id'] }
     end
   end
 end

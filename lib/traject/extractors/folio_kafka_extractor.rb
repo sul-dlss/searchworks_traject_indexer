@@ -2,7 +2,6 @@
 
 require 'kafka'
 require 'kafka/statsd'
-require 'active_support'
 
 # Produces kafka messages with data read from Folio
 class Traject::FolioKafkaExtractor
@@ -18,14 +17,18 @@ class Traject::FolioKafkaExtractor
   end
 
   def process!
+    i = 0
     reader.each do |record|
       Utils.logger.debug("Traject::FolioKafkaExtractor#each(#{record.instance_id})")
 
       # sometimes folio source records don't have an associated instance record
       next if record.instance_id.nil? || record.instance_id.empty?
 
+      i += 1
+
       producer.produce(JSON.fast_generate(record.as_json), key: record.instance_id, topic:)
     end
+    i
   ensure
     producer.deliver_messages
     producer.shutdown

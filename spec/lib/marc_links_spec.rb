@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'marc_links'
+require 'spec_helper'
 
 RSpec.describe MarcLinks::Processor do
   subject(:marc_link) { described_class.new(field) }

@@ -1,14 +1,13 @@
 # SearchworksTrajectIndexer
 [![CI status](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml/badge.svg)](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml)
 [![Current release](https://img.shields.io/github/v/release/sul-dlss/searchworks_traject_indexer)](https://github.com/sul-dlss/searchwork_traject_indexer/releases)
-![tested on ruby 3.1](https://img.shields.io/badge/ruby-v3.1-red)
-![tested on jruby 9.3](https://img.shields.io/badge/jruby-v9.3-red)
+![tested on ruby 3.2](https://img.shields.io/badge/ruby-v3.2-red)
 
 indexing MARC, MODS, and more for [SearchWorks](https://github.com/sul-dlss/SearchWorks).
 <img src="preview.png" alt="solr index fields displayed overlaid on SearchWorks catalog preview for a book">
 
 ## local development
-searchworks_traject_indexer is built on the [traject](https://github.com/traject/traject) transformation library, which requires ruby. we test the application using ruby 3.1 and jruby v9.3; support for other versions is not guaranteed.
+searchworks_traject_indexer is built on the [traject](https://github.com/traject/traject) transformation library, which requires ruby. we test the application using ruby 3.2; support for other versions is not guaranteed.
 
 after cloning the repository, install dependencies:
 ```sh
@@ -29,24 +28,6 @@ bundle exec rake
 ```
 note that some integration tests may hit a live server, for which you may need to be on the Stanford VPN.
 
-## Building services
-For development we can use Foreman to run a procfile, but on a deployed machine, we export the rules to systemd:
-```
-# disable/remove old rules
-sudo systemctl stop traject.target
-sudo systemctl disable traject.target
-
-# Ensure the .env file exists with JRUBY_OPTS=-J-Xmx8192m LANG=en_US.UTF-8 and then:
-foreman export -a traject -u indexer -f Procfile.stage --formation marc_bodoni_dev_indexer=1,marc_morison_dev_indexer=1,folio_dev_indexer=8,sw_dev_indexer=2,sw_preview_stage_indexer=2,earthworks_stage_indexer=1 systemd ~/service_templates
-
-foreman export -a traject -u indexer -f Procfile.prod --formation marc_bodoni_prod_indexer=1,marc_morison_prod_indexer=1,sdr_prod_indexer_catchup=2,sdr_preview_indexer=2,earthworks_prod_indexer=1 systemd ~/service_templates
-
-sudo cp /opt/app/indexer/service_templates/* /usr/lib/systemd/system/
-
-sudo systemctl enable traject.target
-sudo systemctl start traject.target
-```
-
 ## Monitor logs
 ```
 ksu
@@ -63,7 +44,7 @@ indexing is a multi-step process:
 extractor processes are written as ruby scripts in `script/` and usually invoked by shell scripts located in the same directory. they make use of traject extractor classes stored in `lib/traject/extractors/`, which use the ruby kafka client to publish data to a kafka topic using the pattern:
 ```ruby
 producer.produce(record, key: id, topic: topic)
-``` 
+```
 the key is usually a unique identifier like a catkey or DRUID, and the topic groups all data that should be consumed by a single traject indexer.
 
 the shell scripts that invoke extractors are run on a schedule as `cron` jobs, defined by `config/schedule.rb`. you can override this schedule if necessary when debugging by using the `crontab` utility in an `ssh` session.
@@ -96,7 +77,7 @@ processes:
       SOLR_URL: http://sul-solr.stanford.edu/solr/searchworks-prod
       KAFKA_CONSUMER_GROUP_ID: traject_marc_bodoni_prod
     config:
-      start_command: '/usr/local/rvm/bin/rvm jruby-9.3.2.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/sirsi_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
+      start_command: '/usr/local/rvm/bin/rvm jruby-9.3.2.0 do bundle exec honeybadger exec traject -c ./lib/traject/config/marc_config.rb -s solr_writer.max_skipped=-1 -s log.level=debug -s log.file=log/traject_marc_bodoni_prod_indexer.log'
 ```
 
 You can use `sudo systemctl list-dependencies traject.target` to view status information:
@@ -177,7 +158,7 @@ The indexing machines also have scheduled cron tasks for loading data from purl-
 Data is read directly from the postgres database underlying FOLIO, using a custom SQL query stored in the `FolioPostgresReader`. To mimic this activity in local development, one can SSH tunnel to the FOLIO database and use the `#find_by_catkey` helper method:
 ```rb
 # after SSH tunneling to the FOLIO database
-require 'traject/readers/folio_postgres_reader'
+bin/console
 Traject::FolioPostgresReader.find_by_catkey('a123456, 'postgres.url' => 'postgres://[user]:[password]@localhost/okapi')
 ```
 There is also a helper script for fetching single records at a time. You need to set the `DATABASE_URL` environment variable:
@@ -188,3 +169,13 @@ export DATABASE_URL=postgres://[user]:[password]@localhost/okapi
 ```sh
 ./script/download_folio_record.rb a123456 > record.json
 ```
+
+#### Synching data
+##### Libraries
+If the name of a library in Folio has changed, you'll want to export the list of libraries with their labels and check it in here.  You can do this with the Rake command
+
+```shell
+OKAPI_URL="URL_HERE" bin/rake folio:update_types_cache
+```
+
+Then you'll want to reindex everything so as to avoid libaries who's labels have changed from showing both versions of the label in the `building_facet` in Searchworks.

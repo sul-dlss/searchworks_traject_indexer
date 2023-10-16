@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'kafka'
-require 'kafka/statsd'
-require 'active_support' # required internally by ruby-kafka
-
 class Traject::MarcKafkaExtractor
   attr_reader :reader, :kafka, :topic
 

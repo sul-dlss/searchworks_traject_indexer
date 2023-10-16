@@ -1,8 +1,19 @@
 # frozen_string_literal: true
 
 module ResultHelpers
+  def marc_to_folio(marc_record, client: stub_folio_client, instance: {})
+    FolioRecord.new({
+                      'source_record' => [marc_record.to_hash],
+                      'instance' => instance.merge({ 'id' => marc_record['001']&.value })
+                    }, client)
+  end
+
+  def stub_folio_client
+    instance_double(FolioClient, instance: {}, items_and_holdings: {}, statistical_codes: [])
+  end
+
   def select_by_id(id)
-    results.select { |r| r['id'] == [id] }.first
+    results.find { |r| r['id'] == [id] }
   end
 
   def select_by_field(results, field, value)

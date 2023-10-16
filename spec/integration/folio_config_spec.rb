@@ -2,9 +2,6 @@
 
 require 'spec_helper'
 
-require 'folio_client'
-require 'folio_record'
-
 RSpec.describe 'FOLIO indexing' do
   subject(:result) { indexer.map_record(folio_record) }
 
@@ -22,12 +19,30 @@ RSpec.describe 'FOLIO indexing' do
     JSON.parse(File.read(file_fixture('a14185492.json')))
   end
 
-  let(:client) { instance_double(FolioClient) }
+  let(:client_instance_response) do
+    {
+      'id' =>	'4e481734-9304-5035-99b3-afe6153d9835',
+      'hrid' => 'a2656738',
+      'statisticalCodeIds' =>	%w[d3f618e2-9fa9-4623-94ae-1d95d1d66f79]
+    }
+  end
+
+  let(:statistical_codes_response) do
+    [
+      { 'id' => 'd3f618e2-9fa9-4623-94ae-1d95d1d66f79', 'name' => 'MARCIVE loaded record' },
+      { 'id' => '12313', 'name' => 'Not used' },
+      { 'id' => '4bc78766-8f34-4b1a-9e39-2a689a4ae998', 'name' => 'Database' }
+    ]
+  end
+
+  let(:client) { instance_double(FolioClient, instance: client_instance_response, statistical_codes: statistical_codes_response) }
   let(:items_and_holdings) { {} }
+  let(:holding_summaries) { [] }
 
   before do
     allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
     allow(folio_record).to receive(:courses).and_return([])
+    allow(folio_record).to receive(:holding_summaries).and_return(holding_summaries)
   end
 
   it 'maps the record with sirsi fields' do
@@ -40,9 +55,13 @@ RSpec.describe 'FOLIO indexing' do
   end
 
   it 'includes folio-specific fields' do
-    expect(result).to include 'uuid_ssi' => ['b2fe7336-33d1-5553-86cb-a15af14c7348'],
-                              'folio_json_struct' => [start_with('{')],
-                              'holdings_json_struct' => [start_with('{')]
+    aggregate_failures do
+      expect(result).to include 'uuid_ssi' => ['b2fe7336-33d1-5553-86cb-a15af14c7348']
+      expect(result).to include 'folio_json_struct', 'holdings_json_struct'
+
+      expect(JSON.parse(result['folio_json_struct'].first)).to include 'instance'
+      expect(JSON.parse(result['holdings_json_struct'].first)).to include 'holdings', 'items'
+    end
   end
 
   context 'when the record is suppressed' do
@@ -66,9 +85,19 @@ RSpec.describe 'FOLIO indexing' do
       end
     end
 
-    context 'bad date from MARC' do
+    context 'MARC date does match correct format because it has letters' do
       before do
         folio_record.instance['catalogedDate'] = '19uu-uu-uu'
+      end
+
+      it 'is not indexed' do
+        expect(result).not_to include 'date_cataloged'
+      end
+    end
+
+    context 'MARC date not parseable due to incorrect month' do
+      before do
+        folio_record.instance['catalogedDate'] = '2023-00-03'
       end
 
       it 'is not indexed' do
@@ -87,6 +116,78 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  describe 'location codes' do
+    before do
+      folio_record.instance['hrid'] = 'a12451243'
+      allow(client).to receive(:pieces).and_return([])
+    end
+
+    context 'when the holding library is Law' do
+      let(:items) do
+        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'crez' => [],
+           'hrid' => 'ai1755834_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '36105043687818',
+           '_version' => 1,
+           'location' => {} }]
+      end
+
+      let(:holdings) do
+        [{ 'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'LAW-BASEMENT', 'library' => { 'code' => 'LAW' } } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [],
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      it { expect(result['library_code_facet_ssim']).to eq ['LAW'] }
+      it { expect(result['location_code_facet_ssim']).to eq ['LAW-BASEMENT'] }
+    end
+
+    context 'when the location provides additional library codes (e.g. PAGE-AR)' do
+      let(:items) do
+        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'crez' => [],
+           'hrid' => 'ai1755834_1_1',
+           'notes' => [],
+           'status' => 'Available',
+           'barcode' => '36105043687818',
+           '_version' => 1,
+           'location' => {} }]
+      end
+
+      let(:holdings) do
+        [{ 'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'SAL3-PAGE-AR', 'library' => { 'code' => 'SAL3' }, 'details' => { 'searchworksAdditionalLibraryCodeFacetValues' => 'ART' } } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [],
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      it { expect(result['library_code_facet_ssim']).to contain_exactly 'SAL3', 'ART' }
+    end
+  end
+
   describe 'electronic resources' do
     let(:source_record_json) do
       JSON.parse(File.read(file_fixture('a12451243.json')))
@@ -95,7 +196,8 @@ RSpec.describe 'FOLIO indexing' do
     let(:items_and_holdings) do
       { 'items' => [],
         'holdings' =>
-         [{ 'location' =>
+         [{ 'holdingsType' => { 'name' => 'Electronic' },
+            'location' =>
           { 'permanentLocation' =>
             { 'code' => 'SUL-ELECTRONIC' },
             'effectiveLocation' =>
@@ -106,6 +208,7 @@ RSpec.describe 'FOLIO indexing' do
             'holdingsStatementsForIndexes' => [],
             'holdingsStatementsForSupplements' => [] }] }
     end
+    subject(:value) { JSON.parse(result['item_display_struct'].first) }
 
     before do
       folio_record.instance['hrid'] = 'a12451243'
@@ -113,10 +216,17 @@ RSpec.describe 'FOLIO indexing' do
     end
 
     it {
-      expect(result['item_display']).to eq(
-        ['a12451243-0000 -|- SUL -|- INTERNET -|-  -|- ONLINE -|-  -|- ' \
-         'lc pr  3562.000000 l0.385000 002014 -|- ' \
-         'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~ -|-  -|-  -|-  -|- LC']
+      expect(value).to include(
+        { 'id' => nil, 'barcode' => '12451243-1001',
+          'library' => 'SUL',
+          'home_location' => 'INTERNET',
+          'current_location' => nil, 'type' => 'ONLINE',
+          'note' => nil, 'lopped_callnumber' => nil,
+          'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
+          'reverse_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
+          'callnumber' => nil,
+          'full_shelfkey' => nil,
+          'scheme' => 'LC' }
       )
     }
 
@@ -128,7 +238,8 @@ RSpec.describe 'FOLIO indexing' do
       let(:items_and_holdings) do
         { 'items' => [],
           'holdings' =>
-           [{ 'location' =>
+           [{ 'holdingsType' => { 'name' => 'Electronic' },
+              'location' =>
             { 'permanentLocation' =>
               { 'code' => 'LAW-ELECTRONIC' },
               'effectiveLocation' =>
@@ -146,6 +257,7 @@ RSpec.describe 'FOLIO indexing' do
     context 'when the holding does not include an electronic location' do
       let(:items) do
         [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
            'crez' => [],
            'hrid' => 'ai1755834_1_1',
            'notes' => [],
@@ -208,7 +320,383 @@ RSpec.describe 'FOLIO indexing' do
           'holdings' => holdings }
       end
 
-      it { expect(result['item_display'].find { |h| h.match?(/INTERNET/) }).to be_nil }
+      it { expect(result['item_display_struct'].find { |h| h.match?(/INTERNET/) }).to be_nil }
+    end
+  end
+
+  describe 'item_display_struct' do
+    context 'item status is checked out' do
+      let(:items) do
+        [{ 'id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
+           'hrid' => 'ai9330051_1_1',
+           'notes' => [],
+           'status' => 'Checked out',
+           'barcode' => '36105064298164',
+           '_version' => 2,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:28:44.515Z',
+            'updatedDate' => '2023-06-03T00:51:05.108Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => 'cef01822-dc95-45c9-8a71-85c32e24c05f' },
+           'formerIds' => [],
+           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'HV6432.7 .R57 2011' },
+           'copyNumber' => '1',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Can circulate',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLoanTypeId' => '2b94c631-fca9-4892-a730-03ee529ffe27',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'HV 46432.7 R57 42011 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'HV6432.7 .R57 2011' } }]
+      end
+      let(:holdings) do
+        [{ 'id' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'hrid' => 'ah9330051_1',
+           'notes' => [],
+           '_version' => 1,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:16:28.403Z',
+            'updatedDate' => '2023-05-07T00:16:28.403Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'sourceId' => 'f32d531e-df79-46b3-8932-cdd35f7a2264',
+           'formerIds' => [],
+           'illPolicy' => nil,
+           'callNumber' => 'HV6432.7 .R57 2011',
+           'instanceId' => '741a706a-3088-5260-82c6-973244655ac2',
+           'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'holdingsTypeId' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+           'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+           'electronicAccess' => [],
+           'bareHoldingsItems' => [],
+           'holdingsStatements' => [],
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it { expect(result['item_display_struct'].find { |h| h.match?(/CHECKEDOUT/) }).to be_present }
+
+      it 'includes the item UUID in the item_display_struct field' do
+        expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
+                                                                                         hash_including('id' => '5362817d-f2df-503c-aa20-b2287c64ae25')
+                                                                                       ])
+      end
+    end
+
+    context 'item status is in-transit' do
+      let(:items) do
+        [{ 'id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
+           'hrid' => 'ai9330051_1_1',
+           'notes' => [],
+           'status' => 'In transit',
+           'barcode' => '36105064298164',
+           '_version' => 2,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:28:44.515Z',
+            'updatedDate' => '2023-06-03T00:51:05.108Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => 'cef01822-dc95-45c9-8a71-85c32e24c05f' },
+           'formerIds' => [],
+           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'HV6432.7 .R57 2011' },
+           'copyNumber' => '1',
+           'yearCaption' => [],
+           'materialType' => 'book',
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+           'numberOfPieces' => '1',
+           'circulationNotes' => [],
+           'electronicAccess' => [],
+           'holdingsRecordId' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'itemDamagedStatus' => nil,
+           'permanentLoanType' => 'Can circulate',
+           'temporaryLoanType' => nil,
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLoanTypeId' => '2b94c631-fca9-4892-a730-03ee529ffe27',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'effectiveShelvingOrder' => 'HV 46432.7 R57 42011 11',
+           'effectiveCallNumberComponents' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'callNumber' => 'HV6432.7 .R57 2011' } }]
+      end
+      let(:holdings) do
+        [{ 'id' => '724e8e7f-2fe1-5bef-abed-7d7cff8999dd',
+           'hrid' => 'ah9330051_1',
+           'notes' => [],
+           '_version' => 1,
+           'location' =>
+          { 'effectiveLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'permanentLocation' =>
+            { 'id' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+              'code' => 'LAW-BASEMENT',
+              'name' => 'Law Basement',
+              'campus' => { 'id' => '7003123d-ef65-45f6-b469-d2b9839e1bb3', 'code' => 'LAW', 'name' => 'Law School' },
+              'details' => nil,
+              'library' => { 'id' => '7e4c05e3-1ce6-427d-b9ce-03464245cd78', 'code' => 'LAW', 'name' => 'Robert Crown Law' },
+              'isActive' => true,
+              'institution' => { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929', 'code' => 'SU', 'name' => 'Stanford University' } },
+            'temporaryLocation' => nil },
+           'metadata' =>
+          { 'createdDate' => '2023-05-07T00:16:28.403Z',
+            'updatedDate' => '2023-05-07T00:16:28.403Z',
+            'createdByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2',
+            'updatedByUserId' => '3e2ed889-52f2-45ce-8a30-8767266f07d2' },
+           'sourceId' => 'f32d531e-df79-46b3-8932-cdd35f7a2264',
+           'formerIds' => [],
+           'illPolicy' => nil,
+           'callNumber' => 'HV6432.7 .R57 2011',
+           'instanceId' => '741a706a-3088-5260-82c6-973244655ac2',
+           'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' => { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'name' => 'Library of Congress classification', 'source' => 'folio' },
+           'holdingsTypeId' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+           'callNumberTypeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+           'electronicAccess' => [],
+           'bareHoldingsItems' => [],
+           'holdingsStatements' => [],
+           'statisticalCodeIds' => [],
+           'administrativeNotes' => [],
+           'effectiveLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'permanentLocationId' => '0edeef57-074a-4f07-aee2-9f09d55e65c3',
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it { expect(result['item_display_struct'].find { |h| h.match?(/INTRANSIT/) }).to be_present }
+    end
+
+    context 'item is awaiting pickup' do
+      let(:items) do
+        [{ 'id' => '7fdf7094-d30a-5f70-b23e-bc420a82a1d7',
+           'hrid' => 'ai645341_1_1',
+           'holdingsRecordId' => '9c7b3dca-1619-5210-9bd1-6df775986b81',
+           'notes' => [],
+           'status' => 'Awaiting pickup',
+           'barcode' => '36105080746311',
+           '_version' => 3,
+           'request' => { 'id' => '7c8e3f57-6f1b-4d59-a8c6-9b51e32edd38',
+                          'status' => 'Open - Awaiting pickup',
+                          'pickupServicePoint' =>
+            { 'pickupServicePointId' => 'b6987737-1e63-44cc-bfb1-2bcf044adcd7',
+              'code' => 'RUMSEY-MAP',
+              'name' => 'David Rumsey Map Center',
+              'pickupLocation' => true,
+              'discoveryDisplayName' => 'David Rumsey Map Center' } },
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'temporaryLocation' => nil } }]
+      end
+      let(:holdings) do
+        [{ 'id' => '9c7b3dca-1619-5210-9bd1-6df775986b81',
+           'hrid' => 'ah645341_1',
+           'notes' => [],
+           '_version' => 1,
+           'location' =>
+           { 'effectiveLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'permanentLocation' =>
+             { 'id' => 'bb7bd5d2-5b97-4fc6-9dfd-b26a1c14e43f',
+               'code' => 'SAL-PAGE',
+               'name' => 'SAL Stacks',
+               'campus' =>
+               { 'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                 'code' => 'SUL',
+                 'name' => 'Stanford Libraries' },
+               'details' => { 'scanServicePointCode' => 'GREEN' },
+               'library' =>
+               { 'id' => '00d012b4-d5ee-422c-9f38-3457e0ddd1ed',
+                 'code' => 'SAL',
+                 'name' => 'Stanford Auxiliary Library 1&2' },
+               'isActive' => true,
+               'institution' =>
+               { 'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                 'code' => 'SU',
+                 'name' => 'Stanford University' } },
+             'temporaryLocation' => nil },
+           'formerIds' => [],
+           'callNumber' => 'D810.S8 C31 A32',
+           'instanceId' => 'c08db92b-c343-5955-abb1-b739ab186ecb',
+           'holdingsType' =>
+           { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed',
+             'name' => 'Monograph',
+             'source' => 'folio' },
+           'holdingsItems' => [],
+           'callNumberType' =>
+           { 'id' => '95467209-6d7b-468b-94df-0f5d7ad2747d',
+             'name' => 'Library of Congress classification',
+             'source' => 'folio' },
+           'holdingsStatements' => [],
+           'suppressFromDiscovery' => false,
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+      let(:items_and_holdings) do
+        { 'items' => items,
+          'holdings' => holdings }
+      end
+
+      before do
+        allow(client).to receive(:pieces).and_return([])
+      end
+
+      it 'uses the pickup location of the request to generate a current location value' do
+        expect(result['item_display_struct'].find { |h| h.match?(/RUM-LOAN/) }).to be_present
+      end
     end
   end
 
@@ -233,7 +721,7 @@ RSpec.describe 'FOLIO indexing' do
           'temporaryLocation' => {} },
         'formerIds' => [],
         'callNumber' => {},
-        'holdingsType' => 'Unknown',
+        'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
         'electronicAccess' => [],
         'receivingHistory' => { 'entries' => [] },
         'statisticalCodes' => [],
@@ -394,11 +882,11 @@ RSpec.describe 'FOLIO indexing' do
             'temporaryLocation' => {} },
           'formerIds' => [],
           'callNumber' => { 'typeId' => '95467209-6d7b-468b-94df-0f5d7ad2747d', 'typeName' => 'Library of Congress classification', 'callNumber' => 'G1 .N27' },
-          'holdingsType' => 'Monograph',
+          'holdingsType' => { 'id' => '03c9c400-b9e3-4a07-ac0e-05ab470233ed', 'name' => 'Monograph', 'source' => 'folio' },
           'electronicAccess' => [],
           'receivingHistory' => { 'entries' => [{ 'enumeration' => 'TEST', 'publicDisplay' => true }, nil] },
           'statisticalCodes' => [],
-          'holdingsStatements' => [],
+          'holdingsStatements' => [{ 'note' => '', 'staffNote' => 'Such a good book' }],
           'suppressFromDiscovery' => false,
           'holdingsStatementsForIndexes' => [],
           'holdingsStatementsForSupplements' => [] }
@@ -412,9 +900,18 @@ RSpec.describe 'FOLIO indexing' do
           { 'statement' => 'v.195(1999)-v.196(1999),v.201(2002),v.203(2003)-' }
         ]
       end
+      let(:holding_summaries) do
+        [{ 'poLineId' => '99dc412a-6ee3-4560-abca-0fa53c174c85',
+           'poLineNumber' => '12545-1',
+           'polReceiptStatus' => 'Received',
+           'orderType' => 'Ongoing',
+           'orderStatus' => 'Open',
+           'orderSentDate' => '2023-03-11T00:00:00.000Z',
+           'orderCloseReason' => nil }]
+      end
       it {
         is_expected.to eq [
-          'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- ',
+          'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- v.243:no.10 (OCT 2023)',
           'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
         ]
       }
@@ -443,7 +940,7 @@ RSpec.describe 'FOLIO indexing' do
       }
     end
 
-    context 'with holdingsStatementsForSupplements' do
+    context 'with holdingsStatementsForSupplements that have statements' do
       let(:supplement_statements) do
         [{ 'note' => '', 'staffNote' => '', 'statement' => 'guide' }]
       end
@@ -456,6 +953,37 @@ RSpec.describe 'FOLIO indexing' do
           'EARTH-SCI -|- STACKS -|-  -|- Supplement: guide -|- '
         ]
       }
+    end
+
+    context 'with holdingsStatementsForSupplements that have no statement' do
+      # See hrid: a10362341
+      let(:supplement_statements) do
+        [{ 'note' => 'Library keeps latest only', 'staffNote' => 'Library keeps latest supplement only.' }]
+      end
+      let(:holdings_statements) do
+        [{ 'staffNote' => 'Send to cataloging to receive and update holdings...', 'statement' => 'v.1, 11' }]
+      end
+      it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- ', 'EARTH-SCI -|- STACKS -|-  -|- Supplement: Library keeps latest only -|- '] }
+    end
+  end
+
+  describe 'the Resource Type facet (format_main_ssim)' do
+    subject(:field) { result['format_main_ssim'] }
+
+    context 'with the database statistical code' do
+      let(:client_instance_response) do
+        {
+          'id' =>	'4e481734-9304-5035-99b3-afe6153d9835',
+          'hrid' => 'a2656738',
+          'statisticalCodeIds' =>	%w[d3f618e2-9fa9-4623-94ae-1d95d1d66f79 4bc78766-8f34-4b1a-9e39-2a689a4ae998]
+        }
+      end
+
+      it { is_expected.to eq ['Music score', 'Database'] }
+    end
+
+    context 'without the database statistical code' do
+      it { is_expected.to eq ['Music score'] }
     end
   end
 end

@@ -1,0 +1,488 @@
+{
+  "courses": [],
+  "holdingSummaries": [
+    {
+      "orderCloseReason": null,
+      "orderSentDate": null,
+      "orderStatus": null,
+      "orderType": null,
+      "poLineId": null,
+      "poLineNumber": null,
+      "polReceiptStatus": null
+    }
+  ],
+  "holdings": [
+    {
+      "_version": 1,
+      "administrativeNotes": [],
+      "bareHoldingsItems": [],
+      "boundWith": null,
+      "callNumber": "843.7 .C47CE",
+      "callNumberType": {
+        "id": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
+        "name": "Dewey Decimal classification",
+        "source": "folio"
+      },
+      "callNumberTypeId": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
+      "effectiveLocationId": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+      "electronicAccess": [],
+      "formerIds": [],
+      "holdingsItems": [],
+      "holdingsStatements": [],
+      "holdingsStatementsForIndexes": [],
+      "holdingsStatementsForSupplements": [],
+      "holdingsType": {
+        "id": "03c9c400-b9e3-4a07-ac0e-05ab470233ed",
+        "name": "Monograph",
+        "source": "folio"
+      },
+      "holdingsTypeId": "03c9c400-b9e3-4a07-ac0e-05ab470233ed",
+      "hrid": "ah1249291_1",
+      "id": "b9f7f385-73c4-5f02-811b-b9080bdf29a4",
+      "illPolicy": null,
+      "instanceId": "26d6d308-43b4-5be7-bc9f-6a7bdcf9af64",
+      "location": {
+        "effectiveLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL3-STACKS",
+          "details": {
+            "scanServicePoint": "SAL3"
+          },
+          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL3",
+            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+            "name": "Stanford Auxiliary Library 3"
+          },
+          "name": "Off-campus storage"
+        },
+        "permanentLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL3-STACKS",
+          "details": {
+            "scanServicePoint": "SAL3"
+          },
+          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL3",
+            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+            "name": "Stanford Auxiliary Library 3"
+          },
+          "name": "Off-campus storage"
+        },
+        "temporaryLocation": null
+      },
+      "metadata": {
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "createdDate": "2023-05-06T06:19:55.774Z",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedDate": "2023-05-06T06:19:55.774Z"
+      },
+      "notes": [],
+      "permanentLocationId": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+      "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "statisticalCodeIds": [],
+      "suppressFromDiscovery": false
+    }
+  ],
+  "instance": {
+    "_version": 1,
+    "administrativeNotes": [],
+    "alternativeTitles": [],
+    "catalogedDate": "1991-08-24",
+    "classifications": [
+      {
+        "classificationNumber": "PQ2605.H374 C3",
+        "classificationTypeId": "ce176ace-a53e-4b4d-aa89-725ed7b2edac"
+      }
+    ],
+    "contributors": [
+      {
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a",
+        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
+        "contributorTypeText": "Contributor",
+        "name": "Chardonne, Jacques, 1884-1968",
+        "primary": true
+      }
+    ],
+    "discoverySuppress": false,
+    "editions": [],
+    "electronicAccess": [],
+    "holdingsRecords2": [],
+    "hrid": "a1249291",
+    "id": "26d6d308-43b4-5be7-bc9f-6a7bdcf9af64",
+    "identifiers": [
+      {
+        "identifierTypeId": "c858e4f2-2b6b-4385-842b-60732ee14abb",
+        "value": "65034942"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(CStRLIN)CSUG87-B40784"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(OCoLC-M)1355332"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(OCoLC-I)273252040"
+      }
+    ],
+    "indexTitle": "Catherine; roman.",
+    "instanceFormatIds": [],
+    "instanceFormats": [],
+    "instanceTypeId": "30fffe0e-e985-4144-b2e2-1e8179bdb41f",
+    "languages": [
+      "fre"
+    ],
+    "metadata": {
+      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "createdDate": "2023-05-06T06:17:50.125Z",
+      "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "updatedDate": "2023-05-06T06:17:50.125Z"
+    },
+    "modeOfIssuanceId": "9d18a02f-5897-4c31-9106-c9abb5c7ae8b",
+    "natureOfContentTermIds": [],
+    "notes": [],
+    "physicalDescriptions": [
+      "153 p. 19cm."
+    ],
+    "previouslyHeld": false,
+    "publication": [
+      {
+        "dateOfPublication": "[1964]",
+        "place": "Paris",
+        "publisher": "A. Michel"
+      }
+    ],
+    "publicationFrequency": [],
+    "publicationPeriod": {
+      "start": 1964
+    },
+    "publicationRange": [],
+    "series": [],
+    "source": "MARC",
+    "staffSuppress": false,
+    "statisticalCodeIds": [],
+    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
+    "statusUpdatedDate": "2023-05-06T06:17:50.032+0000",
+    "subjects": [],
+    "suppressFromDiscovery": false,
+    "title": "Catherine; roman."
+  },
+  "items": [
+    {
+      "_version": 1,
+      "administrativeNotes": [],
+      "barcode": "36105048333285",
+      "callNumber": {
+        "callNumber": "843.7 .C47CE",
+        "typeId": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
+        "typeName": "Dewey Decimal classification"
+      },
+      "callNumberType": {
+        "id": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
+        "name": "Dewey Decimal classification",
+        "source": "folio"
+      },
+      "circulationNotes": [],
+      "copyNumber": "1",
+      "effectiveCallNumberComponents": {
+        "callNumber": "843.7 .C47CE",
+        "typeId": "03dd64d0-5626-4ecd-8ece-4531e0069f35"
+      },
+      "effectiveLocationId": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+      "effectiveShelvingOrder": "3843.7 C47CE 11",
+      "electronicAccess": [],
+      "formerIds": [],
+      "holdingsRecordId": "b9f7f385-73c4-5f02-811b-b9080bdf29a4",
+      "hrid": "ai1249291_1_1",
+      "id": "998d616f-b61d-5786-8066-fed37d36fa37",
+      "itemDamagedStatus": null,
+      "location": {
+        "effectiveLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL3-STACKS",
+          "details": {
+            "scanServicePoint": "SAL3"
+          },
+          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL3",
+            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+            "name": "Stanford Auxiliary Library 3"
+          },
+          "name": "Off-campus storage"
+        },
+        "permanentLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL3-STACKS",
+          "details": {
+            "scanServicePoint": "SAL3"
+          },
+          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL3",
+            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+            "name": "Stanford Auxiliary Library 3"
+          },
+          "name": "Off-campus storage"
+        },
+        "temporaryLocation": null
+      },
+      "materialType": "book",
+      "materialTypeId": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+      "metadata": {
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "createdDate": "2023-05-06T06:23:40.941Z",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedDate": "2023-05-06T06:23:40.941Z"
+      },
+      "notes": [],
+      "numberOfPieces": "1",
+      "permanentLoanType": "Can circulate",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "permanentLocationId": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
+      "statisticalCodeIds": [
+        "e6f1059b-4ab2-4bb2-adcb-af66acb6f4fa"
+      ],
+      "status": "Available",
+      "suppressFromDiscovery": false,
+      "temporaryLoanType": null,
+      "yearCaption": []
+    }
+  ],
+  "pieces": [
+    null
+  ],
+  "source_record": [
+    {
+      "fields": [
+        {
+          "001": "a1249291"
+        },
+        {
+          "003": "SIRSI"
+        },
+        {
+          "005": "19910715000000.0"
+        },
+        {
+          "008": "870512s1964    fr            000 1 fre  "
+        },
+        {
+          "010": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "   65034942"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(CStRLIN)CSUG87-B40784"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-M)1355332"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-I)273252040"
+              }
+            ]
+          }
+        },
+        {
+          "040": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "c": "IaU"
+              },
+              {
+                "d": "OrLoB"
+              }
+            ]
+          }
+        },
+        {
+          "050": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "PQ2605.H374"
+              },
+              {
+                "b": "C3"
+              }
+            ]
+          }
+        },
+        {
+          "100": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Chardonne, Jacques,"
+              },
+              {
+                "d": "1884-1968."
+              },
+              {
+                "=": "^A417927"
+              }
+            ]
+          }
+        },
+        {
+          "245": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Catherine;"
+              },
+              {
+                "b": "roman."
+              }
+            ]
+          }
+        },
+        {
+          "260": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Paris,"
+              },
+              {
+                "b": "A. Michel"
+              },
+              {
+                "c": "[1964]"
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "153 p."
+              },
+              {
+                "c": "19cm."
+              }
+            ]
+          }
+        },
+        {
+          "596": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "31"
+              }
+            ]
+          }
+        },
+        {
+          "918": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "1249291"
+              }
+            ]
+          }
+        },
+        {
+          "999": {
+            "ind1": "f",
+            "ind2": "f",
+            "subfields": [
+              {
+                "i": "26d6d308-43b4-5be7-bc9f-6a7bdcf9af64"
+              },
+              {
+                "s": "c3df99b0-5b3f-58b2-a83a-4494e00c5b72"
+              }
+            ]
+          }
+        }
+      ],
+      "leader": "00549nam a2200217u  4500"
+    }
+  ]
+}

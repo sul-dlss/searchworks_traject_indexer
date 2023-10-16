@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Format physical config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(folio_record) }
+  let(:folio_record) { marc_to_folio(record) }
   let(:field) { 'format_physical_ssim' }
 
   context 'with 007/00 = m (Film)' do
@@ -56,13 +54,16 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      # The holding is necessary to get into a branch where it looks for context.output_hash['access_facet'] == ['At the Library']
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'has a 007 that is too short to have a format_physical_ssim' do
@@ -75,13 +76,15 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd f'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a CD' do
@@ -94,13 +97,15 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 's     j'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is an Audiocassette' do
@@ -113,13 +118,15 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sd    j'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is undetermined' do
@@ -349,18 +356,20 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'based on 8833535' do
+  context 'when acccess_facet is "At the library" (based on 8833535)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd fungnnmmneu'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a CD' do
@@ -368,21 +377,15 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'based on 8833535, but online' do
+  context 'when acccess_facet is not "At the library" (based on 8833535)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::ControlField.new('007', 'sd fungnnmmneu'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is not a CD, since it is online-only' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
@@ -396,13 +399,15 @@ RSpec.describe 'Format physical config' do
                                      MARC::Subfield.new('a', '1 sound disc :'),
                                      MARC::Subfield.new('b', 'digital ;'),
                                      MARC::Subfield.new('c', '4 3/4 in.')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a CD' do
@@ -419,13 +424,15 @@ RSpec.describe 'Format physical config' do
                                      MARC::Subfield.new('a', '1 sound disc :'),
                                      MARC::Subfield.new('b', 'digital ;'),
                                      MARC::Subfield.new('c', '4 3/4 in.')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a CD' do
@@ -439,13 +446,15 @@ RSpec.describe 'Format physical config' do
         r.leader = '02229cjm a2200409Ia 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
                                      MARC::Subfield.new('a', field_value)))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     [
@@ -528,18 +537,20 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'recording 78' do
+  context 'recording 78 and acccess_facet is "At the library"' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01002cjm a2200313Ma 4500'
         r.append(MARC::ControlField.new('007', 'sd dmsdnnmslne'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a shellac 78' do
@@ -547,37 +558,33 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'recording 78, but online' do
+  context 'when it is a 78 rpm, but acccess_facet is not "At the library"' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01002cjm a2200313Ma 4500'
         r.append(MARC::ControlField.new('007', 'sd dmsdnnmslne'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is no longer a shellac 78' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
 
-  context 'based on 309570' do
+  context 'when acccess_facet is "At the library" (based on 309570)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::ControlField.new('007', 'sdubsmennmplue'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a vinyl' do
@@ -585,21 +592,15 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'based on 309570, but online' do
+  context 'when acccess_facet is not "At the library" (based on 309570)' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::ControlField.new('007', 'sdubsmennmplue'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is no longer a vinyl' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
@@ -610,13 +611,15 @@ RSpec.describe 'Format physical config' do
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
                                      MARC::Subfield.new('a', '2s. 12in. 33.3rpm.')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a vinyl' do
@@ -632,13 +635,15 @@ RSpec.describe 'Format physical config' do
                                      MARC::Subfield.new('a', '1 sound disc :'),
                                      MARC::Subfield.new('b', 'analog, 33 1/3 rpm, stereo. ;'),
                                      MARC::Subfield.new('c', '12 in.')))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a vinyl' do
@@ -652,15 +657,16 @@ RSpec.describe 'Format physical config' do
         r.leader = '02683cjm a2200565ua 4500'
         r.append(MARC::DataField.new('300', ' ', ' ',
                                      MARC::Subfield.new('a', field_value)))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
     end
 
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
+    end
     [
       '1 disc.  33 1/3 rpm. stereo. 12 in.',
       '1 disc.  33.3 rpm. stereo. 12 in.',
@@ -732,18 +738,20 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'with 007: based on 4730355' do
+  context 'when access_facet is "At the library" and with 007 based on 4730355' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01205cim a2200337Ia 4500'
         r.append(MARC::ControlField.new('007', 'ss lunjlc-----'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a cassette' do
@@ -751,21 +759,15 @@ RSpec.describe 'Format physical config' do
     end
   end
 
-  context 'with 007: based on 4730355 not if online only' do
+  context 'when acccess_facet is not "At the library" and with 007: based on 4730355' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01205cim a2200337Ia 4500'
         r.append(MARC::ControlField.new('007', 'ss lunjlc-----'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'INTERNET RESOURCE'),
-                                     MARC::Subfield.new('w', 'ASIS'),
-                                     MARC::Subfield.new('i', '2475606-5001'),
-                                     MARC::Subfield.new('l', 'INTERNET'),
-                                     MARC::Subfield.new('m', 'SUL')))
       end
     end
 
-    it 'is undetermined' do
+    it 'is nil' do
       expect(result[field]).to eq nil
     end
   end
@@ -858,14 +860,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01543cam a2200325Ka 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFILM N.S. 17443'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '9636901-1001'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'GREEN'),
-                                     MARC::Subfield.new('t', 'NH-MICR')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFILM N.S. 17443', home_location: 'MEDIA-MTXT', type: 'NH-MICR')
+        ]
+      )
     end
 
     it 'is a microfilm' do
@@ -949,14 +952,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '01543cam a2200325Ka 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MFICHE 1183 N.5.1.7205'),
-                                     MARC::Subfield.new('w', 'ALPHANUM'),
-                                     MARC::Subfield.new('i', '9636901-1001'),
-                                     MARC::Subfield.new('l', 'MEDIA-MTXT'),
-                                     MARC::Subfield.new('m', 'GREEN'),
-                                     MARC::Subfield.new('t', 'NH-MICR')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFICHE 1183 N.5.1.7205', home_location: 'MEDIA-MTXT', type: 'NH-MICR')
+        ]
+      )
     end
 
     it 'is a microfiche' do
@@ -1005,9 +1009,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ZDVD')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ZDVD')
+        ]
+      )
     end
 
     it 'is a DVD' do
@@ -1019,9 +1029,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ZDVD')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ZDVD')
+        ]
+      )
     end
 
     it 'is a DVD' do
@@ -1033,9 +1049,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MDVD')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'MDVD')
+        ]
+      )
     end
 
     it 'is a DVD' do
@@ -1047,9 +1069,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ADVD')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ADVD')
+        ]
+      )
     end
 
     it 'is a DVD' do
@@ -1101,10 +1129,15 @@ RSpec.describe 'Format physical config' do
 
   context 'with call number contains "BLU-RAY"' do
     let(:record) do
-      MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ZDVD 12345 BLU-RAY')))
-      end
+      MARC::Record.new
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ZDVD 12345 BLU-RAY')
+        ]
+      )
     end
 
     it 'is a Blu-ray' do
@@ -1166,10 +1199,15 @@ RSpec.describe 'Format physical config' do
 
   context 'with call number that starts with ZVC' do
     let(:record) do
-      MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ZVC')))
-      end
+      MARC::Record.new
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ZVC')
+        ]
+      )
     end
 
     it 'is a VHS' do
@@ -1179,10 +1217,15 @@ RSpec.describe 'Format physical config' do
 
   context 'with call number that starts with ARTVC' do
     let(:record) do
-      MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ARTVC')))
-      end
+      MARC::Record.new
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ARTVC')
+        ]
+      )
     end
 
     it 'is a VHS' do
@@ -1192,10 +1235,15 @@ RSpec.describe 'Format physical config' do
 
   context 'with call number that starts with MVC' do
     let(:record) do
-      MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MVC')))
-      end
+      MARC::Record.new
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'MVC')
+        ]
+      )
     end
 
     it 'is a VHS' do
@@ -1205,10 +1253,15 @@ RSpec.describe 'Format physical config' do
 
   context 'with call number that starts with AVC' do
     let(:record) do
-      MARC::Record.new.tap do |r|
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'AVC')))
-      end
+      MARC::Record.new
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'AVC')
+        ]
+      )
     end
 
     it 'is a VHS' do
@@ -1357,9 +1410,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'ZVD')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'ZVD')
+        ]
+      )
     end
 
     it 'is a laser disc' do
@@ -1371,9 +1430,15 @@ RSpec.describe 'Format physical config' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '04711cgm a2200733Ia 4500'
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'MVD')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:alphanum_holding, call_number: 'MVD')
+        ]
+      )
     end
 
     it 'is a laser disc' do
@@ -1611,13 +1676,15 @@ RSpec.describe 'Format physical config' do
       MARC::Record.new.tap do |r|
         r.leader = '01103cem a22002777a 4500'
         r.append(MARC::ControlField.new('007', 'sq'))
-        r.append(MARC::DataField.new('999', ' ', ' ',
-                                     MARC::Subfield.new('a', 'F152 .A28'),
-                                     MARC::Subfield.new('w', 'LC'),
-                                     MARC::Subfield.new('i', '36105018746623'),
-                                     MARC::Subfield.new('l', 'HAS-DIGIT'),
-                                     MARC::Subfield.new('m', 'GREEN')))
       end
+    end
+
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(
+        [
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+        ]
+      )
     end
 
     it 'is a piano/organ roll' do

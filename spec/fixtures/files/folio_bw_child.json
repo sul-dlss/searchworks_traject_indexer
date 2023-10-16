@@ -1,0 +1,544 @@
+{
+  "courses": [],
+  "holdingSummaries": [
+    {
+      "orderCloseReason": null,
+      "orderSentDate": null,
+      "orderStatus": null,
+      "orderType": null,
+      "poLineId": null,
+      "poLineNumber": null,
+      "polReceiptStatus": null
+    }
+  ],
+  "holdings": [
+    {
+      "_version": 1,
+      "administrativeNotes": [],
+      "bareHoldingsItems": [],
+      "boundWith": {
+        "instance": {
+          "hrid": "a134624",
+          "id": "58bce3d3-3016-5c3c-97fa-7cc6082cd75e",
+          "title": "Mursilis SprachlÃ¤hmung; ein hethitischer Text / Mit philologischen und linguistischen ErÃ¶rterungen von Albrecht GÃ¶rze und Holger Pedersen."
+        },
+        "item": {
+          "barcode": "36105018739321",
+          "hrid": "ai134624_1_1",
+          "id": "d1eece03-e4b6-5bd3-b6be-3d76ae8cf96d",
+          "location": {
+            "effectiveLocation": {
+              "campus": {
+                "code": "SUL",
+                "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                "name": "Stanford Libraries"
+              },
+              "code": "SAL-SOUTH-MEZZ",
+              "details": {
+                "scanServicePointCode": "GREEN"
+              },
+              "id": "1daf9ff9-a60c-402f-8498-41189ac51096",
+              "institution": {
+                "code": "SU",
+                "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "name": "Stanford University"
+              },
+              "isActive": true,
+              "library": {
+                "code": "SAL",
+                "id": "00d012b4-d5ee-422c-9f38-3457e0ddd1ed",
+                "name": "Stanford Auxiliary Library 1&2"
+              },
+              "name": "SAL Stacks"
+            },
+            "permanentLocation": {
+              "campus": {
+                "code": "SUL",
+                "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                "name": "Stanford Libraries"
+              },
+              "code": "SAL-SOUTH-MEZZ",
+              "details": {
+                "scanServicePointCode": "GREEN"
+              },
+              "id": "1daf9ff9-a60c-402f-8498-41189ac51096",
+              "institution": {
+                "code": "SU",
+                "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "name": "Stanford University"
+              },
+              "isActive": true,
+              "library": {
+                "code": "SAL",
+                "id": "00d012b4-d5ee-422c-9f38-3457e0ddd1ed",
+                "name": "Stanford Auxiliary Library 1&2"
+              },
+              "name": "SAL Stacks"
+            },
+            "temporaryLocation": null
+          },
+          "status": "Available"
+        }
+      },
+      "callNumber": "064.8 .D191H",
+      "callNumberType": {
+        "id": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
+        "name": "Dewey Decimal classification",
+        "source": "folio"
+      },
+      "callNumberTypeId": "03dd64d0-5626-4ecd-8ece-4531e0069f35",
+      "effectiveLocationId": "4c97036b-29dc-4340-881b-eab30eee9496",
+      "electronicAccess": [],
+      "formerIds": [],
+      "holdingsItems": [],
+      "holdingsStatements": [],
+      "holdingsStatementsForIndexes": [],
+      "holdingsStatementsForSupplements": [],
+      "holdingsType": {
+        "id": "5b08b35d-aaa3-4806-998c-9cd85e5bc406",
+        "name": "Bound-with",
+        "source": "local"
+      },
+      "holdingsTypeId": "5b08b35d-aaa3-4806-998c-9cd85e5bc406",
+      "hrid": "ah84564_1",
+      "id": "c2a24755-baf9-5f49-8151-b354095df8ae",
+      "illPolicy": null,
+      "instanceId": "9b1b9b9b-7e7f-5eb6-8120-b520e34f8771",
+      "location": {
+        "effectiveLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL-SEE-OTHER",
+          "details": null,
+          "id": "4c97036b-29dc-4340-881b-eab30eee9496",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL",
+            "id": "00d012b4-d5ee-422c-9f38-3457e0ddd1ed",
+            "name": "Stanford Auxiliary Library 1&2"
+          },
+          "name": "SAL Shelved Elsewhere"
+        },
+        "permanentLocation": {
+          "campus": {
+            "code": "SUL",
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "name": "Stanford Libraries"
+          },
+          "code": "SAL-SEE-OTHER",
+          "details": null,
+          "id": "4c97036b-29dc-4340-881b-eab30eee9496",
+          "institution": {
+            "code": "SU",
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "name": "Stanford University"
+          },
+          "isActive": true,
+          "library": {
+            "code": "SAL",
+            "id": "00d012b4-d5ee-422c-9f38-3457e0ddd1ed",
+            "name": "Stanford Auxiliary Library 1&2"
+          },
+          "name": "SAL Shelved Elsewhere"
+        },
+        "temporaryLocation": null
+      },
+      "metadata": {
+        "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "createdDate": "2023-05-06T02:13:05.791Z",
+        "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+        "updatedDate": "2023-05-06T02:13:05.791Z"
+      },
+      "notes": [],
+      "permanentLocationId": "4c97036b-29dc-4340-881b-eab30eee9496",
+      "statisticalCodeIds": [],
+      "suppressFromDiscovery": false
+    }
+  ],
+  "instance": {
+    "_version": 1,
+    "administrativeNotes": [],
+    "alternativeTitles": [],
+    "catalogedDate": "1990-09-15",
+    "classifications": [],
+    "contributors": [
+      {
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a",
+        "contributorTypeId": "9f0a2cf0-7a9b-45a2-a403-f68d2850d07c",
+        "contributorTypeText": "Contributor",
+        "name": "Wulff, Kurt, 1881-1939",
+        "primary": true
+      }
+    ],
+    "discoverySuppress": false,
+    "editions": [],
+    "electronicAccess": [],
+    "holdingsRecords2": [],
+    "hrid": "a84564",
+    "id": "9b1b9b9b-7e7f-5eb6-8120-b520e34f8771",
+    "identifiers": [
+      {
+        "identifierTypeId": "c858e4f2-2b6b-4385-842b-60732ee14abb",
+        "value": "ac 35001326"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(OCoLC-M)16314439"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "(OCoLC-I)268899747"
+      },
+      {
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace",
+        "value": "AAJ8516"
+      }
+    ],
+    "indexTitle": "\"musik\" und \"freude\" im chinesischen,",
+    "instanceFormatIds": [],
+    "instanceFormats": [],
+    "instanceTypeId": "30fffe0e-e985-4144-b2e2-1e8179bdb41f",
+    "languages": [
+      "chi",
+      "ger"
+    ],
+    "metadata": {
+      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "createdDate": "2023-05-06T02:04:16.923Z",
+      "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "updatedDate": "2023-05-06T02:04:16.923Z"
+    },
+    "modeOfIssuanceId": "9d18a02f-5897-4c31-9106-c9abb5c7ae8b",
+    "natureOfContentTermIds": [],
+    "notes": [
+      {
+        "instanceNoteTypeId": "265c4910-3997-4242-9269-6a4a2e91392b",
+        "note": "Copy 1 bound with v. 21, no. 1",
+        "staffOnly": true
+      }
+    ],
+    "physicalDescriptions": [
+      "39 p. 25 cm."
+    ],
+    "previouslyHeld": false,
+    "publication": [
+      {
+        "dateOfPublication": "1935",
+        "place": "KÃ¸benhavn",
+        "publisher": "Levin & Munksgaard, Ejnar Munksgaard"
+      }
+    ],
+    "publicationFrequency": [],
+    "publicationPeriod": {
+      "start": 1935
+    },
+    "publicationRange": [],
+    "series": [
+      "Historisk-filologiske meddelelser ; 21:2"
+    ],
+    "source": "MARC",
+    "staffSuppress": false,
+    "statisticalCodeIds": [],
+    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
+    "statusUpdatedDate": "2023-05-06T02:04:16.726+0000",
+    "subjects": [
+      "Chinese language Etymology"
+    ],
+    "suppressFromDiscovery": false,
+    "title": "\"Musik\" und \"freude\" im chinesischen, von K. Wulff."
+  },
+  "items": [],
+  "pieces": [
+    null
+  ],
+  "source_record": [
+    {
+      "fields": [
+        {
+          "001": "a84564"
+        },
+        {
+          "003": "SIRSI"
+        },
+        {
+          "008": "870729s1935    dk            000 0 ger c"
+        },
+        {
+          "010": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "ac 35001326"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-M)16314439"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "(OCoLC-I)268899747"
+              }
+            ]
+          }
+        },
+        {
+          "040": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Columbia univ. Library"
+              },
+              {
+                "c": "TRN"
+              },
+              {
+                "d": "TRN"
+              },
+              {
+                "d": "OrLoB"
+              }
+            ]
+          }
+        },
+        {
+          "041": {
+            "ind1": "0",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "gerchi"
+              }
+            ]
+          }
+        },
+        {
+          "049": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "STFA"
+              },
+              {
+                "c": "1"
+              }
+            ]
+          }
+        },
+        {
+          "092": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "064.8"
+              },
+              {
+                "b": ".D191h v.21"
+              }
+            ]
+          }
+        },
+        {
+          "100": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Wulff, Kurt,"
+              },
+              {
+                "d": "1881-1939."
+              },
+              {
+                "?": "UNAUTHORIZED"
+              }
+            ]
+          }
+        },
+        {
+          "245": {
+            "ind1": "1",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "\"Musik\" und \"freude\" im chinesischen,"
+              },
+              {
+                "c": "von K. Wulff."
+              }
+            ]
+          }
+        },
+        {
+          "260": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "KÃ¸benhavn,"
+              },
+              {
+                "b": "Levin & Munksgaard, Ejnar Munksgaard,"
+              },
+              {
+                "c": "1935."
+              }
+            ]
+          }
+        },
+        {
+          "300": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "39 p."
+              },
+              {
+                "c": "25 cm."
+              }
+            ]
+          }
+        },
+        {
+          "490": {
+            "ind1": "1",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "K. Danske videnskabernes selskab. Historisk-filologiske meddelelser."
+              },
+              {
+                "v": "XXI, 2"
+              }
+            ]
+          }
+        },
+        {
+          "590": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "Copy 1 bound with v. 21, no. 1."
+              },
+              {
+                "c": "134624 (parent record's ckey)"
+              },
+              {
+                "b": "36105018739321 (item id)"
+              }
+            ]
+          }
+        },
+        {
+          "596": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "20"
+              }
+            ]
+          }
+        },
+        {
+          "650": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Chinese language"
+              },
+              {
+                "x": "Etymology."
+              },
+              {
+                "=": "^A1003615"
+              }
+            ]
+          }
+        },
+        {
+          "830": {
+            "ind1": " ",
+            "ind2": "0",
+            "subfields": [
+              {
+                "a": "Historisk-filologiske meddelelser ;"
+              },
+              {
+                "v": "21:2."
+              },
+              {
+                "=": "^A1166434"
+              }
+            ]
+          }
+        },
+        {
+          "918": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "84564"
+              }
+            ]
+          }
+        },
+        {
+          "035": {
+            "ind1": " ",
+            "ind2": " ",
+            "subfields": [
+              {
+                "a": "AAJ8516"
+              }
+            ]
+          }
+        },
+        {
+          "999": {
+            "ind1": "f",
+            "ind2": "f",
+            "subfields": [
+              {
+                "i": "9b1b9b9b-7e7f-5eb6-8120-b520e34f8771"
+              },
+              {
+                "s": "3dd182cc-cd2d-5945-abc4-b067323e9ec3"
+              }
+            ]
+          }
+        }
+      ],
+      "leader": "00968nam a2200277   4500"
+    }
+  ]
+}

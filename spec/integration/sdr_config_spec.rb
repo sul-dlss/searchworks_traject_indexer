@@ -7,25 +7,15 @@ describe 'SDR indexing' do
 
   def stub_purl_request(druid, body)
     without_partial_double_verification do
-      if defined?(JRUBY_VERSION)
-        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(code: 200,
-                                                                                                           body:))
-      else
-        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body:,
-                                                                                                      status: double(ok?: true)))
-      end
+      allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body:,
+                                                                                                    status: double(ok?: true)))
     end
   end
 
   def stub_mods_request(druid, body)
     without_partial_double_verification do
-      if defined?(JRUBY_VERSION)
-        allow(Manticore).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(code: 200,
-                                                                                                            body:))
-      else
-        allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(body:,
-                                                                                                       status: double(ok?: true)))
-      end
+      allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(body:,
+                                                                                                     status: double(ok?: true)))
     end
   end
 
@@ -38,11 +28,7 @@ describe 'SDR indexing' do
   context 'with a missing object' do
     before do
       without_partial_double_verification do
-        if defined?(JRUBY_VERSION)
-          allow(Manticore).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(code: 404))
-        else
-          allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(status: double(ok?: false)))
-        end
+        allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(status: double(ok?: false)))
       end
     end
 
@@ -499,6 +485,24 @@ describe 'SDR indexing' do
 
       it 'maps the right data' do
         expect(result['copyright_year_isi']).to eq ['1923']
+      end
+    end
+
+    describe 'copyright_year_isi with multiple potential years' do
+      let(:mods_fragment) do
+        <<-XML
+        <originInfo>
+          <copyrightDate encoding="w3cdtf" keyDate="yes">1980</copyrightDate>
+        <publisher>Stoneware Inc.</publisher>
+        </originInfo>
+        <originInfo>
+          <copyrightDate encoding="w3cdtf" qualifier="inferred" point="start">1982</copyrightDate>
+          <copyrightDate encoding="w3cdtf" qualifier="inferred" point="end">1984</copyrightDate>
+        </originInfo>
+        XML
+      end
+      it 'maps the right data' do
+        expect(result['copyright_year_isi']).to eq ['1980']
       end
     end
   end

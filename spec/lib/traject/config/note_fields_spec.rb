@@ -1,20 +1,19 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Sirsi config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+RSpec.describe 'Folio config' do
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
   describe 'toc_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'toc_search' }
 
     it 'maps the right fields' do
@@ -25,7 +24,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with Nielson data' do
-      let(:fixture_name) { 'nielsenTests.mrc' }
+      let(:fixture_name) { 'nielsenTests.jsonl' }
 
       it 'indexes both the 505 and 905 fields' do
         result = select_by_id('505')[field]
@@ -46,8 +45,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_toc_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'vern_toc_search' }
 
     it 'maps the right fields' do
@@ -76,8 +75,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'toc_struct' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'toc_struct' }
 
     it 'maps the right fields' do
@@ -470,8 +469,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'context_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'context_search' }
 
     it 'maps the right fields' do
@@ -483,8 +482,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_context_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'vern_context_search' }
 
     it 'maps the right fields' do
@@ -496,8 +495,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'summary_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'summary_search' }
 
     it 'maps the right fields' do
@@ -508,7 +507,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with Nielson data' do
-      let(:fixture_name) { 'nielsenTests.mrc' }
+      let(:fixture_name) { 'nielsenTests.jsonl' }
 
       it 'indexes both the 505 and 905 fields' do
         result = select_by_id('520')[field]
@@ -529,8 +528,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_summary_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'vern_summary_search' }
 
     it 'maps the right fields' do
@@ -559,8 +558,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'summary_struct' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'summaryTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'summaryTests.jsonl' }
     let(:field) { 'summary_struct' }
 
     it 'maps the right fields' do
@@ -593,7 +592,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with Nielson data' do
-      let(:fixture_name) { 'nielsenTests.mrc' }
+      let(:fixture_name) { 'nielsenTests.jsonl' }
       it 'maps the right fields' do
         result = select_by_id('920')[field].map { |x| JSON.parse(x, symbolize_names: true) }
         expect(result.first[:label]).to eq 'Publisher\'s summary'
@@ -602,7 +601,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with a link in a $u' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(marc_to_folio(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -623,7 +622,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with Nielsen-sourced data' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(marc_to_folio(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -642,7 +641,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with content advice' do
-      subject(:result) { indexer.map_record(record) }
+      subject(:result) { indexer.map_record(marc_to_folio(record)) }
       let(:record) do
         MARC::Record.new.tap do |r|
           r.append(
@@ -666,8 +665,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'award_search' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'nielsenTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'nielsenTests.jsonl' }
     let(:field) { 'award_search' }
 
     it 'maps the right fields' do

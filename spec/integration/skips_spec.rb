@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'Skips records' do
+RSpec.describe 'Skips records' do
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.settings(
@@ -8,35 +8,40 @@ describe 'Skips records' do
         'writer_class_name' => 'Traject::ArrayWriter',
         'skip_empty_item_display' => 1
       )
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:results) { indexer.process_with(records, Traject::ArrayWriter.new).values }
-  let(:fixture_name) { 'buildingTests.mrc' }
-  it 'without an item_display field' do
-    expect(results.count).to eq 42
-    expect(records.count).to eq 46
+
+  let(:record) { MARC::Record.new }
+  let(:folio_record) { marc_to_folio(record) }
+  subject(:result) { indexer.map_record(folio_record) }
+
+  context 'when holdings are withdrawn (causing item_display_struct to be nil)' do
+    before do
+      allow(folio_record).to receive(:folio_holdings).and_return(holdings)
+    end
+
+    let(:holdings) do
+      [build(:lc_holding, current_location: 'WITHDRAWN')]
+    end
+
+    it { is_expected.to be nil }
   end
 
   context 'with a **REQUIRED FILE** title' do
-    let(:records) do
-      [
-        MARC::Record.new.tap do |r|
-          r.append(
-            MARC::DataField.new(
-              '245',
-              '1',
-              '0',
-              MARC::Subfield.new('a', '**REQUIRED FIELD**')
-            )
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.append(
+          MARC::DataField.new(
+            '245',
+            '1',
+            '0',
+            MARC::Subfield.new('a', '**REQUIRED FIELD**')
           )
-        end
-      ]
+        )
+      end
     end
 
-    it 'should be skipped' do
-      expect(results.count).to eq 0
-    end
+    it { is_expected.to be nil }
   end
 end

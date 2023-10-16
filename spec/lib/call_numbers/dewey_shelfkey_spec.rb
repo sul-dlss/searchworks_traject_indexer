@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'call_numbers/dewey'
-require 'call_numbers/shelfkey'
+require 'spec_helper'
 
-describe CallNumbers::DeweyShelfkey do
+RSpec.describe CallNumbers::DeweyShelfkey do
   describe 'sorting by generated key' do
     it 'sorts classifications properly' do
       call_number_strings = [

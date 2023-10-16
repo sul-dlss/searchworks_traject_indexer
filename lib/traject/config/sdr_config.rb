@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << File.expand_path('../..', __dir__)
-
-require 'traject'
-require 'stanford-mods'
-require 'kafka'
-require 'traject/readers/kafka_purl_fetcher_reader'
-require 'traject/readers/druid_reader'
-require 'traject/writers/solr_better_json_writer'
-require 'utils'
-require 'honeybadger'
+require_relative '../../../config/boot'
 require 'digest/md5'
 require 'active_support'
 
@@ -33,8 +24,10 @@ settings do
   # provide 'kafka.topic'
   # provide 'kafka.consumer_group_id'
   if self['kafka.topic']
+    provide 'kafka.hosts', ::Settings.kafka.hosts
+    provide 'kafka.client', Kafka.new(self['kafka.hosts'], logger: Utils.logger)
     provide 'reader_class_name', 'Traject::KafkaPurlFetcherReader'
-    consumer = Utils.kafka.consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 15)
+    consumer = self['kafka.client'].consumer(group_id: self['kafka.consumer_group_id'] || 'traject', fetcher_max_queue_size: 15)
     consumer.subscribe(self['kafka.topic'])
     provide 'kafka.consumer', consumer
   else
@@ -48,12 +41,7 @@ settings do
   self['purl_fetcher.skip_catkey'] = self['purl_fetcher.skip_catkey'] != 'false'
 
   provide 'solr_writer.commit_on_close', true
-  if defined?(JRUBY_VERSION)
-    require 'traject/manticore_http_client'
-    provide 'solr_json_writer.http_client', Traject::ManticoreHttpClient.new
-  else
-    provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
-  end
+  provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 
   provide 'mapping_rescue', (lambda do |context, e|
@@ -77,7 +65,9 @@ end
 
 def mods_xpath(xpath)
   lambda do |resource, accumulator, _context|
-    accumulator << resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3')
+    # Convert the xpath result (a Nokogiri nodeset) to a plain array.
+    # This allows traject methods like first_only to work properly.
+    accumulator.concat(resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3'))
   end
 end
 

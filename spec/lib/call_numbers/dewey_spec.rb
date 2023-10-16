@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'call_numbers/dewey'
+require 'spec_helper'
 
-describe CallNumbers::Dewey do
+RSpec.describe CallNumbers::Dewey do
   describe 'standard numbers' do
     it 'handles 1 - 3 class numbers' do
       expect(described_class.new('1.23 .M23 2002').klass_number).to eq '1'

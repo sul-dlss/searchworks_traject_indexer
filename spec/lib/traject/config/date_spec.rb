@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Date config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:fixture_name) { 'idTests.mrc' }
-  subject(:result) { indexer.map_record(record) }
+  let(:fixture_name) { 'idTests.jsonl' }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   describe 'pub_year_ss' do
     let(:field) { 'pub_year_ss' }
@@ -543,32 +540,8 @@ RSpec.describe 'Date config' do
     end
   end
 
-  describe 'date_cataloged' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-
-    let(:records) { MARC::XMLReader.new(file_fixture(fixture_name).to_s).to_a }
-    let(:fixture_name) { 'newItemsDateCataloged.xml' }
-    let(:record) { records.first }
-    let(:field) { 'date_cataloged' }
-
-    it 'is nil if the 916b is NEVER' do
-      result = select_by_id('7000010')[field]
-      expect(result).to be_nil
-    end
-
-    it 'is nil if there is no 916b' do
-      result = select_by_id('7000023')[field]
-      expect(result).to be_nil
-    end
-
-    it 'is an ISO8601 date' do
-      result = select_by_id('7000011')[field]
-      expect(result).to eq ['2007-11-08T00:00:00Z']
-    end
-  end
-
   context 'a blank record (particularly without an 008 field)' do
-    subject(:result) { |_rec| indexer.map_record(record) }
+    subject(:result) { |_rec| indexer.map_record(marc_to_folio(record)) }
     let(:record) { MARC::Record.new }
 
     it 'indexes fine' do

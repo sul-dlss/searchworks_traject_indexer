@@ -3,29 +3,6 @@
 ##
 # Class used for containing mhld display information
 class MhldField
-  attr_accessor :fields866, :fields867, :fields868, :patterns853,
-                :most_recent863link_num, :most_recent863seq_num,
-                :most_recent863, :library, :location, :public_note,
-                :df852has_equals_sf, :library_has
-
-  def initialize
-    @fields866 = []
-    @fields867 = []
-    @fields868 = []
-    @patterns853 = {}
-    @most_recent863link_num = 0
-    @most_recent863seq_num = 0
-    @most_recent863 = nil
-  end
-
-  def latest_received
-    get863display_value(patterns853[most_recent863link_num]) if most_recent_has_been_updated
-  end
-
-  def most_recent_has_been_updated
-    most_recent863 && most_recent863link_num != 0
-  end
-
   ##
   # Ported over algorithm from solrmarc-sw
   # MHLD records put the pattern of the enumeration in an 853, and the values
@@ -33,13 +10,13 @@ class MhldField
   # captions from the 853 must be applied to the values in the 863. NOTE: the
   # match between the 853 and 863 linkage numbers should be done before
   # calling this method.
-  def get863display_value(pattern853)
+  def get863display_value(pattern853, marc863)
     return unless pattern853
 
     result = String.new
     [*'a'..'f'].map do |char|
       caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
-      value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
+      value = marc863.subfields.select { |sf| sf.code == char }.collect(&:value).first
       break unless caption && value
 
       result += ':' unless result.empty?
@@ -48,7 +25,7 @@ class MhldField
     alt_scheme = String.new
     [*'g'..'h'].map do |char|
       caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
-      value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
+      value = marc863.subfields.select { |sf| sf.code == char }.collect(&:value).first
       break unless caption && value
 
       alt_scheme += ', ' if char != 'g'
@@ -60,7 +37,7 @@ class MhldField
     chronology = String.new
     [*'i'..'m'].map do |char|
       caption = pattern853.subfields.select { |sf| sf.code == char }.collect(&:value).first
-      value = most_recent863.subfields.select { |sf| sf.code == char }.collect(&:value).first
+      value = marc863.subfields.select { |sf| sf.code == char }.collect(&:value).first
       break unless caption && value
 
       case caption
@@ -114,13 +91,5 @@ class MhldField
          .gsub('22', 'Summer')
          .gsub('23', 'Autumn')
          .gsub('24', 'Winter')
-  end
-
-  def display(latest_received)
-    [
-      library, location,
-      public_note, library_has,
-      latest_received
-    ].join(' -|- ')
   end
 end

@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require 'kafka'
-require 'kafka/statsd'
-require 'active_support'
-require 'public_xml_record'
-
 class Traject::KafkaPurlFetcherReader
   attr_reader :input_stream, :settings
 

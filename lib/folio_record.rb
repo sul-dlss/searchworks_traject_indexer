@@ -2,10 +2,6 @@
 
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/enumerable'
-require_relative 'traject/common/constants'
-require_relative 'locations_map'
-require_relative 'folio/eresource_holdings_builder'
-require_relative 'folio/mhld_builder'
 
 # rubocop:disable Metrics/ClassLength
 class FolioRecord
@@ -33,10 +29,6 @@ class FolioRecord
     @client = client
   end
 
-  def marc_record
-    @marc_record ||= MARC::Record.new_from_hash(stripped_marc_json || instance_derived_marc_record)
-  end
-
   def instance_id
     instance['id']
   end
@@ -45,32 +37,28 @@ class FolioRecord
     instance['hrid']
   end
 
-  def sirsi_holdings
-    @sirsi_holdings ||= items.map do |item|
-      holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
-      item_location_code = item.dig('location', 'permanentLocation', 'code')
-      item_location_code ||= holding.dig('location', 'permanentLocation', 'code')
-      library_code, home_location_code = LocationsMap.for(item_location_code)
-      _current_library, current_location = LocationsMap.for(item.dig('location', 'location', 'code'))
+  # Extend the MARC record with data from the FOLIO instance
+  # to create parity with the data contained in the Symphony record.
+  # @return [MARC::Record]
+  def marc_record
+    @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, holdings, instance)
+  end
 
-      SirsiHolding.new(
-        call_number: [item.dig('callNumber', 'callNumber'), item['enumeration']].compact.join(' '),
-        current_location: (current_location unless current_location == home_location_code),
-        home_location: home_location_code,
-        library: library_code,
-        scheme: call_number_type_map(item.dig('callNumber', 'typeName')),
-        type: item['materialType'],
-        barcode: item['barcode'],
-        public_note: item['notes']&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n"),
-        tag: item
-      )
+  def folio_holdings
+    @folio_holdings ||= begin
+      holdings = item_holdings.concat(bound_with_holdings)
+      holdings = eresource_holdings if holdings.empty?
+
+      unless all_items.any?
+        holdings = on_order_holdings if holdings.empty?
+        holdings = on_order_stub_holdings if holdings.empty?
+      end
+
+      holdings
     end
   end
 
-  def eresource_holdings
-    Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
-  end
-
+  # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type_map(name)
     case name
     when /dewey/i
@@ -89,47 +77,151 @@ class FolioRecord
   # Creates the mhld_display value. This drives the holding display in searchworks.
   # This packed format mimics how we indexed this data when we used Symphony.
   def mhld
-    holdings.present? ? Folio::MhldBuilder.build(holdings, pieces) : []
+    holdings.present? ? Folio::MhldBuilder.build(holdings, holding_summaries, pieces) : []
   end
 
   def items
-    @items ||= load_unsuppressed('items')
+    all_items.reject do |item|
+      item['suppressFromDiscovery']
+    end
   end
 
   def holdings
-    @holdings ||= load_unsuppressed('holdings')
+    @holdings ||= all_holdings.reject do |holding|
+      holding['suppressFromDiscovery']
+    end
+  end
+
+  def holding_summaries
+    record['holdingSummaries'] || []
   end
 
   def pieces
     @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
   end
 
+  def statistical_codes
+    @statistical_codes ||= instance.fetch('statisticalCodes') do
+      my_ids = client.instance(instance_id:).fetch('statisticalCodeIds', [])
+      client.statistical_codes.select { |code| my_ids.include?(code['id']) }
+    end
+  end
+
   def instance
     record['instance'] || {}
   end
 
+  # hash representation of the record
   def as_json
     record
+  end
+
+  def to_honeybadger_context
+    { hrid:, instance_id: }
   end
 
   # Course information for any courses that have this record's items on reserve
   # @return [Array<Hash>] course information
   def courses
-    record['courses'].map do |course|
-      {
-        course_name: course['name'],
-        course_id: course['courseNumber'],
-        instructors: course['instructorObjects'].pluck('name')
-      }
+    item_courses = items.flat_map do |item|
+      item.fetch('courses', []).map do |course|
+        {
+          course_name: course['name'],
+          course_id: course['courseNumber'],
+          instructors: Array(course['instructorNames']), # NOTE: we've seen cases where instructorNames is nil.
+          reserve_desk: course['locationCode']
+        }
+      end
     end
+
+    item_courses.uniq { |c| c[:course_id] }
+  end
+
+  def eresource?
+    eresource_holdings.any?
   end
 
   private
 
+  def item_holdings
+    items.filter_map do |item|
+      holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
+      next unless holding
+
+      FolioHolding.new(
+        item:,
+        holding:,
+        instance:,
+        course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] }
+      )
+    end
+  end
+
+  # since FOLIO Bound-with records don't have items, we generate a FolioHolding using data from the parent
+  # item and child holding, # or, if there is no parent item, we generate a stub FolioHolding from the original
+  # bound-with holding.
+  # TODO: remove this when we stop using FolioHolding
+  def bound_with_holdings
+    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
+      parent_item = holding.dig('boundWith', 'item') || {}
+      parent_holding = holding.dig('boundWith', 'holding') || holding
+
+      FolioHolding.new(
+        item: parent_item,
+        holding: parent_holding,
+        instance: holding.dig('boundWith', 'instance'),
+        bound_with_holding: holding
+      )
+    end
+  end
+
+  def eresource_holdings
+    @eresource_holdings ||= Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
+  end
+
+  def on_order_holdings
+    on_order_holdings = holdings.select do |holding|
+      pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
+    end
+
+    on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
+      FolioHolding.new(
+        holding:,
+        instance:,
+        current_location: 'ON-ORDER'
+      )
+    end
+  end
+
+  def on_order_stub_holdings
+    order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(marc_record)
+    translation_map = Traject::TranslationMap.new('library_on_order_map')
+
+    lib_codes = order_libs.flat_map(&:split).map { |order_lib| translation_map[order_lib] }.uniq
+    # exclude generic SUL if there's a more specific library
+    lib_codes -= ['SUL'] if lib_codes.length > 1
+    lib_codes.map do |lib|
+      FolioHolding.new(
+        instance:,
+        library: lib,
+        home_location: 'ON-ORDER',
+        current_location: 'ON-ORDER'
+      )
+    end
+  end
+
   # @param [String] type either 'items' or 'holdings'
-  # @return [Array] list of records, of the specified type excluding those that are suppressed
-  def load_unsuppressed(type)
-    (record[type] || items_and_holdings&.dig(type) || []).compact.reject { |item| item['suppressFromDiscovery'] }
+  # @return [Array] list of records, of the specified type
+  def load(type)
+    (record[type] || items_and_holdings&.dig(type) || []).compact
+  end
+
+  def all_items
+    @all_items ||= load('items')
+  end
+
+  def all_holdings
+    @all_holdings ||= load('holdings')
   end
 
   def items_and_holdings
@@ -145,63 +237,7 @@ class FolioRecord
   end
 
   def instance_derived_marc_record
-    MARC::Record.new.tap do |marc|
-      marc.append(MARC::ControlField.new('001', record.dig('instance', 'hrid')))
-      # mode of issuance
-      # identifiers
-      record.dig('instance', 'languages').each do |l|
-        marc.append(MARC::DataField.new('041', ' ', ' ', ['a', l]))
-      end
-
-      record.dig('instance', 'contributors').each do |contrib|
-        # personal name: 100/700
-        field = MARC::DataField.new(contrib['primary'] ? '100' : '700', '1', '')
-        # corp. name: 110/710, ind1: 2
-        # meeting name: 111/711, ind1: 2
-        field.append(MARC::Subfield.new('a', contrib['name']))
-
-        marc.append(field)
-      end
-
-      marc.append(MARC::DataField.new('245', '0', '0', ['a', record.dig('instance', 'title')]))
-
-      # alt titles
-      record.dig('instance', 'editions').each do |edition|
-        marc.append(MARC::DataField.new('250', '0', '', ['a', edition]))
-      end
-      # instanceTypeId
-      record.dig('instance', 'publication').each do |pub|
-        field = MARC::DataField.new('264', '0', '0')
-        field.append(MARC::Subfield.new('a', pub['place'])) if pub['place']
-        field.append(MARC::Subfield.new('b', pub['publisher'])) if pub['publisher']
-        field.append(MARC::Subfield.new('c', pub['dateOfPublication'])) if pub['dateOfPublication']
-        marc.append(field)
-      end
-      record.dig('instance', 'physicalDescriptions').each do |desc|
-        marc.append(MARC::DataField.new('300', '0', '0', ['a', desc]))
-      end
-      record.dig('instance', 'publicationFrequency').each do |freq|
-        marc.append(MARC::DataField.new('310', '0', '0', ['a', freq]))
-      end
-      record.dig('instance', 'publicationRange').each do |range|
-        marc.append(MARC::DataField.new('362', '0', '', ['a', range]))
-      end
-      record.dig('instance', 'notes').each do |note|
-        marc.append(MARC::DataField.new('500', '0', '', ['a', note['note']]))
-      end
-      record.dig('instance', 'series').each do |series|
-        marc.append(MARC::DataField.new('490', '0', '', ['a', series]))
-      end
-      # 856 stuff
-
-      record.dig('instance', 'subjects').each do |subject|
-        marc.append(MARC::DataField.new('653', '', '', ['a', subject]))
-      end
-      # nature of content
-      marc.append(MARC::DataField.new('999', '', '', ['i', record.dig('instance', 'id')]))
-      # date creaetd
-      # date updated
-    end.to_hash
+    Folio::MarcRecordInstanceMapper.build(instance, holdings)
   end
 end
 # rubocop:enable Metrics/ClassLength

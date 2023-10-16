@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'utils'
 
-describe Utils do
+RSpec.describe Utils do
   describe '.balance_parentheses' do
     it 'works' do
       expect(described_class.balance_parentheses('abc')).to eq 'abc'

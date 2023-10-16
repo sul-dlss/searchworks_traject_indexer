@@ -2,11 +2,6 @@
 
 require_relative '../config/boot'
 
-require 'folio_client'
-require 'traject'
-require 'traject/readers/folio_reader'
-require 'traject/extractors/folio_kafka_extractor'
-
 log_file = File.expand_path("../log/process_folio_to_kafka_#{Utils.env_config.kafka_topic}.log", __dir__)
 Utils.set_log_file(log_file)
 

@@ -6,12 +6,28 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 3.1
   SuggestExtensions: false
+  Exclude:
+    - 'lib/traject/config/sirsi_config.rb'
 
 Layout/LineLength:
   Max: 250
 
+Style/ArgumentsForwarding: # new in 1.1
+  Enabled: false
 Style/MultilineIfModifier:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+Style/RedundantConstantBase:  # new in 1.40
+  Enabled: true
+  Exclude:
+    - 'lib/traject/config/**/*.rb'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/folio_holding.rb'
+    - 'lib/sirsi_holding.rb'
 
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true
@@ -93,8 +109,6 @@ Security/CompoundHash: # new in 1.28
   Enabled: true
 Security/IoMethods: # new in 1.22
   Enabled: true
-Style/ArgumentsForwarding: # new in 1.1
-  Enabled: true
 Style/ArrayIntersect: # new in 1.40
   Enabled: true
 Style/CollectionCompact: # new in 1.2
@@ -163,8 +177,6 @@ Style/QuotedSymbols: # new in 1.16
   Enabled: true
 Style/RedundantArgument: # new in 1.4
   Enabled: true
-Style/RedundantConstantBase: # new in 1.40
-  Enabled: true
 Style/RedundantDoubleSplatHashBraces: # new in 1.41
   Enabled: true
 Style/RedundantEach: # new in 1.38
@@ -184,4 +196,24 @@ Style/SelectByRegexp: # new in 1.22
 Style/StringChars: # new in 1.12
   Enabled: true
 Style/SwapValues: # new in 1.1
+  Enabled: true
+Lint/MixedCaseRange: # new in 1.53
+  Enabled: true
+Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Style/ExactRegexpMatch: # new in 1.51
+  Enabled: true
+Style/RedundantArrayConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantCurrentDirectoryInPath: # new in 1.53
+  Enabled: true
+Style/RedundantFilterChain: # new in 1.52
+  Enabled: true
+Style/RedundantRegexpArgument: # new in 1.53
+  Enabled: true
+Style/RedundantRegexpConstructor: # new in 1.52
+  Enabled: true
+Style/ReturnNilInPredicateMethodDefinition: # new in 1.53
+  Enabled: true
+Style/YAMLFileRead: # new in 1.53
   Enabled: true

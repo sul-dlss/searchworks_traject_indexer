@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'call_numbers/shelfkey_base'
-
 module CallNumbers
   class Shelfkey < ShelfkeyBase
     def to_shelfkey

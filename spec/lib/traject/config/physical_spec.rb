@@ -1,20 +1,19 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Sirsi config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+RSpec.describe 'Folio config' do
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
 
   describe 'physical' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'physicalTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'physicalTests.jsonl' }
     let(:field) { 'physical' }
 
     it 'has the correct physical descriptions' do
@@ -32,7 +31,7 @@ RSpec.describe 'Sirsi config' do
     end
 
     context 'with displayFieldTests data' do
-      let(:fixture_name) { 'displayFieldsTests.mrc' }
+      let(:fixture_name) { 'displayFieldsTests.jsonl' }
 
       it 'has the correct physical descriptions' do
         expect(select_by_id('3001')[field]).to eq ['1 sound disc (20 min.); analog, 33 1/3 rpm, stereo. ; 12 in.']
@@ -48,8 +47,8 @@ RSpec.describe 'Sirsi config' do
   end
 
   describe 'vern_physical' do
-    subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
-    let(:fixture_name) { 'vernacularSearchTests.mrc' }
+    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
+    let(:fixture_name) { 'vernacularSearchTests.jsonl' }
     let(:field) { 'vern_physical' }
 
     it 'has the right fields mapped' do

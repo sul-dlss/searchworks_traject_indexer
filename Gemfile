@@ -3,7 +3,6 @@
 source 'https://rubygems.org'
 
 gem 'traject', '~> 3.0'
-gem 'traject-marc4j_reader', platform: :jruby
 gem 'traject_plus'
 
 group :development, :test do
@@ -21,7 +20,6 @@ gem 'honeybadger'
 gem 'http'
 gem 'i18n'
 gem 'iso-639'
-gem 'manticore', platform: :jruby
 gem 'mods_display', '~> 1.0'
 gem 'parallel'
 gem 'pg', platform: :mri
@@ -31,6 +29,7 @@ gem 'ruby-kafka'
 gem 'stanford-mods', '~> 3.0'
 gem 'statsd-ruby'
 gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
+gem 'zeitwerk'
 
 group :deployment do
   gem 'capistrano', '~> 3.0'
@@ -41,3 +40,6 @@ group :deployment do
 end
 
 gem 'activesupport', '~> 7.0'
+gem 'slop'
+
+gem 'factory_bot', '~> 6.2'

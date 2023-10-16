@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Author-title config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
   let(:record) { records.first }
-  let(:fixture_name) { 'authorTitleMappingTests.mrc' }
+  let(:fixture_name) { 'authorTitleMappingTests.jsonl' }
   let(:field) { 'author_title_search' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   # rubocop:disable Layout/LineLength
   describe 'maps search field values from 100, 110, 111 with data from the 240 or 245' do

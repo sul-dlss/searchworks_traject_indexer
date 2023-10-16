@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'http'
-require_relative 'folio_record'
-
 class FolioClient
   MAX_RESULTS_LIMIT = (2**31) - 1 # Folio max results
   DEFAULT_HEADERS = {
@@ -12,7 +9,7 @@ class FolioClient
 
   attr_reader :base_url
 
-  def initialize(url: ENV.fetch('OKAPI_URL'), username: ENV.fetch('OKAPI_USER', nil), password: ENV.fetch('OKAPI_PASSWORD', nil), tenant: 'sul')
+  def initialize(url: ENV.fetch('OKAPI_URL', ''), username: ENV.fetch('OKAPI_USER', nil), password: ENV.fetch('OKAPI_PASSWORD', nil), tenant: 'sul')
     uri = URI.parse(url)
 
     @base_url = url
@@ -56,12 +53,24 @@ class FolioClient
         params: { limit: MAX_RESULTS_LIMIT, updatedAfter: updated_after })
   end
 
+  def libraries
+    get_json('/location-units/libraries', params: { limit: 2_147_483_647 }).fetch('loclibs', []).sort_by { |x| x['id'] }
+  end
+
   def items_and_holdings(instance_id:)
     body = {
       instanceIds: [instance_id],
       skipSuppressedFromDiscoveryRecords: false
     }
     get_json('/inventory-hierarchy/items-and-holdings', method: :post, body: body.to_json)
+  end
+
+  def instance(instance_id:)
+    get_json("/inventory/instances/#{instance_id}")
+  end
+
+  def statistical_codes
+    @statistical_codes ||= get_json('/statistical-codes?limit=2000&query=cql.allRecords=1 sortby name').fetch('statisticalCodes')
   end
 
   private

@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Access config' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
-
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
 
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:fixture_name) { 'onlineFormat.mrc' }
-  subject(:results) { records.map { |rec| indexer.map_record(rec) }.to_a }
+  let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
+  let(:fixture_name) { 'onlineFormat.jsonl' }
+  subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
   describe 'url_sfx' do
     let(:field) { 'url_sfx' }
@@ -74,6 +71,27 @@ RSpec.describe 'Access config' do
                 '4',
                 nil,
                 MARC::Subfield.new('u', 'http://example.com/')
+              )
+            )
+          end
+        ]
+      end
+
+      it 'are not considered full text' do
+        expect(results.first[field]).to be_blank
+      end
+    end
+
+    describe 'Blank subfield u' do
+      let(:records) do
+        [
+          MARC::Record.new.tap do |r|
+            r.append(
+              MARC::DataField.new(
+                '856',
+                '4',
+                nil,
+                MARC::Subfield.new('u', '')
               )
             )
           end
@@ -179,7 +197,7 @@ RSpec.describe 'Access config' do
 
   describe 'url_restricted' do
     let(:field) { 'url_restricted' }
-    let(:fixture_name) { 'restrictedUrlTests.mrc' }
+    let(:fixture_name) { 'restrictedUrlTests.jsonl' }
 
     it 'maps the right values' do
       expect(select_by_id('restrictedUrl1')[field]).to eq ['http://restricted.org']
@@ -232,7 +250,7 @@ RSpec.describe 'Access config' do
   end
 
   describe 'url field ordering' do
-    let(:fixture_name) { 'urlOrderingTests.mrc' }
+    let(:fixture_name) { 'urlOrderingTests.jsonl' }
 
     it 'preserves field ordering from marc21 input to marc21 stored in record' do
       expect(select_by_id('fulltextOnly')['url_fulltext']).to eq ['http://first.org', 'http://second.org']

@@ -1,0 +1,6 @@
+{"leader":"00107cim  2200049Ia 4500","fields":[{"008":"041202s2000    mdunnn  s      f    eng d"},{"245":{"ind1":" ","ind2":" ","subfields":[{"a":"missing 001"}]}}]}
+{"leader":"00179cim  2200073Ia 4500","fields":[{"001":"001and004nosub"},{"004":"004noSuba"},{"008":"041202s2000    mdunnn  s      f    eng d"},{"245":{"ind1":" ","ind2":" ","subfields":[{"a":"001 and 004 neither with subfields"}]}}]}
+{"leader":"00152cim  2200061Ia 4500","fields":[{"001":"001noSubNo004"},{"008":"041202s2000    mdunnn  s      f    eng d"},{"245":{"ind1":" ","ind2":" ","subfields":[{"a":"001 without subfield a, no 004"}]}}]}
+{"leader":"00144cim  2200061Ia 4500","fields":[{"001":"a001suba"},{"008":"041202s2000    mdunnn  s      f    eng d"},{"245":{"ind1":" ","ind2":" ","subfields":[{"a":"001 with subfield a, no 004"}]}}]}
+{"leader":"00195cim  2200073Ia 4500","fields":[{"001":"a001subaAnd004nosub"},{"004":"004noSuba"},{"008":"041202s2000    mdunnn  s      f    eng d"},{"245":{"ind1":" ","ind2":" ","subfields":[{"a":"001 with subfield a and 004 without subfields"}]}}]}
+{"leader":"00180cim  2200073Ia 4500","fields":[{"001":"a001subaAnd004suba"},{"004":"a004suba"},{"008":"041202s2000    mdunnn  s      f    eng d"},{"245":{"ind1":" ","ind2":" ","subfields":[{"a":"001 and 004 both with subfield a"}]}}]}

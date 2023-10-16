@@ -1,18 +1,12 @@
 # frozen_string_literal: true
 
-require 'kafka'
-require 'kafka/statsd'
-require 'active_support'
-require_relative '../../folio_client'
-require_relative '../../folio_record'
-
 # Reads messages out of Kafka and yields FolioRecords
 class Traject::KafkaFolioReader
   attr_reader :settings
 
   def initialize(_input_stream, settings)
     @settings = Traject::Indexer::Settings.new settings
-    @client = settings['folio.client'] || FolioClient.new
+    @client = settings['folio.client']
   end
 
   def each

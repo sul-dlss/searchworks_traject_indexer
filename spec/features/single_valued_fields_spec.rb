@@ -1,23 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Single valued fields' do
-  extend ResultHelpers
-  subject(:result) { indexer.map_record(record) }
+  subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
-      i.load_config_file('./lib/traject/config/sirsi_config.rb')
+      i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
-  let(:records) { MARC::Reader.new(file_fixture(fixture_name).to_s).to_a }
-  let(:record) { records.first }
+  let(:record) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a.first }
   let(:single_valued_fields) do
     %w[title_245a_search title_245_search title_uniform_search vern_title_uniform_search title_full_display all_search
        vern_all_search]
   end
 
   context 'Arabic example' do
-    let(:fixture_name) { '41022.marc' }
+    let(:fixture_name) { '41022.json' }
     it 'fields are all single valued' do
       single_valued_fields.each do |field|
         expect(result[field].length).to eq 1
@@ -33,8 +31,9 @@ RSpec.describe 'Single valued fields' do
       expect(result['title_full_display'].first).to eq "Epître sur l'unité et la Trinité : Traité sur l'intellect, Fragment sur l'ame / texte arabe édité, traduit et annoté par M. Allard et G. Troupeau."
     }
   end
+
   context 'Japanese example' do
-    let(:fixture_name) { '44794.marc' }
+    let(:fixture_name) { '44794.json' }
     it 'fields are all single valued' do
       single_valued_fields.each do |field|
         expect(result[field].length).to eq 1
