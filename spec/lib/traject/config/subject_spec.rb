@@ -740,9 +740,9 @@ RSpec.describe 'Subject config' do
     let(:folio_records) { records.map { |rec| marc_to_folio(rec) } }
     let(:results) { folio_records.map { |rec| indexer.map_record(rec) }.to_a }
     before do
-      # Give a LANE-MED holding to all of the records except for a655keepme
+      # Give a LANE holding to all of the records except for a655keepme
       folio_records.each do |folio_record|
-        allow(folio_record).to receive(:folio_holdings).and_return([build(:lc_holding, library: 'LANE-MED')]) if folio_record['001'].value != 'a655keepme'
+        allow(folio_record).to receive(:folio_holdings).and_return([build(:lc_holding, library: 'LANE')]) if folio_record['001'].value != 'a655keepme'
       end
     end
 

@@ -494,7 +494,7 @@ to_field 'topic_search',
            '650abcdefghijklmnopqrstuw:653abcdefghijklmnopqrstuw:654abcdefghijklmnopqrstuw:690abcdefghijklmnopqrstuw:795ap', alternate_script: false
          ) do |record, accumulator, context|
   accumulator.reject! { |v| v.start_with?('nomesh') }
-  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
+  if holdings(record, context).any? { |holding| holding.library == 'LANE' }
     arr = []
     extract_marc('655a').call(record, arr, nil)
     accumulator.reject! { |v| arr.include? v }
@@ -528,7 +528,7 @@ to_field 'subject_other_search', extract_marc(%w[600 610 611 630 647 655 656 657
   "#{c}abcdefghijklmnopqrstuw"
 end.join(':'), alternate_script: false) do |record, accumulator, context|
   accumulator.reject! { |v| v.start_with?('nomesh') }
-  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
+  if holdings(record, context).any? { |holding| holding.library == 'LANE' }
     arr = []
     extract_marc('655a').call(record, arr, nil)
     accumulator.reject! { |v| arr.include? v }
@@ -1137,7 +1137,7 @@ to_field 'format_main_ssim' do |record, accumulator, context|
 end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
-  if holdings(record, context).any? { |holding| holding.library == 'LANE-MED' }
+  if holdings(record, context).any? { |holding| holding.library == 'LANE' }
     Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
       accumulator << 'Book' if extractor.collect_subfields(field, spec).join(' ') =~ /manuscript/
     end
@@ -1146,7 +1146,7 @@ end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
   if holdings(record, context).any? do |holding|
-       holding.library == 'LANE-MED'
+       holding.library == 'LANE'
      end && ((record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd'))
     context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
     accumulator << 'Book'

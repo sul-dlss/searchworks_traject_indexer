@@ -1280,7 +1280,7 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'when library is LANE-MED' do
+  context 'when library is LANE' do
     let(:folio_record) do
       FolioRecord.new({
                         'source_record' => source_record,
@@ -1288,7 +1288,7 @@ RSpec.describe 'Format main config' do
                       }, stub_folio_client)
     end
     let(:source_record) { [{ 'leader' => leader, 'fields' => [] }] }
-    let(:holdings) { [build(:lc_holding, library: 'LANE-MED')] }
+    let(:holdings) { [build(:lc_holding, library: 'LANE')] }
 
     context 'when leader/06 is a' do
       context 'when leader/07 is d' do

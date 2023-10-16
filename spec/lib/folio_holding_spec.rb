@@ -52,88 +52,44 @@ RSpec.describe FolioHolding do
   describe '#library' do
     subject(:library) { described_class.new(item:, holding:).library }
 
-    context 'with a location without a symphony equivalent' do
-      let(:item) do
-        {
-          location: {}
-        }.with_indifferent_access
-      end
-
-      let(:holding) do
-        {
-          location: {
-            effectiveLocation: { code: 'SPEC-SAL-TAUBE', library: { code: 'SPEC-COLL' } }
-          }
-        }.with_indifferent_access
-      end
-
-      it 'is the Symphony code' do
-        expect(library).to eq 'SPEC-COLL'
-      end
+    let(:item) do
+      {
+        location: {}
+      }.with_indifferent_access
     end
 
-    context 'with a location that maps to a Symphony location' do
-      let(:item) do
-        {
-          location: {}
-        }.with_indifferent_access
-      end
+    let(:holding) do
+      {
+        location: {
+          effectiveLocation: { code: 'SPEC-SAL-TAUBE', library: { code: 'SPEC-COLL' } }
+        }
+      }.with_indifferent_access
+    end
 
-      let(:holding) do
-        {
-          location: {
-            effectiveLocation: { code: 'ART-LOCKED-OVERSIZE' }
-          }
-        }.with_indifferent_access
-      end
-
-      it 'is the Symphony code' do
-        expect(library).to eq 'ART'
-      end
+    it 'is the effective location library code' do
+      expect(library).to eq 'SPEC-COLL'
     end
   end
 
   describe '#home_location' do
     subject(:home_location) { described_class.new(item:, holding:).home_location }
 
-    context 'with a location without a symphony equivalent' do
-      let(:item) do
-        {
-          location: {}
-        }.with_indifferent_access
-      end
-
-      let(:holding) do
-        {
-          location: {
-            effectiveLocation: { code: 'SPEC-SAL-TAUBE' }
-          }
-        }.with_indifferent_access
-      end
-
-      it 'is the FOLIO code' do
-        expect(home_location).to eq 'SPEC-SAL-TAUBE'
-      end
+    let(:item) do
+      {
+        location: {}
+      }.with_indifferent_access
     end
 
-    context 'with a location that maps to a Symphony location' do
-      let(:item) do
-        {
-          location: {}
-        }.with_indifferent_access
-      end
+    let(:holding) do
+      {
+        location: {
+          effectiveLocation: { code: 'SPEC-SAL-TAUBE' }
+        }
+      }.with_indifferent_access
+    end
 
-      let(:holding) do
-        {
-          location: {
-            effectiveLocation: { code: 'ART-LOCKED-OVERSIZE' }
-          }
-        }.with_indifferent_access
-      end
-
-      it 'is the Symphony code' do
-        expect(home_location).to eq 'ARTLCKO'
-      end
+    it 'is the FOLIO code' do
+      expect(home_location).to eq 'SPEC-SAL-TAUBE'
     end
   end
 

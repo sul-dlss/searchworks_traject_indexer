@@ -866,7 +866,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFILM N.S. 17443', home_location: 'MEDIA-MTXT', type: 'NH-MICR')
+          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFILM N.S. 17443', home_location: 'MEDIA-CENTER', type: 'NH-MICR')
         ]
       )
     end
@@ -958,7 +958,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFICHE 1183 N.5.1.7205', home_location: 'MEDIA-MTXT', type: 'NH-MICR')
+          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFICHE 1183 N.5.1.7205', home_location: 'MEDIA-CENTER', type: 'NH-MICR')
         ]
       )
     end
