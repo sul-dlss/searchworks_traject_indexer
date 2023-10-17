@@ -19,8 +19,8 @@ RSpec.describe 'Holdings config' do
 
       it {
         is_expected.to eq [
-          'MUSIC -|- STACKS -|-  -|- v.1 -|- ',
-          'MUSIC -|- STACKS -|-  -|- v.2 -|- '
+          'MUSIC -|- MUS-STACKS -|-  -|- v.1 -|- ',
+          'MUSIC -|- MUS-STACKS -|-  -|- v.2 -|- '
         ]
       }
     end
@@ -30,7 +30,7 @@ RSpec.describe 'Holdings config' do
 
       it {
         is_expected.to eq [
-          'SAL3 -|- STACKS -|-  -|- 1948,1965-1967,1974-1975 -|- '
+          'SAL3 -|- SAL3-STACKS -|-  -|- 1948,1965-1967,1974-1975 -|- '
         ]
       }
     end
@@ -40,7 +40,7 @@ RSpec.describe 'Holdings config' do
 
       it {
         is_expected.to eq [
-          'SAL3 -|- STACKS -|-  -|- Heft 1-2 <v.568-569 in series> -|- '
+          'SAL3 -|- SAL3-STACKS -|-  -|- Heft 1-2 <v.568-569 in series> -|- '
         ]
       }
     end

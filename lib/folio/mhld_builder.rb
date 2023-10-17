@@ -16,7 +16,8 @@ module Folio
 
     def build
       filtered_holdings.flatten.map do |holding|
-        library, location = LocationsMap.for(holding.fetch(:location).fetch('code'))
+        library = holding.dig(:location, 'library', 'code')
+        location = holding.dig(:location, 'code')
         public_note = holding.fetch(:note)
         # The acquisitions department would rather not maintain library_has anymore anymore, as it's expensive for staff to keep it up to date.
         # However, it seems like it's require for records like `a2149237` where there is no other way to display the volume 7 is not held.
