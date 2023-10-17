@@ -711,6 +711,7 @@ RSpec.describe 'FOLIO indexing' do
             'name' => 'Earth Sciences Stacks',
             'campusName' => 'Stanford Libraries',
             'libraryName' => 'Branner Earth Sciences',
+            'library' => { 'code' => 'EARTH-SCI' },
             'institutionName' => 'Stanford University' },
           'permanentLocation' =>
           { 'code' => 'EAR-STACKS',
@@ -793,6 +794,7 @@ RSpec.describe 'FOLIO indexing' do
               'name' => 'Earth Sciences Stacks',
               'campusName' => 'Stanford Libraries',
               'libraryName' => 'Branner Earth Sciences',
+              'library' => { 'code' => 'EARTH-SCI' },
               'institutionName' => 'Stanford University' },
             'permanentLocation' => {},
             'temporaryLocation' => {} },
@@ -872,6 +874,7 @@ RSpec.describe 'FOLIO indexing' do
               'name' => 'Earth Sciences Stacks',
               'campusName' => 'Stanford Libraries',
               'libraryName' => 'Branner Earth Sciences',
+              'library' => { 'code' => 'EARTH-SCI' },
               'institutionName' => 'Stanford University' },
             'permanentLocation' =>
             { 'code' => 'EAR-STACKS',
@@ -911,8 +914,8 @@ RSpec.describe 'FOLIO indexing' do
       end
       it {
         is_expected.to eq [
-          'EARTH-SCI -|- STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- v.243:no.10 (OCT 2023)',
-          'EARTH-SCI -|- STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
+          'EARTH-SCI -|- EAR-STACKS -|- Library has latest 10 yrs. only. -|- v.195(1999)-v.196(1999),v.201(2002),v.203(2003)- -|- v.243:no.10 (OCT 2023)',
+          'EARTH-SCI -|- EAR-STACKS -|-  -|-  -|- v.243:no.10 (OCT 2023)'
         ]
       }
     end
@@ -932,10 +935,10 @@ RSpec.describe 'FOLIO indexing' do
       end
       it {
         is_expected.to eq [
-          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- v.1-37 -|- ',
-          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- "Digest" 1994 -|- ',
-          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- "Master table of contents" Library has latest vol. only -|- ',
-          'EARTH-SCI -|- STACKS -|- 1990-2006 also on microfiche: XF 441 -|- Index: 1992:Apr., 1994:Jan.- -|- '
+          'EARTH-SCI -|- EAR-STACKS -|- 1990-2006 also on microfiche: XF 441 -|- v.1-37 -|- ',
+          'EARTH-SCI -|- EAR-STACKS -|- 1990-2006 also on microfiche: XF 441 -|- "Digest" 1994 -|- ',
+          'EARTH-SCI -|- EAR-STACKS -|- 1990-2006 also on microfiche: XF 441 -|- "Master table of contents" Library has latest vol. only -|- ',
+          'EARTH-SCI -|- EAR-STACKS -|- 1990-2006 also on microfiche: XF 441 -|- Index: 1992:Apr., 1994:Jan.- -|- '
         ]
       }
     end
@@ -949,8 +952,8 @@ RSpec.describe 'FOLIO indexing' do
       end
       it {
         is_expected.to eq [
-          "EARTH-SCI -|- STACKS -|-  -|- reel 1-126 \u003cseries 1\u003e -|- ",
-          'EARTH-SCI -|- STACKS -|-  -|- Supplement: guide -|- '
+          "EARTH-SCI -|- EAR-STACKS -|-  -|- reel 1-126 \u003cseries 1\u003e -|- ",
+          'EARTH-SCI -|- EAR-STACKS -|-  -|- Supplement: guide -|- '
         ]
       }
     end
@@ -963,7 +966,7 @@ RSpec.describe 'FOLIO indexing' do
       let(:holdings_statements) do
         [{ 'staffNote' => 'Send to cataloging to receive and update holdings...', 'statement' => 'v.1, 11' }]
       end
-      it { is_expected.to eq ['EARTH-SCI -|- STACKS -|-  -|- v.1, 11 -|- ', 'EARTH-SCI -|- STACKS -|-  -|- Supplement: Library keeps latest only -|- '] }
+      it { is_expected.to eq ['EARTH-SCI -|- EAR-STACKS -|-  -|- v.1, 11 -|- ', 'EARTH-SCI -|- EAR-STACKS -|-  -|- Supplement: Library keeps latest only -|- '] }
     end
   end
 
