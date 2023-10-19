@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'kafka'
+require 'kafka/statsd'
+
 # Reads messages out of Kafka and yields FolioRecords
 class Traject::KafkaFolioReader
   attr_reader :settings
