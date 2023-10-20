@@ -17,17 +17,17 @@ RSpec.describe 'Location facet config' do
   end
 
   context 'with home location CURRICULUM' do
-    let(:home_location) { 'CURRICULUM' }
+    let(:home_location) { 'EDU-CURRICULUM' }
     it { is_expected.to eq ['Curriculum Collection'] }
   end
 
   context 'with home location ARTLCKL-R' do
-    let(:home_location) { 'ARTLCKL-R' }
+    let(:home_location) { 'ART-LOCKED-LARGE' }
     it { is_expected.to eq ['Art Locked Stacks'] }
   end
 
   context 'with any other home location' do
-    let(:home_location) { 'REFERENCE' }
+    let(:home_location) { 'GRE-REFERENCE' }
     it { is_expected.to be_nil }
   end
 end

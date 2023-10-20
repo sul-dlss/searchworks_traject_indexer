@@ -1956,12 +1956,12 @@ end
 #
 # # Location facet
 to_field 'location_facet' do |record, accumulator, context|
-  if holdings(record, context).any? { |holding| holding.home_location == 'CURRICULUM' }
+  if holdings(record, context).any? { |holding| holding.home_location == 'EDU-CURRICULUM' }
     accumulator << 'Curriculum Collection'
   end
 
   if holdings(record, context).any? do |holding|
-       holding.home_location =~ /^ARTLCK/ || holding.home_location == 'PAGE-AR'
+       holding.home_location =~ /^ART-LOCKED/ || holding.home_location == 'SAL3-PAGE-AR'
      end
     accumulator << 'Art Locked Stacks'
   end
