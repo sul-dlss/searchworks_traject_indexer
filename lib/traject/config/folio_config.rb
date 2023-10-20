@@ -2167,14 +2167,6 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   accumulator << preferred_holding.barcode if preferred_holding
 end
 
-library_map = case settings['reader_class_name']
-              when /Folio/
-                LibrariesMap
-              else
-                Traject::TranslationMap.new('library_map')
-              end
-resv_locs = Traject::TranslationMap.new('locations_reserves_list')
-
 to_field 'library_code_facet_ssim' do |record, accumulator, context|
   holdings(record, context).reject(&:skipped?).each do |holding|
     next unless holding.display_location&.dig('library')
@@ -2194,20 +2186,16 @@ to_field 'building_facet' do |record, accumulator, context|
   holdings(record, context).each do |holding|
     next if holding.skipped?
 
-    if resv_locs.hash.key?(holding.current_location)
-      accumulator << holding.current_location
-    else
-      accumulator << holding.library
-      # https://github.com/sul-dlss/solrmarc-sw/issues/101
-      # Per Peter Blank - items with library = SAL3 and home location = PAGE-AR
-      # should be given two library facet values:
-      # SAL3 (off-campus storage) <- they are currently getting this
-      # and Art & Architecture (Bowes) <- new requirement
-      accumulator << 'ART' if (holding.library == 'SAL3') && (holding.home_location == 'PAGE-AR')
-    end
+    accumulator << holding.library
+    # https://github.com/sul-dlss/solrmarc-sw/issues/101
+    # Per Peter Blank - items with library = SAL3 and home location = PAGE-AR
+    # should be given two library facet values:
+    # SAL3 (off-campus storage) <- they are currently getting this
+    # and Art & Architecture (Bowes) <- new requirement
+    accumulator << 'ART' if holding.home_location == 'SAL3-PAGE-AR'
   end
 
-  accumulator.replace library_map.translate_array(accumulator)
+  accumulator.replace LibrariesMap.translate_array(accumulator)
 end
 
 to_field 'building_facet' do |record, accumulator|
