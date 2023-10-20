@@ -9,7 +9,6 @@ class FolioHolding
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
   ECALLNUM = 'INTERNET RESOURCE'
-  GOV_DOCS_LOCS = %w[BRIT-DOCS CALIF-DOCS FED-DOCS INTL-DOCS SSRC-DOCS SSRC-FICHE SSRC-NWDOC].freeze
   LOST_OR_MISSING_LOCS = %w[MISSING].freeze
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA SHELBYTITL SHELBYSER].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
@@ -121,10 +120,6 @@ class FolioHolding
 
   def lost_or_missing?
     status == 'Missing' || status == 'Long missing'
-  end
-
-  def gov_doc_loc?
-    [home_location, current_location].intersect?(GOV_DOCS_LOCS)
   end
 
   def in_process?
