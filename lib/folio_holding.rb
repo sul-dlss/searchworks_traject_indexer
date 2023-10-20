@@ -120,7 +120,7 @@ class FolioHolding
   end
 
   def lost_or_missing?
-    [home_location, current_location].intersect?(LOST_OR_MISSING_LOCS)
+    status == 'Missing' || status == 'Long missing'
   end
 
   def gov_doc_loc?
@@ -128,7 +128,7 @@ class FolioHolding
   end
 
   def in_process?
-    temp_call_number? && (current_location == 'INPROCESS' || (!current_location.nil? && home_location != 'ON-ORDER'))
+    temp_call_number? && (status == 'In process' || status == 'In process (non-requestable)')
   end
 
   def on_order?
