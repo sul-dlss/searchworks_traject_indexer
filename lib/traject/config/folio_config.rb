@@ -973,13 +973,13 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator << 'Online' if record.eresource?
 
   # Holdings that aren't electronic and aren't on-order must be at the library
-  accumulator << 'At the Library' if holdings(record, context).any? { |holding| !holding.e_call_number? && holding.current_location != 'ON-ORDER' }
+  accumulator << 'At the Library' if holdings(record, context).any? { |holding| !holding.e_call_number? && holding.status != 'On order' }
 
   # Actual on-order PO line
-  accumulator << 'On order' if holdings(record, context).any? { |holding| holding.current_location == 'ON-ORDER' && holding.home_location != 'ON-ORDER' }
+  accumulator << 'On order' if holdings(record, context).any? { |holding| holding.status == 'On order' }
 
   # Stub on-order records
-  accumulator << 'On order' if accumulator.empty? && holdings(record, context).any? { |holding| holding.current_location == 'ON-ORDER' }
+  accumulator << 'On order' if accumulator.empty? && holdings(record, context).any? { |holding| holding.status == 'On order' }
 end
 
 ##

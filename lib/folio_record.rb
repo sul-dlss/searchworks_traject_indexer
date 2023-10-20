@@ -188,6 +188,7 @@ class FolioRecord
       FolioHolding.new(
         holding:,
         instance:,
+        status: 'On order',
         current_location: 'ON-ORDER'
       )
     end
@@ -205,7 +206,8 @@ class FolioRecord
         instance:,
         library: lib,
         home_location: 'ON-ORDER',
-        current_location: 'ON-ORDER'
+        current_location: 'ON-ORDER',
+        status: 'On order'
       )
     end
   end

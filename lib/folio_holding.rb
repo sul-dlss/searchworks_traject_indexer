@@ -9,7 +9,6 @@ class FolioHolding
 
   BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
   ECALLNUM = 'INTERNET RESOURCE'
-  GOV_DOCS_LOCS = %w[BRIT-DOCS CALIF-DOCS FED-DOCS INTL-DOCS SSRC-DOCS SSRC-FICHE SSRC-NWDOC].freeze
   LOST_OR_MISSING_LOCS = %w[MISSING].freeze
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA SHELBYTITL SHELBYSER].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
@@ -17,13 +16,13 @@ class FolioHolding
   TEMP_CALLNUM_PREFIX = 'XX('
 
   attr_reader :item, :holding, :instance, :bound_with_holding,
-              :id, :type, :barcode, :course_reserves
+              :id, :type, :barcode, :course_reserves, :status
 
   # rubocop:disable Metrics/ParameterLists
   def initialize(item: nil, holding: nil, instance: nil,
                  bound_with_holding: nil,
                  course_reserves: [],
-                 call_number: nil, type: nil,
+                 call_number: nil, type: nil, status: nil,
                  library: nil, home_location: nil, current_location: nil)
     @item = item
     @holding = holding
@@ -33,6 +32,7 @@ class FolioHolding
     @provided_call_number = call_number || @bound_with_holding&.dig('callNumber') || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @holding&.dig('callNumber')
     @current_location = current_location
     @home_location = home_location
+    @status = status || item&.dig('status')
     @library = library
     @type = type || @item&.dig('materialType')
     @barcode = @item&.dig('barcode')
@@ -119,19 +119,15 @@ class FolioHolding
   end
 
   def lost_or_missing?
-    [home_location, current_location].intersect?(LOST_OR_MISSING_LOCS)
-  end
-
-  def gov_doc_loc?
-    [home_location, current_location].intersect?(GOV_DOCS_LOCS)
+    status == 'Missing' || status == 'Long missing'
   end
 
   def in_process?
-    temp_call_number? && (current_location == 'INPROCESS' || (!current_location.nil? && home_location != 'ON-ORDER'))
+    temp_call_number? && (status == 'In process' || status == 'In process (non-requestable)')
   end
 
   def on_order?
-    temp_call_number? && (current_location == 'ON-ORDER' || (!current_location.nil? && home_location == 'ON-ORDER'))
+    temp_call_number? && status == 'On order'
   end
 
   def ==(other)
@@ -168,7 +164,7 @@ class FolioHolding
       # FOLIO item data to replace library/home_location/current_location some day
       temporary_location_code: temporary_location&.dig('code'),
       permanent_location_code: permanent_location&.dig('code'),
-      status: item&.dig('status'),
+      status:,
       # FOLIO data used to drive circulation rules
       effective_location_id: temporary_location&.dig('id') || permanent_location&.dig('id'),
       material_type_id: item&.dig('materialTypeId'),

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ParameterLists
-def record_with_holdings(call_number:, item:, indexer:, home_location: 'STACKS', library: 'GREEN', type: '')
+def record_with_holdings(call_number:, item:, indexer:, status: 'Available', home_location: 'STACKS', library: 'GREEN', type: '')
   holdings = [
     build(:holding,
           call_number:,
@@ -9,6 +9,7 @@ def record_with_holdings(call_number:, item:, indexer:, home_location: 'STACKS',
           library:,
           item:,
           type:,
+          status:,
           barcode: '')
   ]
   yield(holdings) if block_given?
@@ -68,14 +69,12 @@ RSpec.describe 'Call Number Facet' do
     end
 
     it 'handles missing or lost call numbers (by not including them)' do
-      FolioHolding::LOST_OR_MISSING_LOCS.each do |loc|
-        # LC
-        expect(record_with_holdings(call_number: 'M123 .M456', home_location: loc, item: { 'callNumberType' => { 'name' => 'LC' } },
-                                    indexer:)[field]).to be_nil
-        # Dewey
-        expect(record_with_holdings(call_number: '123.4 .B45', home_location: loc, item: { 'callNumberType' => { 'name' => 'DEWEY' } },
-                                    indexer:)[field]).to be_nil
-      end
+      # LC
+      expect(record_with_holdings(call_number: 'M123 .M456', status: 'Missing', item: { 'callNumberType' => { 'name' => 'LC' } },
+                                  indexer:)[field]).to be_nil
+      # Dewey
+      expect(record_with_holdings(call_number: '123.4 .B45', status: 'Missing', item: { 'callNumberType' => { 'name' => 'DEWEY' } },
+                                  indexer:)[field]).to be_nil
     end
 
     it 'handles ignored call numbers (by not including them)' do
