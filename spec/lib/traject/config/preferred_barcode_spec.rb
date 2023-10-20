@@ -281,8 +281,8 @@ RSpec.describe 'All_search config' do
         [
           build(:sudoc_holding, barcode: 'sudoc1', call_number: 'Y 4.G 74/7-11:110'),
           build(:sudoc_holding, barcode: 'sudoc2', call_number: 'Y 4.G 74/7-11:222'),
-          build(:sudoc_holding, barcode: 'sudoc3', call_number: 'A 13.78:NC-315', home_location: 'SOMEWHERE'),
-          build(:sudoc_holding, barcode: 'sudoc4', call_number: 'A 13.78:NC-315 1947', home_location: 'SOMEWHERE')
+          build(:sudoc_holding, barcode: 'sudoc3', call_number: 'A 13.78:NC-315', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:sudoc_holding, barcode: 'sudoc4', call_number: 'A 13.78:NC-315 1947', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } })
         ]
       end
 
@@ -336,9 +336,9 @@ RSpec.describe 'All_search config' do
         [
           build(:sudoc_holding, barcode: 'sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
           build(:sudoc_holding, barcode: 'sudoc2', call_number: 'Y 4.G 74/7-11:222'),
-          build(:sudoc_holding, barcode: 'sudoc3', call_number: 'A 13.78:NC-315', home_location: 'SOMEWHERE'),
-          build(:sudoc_holding, barcode: 'sudoc4', call_number: 'A 13.78:NC-315 1947', home_location: 'SOMEWHERE'),
-          build(:sudoc_holding, barcode: 'sudoc5', call_number: 'A 13.78:NC-315 1956', home_location: 'SOMEWHERE')
+          build(:sudoc_holding, barcode: 'sudoc3', call_number: 'A 13.78:NC-315', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:sudoc_holding, barcode: 'sudoc4', call_number: 'A 13.78:NC-315 1947', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:sudoc_holding, barcode: 'sudoc5', call_number: 'A 13.78:NC-315 1956', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } })
         ]
       end
       it { is_expected.to eq ['sudoc3'] }
@@ -349,9 +349,9 @@ RSpec.describe 'All_search config' do
         [
           build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
           build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791 DISC 2'),
-          build(:alphanum_holding, barcode: 'alpha3', call_number: 'ARTDVD 666666 DISC 1', home_location: 'SOMEWHERE'),
-          build(:alphanum_holding, barcode: 'alpha4', call_number: 'ARTDVD 666666 DISC 2', home_location: 'SOMEWHERE'),
-          build(:alphanum_holding, barcode: 'alpha5', call_number: 'ARTDVD 666666 DISC 3', home_location: 'SOMEWHERE')
+          build(:alphanum_holding, barcode: 'alpha3', call_number: 'ARTDVD 666666 DISC 1', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:alphanum_holding, barcode: 'alpha4', call_number: 'ARTDVD 666666 DISC 2', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:alphanum_holding, barcode: 'alpha5', call_number: 'ARTDVD 666666 DISC 3', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } })
 
         ]
       end
