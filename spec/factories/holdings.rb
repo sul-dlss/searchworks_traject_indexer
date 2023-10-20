@@ -12,6 +12,7 @@ FactoryBot.define do
     library { 'GREEN' }
     type { '' }
 
+    additional_item_attributes { {} }
     item do
       {
         'callNumberType' => { 'name' => scheme },
@@ -20,7 +21,7 @@ FactoryBot.define do
       }
     end
 
-    initialize_with { new(**attributes) }
+    initialize_with { new(**attributes.except(:item, :additional_item_attributes), item: item.merge(additional_item_attributes)) }
 
     factory :lc_holding do
       call_number { 'QE538.8 .N36 1975-1977' }

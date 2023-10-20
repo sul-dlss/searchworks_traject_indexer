@@ -110,7 +110,7 @@ each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
 
-# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 def call_number_for_holding(record, holding, context)
   context.clipboard[:call_number_for_holding] ||= {}
   context.clipboard[:call_number_for_holding][holding] ||= begin
@@ -166,8 +166,7 @@ def call_number_for_holding(record, holding, context)
     else
       non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library,
-                                                                   LOCATION_MAP[holding.home_location], holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
+      call_numbers_in_location = (non_skipped_or_ignored_holdings[[holding.library, holding.display_location&.dig('name'), holding.call_number_type]] || []).map(&:call_number).map(&:to_s)
 
       CallNumbers::Other.new(
         holding.call_number.to_s,
@@ -177,7 +176,7 @@ def call_number_for_holding(record, holding, context)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
 # This overrides the method in marc_config.rb to provide holdings derived from Folio data
 def holdings(record, context)
@@ -1708,8 +1707,6 @@ end
 #
 # # Call Number Fields
 
-LOCATION_MAP = Traject::TranslationMap.new('location_map')
-
 each_record do |record, context|
   non_skipped_or_ignored_holdings = []
 
@@ -1721,7 +1718,7 @@ each_record do |record, context|
 
   # Group by library, home location, and call numbe type
   result = non_skipped_or_ignored_holdings = non_skipped_or_ignored_holdings.group_by do |holding|
-    [holding.library, LOCATION_MAP[holding.home_location], holding.call_number_type]
+    [holding.library, holding.display_location&.dig('name'), holding.call_number_type]
   end
 
   context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type] = result
@@ -1908,8 +1905,7 @@ to_field 'shelfkey' do |record, accumulator, context|
 
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library,
-                                                                       LOCATION_MAP[holding.home_location], holding.call_number_type]])
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.display_location&.dig('name'), holding.call_number_type]])
 
     if stuff_in_the_same_library.length > 1
       call_number_object = call_number_for_holding(record, holding, context)
@@ -1944,8 +1940,7 @@ to_field 'reverse_shelfkey' do |record, accumulator, context|
 
     non_skipped_or_ignored_holdings = context.clipboard[:non_skipped_or_ignored_holdings_by_library_location_call_number_type]
 
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library,
-                                                                       LOCATION_MAP[holding.home_location], holding.call_number_type]])
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.display_location&.dig('name'), holding.call_number_type]])
 
     if stuff_in_the_same_library.length > 1
       call_number_object = call_number_for_holding(record, holding, context)
@@ -2230,8 +2225,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
 
     call_number = holding.call_number
     call_number_object = call_number_for_holding(record, holding, context)
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library,
-                                                                       LOCATION_MAP[holding.home_location], holding.call_number_type]])
+    stuff_in_the_same_library = Array(non_skipped_or_ignored_holdings[[holding.library, holding.display_location&.dig('name'), holding.call_number_type]])
 
     if call_number_object
       scheme = call_number_object.scheme.upcase
