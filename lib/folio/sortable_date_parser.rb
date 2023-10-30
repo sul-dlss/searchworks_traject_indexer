@@ -59,7 +59,7 @@ module Folio
       generated_dates = generate_dates(ds_tokens)
       # For each of these strings, extract Date.parse compatible format
       # or extract a year
-      generated_dates.map { |gd| extract_single_sortable_date(gd) }
+      generated_dates.filter_map { |gd| extract_single_sortable_date(gd) }
     end
 
     # ds_tokens is an array of arrays representing each portion of the date string
