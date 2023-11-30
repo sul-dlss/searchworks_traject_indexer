@@ -10,7 +10,7 @@ module Traject
     def initialize(_input_stream, settings)
       @settings = Traject::Indexer::Settings.new settings
       @connection = @settings['postgres.client'] || PG.connect(@settings['postgres.url'])
-      @page_size = @settings['postgres.page_size'] || 100
+      @page_size = @settings['postgres.page_size'] || 25
       @updated_after = @settings['folio.updated_after']
       @statement_timeout = @settings.fetch('statement_timeout', 'DEFAULT') # Timeout value in milliseconds
 
@@ -40,8 +40,8 @@ module Traject
 
         conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
           c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-          sql_query([c] + @sql_filters, addl_from: [filter_join[table], @addl_from].compact.join("\n"))
-        end + [sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter'])]
+          ids_sql_query([c] + @sql_filters, addl_from: [filter_join[table], @addl_from].compact.join("\n"))
+        end + [ids_sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter'])]
 
         conditions.join(') UNION (')
       else
@@ -143,8 +143,15 @@ module Traject
 
         # execute our query
         loop do
-          response = @connection.exec("FETCH FORWARD #{@page_size} IN folio")
-          break if response.entries.empty?
+          cursor_response = @connection.exec("FETCH FORWARD #{@page_size} IN folio")
+          break if cursor_response.entries.empty?
+
+          response = if @updated_after
+                       query = contents_sql_query([cursor_response.map { |row| "vi.id = '#{row['id']}'" }.join(' OR ')])
+                       @connection.exec(query)
+                     else
+                       cursor_response
+                     end
 
           response.each do |row|
             data = JSON.parse(row['jsonb_build_object'])
@@ -191,7 +198,18 @@ module Traject
       Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
     end
 
-    def sql_query(conditions, addl_from: nil)
+    def ids_sql_query(conditions, addl_from: nil)
+      <<-SQL
+      SELECT
+        vi.id
+      FROM sul_mod_inventory_storage.instance vi
+      #{addl_from}
+      WHERE #{conditions.join(' AND ')}
+      GROUP BY vi.id
+      SQL
+    end
+
+    def contents_sql_query(conditions, addl_from: nil)
       <<-SQL
       SELECT
         vi.id,
