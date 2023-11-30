@@ -102,6 +102,30 @@ module Traject
       end
     end
 
+    def course_reserves
+      @course_reserves ||= begin
+        response = @connection.exec <<-SQL
+          SELECT
+              jsonb_build_object(
+              'itemId', cr.jsonb ->> 'itemId',
+              'id', cc.id,
+              'name', cc.jsonb ->> 'name',
+              'locationId', cl.jsonb ->> 'locationId',
+              'courseNumber', cc.jsonb ->> 'courseNumber',
+              'instructorNames', (SELECT jsonb_agg(instructor ->> 'name') FROM jsonb_array_elements(cl.jsonb #> '{instructorObjects}') AS instructor)
+              )
+            FROM sul_mod_courses.coursereserves_reserves cr
+            LEFT JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
+            LEFT JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
+        SQL
+
+        response.map { |row| JSON.parse(row['jsonb']) }.each_with_object({}) do |course, hash|
+          hash[course['itemId']] ||= []
+          hash[course['itemId']] << course
+        end
+      end
+    end
+
     def each
       return to_enum(:each) unless block_given?
 
@@ -133,6 +157,8 @@ module Traject
               }.compact
 
               item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
+
+              item['courses'] = course_reserves[item['id']]
 
               item['courses'].each do |course|
                 course['locationCode'] = locations.dig(course['locationId'], 'code')
@@ -217,24 +243,7 @@ module Traject
                         'status', request.jsonb ->> 'status',
                         'pickupServicePointId', request.jsonb ->> 'pickupServicePointId'
                       )
-                    END,
-                    'courses', COALESCE(
-                      (SELECT
-                        jsonb_agg(
-                          jsonb_build_object(
-                            'id', cc.id,
-                            'name', cc.jsonb ->> 'name',
-                            'locationId', cl.jsonb ->> 'locationId',
-                            'courseNumber', cc.jsonb ->> 'courseNumber',
-                            'instructorNames', (SELECT jsonb_agg(instructor ->> 'name') FROM jsonb_array_elements(cl.jsonb #> '{instructorObjects}') AS instructor)
-                          )
-                        )
-                      FROM sul_mod_courses.coursereserves_reserves cr
-                        LEFT JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
-                        LEFT JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
-                      WHERE (cr.jsonb ->> 'itemId')::uuid = item.id),
-                      '[]'::jsonb
-                    )
+                    END
                   )
                 ) FILTER (WHERE item.id IS NOT NULL),
                 '[]'::jsonb),
