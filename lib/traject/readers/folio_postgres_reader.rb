@@ -113,7 +113,7 @@ module Traject
               'locationId', cl.jsonb ->> 'locationId',
               'courseNumber', cc.jsonb ->> 'courseNumber',
               'instructorNames', (SELECT jsonb_agg(instructor ->> 'name') FROM jsonb_array_elements(cl.jsonb #> '{instructorObjects}') AS instructor)
-              )
+              ) AS jsonb
             FROM sul_mod_courses.coursereserves_reserves cr
             LEFT JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
             LEFT JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
@@ -165,7 +165,7 @@ module Traject
 
               item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
 
-              item['courses'] = course_reserves[item['id']]
+              item['courses'] = course_reserves[item['id']] || []
 
               item['courses'].each do |course|
                 course['locationCode'] = locations.dig(course['locationId'], 'code')
