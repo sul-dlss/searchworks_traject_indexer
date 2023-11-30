@@ -347,8 +347,8 @@ module Traject
           ON parentHolding.instanceid = parentInstance.id
       -- Requests relation
       LEFT JOIN sul_mod_circulation_storage.request request
-          ON (request.jsonb ->> 'itemId')::uuid = item.id
-          AND request.jsonb ->> 'status' = 'Open - Awaiting pickup'
+          ON lower(sul_mod_circulation_storage.f_unaccent(request.jsonb ->> 'itemId'::text)) = lower(sul_mod_circulation_storage.f_unaccent(item.id::text))
+          AND lower(request.jsonb ->> 'status'::text) = lower('Open - Awaiting pickup')
       #{addl_from}
       WHERE #{conditions.join(' AND ')}
       GROUP BY vi.id
