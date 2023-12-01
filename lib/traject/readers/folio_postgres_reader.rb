@@ -5,8 +5,19 @@ require 'time'
 module Traject
   class FolioPostgresReader # rubocop:disable  Metrics/ClassLength
     include Enumerable
-    attr_reader :settings, :last_response_date
+    attr_reader :settings, :cursor_type
 
+    # @param [IO] _input_stream
+    # @param [Traject::Indexer::Settings] settings
+    # @option settings [String] 'postgres.url'
+    # @option settings [String] 'postgres.sql_filters'
+    # @option settings [String] 'postgres.addl_from'
+    # @option settings [String] 'postgres.page_size'
+    # @option settings [String] 'folio.updated_after'
+    # @option settings [String] 'statement_timeout'
+    # @option settings [String] 'cursor_type' ('docs' or 'ids'); use 'ids' to pre-filter the records before constructing
+    #   the full JSON. As of December 2023, this seems to provide better query performance (avoiding some very large temp files)
+    # @option settings [String] 'cursor_base_name' ('folio'); the name of the cursor to use
     def initialize(_input_stream, settings)
       @settings = Traject::Indexer::Settings.new settings
       @connection = @settings['postgres.client'] || PG.connect(@settings['postgres.url'])
@@ -16,6 +27,8 @@ module Traject
 
       @sql_filters = [@settings['postgres.sql_filters']].flatten.compact
       @addl_from = @settings['postgres.addl_from']
+      @cursor_type = @settings.fetch('cursor_type', 'docs')
+      @cursor_base_name = @settings.fetch('cursor_base_name', 'folio')
     end
 
     # Return a single record by catkey by temporarily applying a SQL filter
@@ -23,29 +36,81 @@ module Traject
       new(nil, settings.merge!('postgres.sql_filters' => "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) = '#{catkey.downcase}'")).first
     end
 
+    # @return [String] the SQL query used to retrieve the records from FOLIO; useful for debugging if nothing else.
     def queries
       if @updated_after
-        cr_filter = 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id
-                     LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id
-                     LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item_filter.id'
-        filter_join = {
-          'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
-          'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id',
-          'cr_filter' => cr_filter,
-          'cl_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid",
-          'cc_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid
-                                       LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id",
-          'rs_filter' => 'LEFT JOIN sul_mod_source_record_storage.records_lb rs_filter ON rs_filter.external_id = vi.id'
-        }
-
-        conditions = %w[vi hr_filter item_filter cr_filter cl_filter cc_filter].map do |table|
-          c = "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{@updated_after}'"
-          ids_sql_query([c] + @sql_filters, addl_from: [filter_join[table], @addl_from].compact.join("\n"))
-        end + [ids_sql_query(["rs_filter.updated_date > '#{@updated_after}'"] + @sql_filters, addl_from: filter_join['rs_filter'])]
-
-        conditions.join(') UNION (')
+        delta_query(@updated_after)
       else
         sql_query(@sql_filters, addl_from: @addl_from)
+      end
+    end
+
+    # @yield [FolioRecord] each record from FOLIO
+    def each
+      return to_enum(:each) unless block_given?
+
+      @connection.transaction do
+        setup_query!
+
+        # execute our query
+        loop do
+          response = fetch_next(@page_size)
+          break if response.nil?
+
+          response.each do |row|
+            data = JSON.parse(row['jsonb_build_object'])
+
+            merge_separately_queried_data!(data)
+
+            yield FolioRecord.new(data)
+          end
+        end
+
+        # close the cursor; should happen automatically at the end of the transaction
+        # but just in case we keep the reader around...
+        @connection.exec("CLOSE #{cursor_name}")
+      end
+    end
+
+    def sql_server_current_time
+      Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
+    end
+
+    private
+
+    def cursor_name
+      "#{@cursor_base_name}_#{cursor_type}"
+    end
+
+    # As of December 2023, we found that pulling in this infrequently changed data separate from the main query resulted
+    # in better query performance.
+    def merge_separately_queried_data!(data)
+      data['items'].each do |item|
+        item['location'] = {
+          'effectiveLocation' => locations[item['effectiveLocationId']],
+          'permanentLocation' => locations[item['permanentLocationId']],
+          'temporaryLocation' => locations[item['temporaryLocationId']]
+        }.compact
+
+        item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
+
+        item['courses'] = course_reserves[item['id']] || []
+
+        item['courses'].each do |course|
+          course['locationCode'] = locations.dig(course['locationId'], 'code')
+        end
+      end
+
+      data['holdings'].each do |holding|
+        holding['location'] = {
+          'effectiveLocation' => locations[holding['effectiveLocationId']],
+          'permanentLocation' => locations[holding['permanentLocationId']],
+          'temporaryLocation' => locations[holding['temporaryLocationId']]
+        }.compact
+
+        holding['boundWith']['holding']['location'] = {
+          'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
+        } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
       end
     end
 
@@ -126,76 +191,67 @@ module Traject
       end
     end
 
-    def each
-      return to_enum(:each) unless block_given?
+    def setup_query!
+      # These settings seem to hint postgres to a better query plan
+      @connection.exec('SET join_collapse_limit = 64')
+      @connection.exec('SET from_collapse_limit = 64')
+      @connection.exec("SET statement_timeout = #{@statement_timeout}")
 
-      @connection.transaction do
-        # check postgres's clock time
-        @last_response_date = last_response_date
+      # declare a cursor
+      @connection.exec("DECLARE #{cursor_name} CURSOR FOR #{queries}")
+    end
 
-        # These settings seem to hint postgres to a better query plan
-        @connection.exec('SET join_collapse_limit = 64')
-        @connection.exec('SET from_collapse_limit = 64')
-        @connection.exec("SET statement_timeout = #{@statement_timeout}")
+    def fetch_next(count)
+      cursor_response = @connection.exec("FETCH FORWARD #{count} IN #{cursor_name}")
+      return if cursor_response.entries.empty?
 
-        # declare a cursor
-        @connection.exec("DECLARE folio CURSOR FOR (#{queries})")
-
-        # execute our query
-        loop do
-          cursor_response = @connection.exec("FETCH FORWARD #{@page_size} IN folio")
-          break if cursor_response.entries.empty?
-
-          response = if @updated_after
-                       query = contents_sql_query([cursor_response.map { |row| "vi.id = '#{row['id']}'" }.join(' OR ')])
-                       @connection.exec(query)
-                     else
-                       cursor_response
-                     end
-
-          response.each do |row|
-            data = JSON.parse(row['jsonb_build_object'])
-
-            data['items'].each do |item|
-              item['location'] = {
-                'effectiveLocation' => locations[item['effectiveLocationId']],
-                'permanentLocation' => locations[item['permanentLocationId']],
-                'temporaryLocation' => locations[item['temporaryLocationId']]
-              }.compact
-
-              item['request']['pickupServicePoint'] = service_points[item['request']['pickupServicePointId']] if item['request']
-
-              item['courses'] = course_reserves[item['id']] || []
-
-              item['courses'].each do |course|
-                course['locationCode'] = locations.dig(course['locationId'], 'code')
-              end
-            end
-
-            data['holdings'].each do |holding|
-              holding['location'] = {
-                'effectiveLocation' => locations[holding['effectiveLocationId']],
-                'permanentLocation' => locations[holding['permanentLocationId']],
-                'temporaryLocation' => locations[holding['temporaryLocationId']]
-              }.compact
-
-              holding['boundWith']['holding']['location'] = {
-                'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
-              } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
-            end
-
-            yield FolioRecord.new(data)
-          end
-        end
-
-        # close the cursor; should happen automatically at the end of the transaction
-        # but just in case we keep the reader around...
-        @connection.exec('CLOSE folio')
+      if cursor_by_ids?
+        query = contents_sql_query([cursor_response.map { |row| "vi.id = '#{@connection.escape_string(row['id'])}'" }.join(' OR ')])
+        @connection.exec(query)
+      else
+        cursor_response
       end
     end
 
-    def last_response_date
-      Time.parse(@connection.exec('SELECT NOW()').getvalue(0, 0))
+    def cursor_by_ids?
+      cursor_type == 'ids'
+    end
+
+    def delta_query(date, additional_tables: %w[hr item cr cl cc rs])
+      table_map = {
+        'vi' => 'vi',
+        'hr' => 'hr_filter',
+        'item' => 'item_filter',
+        'cr' => 'cr_filter',
+        'cl' => 'cl_filter',
+        'cc' => 'cc_filter',
+        'rs' => 'rs_filter'
+      }
+      cr_filter = 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id
+                    LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id
+                    LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item_filter.id'
+      filter_join = {
+        'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
+        'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id',
+        'cr_filter' => cr_filter,
+        'cl_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid",
+        'cc_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid
+                                      LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id",
+        'rs_filter' => 'LEFT JOIN sul_mod_source_record_storage.records_lb rs_filter ON rs_filter.external_id = vi.id'
+      }
+
+      method = cursor_by_ids? ? :ids_sql_query : :contents_sql_query
+
+      conditions = (['vi'] + additional_tables.map { |x| table_map[x] }).map do |table|
+        c = if table == 'rs_filter'
+              "#{table}.updated_date > '#{date}'"
+            else
+              "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{date}'"
+            end
+        send(method, [c] + @sql_filters, addl_from: [filter_join[table], @addl_from].compact.join("\n"))
+      end
+
+      "(#{conditions.join(') UNION (')})"
     end
 
     def ids_sql_query(conditions, addl_from: nil)
