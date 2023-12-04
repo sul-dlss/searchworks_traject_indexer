@@ -24,6 +24,9 @@ Style/RedundantConstantBase:  # new in 1.40
   Exclude:
     - 'lib/traject/config/**/*.rb'
 
+Style/RedundantParentheses:
+  Enabled: false
+
 Metrics/ClassLength:
   Exclude:
     - 'lib/folio_holding.rb'
