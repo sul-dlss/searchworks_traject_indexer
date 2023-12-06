@@ -28,6 +28,9 @@ class Traject::FolioKafkaExtractor
 
       producer.produce(JSON.fast_generate(record.as_json), key: record.instance_id, topic:)
     end
+
+    Kafka::Statsd.statsd.count("producer.ruby-kafka.#{topic}.produce.messages", 0, 1) if i.zero?
+
     i
   ensure
     producer.deliver_messages
