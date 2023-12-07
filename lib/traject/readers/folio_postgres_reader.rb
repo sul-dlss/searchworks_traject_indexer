@@ -195,6 +195,15 @@ module Traject
       # These settings seem to hint postgres to a better query plan
       @connection.exec('SET join_collapse_limit = 64')
       @connection.exec('SET from_collapse_limit = 64')
+
+      # Increasing work_mem may reduce temp file usage; the default is 4MB
+      @connection.exec('SET work_mem = \'64MB\'')
+
+      # From the docs: "Smaller values of this setting bias the planner towards
+      #  using “fast start” plans for cursors, which will retrieve the first
+      #  few rows quickly while perhaps taking a long time to fetch all rows"
+      @connection.exec('SET cursor_tuple_fraction = 0.5')
+
       @connection.exec("SET statement_timeout = #{@statement_timeout}")
 
       # declare a cursor
