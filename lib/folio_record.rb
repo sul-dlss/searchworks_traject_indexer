@@ -123,7 +123,7 @@ class FolioRecord
   # Course information for any courses that have this record's items on reserve
   # @return [Array<Hash>] course information
   def courses
-    item_courses = items.flat_map do |item|
+    item_courses = all_items.flat_map do |item|
       item.fetch('courses', []).map do |course|
         {
           course_name: course['name'],
