@@ -41,7 +41,7 @@ module Traject
       if @updated_after
         delta_query(@updated_after)
       else
-        sql_query(@sql_filters, addl_from: @addl_from)
+        contents_sql_query(@sql_filters, addl_from: @addl_from)
       end
     end
 
