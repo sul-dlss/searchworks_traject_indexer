@@ -685,4 +685,23 @@ RSpec.describe FolioRecord do
       end
     end
   end
+
+  describe '#courses' do
+    context 'with a suppressed e-resource' do
+      let(:record) do
+        {
+          'items' => [{
+            'suppressedFromDiscovery' => true,
+            'courses' => [{
+              'name' => 'CHEM 31A'
+            }]
+          }]
+        }
+      end
+
+      it 'returns the course for the suppressed item' do
+        expect(folio_record.courses).to match_array(hash_including(course_name: 'CHEM 31A'))
+      end
+    end
+  end
 end
