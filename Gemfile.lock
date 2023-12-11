@@ -27,7 +27,7 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
-    addressable (2.8.5)
+    addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     airbrussh (1.5.0)
       sshkit (>= 1.6.1, != 1.7.0)
@@ -65,9 +65,9 @@ GEM
       rexml
     crass (1.0.6)
     debouncer (0.2.2)
-    debug (1.8.0)
-      irb (>= 1.5.0)
-      reline (>= 0.3.1)
+    debug (1.9.0)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
@@ -130,7 +130,7 @@ GEM
       rake
     hashdiff (1.0.1)
     hashie (5.0.0)
-    honeybadger (5.3.0)
+    honeybadger (5.4.0)
     http (5.1.1)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
@@ -143,11 +143,11 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
-    irb (1.10.0)
+    irb (1.10.1)
       rdoc
       reline (>= 0.3.8)
     iso-639 (0.3.6)
-    json (2.7.0)
+    json (2.7.1)
     jsonpath (1.1.5)
       multi_json
     language_server-protocol (3.17.0.3)
@@ -170,10 +170,10 @@ GEM
       iso-639
       nokogiri (>= 1.6.6)
       nom-xml (~> 1.0)
-    mods_display (1.4.0)
+    mods_display (1.6.1)
       i18n
       rails_autolink
-      stanford-mods (~> 3.3, >= 3.3.7)
+      stanford-mods (~> 3.3, >= 3.3.9)
       view_component
     multi_json (1.15.0)
     mutex_m (0.2.0)
@@ -225,9 +225,9 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.1.0)
-    rdoc (6.6.0)
+    rdoc (6.6.1)
       psych (>= 4.0.0)
-    regexp_parser (2.8.2)
+    regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
     retriable (3.1.2)
@@ -245,7 +245,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
-    rubocop (1.58.0)
+    rubocop (1.59.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
