@@ -70,5 +70,18 @@ set :indexers, [
       'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-gryphon-search'
     }
+  },
+  {
+    key: 'sw_sul_solr_test_indexer',
+    count: 4,
+    config: './lib/traject/config/folio_config.rb',
+    settings: {
+      'log.file' => 'log/traject_sw_sul_solr_test_indexer.log',
+      'kafka.topic' => 'marc_folio_prod',
+      'kafka.consumer_group_id' => 'traject_sw_sul_solr_test_indexer',
+      'reader_class_name' => 'Traject::KafkaFolioReader',
+      'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
+      'solr.url' => 'https://sul-solr-ubuntu-test.stanford.edu/solr/searchworks-folio-prod-20240111'
+    }
   }
 ]
