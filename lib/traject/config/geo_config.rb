@@ -312,7 +312,8 @@ to_field 'dct_references_s' do |record, accumulator, context|
     if formats.include?('Shapefile')
       references.merge!(
         {
-          'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{geoserver_url(record)}/wfs"
+          'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{geoserver_url(record)}/wfs",
+          'http://www.isotc211.org/schemas/2005/gco/' => "https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/#{record.druid_tree}/iso19110.xml"
         }
       )
     elsif formats.include?('GeoTIFF') || formats.include?('ArcGRID')
