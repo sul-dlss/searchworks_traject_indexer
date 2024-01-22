@@ -402,7 +402,6 @@ to_field 'solr_year_i' do |record, accumulator|
 end
 
 to_field 'dc_source_sm' do |record, accumulator|
-  next unless record.dor_content_type == 'geo'
   next unless record.collections&.any?
 
   record.collections.uniq.each do |collection|

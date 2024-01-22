@@ -64,6 +64,10 @@ describe 'EarthWorks indexing' do
     it 'contains date' do
       expect(result['solr_year_i']).to eq [1603]
     end
+
+    it 'contains a reference to the source collection' do
+      expect(result['dc_source_sm']).to include('stanford-bf420qj4978')
+    end
   end
   context 'image map book content without dc:type' do
     let(:druid) { 'ny179kk3075' }
