@@ -65,6 +65,8 @@ $druid_title_cache = {}
 
 indexer = self
 
+SdrEvents.configure
+
 # rubocop:disable Metrics/BlockLength
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
@@ -97,10 +99,20 @@ settings do
   provide 'solr_json_writer.http_client', (HTTPClient.new.tap { |x| x.receive_timeout = 600 })
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 
-  provide 'mapping_rescue', (lambda do |context, e|
-    Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
+  # On error, log to Honeybadger and report as SDR event if we can tie the error to a druid
+  provide 'mapping_rescue', (lambda do |traject_context, err|
+    context = { record: traject_context.record_inspect, index_step: traject_context.index_step.inspect }
 
-    indexer.send(:default_mapping_rescue).call(context, e)
+    Honeybadger.notify(err, context:)
+
+    begin
+      druid = traject_context.source_record&.druid
+      SdrEvents.report_indexing_errored(druid, message: err.message, context:) if druid
+    rescue StandardError => e
+      Honeybadger.notify(e, context:)
+    end
+
+    indexer.send(:default_mapping_rescue).call(traject_context, err)
   end)
 end
 # rubocop:enable Metrics/BlockLength
@@ -148,26 +160,36 @@ each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
 
-##
 # Skip records that have a delete field
 each_record do |record, context|
-  if record.is_a?(Hash) && record[:delete]
-    context.output_hash['id'] = [record[:id].sub('druid:', '')]
-    context.skip!('Delete')
-  end
+  next unless record.is_a?(Hash) && record[:delete]
+
+  druid = record[:id].sub('druid:', '')
+  context.output_hash['id'] = [druid]
+  SdrEvents.report_indexing_deleted(druid)
+  context.skip!("Delete: #{druid}")
+end
+
+# Skip records with no public XML
+each_record do |record, context|
+  next if record.public_xml?
+
+  message = 'Item is in processing or does not exist'
+  SdrEvents.report_indexing_skipped(record.druid, message:)
+  context.skip!("#{message}: #{context.output_hash['id']}")
+end
+
+# Skip records with content types that we can't index
+each_record do |record, context|
+  next if %w[image map book geo file].include?(record.dor_content_type) || record.collection?
+
+  message = "Item content type \"#{record.dor_content_type}\" is not supported"
+  SdrEvents.report_indexing_skipped(record.druid, message:)
+  context.skip!("#{message}: #{context.output_hash['id']}")
 end
 
 to_field 'dc_identifier_s' do |record, accumulator|
   accumulator << "#{settings['purl.url']}/#{record.druid}"
-end
-
-each_record do |record, context|
-  context.skip!('This item is in processing or does not exist') unless record.public_xml?
-  next if %w[image map book geo file].include?(record.dor_content_type) || record.collection?
-
-  context.skip!(
-    "This content type: #{record.dor_content_type} is not supported"
-  )
 end
 
 to_field 'dc_title_s', stanford_mods(:sw_short_title, default: '[Untitled]')
@@ -426,23 +448,24 @@ each_record do |_record, context|
   end
 end
 
-each_record do |_record, context|
+each_record do |record, context|
   # Make sure that this field is single valued. GeoBlacklight at the moment only
   # supports single valued srpt
   if context.output_hash['solr_geom'].present?
     context.output_hash['solr_geom'] = context.output_hash['solr_geom'].first
   else
-    context.skip!(
-      "No ENVELOPE available for #{context.output_hash['id']}"
-    )
+    message = 'No ENVELOPE available for item'
+    SdrEvents.report_indexing_skipped(record.druid, message:)
+    context.skip!("#{message}: #{context.output_hash['id']}")
   end
 end
 
-each_record do |_record, context|
+each_record do |record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
   logger.debug('geo_config.rb') { "Processed #{context.output_hash['id']} (#{t1 - t0}s)" }
+  SdrEvents.report_indexing_success(record.druid)
 end
 
 # rubocop:disable Metrics/MethodLength

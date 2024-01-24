@@ -31,6 +31,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     airbrussh (1.5.1)
       sshkit (>= 1.6.1, != 1.7.0)
+    amq-protocol (2.3.2)
     ast (2.4.2)
     base64 (0.2.0)
     bigdecimal (3.1.6)
@@ -38,6 +39,9 @@ GEM
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
+    bunny (2.22.0)
+      amq-protocol (~> 2.3, >= 2.3.1)
+      sorted_set (~> 1, >= 1.0.2)
     capistrano (3.18.0)
       airbrussh (>= 1.0.0)
       i18n
@@ -81,6 +85,10 @@ GEM
       capistrano-shared_configs
     docile (1.4.0)
     domain_name (0.6.20240107)
+    dor-event-client (1.0.0)
+      activesupport (>= 4.2, < 8)
+      bunny (~> 2.17)
+      zeitwerk (~> 2.1)
     dor-rights-auth (1.8.0)
       nokogiri
     dot-properties (0.1.4)
@@ -228,6 +236,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.1.0)
+    rbtree (0.4.6)
     rdoc (6.6.2)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
@@ -266,6 +275,7 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     scrub_rb (1.0.1)
+    set (1.1.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -273,6 +283,9 @@ GEM
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
     slop (4.10.1)
+    sorted_set (1.0.3)
+      rbtree
+      set (~> 1.0)
     sshkit (1.22.0)
       mutex_m
       net-scp (>= 1.1.2)
@@ -336,6 +349,7 @@ DEPENDENCIES
   debouncer
   debug
   dlss-capistrano
+  dor-event-client
   dor-rights-auth
   factory_bot (~> 6.2)
   honeybadger

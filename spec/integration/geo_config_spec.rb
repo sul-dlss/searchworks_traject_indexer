@@ -4,7 +4,8 @@ require 'spec_helper'
 
 describe 'EarthWorks indexing' do
   let(:druid) { 'dc482zx1528' }
-  subject(:result) { indexer.map_record(PublicXmlRecord.new(druid, purl_url: 'https://purl.stanford.edu')) }
+  let(:record) { PublicXmlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
+  subject(:result) { indexer.map_record(record) }
 
   def stub_purl_request(druid, body)
     without_partial_double_verification do
@@ -281,6 +282,93 @@ describe 'EarthWorks indexing' do
 
     it 'builds a solr_geom from coordinate parsing' do
       expect(result['layer_geom_type_s']).to eq ['Line']
+    end
+  end
+
+  describe 'SDR events' do
+    before do
+      allow(Settings.sdr_events).to receive(:enabled).and_return(true)
+      allow(SdrEvents).to receive_messages(
+        report_indexing_success: true,
+        report_indexing_deleted: true,
+        report_indexing_skipped: true,
+        report_indexing_errored: true
+      )
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    end
+
+    context 'when indexing is successful' do
+      it 'creates an indexing success event' do
+        expect(result).to be_a Hash
+        expect(SdrEvents).to have_received(:report_indexing_success).with(druid)
+      end
+    end
+
+    context 'when the item was deleted' do
+      let(:record) { { id: "druid:#{druid}", delete: true } }
+
+      it 'creates an indexing delete event' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_deleted).with(druid)
+      end
+    end
+
+    context 'when the item has no public XML' do
+      before { stub_purl_request(druid, nil) }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'Item is in processing or does not exist')
+      end
+    end
+
+    context 'when the item has an unsupported content type' do
+      before { allow(record).to receive(:dor_content_type).and_return('document') }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'Item content type "document" is not supported')
+      end
+    end
+
+    context 'when the item has no bounding box' do
+      before do
+        record_xml = Nokogiri::XML(File.read(file_fixture("#{druid}.xml").to_s))
+        record_xml.xpath(
+          '//rdf:RDF/rdf:Description/gml:boundedBy/gml:Envelope',
+          'gml' => 'http://www.opengis.net/gml/3.2/',
+          'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+        ).remove
+        stub_purl_request(druid, record_xml.to_xml)
+      end
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'No ENVELOPE available for item')
+      end
+    end
+
+    context 'when indexing raised an error' do
+      before do
+        allow(Honeybadger).to receive(:notify)
+        allow(record).to receive(:rights_xml).and_raise('Error message')
+      end
+
+      it 'creates an indexing error event with message and context' do
+        expect { result }.to raise_error('Error message')
+        expect(SdrEvents).to have_received(:report_indexing_errored)
+          .with(
+            druid,
+            message: 'Error message',
+            context: a_hash_including(
+              index_step: an_instance_of(String),
+              record: an_instance_of(String)
+            )
+          )
+      end
     end
   end
 end
