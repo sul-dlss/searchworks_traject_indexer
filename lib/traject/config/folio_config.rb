@@ -2514,6 +2514,11 @@ to_field 'crez_course_id_search' do |record, _accumulator, context|
   context.output_hash['crez_course_id_search'] = record.courses.map { |course| course[:course_id] }.compact.sort.uniq
 end
 
+# This allows SW to match the folio coursereserves data with the Solr record
+to_field 'courses_folio_id_ssim' do |record, _accumulator, context|
+  context.output_hash['courses_folio_id_ssim'] = record.courses.map { |course| course[:folio_course_id] }
+end
+
 # TODO: included for parity; refactor SW to use courses_json_struct instead
 to_field 'crez_course_info' do |record, _accumulator, context|
   context.output_hash['crez_course_info'] = record.courses.flat_map do |course|
