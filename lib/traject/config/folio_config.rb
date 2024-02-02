@@ -368,6 +368,25 @@ to_field 'vern_series_search',
          extract_marc("440anpv:490av:800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: :only)
 to_field 'series_exact_search', extract_marc('830a', alternate_script: false)
 
+to_field 'author_title_245ac_search', extract_marc('245ac', alternate_script: false)
+to_field 'vern_author_title_245ac_search', extract_marc('245ac', alternate_script: :only)
+
+to_field 'author_title_1xx_search' do |record, accumulator|
+  onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcq:110abn:111aeq', alternate_script: false).extract(record).first)
+  twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: false).extract(record).first)
+  twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: false).extract(record).first
+
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
+end
+
+to_field 'vern_author_title_1xx_search' do |record, accumulator|
+  onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcq:110abn:111aeq', alternate_script: :only).extract(record).first)
+  twoxx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first)
+  twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
+
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
+end
+
 # # Author Title Search Fields
 to_field 'author_title_search' do |record, accumulator|
   onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached(
@@ -380,7 +399,7 @@ to_field 'author_title_search' do |record, accumulator|
   twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: false).extract(record).first if record['245']
   twoxx ||= 'null'
 
-  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
 to_field 'author_title_search' do |record, accumulator|
@@ -389,7 +408,6 @@ to_field 'author_title_search' do |record, accumulator|
   ).extract(record).first
 
   twoxx = Traject::MarcExtractor.cached('240' + ALPHABET, alternate_script: :only).extract(record).first
-  twoxx ||= Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
@@ -411,6 +429,21 @@ to_field 'author_title_search' do |record, accumulator|
   Traject::MarcExtractor.cached('800abcdfghijklmnopqrstuyz:810abcdfghijklmnopqrstuyz:811abcdfghijklmnopqrstuyz').collect_matching_lines(record) do |field, spec, extractor|
     accumulator.concat extractor.collect_subfields(field, spec) if field['t']
   end
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  onexx = trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz',
+                                                                                                                  alternate_script: false).extract(record).first)
+
+  twoxx = Traject::MarcExtractor.cached('245aa', alternate_script: false).extract(record).first if record['245']
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
+end
+
+to_field 'author_title_search' do |record, accumulator|
+  onexx = Traject::MarcExtractor.cached('100abcdfghijklmnopqrstuvwxyz:110abcdfghijklmnopqrstuvwxyz:111abcdefghjklmnopqrstuvwxyz', alternate_script: :only).extract(record).first
+
+  twoxx = Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
+  accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
 # # Author Search Fields
@@ -2573,6 +2606,55 @@ to_field 'context_marc_fields_ssim' do |record, accumulator|
       ['?', field.tag, code].flatten.join
     end
   end.flatten.uniq)
+end
+
+to_field 'bib_search' do |record, accumulator, context|
+  # authors, titles, series, publisher
+  keep_fields = %w[
+    100 110 111 130 210 222 242 243 245 246 247 260 264 440 490 700 710 711 800 810 811
+  ]
+
+  result = []
+  record.each do |field|
+    next unless keep_fields.include?(field.tag)
+
+    subfield_values = field.subfields
+                           .reject { |sf| Constants::EXCLUDE_FIELDS.include?(sf.code) }
+                           .collect(&:value)
+
+    next unless subfield_values.length > 0
+
+    result << subfield_values.join(' ')
+  end
+
+  result += Array(context.output_hash['format_main_ssim'])
+
+  accumulator << result.join(' ') if result.any?
+end
+
+to_field 'vern_bib_search' do |record, accumulator|
+  # authors, titles, series, publisher
+  keep_fields = %w[
+    100 110 111 130 210 222 242 243 245 246 247 260 264 440 490 700 710 711 800 810 811
+  ]
+
+  result = []
+  record.each do |field|
+    next unless field.tag == '880'
+    next if field['6'].nil? ||
+            !field['6'].include?('-') ||
+            !keep_fields.include?(field['6'].split('-')[0])
+
+    subfield_values = field.subfields
+                           .reject { |sf| Constants::EXCLUDE_FIELDS.include?(sf.code) }
+                           .collect(&:value)
+
+    next unless subfield_values.length > 0
+
+    result << subfield_values.join(' ')
+  end
+
+  accumulator << result.join(' ') if result.any?
 end
 
 ## FOLIO specific fields
