@@ -206,6 +206,16 @@ describe 'EarthWorks indexing' do
     end
   end
 
+  context 'when the item was deleted' do
+    subject(:context) { indexer.process_record(record) }
+
+    let(:record) { { id: "druid:#{druid}", delete: true } }
+
+    it 'sets the id in the output to match the layer unique key in solr' do
+      expect(context.output_hash['id']).to eq ['stanford-dc482zx1528']
+    end
+  end
+
   context 'when no envelope is present' do
     let(:druid) { 'bk264hq9320' }
 
