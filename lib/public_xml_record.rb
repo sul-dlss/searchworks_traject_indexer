@@ -20,6 +20,8 @@ class PublicXmlRecord
   end
 
   def searchworks_id
+    return nil unless collection_in_searchworks?
+
     catkey.nil? ? druid : catkey
   end
 
@@ -31,7 +33,19 @@ class PublicXmlRecord
 
   # @return objectLabel value from the DOR identity_metadata, or nil if there is no barcode
   def label
+    return nil unless collection_in_searchworks?
+
     get_value(public_xml_doc.xpath('/publicObject/identityMetadata/objectLabel'))
+  end
+
+  def collection_in_searchworks?
+    return true unless collection?
+
+    if public_xml_doc.xpath('/publicObject/releaseData').present?
+      get_value(public_xml_doc.xpath('/publicObject/releaseData/release[@to="Searchworks"]')) == 'true'
+    else
+      false
+    end
   end
 
   def get_value(node)

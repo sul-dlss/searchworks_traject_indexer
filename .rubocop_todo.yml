@@ -123,7 +123,7 @@ Metrics/BlockNesting:
 # Offense count: 3
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 127
+  Max: 140
 
 # Offense count: 25
 # Configuration parameters: AllowedMethods, AllowedPatterns.
