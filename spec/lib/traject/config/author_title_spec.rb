@@ -16,9 +16,18 @@ RSpec.describe 'Author-title config' do
   # rubocop:disable Layout/LineLength
   describe 'maps search field values from 100, 110, 111 with data from the 240 or 245' do
     it 'maps the right data' do
-      expect(select_by_id('100240')[field]).to eq ['100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
-      expect(select_by_id('110240')[field]).to eq ['110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
-      expect(select_by_id('111240')[field]).to eq ['111a 111c 111d 111e 111f 111g 111j 111k 111l 111n 111p 111q 111t 111u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
+      expect(select_by_id('100240')[field]).to eq [
+        '100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s',
+        '100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 100 all subfields + 240 all subfields'
+      ]
+      expect(select_by_id('110240')[field]).to eq [
+        '110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s',
+        '110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 110 all subfields + 240 all subfields'
+      ]
+      expect(select_by_id('111240')[field]).to eq [
+        '111a 111c 111d 111e 111f 111g 111j 111k 111l 111n 111p 111q 111t 111u 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s',
+        '111a 111c 111d 111e 111f 111g 111j 111k 111l 111n 111p 111q 111t 111u 111 all subfields + 240 all subfields'
+      ]
 
       expect(select_by_id('100no240')[field]).to eq ['100a 100b 100c 100d 100f 100g 100j 100k 100l 100n 100p 100q 100t 100u 245a']
       expect(select_by_id('110no240')[field]).to eq ['110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 245a']
@@ -62,7 +71,7 @@ RSpec.describe 'Author-title config' do
 
     it 'does something with a minimal 100 field to link to 880' do
       expect(select_by_id('vern100no240')[field]).to eq ['100a 245a']
-      expect(select_by_id('vern100plain240')[field]).to eq ['100a 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s']
+      expect(select_by_id('vern100plain240')[field]).to eq ['100a 240a 240d 240f 240g 240h 240k 240l 240m 240n 240o 240p 240r 240s', '100a 245a']
 
       expect(select_by_id('vern110vern240')[field]).to include 'vern110a vern110b vern110c vern110d vern110f vern110g vern110k vern110l vern110n vern110p vern110t vern110u vern240a vern240d vern240f vern240g vern240h vern240k vern240l vern240m vern240n vern240o vern240p vern240r vern240s'
       expect(select_by_id('vern110vern245')[field]).to include 'vern110a vern110b vern110c vern110d vern110f vern110g vern110k vern110l vern110n vern110p vern110t vern110u vern245a'

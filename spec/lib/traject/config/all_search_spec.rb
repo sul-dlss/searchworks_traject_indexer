@@ -37,4 +37,12 @@ RSpec.describe 'All_search config' do
       # all_search should include 033a
     end
   end
+  describe 'bib_search' do
+    let(:field) { 'bib_search' }
+    it do
+      expect(select_by_id('allfields1')[field]).to include(/Dharma Kumar/)
+      expect(select_by_id('allfields1')[field]).to include(/allfields should skip 00x/)
+      expect(select_by_id('allfields1')[field]).to include(%r{Journal/Periodical})
+    end
+  end
 end
