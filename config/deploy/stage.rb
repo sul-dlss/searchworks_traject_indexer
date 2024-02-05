@@ -14,7 +14,6 @@ set :indexers, [
       'kafka.topic' => 'purl_fetcher_stage',
       'kafka.consumer_group_id' => 'traject_sdr_preview_stage',
       'purl.url' => 'https://sul-purl-test.stanford.edu',
-      'purl_fetcher.target' => 'SearchWorksPreview',
       'purl_fetcher.skip_catkey' => false,
       'solr.url' => 'http://sul-solr.stanford.edu/solr/sw-preview-stage'
     }
