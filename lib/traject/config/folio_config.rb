@@ -284,7 +284,8 @@ to_field 'title_uniform_display', extract_marc(%w[130 240].map do |c|
   "#{c}#{ALPHABET}"
 end.join(':'), first: true, alternate_script: false)
 # # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
-# TODO: Remove looks like SearchWorks is not using, confirm relevancy changes
+
+# Used by SearchWorks for "Uniform Title" on the show page. See https://searchworks.stanford.edu/view/13553090
 to_field 'vern_title_uniform_display', extract_marc(%w[130 240].map do |c|
   "#{c}#{ALPHABET}"
 end.join(':'), first: true, alternate_script: :only)
