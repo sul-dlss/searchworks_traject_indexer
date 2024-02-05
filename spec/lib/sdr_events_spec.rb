@@ -12,7 +12,7 @@ RSpec.describe SdrEvents do
 
   describe '#report_indexing_success' do
     it 'creates an event' do
-      SdrEvents.report_indexing_success(druid)
+      described_class.report_indexing_success(druid)
       expect(Dor::Event::Client).to have_received(:create).with(
         druid: "druid:#{druid}",
         type: 'indexing_success',
@@ -23,7 +23,7 @@ RSpec.describe SdrEvents do
 
   describe '#report_indexing_deleted' do
     it 'creates an event' do
-      SdrEvents.report_indexing_deleted(druid)
+      described_class.report_indexing_deleted(druid)
       expect(Dor::Event::Client).to have_received(:create).with(
         druid: "druid:#{druid}",
         type: 'indexing_deleted',
@@ -34,7 +34,7 @@ RSpec.describe SdrEvents do
 
   describe '#report_indexing_skipped' do
     it 'creates an event with message' do
-      SdrEvents.report_indexing_skipped(druid, message: 'Problem with metadata')
+      described_class.report_indexing_skipped(druid, message: 'Problem with metadata')
       expect(Dor::Event::Client).to have_received(:create).with(
         druid: "druid:#{druid}",
         type: 'indexing_skipped',
@@ -45,7 +45,7 @@ RSpec.describe SdrEvents do
 
   describe '#report_indexing_errored' do
     it 'creates an event with message and context' do
-      SdrEvents.report_indexing_errored(druid, message: 'Indexing errored', context: 'stack trace')
+      described_class.report_indexing_errored(druid, message: 'Indexing errored', context: 'stack trace')
       expect(Dor::Event::Client).to have_received(:create).with(
         druid: "druid:#{druid}",
         type: 'indexing_errored',
