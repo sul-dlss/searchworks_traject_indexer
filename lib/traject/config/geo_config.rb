@@ -165,7 +165,11 @@ each_record do |record, context|
   next unless record.is_a?(Hash) && record[:delete]
 
   druid = record[:id].sub('druid:', '')
-  context.output_hash['id'] = [druid]
+
+  # This id must be the same value as layer_slug_s, which is the key used to
+  # delete records form the index
+  context.output_hash['id'] = ["stanford-#{druid}"]
+
   SdrEvents.report_indexing_deleted(druid)
   context.skip!("Delete: #{druid}")
 end
@@ -176,7 +180,7 @@ each_record do |record, context|
 
   message = 'Item is in processing or does not exist'
   SdrEvents.report_indexing_skipped(record.druid, message:)
-  context.skip!("#{message}: #{context.output_hash['id']}")
+  context.skip!("#{message}: #{record.druid}")
 end
 
 # Skip records with content types that we can't index
@@ -185,7 +189,7 @@ each_record do |record, context|
 
   message = "Item content type \"#{record.dor_content_type}\" is not supported"
   SdrEvents.report_indexing_skipped(record.druid, message:)
-  context.skip!("#{message}: #{context.output_hash['id']}")
+  context.skip!("#{message}: #{record.druid}")
 end
 
 to_field 'dc_identifier_s' do |record, accumulator|
