@@ -280,15 +280,6 @@ to_field 'vern_title_display',
 end
 to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: false)
 to_field 'vern_title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :only)
-to_field 'title_uniform_display', extract_marc(%w[130 240].map do |c|
-  "#{c}#{ALPHABET}"
-end.join(':'), first: true, alternate_script: false)
-# # ? no longer will use title_uniform_display due to author-title searching needs ? 2010-11
-
-# Used by SearchWorks for "Uniform Title" on the show page. See https://searchworks.stanford.edu/view/13553090
-to_field 'vern_title_uniform_display', extract_marc(%w[130 240].map do |c|
-  "#{c}#{ALPHABET}"
-end.join(':'), first: true, alternate_script: :only)
 # # Title Sort Field
 to_field 'title_sort' do |record, accumulator|
   result = []
