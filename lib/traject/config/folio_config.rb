@@ -2619,12 +2619,13 @@ to_field 'bib_search' do |record, accumulator, context|
     result << subfield_values.join(' ')
   end
 
+  result += Array(context.output_hash['topic_search'])
   result += Array(context.output_hash['format_main_ssim'])
 
   accumulator << result.join(' ') if result.any?
 end
 
-to_field 'vern_bib_search' do |record, accumulator|
+to_field 'vern_bib_search' do |record, accumulator, context|
   # authors, titles, series, publisher
   keep_fields = %w[
     100 110 111 130 210 222 242 243 245 246 247 260 264 440 490 700 710 711 800 810 811
@@ -2645,6 +2646,9 @@ to_field 'vern_bib_search' do |record, accumulator|
 
     result << subfield_values.join(' ')
   end
+
+  result += Array(context.output_hash['vern_topic_search'])
+  result += Array(context.output_hash['format_main_ssim'])
 
   accumulator << result.join(' ') if result.any?
 end
