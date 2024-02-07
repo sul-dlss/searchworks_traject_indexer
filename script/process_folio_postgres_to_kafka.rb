@@ -29,6 +29,7 @@ opts = Slop.parse do |o|
   o.separator ''
   o.separator 'Reading IDs from a file'
   o.string '--ids-file', 'A file containing a list of IDs to process', default: nil
+  o.string '--catkeys-file', 'A file containing a list of hrids to process', default: nil
   o.int '--chunk-size', 'Number of IDs to process per query', default: 100
 end
 
@@ -66,6 +67,12 @@ File.open(state_file, 'r+') do |f|
                # FOLIO's native identifier exports are quoted, so we should to strip the quotes :shrug:
                ids = slice.map { |x| x.strip.delete_prefix('"').delete_suffix('"') }.map { |x| "'#{PG::Connection.escape_string(x)}'::uuid" }.join(', ')
                "vi.id IN (#{ids})"
+             end
+           elsif opts[:catkeys_file]
+             File.open(opts[:catkeys_file]).each_line.each_slice(opts[:chunk_size]).lazy.map do |slice|
+               # FOLIO's native identifier exports are quoted, so we should to strip the quotes :shrug:
+               ids = slice.map { |x| x.strip.delete_prefix('"').delete_suffix('"') }.map { |x| "'#{PG::Connection.escape_string((x.match?(/^\d+$/) ? "a#{x}" : x).downcase)}'" }.join(', ')
+               "lower(sul_mod_inventory_storage.f_unaccent(vi.jsonb ->> 'hrid'::text)) IN (#{ids})"
              end
            elsif processes.to_i > 1
              step = Utils.env_config.step_size || 0x0100
