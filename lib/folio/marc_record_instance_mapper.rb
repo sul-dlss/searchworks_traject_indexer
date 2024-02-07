@@ -68,10 +68,10 @@ module Folio
           marc.append(MARC::DataField.new('500', '0', '', ['a', note['note']]))
         end
         instance['series'].each do |series|
-          marc.append(MARC::DataField.new('490', '0', '', ['a', series]))
+          marc.append(MARC::DataField.new('490', '0', '', ['a', folio_value(series)]))
         end
         instance['subjects'].each do |subject|
-          marc.append(MARC::DataField.new('653', '', '', ['a', subject]))
+          marc.append(MARC::DataField.new('653', '', '', ['a', folio_value(subject)]))
         end
 
         # 856 stuff
@@ -130,5 +130,12 @@ module Folio
       end.to_hash
     end
     # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+
+    # The FOLIO data can either be a plain string (pre-Poppy) or a hash (post-Poppy)
+    def self.folio_value(folio_data)
+      return folio_data['value'] if folio_data.is_a?(Hash)
+
+      folio_data
+    end
   end
 end
