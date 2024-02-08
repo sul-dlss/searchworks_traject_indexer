@@ -6,12 +6,14 @@ module Traject
   #  bin/console
   #  record = Traject::FolioPostgresReader.find_by_catkey('a14238203', 'postgres.url' => ENV['DATABASE_URL']
   #  File.write("a14238203.json", JSON.pretty_generate(record.as_json))
-  class FolioJsonReader < TrajectPlus::JsonReader
+  class FolioJsonReader < Traject::NDJReader
     def each(&)
-      return to_enum(:each) unless block_given?
+      return enum_for(:each) unless block_given?
 
-      super do |record|
-        yield FolioRecord.new(record, nil)
+      @input_stream.each_with_index do |json, i|
+        yield FolioRecord.new(JSON.parse(json), nil)
+      rescue StandardError => e
+        logger.error("Problem with JSON record on line #{i}: #{e.message}")
       end
     end
   end
