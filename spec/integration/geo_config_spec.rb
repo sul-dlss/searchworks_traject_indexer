@@ -269,6 +269,14 @@ describe 'EarthWorks indexing' do
     end
   end
 
+  describe 'geoJSON objects' do
+    let(:druid) { 'jk681br3989' }
+
+    it 'includes the WFS url in the references' do
+      expect(JSON.parse(result['dct_references_s'].first)).to include 'http://www.opengis.net/def/serviceType/ogc/wfs' => 'https://geowebservices.stanford.edu/geoserver/wfs'
+    end
+  end
+
   describe 'coordinate envelopes' do
     let(:druid) { 'qy240vt8937' }
 

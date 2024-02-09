@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:jk681br3989" published="2024-02-06T23:57:23Z" publishVersion="cocina-models/0.95.0">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>Clowns of America, International Membership Point GeoJSON (anonymized)</objectLabel>
+    <sourceId source="sul">gis-integration-test:hoopoe-yzqmkn</sourceId>
+  </identityMetadata>
+  <contentMetadata objectId="druid:jk681br3989" type="geo">
+    <resource id="cocina-fileSet-jk681br3989-jk681br3989_1" sequence="1" type="object">
+      <label>Data</label>
+      <file id="data.zip" mimetype="application/zip" size="467459" publish="yes" shelve="yes" preserve="yes" role="master">
+        <checksum type="sha1">05f6541c63011a4393a115431657dcbde6a1cdde</checksum>
+        <checksum type="md5">1f332db07b58e5a94274fcb322255c43</checksum>
+      </file>
+      <file id="data_EPSG_4326.zip" mimetype="application/zip" size="293560" publish="yes" shelve="yes" preserve="no" role="derivative">
+        <checksum type="sha1">45850f75f832d6c76faf108d8e10295e0d4c9717</checksum>
+        <checksum type="md5">8e7aaa51685cfceb5fa7d9b3bd04c2d4</checksum>
+      </file>
+    </resource>
+    <resource id="cocina-fileSet-jk681br3989-jk681br3989_2" sequence="2" type="preview">
+      <label>Preview</label>
+      <file id="preview.jpg" mimetype="image/jpeg" size="26314" publish="yes" shelve="yes" preserve="yes" role="master">
+        <checksum type="sha1">ae5a8426ffeb2f19dbc0ac1c4b15fbb7c4c5a23b</checksum>
+        <checksum type="md5">471d3c592c9199d41b57c09edaa9fef1</checksum>
+        <imageData height="430" width="338"/>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:jk681br3989">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:jn518bx4248"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Clowns of America, International Membership Point GeoJSON (anonymized)</dc:title>
+    <dc:creator>Maples, Stacey D.</dc:creator>
+    <dc:type>Geospatial data</dc:type>
+    <dc:type>cartographic dataset</dc:type>
+    <dc:format>GeoJSON</dc:format>
+    <dc:language>eng</dc:language>
+    <dc:description displayLabel="Abstract">This point GeoJSON was created from the Clowns of America International Membership Database (anonymized) obtained in 2007 from Clowns of America, International, for use in teaching. It was created by geocoding the ZipCode field of the original table, using OpenRefine and the Geonames.org PostalCodes API. Attributes include those from the original data table ("City", "ZipCode", "Clown_Name", and "Country"), as well attributes added during the geocoding process ("admname1","adm1","adm2","placname","longitude","latitude") and an attribute "Clown-Na_1" which represents the values in the "Clown_Name" attribute field after a "Cluster and Edit" operation, performed in OpenRefine to collapse values so that "Co Co" or "Co-Co" both are clustered and edited to become "CoCo" for use in name frequency analysis. This layer is intended to be used for teaching and instruction at Stanford"s Geospatial Center. </dc:description>
+    <dc:description displayLabel="WGS84 Cartographics">This layer is presented in the WGS84 coordinate system for web display purposes. Downloadable data are provided in native coordinate system or projection.</dc:description>
+    <dc:subject>Clowns</dc:subject>
+    <dc:subject/>
+    <dc:coverage>United States</dc:coverage>
+    <dc:subject/>
+    <dc:coverage>2007</dc:coverage>
+    <dc:subject>Location</dc:subject>
+    <dc:subject/>
+    <dc:coverage>Scale not given.</dc:coverage>
+    <dc:coverage>Custom projection</dc:coverage>
+    <dc:coverage>W 158°1ʹ3ʺ--W 65°35ʹ41ʺ/N 64°51ʹ16ʺ--N 18°7ʺ</dc:coverage>
+    <dc:subject/>
+    <dc:coverage>EPSG::4326</dc:coverage>
+    <dc:date>2007</dc:date>
+    <dc:identifier>https://purl.stanford.edu/jk681br3989</dc:identifier>
+    <dc:rights>User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.</dc:rights>
+    <dc:relation type="url" href="https://purl.stanford.edu/vx812cc5548"/>
+    <dc:relation type="collection">Integration Test Collection - GIS</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo>
+      <title>Clowns of America, International Membership Point GeoJSON (anonymized)</title>
+    </titleInfo>
+    <name type="personal">
+      <namePart>Maples, Stacey D.</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">creator</roleTerm>
+      </role>
+    </name>
+    <genre valueURI="http://id.loc.gov/authorities/genreForms/gf2011026297" authority="lcgft">Geospatial data</genre>
+    <genre valueURI="http://rdvocab.info/termList/RDAContentType/1001" authority="rdacontent">cartographic dataset</genre>
+    <typeOfResource>cartographic</typeOfResource>
+    <typeOfResource>software, multimedia</typeOfResource>
+    <physicalDescription>
+      <form>GeoJSON</form>
+      <digitalOrigin>born digital</digitalOrigin>
+    </physicalDescription>
+    <language>
+      <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <abstract lang="eng" displayLabel="Abstract">This point GeoJSON was created from the Clowns of America International Membership Database (anonymized) obtained in 2007 from Clowns of America, International, for use in teaching. It was created by geocoding the ZipCode field of the original table, using OpenRefine and the Geonames.org PostalCodes API. Attributes include those from the original data table ("City", "ZipCode", "Clown_Name", and "Country"), as well attributes added during the geocoding process ("admname1","adm1","adm2","placname","longitude","latitude") and an attribute "Clown-Na_1" which represents the values in the "Clown_Name" attribute field after a "Cluster and Edit" operation, performed in OpenRefine to collapse values so that "Co Co" or "Co-Co" both are clustered and edited to become "CoCo" for use in name frequency analysis. This layer is intended to be used for teaching and instruction at Stanford"s Geospatial Center. </abstract>
+    <note displayLabel="WGS84 Cartographics">This layer is presented in the WGS84 coordinate system for web display purposes. Downloadable data are provided in native coordinate system or projection.</note>
+    <subject authority="lcsh" lang="eng">
+      <topic authority="lcsh" authorityURI="http://id.loc.gov/authorities/subjects.html">Clowns</topic>
+    </subject>
+    <subject authority="geonames" lang="eng">
+      <geographic authority="geonames" authorityURI="http://www.geonames.org/ontology#" valueURI="http://sws.geonames.org/6252001/">United States</geographic>
+    </subject>
+    <subject>
+      <temporal encoding="w3cdtf">2007</temporal>
+    </subject>
+    <subject authority="ISO19115TopicCategory">
+      <topic authority="ISO19115TopicCategory" authorityURI="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode" valueURI="location">Location</topic>
+    </subject>
+    <subject>
+      <cartographics>
+        <scale>Scale not given.</scale>
+        <projection>Custom projection</projection>
+        <coordinates>W 158°1ʹ3ʺ--W 65°35ʹ41ʺ/N 64°51ʹ16ʺ--N 18°7ʺ</coordinates>
+      </cartographics>
+    </subject>
+    <subject displayLabel="WGS84" authority="EPSG" valueURI="http://opengis.net/def/crs/EPSG/0/4326">
+      <cartographics>
+        <projection>EPSG::4326</projection>
+      </cartographics>
+    </subject>
+    <originInfo>
+      <dateIssued encoding="w3cdtf" keyDate="yes">2007</dateIssued>
+      <place>
+        <placeTerm type="text">US</placeTerm>
+      </place>
+    </originInfo>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/jk681br3989</url>
+    </location>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource>Stanford</recordContentSource>
+      <recordOrigin>This record was translated from ISO 19139 to MODS v.3 using an xsl transformation.</recordOrigin>
+      <recordIdentifier>edu.stanford.purl:vx812cc5548</recordIdentifier>
+    </recordInfo>
+    <relatedItem>
+      <location>
+        <url usage="primary display">https://purl.stanford.edu/vx812cc5548</url>
+      </location>
+    </relatedItem>
+    <extension displayLabel="geo">
+      <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <rdf:Description rdf:about="http://purl.stanford.edu/jk681br3989">
+          <dc:format>application/geo+json; format=GeoJSON</dc:format>
+          <dc:type>Dataset#Point</dc:type>
+          <gml:boundedBy>
+            <gml:Envelope gml:srsName="EPSG:4326">
+              <gml:lowerCorner>-158.017379 18.001995</gml:lowerCorner>
+              <gml:upperCorner>-65.594769 64.85437</gml:upperCorner>
+            </gml:Envelope>
+          </gml:boundedBy>
+          <dc:coverage rdf:resource="http://sws.geonames.org/6252001/" dc:language="eng" dc:title="United States"/>
+        </rdf:Description>
+      </rdf:RDF>
+    </extension>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Integration Test Collection - GIS</title>
+      </titleInfo>
+      <location>
+        <url>https://sul-purl-stage.stanford.edu/jn518bx4248</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+  </mods>
+  <releaseData>
+    <release to="Earthworks">true</release>
+  </releaseData>
+</publicObject>
