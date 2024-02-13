@@ -5,7 +5,7 @@ require 'time'
 module Traject
   class FolioPostgresReader # rubocop:disable  Metrics/ClassLength
     include Enumerable
-    attr_reader :settings, :cursor_type
+    attr_reader :settings, :cursor_type, :folio_version
 
     # @param [IO] _input_stream
     # @param [Traject::Indexer::Settings] settings
@@ -27,6 +27,7 @@ module Traject
 
       @sql_filters = [@settings['postgres.sql_filters']].flatten.compact
       @addl_from = @settings['postgres.addl_from']
+      @folio_version = @settings['folio.version']
       @cursor_type = @settings.fetch('cursor_type', 'docs')
       @cursor_base_name = @settings.fetch('cursor_base_name', 'folio')
     end
@@ -238,17 +239,25 @@ module Traject
                     LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id
                     LEFT JOIN sul_mod_courses.coursereserves_reserves cr_filter ON (cr_filter.jsonb ->> \'itemId\')::uuid = item_filter.id'
       filter_join = {
+        # hr, item, and rs are replaced by vi.complete_updated_date in poppy
+        'hr_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id',
+        'item_filter' => 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id LEFT JOIN sul_mod_inventory_storage.item item_filter ON item_filter.holdingsrecordid = hr_filter.id',
+        'rs_filter' => 'LEFT JOIN sul_mod_source_record_storage.records_lb rs_filter ON rs_filter.external_id = vi.id',
         'cr_filter' => cr_filter,
         'cl_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid",
         'cc_filter' => "#{cr_filter} LEFT JOIN sul_mod_courses.coursereserves_courselistings cl_filter ON cl_filter.id = cr_filter.courselistingid
                                       LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id"
       }
 
+      additional_tables += %w[hr_filter item_filter rs_filter] if folio_version.nil? || folio_version < 'poppy'
+
       method = cursor_by_ids? ? :ids_sql_query : :contents_sql_query
 
       conditions = (['vi'] + additional_tables.map { |x| table_map[x] }).map do |table|
         c = if table == 'vi'
               "#{table}.complete_updated_date > '#{date}'"
+            elsif table == 'rs_filter'
+              "#{table}.updated_date > '#{date}'"
             else
               "sul_mod_inventory_storage.strtotimestamp((#{table}.jsonb -> 'metadata'::text) ->> 'updatedDate'::text) > '#{date}'"
             end
