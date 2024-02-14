@@ -88,6 +88,7 @@ File.open(state_file, 'r+') do |f|
     attempts ||= 1
     begin
       reader = Traject::FolioPostgresReader.new(nil, 'folio.updated_after': last_date&.utc&.iso8601,
+                                                     'folio.version': Utils.env_config.folio_version,
                                                      'postgres.url': Utils.env_config.database_url,
                                                      'postgres.sql_filters': opts[:sql_query] + [sql_filter],
                                                      'postgres.addl_from': opts[:sql_join],
