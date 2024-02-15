@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module MarcLinks
-  GSB_URL_REGEX = %r{^https?://www.gsb.stanford.edu/jacksonlibrary/services/}
   PROXY_URL_REGEX = /stanford\.idm\.oclc\.org/
   SFX_URL_REGEX = Regexp.union(%r{^https?://library.stanford.edu/sfx\?.+},
                                %r{^https?://caslon.stanford.edu:3210/sfxlcl3\?.+})
