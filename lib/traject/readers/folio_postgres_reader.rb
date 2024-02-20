@@ -232,7 +232,10 @@ module Traject
         'vi' => 'vi',
         'cr' => 'cr_filter',
         'cl' => 'cl_filter',
-        'cc' => 'cc_filter'
+        'cc' => 'cc_filter',
+        'hr' => 'hr_filter',
+        'item' => 'item_filter',
+        'rs' => 'rs_filter'
       }
 
       cr_filter = 'LEFT JOIN sul_mod_inventory_storage.holdings_record hr_filter ON hr_filter.instanceid = vi.id
@@ -249,7 +252,7 @@ module Traject
                                       LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id"
       }
 
-      additional_tables += %w[hr_filter item_filter rs_filter] if folio_version.nil? || folio_version < 'poppy'
+      additional_tables += %w[hr item rs] if folio_version.nil? || folio_version < 'poppy'
 
       method = cursor_by_ids? ? :ids_sql_query : :contents_sql_query
 
