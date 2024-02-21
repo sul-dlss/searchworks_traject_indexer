@@ -346,6 +346,7 @@ module Traject
       end
     end
 
+    # @return [Array]
     def get_unmatched_vernacular(marc, tag)
       return [] unless marc['880']
 
@@ -366,7 +367,7 @@ module Traject
         fields << text.join(' ') unless text.empty?
       end
 
-      fields unless fields.empty?
+      fields
     end
 
     # INDEX-142 NOTE: Lane Medical adds (Print) or (Digital) descriptors to their ISSNs

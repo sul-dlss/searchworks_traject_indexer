@@ -591,6 +591,14 @@ RSpec.describe 'Folio config' do
       end
     end
 
+    context 'without a 520 or 880' do
+      let(:result) { indexer.map_record(marc_to_folio(record)) }
+      let(:record) { MARC::Record.new }
+      subject(:result_field) { result[field] }
+
+      it { is_expected.to be_nil }
+    end
+
     context 'with Nielson data' do
       let(:fixture_name) { 'nielsenTests.jsonl' }
       it 'maps the right fields' do
