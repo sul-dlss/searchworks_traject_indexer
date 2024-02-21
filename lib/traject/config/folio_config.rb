@@ -1582,10 +1582,8 @@ to_field 'toc_struct' do |marc, accumulator|
   end
 
   unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
-  unless unmatched_vern_fields.nil?
-    unmatched_vern_fields.each do |vern_field|
-      unmatched_vern << vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
-    end
+  unmatched_vern_fields.each do |vern_field|
+    unmatched_vern << vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
   end
 
   new_vern = vern unless vern.empty?
@@ -1630,6 +1628,7 @@ end
 
 def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
   fields = []
+  unmatched_vern = []
   if matching_fields.any?
     matching_fields.each do |field|
       field_text = []
@@ -1649,7 +1648,7 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
   end
 
   accumulator << { label:, fields:,
-                   unmatched_vernacular: unmatched_vern } unless fields.empty? && unmatched_vern.nil?
+                   unmatched_vernacular: unmatched_vern } if !fields.empty? || !unmatched_vern.empty?
 end
 
 to_field 'context_search', extract_marc('518a', alternate_script: false)
