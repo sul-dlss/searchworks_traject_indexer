@@ -15,9 +15,9 @@ bundle install
 ```
 then, you can test out indexing against a local solr index:
 ```sh
-SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/sirsi_config.rb my_marc_file.marc
+SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/folio_config.rb my_marc_file.marc
 ```
-the above command will index the file `my_marc_file.marc` into the solr core `core-name` using the configuration for Symphony (`sirsi_config.rb`). after the command completes, you can check the solr web interface to see what was indexed.
+the above command will index the file `my_marc_file.marc` into the solr core `core-name` using the configuration for FOLIO (`folio_config.rb`). after the command completes, you can check the solr web interface to see what was indexed.
 
 for assistance creating and managing a local solr instance for development, see [solr_wrapper](https://github.com/cbeer/solr_wrapper). for more on indexing, see "indexing data" below.
 
@@ -141,15 +141,16 @@ cat record.json | bundle exec traject -c lib/traject/config/folio_config.rb -s r
 ```
 note that this approach doesn't use the `FolioClient` to make API calls, so the burden is on the user to create a fully-formed `FolioRecord` prior to indexing.
 
-## environments
-### Symphony ILS (Sirsi)
-MARC binary data is dumped into files (each containing ~500k records) on the Symphony servers. These dumps happen hourly (containing every changed MARC record during that calendar day), nightly (containing every record changed the previous day), and monthly (containing every exportable MARC record in Symphony). Hourly and nightly dumps also include a `del` file, containing a catkey-per-line of records that have been deleted or retracted.
+It's also possible to index a group of druids, mimicking the process from SDR.
+`SOLR_URL=http://localhost:8983/solr/blacklight-core bundle exec traject -i xml -c lib/traject/config/sdr_config.rb druidslist.txt`
+You can create a `druids.txt` file containing a list of newline delimitd druids.
 
-Additional data comes from a course reserves data dump, also on the Symphony servers. Course reserves files are pipe `|` separated values (PSV) files which are read in during the indexing process and used to enhance MARC records during the transform process.
+### Data sources 
+The indexing machines have scheduled cron tasks (see `./config/schedule.rb`) that retrieve this data from the FOLIO servers and process the data into a kafka topic. Messages in the topic are key-value pairs; the key is the catkey of the record, and the value is either blank (representing a delete) or containing one or more records for the catkey. The topics are regularly compacted by Kafka to remove duplicate data.
 
-The indexing machines have scheduled cron tasks (see `./config/schedule.rb`) that retrieve this data from the Symphony servers and process the data into a kafka topic. Messages in the topic are key-value pairs; the key is the catkey of the record, and the value is either blank (representing a delete) or containing one or more binary MARC records for the catkey. The topics are regularly compacted by Kafka to remove duplicate data.
+This traject config uses the special setting `SKIP_EMPTY_ITEM_DISPLAY`, which tells the indexer to skip or not skip empty item_display fields. anything greater than -1 will skip. tests are set to use `-1` unless otherwise configured.
 
-the sirsi traject config uses the special setting `SKIP_EMPTY_ITEM_DISPLAY`, which tells the indexer to skip or not skip empty item_display fields. anything greater than -1 will skip. tests are set to use `-1` unless otherwise configured.
+## Environments
 
 ### SDR
 The indexing machines also have scheduled cron tasks for loading data from purl-fetcher into a kafka topic. This task records a state file (in `./tmp`) that contains the timestamp of the most recent entry from purl-fetcher that was processed. Every minute, the cron task runs, retrieves the purl-fetcher changes since that most recent timestamp, and adds the message to a kafka topic.
@@ -157,8 +158,12 @@ The indexing machines also have scheduled cron tasks for loading data from purl-
 #### Reporting events
 Indexers for SDR content can report the status of indexing events to [dor-services-app](https://github.com/sul-dlss/dor-services-app) using the [dor-event-client](https://github.com/sul-dlss/dor-event-client) gem. When the feature is enabled and configured in `settings.yml` or via environment variables, the indexer will create events for each record that is indexed, skipped, deleted, etc. These events are visible in the Argo UI and can be used to troubleshoot items released from SDR that are not appearing in search indices.
 
+
 ### FOLIO
-Data is read directly from the postgres database underlying FOLIO, using a custom SQL query stored in the `FolioPostgresReader`. To mimic this activity in local development, one can SSH tunnel to the FOLIO database and use the `#find_by_catkey` helper method:
+Our catalog data comes from queries to the FOLIO postgres database.
+Course reserve information is retrieved from FOLIO and associated with items and holdings for retrieval in the indexing process.
+
+Data is read directly from the postgres database underlying FOLIO using a custom SQL query stored in the `FolioPostgresReader`. To mimic this activity in local development, one can SSH tunnel to the FOLIO database and use the `#find_by_catkey` helper method:
 ```rb
 # after SSH tunneling to the FOLIO database
 bin/console
