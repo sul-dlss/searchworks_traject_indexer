@@ -5,7 +5,7 @@ module Traject
   # @example An export can be produced by doing:
   #  bin/console
   #  record = Traject::FolioPostgresReader.find_by_catkey('a14238203', 'postgres.url' => ENV['DATABASE_URL']
-  #  File.write("a14238203.json", JSON.pretty_generate(record.as_json))
+  #  File.write("a14238203.json", record.to_json)
   class FolioJsonReader < Traject::NDJReader
     def each(&)
       return enum_for(:each) unless block_given?

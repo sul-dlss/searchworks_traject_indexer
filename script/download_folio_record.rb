@@ -9,4 +9,4 @@ require_relative '../config/boot'
 record = Traject::FolioPostgresReader.find_by_catkey(ARGV[0], 'postgres.url' => postgres_url)
 raise "No record found for catkey #{ARGV[0]}" unless record
 
-puts JSON.pretty_generate(record.as_json)
+puts record.to_json
