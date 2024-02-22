@@ -50,7 +50,7 @@ FactoryBot.define do
     end
 
     trait :internet_holding do
-      call_number { FolioHolding::ECALLNUM }
+      type { 'ONLINE' }
     end
   end
 end

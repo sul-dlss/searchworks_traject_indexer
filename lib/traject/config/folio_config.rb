@@ -140,7 +140,7 @@ def call_number_for_holding(record, holding, context)
       to_lopped_shelfkey: holding.call_number.to_s,
       to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{holding.call_number}")
     ) if holding.bad_lc_lane_call_number?
-    return OpenStruct.new(scheme: holding.call_number_type) if holding.e_call_number?
+    return OpenStruct.new(scheme: holding.call_number_type) if holding.internet_resource?
     return OpenStruct.new(scheme: holding.call_number_type) if holding.ignored_call_number?
 
     calculated_call_number_type = case holding.call_number_type
@@ -998,7 +998,7 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator << 'Online' if record.eresource?
 
   # Holdings that aren't electronic and aren't on-order must be at the library
-  accumulator << 'At the Library' if holdings(record, context).any? { |holding| !holding.e_call_number? && holding.status != 'On order' }
+  accumulator << 'At the Library' if holdings(record, context).any? { |holding| !holding.internet_resource? && holding.status != 'On order' }
 
   # Actual on-order PO line
   accumulator << 'On order' if holdings(record, context).any? { |holding| holding.status == 'On order' }
@@ -2267,7 +2267,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
         shelfkey = lopped_call_number.downcase
         reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
 
-        call_number = [lopped_call_number, enumeration].compact.join(' ') unless holding.e_call_number?
+        call_number = [lopped_call_number, enumeration].compact.join(' ') unless holding.internet_resource?
         volume_sort = [lopped_call_number,
                        (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50,
                                                                                                                        '~') if enumeration)].compact.join(' ').downcase
@@ -2309,9 +2309,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
                                                         reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !holding.lost_or_missing?),
                                                         callnumber: (unless holding.ignored_call_number? && !holding.shelved_by_location?
                                                                        call_number
-                                                                     end) || (if holding.e_call_number? && call_number.to_s != FolioHolding::ECALLNUM && !call_number_object.call_number
-                                                                                call_number
-                                                                              end),
+                                                                     end),
                                                         full_shelfkey: (volume_sort unless holding.ignored_call_number? && !holding.shelved_by_location?),
                                                         scheme:
                                                       })

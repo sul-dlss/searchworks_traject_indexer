@@ -674,7 +674,7 @@ RSpec.describe 'ItemInfo config' do
         end
       end
 
-      context 'when the call number is "INTERNET RESOURCE"' do
+      context 'when the item is an electronic resource' do
         let(:holdings) do
           [
             build(:other_holding, :internet_holding)

@@ -7,7 +7,6 @@ class FolioHolding
 
   delegate %i[dewey? valid_lc?] => :call_number
 
-  ECALLNUM = 'INTERNET RESOURCE'
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SHELBYTITL SCI-SHELBYSERIES].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
   SKIPPED_LOCS = %w[SUL-BORROW-DIRECT].freeze
@@ -96,16 +95,12 @@ class FolioHolding
 
   def ignored_call_number?
     SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
-      e_call_number? ||
-      temp_call_number?
+      temp_call_number? ||
+      internet_resource?
   end
 
   def temp_call_number?
     call_number.to_s.blank? || call_number.to_s.start_with?(TEMP_CALLNUM_PREFIX)
-  end
-
-  def e_call_number?
-    call_number.to_s.start_with?(ECALLNUM)
   end
 
   def lost_or_missing?
@@ -167,6 +162,10 @@ class FolioHolding
       course_id: course[:course_id],
       loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
     }
+  end
+
+  def internet_resource?
+    type == Folio::EresourceHoldingsBuilder::TYPE
   end
 
   private

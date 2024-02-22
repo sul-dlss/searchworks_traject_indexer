@@ -385,7 +385,7 @@ RSpec.describe 'All_search config' do
   context 'with an online item' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'onlineByCallnum', call_number: 'INTERNET RESOURCE')
+        build(:lc_holding, barcode: 'onlineByCallnum', type: 'ONLINE')
       ]
     end
     it { is_expected.to eq nil }
@@ -406,26 +406,17 @@ RSpec.describe 'All_search config' do
 
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'onlineByCallnum', call_number: 'INTERNET RESOURCE')
+        build(:lc_holding, barcode: 'onlineByCallnum', type: 'ONLINE')
       ]
     end
 
     it { is_expected.to eq ['onlineByCallnum'] }
   end
 
-  context 'with an item with an INTERNET location' do
-    let(:folio_holdings) do
-      [
-        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', permanent_location_code: 'INTERNET')
-      ]
-    end
-    it { is_expected.to eq ['onlineByLoc'] }
-  end
-
   context 'with an item with an online item with callnum matches another group' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', permanent_location_code: 'INTERNET'),
+        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', type: 'ONLINE'),
         build(:lc_holding, barcode: 'notOnline', call_number: 'AB123 .C45')
       ]
     end

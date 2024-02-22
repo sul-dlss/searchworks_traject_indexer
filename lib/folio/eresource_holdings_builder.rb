@@ -4,7 +4,6 @@ module Folio
   # Folio::EresourceHoldingsBuilder builds an array of FolioHolding
   # instances for electronic resources from FOLIO record components
   class EresourceHoldingsBuilder
-    CALL_NUMBER = 'INTERNET RESOURCE'
     TYPE = 'ONLINE'
 
     def self.build(hrid, holdings, marc_record)
@@ -47,7 +46,6 @@ module Folio
 
     def folio_holding(index)
       FolioHolding.new(
-        call_number: CALL_NUMBER,
         item: { 'barcode' => barcode(index) },
         holding: electronic_holding_location,
         type: TYPE
