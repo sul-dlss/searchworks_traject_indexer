@@ -60,7 +60,7 @@ module Folio
     # This approach works fine unless there are records with multiple
     # e-resource holdings associated with different locations.
     def electronic_holding_location
-      @electronic_holding_location ||= holdings&.find { |h| (h.dig('holdingsType', 'name') || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Electronic' }
+      @electronic_holding_location ||= holdings&.find { |h| h.dig('holdingsType', 'name') == 'Electronic' || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
     end
   end
 end
