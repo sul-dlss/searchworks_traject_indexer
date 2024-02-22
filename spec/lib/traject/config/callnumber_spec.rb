@@ -56,9 +56,9 @@ RSpec.describe 'Call Numbers' do
     context 'when the call numbers are not unique (2328381)' do
       let(:holdings) do
         [
-          build(:lc_holding, call_number: 'PR3724.T3', barcode: '36105003934432', home_location: 'STACKS', library: 'SAL'),
-          build(:lc_holding, call_number: 'PR3724.T3', barcode: '36105003934424', home_location: 'STACKS', library: 'SAL'),
-          build(:dewey_holding, call_number: '827.5 .S97TG', barcode: '36105048104132', home_location: 'STACKS', library: 'SAL3')
+          build(:lc_holding, call_number: 'PR3724.T3', barcode: '36105003934432', permanent_location_code: 'STACKS', library: 'SAL'),
+          build(:lc_holding, call_number: 'PR3724.T3', barcode: '36105003934424', permanent_location_code: 'STACKS', library: 'SAL'),
+          build(:dewey_holding, call_number: '827.5 .S97TG', barcode: '36105048104132', permanent_location_code: 'STACKS', library: 'SAL3')
         ]
       end
 
@@ -68,8 +68,8 @@ RSpec.describe 'Call Numbers' do
     context 'when there are two call numbers with the same barcode (1849258)' do
       let(:holdings) do
         [
-          build(:dewey_holding, call_number: '352.042 .C594 ED.2', barcode: '36105047516096', home_location: 'STACKS', library: 'SAL3'),
-          build(:dewey_holding, call_number: '352.042 .C594 ED.3', barcode: '36105047516096', home_location: 'STACKS', library: 'SAL3')
+          build(:dewey_holding, call_number: '352.042 .C594 ED.2', barcode: '36105047516096', permanent_location_code: 'STACKS', library: 'SAL3'),
+          build(:dewey_holding, call_number: '352.042 .C594 ED.3', barcode: '36105047516096', permanent_location_code: 'STACKS', library: 'SAL3')
         ]
       end
 
@@ -79,8 +79,8 @@ RSpec.describe 'Call Numbers' do
     context 'when there is a withdrawn record (2214009)' do
       let(:holdings) do
         [
-          build(:dewey_holding, call_number: '370.1 .S655', barcode: '36105033336798', home_location: 'WITHDRAWN', library: 'EDUCATION'),
-          build(:dewey_holding, call_number: '370.1 .S655', barcode: '36105033336780', home_location: 'STACKS', library: 'SAL3')
+          build(:dewey_holding, call_number: '370.1 .S655', barcode: '36105033336798', permanent_location_code: 'WITHDRAWN', library: 'EDUCATION'),
+          build(:dewey_holding, call_number: '370.1 .S655', barcode: '36105033336780', permanent_location_code: 'STACKS', library: 'SAL3')
         ]
       end
 

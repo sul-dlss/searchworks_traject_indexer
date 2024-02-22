@@ -122,11 +122,34 @@ RSpec.describe FolioHolding do
           id: 'uuid',
           barcode: '36105000',
           status: 'Available',
+          home_location: 'SAL3-STACKS',
+          current_location: 'GRE-STACKS',
           temporary_location_code: 'GRE-STACKS',
           permanent_location_code: 'SAL3-STACKS',
           material_type_id: 'mt-uuid',
           loan_type_id: 'tlt-uuid'
         )
+      end
+
+      context 'with an item in a location that we treat as the permanent location for display purposes' do
+        let(:item) do
+          {
+            location: {
+              temporaryLocation: { code: 'GRE-CRES', details: { searchworksTreatTemporaryLocationAsPermanentLocation: 'true' } }
+            }
+          }.with_indifferent_access
+        end
+        let(:holding) do
+          {
+            location: {
+              effectiveLocation: { code: 'SAL3-STACKS' }
+            }
+          }.with_indifferent_access
+        end
+
+        it 'is the holdings effective location' do
+          expect(hash).to include(home_location: 'GRE-CRES')
+        end
       end
     end
 

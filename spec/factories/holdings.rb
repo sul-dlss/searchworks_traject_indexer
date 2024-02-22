@@ -16,8 +16,8 @@ FactoryBot.define do
           'notes' => notes
         }
       end
-      home_location { '' }
-      permanent_location { { 'code' => home_location } }
+      permanent_location_code { '' }
+      permanent_location { { 'code' => permanent_location_code } }
     end
     library { 'GREEN' }
     type { '' }

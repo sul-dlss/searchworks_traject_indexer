@@ -221,7 +221,7 @@ RSpec.describe 'All_search config' do
       let(:folio_holdings) do
         [
           build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
-          build(:dewey_holding, barcode: 'Dewey2', call_number: '505 .N285B V.241-245 1973', home_location: 'LOCATION')
+          build(:dewey_holding, barcode: 'Dewey2', call_number: '505 .N285B V.241-245 1973', permanent_location_code: 'LOCATION')
         ]
       end
       it { is_expected.to eq ['Dewey1'] }
@@ -231,7 +231,7 @@ RSpec.describe 'All_search config' do
       let(:folio_holdings) do
         [
           build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
-          build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'A 13.78:NC-315', home_location: 'LOCATION')
+          build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'A 13.78:NC-315', permanent_location_code: 'LOCATION')
         ]
       end
       it { is_expected.to eq ['Sudoc2'] }
@@ -241,7 +241,7 @@ RSpec.describe 'All_search config' do
       let(:folio_holdings) do
         [
           build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
-          build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2', home_location: 'LOCATION')
+          build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2', permanent_location_code: 'LOCATION')
         ]
       end
       it { is_expected.to eq ['Alpha1'] }
@@ -416,7 +416,7 @@ RSpec.describe 'All_search config' do
   context 'with an item with an INTERNET location' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', home_location: 'INTERNET')
+        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', permanent_location_code: 'INTERNET')
       ]
     end
     it { is_expected.to eq ['onlineByLoc'] }
@@ -425,7 +425,7 @@ RSpec.describe 'All_search config' do
   context 'with an item with an online item with callnum matches another group' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', home_location: 'INTERNET'),
+        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', permanent_location_code: 'INTERNET'),
         build(:lc_holding, barcode: 'notOnline', call_number: 'AB123 .C45')
       ]
     end
@@ -444,7 +444,7 @@ RSpec.describe 'All_search config' do
   context 'with a shelby location' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', home_location: 'MAR-SHELBYTITL')
+        build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', permanent_location_code: 'MAR-SHELBYTITL')
       ]
     end
 
@@ -470,7 +470,7 @@ RSpec.describe 'All_search config' do
   context 'with a bad lane lc callnum' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'lane', call_number: 'XX13413', library: 'LANE', home_location: 'ASK@LANE')
+        build(:lc_holding, barcode: 'lane', call_number: 'XX13413', library: 'LANE', permanent_location_code: 'ASK@LANE')
       ]
     end
 
