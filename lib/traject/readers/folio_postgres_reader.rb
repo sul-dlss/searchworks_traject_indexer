@@ -257,7 +257,7 @@ module Traject
       method = cursor_by_ids? ? :ids_sql_query : :contents_sql_query
 
       conditions = (['vi'] + additional_tables.map { |x| table_map[x] }).map do |table|
-        c = if table == 'vi'
+        c = if table == 'vi' && folio_version >= 'poppy'
               "#{table}.complete_updated_date > '#{date}'"
             elsif table == 'rs_filter'
               "#{table}.updated_date > '#{date}'"
