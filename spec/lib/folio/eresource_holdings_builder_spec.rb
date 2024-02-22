@@ -104,6 +104,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
             { 'code' => 'LANE-EDATA' },
             'effectiveLocation' =>
             { 'code' => 'LANE-EDATA', 'library' => { 'code' => 'LANE' }, 'details' => { 'holdingsTypeName' => 'Electronic' } } },
+            'holdingsType' => { 'name' => 'Monograph' },
             'suppressFromDiscovery' => false,
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [] }] }
