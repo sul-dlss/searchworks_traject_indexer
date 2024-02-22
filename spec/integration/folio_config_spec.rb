@@ -219,8 +219,7 @@ RSpec.describe 'FOLIO indexing' do
       expect(value).to include(
         { 'id' => nil, 'barcode' => '12451243-1001',
           'library' => 'SUL',
-          'home_location' => 'SUL-ELECTRONIC',
-          'current_location' => nil, 'type' => 'ONLINE',
+          'permanent_location_code' => 'SUL-ELECTRONIC', 'type' => 'ONLINE',
           'note' => nil, 'lopped_callnumber' => nil,
           'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
           'reverse_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',

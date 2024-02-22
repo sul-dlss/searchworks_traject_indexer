@@ -61,7 +61,7 @@ RSpec.describe 'Format physical config' do
       # The holding is necessary to get into a branch where it looks for context.output_hash['access_facet'] == ['At the Library']
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -82,7 +82,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -103,7 +103,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -124,7 +124,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -367,7 +367,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -405,7 +405,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -430,7 +430,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -452,7 +452,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -548,7 +548,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -582,7 +582,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -617,7 +617,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -641,7 +641,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -663,7 +663,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -749,7 +749,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end
@@ -866,7 +866,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFILM N.S. 17443', home_location: 'MEDIA-CENTER', type: 'NH-MICR')
+          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFILM N.S. 17443', permanent_location_code: 'MEDIA-CENTER', type: 'NH-MICR')
         ]
       )
     end
@@ -958,7 +958,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFICHE 1183 N.5.1.7205', home_location: 'MEDIA-CENTER', type: 'NH-MICR')
+          build(:alphanum_holding, barcode: '9636901-1001', call_number: 'MFICHE 1183 N.5.1.7205', permanent_location_code: 'MEDIA-CENTER', type: 'NH-MICR')
         ]
       )
     end
@@ -1682,7 +1682,7 @@ RSpec.describe 'Format physical config' do
     before do
       allow(folio_record).to receive(:folio_holdings).and_return(
         [
-          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', home_location: 'HAS-DIGIT')
+          build(:lc_holding, barcode: '36105018746623', call_number: 'F152 .A28', permanent_location_code: 'HAS-DIGIT')
         ]
       )
     end

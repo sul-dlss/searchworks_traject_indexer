@@ -7,12 +7,10 @@ class FolioHolding
 
   delegate %i[dewey? valid_lc?] => :call_number
 
-  BUSINESS_SHELBY_LOCS = %w[NEWS-STKS].freeze
   ECALLNUM = 'INTERNET RESOURCE'
-  LOST_OR_MISSING_LOCS = %w[MISSING].freeze
-  SHELBY_LOCS = %w[BUS-PER BUS-MAKENA SHELBYTITL SHELBYSER].freeze
+  SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SHELBYTITL SCI-SHELBYSERIES].freeze
   SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
-  SKIPPED_LOCS = %w[BORROWDIR CDPSHADOW SHADOW SSRC-FIC-S STAFSHADOW TECHSHADOW WITHDRAWN].freeze
+  SKIPPED_LOCS = %w[SUL-BORROW-DIRECT].freeze
   TEMP_CALLNUM_PREFIX = 'XX('
 
   attr_reader :item, :holding, :instance, :bound_with_holding,
@@ -23,15 +21,13 @@ class FolioHolding
                  bound_with_holding: nil,
                  course_reserves: [],
                  call_number: nil, type: nil, status: nil,
-                 library: nil, home_location: nil, current_location: nil)
+                 library: nil)
     @item = item
     @holding = holding
     @instance = instance
     @bound_with_holding = bound_with_holding
     @id = @item&.dig('id')
     @provided_call_number = call_number || @bound_with_holding&.dig('callNumber') || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @holding&.dig('callNumber')
-    @current_location = current_location
-    @home_location = home_location
     @status = status || item&.dig('status')
     @library = library
     @type = type || @item&.dig('materialType')
@@ -50,13 +46,12 @@ class FolioHolding
     @library ||= display_location&.dig('library', 'code')
   end
 
-  def home_location
-    @home_location ||= display_location&.dig('code')
+  def display_location_code
+    display_location&.dig('code')
   end
 
-  def current_location
-    @current_location ||= temporary_location&.dig('code')
-    @current_location
+  def temporary_location_code
+    temporary_location&.dig('code')
   end
 
   def public_note
@@ -68,15 +63,11 @@ class FolioHolding
   end
 
   def skipped?
-    [home_location, current_location].intersect?(SKIPPED_LOCS)
+    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SKIPPED_LOCS)
   end
 
   def shelved_by_location?
-    if library == 'BUSINESS'
-      [home_location, current_location].intersect?(BUSINESS_SHELBY_LOCS)
-    else
-      [home_location, current_location].intersect?(SHELBY_LOCS)
-    end
+    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITL')
   end
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
@@ -131,31 +122,22 @@ class FolioHolding
 
   def ==(other)
     other.is_a?(self.class) and
-      other.call_number == @call_number and
-      other.current_location == @current_location and
-      other.home_location == @home_location and
-      other.library == @library and
-      other.scheme == @scheme and
-      other.type == @type and
-      other.barcode == @barcode
+      other.id == @id
   end
 
   alias eql? ==
 
   def hash
-    [@item, @holding, @bound_with_holding, @id, @barcode].hash
+    [@item, @holding, @bound_with_holding, @id].hash
   end
 
   def to_item_display_hash
-    current_location = self.current_location.presence
-    current_location = 'ON-ORDER' if on_order? && current_location && !current_location.empty? && home_location != 'ON-ORDER' && home_location != 'INPROCESS'
-
     {
       id:,
       barcode:,
       library:,
-      home_location:,
-      current_location:,
+      home_location: display_location&.dig('code'),
+      current_location: temporary_location&.dig('code'),
       type:,
       note: public_note.presence,
       instance_id: instance&.dig('id'),

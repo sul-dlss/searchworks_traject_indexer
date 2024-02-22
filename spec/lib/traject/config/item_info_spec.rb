@@ -168,13 +168,13 @@ RSpec.describe 'ItemInfo config' do
     let(:field) { 'building_location_facet_ssim' }
 
     context 'with ARS/STACKS' do
-      let(:holdings) { [build(:lc_holding, library: 'ARS', home_location: 'STACKS', type: 'STKS-MONO')] }
+      let(:holdings) { [build(:lc_holding, library: 'ARS', permanent_location_code: 'STACKS', type: 'STKS-MONO')] }
 
       it { is_expected.to include 'ARS/STACKS', 'ARS/STACKS/type/STKS-MONO', 'ARS/*/type/STKS-MONO' }
     end
 
     context 'with GREEN/STACKS' do
-      let(:holdings) { [build(:lc_holding, library: 'GREEN', home_location: 'STACKS', type: 'STKS-MONO')] }
+      let(:holdings) { [build(:lc_holding, library: 'GREEN', permanent_location_code: 'STACKS', type: 'STKS-MONO')] }
 
       it { is_expected.to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO', 'GREEN/*/type/STKS-MONO' }
     end
@@ -315,60 +315,60 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'when location is STACKS' do
-        let(:holdings) { [build(:lc_holding, home_location: 'STACKS')] }
+        let(:holdings) { [build(:lc_holding, permanent_location_code: 'STACKS')] }
 
-        it { is_expected.to match_array([hash_including('home_location' => 'STACKS')]) }
+        it { is_expected.to match_array([hash_including('permanent_location_code' => 'STACKS')]) }
       end
 
       context 'when location is ASK@LANE' do
-        let(:holdings) { [build(:lc_holding, home_location: 'ASK@LANE')] }
+        let(:holdings) { [build(:lc_holding, permanent_location_code: 'ASK@LANE')] }
 
-        it { is_expected.to match_array([hash_including('home_location' => 'ASK@LANE')]) }
+        it { is_expected.to match_array([hash_including('permanent_location_code' => 'ASK@LANE')]) }
       end
 
       context 'when there are multiple holdings with different locations' do
-        let(:holdings) { [build(:lc_holding, home_location: 'STACKS'), build(:lc_holding, home_location: 'BENDER')] }
+        let(:holdings) { [build(:lc_holding, permanent_location_code: 'STACKS'), build(:lc_holding, permanent_location_code: 'BENDER')] }
 
-        it { is_expected.to match_array([hash_including('home_location' => 'STACKS'), hash_including('home_location' => 'BENDER')]) }
+        it { is_expected.to match_array([hash_including('permanent_location_code' => 'STACKS'), hash_including('permanent_location_code' => 'BENDER')]) }
       end
 
       context 'with an on order location' do
         let(:holdings) do
-          [build(:lc_holding, barcode: '36105007402873', home_location: 'ON-ORDER', call_number: 'E184.S75 R47A V.1 1980'),
+          [build(:lc_holding, barcode: '36105007402873', permanent_location_code: 'ON-ORDER', call_number: 'E184.S75 R47A V.1 1980'),
            build(:lc_holding)]
         end
 
         it {
           is_expected.to match_array([
-                                       hash_including('barcode' => '36105007402873', 'library' => 'GREEN', 'home_location' => 'ON-ORDER', 'callnumber' => 'E184.S75 R47A V.1 1980'),
+                                       hash_including('barcode' => '36105007402873', 'library' => 'GREEN', 'permanent_location_code' => 'ON-ORDER', 'callnumber' => 'E184.S75 R47A V.1 1980'),
                                        hash_including('barcode' => 'barcode')
                                      ])
         }
       end
       context 'with an reserve location' do
         let(:holdings) do
-          [build(:lc_holding, barcode: '36105046693508', home_location: 'BRAN-RESV', library: 'EARTH-SCI')]
+          [build(:lc_holding, barcode: '36105046693508', permanent_location_code: 'BRAN-RESV', library: 'EARTH-SCI')]
         end
 
         it {
           is_expected.to match_array([
-                                       hash_including('barcode' => '36105046693508', 'library' => 'EARTH-SCI', 'home_location' => 'BRAN-RESV')
+                                       hash_including('barcode' => '36105046693508', 'library' => 'EARTH-SCI', 'permanent_location_code' => 'BRAN-RESV')
                                      ])
         }
       end
 
       context 'with multiple items in the same library / location and with a different callnum' do
         let(:holdings) do
-          [build(:lc_holding, barcode: '36105003934432', home_location: 'STACKS', call_number: 'PR3724.T3'),
-           build(:lc_holding, barcode: '36105003934424', home_location: 'STACKS', call_number: 'PR3724.T3 A2 V.1'),
-           build(:lc_holding, barcode: '36105048104132', home_location: 'STACKS', call_number: 'PR3724.T3 A2 V.2')]
+          [build(:lc_holding, barcode: '36105003934432', permanent_location_code: 'STACKS', call_number: 'PR3724.T3'),
+           build(:lc_holding, barcode: '36105003934424', permanent_location_code: 'STACKS', call_number: 'PR3724.T3 A2 V.1'),
+           build(:lc_holding, barcode: '36105048104132', permanent_location_code: 'STACKS', call_number: 'PR3724.T3 A2 V.2')]
         end
 
         it {
           is_expected.to match_array([
-                                       hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'home_location' => 'STACKS'),
-                                       hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'home_location' => 'STACKS'),
-                                       hash_including('barcode' => '36105048104132', 'library' => 'GREEN', 'home_location' => 'STACKS')
+                                       hash_including('barcode' => '36105003934432', 'library' => 'GREEN', 'permanent_location_code' => 'STACKS'),
+                                       hash_including('barcode' => '36105003934424', 'library' => 'GREEN', 'permanent_location_code' => 'STACKS'),
+                                       hash_including('barcode' => '36105048104132', 'library' => 'GREEN', 'permanent_location_code' => 'STACKS')
                                      ])
         }
       end
@@ -376,45 +376,36 @@ RSpec.describe 'ItemInfo config' do
 
     context 'when holdings are checked-out' do
       let(:holdings) do
-        [build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087092'),
-         build(:lc_holding, current_location: 'CHECKEDOUT', home_location: 'STACKS', barcode: '36105035087093')]
+        [build(:lc_holding, status: 'Checked out', permanent_location_code: 'STACKS', barcode: '36105035087092'),
+         build(:lc_holding, status: 'Checked out', permanent_location_code: 'STACKS', barcode: '36105035087093')]
       end
 
       it {
         is_expected.to match_array([
-                                     hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT'),
-                                     hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'home_location' => 'STACKS', 'current_location' => 'CHECKEDOUT')
+                                     hash_including('barcode' => '36105035087092', 'library' => 'GREEN', 'permanent_location_code' => 'STACKS', 'status' => 'Checked out'),
+                                     hash_including('barcode' => '36105035087093', 'library' => 'GREEN', 'permanent_location_code' => 'STACKS', 'status' => 'Checked out')
                                    ])
       }
     end
 
-    context 'when holdings are withdrawn' do
-      let(:holdings) do
-        [build(:lc_holding, current_location: 'WITHDRAWN', home_location: 'STACKS', barcode: '36105035087092')]
-      end
-      subject(:value) { result[field] }
-
-      it { is_expected.to be_nil }
-    end
-
     describe 'location implies item is shelved by title' do
-      context 'with SHELBYTITL' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', home_location: 'SHELBYTITL', type: 'STKS-MONO')] }
+      context 'with SCI-SHELBYTITL' do
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYTITL', type: 'STKS-MONO')] }
 
         it {
           is_expected.to match_array([
-                                       hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'home_location' => 'SHELBYTITL',
+                                       hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'permanent_location_code' => 'SCI-SHELBYTITL',
                                                       'callnumber' => 'Shelved by title VOL 1 1946')
                                      ])
         }
       end
 
-      context 'with SHELBYSER' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', home_location: 'SHELBYSER', type: 'STKS-MONO')] }
+      context 'with SCI-SHELBYSERIES' do
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYSERIES', type: 'STKS-MONO')] }
 
         it {
           is_expected.to match_array([
-                                       hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'home_location' => 'SHELBYSER',
+                                       hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'permanent_location_code' => 'SCI-SHELBYSERIES',
                                                       'callnumber' => 'Shelved by Series title VOL 1 1946')
                                      ])
         }
@@ -425,13 +416,13 @@ RSpec.describe 'ItemInfo config' do
       context 'with a NEWS-STKS location' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105111222333', library: 'BUSINESS', home_location: 'NEWS-STKS')
+            build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105111222333', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
           ]
         end
 
         it 'is shelved by title' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946',
+                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946',
                                                                                           'scheme' => 'LC')
                                                                          ])
         end
@@ -440,28 +431,14 @@ RSpec.describe 'ItemInfo config' do
       context 'with a NEWS-STKS location and an ALPHANUM call number' do
         let(:holdings) do
           [
-            build(:alphanum_holding, call_number: 'BUS54594-11 V.3 1986 MAY-AUG.', barcode: '20504037816', library: 'BUSINESS', home_location: 'NEWS-STKS')
+            build(:alphanum_holding, call_number: 'BUS54594-11 V.3 1986 MAY-AUG.', barcode: '20504037816', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
           ]
         end
 
         it 'is shelved by title' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'home_location' => 'NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
+                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
                                                                                           'scheme' => 'ALPHANUM')
-                                                                         ])
-        end
-      end
-
-      context 'with a NEWS-STKS location when it is not in BUSINESS' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980', barcode: '36105444555666', home_location: 'NEWS-STKS')
-          ]
-        end
-
-        it 'does nothing special ' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '36105444555666', 'library' => 'GREEN', 'home_location' => 'NEWS-STKS', 'callnumber' => 'E184.S75 R47A V.1 1980', 'scheme' => 'LC')
                                                                          ])
         end
       end
@@ -469,7 +446,7 @@ RSpec.describe 'ItemInfo config' do
       context 'volume includes an O.S. (old series) designation' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: '551.46 .I55 O.S:V.1 1909/1910', home_location: 'SHELBYTITL')
+            build(:lc_holding, call_number: '551.46 .I55 O.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
           ]
         end
 
@@ -483,7 +460,7 @@ RSpec.describe 'ItemInfo config' do
       context 'volume includes an N.S. (new series) designation' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: '551.46 .I55 N.S:V.1 1909/1910', home_location: 'SHELBYTITL')
+            build(:lc_holding, call_number: '551.46 .I55 N.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
           ]
         end
 
@@ -495,40 +472,18 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    context 'when there are locations that are shadowed' do
-      let(:holdings) do
-        [build(:lc_holding, home_location: 'CDPSHADOW', barcode: '36105037439663')]
-      end
-
-      subject { result[field] }
-
-      it { is_expected.to be_nil }
-    end
-
-    context 'when there are locations that are inprocess' do
-      let(:holdings) do
-        [build(:lc_holding, home_location: 'INPROCESS', library: 'SAL3', barcode: '36105129694373')]
-      end
-
-      it {
-        is_expected.to match_array([
-                                     hash_including('barcode' => '36105129694373', 'library' => 'SAL3', 'home_location' => 'INPROCESS')
-                                   ])
-      }
-    end
-
     context 'when location is to be left "as is"  (no translation in map, but don\'t skip)' do
       let(:holdings) do
-        [build(:lc_holding, home_location: 'PERM-RES', library: 'EARTH-SCI', barcode: '36105130436541'),
-         build(:lc_holding, home_location: 'REFERENCE', library: 'EARTH-SCI', barcode: '36105130436848'),
-         build(:lc_holding, home_location: 'MEDIA', library: 'EARTH-SCI', barcode: '36105130437192')]
+        [build(:lc_holding, permanent_location_code: 'PERM-RES', library: 'EARTH-SCI', barcode: '36105130436541'),
+         build(:lc_holding, permanent_location_code: 'REFERENCE', library: 'EARTH-SCI', barcode: '36105130436848'),
+         build(:lc_holding, permanent_location_code: 'MEDIA', library: 'EARTH-SCI', barcode: '36105130437192')]
       end
 
       it {
         is_expected.to match_array([
-                                     hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'home_location' => 'PERM-RES'),
-                                     hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'home_location' => 'REFERENCE'),
-                                     hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'home_location' => 'MEDIA')
+                                     hash_including('barcode' => '36105130436541', 'library' => 'EARTH-SCI', 'permanent_location_code' => 'PERM-RES'),
+                                     hash_including('barcode' => '36105130436848', 'library' => 'EARTH-SCI', 'permanent_location_code' => 'REFERENCE'),
+                                     hash_including('barcode' => '36105130437192', 'library' => 'EARTH-SCI', 'permanent_location_code' => 'MEDIA')
                                    ])
       }
     end
@@ -796,7 +751,7 @@ RSpec.describe 'ItemInfo config' do
         context 'with a DEWEY call number that begins with TX' do
           let(:holdings) do
             [
-              build(:dewey_holding, call_number: 'TX 443.21 A3', home_location: 'STACKS', library: 'CUBBERLY')
+              build(:dewey_holding, call_number: 'TX 443.21 A3', permanent_location_code: 'STACKS', library: 'CUBBERLY')
             ]
           end
 

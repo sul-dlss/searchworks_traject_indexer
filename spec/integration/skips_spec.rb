@@ -16,18 +16,6 @@ RSpec.describe 'Skips records' do
   let(:folio_record) { marc_to_folio(record) }
   subject(:result) { indexer.map_record(folio_record) }
 
-  context 'when holdings are withdrawn (causing item_display_struct to be nil)' do
-    before do
-      allow(folio_record).to receive(:folio_holdings).and_return(holdings)
-    end
-
-    let(:holdings) do
-      [build(:lc_holding, current_location: 'WITHDRAWN')]
-    end
-
-    it { is_expected.to be nil }
-  end
-
   context 'with a **REQUIRED FILE** title' do
     let(:record) do
       MARC::Record.new.tap do |r|
