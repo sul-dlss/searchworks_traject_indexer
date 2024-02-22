@@ -71,8 +71,8 @@ RSpec.describe FolioHolding do
     end
   end
 
-  describe '#home_location' do
-    subject(:home_location) { described_class.new(item:, holding:).home_location }
+  describe '#display_location_code' do
+    subject(:display_location_code) { described_class.new(item:, holding:).display_location_code }
 
     let(:item) do
       {
@@ -89,7 +89,7 @@ RSpec.describe FolioHolding do
     end
 
     it 'is the FOLIO code' do
-      expect(home_location).to eq 'SPEC-SAL-TAUBE'
+      expect(display_location_code).to eq 'SPEC-SAL-TAUBE'
     end
   end
 

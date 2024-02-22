@@ -38,7 +38,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   it { expect(holdings.count).to eq 1 }
   it { expect(holdings.first).to be_a FolioHolding }
   it { expect(holdings.first.call_number.call_number).to eq 'INTERNET RESOURCE' }
-  it { expect(holdings.first.home_location).to eq 'SUL-ELECTRONIC' }
+  it { expect(holdings.first.display_location_code).to eq 'SUL-ELECTRONIC' }
   it { expect(holdings.first.library).to eq 'SUL' }
   it { expect(holdings.first.type).to eq 'ONLINE' }
   it { expect(holdings.first.barcode).to eq '12451243-1001' }
@@ -50,7 +50,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
 
     it { expect(holdings.count).to eq 1 }
     it { expect(holdings.first.call_number.call_number).to eq 'INTERNET RESOURCE' }
-    it { expect(holdings.first.home_location).to eq 'SUL-ELECTRONIC' }
+    it { expect(holdings.first.display_location_code).to eq 'SUL-ELECTRONIC' }
   end
 
   context 'the holding library is Law' do
@@ -94,7 +94,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
             'holdingsStatements' => [] }] }
     end
-    it { expect(holdings.first.home_location).to eq 'SUL-SDR' }
+    it { expect(holdings.first.display_location_code).to eq 'SUL-SDR' }
   end
 
   context 'the holding library is Lane (without a explicit holdingsType)' do

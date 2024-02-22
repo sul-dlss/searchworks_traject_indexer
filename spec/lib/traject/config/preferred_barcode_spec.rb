@@ -444,31 +444,11 @@ RSpec.describe 'All_search config' do
   context 'with a shelby location' do
     let(:folio_holdings) do
       [
-        build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', current_location: 'SHELBYTITL')
+        build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', home_location: 'MAR-SHELBYTITL')
       ]
     end
 
     it { is_expected.to eq ['shelby'] }
-  end
-
-  context 'with a missing location' do
-    let(:folio_holdings) do
-      [
-        build(:lc_holding, barcode: 'missing', call_number: 'AB123 C45', home_location: 'MISSING')
-      ]
-    end
-
-    it { is_expected.to eq ['missing'] }
-  end
-
-  context 'with a lost location' do
-    let(:folio_holdings) do
-      [
-        build(:lc_holding, barcode: 'lost', call_number: 'AB123 C45', home_location: 'LOST-PAID')
-      ]
-    end
-
-    it { is_expected.to eq ['lost'] }
   end
 
   context 'with no items' do

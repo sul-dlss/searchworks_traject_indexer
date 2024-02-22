@@ -46,26 +46,18 @@ RSpec.describe 'Call Number Facet' do
   end
 
   describe 'call numbers excluded for various reasons' do
-    context 'with a skipped location' do
-      let(:holdings) { [build(:lc_holding, home_location: 'SHADOW', library: 'ART')] }
-
-      it { is_expected.to be_nil }
-    end
-
     it 'assigns value for valid LC even if it is a shelve by location' do
-      FolioHolding::SHELBY_LOCS.each do |loc|
-        # valid LC
-        # FIXME: we DO want a value if there is valid LC for shelby location
-        # expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', home_location: loc, indexer: indexer)[field]).to eq(
-        #   ['LC Classification|M - Music|M - Music']
-        # )
-        # LC
-        expect(record_with_holdings(call_number: 'M123 .M456', home_location: loc, item: { 'callNumberType' => { 'name' => 'LC' } },
-                                    indexer:)[field]).to be_nil
-        # Dewey
-        expect(record_with_holdings(call_number: '123.4 .B45', home_location: loc, item: { 'callNumberType' => { 'name' => 'DEWEY' } },
-                                    indexer:)[field]).to be_nil
-      end
+      # valid LC
+      # FIXME: we DO want a value if there is valid LC for shelby location
+      # expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', home_location: loc, indexer: indexer)[field]).to eq(
+      #   ['LC Classification|M - Music|M - Music']
+      # )
+      # LC
+      expect(record_with_holdings(call_number: 'M123 .M456', home_location: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'LC' } },
+                                  indexer:)[field]).to be_nil
+      # Dewey
+      expect(record_with_holdings(call_number: '123.4 .B45', home_location: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'DEWEY' } },
+                                  indexer:)[field]).to be_nil
     end
 
     it 'handles missing or lost call numbers (by not including them)' do

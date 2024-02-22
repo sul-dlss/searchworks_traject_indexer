@@ -6,22 +6,23 @@ FactoryBot.define do
       scheme { '' }
       barcode { 'barcode' }
       notes { [] }
+      sequence(:id) { |n| "hi_#{n}" }
+      default_item_attributes { { 'id' => id, 'status' => 'Available', 'location' => { 'permanentLocation' => permanent_location } } }
+      additional_item_attributes { {} }
+      item do
+        {
+          'callNumberType' => { 'name' => scheme },
+          'barcode' => barcode,
+          'notes' => notes
+        }
+      end
+      home_location { '' }
+      permanent_location { { 'code' => home_location } }
     end
-    current_location { '' }
-    home_location { '' }
     library { 'GREEN' }
     type { '' }
 
-    additional_item_attributes { {} }
-    item do
-      {
-        'callNumberType' => { 'name' => scheme },
-        'barcode' => barcode,
-        'notes' => notes
-      }
-    end
-
-    initialize_with { new(**attributes.except(:item, :additional_item_attributes), item: item.merge(additional_item_attributes)) }
+    initialize_with { new(**attributes, item: default_item_attributes.merge(item).merge(additional_item_attributes.deep_stringify_keys)) }
 
     factory :lc_holding do
       call_number { 'QE538.8 .N36 1975-1977' }

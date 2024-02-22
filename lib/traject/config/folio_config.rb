@@ -1980,12 +1980,12 @@ end
 #
 # # Location facet
 to_field 'location_facet' do |record, accumulator, context|
-  if holdings(record, context).any? { |holding| holding.home_location == 'EDU-CURRICULUM' }
+  if holdings(record, context).any? { |holding| holding.display_location_code == 'EDU-CURRICULUM' }
     accumulator << 'Curriculum Collection'
   end
 
   if holdings(record, context).any? do |holding|
-       holding.home_location =~ /^ART-LOCKED/ || holding.home_location == 'SAL3-PAGE-AR'
+       holding.display_location_code =~ /^ART-LOCKED/ || holding.display_location_code == 'SAL3-PAGE-AR'
      end
     accumulator << 'Art Locked Stacks'
   end
@@ -2138,7 +2138,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   preferred_callnumber_holdings_by_call_number = preferred_callnumber_scheme_holdings.group_by do |holding|
     call_number_object = call_number_for_holding(record, holding, context)
 
-    if preferred_callnumber_scheme_holdings.many? { |y| y.home_location == holding.home_location }
+    if preferred_callnumber_scheme_holdings.many? { |y| y.display_location_code == holding.display_location_code }
       call_number_object.lopped
     else
       call_number_object.call_number
@@ -2180,7 +2180,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   online_locs = %w[E-RECVD E-RESV ELECTR-LOC INTERNET KIOST ONLINE-TXT RESV-URL WORKSTATN]
 
   preferred_holding = non_skipped_holdings.first do |holding|
-    ignored_call_number? || online_locs.include?(holding.current_location) || online_locs.include?(holding.home_location)
+    ignored_call_number? || online_locs.include?(holding.display_location_code)
   end
 
   accumulator << preferred_holding.barcode if preferred_holding
@@ -2197,7 +2197,7 @@ end
 
 to_field 'location_code_facet_ssim' do |record, accumulator, context|
   holdings(record, context).reject(&:skipped?).each do |holding|
-    accumulator << holding.display_location&.dig('code')
+    accumulator << holding.display_location_code
   end
 end
 
@@ -2211,7 +2211,7 @@ to_field 'building_facet' do |record, accumulator, context|
     # should be given two library facet values:
     # SAL3 (off-campus storage) <- they are currently getting this
     # and Art & Architecture (Bowes) <- new requirement
-    accumulator << 'ART' if holding.home_location == 'SAL3-PAGE-AR'
+    accumulator << 'ART' if holding.display_location_code == 'SAL3-PAGE-AR'
   end
 
   accumulator.replace LibrariesMap.translate_array(accumulator)
@@ -2228,16 +2228,16 @@ to_field 'building_location_facet_ssim' do |record, accumulator, context|
     next if holding.skipped?
 
     accumulator << [holding.library, '*'].join('/')
-    accumulator << [holding.library, holding.home_location].join('/')
+    accumulator << [holding.library, holding.display_location_code].join('/')
     accumulator << [holding.library, '*', 'type', holding.type].join('/')
-    accumulator << [holding.library, holding.home_location, 'type', holding.type].join('/')
-    next unless holding.current_location
+    accumulator << [holding.library, holding.display_location_code, 'type', holding.type].join('/')
+    next unless holding.temporary_location_code
 
-    accumulator << [holding.library, '*', 'type', holding.type, 'curr', holding.current_location].join('/')
-    accumulator << [holding.library, '*', 'type', '*', 'curr', holding.current_location].join('/')
-    accumulator << [holding.library, holding.home_location, 'type', '*', 'curr', holding.current_location].join('/')
-    accumulator << [holding.library, holding.home_location, 'type', holding.type, 'curr',
-                    holding.current_location].join('/')
+    accumulator << [holding.library, '*', 'type', holding.type, 'curr', holding.temporary_location_code].join('/')
+    accumulator << [holding.library, '*', 'type', '*', 'curr', holding.temporary_location_code].join('/')
+    accumulator << [holding.library, holding.display_location_code, 'type', '*', 'curr', holding.temporary_location_code].join('/')
+    accumulator << [holding.library, holding.display_location_code, 'type', holding.type, 'curr',
+                    holding.temporary_location_code].join('/')
   end
 end
 
@@ -2255,7 +2255,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
       scheme = call_number_object.scheme.upcase
       # if it's a shelved-by location, use a totally different way to get the callnumber
       if holding.shelved_by_location?
-        lopped_call_number = if [holding.home_location, holding.current_location].include? 'SHELBYSER'
+        lopped_call_number = if [holding.display_location_code, holding.temporary_location_code].include? 'SCI-SHELBYSERIES'
                                'Shelved by Series title'
                              else
                                'Shelved by title'

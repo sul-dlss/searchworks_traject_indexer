@@ -150,13 +150,5 @@ RSpec.describe 'Call Numbers' do
 
       it { is_expected.to be_nil }
     end
-
-    context 'when current location is WITHDRAWN' do
-      let(:holdings) do
-        [build(:lc_holding, current_location: 'WITHDRAWN')]
-      end
-
-      it { is_expected.to be_nil }
-    end
   end
 end

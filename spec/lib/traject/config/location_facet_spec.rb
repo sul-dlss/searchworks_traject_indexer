@@ -9,7 +9,7 @@ RSpec.describe 'Location facet config' do
   let(:folio_record) { marc_to_folio(MARC::Record.new) }
   let(:result) { indexer.map_record(folio_record) }
   let(:field) { 'location_facet' }
-  let(:holdings) { [build(:lc_holding, home_location:)] }
+  let(:holdings) { [build(:lc_holding, additional_item_attributes: { location: { permanentLocation: permanent_location } })] }
   subject(:value) { result[field] }
 
   before do
@@ -17,17 +17,17 @@ RSpec.describe 'Location facet config' do
   end
 
   context 'with home location CURRICULUM' do
-    let(:home_location) { 'EDU-CURRICULUM' }
+    let(:permanent_location) { { code: 'EDU-CURRICULUM' } }
     it { is_expected.to eq ['Curriculum Collection'] }
   end
 
   context 'with home location ARTLCKL-R' do
-    let(:home_location) { 'ART-LOCKED-LARGE' }
+    let(:permanent_location) { { code: 'ART-LOCKED-LARGE' } }
     it { is_expected.to eq ['Art Locked Stacks'] }
   end
 
   context 'with any other home location' do
-    let(:home_location) { 'GRE-REFERENCE' }
+    let(:permanent_location) { { code: 'GRE-REFERENCE' } }
     it { is_expected.to be_nil }
   end
 end
