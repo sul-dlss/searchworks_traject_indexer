@@ -441,7 +441,7 @@ RSpec.describe 'FOLIO indexing' do
         allow(client).to receive(:pieces).and_return([])
       end
 
-      it { expect(result['item_display_struct'].find { |h| h.match?(/CHECKEDOUT/) }).to be_present }
+      it { expect(result['item_display_struct'].find { |h| h.match?(/Checked out/) }).to be_present }
 
       it 'includes the item UUID in the item_display_struct field' do
         expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
@@ -566,7 +566,7 @@ RSpec.describe 'FOLIO indexing' do
         allow(client).to receive(:pieces).and_return([])
       end
 
-      it { expect(result['item_display_struct'].find { |h| h.match?(/INTRANSIT/) }).to be_present }
+      it { expect(result['item_display_struct'].find { |h| h.match?(/In transit/) }).to be_present }
     end
 
     context 'item is awaiting pickup' do
@@ -692,10 +692,6 @@ RSpec.describe 'FOLIO indexing' do
 
       before do
         allow(client).to receive(:pieces).and_return([])
-      end
-
-      it 'uses the pickup location of the request to generate a current location value' do
-        expect(result['item_display_struct'].find { |h| h.match?(/RUM-LOAN/) }).to be_present
       end
     end
   end

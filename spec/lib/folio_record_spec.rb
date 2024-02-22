@@ -641,7 +641,7 @@ RSpec.describe FolioRecord do
 
       it 'uses the item status of the holding as the current location' do
         expect(folio_holdings.first).to have_attributes(
-          current_location: 'INPROCESS',
+          current_location: nil,
           home_location: 'GRE-STACKS',
           library: 'GREEN'
         )

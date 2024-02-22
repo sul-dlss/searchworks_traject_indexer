@@ -56,7 +56,6 @@ class FolioHolding
 
   def current_location
     @current_location ||= temporary_location&.dig('code')
-    @current_location ||= Folio::StatusCurrentLocation.new(item).current_location if item
     @current_location
   end
 
