@@ -2178,8 +2178,8 @@ to_field 'preferred_barcode' do |record, accumulator, context|
 
   next if non_skipped_items.length == 0
 
-  preferred_item = non_skipped_items.find do |holding|
-    holding.ignored_call_number?
+  preferred_item = non_skipped_items.find do |item|
+    item.ignored_call_number?
   end
 
   accumulator << preferred_item.barcode if preferred_item
