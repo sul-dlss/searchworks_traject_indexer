@@ -2166,21 +2166,22 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   accumulator << holding_with_the_most_recent_shelfkey.barcode
 end
 
+# In the first pass (above), we ignored items without a call number (e.g. e-resources, in-process items, etc).
+# E-resources, in particular, sometimes have a call number in the MARC metadata that we can use to drive the
+# browse behavior, so here we take a second pass through the records loosening some of the initial restrictions
+# to try to select an item.
 to_field 'preferred_barcode' do |record, accumulator, context|
   next if context.output_hash['preferred_barcode']
   next unless record['050'] || record['090'] || record['086']
 
-  non_skipped_holdings = []
-  holdings(record, context).each do |holding|
-    next if holding.skipped?
-
-    non_skipped_holdings << holding
+  non_skipped_holdings = holdings(record, context).sort_by(&:call_number).reject do |holding|
+    holding.skipped? || holding.bad_lc_lane_call_number?
   end
 
-  online_locs = %w[E-RECVD E-RESV ELECTR-LOC INTERNET KIOST ONLINE-TXT RESV-URL WORKSTATN]
+  next if non_skipped_holdings.length == 0
 
-  preferred_holding = non_skipped_holdings.first do |holding|
-    ignored_call_number? || online_locs.include?(holding.display_location_code)
+  preferred_holding = non_skipped_holdings.find do |holding|
+    holding.ignored_call_number?
   end
 
   accumulator << preferred_holding.barcode if preferred_holding
