@@ -2170,12 +2170,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   next if context.output_hash['preferred_barcode']
   next unless record['050'] || record['090'] || record['086']
 
-  non_skipped_holdings = []
-  holdings(record, context).each do |holding|
-    next if holding.skipped?
-
-    non_skipped_holdings << holding
-  end
+  non_skipped_holdings = holdings(record, context).filter { |holding| !holding.skipped? }
 
   online_locs = %w[E-RECVD E-RESV ELECTR-LOC INTERNET KIOST ONLINE-TXT RESV-URL WORKSTATN]
 
