@@ -2541,15 +2541,6 @@ to_field 'courses_folio_id_ssim' do |record, _accumulator, context|
   context.output_hash['courses_folio_id_ssim'] = record.courses.map { |course| course[:folio_course_id] }
 end
 
-# TODO: included for parity; refactor SW to use courses_json_struct instead
-to_field 'crez_course_info' do |record, _accumulator, context|
-  context.output_hash['crez_course_info'] = record.courses.flat_map do |course|
-    [course[:course_id]].product(course[:instructors]).map do |course_id, instructor|
-      [course_id, course[:course_name], instructor].join(' -|- ')
-    end
-  end.sort { |ca, cb| ca.split(' -|- ').first <=> cb.split(' -|- ').first }
-end
-
 each_record do |_record, context|
   context.output_hash.reject do |k, _v|
     k == 'mhld_display' || k == 'item_display_struct' || k =~ /^url_/ || k =~ /^marc/
@@ -2674,10 +2665,6 @@ to_field 'holdings_json_struct' do |record, accumulator|
     holdings: record.holdings,
     items: record.items
   }
-end
-
-to_field 'courses_json_struct' do |record, accumulator|
-  accumulator.concat record.courses
 end
 
 each_record do |_record, context|
