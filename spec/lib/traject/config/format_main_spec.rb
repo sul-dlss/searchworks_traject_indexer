@@ -12,7 +12,7 @@ RSpec.describe 'Format main config' do
   let(:field) { 'format_main_ssim' }
 
   before do
-    allow(folio_record).to receive(:folio_holdings).and_return(holdings)
+    allow(folio_record).to receive(:index_items).and_return(holdings)
   end
   let(:holdings) { [] }
 

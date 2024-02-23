@@ -44,17 +44,17 @@ class FolioRecord
     @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, holdings, instance)
   end
 
-  def folio_holdings
-    @folio_holdings ||= begin
-      holdings = item_holdings.concat(bound_with_holdings)
-      holdings = eresource_holdings if holdings.empty?
+  def index_items
+    @index_items ||= begin
+      items = item_holdings.concat(bound_with_holdings)
+      items = eresource_holdings if items.empty?
 
       unless all_items.any?
-        holdings = on_order_holdings if holdings.empty?
-        holdings = on_order_stub_holdings if holdings.empty?
+        items = on_order_holdings if items.empty?
+        items = on_order_stub_holdings if items.empty?
       end
 
-      holdings
+      items
     end
   end
 
