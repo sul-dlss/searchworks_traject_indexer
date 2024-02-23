@@ -13,7 +13,7 @@ RSpec.describe 'Location facet config' do
   subject(:value) { result[field] }
 
   before do
-    allow(folio_record).to receive(:folio_holdings).and_return(holdings)
+    allow(folio_record).to receive(:index_items).and_return(holdings)
   end
 
   context 'with home location CURRICULUM' do

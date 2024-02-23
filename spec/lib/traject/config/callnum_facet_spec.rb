@@ -13,7 +13,7 @@ def record_with_holdings(call_number:, item:, indexer:, status: 'Available', per
           barcode: '')
   ]
   yield(holdings) if block_given?
-  allow(folio_record).to receive(:folio_holdings).and_return(holdings)
+  allow(folio_record).to receive(:index_items).and_return(holdings)
   indexer.map_record(folio_record)
 end
 # rubocop:enable Metrics/ParameterLists
@@ -42,7 +42,7 @@ RSpec.describe 'Call Number Facet' do
   let(:holdings) { [] }
 
   before do
-    allow(folio_record).to receive(:folio_holdings).and_return(holdings)
+    allow(folio_record).to receive(:index_items).and_return(holdings)
   end
 
   describe 'call numbers excluded for various reasons' do
@@ -390,14 +390,14 @@ RSpec.describe 'Call Number Facet' do
 
     let(:folio_client) { instance_double(FolioClient, instance: {}, items_and_holdings:, statistical_codes: []) }
     let(:items_and_holdings) { {} }
-    let(:folio_holdings) { [] }
+    let(:index_items) { [] }
 
     before do
-      allow(folio_record).to receive(:folio_holdings).and_return(folio_holdings)
+      allow(folio_record).to receive(:index_items).and_return(index_items)
     end
 
     context 'with a SUDOC scheme' do
-      let(:folio_holdings) do
+      let(:index_items) do
         [build(:sudoc_holding, call_number: 'I 19.76:98-600-B')]
       end
 
@@ -479,7 +479,7 @@ RSpec.describe 'Call Number Facet' do
     end
 
     context 'when it has an LC and Dewey and SUDOC call numbers' do
-      let(:folio_holdings) do
+      let(:index_items) do
         [
           build(:sudoc_holding, call_number: 'I 19.76:98-600-B'),
           build(:dewey_holding, call_number: '550.6 .U58O 00-600'),
