@@ -128,7 +128,7 @@ def call_number_for_item(record, item, context)
 
       Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
         separate_browse_call_num << CallNumbers::LC.new(item_050,
-                                                        serial:) if FolioHolding::CallNumber.new(item_050).valid_lc?
+                                                        serial:) if FolioItem::CallNumber.new(item_050).valid_lc?
       end
     end
 
@@ -1760,7 +1760,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
 
     translation_map = Traject::TranslationMap.new('call_number')
     cn = item.call_number.normalized_lc
-    next unless FolioHolding::CallNumber.new(cn).valid_lc?
+    next unless FolioItem::CallNumber.new(cn).valid_lc?
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1808,7 +1808,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless cn =~ FolioHolding::CallNumber::VALID_LC_REGEX
+    next unless cn =~ FolioItem::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1832,7 +1832,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless cn =~ FolioHolding::CallNumber::VALID_LC_REGEX
+    next unless cn =~ FolioItem::CallNumber::VALID_LC_REGEX
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1917,7 +1917,7 @@ to_field 'callnum_search' do |record, accumulator, context|
 end
 
 to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, accumulator, _context|
-  accumulator.select! { |cn| cn =~ FolioHolding::CallNumber::VALID_LC_REGEX }
+  accumulator.select! { |cn| cn =~ FolioItem::CallNumber::VALID_LC_REGEX }
 end
 
 # shelfkey = custom, getShelfkeys

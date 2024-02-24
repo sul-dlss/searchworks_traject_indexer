@@ -29,8 +29,7 @@ Style/RedundantParentheses:
 
 Metrics/ClassLength:
   Exclude:
-    - 'lib/folio_holding.rb'
-    - 'lib/sirsi_holding.rb'
+    - 'lib/folio_item.rb'
 
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true

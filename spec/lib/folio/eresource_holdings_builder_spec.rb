@@ -36,7 +36,7 @@ RSpec.describe Folio::EresourceHoldingsBuilder do
   end
 
   it { expect(holdings.count).to eq 1 }
-  it { expect(holdings.first).to be_a FolioHolding }
+  it { expect(holdings.first).to be_a FolioItem }
   it { expect(holdings.first.display_location_code).to eq 'SUL-ELECTRONIC' }
   it { expect(holdings.first.library).to eq 'SUL' }
   it { expect(holdings.first.type).to eq 'ONLINE' }
