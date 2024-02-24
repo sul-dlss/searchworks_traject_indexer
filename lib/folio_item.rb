@@ -2,7 +2,7 @@
 
 require 'forwardable'
 
-class FolioHolding
+class FolioItem
   extend Forwardable
 
   delegate %i[dewey? valid_lc?] => :call_number

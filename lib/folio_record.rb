@@ -149,7 +149,7 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
-      FolioHolding.new(
+      FolioItem.new(
         item:,
         holding:,
         instance:,
@@ -158,16 +158,16 @@ class FolioRecord
     end
   end
 
-  # since FOLIO Bound-with records don't have items, we generate a FolioHolding using data from the parent
-  # item and child holding, # or, if there is no parent item, we generate a stub FolioHolding from the original
+  # since FOLIO Bound-with records don't have items, we generate a FolioItem using data from the parent
+  # item and child holding, # or, if there is no parent item, we generate a stub FolioItem from the original
   # bound-with holding.
-  # TODO: remove this when we stop using FolioHolding
+  # TODO: remove this when we stop using FolioItem
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
       parent_holding = holding.dig('boundWith', 'holding') || holding
 
-      FolioHolding.new(
+      FolioItem.new(
         item: parent_item,
         holding: parent_holding,
         instance: holding.dig('boundWith', 'instance'),
@@ -186,7 +186,7 @@ class FolioRecord
     end
 
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
-      FolioHolding.new(
+      FolioItem.new(
         holding:,
         instance:,
         status: 'On order'
@@ -202,7 +202,7 @@ class FolioRecord
     # exclude generic SUL if there's a more specific library
     lib_codes -= ['SUL'] if lib_codes.length > 1
     lib_codes.map do |lib|
-      FolioHolding.new(
+      FolioItem.new(
         instance:,
         library: lib,
         status: 'On order'

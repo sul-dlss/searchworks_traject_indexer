@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Folio
-  # Folio::EresourceHoldingsBuilder builds an array of FolioHolding
+  # Folio::EresourceHoldingsBuilder builds an array of FolioItem
   # instances for electronic resources from FOLIO record components
   class EresourceHoldingsBuilder
     TYPE = 'ONLINE'
@@ -28,7 +28,7 @@ module Folio
       fields = electronic_location_fields.first(1) if fields.empty?
 
       fields.map.with_index do |_url, index|
-        folio_holding(index)
+        folio_item(index)
       end
     end
 
@@ -44,8 +44,8 @@ module Folio
       (marc_record || []).select { |field| %w[856 956].include?(field.tag) && field.codes.include?('u') }
     end
 
-    def folio_holding(index)
-      FolioHolding.new(
+    def folio_item(index)
+      FolioItem.new(
         item: { 'barcode' => barcode(index) },
         holding: electronic_holding_location,
         type: TYPE
