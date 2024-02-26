@@ -2315,6 +2315,18 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
+# TODO: After this field is fully populated and Searchworks is using it to drive browse-nearby, the shelfkey
+# logic in the item_display_struct field can move down here.
+to_field 'browse_nearby_struct' do |_record, accumulator, context|
+  next unless context.output_hash['item_display_struct']
+
+  browseable_items = context.output_hash['item_display_struct'].select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) }
+
+  accumulator.concat(browseable_items.sort_by { |v| v[:shelfkey] }.uniq { |v| v[:shelfkey] }.map do |v|
+    v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
+  end)
+end
+
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|
