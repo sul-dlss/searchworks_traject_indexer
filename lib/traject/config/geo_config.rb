@@ -107,7 +107,7 @@ settings do
 
     begin
       druid = traject_context.source_record&.druid
-      SdrEvents.report_indexing_errored(druid, message: err.message, context:) if druid
+      SdrEvents.report_indexing_errored(druid, target: 'Earthworks', message: err.message, context:) if druid
     rescue StandardError => e
       Honeybadger.notify(e, context:)
     end
@@ -170,7 +170,7 @@ each_record do |record, context|
   # delete records form the index
   context.output_hash['id'] = ["stanford-#{druid}"]
 
-  SdrEvents.report_indexing_deleted(druid)
+  SdrEvents.report_indexing_deleted(druid, target: settings['purl_fetcher.target'])
   context.skip!("Delete: #{druid}")
 end
 
@@ -179,7 +179,7 @@ each_record do |record, context|
   next if record.public_xml?
 
   message = 'Item is in processing or does not exist'
-  SdrEvents.report_indexing_skipped(record.druid, message:)
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
   context.skip!("#{message}: #{record.druid}")
 end
 
@@ -188,7 +188,7 @@ each_record do |record, context|
   next if %w[image map book geo file].include?(record.dor_content_type) || record.collection?
 
   message = "Item content type \"#{record.dor_content_type}\" is not supported"
-  SdrEvents.report_indexing_skipped(record.druid, message:)
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
   context.skip!("#{message}: #{record.druid}")
 end
 
@@ -460,7 +460,7 @@ each_record do |record, context|
     context.output_hash['solr_geom'] = context.output_hash['solr_geom'].first
   else
     message = 'No ENVELOPE available for item'
-    SdrEvents.report_indexing_skipped(record.druid, message:)
+    SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
     context.skip!("#{message}: #{context.output_hash['id']}")
   end
 end
@@ -470,7 +470,7 @@ each_record do |record, context|
   t1 = Time.now
 
   logger.debug('geo_config.rb') { "Processed #{context.output_hash['id']} (#{t1 - t0}s)" }
-  SdrEvents.report_indexing_success(record.druid)
+  SdrEvents.report_indexing_success(record.druid, target: settings['purl_fetcher.target'])
 end
 
 # rubocop:disable Metrics/MethodLength

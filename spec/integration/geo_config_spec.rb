@@ -315,7 +315,7 @@ describe 'EarthWorks indexing' do
     context 'when indexing is successful' do
       it 'creates an indexing success event' do
         expect(result).to be_a Hash
-        expect(SdrEvents).to have_received(:report_indexing_success).with(druid)
+        expect(SdrEvents).to have_received(:report_indexing_success).with(druid, target: 'Earthworks')
       end
     end
 
@@ -324,7 +324,7 @@ describe 'EarthWorks indexing' do
 
       it 'creates an indexing delete event' do
         expect(result).to be_nil
-        expect(SdrEvents).to have_received(:report_indexing_deleted).with(druid)
+        expect(SdrEvents).to have_received(:report_indexing_deleted).with(druid, target: 'Earthworks')
       end
     end
 
@@ -334,7 +334,7 @@ describe 'EarthWorks indexing' do
       it 'creates an indexing skipped event with message' do
         expect(result).to be_nil
         expect(SdrEvents).to have_received(:report_indexing_skipped)
-          .with(druid, message: 'Item is in processing or does not exist')
+          .with(druid, message: 'Item is in processing or does not exist', target: 'Earthworks')
       end
     end
 
@@ -344,7 +344,7 @@ describe 'EarthWorks indexing' do
       it 'creates an indexing skipped event with message' do
         expect(result).to be_nil
         expect(SdrEvents).to have_received(:report_indexing_skipped)
-          .with(druid, message: 'Item content type "document" is not supported')
+          .with(druid, message: 'Item content type "document" is not supported', target: 'Earthworks')
       end
     end
 
@@ -362,7 +362,7 @@ describe 'EarthWorks indexing' do
       it 'creates an indexing skipped event with message' do
         expect(result).to be_nil
         expect(SdrEvents).to have_received(:report_indexing_skipped)
-          .with(druid, message: 'No ENVELOPE available for item')
+          .with(druid, message: 'No ENVELOPE available for item', target: 'Earthworks')
       end
     end
 
@@ -378,6 +378,7 @@ describe 'EarthWorks indexing' do
         expect(SdrEvents).to have_received(:report_indexing_errored)
           .with(
             druid,
+            target: 'Earthworks',
             message: 'Error message',
             context: a_hash_including(
               index_step: an_instance_of(String),
