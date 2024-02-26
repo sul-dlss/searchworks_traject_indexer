@@ -385,7 +385,7 @@ RSpec.describe 'All_search config' do
   context 'with an online item' do
     let(:index_items) do
       [
-        build(:lc_holding, barcode: 'onlineByCallnum', type: 'ONLINE')
+        build(:sudoc_holding, :internet_holding, barcode: 'onlineByCallnum')
       ]
     end
     it { is_expected.to eq nil }
@@ -406,7 +406,7 @@ RSpec.describe 'All_search config' do
 
     let(:index_items) do
       [
-        build(:lc_holding, barcode: 'onlineByCallnum', type: 'ONLINE')
+        build(:sudoc_holding, :internet_holding, barcode: 'onlineByCallnum')
       ]
     end
 

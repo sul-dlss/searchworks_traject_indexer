@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ParameterLists
-def record_with_holdings(call_number:, item:, indexer:, status: 'Available', permanent_location_code: 'STACKS', library: 'GREEN', type: '')
+def record_with_holdings(item:, indexer:, status: 'Available', permanent_location_code: 'STACKS', library: 'GREEN', type: '')
   holdings = [
     build(:holding,
-          call_number:,
           permanent_location_code:,
           library:,
           item:,
@@ -53,77 +52,76 @@ RSpec.describe 'Call Number Facet' do
       #   ['LC Classification|M - Music|M - Music']
       # )
       # LC
-      expect(record_with_holdings(call_number: 'M123 .M456', permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'LC' } },
+      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
                                   indexer:)[field]).to be_nil
       # Dewey
-      expect(record_with_holdings(call_number: '123.4 .B45', permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'DEWEY' } },
+      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
                                   indexer:)[field]).to be_nil
     end
 
     it 'handles missing or lost call numbers (by not including them)' do
       # LC
-      expect(record_with_holdings(call_number: 'M123 .M456', status: 'Missing', item: { 'callNumberType' => { 'name' => 'LC' } },
+      expect(record_with_holdings(status: 'Missing', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
                                   indexer:)[field]).to be_nil
       # Dewey
-      expect(record_with_holdings(call_number: '123.4 .B45', status: 'Missing', item: { 'callNumberType' => { 'name' => 'DEWEY' } },
+      expect(record_with_holdings(status: 'Missing', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
                                   indexer:)[field]).to be_nil
     end
 
     it 'handles ignored call numbers (by not including them)' do
       # LC
-      expect(record_with_holdings(call_number: 'INTERNET RESOURCE stuff', item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'XX stuff', item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'NO CALL NUMBER', item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(type: 'ONLINE', item: { 'callNumberType' => { 'name' => 'ASIC' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'XX stuff' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'NO CALL NUMBER' } }, indexer:)[field]).to be_nil
 
       # Dewey
-      expect(record_with_holdings(call_number: 'INTERNET RESOURCE stuff', item: { 'callNumberType' => { 'name' => 'DEWEY' } },
-                                  indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'XX stuff', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'NO CALL NUMBER', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(type: 'ONLINE', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => 'XX stuff' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => 'NO CALL NUMBER' } }, indexer:)[field]).to be_nil
     end
 
     it 'handles empty call numbers (by not returning them)' do
       # LC
-      expect(record_with_holdings(call_number: nil, item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '', item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: ' ', item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '. . ', item: { 'callNumberType' => { 'name' => 'LC' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => nil } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => '' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => ' ' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => '. . ' } }, indexer:)[field]).to be_nil
 
       # Dewey
-      expect(record_with_holdings(call_number: nil, item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: ' ', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '. . ', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => nil } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => ' ' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '. . ' } }, indexer:)[field]).to be_nil
     end
 
     it 'does not return call nubmers typed as Alphanum, and clearly not LC or Dewey' do
-      expect(record_with_holdings(call_number: '71 15446 V.1', item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '4488.301 0300 2001 CD-ROM', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '71 15446 V.1' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '4488.301 0300 2001 CD-ROM' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '8291.209 .A963 V.5 1971/1972', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '8291.209 .A963 V.5 1971/1972' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '"NEW BEGINNING" INVESTMENT RESERVE FUND', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '"NEW BEGINNING" INVESTMENT RESERVE FUND' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '"21" BRANDS, INCORPORATED', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '"21" BRANDS, INCORPORATED' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: ' "LA CONSOLIDADA", S.A', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => ' "LA CONSOLIDADA", S.A' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '(THE) NWNL COMPANIES, INC.', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '(THE) NWNL COMPANIES, INC.' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'ISHII SPRING 2009', item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'OYER WINTER 2012', item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: "O'REILLY FALL 2006", item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'XV 852', item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'YUGOSLAV SERIAL 1963 NO.5-6', item: { 'callNumberType' => { 'name' => 'Shelving control number' } },
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => 'ISHII SPRING 2009' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => 'OYER WINTER 2012' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => "O'REILLY FALL 2006" } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => 'XV 852' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => 'YUGOSLAV SERIAL 1963 NO.5-6' } },
                                   indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'SUSEL-69048', item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'MFICHE 3239', item: { 'callNumberType' => { 'name' => 'Shelving control number' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => 'SUSEL-69048' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => 'MFICHE 3239' } }, indexer:)[field]).to be_nil
     end
 
     it 'does not return call numbers w/ the scheme ASIS' do
-      expect(record_with_holdings(call_number: '(ADL4044.1)XX', item: { 'callNumberType' => { 'name' => 'ASIS' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: '134776', item: { 'callNumberType' => { 'name' => 'ASIS' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(call_number: 'INTERNET RESOURCE', item: { 'callNumberType' => { 'name' => 'ASIS' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'ASIS' }, 'callNumber' => { 'callNumber' => '(ADL4044.1)XX' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'ASIS' }, 'callNumber' => { 'callNumber' => '134776' } }, indexer:)[field]).to be_nil
+      expect(record_with_holdings(type: 'ONLINE', item: { 'callNumberType' => { 'name' => 'ASIS' } }, indexer:)[field]).to be_nil
     end
   end
 
@@ -353,9 +351,8 @@ RSpec.describe 'Call Number Facet' do
   end
 
   context 'with items typed as DEWEYPER' do
-    let(:result) { record_with_holdings(call_number:, item: { 'callNumberType' => { 'name' => 'DEWEYPER' } }, indexer:) }
+    let(:result) { record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEYPER' }, 'callNumber' => { 'callNumber' => '550.6 .U58O 92-600' } }, indexer:) }
 
-    let(:call_number) { '550.6 .U58O 92-600' }
     it { is_expected.to eq ['Dewey Classification|500s - Natural Sciences & Mathematics|550s - Earth Sciences'] }
   end
 
