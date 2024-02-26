@@ -447,6 +447,16 @@ RSpec.describe 'FOLIO indexing' do
                                                                                          hash_including('id' => '5362817d-f2df-503c-aa20-b2287c64ae25')
                                                                                        ])
       end
+
+      it 'includes the item in the browse_nearby_struct' do
+        expect(result['browse_nearby_struct'].map { |x| JSON.parse(x) }).to match_array(hash_including(
+                                                                                          'item_id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
+                                                                                          'callnumber' => 'HV6432.7 .R57 2011',
+                                                                                          'shelfkey' => 'lc hv  6432.700000 r0.570000 002011',
+                                                                                          'reverse_shelfkey' => 'en~i4~~tvwx}szzzzz~8z}uszzzz~zzxzyy~~~~~~~~~~~~~~~',
+                                                                                          'scheme' => 'LC'
+                                                                                        ))
+      end
     end
 
     context 'item status is in-transit' do
