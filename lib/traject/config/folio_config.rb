@@ -110,21 +110,8 @@ each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
 
-def call_number_object(call_number, call_number_type, holdings_items: [], serial: false)
-  calculated_call_number_type = case call_number_type
-                                when 'LC'
-                                  if call_number.valid_lc?
-                                    'LC'
-                                  elsif call_number.dewey?
-                                    'DEWEY'
-                                  else
-                                    'OTHER'
-                                  end
-                                when 'DEWEY'
-                                  'DEWEY'
-                                else
-                                  'OTHER'
-                                end
+def call_number_object(call_number, holdings_items: [], serial: false)
+  calculated_call_number_type = call_number.type
 
   case calculated_call_number_type
   when 'LC'
@@ -158,7 +145,7 @@ def call_number_for_item(record, item, context)
 
       Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
         separate_browse_call_num << CallNumbers::LC.new(item_050,
-                                                        serial:) if FolioItem::CallNumber.new(item_050).valid_lc?
+                                                        serial:) if FolioItem::CallNumber.new(item_050, 'LC').valid_lc?
       end
     end
 
@@ -176,7 +163,7 @@ def call_number_for_item(record, item, context)
 
   context.clipboard[:call_number_for_item][item] ||= begin
     holdings_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type][[item.library, item.display_location&.dig('name'), item.call_number_type]] || []
-    call_number_object(item.call_number, item.call_number_type, holdings_items:, serial:)
+    call_number_object(item.call_number, holdings_items:, serial:)
   end
 end
 
@@ -2339,11 +2326,11 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
 
   callnumber = begin
     value = eresource.holding&.dig('callNumber')
-    call_number_object(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name'))) if value
+    call_number_object(FolioItem::CallNumber.new(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name')))) if value
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
-    call_number_object(FolioItem::CallNumber.new(item_050), 'LC') if FolioItem::CallNumber.new(item_050).valid_lc?
+    call_number_object(FolioItem::CallNumber.new(item_050, 'LC')) if FolioItem::CallNumber.new(item_050, 'LC').valid_lc?
   end.first
 
   next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.scheme.upcase)
