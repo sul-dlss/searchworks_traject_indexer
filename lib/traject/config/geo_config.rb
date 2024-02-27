@@ -329,9 +329,9 @@ to_field 'dct_references_s' do |record, accumulator, context|
 
     references.merge!(
       {
-        'http://schema.org/downloadUrl' => "#{settings['stacks.url']}/file/druid:#{record.druid}/data.zip",
+        'http://schema.org/downloadUrl' => "#{settings['stacks.url']}/object/#{record.druid}",
         'http://www.opengis.net/def/serviceType/ogc/wms' => "#{geoserver_url(record)}/wms",
-        'http://www.isotc211.org/schemas/2005/gmd/' => "https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/#{record.druid_tree}/iso19139.xml"
+        'http://www.isotc211.org/schemas/2005/gmd/' => "#{settings['stacks.url']}/file/druid:#{record.druid}/iso19139.xml"
       }
     )
 
@@ -339,7 +339,7 @@ to_field 'dct_references_s' do |record, accumulator, context|
       references.merge!(
         {
           'http://www.opengis.net/def/serviceType/ogc/wfs' => "#{geoserver_url(record)}/wfs",
-          'http://www.isotc211.org/schemas/2005/gco/' => "https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/#{record.druid_tree}/iso19110.xml"
+          'http://www.isotc211.org/schemas/2005/gco/' => "#{settings['stacks.url']}/file/druid:#{record.druid}/iso19110.xml"
         }
       )
     elsif formats.include?('GeoTIFF') || formats.include?('ArcGRID')
@@ -350,12 +350,12 @@ to_field 'dct_references_s' do |record, accumulator, context|
       )
     end
 
-    index_map = !record.public_xml_doc.xpath('//file[@id="index_map.json"]').empty?
+    index_map = !record.public_xml_doc.xpath('//file[@id="index_map.geojson"]').empty?
 
     if index_map
       references.merge!(
         {
-          'https://openindexmaps.org' => "#{settings['stacks.url']}/file/druid:#{record.druid}/index_map.json"
+          'https://openindexmaps.org' => "#{settings['stacks.url']}/file/druid:#{record.druid}/index_map.geojson"
         }
       )
     end

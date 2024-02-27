@@ -144,9 +144,9 @@ describe 'EarthWorks indexing' do
     it 'contains the correct dct_references_s' do
       expect(JSON.parse(result['dct_references_s'].first)).to include(
         'http://schema.org/url' => 'https://purl.stanford.edu/vv853br8653',
-        'http://schema.org/downloadUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+        'http://schema.org/downloadUrl' => 'https://stacks.stanford.edu/object/vv853br8653',
         'http://www.loc.gov/mods/v3' => 'https://purl.stanford.edu/vv853br8653.mods',
-        'http://www.isotc211.org/schemas/2005/gmd/' => 'https://raw.githubusercontent.com/OpenGeoMetadata/edu.stanford.purl/master/vv/853/br/8653/iso19139.xml',
+        'http://www.isotc211.org/schemas/2005/gmd/' => 'https://stacks.stanford.edu/file/druid:vv853br8653/iso19139.xml',
         'http://www.opengis.net/def/serviceType/ogc/wfs' => 'https://geowebservices.stanford.edu/geoserver/wfs',
         'http://www.opengis.net/def/serviceType/ogc/wms' => 'https://geowebservices.stanford.edu/geoserver/wms'
       )
