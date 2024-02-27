@@ -62,11 +62,11 @@ class FolioItem
   end
 
   def skipped?
-    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SKIPPED_LOCS)
+    [display_location&.dig('code'), temporary_location_code].intersect?(SKIPPED_LOCS)
   end
 
   def shelved_by_location?
-    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITL')
+    [display_location&.dig('code'), temporary_location_code].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITL')
   end
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
@@ -132,14 +132,14 @@ class FolioItem
       barcode:,
       library:,
       home_location: display_location&.dig('code'),
-      current_location: temporary_location&.dig('code'),
+      current_location: temporary_location_code,
       type:,
       note: public_note.presence,
       instance_id: instance&.dig('id'),
       instance_hrid: instance&.dig('hrid'),
       # FOLIO item data to replace library/home_location/current_location some day
       effective_permanent_location_code: display_location_code,
-      temporary_location_code: temporary_location&.dig('code'),
+      temporary_location_code:,
       permanent_location_code: permanent_location&.dig('code'),
       status:,
       # FOLIO data used to drive circulation rules
