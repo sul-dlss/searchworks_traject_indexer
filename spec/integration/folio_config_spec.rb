@@ -229,6 +229,15 @@ RSpec.describe 'FOLIO indexing' do
       )
     }
 
+    it 'includes the item in the browse_nearby_struct' do
+      expect(result['browse_nearby_struct'].map { |x| JSON.parse(x) }).to match_array(hash_including(
+                                                                                        'callnumber' => 'PR3562 .L385 2014',
+                                                                                        'lopped_call_number' => 'PR3562 .L385 2014',
+                                                                                        'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
+                                                                                        'reserve_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
+                                                                                        'scheme' => 'LC'
+                                                                                      ))
+    end
     it { expect(result['access_facet']).to eq ['Online'] }
     it { expect(result['shelfkey']).to eq ['lc pr  3562.000000 l0.385000 002014'] }
     it { expect(result['building_facet']).to be_nil }
