@@ -19,14 +19,13 @@ class FolioItem
   def initialize(item: nil, holding: nil, instance: nil,
                  bound_with_holding: nil,
                  course_reserves: [],
-                 call_number: nil, type: nil, status: nil,
+                 type: nil, status: nil,
                  library: nil)
     @item = item
     @holding = holding
     @instance = instance
     @bound_with_holding = bound_with_holding
     @id = @item&.dig('id')
-    @provided_call_number = call_number || @bound_with_holding&.dig('callNumber') || ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) || @holding&.dig('callNumber')
     @status = status || item&.dig('status')
     @library = library
     @type = type || @item&.dig('materialType')
@@ -58,7 +57,7 @@ class FolioItem
   end
 
   def call_number
-    @call_number ||= CallNumber.new(normalize_call_number(@provided_call_number))
+    @call_number ||= build_call_number
   end
 
   def skipped?
@@ -178,6 +177,14 @@ class FolioItem
   def permanent_location
     item&.dig('location', 'permanentLocation') ||
       holding&.dig('location', 'effectiveLocation')
+  end
+
+  def build_call_number
+    provided_call_number = @bound_with_holding&.dig('callNumber') ||
+                           ([@item.dig('callNumber', 'callNumber'), @item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ') if @item) ||
+                           @holding&.dig('callNumber')
+
+    CallNumber.new(normalize_call_number(provided_call_number))
   end
 
   # Call number normalization ported from solrmarc code

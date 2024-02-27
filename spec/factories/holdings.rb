@@ -14,10 +14,13 @@ FactoryBot.define do
           'callNumberType' => { 'name' => scheme },
           'barcode' => barcode,
           'notes' => notes
-        }
+        }.tap do |json|
+          json.merge!('callNumber' => { 'callNumber' => call_number }) if call_number
+        end
       end
       permanent_location_code { '' }
       permanent_location { { 'code' => permanent_location_code } }
+      call_number { nil }
     end
     library { 'GREEN' }
     type { '' }
