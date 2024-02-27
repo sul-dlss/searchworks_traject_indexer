@@ -2322,11 +2322,40 @@ end
 to_field 'browse_nearby_struct' do |_record, accumulator, context|
   next unless context.output_hash['item_display_struct']
 
-  browseable_items = context.output_hash['item_display_struct'].select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) }
+  browseable_items = context.output_hash['item_display_struct'].select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) && v[:type] != 'ONLINE' }
 
   accumulator.concat(browseable_items.sort_by { |v| v[:shelfkey] }.uniq { |v| v[:shelfkey] }.map do |v|
     v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
   end)
+end
+
+# Inject a special browse nearby entry for e-resources, using either the call number from the holdings record
+# or from the MARC data.
+to_field 'browse_nearby_struct' do |record, accumulator, context|
+  next if context.output_hash['item_display_struct']&.any? { |v| v[:type] != 'ONLINE' }
+
+  eresource = Folio::EresourceHoldingsBuilder.new(record.hrid, record.holdings, record.marc_record).build.first
+
+  next unless eresource
+
+  callnumber = begin
+    value = eresource.holding&.dig('callNumber')
+    call_number_object(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name'))) if value
+  end
+
+  callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
+    call_number_object(FolioItem::CallNumber.new(item_050), 'LC') if FolioItem::CallNumber.new(item_050).valid_lc?
+  end.first
+
+  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.scheme.upcase)
+
+  accumulator << {
+    lopped_call_number: callnumber.call_number,
+    shelfkey: callnumber.to_shelfkey,
+    reserve_shelfkey: callnumber.to_reverse_shelfkey,
+    callnumber: callnumber.call_number,
+    scheme: callnumber.scheme.upcase
+  }
 end
 
 ##
