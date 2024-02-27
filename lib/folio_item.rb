@@ -83,7 +83,7 @@ class FolioItem
   end
 
   def skipped?
-    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SKIPPED_LOCS)
+    [display_location&.dig('code'), temporary_location_code].intersect?(SKIPPED_LOCS)
   end
 
   def shelved_by_text
@@ -116,7 +116,7 @@ class FolioItem
       instance_id: bound_with&.dig('instance', 'id') || instance&.dig('id'),
       instance_hrid: bound_with&.dig('instance', 'hrid') || instance&.dig('hrid'),
       effective_permanent_location_code: display_location_code,
-      temporary_location_code: temporary_location&.dig('code'),
+      temporary_location_code:,
       permanent_location_code: permanent_location&.dig('code'),
       status:,
       # FOLIO data used to drive circulation rules
