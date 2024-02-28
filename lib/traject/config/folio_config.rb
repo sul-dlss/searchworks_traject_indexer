@@ -1909,61 +1909,6 @@ to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, ac
   accumulator.select! { |cn| cn =~ FolioItem::CallNumber::VALID_LC_REGEX }
 end
 
-# shelfkey = custom, getShelfkeys
-
-to_field 'shelfkey' do |record, accumulator, context|
-  items(record, context).each do |item|
-    next if item.skipped? || item.shelved_by_location? || item.lost_or_missing?
-
-    non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
-
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]])
-
-    if stuff_in_the_same_library.length > 1
-      call_number_object = call_number_for_item(record, item, context)
-      lopped_shelfkey = call_number_object.to_lopped_shelfkey
-
-      # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this item's shelfkey, we need to add ellipses.
-      accumulator << if lopped_shelfkey != call_number_object.to_shelfkey || stuff_in_the_same_library.reject do |x|
-                                                                               x.call_number.to_s == item.call_number.to_s
-                                                                             end.any? do |x|
-                          call_number_for_item(record, x, context).lopped == call_number_object.lopped
-                        end
-                       lopped_shelfkey + ' ...'
-                     else
-                       lopped_shelfkey
-                     end
-    else
-      accumulator << call_number_for_item(record, item, context).to_shelfkey
-    end
-  end
-end
-
-# given a shelfkey (a lexicaly sortable call number), return the reverse
-# shelf key - a sortable version of the call number that will give the
-# reverse order (for getting "previous" call numbers in a list)
-#
-# return the reverse String value, mapping A --> 9, B --> 8, ...
-#   9 --> A and also non-alphanum to sort properly (before or after alphanum)
-to_field 'reverse_shelfkey' do |record, accumulator, context|
-  items(record, context).each do |item|
-    next if item.skipped? || item.shelved_by_location? || item.lost_or_missing?
-
-    non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
-
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]])
-
-    if stuff_in_the_same_library.length > 1
-      call_number_object = call_number_for_item(record, item, context)
-      lopped_shelfkey = call_number_object.to_lopped_reverse_shelfkey
-
-      accumulator << lopped_shelfkey
-    else
-      accumulator << call_number_for_item(record, item, context).to_reverse_shelfkey
-    end
-  end
-end
-
 #
 # # Location facet
 to_field 'location_facet' do |record, accumulator, context|
@@ -2303,14 +2248,22 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
-# TODO: After this field is fully populated and Searchworks is using it to drive browse-nearby, the shelfkey
-# logic in the item_display_struct field can move down here.
-to_field 'browse_nearby_struct' do |_record, accumulator, context|
-  next unless context.output_hash['item_display_struct']
+to_field 'browse_nearby_struct' do |record, accumulator, context|
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
+  browseable_schemes = %w[LC DEWEY ALPHANUM]
+  grouped_items = items(record, context).select(&:browseable?).group_by { |v| v.call_number.call_number }
 
-  browseable_items = context.output_hash['item_display_struct'].select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) && v[:type] != 'ONLINE' }
+  browseable_items = grouped_items.map do |_k, v|
+    if v.one?
+      v.first
+    elsif serial
+      v.max_by { |x| x.call_number.sortable_volume_info }
+    else
+      v.min_by { |x| x.call_number.sortable_volume_info }
+    end
+  end
 
-  accumulator.concat(browseable_items.sort_by { |v| v[:shelfkey] }.uniq { |v| v[:shelfkey] }.map do |v|
+  accumulator.concat(browseable_items.map do |v|
     v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
   end)
 end
@@ -2342,6 +2295,24 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
     callnumber: callnumber.call_number,
     scheme: callnumber.scheme.upcase
   }
+end
+
+to_field 'shelfkey' do |_record, accumulator, context|
+  accumulator.concat((context.output_hash['browse_nearby_struct'] || []).map do |item|
+    item[:shelfkey]
+  end)
+end
+
+# given a shelfkey (a lexicaly sortable call number), return the reverse
+# shelf key - a sortable version of the call number that will give the
+# reverse order (for getting "previous" call numbers in a list)
+#
+# return the reverse String value, mapping A --> 9, B --> 8, ...
+#   9 --> A and also non-alphanum to sort properly (before or after alphanum)
+to_field 'reverse_shelfkey' do |_record, accumulator, context|
+  accumulator.concat((context.output_hash['browse_nearby_struct'] || []).map do |item|
+    item[:reverse_shelfkey]
+  end)
 end
 
 ##
@@ -2687,7 +2658,6 @@ end
 # - is "materialType" the correct field for the item type in FOLIO?
 # - URLs will be in the holdings record instead of the in 856
 # - How should we handle item statuses? "at the bindery", "lost"?
-# - does effectiveShelvingOrder replace our shelfkeys (and get rid of weird lopping code) ? help with shelve-by-title enumeration?
 
 to_field 'uuid_ssi' do |record, accumulator|
   accumulator << record.instance_id

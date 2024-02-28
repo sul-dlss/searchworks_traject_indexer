@@ -242,6 +242,16 @@ class FolioItem
       to_s <=> other.to_s
     end
 
+    def sortable_volume_info
+      return unless volume_info
+      return volume_info.downcase.strip unless volume_info[/\d+/]
+
+      # prefix all numbers with the count of digits (and the count of digits of the count) so they sort lexically
+      volume_info.downcase.gsub(/\d+/) do |val|
+        val.length.length.to_s + val.length.to_s + val
+      end
+    end
+
     def to_s
       [call_number.to_s, volume_info].compact.join(' ')
     end
