@@ -118,6 +118,12 @@ class FolioItem
     temp_call_number? && status == 'On order'
   end
 
+  def browseable?
+    return false if internet_resource? || skipped? || lost_or_missing? || shelved_by_location?
+
+    browseable_schemes.include?(call_number_type)
+  end
+
   def ==(other)
     other.is_a?(self.class) and
       other.id == @id
