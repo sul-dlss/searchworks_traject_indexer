@@ -149,6 +149,16 @@ def mods_display(method, *args, default: nil)
   end
 end
 
+# Index map file name, if any
+# TODO: remove support for plain .json once all records have been remediated to .geojson
+# see: https://github.com/sul-dlss/gis-robot-suite/issues/817
+def index_map(record)
+  return 'index_map.geojson' unless record.public_xml_doc.xpath('//file[@id="index_map.geojson"]').empty?
+  return 'index_map.json' unless record.public_xml_doc.xpath('//file[@id="index_map.json"]').empty?
+
+  false
+end
+
 # Get the right geoserver url for a record given its access rights
 def geoserver_url(record)
   return settings['geoserver.stan_url'] if record.stanford_only?
@@ -350,12 +360,12 @@ to_field 'dct_references_s' do |record, accumulator, context|
       )
     end
 
-    index_map = !record.public_xml_doc.xpath('//file[@id="index_map.json"]').empty?
+    index_map_file = index_map(record)
 
-    if index_map
+    if index_map_file
       references.merge!(
         {
-          'https://openindexmaps.org' => "#{settings['stacks.url']}/file/druid:#{record.druid}/index_map.json"
+          'https://openindexmaps.org' => "#{settings['stacks.url']}/file/druid:#{record.druid}/#{index_map_file}"
         }
       )
     end
