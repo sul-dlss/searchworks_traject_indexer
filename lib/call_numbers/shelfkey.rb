@@ -76,7 +76,7 @@ module CallNumbers
             # and if it is not a letter or a digit, sort it last
             '~'
           end
-        end.join('')
+        end.join
       end
 
       def pad_all_digits(value, by: PADDING)
