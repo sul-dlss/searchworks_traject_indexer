@@ -2225,7 +2225,6 @@ end
 
 to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-  browseable_schemes = %w[LC DEWEY ALPHANUM]
   grouped_items = items(record, context).select(&:browseable?).group_by { |v| v.call_number.call_number }
 
   browseable_items = grouped_items.map do |_k, v|
@@ -2239,7 +2238,15 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   end
 
   accumulator.concat(browseable_items.map do |v|
-    v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
+    cn = call_number_for_item(record, v, context)
+    {
+      lopped_callnumber: v.call_number.base_call_number,
+      shelfkey: cn.to_shelfkey,
+      reverse_shelfkey: cn.to_reverse_shelfkey,
+      callnumber: v.call_number.to_s,
+      scheme: v.call_number.type,
+      item_id: v.id
+    }
   end)
 end
 

@@ -5,7 +5,7 @@ module CallNumbers
     attr_reader :call_number, :serial,
                 :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :volume_info
 
-    def initialize(call_number, volume_info: nil, serial: false)
+    def initialize(call_number, volume_info = nil, serial: false)
       match_data = /
         (?<klass>[A-Z]{0,3})\s*
         (?<klass_number>\d+)?(?<klass_decimal>\.?\d+)?\s*

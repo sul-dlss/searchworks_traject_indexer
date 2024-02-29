@@ -118,7 +118,7 @@ class FolioItem
     temp_call_number? && status == 'On order'
   end
 
-  def browseable?
+  def browseable?(browseable_schemes: %w[LC DEWEY ALPHANUM])
     return false if internet_resource? || skipped? || lost_or_missing? || shelved_by_location?
 
     browseable_schemes.include?(call_number_type)
