@@ -2169,7 +2169,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
 
     call_number = item.call_number
     call_number_object = call_number_for_item(record, item, context)
-    stuff_with_same_callnumber = Array(non_skipped_or_ignored_items[:items_by_base_call_number][[item.call_number_type, item.call_number.base_call_number]])
+    stuff_with_same_callnumber = Array(non_skipped_or_ignored_items[[item.call_number_type, item.call_number.base_call_number]])
 
     if call_number_object
       scheme = call_number_object.scheme.upcase
