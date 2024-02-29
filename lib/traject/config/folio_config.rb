@@ -1742,7 +1742,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
 
     translation_map = Traject::TranslationMap.new('call_number')
     cn = item.call_number.normalized_lc
-    next unless FolioItem::CallNumber.new(cn).valid_lc?
+    next unless FolioItem::CallNumber.new(cn, item.call_number.purported_type).valid_lc?
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
