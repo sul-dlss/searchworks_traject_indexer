@@ -43,17 +43,6 @@ module CallNumbers
       end
     end
 
-    class << self
-      def lop_years(value)
-        month_b4_year = value[0...(value.index(LOOSE_MONTHS_REGEX) || value.length)]
-        year_b4_month = value[0...(value.index(FOUR_DIGIT_YEAR_REGEX) || value.length)]
-        shortest_lopped = [month_b4_year, year_b4_month].min_by(&:length)
-        return value if shortest_lopped.length < 4
-
-        shortest_lopped
-      end
-    end
-
     private
 
     def shelfkey
