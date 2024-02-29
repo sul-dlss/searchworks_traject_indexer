@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CallNumbers
-  class Shelfkey < ShelfkeyBase
+  class LcShelfkey < ShelfkeyBase
     def to_shelfkey
       [
         call_number.scheme,
