@@ -39,7 +39,7 @@ module CallNumbers
 
       # prefix all numbers with the count of digits (and the count of digits of the count) so they sort lexically
       sortable_volume_info = call_number.volume_info.downcase.gsub(/\d+/) do |val|
-        val.length.length.to_s + val.length.to_s + val
+        val.length.to_s.length.to_s + val.length.to_s + val
       end
 
       if serial
