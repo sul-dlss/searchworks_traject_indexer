@@ -40,10 +40,6 @@ module CallNumbers
       'lc'
     end
 
-    def lopped
-      call_number
-    end
-
     private
 
     def shelfkey_class

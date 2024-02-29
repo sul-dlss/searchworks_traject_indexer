@@ -155,7 +155,7 @@ def call_number_for_item(record, item, context)
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
   context.clipboard[:call_number_for_item][item] ||= begin
-    holdings_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type][[item.library, item.display_location&.dig('name'), item.call_number_type]] || []
+    holdings_items = context.clipboard[:items_by_base_call_number][[item.call_number_type, item.call_number.base_call_number]] || []
     call_number_object(item.call_number, holdings_items:, serial:)
   end
 end
@@ -1723,10 +1723,10 @@ each_record do |record, context|
 
   # Group by library, home location, and call numbe type
   result = non_skipped_or_ignored_items = non_skipped_or_ignored_items.group_by do |item|
-    [item.library, item.display_location&.dig('name'), item.call_number_type]
+    [item.call_number_type, item.call_number.base_call_number]
   end
 
-  context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type] = result
+  context.clipboard[:items_by_base_call_number] = result
 end
 
 # For LC call numbers
@@ -2165,11 +2165,11 @@ to_field 'item_display_struct' do |record, accumulator, context|
   items(record, context).each do |item|
     next if item.skipped?
 
-    non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
+    non_skipped_or_ignored_items = context.clipboard[:items_by_base_call_number]
 
     call_number = item.call_number
     call_number_object = call_number_for_item(record, item, context)
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]])
+    stuff_with_same_callnumber = Array(non_skipped_or_ignored_items[:items_by_base_call_number][[item.call_number_type, item.call_number.base_call_number]])
 
     if call_number_object
       scheme = call_number_object.scheme.upcase
@@ -2181,9 +2181,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
                                'Shelved by title'
                              end
 
-        unless item.ignored_call_number?
-          enumeration = item.call_number.to_s[call_number_object.lopped.length..-1].strip
-        end
+        enumeration = item.call_number.volume_info unless item.ignored_call_number?
         shelfkey = lopped_call_number.downcase
         reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
 
@@ -2191,28 +2189,18 @@ to_field 'item_display_struct' do |record, accumulator, context|
         volume_sort = [lopped_call_number,
                        (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50,
                                                                                                                        '~') if enumeration)].compact.join(' ').downcase
-      # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
-      elsif stuff_in_the_same_library.length <= 1
+      # if there's only one item within the call number, then we use the non-lopped versions of stuff
+      elsif stuff_with_same_callnumber.length <= 1
         shelfkey = call_number_object.to_shelfkey
         volume_sort = call_number_object.to_shelfkey
         reverse_shelfkey = call_number_object.to_reverse_shelfkey
         lopped_call_number = call_number_object.call_number
       else
-        # there's more than one item in the library/home_location/call_number_type, so we lop
-        shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
+        # there's more than one item shares the call number, so we lop
         volume_sort = call_number_object.to_shelfkey
-        reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
-        lopped_call_number = call_number_object.lopped == item.call_number.to_s ? item.call_number.to_s : "#{call_number_object.lopped} ..."
-
-        # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this item's shelfkey, we need to add ellipses.
-        if call_number_object.lopped == item.call_number.to_s && stuff_in_the_same_library.reject do |x|
-                                                                   x.call_number.to_s == item.call_number.to_s
-                                                                 end.any? do |x|
-             call_number_for_item(record, x, context).lopped == call_number_object.lopped
-           end
-          lopped_call_number += ' ...'
-          shelfkey += ' ...'
-        end
+        shelfkey = call_number_object.to_shelfkey(omit_volume_info: true)
+        reverse_shelfkey = call_number_object.to_reverse_shelfkey(omit_volume_info: true)
+        lopped_call_number = item.call_number.base_call_number
       end
     else
       scheme = ''

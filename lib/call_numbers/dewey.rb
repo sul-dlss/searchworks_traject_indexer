@@ -38,10 +38,6 @@ module CallNumbers
       'dewey'
     end
 
-    def lopped
-      call_number
-    end
-
     private
 
     def shelfkey_class

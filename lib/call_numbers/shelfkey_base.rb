@@ -30,8 +30,8 @@ module CallNumbers
       raise NotImplementedError
     end
 
-    def to_reverse_shelfkey
-      self.class.reverse(to_shelfkey).ljust(50, '~')
+    def to_reverse_shelfkey(omit_volume_info: false)
+      self.class.reverse(to_shelfkey(omit_volume_info:)).ljust(50, '~')
     end
 
     def volume_info_with_serial_behavior

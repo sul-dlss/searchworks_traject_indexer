@@ -7,7 +7,7 @@ module CallNumbers
     delegate :scheme, :klass_number, :klass_decimal, :doon1, :doon2,
              :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
 
-    def to_shelfkey
+    def to_shelfkey(omit_volume_info: false)
       [
         scheme,
         self.class.pad(klass_number, by: 3, direction: :left, character: '0'),
@@ -19,7 +19,7 @@ module CallNumbers
         normalize_dewey_cutter(cutter3),
         (folio || '').downcase.strip,
         rest,
-        volume_info_with_serial_behavior
+        (volume_info_with_serial_behavior unless omit_volume_info)
       ].compact.reject(&:empty?).join(' ').strip
     end
 
