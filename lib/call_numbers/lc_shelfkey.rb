@@ -23,25 +23,25 @@ module CallNumbers
         (volume_info_with_serial_behavior unless omit_volume_info)
       ].compact.reject(&:empty?).join(' ').strip
     end
-  end
 
-  private
+    private
 
-  def pad_cutter(cutter)
-    return unless cutter
+    def pad_cutter(cutter)
+      return unless cutter
 
-    cutter = cutter.downcase.sub(/^\./, '') # downcase and remove opening period
-    # Round numbers to 6
-    cutter.sub!(/(\d+)/, round_cutter_number(cutter[/\d+/])) if cutter[/\d+/].length > CUTTER_ROUNDING
-    cutter.sub!(/(\d+)/, ".#{pad(cutter[/\d+/])}") # Pad numbers
-    cutter.sub!(/([a-z]+)/, pad(cutter[/[a-z]+/], by: 2)) # Pad letters
-    cutter
-  end
+      cutter = cutter.downcase.sub(/^\./, '') # downcase and remove opening period
+      # Round numbers to 6
+      cutter.sub!(/(\d+)/, round_cutter_number(cutter[/\d+/])) if cutter[/\d+/].length > CUTTER_ROUNDING
+      cutter.sub!(/(\d+)/, ".#{pad(cutter[/\d+/])}") # Pad numbers
+      cutter.sub!(/([a-z]+)/, pad(cutter[/[a-z]+/], by: 2)) # Pad letters
+      cutter
+    end
 
-  # We are currently rounding the cutter numbers for parity with the sw-solrmarc
-  # shelfkey logic.  We may want to revisit this in the future as we could
-  # use larger padding here to account for larger cutters instead.
-  def round_cutter_number(number, by: CUTTER_ROUNDING)
-    "0.#{number}".to_f.round(by).to_s.sub(/^0\./, '')
+    # We are currently rounding the cutter numbers for parity with the sw-solrmarc
+    # shelfkey logic.  We may want to revisit this in the future as we could
+    # use larger padding here to account for larger cutters instead.
+    def round_cutter_number(number, by: CUTTER_ROUNDING)
+      "0.#{number}".to_f.round(by).to_s.sub(/^0\./, '')
+    end
   end
 end
