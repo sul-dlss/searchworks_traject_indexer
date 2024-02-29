@@ -150,7 +150,7 @@ def call_number_for_item(record, item, context)
     separate_browse_call_num.first
   end
 
-  context.clipboard[:call_number_for_item][item] ||= CallNumber::Other.new(item.call_number.base_call_number, item.call_number.volume_info, scheme: 'OTHER') if item.bad_lc_lane_call_number?
+  context.clipboard[:call_number_for_item][item] ||= CallNumbers::Other.new(item.call_number.base_call_number, item.call_number.volume_info, scheme: 'OTHER') if item.bad_lc_lane_call_number?
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 

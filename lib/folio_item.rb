@@ -252,7 +252,7 @@ class FolioItem
 
       # prefix all numbers with the count of digits (and the count of digits of the count) so they sort lexically
       volume_info.downcase.gsub(/\d+/) do |val|
-        val.length.length.to_s + val.length.to_s + val
+        val.length.to_s.length.to_s + val.length.to_s + val
       end
     end
 
