@@ -43,10 +43,6 @@ module CallNumbers
       end
     end
 
-    def to_volume_sort
-      to_shelfkey
-    end
-
     class << self
       def lop_years(value)
         month_b4_year = value[0...(value.index(LOOSE_MONTHS_REGEX) || value.length)]

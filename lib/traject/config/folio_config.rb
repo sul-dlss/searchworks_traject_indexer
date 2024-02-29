@@ -139,25 +139,18 @@ def call_number_for_item(record, item, context)
     if item.call_number.to_s.empty? || item.ignored_call_number?
       if record['086']
         last_086 = record.find_all { |f| f.tag == '086' }.last
-        separate_browse_call_num << CallNumbers::Other.new(last_086['a'],
-                                                           scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
+        separate_browse_call_num << CallNumbers::Other.new(last_086['a'], scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
       end
 
       Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
-        separate_browse_call_num << CallNumbers::LC.new(item_050,
-                                                        serial:) if FolioItem::CallNumber.new(item_050, 'LC').valid_lc?
+        separate_browse_call_num << CallNumbers::LC.new(item_050, serial:) if FolioItem::CallNumber.new(item_050, 'LC').valid_lc?
       end
     end
 
     separate_browse_call_num.first
   end
 
-  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(
-    scheme: 'OTHER',
-    call_number: item.call_number.to_s,
-    to_lopped_shelfkey: item.call_number.to_s,
-    to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{item.call_number}")
-  ) if item.bad_lc_lane_call_number?
+  context.clipboard[:call_number_for_item][item] ||= CallNumber::Other.new(item.call_number.base_call_number, item.call_number.volume_info, scheme: 'OTHER') if item.bad_lc_lane_call_number?
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
@@ -2068,13 +2061,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
                                       chosen_items_by_callnumber_type.values.first
 
   preferred_callnumber_items_by_call_number = preferred_callnumber_scheme_items.group_by do |item|
-    call_number_object = call_number_for_item(record, item, context)
-
-    if preferred_callnumber_scheme_items.many? { |y| y.display_location_code == item.display_location_code }
-      call_number_object.lopped
-    else
-      call_number_object.call_number
-    end
+    item.call_number.base_call_number
   end
 
   # Prefer the items with the most item for the lopped call number
@@ -2092,7 +2079,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
 
   item_with_the_most_recent_shelfkey = callnumber_with_the_most_items.min_by do |item|
     call_number_object = call_number_for_item(record, item, context)
-    [call_number_object.to_volume_sort, item.barcode || '']
+    [call_number_object.to_shelfkey, item.barcode || '']
   end
 
   accumulator << item_with_the_most_recent_shelfkey.barcode
@@ -2207,13 +2194,13 @@ to_field 'item_display_struct' do |record, accumulator, context|
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
       elsif stuff_in_the_same_library.length <= 1
         shelfkey = call_number_object.to_shelfkey
-        volume_sort = call_number_object.to_volume_sort
+        volume_sort = call_number_object.to_shelfkey
         reverse_shelfkey = call_number_object.to_reverse_shelfkey
         lopped_call_number = call_number_object.call_number
       else
         # there's more than one item in the library/home_location/call_number_type, so we lop
         shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
-        volume_sort = call_number_object.to_volume_sort
+        volume_sort = call_number_object.to_shelfkey
         reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
         lopped_call_number = call_number_object.lopped == item.call_number.to_s ? item.call_number.to_s : "#{call_number_object.lopped} ..."
 
