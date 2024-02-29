@@ -4,10 +4,14 @@ require 'call_numbers/shelfkey_base'
 
 module CallNumbers
   class DeweyShelfkey < ShelfkeyBase
+    delegate :scheme, :klass_number, :klass_decimal, :doon1, :doon2,
+             :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
+
     def to_shelfkey
       [
-        call_number.scheme,
-        klass_number_and_decimal,
+        scheme,
+        self.class.pad(klass_number, by: 3, direction: :left, character: '0'),
+        self.class.pad((klass_decimal || '.'), by: 8),
         self.class.pad_all_digits(doon1),
         normalize_dewey_cutter(cutter1),
         self.class.pad_all_digits(doon2),
@@ -19,22 +23,6 @@ module CallNumbers
     end
 
     private
-
-    # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
-    def rest_with_serial_behavior
-      return unless rest
-      return if rest.empty? && (call_number.scheme == 'lc' || call_number.scheme == 'dewey')
-      return self.class.pad_all_digits(rest) unless serial
-
-      self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
-    end
-
-    def klass_number_and_decimal
-      [
-        self.class.pad(klass_number, by: 3, direction: :left, character: '0'),
-        self.class.pad((klass_decimal || '.'), by: 8)
-      ].join('')
-    end
 
     def normalize_dewey_cutter(cutter)
       return unless cutter

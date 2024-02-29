@@ -5,7 +5,6 @@ require 'i18n'
 
 module CallNumbers
   class ShelfkeyBase
-    CUTTER_ROUNDING = 6
     PADDING = 6
     FORWARD_CHARS = ('0'..'9').to_a + ('a'..'z').to_a
 
@@ -21,9 +20,6 @@ module CallNumbers
       '-' => '~'
     )
 
-    delegate :scheme, :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3,
-             :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
-
     attr_reader :call_number
 
     def initialize(call_number)
@@ -38,7 +34,16 @@ module CallNumbers
       self.class.reverse(to_shelfkey).ljust(50, '~')
     end
 
-    delegate :pad, :pad_all_digits, :pad_cutter, to: :class
+    # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
+    def rest_with_serial_behavior
+      return unless rest
+      return if rest.empty? && (scheme == 'lc' || scheme == 'dewey')
+      return self.class.pad_all_digits(rest) unless serial
+
+      self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
+    end
+
+    delegate :pad, :pad_all_digits, to: :class
 
     class << self
       def reverse(value)
@@ -66,17 +71,6 @@ module CallNumbers
         end.strip
       end
 
-      def pad_cutter(cutter)
-        return unless cutter
-
-        cutter = cutter.downcase.sub(/^\./, '') # downcase and remove opening period
-        # Round numbers to 6
-        cutter.sub!(/(\d+)/, round_cutter_number(cutter[/\d+/])) if cutter[/\d+/].length > CUTTER_ROUNDING
-        cutter.sub!(/(\d+)/, ".#{pad(cutter[/\d+/])}") # Pad numbers
-        cutter.sub!(/([a-z]+)/, pad(cutter[/[a-z]+/], by: 2)) # Pad letters
-        cutter
-      end
-
       def pad(value, by: PADDING, direction: :right, character: '0')
         raise ArugmentError unless %i[left right].include?(direction.to_sym)
 
@@ -90,15 +84,6 @@ module CallNumbers
         when :left
           value.rjust(by, character)
         end
-      end
-
-      private
-
-      # We are currently rounding the cutter numbers for parity with the sw-solrmarc
-      # shelfkey logic.  We may want to revisit this in the future as we could
-      # use larger padding here to account for larger cutters instead.
-      def round_cutter_number(number, by: CUTTER_ROUNDING)
-        "0.#{number}".to_f.round(by).to_s.sub(/^0\./, '')
       end
     end
   end
