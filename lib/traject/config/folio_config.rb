@@ -115,16 +115,16 @@ def call_number_object(call_number, holdings_items: [], serial: false)
 
   case calculated_call_number_type
   when 'LC'
-    CallNumbers::LC.new(call_number.to_s, serial:)
+    CallNumbers::LC.new(call_number.base_call_number, call_number.volume_info, serial:)
   when 'DEWEY'
-    CallNumbers::Dewey.new(call_number.to_s, serial:)
+    CallNumbers::Dewey.new(call_number.base_call_number, call_number.volume_info, serial:)
   else
     call_numbers_in_location = holdings_items.map(&:call_number).map(&:to_s)
 
     CallNumbers::Other.new(
-      call_number.to_s,
-      longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
-      scheme: call_number_type == 'LC' ? 'OTHER' : call_number_type
+      call_number.base_call_number,
+      call_number.volume_info,
+      scheme: calculated_call_number_type == 'LC' ? 'OTHER' : calculated_call_number_type
     )
   end
 end

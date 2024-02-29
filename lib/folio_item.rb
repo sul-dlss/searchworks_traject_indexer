@@ -242,6 +242,10 @@ class FolioItem
       to_s <=> other.to_s
     end
 
+    def base_call_number
+      call_number
+    end
+
     def sortable_volume_info
       return unless volume_info
       return volume_info.downcase.strip unless volume_info[/\d+/]

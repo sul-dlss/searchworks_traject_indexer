@@ -34,13 +34,19 @@ module CallNumbers
       self.class.reverse(to_shelfkey).ljust(50, '~')
     end
 
-    # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
-    def rest_with_serial_behavior
-      return unless rest
-      return if rest.empty? && (scheme == 'lc' || scheme == 'dewey')
-      return self.class.pad_all_digits(rest) unless serial
+    def volume_info_with_serial_behavior
+      return call_number.volume_info&.downcase&.strip unless call_number.volume_info&.match?(/\d+/)
 
-      self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
+      # prefix all numbers with the count of digits (and the count of digits of the count) so they sort lexically
+      sortable_volume_info = call_number.volume_info.downcase.gsub(/\d+/) do |val|
+        val.length.length.to_s + val.length.to_s + val
+      end
+
+      if serial
+        self.class.reverse(sortable_volume_info).strip.ljust(50, '~')
+      else
+        sortable_volume_info
+      end
     end
 
     delegate :pad, :pad_all_digits, to: :class

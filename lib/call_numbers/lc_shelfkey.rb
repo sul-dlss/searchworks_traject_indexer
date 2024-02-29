@@ -19,7 +19,8 @@ module CallNumbers
         pad_all_digits(doon3),
         pad_cutter(cutter3),
         (folio || '').downcase.strip,
-        rest_with_serial_behavior
+        rest,
+        volume_info_with_serial_behavior
       ].compact.reject(&:empty?).join(' ').strip
     end
   end

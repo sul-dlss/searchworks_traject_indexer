@@ -6,7 +6,7 @@ module CallNumbers
 
     # shortcutting a shelfkey class as we just need the normalization/reverse methods
     def to_shelfkey
-      [shelfkey_scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number.call_number)].join(' ')
+      [shelfkey_scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number.call_number), volume_info_with_serial_behavior].join(' ')
     end
 
     def to_reverse_shelfkey

@@ -18,7 +18,8 @@ module CallNumbers
         normalize_dewey_cutter(cutter2),
         normalize_dewey_cutter(cutter3),
         (folio || '').downcase.strip,
-        rest_with_serial_behavior
+        rest,
+        volume_info_with_serial_behavior
       ].compact.reject(&:empty?).join(' ').strip
     end
 
