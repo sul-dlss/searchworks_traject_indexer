@@ -68,7 +68,7 @@ module CallNumbers
     private
 
     def shelfkey_class
-      CallNumbers::Shelfkey
+      CallNumbers::LcShelfkey
     end
   end
 end
