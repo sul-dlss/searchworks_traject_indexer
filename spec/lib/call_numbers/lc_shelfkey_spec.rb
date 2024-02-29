@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe CallNumbers::Shelfkey do
+RSpec.describe CallNumbers::LcShelfkey do
   describe 'sorting by generated key' do
     it 'sorts classifications properly' do
       call_number_strings = [
