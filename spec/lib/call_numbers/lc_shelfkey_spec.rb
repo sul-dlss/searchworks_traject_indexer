@@ -12,8 +12,8 @@ RSpec.describe CallNumbers::LcShelfkey do
       ].shuffle
 
       sorted_call_numbers = call_number_strings.map do |call_number|
-        CallNumbers::LC.new(call_number)
-      end.sort_by(&:to_shelfkey).map(&:call_number)
+        FolioItem::CallNumber.new(call_number, 'LC')
+      end.sort_by(&:to_shelfkey).map(&:to_s)
 
       expect(sorted_call_numbers).to eq(
         [
@@ -37,8 +37,8 @@ RSpec.describe CallNumbers::LcShelfkey do
       ].shuffle
 
       sorted_call_numbers = call_number_strings.map do |call_number|
-        CallNumbers::LC.new(call_number)
-      end.sort_by(&:to_shelfkey).map(&:call_number)
+        FolioItem::CallNumber.new(call_number, 'LC')
+      end.sort_by(&:to_shelfkey).map(&:to_s)
 
       expect(sorted_call_numbers).to eq(
         [

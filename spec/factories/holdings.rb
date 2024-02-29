@@ -16,11 +16,13 @@ FactoryBot.define do
           'notes' => notes
         }.tap do |json|
           json.merge!('callNumber' => { 'callNumber' => call_number }) if call_number
+          json.merge!('enumeration' => enumeration) if enumeration
         end
       end
       permanent_location_code { '' }
       permanent_location { { 'code' => permanent_location_code } }
       call_number { nil }
+      enumeration { nil }
     end
     library { 'GREEN' }
     type { '' }

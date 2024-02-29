@@ -213,12 +213,17 @@ class FolioItem
     VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
 
     attr_reader :call_number, :purported_type, :volume_info
+    delegate :to_shelfkey, :to_reverse_shelfkey, to: :shelfkey
 
     # NOTE: call_number may be nil (when used for an on-order item)
     def initialize(call_number, purported_type, volume_info: nil)
       @call_number = call_number
       @purported_type = purported_type
       @volume_info = volume_info
+    end
+
+    def shelfkey(serial: false)
+      CallNumbers::Shelfkey.for(base_call_number, type, volume_info, serial:)
     end
 
     def type
@@ -234,7 +239,7 @@ class FolioItem
                 when 'DEWEY'
                   'DEWEY'
                 else
-                  'OTHER'
+                  purported_type.upcase
                 end
     end
 

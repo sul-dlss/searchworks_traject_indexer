@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe CallNumbers::ShelfkeyBase do
+RSpec.describe CallNumbers::Shelfkey do
   describe 'class methods' do
     describe '#pad_cutter' do
       it 'handles normal cutters' do

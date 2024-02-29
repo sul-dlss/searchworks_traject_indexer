@@ -13,12 +13,14 @@ RSpec.describe 'All_search config' do
     marc_to_folio(
       MARC::Record.new.tap do |r|
         r.leader = '01952cas  2200457Ia 4500'
-        r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
+        r.append(extra_marc_field) if extra_marc_field
       end
     )
   end
   let(:result) { indexer.map_record(folio_record) }
   let(:field) { 'preferred_barcode' }
+  let(:extra_marc_field) { nil }
+  let(:marc_008_serial_field) { MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d') }
 
   before do
     allow(folio_record).to receive(:index_items).and_return(index_items)
@@ -131,8 +133,8 @@ RSpec.describe 'All_search config' do
     let(:index_items) do
       [
         build(:lc_holding, barcode: 'LCbarcode', call_number: 'QE538.8 .N36 1975-1977'),
-        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
-        build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788 V.6')
+        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+        build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788', enumeration: 'V.6')
       ]
     end
 
@@ -143,8 +145,8 @@ RSpec.describe 'All_search config' do
     let(:index_items) do
       [
         build(:lc_holding, barcode: 'LCbarcode', call_number: 'QE538.8 .N36 1975-1977'),
-        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
-        build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788 V.6'),
+        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+        build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
         build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
         build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'Y 4.G 74/7-11:1101')
       ]
@@ -157,12 +159,12 @@ RSpec.describe 'All_search config' do
     let(:index_items) do
       [
         build(:lc_holding, barcode: 'LCbarcode', call_number: 'QE538.8 .N36 1975-1977'),
-        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
-        build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788 V.6'),
+        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+        build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
         build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
         build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'Y 4.G 74/7-11:1101'),
-        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
-        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2')
+        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2')
       ]
     end
     it { is_expected.to eq ['LCbarcode'] }
@@ -171,11 +173,11 @@ RSpec.describe 'All_search config' do
   context 'with dewey untruncated + sudoc truncated + alphanum truncated' do
     let(:index_items) do
       [
-        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
+        build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
         build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
         build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'Y 4.G 74/7-11:1101'),
-        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
-        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2')
+        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2')
       ]
     end
 
@@ -186,8 +188,8 @@ RSpec.describe 'All_search config' do
     let(:index_items) do
       [
         build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
-        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
-        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2')
+        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2')
       ]
     end
 
@@ -198,8 +200,8 @@ RSpec.describe 'All_search config' do
     let(:index_items) do
       [
         build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788 V.5'),
-        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
-        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2')
+        build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+        build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2')
       ]
     end
     it { is_expected.to eq ['Dewey1'] }
@@ -240,8 +242,8 @@ RSpec.describe 'All_search config' do
     context 'with alphanum' do
       let(:index_items) do
         [
-          build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791 DISC 1'),
-          build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791 DISC 2', permanent_location_code: 'LOCATION')
+          build(:alphanum_holding, barcode: 'Alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+          build(:alphanum_holding, barcode: 'Alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2', permanent_location_code: 'LOCATION')
         ]
       end
       it { is_expected.to eq ['Alpha1'] }
@@ -250,27 +252,28 @@ RSpec.describe 'All_search config' do
 
   describe 'picking the shortest truncated callnumber when the number of items is the same' do
     context 'with lc only' do
+      let(:extra_marc_field) { marc_008_serial_field }
       let(:index_items) do
         [
-          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36 1975-1977'),
-          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36 1978-1980'),
-          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A V.1 1980'),
-          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A V.2 1980')
+          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36', enumeration: '1975-1977'),
+          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36', enumeration: '1978-1980'),
+          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')
         ]
       end
       specify do
-        pending 'Waiting for some decision about how items should be sorted within a lopped call number set'
-        expect(result[field]).to eq ['lc1']
+        expect(result[field]).to eq ['lc2']
       end
     end
 
     context 'with dewey only' do
+      let(:extra_marc_field) { marc_008_serial_field }
       let(:index_items) do
         [
-          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788 V.5'),
-          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788 V.6'),
-          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B V.241-245 1973'),
-          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B V.241-245 1975')
+          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
+          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B', enumeration: 'V.241-245 1973'),
+          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B', enumeration: 'V.241-245 1975')
         ]
       end
       it { is_expected.to eq ['dewey4'] }
@@ -286,16 +289,16 @@ RSpec.describe 'All_search config' do
         ]
       end
 
-      it { is_expected.to eq ['sudoc1'] }
+      it { is_expected.to eq ['sudoc3'] }
     end
 
     context 'with alphanum only' do
       let(:index_items) do
         [
-          build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
-          build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791 DISC 2'),
-          build(:alphanum_holding, barcode: 'alpha3', call_number: 'ARTDVD 666666 DISC 1'),
-          build(:alphanum_holding, barcode: 'alpha4', call_number: 'ARTDVD 666666 DISC 2')
+          build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+          build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2'),
+          build(:alphanum_holding, barcode: 'alpha3', call_number: 'ARTDVD 666666', enumeration: 'DISC 1'),
+          build(:alphanum_holding, barcode: 'alpha4', call_number: 'ARTDVD 666666', enumeration: 'DISC 2')
         ]
       end
       specify do
@@ -306,26 +309,28 @@ RSpec.describe 'All_search config' do
 
   describe 'prefer more items over a shorter key' do
     context 'with lc only' do
+      let(:extra_marc_field) { marc_008_serial_field }
       let(:index_items) do
         [
-          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36 1975-1977'),
-          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36 1978-1980'),
-          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A V.1 1980'),
-          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A V.2 1980'),
-          build(:lc_holding, barcode: 'lc5', call_number: 'E184.S75 R47A V.3')
+          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36', enumeration: '1975-1977'),
+          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36', enumeration: '1978-1980'),
+          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A', enumeration: 'V.2 1980'),
+          build(:lc_holding, barcode: 'lc5', call_number: 'E184.S75 R47A', enumeration: 'V.3')
         ]
       end
       it { is_expected.to eq ['lc5'] }
     end
 
     context 'with dewey only' do
+      let(:extra_marc_field) { marc_008_serial_field }
       let(:index_items) do
         [
-          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788 V.5'),
-          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788 V.6'),
-          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B V.241-245 1973'),
-          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B V.241-245 1975'),
-          build(:dewey_holding, barcode: 'dewey5', call_number: '505 .N285B V.283-285')
+          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
+          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B', enumeration: 'V.241-245 1973'),
+          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B', enumeration: 'V.241-245 1975'),
+          build(:dewey_holding, barcode: 'dewey5', call_number: '505 .N285B', enumeration: 'V.283-285')
         ]
       end
       it { is_expected.to eq ['dewey5'] }
@@ -347,11 +352,11 @@ RSpec.describe 'All_search config' do
     context 'with alphanum only' do
       let(:index_items) do
         [
-          build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
-          build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791 DISC 2'),
-          build(:alphanum_holding, barcode: 'alpha3', call_number: 'ARTDVD 666666 DISC 1', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
-          build(:alphanum_holding, barcode: 'alpha4', call_number: 'ARTDVD 666666 DISC 2', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
-          build(:alphanum_holding, barcode: 'alpha5', call_number: 'ARTDVD 666666 DISC 3', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } })
+          build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791', enumeration: 'DISC 1'),
+          build(:alphanum_holding, barcode: 'alpha2', call_number: 'ZDVD 19791', enumeration: 'DISC 2'),
+          build(:alphanum_holding, barcode: 'alpha3', call_number: 'ARTDVD 666666', enumeration: 'DISC 1', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:alphanum_holding, barcode: 'alpha4', call_number: 'ARTDVD 666666', enumeration: 'DISC 2', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } }),
+          build(:alphanum_holding, barcode: 'alpha5', call_number: 'ARTDVD 666666', enumeration: 'DISC 3', additional_item_attributes: { 'location' => { 'permanentLocation' => { 'name' => 'Somewhere' } } })
 
         ]
       end
@@ -363,8 +368,8 @@ RSpec.describe 'All_search config' do
     context 'with lc only' do
       let(:index_items) do
         [
-          build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791 DISC 1'),
-          build(:lc_holding, barcode: 'ArsLC1', call_number: 'QE538.8 .N36 V.7', library: 'ARS')
+          build(:alphanum_holding, barcode: 'alpha1', call_number: 'ZDVD 19791', enumeration: ' DISC 1'),
+          build(:lc_holding, barcode: 'ArsLC1', call_number: 'QE538.8 .N36', enumeration: 'V.7', library: 'ARS')
         ]
       end
 

@@ -110,56 +110,6 @@ each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
 
-def call_number_object(call_number, holdings_items: [], serial: false)
-  calculated_call_number_type = call_number.type
-
-  case calculated_call_number_type
-  when 'LC'
-    CallNumbers::LC.new(call_number.base_call_number, call_number.volume_info, serial:)
-  when 'DEWEY'
-    CallNumbers::Dewey.new(call_number.base_call_number, call_number.volume_info, serial:)
-  else
-    call_numbers_in_location = holdings_items.map(&:call_number).map(&:to_s)
-
-    CallNumbers::Other.new(
-      call_number.base_call_number,
-      call_number.volume_info,
-      scheme: calculated_call_number_type == 'LC' ? 'OTHER' : calculated_call_number_type
-    )
-  end
-end
-
-def call_number_for_item(record, item, context)
-  context.clipboard[:call_number_for_item] ||= {}
-  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.on_order? || item.in_process?
-  context.clipboard[:call_number_for_item][item] ||= begin
-    serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
-    separate_browse_call_num = []
-    if item.call_number.to_s.empty? || item.ignored_call_number?
-      if record['086']
-        last_086 = record.find_all { |f| f.tag == '086' }.last
-        separate_browse_call_num << CallNumbers::Other.new(last_086['a'], scheme: last_086.indicator1 == '0' ? 'SUDOC' : 'OTHER')
-      end
-
-      Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).each do |item_050|
-        separate_browse_call_num << CallNumbers::LC.new(item_050, serial:) if FolioItem::CallNumber.new(item_050, 'LC').valid_lc?
-      end
-    end
-
-    separate_browse_call_num.first
-  end
-
-  context.clipboard[:call_number_for_item][item] ||= CallNumbers::Other.new(item.call_number.base_call_number, item.call_number.volume_info, scheme: 'OTHER') if item.bad_lc_lane_call_number?
-  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
-  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
-
-  context.clipboard[:call_number_for_item][item] ||= begin
-    holdings_items = context.clipboard[:items_by_base_call_number][[item.call_number_type, item.call_number.base_call_number]] || []
-    call_number_object(item.call_number, holdings_items:, serial:)
-  end
-end
-
 def items(record, context)
   context.clipboard[:item] ||= record.index_items
 end
@@ -2037,6 +1987,7 @@ end
 # * 2. If no Green shelfkey, use the above algorithm libraries (raw codes in 999) in alpha order.
 # *
 to_field 'preferred_barcode' do |record, accumulator, context|
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   non_skipped_items = items(record, context).sort_by(&:call_number).reject do |item|
     item.skipped? || item.bad_lc_lane_call_number? || item.ignored_call_number?
   end
@@ -2078,8 +2029,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   # Prefer items with the first volume sort key
 
   item_with_the_most_recent_shelfkey = callnumber_with_the_most_items.min_by do |item|
-    call_number_object = call_number_for_item(record, item, context)
-    [call_number_object.to_shelfkey, item.barcode || '']
+    [item.call_number.shelfkey(serial:).to_shelfkey, item.barcode || '']
   end
 
   accumulator << item_with_the_most_recent_shelfkey.barcode
@@ -2162,70 +2112,45 @@ to_field 'building_location_facet_ssim' do |record, accumulator, context|
 end
 
 to_field 'item_display_struct' do |record, accumulator, context|
+  serial = context.output_hash['format_main_ssim']&.include?('Journal/Periodical')
   items(record, context).each do |item|
     next if item.skipped?
 
     non_skipped_or_ignored_items = context.clipboard[:items_by_base_call_number]
 
     call_number = item.call_number
-    call_number_object = call_number_for_item(record, item, context)
     stuff_with_same_callnumber = Array(non_skipped_or_ignored_items[[item.call_number_type, item.call_number.base_call_number]])
 
-    if call_number_object
-      scheme = call_number_object.scheme.upcase
-      # if it's a shelved-by location, use a totally different way to get the callnumber
-      if item.shelved_by_location?
-        lopped_call_number = if [item.display_location_code, item.temporary_location_code].include? 'SCI-SHELBYSERIES'
-                               'Shelved by Series title'
-                             else
-                               'Shelved by title'
-                             end
+    if item.shelved_by_location? && !item.internet_resource? && !item.ignored_call_number?
+      base_call_number = if [item.display_location_code, item.temporary_location_code].include? 'SCI-SHELBYSERIES'
+                           'Shelved by Series title'
+                         else
+                           'Shelved by title'
+                         end
 
-        enumeration = item.call_number.volume_info unless item.ignored_call_number?
-        shelfkey = lopped_call_number.downcase
-        reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
-
-        call_number = [lopped_call_number, enumeration].compact.join(' ') unless item.internet_resource?
-        volume_sort = [lopped_call_number,
-                       (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50,
-                                                                                                                       '~') if enumeration)].compact.join(' ').downcase
-      # if there's only one item within the call number, then we use the non-lopped versions of stuff
-      elsif stuff_with_same_callnumber.length <= 1
-        shelfkey = call_number_object.to_shelfkey
-        volume_sort = call_number_object.to_shelfkey
-        reverse_shelfkey = call_number_object.to_reverse_shelfkey
-        lopped_call_number = call_number_object.call_number
-      else
-        # there's more than one item shares the call number, so we lop
-        volume_sort = call_number_object.to_shelfkey
-        shelfkey = call_number_object.to_shelfkey(omit_volume_info: true)
-        reverse_shelfkey = call_number_object.to_reverse_shelfkey(omit_volume_info: true)
-        lopped_call_number = item.call_number.base_call_number
-      end
-    else
-      scheme = ''
-      shelfkey = ''
-      volume_sort = ''
-      reverse_shelfkey = ''
-      lopped_call_number = item.call_number.to_s
+      enumeration = item.call_number.volume_info
+      lopped_call_number = item.call_number.base_call_number
+      call_number = [base_call_number, enumeration].compact.join(' ')
     end
 
-    accumulator << item.to_item_display_hash.merge({
-                                                     lopped_callnumber: (lopped_call_number unless item.ignored_call_number? && !item.shelved_by_location?),
-                                                     shelfkey: (shelfkey unless item.lost_or_missing?),
-                                                     reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !item.lost_or_missing?),
-                                                     callnumber: (unless item.ignored_call_number? && !item.shelved_by_location?
-                                                                    call_number
-                                                                  end),
-                                                     full_shelfkey: (volume_sort unless item.ignored_call_number? && !item.shelved_by_location?),
-                                                     scheme:
-                                                   })
+    call_number_data = {}
+
+    unless item.ignored_call_number?
+      call_number_data = {
+        lopped_callnumber: item.call_number.base_call_number,
+        callnumber: call_number,
+        full_shelfkey: item.call_number.shelfkey(serial:).to_shelfkey,
+        scheme: item.call_number.type # TODO: remove the scheme
+      }
+    end
+
+    accumulator << item.to_item_display_hash.merge(call_number_data)
   end
 end
 
 to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-  grouped_items = items(record, context).select(&:browseable?).group_by { |v| v.call_number.call_number }
+  grouped_items = items(record, context).select(&:browseable?).group_by { |item| item.call_number.base_call_number }
 
   browseable_items = grouped_items.map do |_k, v|
     if v.one?
@@ -2237,15 +2162,16 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
     end
   end
 
-  accumulator.concat(browseable_items.map do |v|
-    cn = call_number_for_item(record, v, context)
+  accumulator.concat(browseable_items.map do |item|
+    cn = item.call_number
+    sk = cn.shelfkey
     {
-      lopped_callnumber: v.call_number.base_call_number,
-      shelfkey: cn.to_shelfkey,
-      reverse_shelfkey: cn.to_reverse_shelfkey,
-      callnumber: v.call_number.to_s,
-      scheme: v.call_number.type,
-      item_id: v.id
+      lopped_callnumber: cn.base_call_number,
+      shelfkey: sk.to_shelfkey,
+      reverse_shelfkey: sk.to_reverse_shelfkey,
+      callnumber: cn.to_s,
+      scheme: cn.type,
+      item_id: item.id
     }
   end)
 end
@@ -2261,21 +2187,22 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
 
   callnumber = begin
     value = eresource.holding&.dig('callNumber')
-    call_number_object(FolioItem::CallNumber.new(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name')))) if value
+    FolioItem::CallNumber.new(value, FolioItem.call_number_type_code(eresource.holding&.dig('callNumberType', 'name'))) if value
   end
 
-  callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
-    call_number_object(FolioItem::CallNumber.new(item_050, 'LC')) if FolioItem::CallNumber.new(item_050, 'LC').valid_lc?
+  callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record.marc_record).filter_map do |item_050|
+    cn = FolioItem::CallNumber.new(item_050, 'LC')
+    cn if cn.valid_lc?
   end.first
 
-  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.scheme.upcase)
+  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.type)
 
   accumulator << {
     lopped_call_number: callnumber.call_number,
-    shelfkey: callnumber.to_shelfkey,
-    reserve_shelfkey: callnumber.to_reverse_shelfkey,
+    shelfkey: callnumber.shelfkey.to_shelfkey,
+    reserve_shelfkey: callnumber.shelfkey.to_reverse_shelfkey,
     callnumber: callnumber.call_number,
-    scheme: callnumber.scheme.upcase
+    scheme: callnumber.type
   }
 end
 

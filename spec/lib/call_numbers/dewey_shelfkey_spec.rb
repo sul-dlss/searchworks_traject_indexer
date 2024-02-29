@@ -15,7 +15,7 @@ RSpec.describe CallNumbers::DeweyShelfkey do
       ].shuffle
 
       sorted_call_numbers = call_number_strings.map do |call_number|
-        CallNumbers::Dewey.new(call_number)
+        FolioItem::CallNumber.new(call_number, 'DEWEY')
       end.sort_by(&:to_shelfkey).map(&:call_number)
 
       expect(sorted_call_numbers).to eq(
@@ -39,7 +39,7 @@ RSpec.describe CallNumbers::DeweyShelfkey do
       ].shuffle
 
       sorted_call_numbers = call_number_strings.map do |call_number|
-        CallNumbers::Dewey.new(call_number)
+        FolioItem::CallNumber.new(call_number, 'DEWEY')
       end.sort_by(&:to_shelfkey).map(&:call_number)
 
       expect(sorted_call_numbers).to eq(

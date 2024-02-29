@@ -390,7 +390,7 @@ RSpec.describe 'ItemInfo config' do
 
     describe 'location implies item is shelved by title' do
       context 'with SCI-SHELBYTITL' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYTITL', type: 'STKS-MONO')] }
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYTITL', type: 'STKS-MONO')] }
 
         it {
           is_expected.to match_array([
@@ -401,7 +401,7 @@ RSpec.describe 'ItemInfo config' do
       end
 
       context 'with SCI-SHELBYSERIES' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYSERIES', type: 'STKS-MONO')] }
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYSERIES', type: 'STKS-MONO')] }
 
         it {
           is_expected.to match_array([
@@ -416,7 +416,7 @@ RSpec.describe 'ItemInfo config' do
       context 'with a NEWS-STKS location' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: 'PQ9661 .P31 C6 VOL 1 1946', barcode: '36105111222333', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
+            build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105111222333', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
           ]
         end
 
@@ -431,7 +431,7 @@ RSpec.describe 'ItemInfo config' do
       context 'with a NEWS-STKS location and an ALPHANUM call number' do
         let(:holdings) do
           [
-            build(:alphanum_holding, call_number: 'BUS54594-11 V.3 1986 MAY-AUG.', barcode: '20504037816', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
+            build(:alphanum_holding, call_number: 'BUS54594-11', enumeration: 'V.3 1986 MAY-AUG.', barcode: '20504037816', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
           ]
         end
 
@@ -446,7 +446,7 @@ RSpec.describe 'ItemInfo config' do
       context 'volume includes an O.S. (old series) designation' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: '551.46 .I55 O.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
+            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'O.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
           ]
         end
 
@@ -460,7 +460,7 @@ RSpec.describe 'ItemInfo config' do
       context 'volume includes an N.S. (new series) designation' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: '551.46 .I55 N.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
+            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'N.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
           ]
         end
 
@@ -490,43 +490,42 @@ RSpec.describe 'ItemInfo config' do
 
     context 'with loppable call numbers' do
       let(:holdings) do
-        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
-         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+        [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
       end
 
       it {
         is_expected.to match_array([
-                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A'),
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A')
                                    ])
       }
     end
 
     context 'when call numbers have SUPPL.' do
       let(:holdings) do
-        [build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.31'),
-         build(:lc_holding, call_number: 'CB3 .A6 SUPPL. V.32')]
+        [build(:lc_holding, call_number: 'CB3 .A6 SUPPL.', enumeration: 'V.31'),
+         build(:lc_holding, call_number: 'CB3 .A6 SUPPL.', enumeration: 'V.32')]
       end
 
-      # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
       it {
         is_expected.to match_array([
-                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...'),
-                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL. ...')
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL'),
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL')
                                    ])
       }
     end
 
     describe 'forward sort key (shelfkey)' do
       let(:holdings) do
-        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
-         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+        [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
       end
 
       it {
         is_expected.to match_array([
-                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'),
-                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...')
+                                     hash_including('full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a v.111 141980'),
+                                     hash_including('full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a v.112 141980')
                                    ])
       }
     end
@@ -545,25 +544,11 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'reverse shelfkeys' do
-      let(:holdings) do
-        [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
-         build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
-      end
-
-      it {
-        is_expected.to match_array([
-                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~'),
-                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~}}}~~~~~~~')
-                                   ])
-      }
-    end
-
     describe 'full call numbers' do
       let(:holdings) do
         [
-          build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
-          build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')
+          build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+          build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')
         ]
       end
 
@@ -655,7 +640,7 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('OTHER'))
+                                                                           hash_not_including('scheme')
                                                                          ])
         end
       end
@@ -683,7 +668,7 @@ RSpec.describe 'ItemInfo config' do
 
         it 'includes the correct data' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('OTHER'))
+                                                                           hash_not_including('scheme')
                                                                          ])
         end
       end
@@ -712,15 +697,15 @@ RSpec.describe 'ItemInfo config' do
           end
         end
         let(:holdings) do
-          [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
-           build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+          [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+           build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
         end
         it {
           is_expected.to match_array([
                                        hash_including('callnumber' => 'E184.S75 R47A V.1 1980',
-                                                      'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzy~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
+                                                      'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}yyy~yvyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
                                        hash_including('callnumber' => 'E184.S75 R47A V.2 1980',
-                                                      'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}zzzzzx~zzyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                                                      'full_shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a 4}yyx~yvyqrz~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
                                      ])
         }
       end
@@ -734,16 +719,16 @@ RSpec.describe 'ItemInfo config' do
         end
 
         let(:holdings) do
-          [build(:dewey_holding, call_number: '553.2805 .P187 V.1-2 1916-1918'),
-           build(:dewey_holding, call_number: '553.2805 .P187 V.1-2 1919-1920')]
+          [build(:dewey_holding, call_number: '553.2805 .P187', enumeration: 'V.1-2 1916-1918'),
+           build(:dewey_holding, call_number: '553.2805 .P187', enumeration: 'V.1-2 1919-1920')]
         end
 
         it {
           is_expected.to match_array([
                                        hash_including('callnumber' => '553.2805 .P187 V.1-2 1916-1918',
-                                                      'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyt~zzyqyr~~~~~~~~~~~~~~~~~~~~~'),
+                                                      'full_shelfkey' => 'dewey 553 .28050000 p187 4}yyy~yyx~yvyqyt~yvyqyr~~~~~~~~~~~~~~~~~~~~~~~~~~~'),
                                        hash_including('callnumber' => '553.2805 .P187 V.1-2 1919-1920',
-                                                      'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
+                                                      'full_shelfkey' => 'dewey 553 .28050000 p187 4}yyy~yyx~yvyqyq~yvyqxz~~~~~~~~~~~~~~~~~~~~~~~~~~~')
                                      ])
         }
 
@@ -758,26 +743,10 @@ RSpec.describe 'ItemInfo config' do
           # this is potentially incidental since we don't fall back for non-valid DEWEY
           it 'is handled' do
             expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                             hash_including('shelfkey' => 'dewey 443.21000000 a3')
+                                                                             hash_including('full_shelfkey' => 'dewey 443 .21000000 a3')
                                                                            ])
           end
         end
-      end
-    end
-
-    describe 'shefkey field data is the same as the field in the item_display_struct' do
-      let(:fixture_name) { 'shelfkeyMatchItemDispTests.jsonl' }
-      let(:item_display_shelfkey) { subject.first.fetch('shelfkey') }
-      let(:shelfkey) { result['shelfkey'] }
-
-      let(:holdings) do
-        [build(:alphanum_holding, call_number: 'CALIF A125 .A34 2002'),
-         build(:alphanum_holding, call_number: 'CALIF A125 .A34 2003')]
-      end
-
-      it 'has the same shelfkey in the field as it does in the item_display' do
-        expect(item_display_shelfkey).to eq 'other calif a000125 .a000034 ...'
-        expect(shelfkey).to eq ['other calif a000125 .a000034 ...']
       end
     end
   end

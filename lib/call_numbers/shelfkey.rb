@@ -4,7 +4,18 @@ require 'active_support/core_ext/module/delegation'
 require 'i18n'
 
 module CallNumbers
-  class ShelfkeyBase
+  class Shelfkey
+    def self.for(call_number, scheme, volume_info = nil, serial: false)
+      case scheme
+      when 'DEWEY'
+        DeweyShelfkey.new(call_number, volume_info, serial:)
+      when 'LC'
+        LcShelfkey.new(call_number, volume_info, serial:)
+      else
+        OtherShelfkey.new(call_number, volume_info, scheme:, serial:)
+      end
+    end
+
     PADDING = 6
     FORWARD_CHARS = ('0'..'9').to_a + ('a'..'z').to_a
 
@@ -20,7 +31,7 @@ module CallNumbers
       '-' => '~'
     )
 
-    attr_reader :call_number
+    attr_reader :call_number, :volume_info
 
     def initialize(call_number)
       @call_number = call_number
@@ -35,10 +46,10 @@ module CallNumbers
     end
 
     def volume_info_with_serial_behavior
-      return call_number.volume_info&.downcase&.strip unless call_number.volume_info&.match?(/\d+/)
+      return volume_info&.downcase&.strip unless volume_info&.match?(/\d+/)
 
       # prefix all numbers with the count of digits (and the count of digits of the count) so they sort lexically
-      sortable_volume_info = call_number.volume_info.downcase.gsub(/\d+/) do |val|
+      sortable_volume_info = volume_info.downcase.gsub(/\d+/) do |val|
         val.length.to_s.length.to_s + val.length.to_s + val
       end
 

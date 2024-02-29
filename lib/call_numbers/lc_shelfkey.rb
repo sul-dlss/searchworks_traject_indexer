@@ -1,15 +1,46 @@
 # frozen_string_literal: true
 
 module CallNumbers
-  class LcShelfkey < ShelfkeyBase
+  class LcShelfkey < Shelfkey
     CUTTER_ROUNDING = 6
 
-    delegate :scheme, :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3,
-             :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
+    attr_reader :call_number, :serial,
+                :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :volume_info
+
+    def initialize(call_number, volume_info = nil, serial: false)
+      super(call_number)
+      match_data = /
+        (?<klass>[A-Z]{0,3})\s*
+        (?<klass_number>\d+)?(?<klass_decimal>\.?\d+)?\s*
+        (?<doon1>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<cutter1>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
+        (?<potential_stuff_to_lop>(?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<cutter2>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
+        (?<doon3>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<cutter3>\.?[a-zA-Z]+\d+([a-zA-Z]+(?![0-9]))?)?\s*
+        (?<folio>(?<=\s)?F{1,2}(?=(\s|$)))?
+        (?<rest>.*))
+      /x.match(call_number)
+
+      match_data ||= {}
+      @klass = match_data[:klass] || ''
+      @klass_number = match_data[:klass_number]
+      @klass_decimal = match_data[:klass_decimal]
+      @doon1 = match_data[:doon1]
+      @cutter1 = match_data[:cutter1]
+      @doon2 = match_data[:doon2]
+      @cutter2 = match_data[:cutter2]
+      @doon3 = match_data[:doon3]
+      @cutter3 = match_data[:cutter3]
+      @folio = match_data[:folio]
+      @rest = match_data[:rest]
+      @volume_info = volume_info
+      @serial = serial
+    end
 
     def to_shelfkey(omit_volume_info: false)
       [
-        scheme,
+        'lc',
         (pad(klass.downcase, by: 3, character: ' ') if klass),
         [pad(klass_number, by: 4, direction: :left), pad(klass_decimal || '.')].join,
         pad_all_digits(doon1),
