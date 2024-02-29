@@ -2,6 +2,8 @@
 
 module CallNumbers
   class OtherShelfkey < ShelfkeyBase
+    delegate :scheme, to: :call_number
+
     # shortcutting a shelfkey class as we just need the normalization/reverse methods
     def to_shelfkey
       [
