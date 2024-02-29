@@ -65,7 +65,7 @@ module CallNumbers
     end
 
     def shelfkey_class
-      raise NotImplementedError
+      CallNumbers::OtherShelfkey
     end
   end
 end
