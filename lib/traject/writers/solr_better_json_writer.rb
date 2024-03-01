@@ -31,19 +31,19 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
   end
 
   def drain_queue
-    batch = Traject::Util.drain_queue(@batched_queue)
-    @thread_pool.maybe_in_thread_pool(batch) { |batch_arg| send_batch(batch_arg) }
+    contexts = Traject::Util.drain_queue(@batched_queue)
+    @thread_pool.maybe_in_thread_pool(contexts) { |batch_arg| send_batch(batch_arg) }
   end
 
   # Send the given batch of contexts. If something goes wrong, send
   # them one at a time.
   # @param [Array<Traject::Indexer::Context>] an array of contexts
-  def send_batch(batch)
+  def send_batch(contexts)
+    batch = Batch.new(contexts)
     return if batch.empty?
 
-    json_package = generate_json(batch)
     begin
-      resp = @http_client.post @solr_update_url, json_package, 'Content-type' => 'application/json'
+      resp = @http_client.post @solr_update_url, batch.generate_json, 'Content-type' => 'application/json'
     rescue StandardError => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
     end
 
@@ -58,9 +58,9 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
       @retry_count += 1
 
-      batch.each do |c|
+      batch.each do |context|
         sleep rand(0..max_sleep_seconds)
-        if send_single(c)
+        if send_single(context)
           @retry_count = [0, @retry_count - 0.1].min
         else
           @retry_count += 0.1
@@ -68,15 +68,17 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       end
     else
       @retry_count = 0
+      SdrEvents.report_indexing_batch_success(batch, target: @settings['purl_fetcher.target'])
     end
   end
 
   # Send a single context to Solr, logging an error if need be
   # @param [Traject::Indexer::Context] c The context whose document you want to send
-  def send_single(c)
-    json_package = generate_json([c])
+  def send_single(context)
+    batch = Batch.new([context])
+
     begin
-      resp = @http_client.post @solr_update_url, json_package, 'Content-type' => 'application/json'
+      resp = @http_client.post @solr_update_url, batch.generate_json, 'Content-type' => 'application/json'
       # Catch Timeouts and network errors as skipped records, but otherwise
       # allow unexpected errors to propagate up.
     rescue *skippable_exceptions => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
@@ -89,9 +91,9 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
             else
               "Solr error response: #{resp.status}: #{resp.body}"
             end
-      logger.error "Could not add record #{c.record_inspect}: #{msg}"
+      logger.error "Could not add record #{context.record_inspect}: #{msg}"
       logger.debug("\t" + exception.backtrace.join("\n\t")) if exception
-      logger.debug(c.source_record.to_s) if c.source_record
+      logger.debug(context.source_record.to_s) if context.source_record
 
       @skipped_record_incrementer.increment
       if @max_skipped and skipped_record_count > @max_skipped
@@ -99,7 +101,10 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
               "#{self.class.name}: Exceeded maximum number of skipped records (#{@max_skipped}): aborting"
       end
 
+      SdrEvents.report_indexing_batch_errored(batch, target: @settings['purl_fetcher.target'], exception: msg)
       return false
+    else
+      SdrEvents.report_indexing_batch_success(batch, target: @settings['purl_fetcher.target'])
     end
 
     true
@@ -109,18 +114,44 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     Float(2**@retry_count)
   end
 
-  def generate_json(batch)
-    arr = []
-
-    batch.each do |c|
-      if c.skip?
-        id = Array(c.output_hash['id']).first
-        arr << "delete: #{JSON.generate(id)}" if id
-      else
-        arr << "add: #{JSON.generate(doc: c.output_hash)}"
-      end
+  # Collection of Traject contexts to be sent to solr
+  class Batch
+    def initialize(contexts)
+      @contexts = contexts
     end
 
-    '{' + arr.join(",\n") + '}'
+    def empty?
+      @contexts.empty?
+    end
+
+    def each(&)
+      @contexts.each(&)
+    end
+
+    # Array of [action, druid, data] triples, where action is :add or :delete
+    # and data is either the doc id or the full doc hash. Druid is empty for
+    # non-SDR content.
+    def actions
+      @actions ||= @contexts.map do |context|
+        if context.skip?
+          id = Array(context.output_hash['id']).first
+          [:delete, context.source_record&.druid, id] if id
+        else
+          [:add, context.source_record&.druid, context.output_hash]
+        end
+      end.compact
+    end
+
+    # Make a JSON string for sending to solr /update API
+    def generate_json
+      actions.map do |action, _druid, data|
+        case action
+        when :delete
+          "\"delete\":#{JSON.generate(data)}"
+        when :add
+          "\"add\":#{JSON.generate(doc: data)}"
+        end
+      end.join(",\n").prepend('{').concat('}')
+    end
   end
 end

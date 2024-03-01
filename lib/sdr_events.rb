@@ -40,6 +40,34 @@ class SdrEvents
       create_event(druid:, target:, type: 'indexing_errored', data: { message:, context: }.compact)
     end
 
+    # Take a SolrBetterJsonWriter::Batch and report successful adds/deletes
+    def report_indexing_batch_success(batch, target:)
+      batch.actions.each do |action, druid, _data|
+        next unless druid
+
+        case action
+        when :delete
+          report_indexing_deleted(druid, target:)
+        when :add
+          report_indexing_success(druid, target:)
+        end
+      end
+    end
+
+    # Take a SolrBetterJsonWriter::Batch and report failed adds/deletes
+    def report_indexing_batch_errored(batch, target:, exception:)
+      batch.actions.each do |action, druid, _data|
+        next unless druid
+
+        case action
+        when :delete
+          report_indexing_errored(druid, target:, message: 'delete failed', context: exception)
+        when :add
+          report_indexing_errored(druid, target:, message: 'add failed', context: exception)
+        end
+      end
+    end
+
     private
 
     # Generic event creation; prefer more specific methods
