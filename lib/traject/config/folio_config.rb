@@ -172,9 +172,7 @@ def call_number_for_item(record, item, context)
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
-  context.clipboard[:call_number_for_item][item] ||= begin
-    call_number_object(item.call_number, item.call_number.type, serial:)
-  end
+  context.clipboard[:call_number_for_item][item] ||= call_number_object(item.call_number, item.call_number.type, serial:)
 end
 
 def items(record, context)
@@ -1931,12 +1929,12 @@ to_field 'shelfkey' do |record, accumulator, context|
 
     if stuff_in_the_same_library.length > 1
       call_number_object = call_number_for_item(record, item, context)
-      lopped_shelfkey = call_number_object.to_lopped_shelfkey
+      lopped_shelfkey = call_number_object.to_lopped_shelfkey.forward
 
       # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this item's shelfkey, we need to add ellipses.
-      accumulator << if lopped_shelfkey != call_number_object.to_shelfkey || stuff_in_the_same_library.reject do |x|
-                                                                               x.call_number.to_s == item.call_number.to_s
-                                                                             end.any? do |x|
+      accumulator << if lopped_shelfkey != call_number_object.shelfkey.forward || stuff_in_the_same_library.reject do |x|
+                                                                                    x.call_number.to_s == item.call_number.to_s
+                                                                                  end.any? do |x|
                           call_number_for_item(record, x, context).lopped == call_number_object.lopped
                         end
                        lopped_shelfkey + ' ...'
@@ -1944,7 +1942,7 @@ to_field 'shelfkey' do |record, accumulator, context|
                        lopped_shelfkey
                      end
     else
-      accumulator << call_number_for_item(record, item, context).to_shelfkey
+      accumulator << call_number_for_item(record, item, context).shelfkey&.forward
     end
   end
 end
@@ -1965,11 +1963,11 @@ to_field 'reverse_shelfkey' do |record, accumulator, context|
 
     if stuff_in_the_same_library.length > 1
       call_number_object = call_number_for_item(record, item, context)
-      lopped_shelfkey = call_number_object.to_lopped_reverse_shelfkey
+      lopped_shelfkey = call_number_object.to_lopped_shelfkey.reverse
 
       accumulator << lopped_shelfkey
     else
-      accumulator << call_number_for_item(record, item, context).to_reverse_shelfkey
+      accumulator << call_number_for_item(record, item, context).shelfkey&.reverse
     end
   end
 end
@@ -2265,15 +2263,15 @@ to_field 'item_display_struct' do |record, accumulator, context|
                                                                                                                        '~') if enumeration)].compact.join(' ').downcase
       # if there's only one item in a library/home_location/call_number_type, then we use the non-lopped versions of stuff
       elsif stuff_in_the_same_library.length <= 1
-        shelfkey = call_number_object.to_shelfkey
+        shelfkey = call_number_object.shelfkey&.forward
         volume_sort = call_number_object.to_volume_sort
-        reverse_shelfkey = call_number_object.to_reverse_shelfkey
+        reverse_shelfkey = call_number_object.shelfkey&.reverse
         lopped_call_number = call_number_object.call_number
       else
         # there's more than one item in the library/home_location/call_number_type, so we lop
-        shelfkey = call_number_object.to_lopped_shelfkey == call_number_object.to_shelfkey ? call_number_object.to_shelfkey : "#{call_number_object.to_lopped_shelfkey} ..."
+        shelfkey = call_number_object.to_lopped_shelfkey&.forward == call_number_object.shelfkey&.forward ? call_number_object.shelfkey&.forward : "#{call_number_object.to_lopped_shelfkey&.forward} ..."
         volume_sort = call_number_object.to_volume_sort
-        reverse_shelfkey = call_number_object.to_lopped_reverse_shelfkey
+        reverse_shelfkey = call_number_object.to_lopped_shelfkey&.reverse
         lopped_call_number = call_number_object.lopped == item.call_number.to_s ? item.call_number.to_s : "#{call_number_object.lopped} ..."
 
         # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this item's shelfkey, we need to add ellipses.
@@ -2341,8 +2339,8 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
 
   accumulator << {
     lopped_call_number: callnumber.call_number,
-    shelfkey: callnumber.to_shelfkey,
-    reserve_shelfkey: callnumber.to_reverse_shelfkey,
+    shelfkey: callnumber.shelfkey.forward,
+    reserve_shelfkey: callnumber.shelfkey.reverse,
     callnumber: callnumber.call_number,
     scheme: callnumber.scheme.upcase
   }

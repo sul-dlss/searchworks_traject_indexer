@@ -4,7 +4,7 @@ module CallNumbers
   class LcShelfkey < ShelfkeyBase
     delegate :base_call_number, to: :call_number
 
-    def to_shelfkey
+    def forward
       [
         'lc',
         (pad(parsed[:klass].downcase, by: 3, character: ' ') if parsed[:klass]),

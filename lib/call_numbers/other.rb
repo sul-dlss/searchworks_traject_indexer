@@ -12,11 +12,7 @@ module CallNumbers
     end
 
     def to_lopped_shelfkey
-      self.class.new(lopped, serial:, scheme:).to_shelfkey
-    end
-
-    def to_lopped_reverse_shelfkey
-      self.class.new(lopped, serial:, scheme:).to_reverse_shelfkey
+      self.class.new(lopped, serial:, scheme:).shelfkey
     end
 
     def lopped

@@ -27,12 +27,12 @@ module CallNumbers
       @call_number = call_number
     end
 
-    def to_shelfkey
+    def forward
       raise NotImplementedError
     end
 
-    def to_reverse_shelfkey
-      self.class.reverse(to_shelfkey).ljust(50, '~')
+    def reverse
+      self.class.reverse(forward).ljust(50, '~')
     end
 
     # Unit tests inidcate that serial deweys don't get reversed years justified with tildes

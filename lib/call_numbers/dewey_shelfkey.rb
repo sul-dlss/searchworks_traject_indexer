@@ -6,7 +6,7 @@ module CallNumbers
   class DeweyShelfkey < ShelfkeyBase
     delegate :base_call_number, to: :call_number
 
-    def to_shelfkey
+    def forward
       [
         'dewey',
         klass_number_and_decimal,
