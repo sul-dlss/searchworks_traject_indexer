@@ -5,6 +5,21 @@ require 'forwardable'
 class FolioItem
   extend Forwardable
 
+  def self.call_number_type_code(folio_call_number_type_name)
+    case folio_call_number_type_name
+    when /dewey/i
+      'DEWEY'
+    when /congress/i, /LC/i
+      'LC'
+    when /superintendent/i
+      'SUDOC'
+    when /title/i, /shelving/i
+      'ALPHANUM'
+    else
+      'OTHER'
+    end
+  end
+
   delegate %i[dewey? valid_lc?] => :call_number
 
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SHELBYTITL SCI-SHELBYSERIES].freeze
@@ -70,18 +85,7 @@ class FolioItem
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type
-    @call_number_type ||= case item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || bound_with_holding&.dig('callNumberType', 'name') || holding&.dig('callNumberType', 'name')
-                          when /dewey/i
-                            'DEWEY'
-                          when /congress/i, /LC/i
-                            'LC'
-                          when /superintendent/i
-                            'SUDOC'
-                          when /title/i, /shelving/i
-                            'ALPHANUM'
-                          else
-                            'OTHER'
-                          end
+    @call_number_type ||= self.class.call_number_type_code(item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || bound_with_holding&.dig('callNumberType', 'name') || holding&.dig('callNumberType', 'name'))
   end
 
   def bad_lc_lane_call_number?
