@@ -160,16 +160,17 @@ def call_number_for_item(record, item, context)
 
     case calculated_call_number_type
     when 'LC'
-      CallNumbers::LC.new(item.call_number.to_s, serial:)
+      CallNumbers::LC.new(item.call_number.base_call_number.to_s, item.call_number.volume_info, serial:)
     when 'DEWEY'
-      CallNumbers::Dewey.new(item.call_number.to_s, serial:)
+      CallNumbers::Dewey.new(item.call_number.base_call_number.to_s, item.call_number.volume_info, serial:)
     else
       non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
 
       call_numbers_in_location = (non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]] || []).map(&:call_number).map(&:to_s)
 
       CallNumbers::Other.new(
-        item.call_number.to_s,
+        item.call_number.base_call_number.to_s,
+        item.call_number.volume_info,
         longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
         scheme: item.call_number_type == 'LC' ? 'OTHER' : item.call_number_type
       )

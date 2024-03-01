@@ -38,6 +38,15 @@ module CallNumbers
       self.class.reverse(to_shelfkey).ljust(50, '~')
     end
 
+    # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
+    def volume_info_with_serial_behavior
+      return if call_number.volume_info.blank?
+      return unless call_number.scheme == 'lc' || call_number.scheme == 'dewey'
+      return self.class.pad_all_digits(call_number.volume_info) unless serial
+
+      self.class.reverse(self.class.pad_all_digits(call_number.volume_info)).strip.ljust(50, '~')
+    end
+
     delegate :pad, :pad_all_digits, :pad_cutter, to: :class
 
     class << self
