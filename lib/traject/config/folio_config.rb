@@ -110,42 +110,12 @@ each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
 
-def call_number_object(call_number, call_number_type, serial: false)
-  calculated_call_number_type = case call_number_type
-                                when 'LC'
-                                  if call_number.valid_lc?
-                                    'LC'
-                                  elsif call_number.dewey?
-                                    'DEWEY'
-                                  else
-                                    'OTHER'
-                                  end
-                                when 'DEWEY'
-                                  'DEWEY'
-                                else
-                                  'OTHER'
-                                end
-
-  case calculated_call_number_type
-  when 'LC'
-    CallNumbers::LC.new(call_number.base_call_number.to_s, call_number.volume_info, serial:)
-  when 'DEWEY'
-    CallNumbers::Dewey.new(call_number.base_call_number.to_s, call_number.volume_info, serial:)
-  else
-    CallNumbers::Other.new(
-      call_number.base_call_number.to_s,
-      call_number.volume_info,
-      scheme: call_number_type == 'LC' ? 'OTHER' : call_number_type
-    )
-  end
-end
-
 def call_number_for_item(record, item, context)
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
+
   context.clipboard[:call_number_for_item] ||= {}
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.on_order? || item.in_process?
   context.clipboard[:call_number_for_item][item] ||= begin
-    serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
     separate_browse_call_num = []
     if item.call_number.to_s.empty? || item.ignored_call_number?
       if record['086']
@@ -165,7 +135,7 @@ def call_number_for_item(record, item, context)
 
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
-  context.clipboard[:call_number_for_item][item] ||= call_number_object(item.call_number, item.call_number.type, serial:)
+  context.clipboard[:call_number_for_item][item] ||= item.call_number.call_number_object(serial:)
 end
 
 def items(record, context)
@@ -2045,6 +2015,7 @@ end
 # * 2. If no Green shelfkey, use the above algorithm libraries (raw codes in 999) in alpha order.
 # *
 to_field 'preferred_barcode' do |record, accumulator, context|
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   non_skipped_items = items(record, context).sort_by(&:call_number).reject do |item|
     item.skipped? || item.bad_lc_lane_call_number? || item.ignored_call_number?
   end
@@ -2086,8 +2057,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   # Prefer items with the first volume sort key
 
   item_with_the_most_recent_shelfkey = callnumber_with_the_most_items.min_by do |item|
-    call_number_object = call_number_for_item(record, item, context)
-    [call_number_object.to_volume_sort, item.barcode || '']
+    [item.call_number.call_number_object(serial:).to_volume_sort, item.barcode || '']
   end
 
   accumulator << item_with_the_most_recent_shelfkey.barcode
@@ -2216,7 +2186,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
         if call_number_object.lopped == item.call_number.to_s && stuff_in_the_same_library.reject do |x|
                                                                    x.call_number.to_s == item.call_number.to_s
                                                                  end.any? do |x|
-             call_number_for_item(record, x, context).lopped == call_number_object.lopped
+             x.call_number.base_call_number == item.call_number.base_call_number
            end
           lopped_call_number += ' ...'
           shelfkey += ' ...'
@@ -2266,11 +2236,14 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
 
   callnumber = begin
     value = eresource.holding&.dig('callNumber')
-    call_number_object(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name'))) if value
+    type = FolioItem.call_number_type_code(eresource.holding&.dig('callNumberType', 'name'))
+    FolioItem::CallNumber.new(value, type).call_number_object if value.present?
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
-    call_number_object(FolioItem::CallNumber.new(item_050), 'LC') if FolioItem::CallNumber.new(item_050).valid_lc?
+    cn = FolioItem::CallNumber.new(item_050, 'LC')
+
+    cn.call_number_object if cn.valid_lc?
   end.first
 
   next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.scheme.upcase)
