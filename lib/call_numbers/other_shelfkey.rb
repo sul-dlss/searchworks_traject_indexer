@@ -9,7 +9,7 @@ module CallNumbers
       [
         shelfkey_scheme,
         CallNumbers::ShelfkeyBase.pad_all_digits(call_number.call_number),
-        CallNumbers::ShelfkeyBase.pad_all_digits(call_number.volume_info)
+        volume_info_with_serial_behavior
       ].filter_map(&:presence).join(' ')
     end
 
