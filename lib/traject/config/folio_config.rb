@@ -2109,14 +2109,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
     reverse_shelfkey = ''
     lopped_call_number = item.call_number.to_s
 
-    if item.on_order? || item.in_process?
-      scheme = item.call_number_type
-      shelfkey = ''
-      reverse_shelfkey = ''
-      lopped_call_number = ''
-      call_number = ''
-      volume_sort = ''
-    elsif item.call_number.to_s.empty? || item.ignored_call_number?
+    if item.call_number.to_s.empty? || item.ignored_call_number?
       separate_browse_call_num = nil
       if record['086']
         last_086 = record.find_all { |f| f.tag == '086' }.last
@@ -2171,8 +2164,8 @@ to_field 'item_display_struct' do |record, accumulator, context|
 
     accumulator << item.to_item_display_hash.merge({
                                                      lopped_callnumber: (lopped_call_number unless item.ignored_call_number? && !item.shelved_by_location?),
-                                                     shelfkey: (shelfkey unless item.lost_or_missing?),
-                                                     reverse_shelfkey: (reverse_shelfkey.ljust(50, '~') if reverse_shelfkey && !reverse_shelfkey.empty? && !item.lost_or_missing?),
+                                                     shelfkey:,
+                                                     reverse_shelfkey:,
                                                      callnumber: (unless item.ignored_call_number? && !item.shelved_by_location?
                                                                     call_number
                                                                   end),
