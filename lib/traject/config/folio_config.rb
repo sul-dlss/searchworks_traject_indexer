@@ -110,7 +110,7 @@ each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
 
-def call_number_object(call_number, call_number_type, holdings_items: [], serial: false)
+def call_number_object(call_number, call_number_type, serial: false)
   calculated_call_number_type = case call_number_type
                                 when 'LC'
                                   if call_number.valid_lc?
@@ -132,12 +132,9 @@ def call_number_object(call_number, call_number_type, holdings_items: [], serial
   when 'DEWEY'
     CallNumbers::Dewey.new(call_number.base_call_number.to_s, call_number.volume_info, serial:)
   else
-    call_numbers_in_location = holdings_items.map(&:call_number).map(&:to_s)
-
     CallNumbers::Other.new(
       call_number.base_call_number.to_s,
       call_number.volume_info,
-      longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
       scheme: call_number_type == 'LC' ? 'OTHER' : call_number_type
     )
   end
@@ -176,8 +173,7 @@ def call_number_for_item(record, item, context)
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
   context.clipboard[:call_number_for_item][item] ||= begin
-    holdings_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type][[item.library, item.display_location&.dig('name'), item.call_number_type]] || []
-    call_number_object(item.call_number, item.call_number_type, holdings_items:, serial:)
+    call_number_object(item.call_number, item.call_number_type, serial:)
   end
 end
 
@@ -2137,13 +2133,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
                                       chosen_items_by_callnumber_type.values.first
 
   preferred_callnumber_items_by_call_number = preferred_callnumber_scheme_items.group_by do |item|
-    call_number_object = call_number_for_item(record, item, context)
-
-    if preferred_callnumber_scheme_items.many? { |y| y.display_location_code == item.display_location_code }
-      call_number_object.lopped
-    else
-      call_number_object.call_number
-    end
+    item.call_number.base_call_number
   end
 
   # Prefer the items with the most item for the lopped call number

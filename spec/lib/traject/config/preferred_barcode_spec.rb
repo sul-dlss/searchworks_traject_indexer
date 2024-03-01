@@ -288,7 +288,7 @@ RSpec.describe 'All_search config' do
         ]
       end
 
-      it { is_expected.to eq ['sudoc1'] }
+      it { is_expected.to eq ['sudoc3'] }
     end
 
     context 'with alphanum only' do
