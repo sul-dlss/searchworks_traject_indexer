@@ -2096,7 +2096,6 @@ end
 
 to_field 'item_display_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-  items_by_base_call_number = items(record, context).reject(&:skipped?).group_by { |item| item.call_number.base_call_number }
 
   items(record, context).each do |item|
     next if item.skipped?
@@ -2147,19 +2146,11 @@ to_field 'item_display_struct' do |record, accumulator, context|
       ].compact.join(' ').downcase
     # if there's only one item with the base call number, then we use the non-lopped versions of stuff
     # We also used the non-lopped form if the item has no enumeration information, or all the items share the same enumeration data
-    elsif items_by_base_call_number[item.call_number.base_call_number].length <= 1 || call_number_object.lopped == item.call_number.to_s || items_by_base_call_number[item.call_number.base_call_number].all? do |x|
-            x.call_number.to_s == item.call_number.to_s
-          end
+    else
       shelfkey = call_number_object.shelfkey&.forward
       volume_sort = call_number_object.to_volume_sort
       reverse_shelfkey = call_number_object.shelfkey&.reverse
-      lopped_call_number = call_number_object.call_number
-    else
-      # there's more than one item with the base call number
-      volume_sort = call_number_object.to_volume_sort
-      shelfkey = "#{call_number_object.to_lopped_shelfkey&.forward} ..."
-      reverse_shelfkey = call_number_object.to_lopped_shelfkey&.reverse
-      lopped_call_number = "#{call_number_object.lopped} ..."
+      lopped_call_number = item.call_number.base_call_number
     end
 
     accumulator << item.to_item_display_hash.merge({

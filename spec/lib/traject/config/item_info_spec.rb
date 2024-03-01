@@ -496,8 +496,8 @@ RSpec.describe 'ItemInfo config' do
 
       it {
         is_expected.to match_array([
-                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A'),
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A')
                                    ])
       }
     end
@@ -511,8 +511,8 @@ RSpec.describe 'ItemInfo config' do
       # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
       it {
         is_expected.to match_array([
-                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL ...'),
-                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL ...')
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL'),
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL')
                                    ])
       }
     end
@@ -525,8 +525,8 @@ RSpec.describe 'ItemInfo config' do
 
       it {
         is_expected.to match_array([
-                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'),
-                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...')
+                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a v.000001 001980'),
+                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a v.000002 001980')
                                    ])
       }
     end
@@ -553,8 +553,8 @@ RSpec.describe 'ItemInfo config' do
 
       it {
         is_expected.to match_array([
-                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~~~~~~~~~~~'),
-                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~~~~~~~~~~~')
+                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~4}zzzzzy~zzyqrz'),
+                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~4}zzzzzx~zzyqrz')
                                    ])
       }
     end
@@ -776,8 +776,8 @@ RSpec.describe 'ItemInfo config' do
       end
 
       it 'has the same shelfkey in the field as it does in the item_display' do
-        expect(item_display_shelfkey).to eq 'other calif a000125 .a000034 ...'
-        expect(shelfkey).to eq ['other calif a000125 .a000034 ...']
+        expect(item_display_shelfkey).to eq 'other calif a000125 .a000034 002002'
+        expect(shelfkey).to eq ['other calif a000125 .a000034 002002']
       end
     end
   end
