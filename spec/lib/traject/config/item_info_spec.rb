@@ -213,8 +213,24 @@ RSpec.describe 'ItemInfo config' do
         end
       end
 
-      it 'omits the on-order placeholder' do
-        expect(result[field]).to be_nil
+      context 'without any holdings' do
+        it 'omits the on-order placeholder' do
+          expect(result[field]).to be_nil
+        end
+      end
+
+      context 'with holdings' do
+        let(:holdings) { [build(:lc_holding, :bound_with)] }
+        it 'contains a bound_with parent' do
+          expect(value).to match_array([
+                                         hash_including('bound_with' => {
+                                                          'call_number' => '630.654 .I39M', 'chronology' => nil,
+                                                          'enumeration' => 'V.5:NO.1', 'hrid' => 'a5488000',
+                                                          'title' => 'The gases of swamp rice soils ...',
+                                                          'volume' => nil
+                                                        })
+                                       ])
+        end
       end
     end
 

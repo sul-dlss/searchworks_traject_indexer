@@ -373,7 +373,11 @@ module Traject
                                 'id', parentItem.id,
                                 'hrid', parentItem.jsonb ->> 'hrid',
                                 'barcode', parentItem.jsonb ->> 'barcode',
-                                'status', parentItem.jsonb #>> '{status, name}'
+                                'callNumber', parentItem.jsonb #>> '{effectiveCallNumberComponents, callNumber}',
+                                'status', parentItem.jsonb #>> '{status, name}',
+                                'enumeration', parentItem.jsonb->>'enumeration',
+                                'volume', parentItem.jsonb->>'volume',
+                                'chronology', parentItem.jsonb->>'chronology'
                               )
                             )
                           ELSE NULL END::jsonb

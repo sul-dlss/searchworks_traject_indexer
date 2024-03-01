@@ -53,5 +53,25 @@ FactoryBot.define do
       call_number { '71 15446' }
       scheme { 'OTHER' }
     end
+
+    trait :bound_with do
+      bound_with_holding do
+        {
+          'boundWith' => {
+            'instance' => {
+              'hrid' => 'a5488000',
+              'title' => 'The gases of swamp rice soils ...'
+            },
+            'holding' => {},
+            'item' => {
+              'volume' => nil,
+              'callNumber' => '630.654 .I39M',
+              'chronology' => nil,
+              'enumeration' => 'V.5:NO.1'
+            }
+          }
+        }
+      end
+    end
   end
 end
