@@ -2156,14 +2156,31 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
-# TODO: After this field is fully populated and Searchworks is using it to drive browse-nearby, the shelfkey
-# logic in the item_display_struct field can move down here.
+# Each (browseable) base call number is represented by a single browse nearby entry; we choose
+# the representative item by the following rules:
+# 1. If there's only one item with the base call number, then we use that item
+# 2. For a serial publication, choose the latest item (e.g. V.57 2023 instead of V.34 2019)
+# 3. For non-serial publications, choose the earliest item (e.g. V.1 instead of V.57)
+#
+# The earliest/latest logic is already baked into the full shelfkey.
 to_field 'browse_nearby_struct' do |_record, accumulator, context|
   next unless context.output_hash['item_display_struct']
 
-  browseable_items = context.output_hash['item_display_struct'].select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) && v[:type] != 'ONLINE' }
+  serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
 
-  accumulator.concat(browseable_items.sort_by { |v| v[:shelfkey] }.uniq { |v| v[:shelfkey] }.map do |v|
+  grouped_items = context.output_hash['item_display_struct']
+                         .select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) && v[:type] != 'ONLINE' }
+                         .group_by { |v| v[:lopped_callnumber] }
+
+  browseable_items = grouped_items.map do |_base_call_number, items|
+    if items.one?
+      items.first
+    else
+      items.min_by { |item| item[:full_shelfkey] }
+    end
+  end
+
+  accumulator.concat(browseable_items.map do |v|
     v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
   end)
 end
