@@ -163,13 +163,6 @@ def call_number_for_item(record, item, context)
     separate_browse_call_num.first
   end
 
-  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(
-    scheme: 'OTHER',
-    call_number: item.call_number.to_s,
-    to_lopped_shelfkey: item.call_number.to_s,
-    to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{item.call_number}")
-  ) if item.bad_lc_lane_call_number?
-  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
   context.clipboard[:call_number_for_item][item] ||= call_number_object(item.call_number, item.call_number.type, serial:)
