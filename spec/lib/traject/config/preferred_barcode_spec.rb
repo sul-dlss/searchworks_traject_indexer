@@ -252,10 +252,10 @@ RSpec.describe 'All_search config' do
     context 'with lc only' do
       let(:index_items) do
         [
-          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36 1975-1977'),
-          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36 1978-1980'),
-          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A V.1 1980'),
-          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A V.2 1980')
+          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36', enumeration: '1975-1977'),
+          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36', enumeration: '1978-1980'),
+          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')
         ]
       end
       specify do
@@ -267,10 +267,10 @@ RSpec.describe 'All_search config' do
     context 'with dewey only' do
       let(:index_items) do
         [
-          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788 V.5'),
-          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788 V.6'),
-          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B V.241-245 1973'),
-          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B V.241-245 1975')
+          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
+          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B', enumeration: 'V.241-245 1973'),
+          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B', enumeration: 'V.241-245 1975')
         ]
       end
       it { is_expected.to eq ['dewey4'] }
@@ -308,11 +308,11 @@ RSpec.describe 'All_search config' do
     context 'with lc only' do
       let(:index_items) do
         [
-          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36 1975-1977'),
-          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36 1978-1980'),
-          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A V.1 1980'),
-          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A V.2 1980'),
-          build(:lc_holding, barcode: 'lc5', call_number: 'E184.S75 R47A V.3')
+          build(:lc_holding, barcode: 'lc1', call_number: 'QE538.8 .N36', enumeration: '1975-1977'),
+          build(:lc_holding, barcode: 'lc2', call_number: 'QE538.8 .N36', enumeration: '1978-1980'),
+          build(:lc_holding, barcode: 'lc3', call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+          build(:lc_holding, barcode: 'lc4', call_number: 'E184.S75 R47A', enumeration: 'V.2 1980'),
+          build(:lc_holding, barcode: 'lc5', call_number: 'E184.S75 R47A', enumeration: 'V.3')
         ]
       end
       it { is_expected.to eq ['lc5'] }
@@ -321,11 +321,11 @@ RSpec.describe 'All_search config' do
     context 'with dewey only' do
       let(:index_items) do
         [
-          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788 V.5'),
-          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788 V.6'),
-          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B V.241-245 1973'),
-          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B V.241-245 1975'),
-          build(:dewey_holding, barcode: 'dewey5', call_number: '505 .N285B V.283-285')
+          build(:dewey_holding, barcode: 'dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
+          build(:dewey_holding, barcode: 'dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
+          build(:dewey_holding, barcode: 'dewey3', call_number: '505 .N285B', enumeration: 'V.241-245 1973'),
+          build(:dewey_holding, barcode: 'dewey4', call_number: '505 .N285B', enumeration: 'V.241-245 1975'),
+          build(:dewey_holding, barcode: 'dewey5', call_number: '505 .N285B', enumeration: 'V.283-285')
         ]
       end
       it { is_expected.to eq ['dewey5'] }

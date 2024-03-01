@@ -712,8 +712,8 @@ RSpec.describe 'ItemInfo config' do
           end
         end
         let(:holdings) do
-          [build(:lc_holding, call_number: 'E184.S75 R47A V.1 1980'),
-           build(:lc_holding, call_number: 'E184.S75 R47A V.2 1980')]
+          [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+           build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
         end
         it {
           is_expected.to match_array([
@@ -734,8 +734,8 @@ RSpec.describe 'ItemInfo config' do
         end
 
         let(:holdings) do
-          [build(:dewey_holding, call_number: '553.2805 .P187 V.1-2 1916-1918'),
-           build(:dewey_holding, call_number: '553.2805 .P187 V.1-2 1919-1920')]
+          [build(:dewey_holding, call_number: '553.2805 .P187', enumeration: 'V.1-2 1916-1918'),
+           build(:dewey_holding, call_number: '553.2805 .P187', enumeration: 'V.1-2 1919-1920')]
         end
 
         it {
