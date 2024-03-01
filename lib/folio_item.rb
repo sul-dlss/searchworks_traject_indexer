@@ -189,7 +189,7 @@ class FolioItem
                            @holding&.dig('callNumber')
 
     volume_info = normalize_call_number([@item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ').presence) if @item
-    CallNumber.new(normalize_call_number(provided_call_number), volume_info:)
+    CallNumber.new(normalize_call_number(provided_call_number), call_number_type, volume_info:)
   end
 
   # Call number normalization ported from solrmarc code
@@ -207,12 +207,27 @@ class FolioItem
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
     VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
 
-    attr_reader :base_call_number, :volume_info
+    attr_reader :base_call_number, :purported_type, :volume_info
 
     # NOTE: call_number may be nil (when used for an on-order item)
-    def initialize(base_call_number, volume_info: nil)
+    def initialize(base_call_number, purported_type = nil, volume_info: nil)
       @base_call_number = base_call_number
+      @purported_type = purported_type
       @volume_info = volume_info
+    end
+
+    def type
+      @type ||= if purported_type == 'LC'
+                  if valid_lc?
+                    'LC'
+                  elsif dewey?
+                    'DEWEY'
+                  else
+                    'OTHER'
+                  end
+                else
+                  purported_type.upcase
+                end
     end
 
     def <=>(other)

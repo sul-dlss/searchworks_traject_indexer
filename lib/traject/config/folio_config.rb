@@ -173,7 +173,7 @@ def call_number_for_item(record, item, context)
   context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
   context.clipboard[:call_number_for_item][item] ||= begin
-    call_number_object(item.call_number, item.call_number_type, serial:)
+    call_number_object(item.call_number, item.call_number.type, serial:)
   end
 end
 
