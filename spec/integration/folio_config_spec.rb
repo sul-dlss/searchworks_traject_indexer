@@ -220,12 +220,7 @@ RSpec.describe 'FOLIO indexing' do
         { 'id' => nil, 'barcode' => '12451243-1001',
           'library' => 'SUL',
           'permanent_location_code' => 'SUL-ELECTRONIC', 'type' => 'ONLINE',
-          'note' => nil, 'lopped_callnumber' => nil,
-          'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
-          'reverse_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
-          'callnumber' => nil,
-          'full_shelfkey' => nil,
-          'scheme' => 'LC' }
+          'note' => nil }
       )
     }
 
