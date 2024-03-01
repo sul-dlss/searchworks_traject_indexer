@@ -226,7 +226,7 @@ RSpec.describe 'All_search config' do
           build(:dewey_holding, barcode: 'Dewey2', call_number: '505 .N285B', enumeration: 'V.241-245 1973', permanent_location_code: 'LOCATION')
         ]
       end
-      it { is_expected.to eq ['Dewey1'] }
+      it { is_expected.to eq ['Dewey2'] }
     end
 
     context 'with sudoc' do
@@ -261,7 +261,6 @@ RSpec.describe 'All_search config' do
         ]
       end
       specify do
-        pending 'Waiting for some decision about how items should be sorted within a lopped call number set'
         expect(result[field]).to eq ['lc1']
       end
     end
