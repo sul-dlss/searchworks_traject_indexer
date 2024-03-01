@@ -110,12 +110,43 @@ each_record do |record, context|
   context.skip!('Incomplete record') if record['245'] && record['245']['a'] == '**REQUIRED FIELD**'
 end
 
-# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+def call_number_object(call_number, call_number_type, holdings_items: [], serial: false)
+  calculated_call_number_type = case call_number_type
+                                when 'LC'
+                                  if call_number.valid_lc?
+                                    'LC'
+                                  elsif call_number.dewey?
+                                    'DEWEY'
+                                  else
+                                    'OTHER'
+                                  end
+                                when 'DEWEY'
+                                  'DEWEY'
+                                else
+                                  'OTHER'
+                                end
+
+  case calculated_call_number_type
+  when 'LC'
+    CallNumbers::LC.new(call_number.base_call_number.to_s, call_number.volume_info, serial:)
+  when 'DEWEY'
+    CallNumbers::Dewey.new(call_number.base_call_number.to_s, call_number.volume_info, serial:)
+  else
+    call_numbers_in_location = holdings_items.map(&:call_number).map(&:to_s)
+
+    CallNumbers::Other.new(
+      call_number.base_call_number.to_s,
+      call_number.volume_info,
+      longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
+      scheme: call_number_type == 'LC' ? 'OTHER' : call_number_type
+    )
+  end
+end
+
 def call_number_for_item(record, item, context)
   context.clipboard[:call_number_for_item] ||= {}
+  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.on_order? || item.in_process?
   context.clipboard[:call_number_for_item][item] ||= begin
-    return OpenStruct.new(scheme: item.call_number_type) if item.on_order? || item.in_process?
-
     serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
 
     separate_browse_call_num = []
@@ -132,52 +163,23 @@ def call_number_for_item(record, item, context)
       end
     end
 
-    return separate_browse_call_num.first if separate_browse_call_num.any?
+    separate_browse_call_num.first
+  end
 
-    return OpenStruct.new(
-      scheme: 'OTHER',
-      call_number: item.call_number.to_s,
-      to_lopped_shelfkey: item.call_number.to_s,
-      to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{item.call_number}")
-    ) if item.bad_lc_lane_call_number?
-    return OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
-    return OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
+  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(
+    scheme: 'OTHER',
+    call_number: item.call_number.to_s,
+    to_lopped_shelfkey: item.call_number.to_s,
+    to_volume_sort: CallNumbers::ShelfkeyBase.pad_all_digits("other #{item.call_number}")
+  ) if item.bad_lc_lane_call_number?
+  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.internet_resource?
+  context.clipboard[:call_number_for_item][item] ||= OpenStruct.new(scheme: item.call_number_type) if item.ignored_call_number?
 
-    calculated_call_number_type = case item.call_number_type
-                                  when 'LC'
-                                    if item.valid_lc?
-                                      'LC'
-                                    elsif item.dewey?
-                                      'DEWEY'
-                                    else
-                                      'OTHER'
-                                    end
-                                  when 'DEWEY'
-                                    'DEWEY'
-                                  else
-                                    'OTHER'
-                                  end
-
-    case calculated_call_number_type
-    when 'LC'
-      CallNumbers::LC.new(item.call_number.base_call_number.to_s, item.call_number.volume_info, serial:)
-    when 'DEWEY'
-      CallNumbers::Dewey.new(item.call_number.base_call_number.to_s, item.call_number.volume_info, serial:)
-    else
-      non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
-
-      call_numbers_in_location = (non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]] || []).map(&:call_number).map(&:to_s)
-
-      CallNumbers::Other.new(
-        item.call_number.base_call_number.to_s,
-        item.call_number.volume_info,
-        longest_common_prefix: Utils.longest_common_prefix(*call_numbers_in_location),
-        scheme: item.call_number_type == 'LC' ? 'OTHER' : item.call_number_type
-      )
-    end
+  context.clipboard[:call_number_for_item][item] ||= begin
+    holdings_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type][[item.library, item.display_location&.dig('name'), item.call_number_type]] || []
+    call_number_object(item.call_number, item.call_number_type, holdings_items:, serial:)
   end
 end
-# rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
 def items(record, context)
   context.clipboard[:item] ||= record.index_items
@@ -2313,6 +2315,47 @@ to_field 'item_display_struct' do |record, accumulator, context|
                                                      scheme:
                                                    })
   end
+end
+
+# TODO: After this field is fully populated and Searchworks is using it to drive browse-nearby, the shelfkey
+# logic in the item_display_struct field can move down here.
+to_field 'browse_nearby_struct' do |_record, accumulator, context|
+  next unless context.output_hash['item_display_struct']
+
+  browseable_items = context.output_hash['item_display_struct'].select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) && v[:type] != 'ONLINE' }
+
+  accumulator.concat(browseable_items.sort_by { |v| v[:shelfkey] }.uniq { |v| v[:shelfkey] }.map do |v|
+    v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
+  end)
+end
+
+# Inject a special browse nearby entry for e-resources, using either the call number from the holdings record
+# or from the MARC data.
+to_field 'browse_nearby_struct' do |record, accumulator, context|
+  next if context.output_hash['item_display_struct']&.any? { |v| v[:type] != 'ONLINE' }
+
+  eresource = Folio::EresourceHoldingsBuilder.new(record.hrid, record.holdings, record.marc_record).build.first
+
+  next unless eresource
+
+  callnumber = begin
+    value = eresource.holding&.dig('callNumber')
+    call_number_object(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name'))) if value
+  end
+
+  callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
+    call_number_object(FolioItem::CallNumber.new(item_050), 'LC') if FolioItem::CallNumber.new(item_050).valid_lc?
+  end.first
+
+  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.scheme.upcase)
+
+  accumulator << {
+    lopped_call_number: callnumber.call_number,
+    shelfkey: callnumber.to_shelfkey,
+    reserve_shelfkey: callnumber.to_reverse_shelfkey,
+    callnumber: callnumber.call_number,
+    scheme: callnumber.scheme.upcase
+  }
 end
 
 ##

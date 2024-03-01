@@ -229,6 +229,15 @@ RSpec.describe 'FOLIO indexing' do
       )
     }
 
+    it 'includes the item in the browse_nearby_struct' do
+      expect(result['browse_nearby_struct'].map { |x| JSON.parse(x) }).to match_array(hash_including(
+                                                                                        'callnumber' => 'PR3562 .L385 2014',
+                                                                                        'lopped_call_number' => 'PR3562 .L385 2014',
+                                                                                        'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
+                                                                                        'reserve_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
+                                                                                        'scheme' => 'LC'
+                                                                                      ))
+    end
     it { expect(result['access_facet']).to eq ['Online'] }
     it { expect(result['shelfkey']).to eq ['lc pr  3562.000000 l0.385000 002014'] }
     it { expect(result['building_facet']).to be_nil }
@@ -446,6 +455,16 @@ RSpec.describe 'FOLIO indexing' do
         expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
                                                                                          hash_including('id' => '5362817d-f2df-503c-aa20-b2287c64ae25')
                                                                                        ])
+      end
+
+      it 'includes the item in the browse_nearby_struct' do
+        expect(result['browse_nearby_struct'].map { |x| JSON.parse(x) }).to match_array(hash_including(
+                                                                                          'item_id' => '5362817d-f2df-503c-aa20-b2287c64ae25',
+                                                                                          'callnumber' => 'HV6432.7 .R57 2011',
+                                                                                          'shelfkey' => 'lc hv  6432.700000 r0.570000 002011',
+                                                                                          'reverse_shelfkey' => 'en~i4~~tvwx}szzzzz~8z}uszzzz~zzxzyy~~~~~~~~~~~~~~~',
+                                                                                          'scheme' => 'LC'
+                                                                                        ))
       end
     end
 
