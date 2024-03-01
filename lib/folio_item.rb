@@ -262,14 +262,14 @@ class FolioItem
       [base_call_number.to_s, volume_info].compact.join(' ')
     end
 
-    def call_number_object(serial: false)
+    def shelfkey(serial: false)
       case type
       when 'LC'
-        CallNumbers::LC.new(base_call_number.to_s, volume_info, serial:)
+        CallNumbers::LcShelfkey.new(base_call_number.to_s, volume_info, serial:)
       when 'DEWEY'
-        CallNumbers::Dewey.new(base_call_number.to_s, volume_info, serial:)
+        CallNumbers::DeweyShelfkey.new(base_call_number.to_s, volume_info, serial:)
       else
-        CallNumbers::Other.new(
+        CallNumbers::OtherShelfkey.new(
           base_call_number.to_s,
           volume_info,
           scheme: type,

@@ -4,8 +4,6 @@ require 'call_numbers/shelfkey_base'
 
 module CallNumbers
   class DeweyShelfkey < ShelfkeyBase
-    delegate :base_call_number, to: :call_number
-
     def forward
       [
         'dewey',

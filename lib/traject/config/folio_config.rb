@@ -2012,7 +2012,7 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   # Prefer items with the first volume sort key
 
   item_with_the_most_recent_shelfkey = callnumber_with_the_most_items.min_by do |item|
-    [item.call_number.call_number_object(serial:).to_volume_sort, item.barcode || '']
+    [item.call_number.shelfkey(serial:).forward, item.barcode || '']
   end
 
   accumulator << item_with_the_most_recent_shelfkey.barcode
@@ -2101,11 +2101,11 @@ to_field 'item_display_struct' do |record, accumulator, context|
     next if item.skipped?
 
     call_number = item.call_number.to_s
-    call_number_object = item.call_number.call_number_object(serial:)
-    scheme = call_number_object.scheme.upcase
-    shelfkey = call_number_object.shelfkey&.forward
-    volume_sort = call_number_object.to_volume_sort
-    reverse_shelfkey = call_number_object.shelfkey&.reverse
+    shelfkey_obj = item.call_number.shelfkey(serial:)
+    scheme = item.call_number.type.upcase
+    shelfkey = shelfkey_obj.forward
+    volume_sort = shelfkey_obj.forward
+    reverse_shelfkey = shelfkey_obj.reverse
     lopped_call_number = item.call_number.base_call_number
 
     if item.shelved_by_location?
@@ -2179,23 +2179,23 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   callnumber = begin
     value = eresource.holding&.dig('callNumber')
     type = FolioItem.call_number_type_code(eresource.holding&.dig('callNumberType', 'name'))
-    FolioItem::CallNumber.new(value, type).call_number_object if value.present?
+    FolioItem::CallNumber.new(value, type) if value.present?
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
     cn = FolioItem::CallNumber.new(item_050, 'LC')
 
-    cn.call_number_object if cn.valid_lc?
+    cn if cn.valid_lc?
   end.first
 
-  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.scheme.upcase)
+  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.type.upcase)
 
   accumulator << {
-    lopped_call_number: callnumber.call_number,
+    lopped_call_number: callnumber.base_call_number,
     shelfkey: callnumber.shelfkey.forward,
     reserve_shelfkey: callnumber.shelfkey.reverse,
     callnumber: callnumber.call_number,
-    scheme: callnumber.scheme.upcase
+    scheme: callnumber.type.upcase
   }
 end
 
