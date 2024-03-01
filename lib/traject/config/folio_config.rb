@@ -1917,61 +1917,6 @@ to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, ac
   accumulator.select! { |cn| cn =~ FolioItem::CallNumber::VALID_LC_REGEX }
 end
 
-# shelfkey = custom, getShelfkeys
-
-to_field 'shelfkey' do |record, accumulator, context|
-  items(record, context).each do |item|
-    next if item.skipped? || item.shelved_by_location? || item.lost_or_missing?
-
-    non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
-
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]])
-
-    if stuff_in_the_same_library.length > 1
-      call_number_object = call_number_for_item(record, item, context)
-      lopped_shelfkey = call_number_object.to_lopped_shelfkey.forward
-
-      # if we lopped the shelfkey, or if there's other stuff in the same library whose shelfkey will be lopped to this item's shelfkey, we need to add ellipses.
-      accumulator << if lopped_shelfkey != call_number_object.shelfkey.forward || stuff_in_the_same_library.reject do |x|
-                                                                                    x.call_number.to_s == item.call_number.to_s
-                                                                                  end.any? do |x|
-                          call_number_for_item(record, x, context).lopped == call_number_object.lopped
-                        end
-                       lopped_shelfkey + ' ...'
-                     else
-                       lopped_shelfkey
-                     end
-    else
-      accumulator << call_number_for_item(record, item, context).shelfkey&.forward
-    end
-  end
-end
-
-# given a shelfkey (a lexicaly sortable call number), return the reverse
-# shelf key - a sortable version of the call number that will give the
-# reverse order (for getting "previous" call numbers in a list)
-#
-# return the reverse String value, mapping A --> 9, B --> 8, ...
-#   9 --> A and also non-alphanum to sort properly (before or after alphanum)
-to_field 'reverse_shelfkey' do |record, accumulator, context|
-  items(record, context).each do |item|
-    next if item.skipped? || item.shelved_by_location? || item.lost_or_missing?
-
-    non_skipped_or_ignored_items = context.clipboard[:non_skipped_or_ignored_items_by_library_location_call_number_type]
-
-    stuff_in_the_same_library = Array(non_skipped_or_ignored_items[[item.library, item.display_location&.dig('name'), item.call_number_type]])
-
-    if stuff_in_the_same_library.length > 1
-      call_number_object = call_number_for_item(record, item, context)
-      lopped_shelfkey = call_number_object.to_lopped_shelfkey.reverse
-
-      accumulator << lopped_shelfkey
-    else
-      accumulator << call_number_for_item(record, item, context).shelfkey&.reverse
-    end
-  end
-end
-
 #
 # # Location facet
 to_field 'location_facet' do |record, accumulator, context|
@@ -2344,6 +2289,20 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
     callnumber: callnumber.call_number,
     scheme: callnumber.scheme.upcase
   }
+end
+
+to_field 'shelfkey' do |_record, accumulator, context|
+  accumulator.concat context.output_hash['browse_nearby_struct']&.map { |v| v[:shelfkey] }&.compact || []
+end
+
+# given a shelfkey (a lexicaly sortable call number), return the reverse
+# shelf key - a sortable version of the call number that will give the
+# reverse order (for getting "previous" call numbers in a list)
+#
+# return the reverse String value, mapping A --> 9, B --> 8, ...
+#   9 --> A and also non-alphanum to sort properly (before or after alphanum)
+to_field 'reverse_shelfkey' do |_record, accumulator, context|
+  accumulator.concat context.output_hash['browse_nearby_struct']&.map { |v| v[:reverse_shelfkey] }&.compact || []
 end
 
 ##
