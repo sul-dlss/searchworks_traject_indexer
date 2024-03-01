@@ -14,20 +14,12 @@ module CallNumbers
         normalize_dewey_cutter(cutter2),
         normalize_dewey_cutter(cutter3),
         (folio || '').downcase.strip,
-        rest_with_serial_behavior
-      ].compact.reject(&:empty?).join(' ').strip
+        self.class.pad_all_digits(rest),
+        volume_info_with_serial_behavior
+      ].filter_map(&:presence).join(' ').strip
     end
 
     private
-
-    # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
-    def rest_with_serial_behavior
-      return unless rest
-      return if rest.empty? && (call_number.scheme == 'lc' || call_number.scheme == 'dewey')
-      return self.class.pad_all_digits(rest) unless serial
-
-      self.class.reverse(self.class.pad_all_digits(rest)).strip.ljust(50, '~')
-    end
 
     def klass_number_and_decimal
       [

@@ -3,9 +3,10 @@
 module CallNumbers
   class LC < CallNumberBase
     attr_reader :call_number, :serial,
-                :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop
+                :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop,
+                :volume_info
 
-    def initialize(call_number, serial: false)
+    def initialize(call_number, volume_info = '', serial: false)
       match_data = /
         (?<klass>[A-Z]{0,3})\s*
         (?<klass_number>\d+)?(?<klass_decimal>\.?\d+)?\s*
@@ -33,6 +34,7 @@ module CallNumbers
       @folio = match_data[:folio]
       @rest = match_data[:rest]
       @potential_stuff_to_lop = match_data[:potential_stuff_to_lop]
+      @volume_info = volume_info
       @serial = serial
     end
 

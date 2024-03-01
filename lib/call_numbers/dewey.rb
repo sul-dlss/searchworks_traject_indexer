@@ -3,9 +3,10 @@
 module CallNumbers
   class Dewey < CallNumberBase
     attr_reader :call_number, :serial,
-                :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop
+                :klass_number, :klass_decimal, :doon1, :doon2, :doon3, :cutter1, :cutter2, :cutter3, :folio, :rest, :potential_stuff_to_lop,
+                :volume_info
 
-    def initialize(call_number, serial: false)
+    def initialize(call_number, volume_info = '', serial: false)
       match_data = %r{
         (?<klass_number>\d{1,3})(?<klass_decimal>\.?\d+)?\s*
         (?<doon1>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
@@ -32,6 +33,7 @@ module CallNumbers
       @rest = match_data[:rest]
       @potential_stuff_to_lop = match_data[:potential_stuff_to_lop]
       @serial = serial
+      @volume_info = volume_info
     end
 
     def scheme

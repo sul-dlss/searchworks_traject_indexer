@@ -9,10 +9,11 @@ module CallNumbers
       'os folder', 'small folder', 'small map folder', 'suppl', 'tube', 'series'
     ]
 
-    attr_reader :call_number, :longest_common_prefix, :serial, :scheme
+    attr_reader :call_number, :longest_common_prefix, :serial, :scheme, :volume_info
 
-    def initialize(call_number, longest_common_prefix: '', serial: false, scheme: '')
+    def initialize(call_number, volume_info = '', longest_common_prefix: '', serial: false, scheme: '')
       @call_number = call_number
+      @volume_info = volume_info
       @longest_common_prefix = longest_common_prefix
       @serial = serial
       @scheme = scheme
@@ -44,7 +45,7 @@ module CallNumbers
 
     # shortcutting a shelfkey class as we just need the normalization/reverse methods
     def to_shelfkey
-      [shelfkey_scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number)].join(' ')
+      [shelfkey_scheme, CallNumbers::ShelfkeyBase.pad_all_digits(call_number), CallNumbers::ShelfkeyBase.pad_all_digits(volume_info)].filter_map(&:presence).join(' ')
     end
 
     def to_reverse_shelfkey
