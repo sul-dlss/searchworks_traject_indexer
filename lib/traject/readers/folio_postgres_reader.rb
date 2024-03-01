@@ -168,6 +168,7 @@ module Traject
       end
     end
 
+    # Retrieve the courses that end sometime in the future
     def course_reserves
       @course_reserves ||= begin
         response = @connection.exec <<-SQL
@@ -181,8 +182,10 @@ module Traject
               'instructorNames', (SELECT jsonb_agg(instructor ->> 'name') FROM jsonb_array_elements(cl.jsonb #> '{instructorObjects}') AS instructor)
               ) AS jsonb
             FROM sul_mod_courses.coursereserves_reserves cr
-            LEFT JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
-            LEFT JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
+            JOIN sul_mod_courses.coursereserves_courselistings cl ON cl.id = cr.courselistingid
+            JOIN sul_mod_courses.coursereserves_courses cc ON cc.courselistingid = cl.id
+            JOIN sul_mod_courses.coursereserves_terms ct ON cl.termid = ct.id
+            WHERE (ct.jsonb ->> 'endDate')::timestamp > current_date
         SQL
 
         response.map { |row| JSON.parse(row['jsonb']) }.each_with_object({}) do |course, hash|
