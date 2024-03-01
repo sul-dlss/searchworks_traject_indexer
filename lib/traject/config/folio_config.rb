@@ -2127,23 +2127,13 @@ to_field 'item_display_struct' do |record, accumulator, context|
         lopped_call_number = separate_browse_call_num.call_number
       end
     elsif item.shelved_by_location?
-      lopped_call_number = if [item.display_location_code, item.temporary_location_code].include? 'SCI-SHELBYSERIES'
-                             'Shelved by Series title'
-                           else
-                             'Shelved by title'
-                           end
+      shelved_by_text = if [item.display_location_code, item.temporary_location_code].include? 'SCI-SHELBYSERIES'
+                          'Shelved by Series title'
+                        else
+                          'Shelved by title'
+                        end
 
-      unless item.ignored_call_number?
-        enumeration = item.call_number.to_s[call_number_object.lopped.length..-1].strip
-      end
-      shelfkey = lopped_call_number.downcase
-      reverse_shelfkey = CallNumbers::ShelfkeyBase.reverse(shelfkey)
-
-      call_number = [lopped_call_number, enumeration].compact.join(' ') unless item.internet_resource?
-      volume_sort = [
-        lopped_call_number,
-        (CallNumbers::ShelfkeyBase.reverse(CallNumbers::ShelfkeyBase.pad_all_digits(enumeration)).ljust(50, '~') if enumeration)
-      ].compact.join(' ').downcase
+      call_number = [shelved_by_text, item.call_number.volume_info].compact.join(' ')
     # if there's only one item with the base call number, then we use the non-lopped versions of stuff
     # We also used the non-lopped form if the item has no enumeration information, or all the items share the same enumeration data
     else
