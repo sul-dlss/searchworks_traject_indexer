@@ -17,7 +17,7 @@ RSpec.describe CallNumbers::Other do
     before { I18n.config.available_locales = :en } # No idea why this is needed
     let(:reverse_shelfkey) { described_class.new('ZDVD 1234').to_reverse_shelfkey }
 
-    it 'uses CallNumbers::Shelfkey.reverse to reverse' do
+    it 'uses CallNumbers::ShelfkeyBase.reverse to reverse' do
       expect(reverse_shelfkey).to start_with('b6il8')
       expect(reverse_shelfkey).to include('0m4m')
       expect(reverse_shelfkey).to include('zzyxwv')

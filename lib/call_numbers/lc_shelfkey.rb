@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 module CallNumbers
-  class Shelfkey < ShelfkeyBase
+  class LcShelfkey < ShelfkeyBase
+    delegate :scheme, :klass, :klass_number, :klass_decimal, :doon1, :doon2, :doon3,
+             :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
+
     def to_shelfkey
       [
         call_number.scheme,
