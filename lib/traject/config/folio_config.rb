@@ -2143,16 +2143,16 @@ to_field 'item_display_struct' do |record, accumulator, context|
       lopped_call_number = item.call_number.base_call_number
     end
 
-    accumulator << item.to_item_display_hash.merge({
-                                                     lopped_callnumber: (lopped_call_number unless item.ignored_call_number? && !item.shelved_by_location?),
-                                                     shelfkey:,
-                                                     reverse_shelfkey:,
-                                                     callnumber: (unless item.ignored_call_number? && !item.shelved_by_location?
-                                                                    call_number
-                                                                  end),
-                                                     full_shelfkey: (volume_sort unless item.ignored_call_number? && !item.shelved_by_location?),
-                                                     scheme:
-                                                   })
+    call_number_data = {
+      lopped_callnumber: lopped_call_number,
+      shelfkey:,
+      reverse_shelfkey:,
+      callnumber: call_number,
+      full_shelfkey: volume_sort,
+      scheme:
+    }
+
+    accumulator << item.to_item_display_hash.merge(call_number_data)
   end
 end
 
