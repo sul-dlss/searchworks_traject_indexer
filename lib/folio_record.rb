@@ -153,7 +153,8 @@ class FolioRecord
         item:,
         holding:,
         instance:,
-        course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] }
+        course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] },
+        record: self
       )
     end
   end
