@@ -306,8 +306,9 @@ module Traject
                                        '[]'::jsonb
                                     END,
                 'administrativeNotes', '[]'::jsonb,
-                'notes', COALESCE((SELECT jsonb_agg(e) FROM jsonb_array_elements(vi.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb)
-
+                'notes', COALESCE((SELECT jsonb_agg(e) FROM jsonb_array_elements(vi.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
+                'instanceType', COALESCE(jsonb_agg(jsonb_build_object('name', it.jsonb ->> 'name'))  -> 0, '{}'::jsonb),
+                'modeOfIssuance', COALESCE(jsonb_agg(jsonb_build_object('name', moi.jsonb ->> 'name')) -> 0, '{}'::jsonb)
               ),
             'source_record', COALESCE(jsonb_agg(DISTINCT mr."content"), '[]'::jsonb),
             'items',
@@ -429,6 +430,12 @@ module Traject
       -- Holdings Ill policy relation
       LEFT JOIN sul_mod_inventory_storage.ill_policy ilp
           ON hr.illpolicyid = ilp.id
+      -- Instance Type (Resource type) relation
+      LEFT JOIN sul_mod_inventory_storage.instance_type it
+          ON vi.instancetypeid = it.id
+      -- Mode of Issuance relation
+      LEFT JOIN sul_mod_inventory_storage.mode_of_issuance moi
+          ON vi.modeofissuanceid = moi.id
       LEFT JOIN sul_mod_source_record_storage.records_lb rs
           ON rs.external_id = vi.id AND rs.state = 'ACTUAL'
       LEFT JOIN sul_mod_source_record_storage.marc_records_lb mr
