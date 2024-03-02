@@ -312,6 +312,22 @@ describe 'EarthWorks indexing' do
       )
     end
 
+    context 'when indexing is successful' do
+      it 'creates an indexing success event' do
+        expect(result).to be_a Hash
+        expect(SdrEvents).to have_received(:report_indexing_success).with(druid, target: 'Earthworks')
+      end
+    end
+
+    context 'when the item was deleted' do
+      let(:record) { { id: "druid:#{druid}", delete: true } }
+
+      it 'creates an indexing delete event' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_deleted).with(druid, target: 'Earthworks')
+      end
+    end
+
     context 'when the item has no public XML' do
       before { allow(record).to receive(:public_xml).and_return(nil) }
 

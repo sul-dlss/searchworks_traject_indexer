@@ -180,6 +180,7 @@ each_record do |record, context|
   # delete records form the index
   context.output_hash['id'] = ["stanford-#{druid}"]
 
+  SdrEvents.report_indexing_deleted(druid, target: settings['purl_fetcher.target'])
   context.skip!("Delete: #{druid}")
 end
 
@@ -474,11 +475,12 @@ each_record do |record, context|
   end
 end
 
-each_record do |_record, context|
+each_record do |record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now
 
   logger.debug('geo_config.rb') { "Processed #{context.output_hash['id']} (#{t1 - t0}s)" }
+  SdrEvents.report_indexing_success(record.druid, target: settings['purl_fetcher.target'])
 end
 
 # rubocop:disable Metrics/MethodLength
