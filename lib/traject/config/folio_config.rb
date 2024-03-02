@@ -2340,7 +2340,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
 
   callnumber = begin
     value = eresource.holding&.dig('callNumber')
-    call_number_object(value, FolioItem.symphony_call_number_type(eresource.holding&.dig('callNumberType', 'name'))) if value
+    call_number_object(FolioItem::CallNumber.new(value), FolioItem.call_number_type_code(eresource.holding&.dig('callNumberType', 'name'))) if value
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
