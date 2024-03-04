@@ -30,13 +30,16 @@ module Utils
     new_string
   end
 
-  # https://rosettacode.org/wiki/Longest_common_prefix#Ruby
-  def self.longest_common_prefix(*strs)
+  def self.longest_common_call_number_prefix(*strs)
     return '' if strs.empty?
+    return strs.first if strs.one?
 
     min, max = strs.minmax
     idx = min.size.times { |i| break i if min[i] != max[i] }
-    min[0...idx]
+    return min if idx == min.length
+
+    substr = min[0...idx].sub(/V?(\s|[[:punct:]])+\z/, '')
+    substr.sub(/(\s|[[:punct:]])+\z/, '')
   end
 
   def self.version

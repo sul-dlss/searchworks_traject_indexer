@@ -35,7 +35,7 @@ class FolioItem
                  bound_with_holding: nil,
                  course_reserves: [],
                  type: nil, status: nil,
-                 library: nil)
+                 library: nil, record: nil)
     @item = item
     @holding = holding
     @instance = instance
@@ -46,6 +46,7 @@ class FolioItem
     @type = type || @item&.dig('materialType')
     @barcode = @item&.dig('barcode')
     @course_reserves = course_reserves
+    @record = record
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -174,6 +175,8 @@ class FolioItem
 
   private
 
+  attr_reader :record
+
   def temporary_location
     item&.dig('location', 'temporaryLocation')
   end
@@ -184,12 +187,33 @@ class FolioItem
   end
 
   def build_call_number
-    provided_call_number = @bound_with_holding&.dig('callNumber') ||
-                           @item&.dig('callNumber', 'callNumber') ||
-                           @holding&.dig('callNumber')
+    base_call_number = @bound_with_holding&.dig('callNumber') ||
+                       @item&.dig('callNumber', 'callNumber') ||
+                       @holding&.dig('callNumber')
 
     volume_info = normalize_call_number([@item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ').presence) if @item
-    CallNumber.new(normalize_call_number(provided_call_number), volume_info:)
+
+    if volume_info.blank? && (call_number_type == 'ALPHANUM' || call_number_type == 'SUDOC') && record
+      # ALPHANUM call numbers seem to be problematic; sometimes they use the volume/enumeration/chronology fields under one holdings record
+      # but sometimes they create unique holdings records for each item... so we get to do a little extra work to try to generate
+      # the volume information as best we can...:
+      # we assume that all items in the same location with the same call number prefix are part of the same set, so
+      # the common prefix between all those call numbers is the base call number, and the differences are the volume info.
+      # The prefix is the shared characters from the beginning of the call number up to the first space or punctuation before
+      # the call numbers start to diverge.
+
+      all_holdings = record.holdings.select { |x| x&.dig('location', 'effectiveLocation') == holding&.dig('location', 'effectiveLocation') }
+      callnums_in_the_same_location = all_holdings.filter_map { |x| x&.dig('callNumber') }.select { |cn| cn[0..4] == base_call_number[0..4] }
+
+      prefix = Utils.longest_common_call_number_prefix(*callnums_in_the_same_location)
+      if prefix.length > 4
+        original_call_number = base_call_number
+        base_call_number = prefix.strip
+        volume_info = original_call_number[prefix.length..].strip
+      end
+    end
+
+    CallNumber.new(normalize_call_number(base_call_number), call_number_type, volume_info:)
   end
 
   # Call number normalization ported from solrmarc code
@@ -207,12 +231,27 @@ class FolioItem
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
     VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
 
-    attr_reader :base_call_number, :volume_info
+    attr_reader :base_call_number, :purported_type, :volume_info
 
     # NOTE: call_number may be nil (when used for an on-order item)
-    def initialize(base_call_number, volume_info: nil)
+    def initialize(base_call_number, purported_type = nil, volume_info: nil)
       @base_call_number = base_call_number
+      @purported_type = purported_type
       @volume_info = volume_info
+    end
+
+    def type
+      @type ||= if purported_type == 'LC'
+                  if valid_lc?
+                    'LC'
+                  elsif dewey?
+                    'DEWEY'
+                  else
+                    'OTHER'
+                  end
+                else
+                  purported_type.upcase
+                end
     end
 
     def <=>(other)
@@ -221,6 +260,22 @@ class FolioItem
 
     def call_number
       [base_call_number.to_s, volume_info].compact.join(' ')
+    end
+
+    def call_number_object(serial: false)
+      case type
+      when 'LC'
+        CallNumbers::LC.new(base_call_number.to_s, volume_info, serial:)
+      when 'DEWEY'
+        CallNumbers::Dewey.new(base_call_number.to_s, volume_info, serial:)
+      else
+        CallNumbers::Other.new(
+          base_call_number.to_s,
+          volume_info,
+          scheme: type,
+          serial:
+        )
+      end
     end
 
     def to_s

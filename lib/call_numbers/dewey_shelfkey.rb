@@ -4,30 +4,44 @@ require 'call_numbers/shelfkey_base'
 
 module CallNumbers
   class DeweyShelfkey < ShelfkeyBase
-    delegate :scheme, :klass, :klass_number, :klass_decimal, :doon1, :doon2,
-             :cutter1, :cutter2, :cutter3, :folio, :rest, :serial, to: :call_number
+    delegate :base_call_number, to: :call_number
 
-    def to_shelfkey
+    def forward
       [
-        call_number.scheme,
+        'dewey',
         klass_number_and_decimal,
-        self.class.pad_all_digits(doon1),
-        normalize_dewey_cutter(cutter1),
-        self.class.pad_all_digits(doon2),
-        normalize_dewey_cutter(cutter2),
-        normalize_dewey_cutter(cutter3),
-        (folio || '').downcase.strip,
-        self.class.pad_all_digits(rest),
+        self.class.pad_all_digits(parsed[:doon1]),
+        normalize_dewey_cutter(parsed[:cutter1]),
+        self.class.pad_all_digits(parsed[:doon2]),
+        normalize_dewey_cutter(parsed[:cutter2]),
+        normalize_dewey_cutter(parsed[:cutter3]),
+        (parsed[:folio] || '').downcase.strip,
+        self.class.pad_all_digits(parsed[:rest]),
         volume_info_with_serial_behavior
       ].filter_map(&:presence).join(' ').strip
     end
 
     private
 
+    def parsed
+      @parsed ||= %r{
+        (?<klass_number>\d{1,3})(?<klass_decimal>\.?\d+)?\s*
+        (?<doon1>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<cutter1>[\./]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
+        (?<potential_stuff_to_lop>(?<doon2>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<cutter2>[\./]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
+        (?<doon3>(\d{1,4})(?:ST|ND|RD|TH|D)?\s+)?\s*
+        (?<cutter3>[\./]?[a-zA-Z]+\d+([a-zA-Z]*(?![0-9])))?\s*
+        (?<folio>(?<=\s)?F{1,2}(?=(\s|$)))?
+        (?<rest>.*))
+      }x.match(base_call_number)
+      @parsed ||= {}
+    end
+
     def klass_number_and_decimal
       [
-        self.class.pad(klass_number, by: 3, direction: :left, character: '0'),
-        self.class.pad((klass_decimal || '.'), by: 8)
+        self.class.pad(parsed[:klass_number], by: 3, direction: :left, character: '0'),
+        self.class.pad((parsed[:klass_decimal] || '.'), by: 8)
       ].join('')
     end
 
