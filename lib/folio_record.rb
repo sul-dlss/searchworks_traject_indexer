@@ -47,9 +47,8 @@ class FolioRecord
   def index_items
     @index_items ||= begin
       items = item_holdings.concat(bound_with_holdings)
-      items = eresource_holdings if items.empty?
 
-      unless all_items.any?
+      unless all_items.any? || eresource?
         items = on_order_holdings if items.empty?
         items = on_order_stub_holdings if items.empty?
       end

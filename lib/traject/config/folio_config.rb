@@ -929,7 +929,7 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator << 'Online' if record.eresource?
 
   # Holdings that aren't electronic and aren't on-order must be at the library
-  accumulator << 'At the Library' if items(record, context).any? { |item| !item.internet_resource? && item.status != 'On order' }
+  accumulator << 'At the Library' if items(record, context).any? { |item| item.status != 'On order' }
 
   # Actual on-order PO line
   accumulator << 'On order' if items(record, context).any? { |item| item.status == 'On order' }
@@ -2075,6 +2075,13 @@ to_field 'building_facet' do |record, accumulator, context|
 end
 
 to_field 'building_facet' do |record, accumulator|
+  next if record.index_items.any?
+
+  eholdings = record.holdings.select { |holding| holding.dig('holdingsType', 'name') == 'Electronic' || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
+  accumulator.concat(eholdings.map { |holding| LibrariesMap.for(holding.dig('location', 'effectiveLocation', 'library', 'code')) }.uniq)
+end
+
+to_field 'building_facet' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, _spec, _extractor|
     accumulator << 'Stanford Digital Repository' if field['x'] =~ /SDR-PURL/ || field['u'] =~ /purl\.stanford\.edu/
   end
@@ -2145,7 +2152,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   grouped_items = items(record, context)
                   .reject(&:skipped?)
-                  .select { |item| item.call_number.to_s.present? && %w[LC DEWEY ALPHANUM].include?(item.call_number.type) && item.type != 'ONLINE' }
+                  .select { |item| item.call_number.to_s.present? && %w[LC DEWEY ALPHANUM].include?(item.call_number.type) }
                   .group_by { |item| item.call_number.base_call_number }
 
   browseable_items = grouped_items.map do |_base_call_number, items|
@@ -2172,9 +2179,7 @@ end
 
 # Inject a special browse nearby entry for e-resources, using either the call number from the holdings record
 # or from the MARC data.
-to_field 'browse_nearby_struct' do |record, accumulator, context|
-  next if context.output_hash['item_display_struct']&.any? { |v| v[:type] != 'ONLINE' }
-
+to_field 'browse_nearby_struct' do |record, accumulator|
   eresource = Folio::EresourceHoldingsBuilder.new(record.hrid, record.holdings, record.marc_record).build.first
 
   next unless eresource

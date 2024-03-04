@@ -214,15 +214,6 @@ RSpec.describe 'FOLIO indexing' do
       allow(client).to receive(:pieces).and_return([])
     end
 
-    it {
-      expect(value).to include(
-        { 'id' => nil, 'barcode' => '12451243-1001',
-          'library' => 'SUL',
-          'permanent_location_code' => 'SUL-ELECTRONIC', 'type' => 'ONLINE',
-          'note' => nil }
-      )
-    }
-
     it 'includes the item in the browse_nearby_struct' do
       expect(result['browse_nearby_struct'].map { |x| JSON.parse(x) }).to match_array(hash_including(
                                                                                         'callnumber' => 'PR3562 .L385 2014',
