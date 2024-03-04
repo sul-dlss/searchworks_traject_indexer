@@ -16,6 +16,8 @@ $druid_title_cache = {}
 
 indexer = self
 
+SdrEvents.configure
+
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV.fetch('SOLR_URL', nil)
@@ -44,10 +46,20 @@ settings do
   provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
 
-  provide 'mapping_rescue', (lambda do |context, e|
-    Honeybadger.notify(e, context: { record: context.record_inspect, index_step: context.index_step.inspect })
+  # On error, log to Honeybadger and report as SDR event if we can tie the error to a druid
+  provide 'mapping_rescue', (lambda do |traject_context, err|
+    context = { record: traject_context.record_inspect, index_step: traject_context.index_step.inspect }
 
-    indexer.send(:default_mapping_rescue).call(context, e)
+    Honeybadger.notify(err, context:)
+
+    begin
+      druid = traject_context.source_record&.druid
+      SdrEvents.report_indexing_errored(druid, target: 'Searchworks', message: err.message, context:) if druid
+    rescue StandardError => e
+      Honeybadger.notify(e, context:)
+    end
+
+    indexer.send(:default_mapping_rescue).call(traject_context, err)
   end)
 end
 
@@ -108,14 +120,23 @@ to_field 'hashed_id_ssi' do |_record, accumulator, context|
   accumulator << Digest::MD5.hexdigest(context.output_hash['id'].first)
 end
 
+# Skip records with no public XML
 each_record do |record, context|
-  context.skip!('This item is in processing or does not exist') unless record.public_xml?
+  next if record.public_xml?
+
+  message = 'Item is in processing or does not exist'
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  context.skip!("#{message}: #{record.druid}")
 end
 
 ##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
-  context.skip!('Item has a catkey') if record.catkey
+  next unless record.catkey
+
+  message = 'Item has a catkey'
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  context.skip!("#{message}: #{record.druid}")
 end
 
 to_field 'druid' do |record, accumulator|

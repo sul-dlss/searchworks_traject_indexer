@@ -3,33 +3,28 @@
 require 'spec_helper'
 
 describe 'SDR indexing' do
-  subject(:result) { indexer.map_record(PublicXmlRecord.new('bk264hq9320')) }
-
-  def stub_purl_request(druid, body)
-    without_partial_double_verification do
-      allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.xml").and_return(double(body:,
-                                                                                                    status: double(ok?: true)))
-    end
-  end
-
-  def stub_mods_request(druid, body)
-    without_partial_double_verification do
-      allow(HTTP).to receive(:get).with("https://purl.stanford.edu/#{druid}.mods").and_return(double(body:,
-                                                                                                     status: double(ok?: true)))
-    end
-  end
+  subject(:result) { indexer.map_record(record) }
 
   let(:indexer) do
     Traject::Indexer.new.tap do |i|
       i.load_config_file('./lib/traject/config/sdr_config.rb')
     end
   end
+  let(:record) { PublicXmlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
+
+  def stub_purl_request(druid, body)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
+  end
+
+  def stub_mods_request(druid, body)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.mods").to_return(status: 200, body:)
+  end
 
   context 'with a missing object' do
+    let(:druid) { 'abc' }
+
     before do
-      without_partial_double_verification do
-        allow(HTTP).to receive(:get).with('https://purl.stanford.edu/bk264hq9320.xml').and_return(double(status: double(ok?: false)))
-      end
+      stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     end
 
     it 'maps the data the same way as it does currently' do
@@ -38,97 +33,106 @@ describe 'SDR indexing' do
   end
 
   context 'with bk264hq9320' do
+    let(:druid) { 'bk264hq9320' }
+    let(:collection_druid) { 'nj770kg7809' }
+
     before do
-      stub_purl_request('bk264hq9320', File.read(file_fixture('bk264hq9320.xml').to_s))
-      stub_purl_request('nj770kg7809', File.read(file_fixture('nj770kg7809.xml').to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
 
     it 'maps the data the same way as it does currently' do
-      expect(result).to include 'id' => ['bk264hq9320'],
-                                'hashed_id_ssi' => ['6f9a6cccb27e922d48ee5803d9433648'],
-                                'druid' => ['bk264hq9320'],
-                                'title_245a_search' => ['Trustees Demo reel'],
-                                'title_245_search' => ['Trustees Demo reel.'],
-                                'title_sort' => ['Trustees Demo reel'],
-                                'title_245a_display' => ['Trustees Demo reel'],
-                                'title_display' => ['Trustees Demo reel'],
-                                'title_full_display' => ['Trustees Demo reel.'],
-                                'author_7xx_search' => ['Stanford University. News and Publications Service'],
-                                'author_other_facet' => ['Stanford University. News and Publications Service'],
-                                'author_sort' => ["\u{10FFFF} Trustees Demo reel"],
-                                'author_corp_display' => ['Stanford University. News and Publications Service'],
-                                'pub_search' => ['cau', 'Stanford (Calif.)'],
-                                'pub_year_isi' => [2004],
-                                'pub_date_sort' => ['2004'],
-                                'imprint_display' => ['Stanford (Calif.), February  9, 2004'],
-                                'pub_date' => ['2004'],
-                                'pub_year_ss' => ['2004'],
-                                'pub_year_tisim' => [2004],
-                                'creation_year_isi' => [2004],
-                                'format_main_ssim' => ['Video'],
-                                'language' => ['English'],
-                                'physical' => ['1 MiniDV tape'],
-                                'url_suppl' => [
-                                  'http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv',
-                                  'https://purl.stanford.edu/nj770kg7809'
-                                ],
-                                'url_fulltext' => ['https://purl.stanford.edu/bk264hq9320'],
-                                'access_facet' => ['Online'],
-                                'building_facet' => ['Stanford Digital Repository'],
-                                'collection' => ['9665836'],
-                                'collection_with_title' => ['9665836-|-Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)'],
-                                'all_search' => [' Trustees Demo reel Stanford University. News and Publications Service pro producer moving image cau Stanford (Calif.) 2004-02-09 eng English videocassette 1 MiniDV tape access reformatted digital video/mp4 image/jpeg NTSC Sound Color Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320 Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv English eng CSt human prepared Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive) https://purl.stanford.edu/nj770kg7809 The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu). '] # rubocop:disable Layout/LineLength
+      expect(result).to include(
+        {
+          'id' => ['bk264hq9320'],
+          'hashed_id_ssi' => ['6f9a6cccb27e922d48ee5803d9433648'],
+          'druid' => ['bk264hq9320'],
+          'title_245a_search' => ['Trustees Demo reel'],
+          'title_245_search' => ['Trustees Demo reel.'],
+          'title_sort' => ['Trustees Demo reel'],
+          'title_245a_display' => ['Trustees Demo reel'],
+          'title_display' => ['Trustees Demo reel'],
+          'title_full_display' => ['Trustees Demo reel.'],
+          'author_7xx_search' => ['Stanford University. News and Publications Service'],
+          'author_other_facet' => ['Stanford University. News and Publications Service'],
+          'author_sort' => ["\u{10FFFF} Trustees Demo reel"],
+          'author_corp_display' => ['Stanford University. News and Publications Service'],
+          'pub_search' => ['cau', 'Stanford (Calif.)'],
+          'pub_year_isi' => [2004],
+          'pub_date_sort' => ['2004'],
+          'imprint_display' => ['Stanford (Calif.), February  9, 2004'],
+          'pub_date' => ['2004'],
+          'pub_year_ss' => ['2004'],
+          'pub_year_tisim' => [2004],
+          'creation_year_isi' => [2004],
+          'format_main_ssim' => ['Video'],
+          'language' => ['English'],
+          'physical' => ['1 MiniDV tape'],
+          'url_suppl' => [
+            'http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv',
+            'https://purl.stanford.edu/nj770kg7809'
+          ],
+          'url_fulltext' => ['https://purl.stanford.edu/bk264hq9320'],
+          'access_facet' => ['Online'],
+          'building_facet' => ['Stanford Digital Repository'],
+          'collection' => ['9665836'],
+          'collection_with_title' => ['9665836-|-Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)'],
+          'all_search' => [' Trustees Demo reel Stanford University. News and Publications Service pro producer moving image cau Stanford (Calif.) 2004-02-09 eng English videocassette 1 MiniDV tape access reformatted digital video/mp4 image/jpeg NTSC Sound Color Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320 Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv English eng CSt human prepared Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive) https://purl.stanford.edu/nj770kg7809 The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu). '] # rubocop:disable Layout/LineLength
+        }
+      )
 
       expect(result).to include 'modsxml'
 
-      expect(result).not_to include 'title_variant_search', 'author_meeting_display', 'author_person_display', 'author_person_full_display', 'author_1xx_search',
-                                    'topic_search', 'geographic_search', 'subject_other_search', 'subject_other_subvy_search', 'subject_all_search',
-                                    'topic_facet', 'geographic_facet', 'era_facet', 'publication_year_isi', 'genre_ssim', 'summary_search', 'toc_search', 'file_id',
-                                    'set', 'set_with_title'
+      expect(result).not_to include(
+        'title_variant_search', 'author_meeting_display', 'author_person_display', 'author_person_full_display', 'author_1xx_search',
+        'topic_search', 'geographic_search', 'subject_other_search', 'subject_other_subvy_search', 'subject_all_search',
+        'topic_facet', 'geographic_facet', 'era_facet', 'publication_year_isi', 'genre_ssim', 'summary_search', 'toc_search', 'file_id',
+        'set', 'set_with_title'
+      )
     end
   end
+
   context 'with vv853br8653' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('vv853br8653')) }
+    let(:druid) { 'vv853br8653' }
+    let(:collection_druid) { 'zc193vn8689' }
 
     before do
-      stub_purl_request('vv853br8653', File.read(file_fixture('vv853br8653.xml').to_s))
-      stub_purl_request('zc193vn8689', File.read(file_fixture('zc193vn8689.xml').to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
+
     it 'maps schema.org data for geo content' do
-      expect(JSON.parse(result['schema_dot_org_struct'].first)).to include '@context' => 'http://schema.org',
-                                                                           '@type' => 'Dataset',
-                                                                           'citation' => /Pinsky/,
-                                                                           'description' => [/This dataset/,
-                                                                                             /The Conservation/],
-                                                                           'distribution' => [
-                                                                             {
-                                                                               '@type' => 'DataDownload',
-                                                                               'contentUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
-                                                                               'encodingFormat' => 'application/zip'
-                                                                             }
-                                                                           ],
-                                                                           'identifier' => ['https://purl.stanford.edu/vv853br8653'],
-                                                                           'includedInDataCatalog' => {
-                                                                             '@type' => 'DataCatalog',
-                                                                             'name' => 'https://earthworks.stanford.edu'
-                                                                           },
-                                                                           'keywords' => ['Marine habitat conservation',
-                                                                                          'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
-                                                                                          'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
-                                                                           'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
-                                                                           'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
-                                                                           'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
+      expect(JSON.parse(result['schema_dot_org_struct'].first)).to include(
+        {
+          '@context' => 'http://schema.org',
+          '@type' => 'Dataset',
+          'citation' => /Pinsky/,
+          'description' => [/This dataset/,
+                            /The Conservation/],
+          'distribution' => [
+            {
+              '@type' => 'DataDownload',
+              'contentUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+              'encodingFormat' => 'application/zip'
+            }
+          ],
+          'identifier' => ['https://purl.stanford.edu/vv853br8653'],
+          'includedInDataCatalog' => {
+            '@type' => 'DataCatalog',
+            'name' => 'https://earthworks.stanford.edu'
+          },
+          'keywords' => ['Marine habitat conservation',
+                         'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
+                         'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+          'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
+          'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
+          'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
+        }
+      )
     end
   end
 
   describe 'stanford_work_facet_hsim' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
-
-    before do
-      stub_purl_request(druid, data)
-      stub_purl_request(collection_druid, collection_data)
-    end
-
     let(:druid) { 'abc' }
     let(:collection_druid) { 'abccoll' }
     let(:collection_label) { '' }
@@ -148,12 +152,17 @@ describe 'SDR indexing' do
     end
     let(:collection_data) do
       <<-XML
-        <publicObject>
-          <identityMetadata>
-            <objectLabel>#{collection_label}</objectLabel>
-          </identityMetadata>
-        </publicObject>
+      <publicObject>
+        <identityMetadata>
+          <objectLabel>#{collection_label}</objectLabel>
+        </identityMetadata>
+      </publicObject>
       XML
+    end
+
+    before do
+      stub_purl_request(druid, data)
+      stub_purl_request(collection_druid, collection_data)
     end
 
     context 'with an honors thesis' do
@@ -227,6 +236,7 @@ describe 'SDR indexing' do
           <genre authority="marcgt">student project report</genre>
         XML
       end
+
       it 'maps to Other student work > Student report' do
         expect(result['stanford_work_facet_hsim'].first).to eq 'Other student work|Student report'
       end
@@ -234,12 +244,6 @@ describe 'SDR indexing' do
   end
 
   describe 'identifiers' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
-
-    before do
-      stub_purl_request(druid, data)
-    end
-
     let(:druid) { 'abc' }
     let(:data) do
       <<-XML
@@ -257,6 +261,10 @@ describe 'SDR indexing' do
       XML
     end
 
+    before do
+      stub_purl_request(druid, data)
+    end
+
     it 'maps the appropriate identifier types' do
       expect(result['isbn_search']).to eq ['isbn-id']
       expect(result['isbn_display']).to eq ['isbn-id']
@@ -267,13 +275,7 @@ describe 'SDR indexing' do
     end
   end
 
-  context 'content metadata' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
-
-    before do
-      stub_purl_request(druid, data)
-    end
-
+  describe 'content metadata' do
     let(:druid) { 'abc' }
     let(:data) do
       <<-XML
@@ -296,6 +298,10 @@ describe 'SDR indexing' do
       XML
     end
 
+    before do
+      stub_purl_request(druid, data)
+    end
+
     it 'maps the right data' do
       expect(result['dor_content_type_ssi']).to eq ['image']
       expect(result['dor_resource_content_type_ssim']).to eq %w[object preview]
@@ -304,13 +310,7 @@ describe 'SDR indexing' do
     end
   end
 
-  context 'rights metadata' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
-
-    before do
-      stub_purl_request(druid, data)
-    end
-
+  describe 'rights metadata' do
     let(:druid) { 'abc' }
     let(:data) do
       <<-XML
@@ -335,18 +335,16 @@ describe 'SDR indexing' do
       XML
     end
 
+    before do
+      stub_purl_request(druid, data)
+    end
+
     it 'maps the right data' do
       expect(result['dor_read_rights_ssim']).to eq ['world']
     end
   end
 
-  context 'dates' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
-
-    before do
-      stub_purl_request(druid, data)
-    end
-
+  describe 'dates' do
     let(:druid) { 'abc' }
     let(:data) do
       <<-XML
@@ -356,6 +354,10 @@ describe 'SDR indexing' do
           </mods>
         </publicObject>
       XML
+    end
+
+    before do
+      stub_purl_request(druid, data)
     end
 
     describe 'beginning_year_isi' do
@@ -501,71 +503,74 @@ describe 'SDR indexing' do
         </originInfo>
         XML
       end
+
       it 'maps the right data' do
         expect(result['copyright_year_isi']).to eq ['1980']
       end
     end
   end
 
-  context 'pub_country' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('abc')) }
-
-    before do
-      stub_purl_request(druid, data)
-    end
-
+  describe 'pub_country' do
     let(:druid) { 'abc' }
     let(:data) do
       <<-XML
         <publicObject>
           <mods xmlns="http://www.loc.gov/mods/v3">
-            #{mods_fragment}
+            <originInfo>
+              <place>
+                <placeTerm type="code" authority="marccountry">
+                  aq
+                </placeTerm>
+              </place>
+              <place>
+                <placeTerm type="code" authority="whatever">
+                  aa
+                </placeTerm>
+              </place>
+            </originInfo>
           </mods>
         </publicObject>
       XML
     end
 
-    describe 'pub_country' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo>
-            <place>
-              <placeTerm type="code" authority="marccountry">
-                aq
-              </placeTerm>
-            </place>
-            <place>
-              <placeTerm type="code" authority="whatever">
-                aa
-              </placeTerm>
-            </place>
-          </originInfo>
-        XML
-      end
+    before do
+      stub_purl_request(druid, data)
+    end
 
-      it 'maps the right data' do
-        expect(result['pub_country']).to eq ['Antigua and Barbuda']
-      end
+    it 'maps the right data' do
+      expect(result['pub_country']).to eq ['Antigua and Barbuda']
     end
   end
+
   context 'with zz400gd3785' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('zz400gd3785')) }
+    let(:druid) { 'zz400gd3785' }
+    let(:collection_druid) { 'sg213ph2100' }
+
     before do
-      stub_purl_request('zz400gd3785', File.read(file_fixture('zz400gd3785.xml').to_s))
-      stub_purl_request('sg213ph2100', File.read(file_fixture('sg213ph2100.xml').to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
+
     it 'maps the data' do
-      expect(result).to include 'summary_search' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”'], # rubocop:disable Layout/LineLength
-                                'iiif_manifest_url_ssim' => ['https://purl.stanford.edu/zz400gd3785/iiif/manifest']
+      expect(result).to include(
+        {
+          'summary_search' => ['Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”'], # rubocop:disable Layout/LineLength
+          'iiif_manifest_url_ssim' => ['https://purl.stanford.edu/zz400gd3785/iiif/manifest']
+        }
+      )
     end
   end
+
   context 'with df650pk4327' do
-    subject(:result) { indexer.map_record(PublicXmlRecord.new('df650pk4327')) }
+    let(:druid) { 'df650pk4327' }
+    let(:collection_druid) { 'hn730ks3626' }
+
     before do
-      stub_purl_request('df650pk4327', File.read(file_fixture('df650pk4327.xml').to_s))
-      stub_mods_request('df650pk4327', File.read(file_fixture('df650pk4327.mods')))
-      stub_purl_request('hn730ks3626', File.read(file_fixture('hn730ks3626.xml').to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_mods_request(druid, File.read(file_fixture("#{druid}.mods")))
+      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
+
     it 'turns mods author data into a structure' do
       expect(
         result['author_struct'].length
@@ -574,10 +579,70 @@ describe 'SDR indexing' do
         JSON.parse(result['author_struct'].first)
       ).to include('link' => 'Snydman, Stuart', 'search' => '"Snydman, Stuart"', 'post_text' => '(Author)')
     end
+
     it 'dates not available are nil' do
       %w[beginning_year_isi ending_year_isi earliest_year_isi latest_year_isi earliest_poss_year_isi
          latest_poss_year_isi release_year_isi production_year_isi copyright_year_isi].each do |field|
         expect(result[field]).to be_nil
+      end
+    end
+  end
+
+  describe 'SDR events' do
+    let(:druid) { 'bk264hq9320' }
+    let(:collection_druid) { 'nj770kg7809' }
+
+    before do
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      allow(Settings.sdr_events).to receive(:enabled).and_return(true)
+      allow(SdrEvents).to receive_messages(
+        report_indexing_success: true,
+        report_indexing_deleted: true,
+        report_indexing_skipped: true,
+        report_indexing_errored: true
+      )
+    end
+
+    context 'when the item has no public XML' do
+      before { allow(record).to receive(:public_xml).and_return(nil) }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'Item is in processing or does not exist', target: 'Searchworks')
+      end
+    end
+
+    context 'when the item has a catkey' do
+      before { allow(record).to receive(:catkey).and_return('12345') }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'Item has a catkey', target: 'Searchworks')
+      end
+    end
+
+    context 'when indexing raised an error' do
+      before do
+        allow(Honeybadger).to receive(:notify)
+        allow(indexer).to receive(:logger).and_return(Logger.new('/dev/null')) # suppress logger output
+        allow(record).to receive(:dor_content_type).and_raise('Error message')
+      end
+
+      it 'creates an indexing error event with message and context' do
+        expect { result }.to raise_error('Error message')
+        expect(SdrEvents).to have_received(:report_indexing_errored)
+          .with(
+            druid,
+            target: 'Searchworks',
+            message: 'Error message',
+            context: a_hash_including(
+              index_step: an_instance_of(String),
+              record: an_instance_of(String)
+            )
+          )
       end
     end
   end
