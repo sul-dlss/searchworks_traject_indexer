@@ -226,4 +226,34 @@ module Constants
     852 853 863 866 867 868
     901 910 918 923 924 930 935 940 948 949 950 955 960 962 980 981 983 990 993 998
   ]
+
+  INSTANCE_TYPE_LEADER_CODE = {
+    'cartographic dataset' => 'e',
+    'cartographic image' => 'e',
+    'cartographic moving image' => 'e',
+    'cartographic tactile image' => 'e',
+    'cartographic tactile three-dimensional form' => 'e',
+    'cartographic three-dimensional form' => 'e',
+    'computer dataset' => 'm',
+    'computer program' => 'm',
+    'notated music' => 'c',
+    'performed music' => 'j',
+    'sounds' => 'i',
+    'spoken word' => 'i',
+    'still image' => 'k',
+    'tactile image' => 'k',
+    'tactile notated music' => 'c',
+    'tactile three-dimensional form' => 'r',
+    'text' => 'a',
+    'three-dimensional form' => 'r',
+    'three-dimensional moving image' => 'r',
+    'two-dimensional moving image' => 'g'
+  }
+
+  MODE_OF_ISSUANCE_LEADER_CODE = {
+    'integrating resource' => 'i',
+    'multipart monograph' => 'a',
+    'serial' => 's',
+    'single unit' => 'm'
+  }
 end

@@ -3,9 +3,13 @@
 module Folio
   # Creates a Marc Record for an Folio instance
   class MarcRecordInstanceMapper
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/BlockLength, Metrics/CyclomaticComplexity, Metrics/MethodLength
     def self.build(instance, holdings)
       MARC::Record.new.tap do |marc|
+        # Add what we can to the leader from FOLIO data
+        marc.leader[6] = Constants::INSTANCE_TYPE_LEADER_CODE[instance.dig('instanceType', 'name')] || ' '
+        marc.leader[7] = Constants::MODE_OF_ISSUANCE_LEADER_CODE[instance.dig('modeOfIssuance', 'name')] || ' '
+
         marc.append(MARC::ControlField.new('001', instance['hrid']))
         # mode of issuance
         # identifiers
@@ -129,7 +133,7 @@ module Folio
         # date updated
       end.to_hash
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/BlockLength, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
     # The FOLIO data can either be a plain string (pre-Poppy) or a hash (post-Poppy)
     def self.folio_value(folio_data)
