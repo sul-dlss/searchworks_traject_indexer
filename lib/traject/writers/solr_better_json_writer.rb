@@ -68,6 +68,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       end
     else
       @retry_count = 0
+      SdrEvents.report_indexing_batch_success(batch, target: @settings['purl_fetcher.target'])
     end
   end
 
@@ -100,7 +101,10 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
               "#{self.class.name}: Exceeded maximum number of skipped records (#{@max_skipped}): aborting"
       end
 
+      SdrEvents.report_indexing_batch_errored(batch, target: @settings['purl_fetcher.target'], exception: msg)
       return false
+    else
+      SdrEvents.report_indexing_batch_success(batch, target: @settings['purl_fetcher.target'])
     end
 
     true
@@ -124,27 +128,28 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       @contexts.each(&)
     end
 
-    # Array of [action, data] pairs, where action is :add or :delete
-    # and data is either the doc id or the full doc hash
+    # Array of [action, druid, data] triples, where action is :add or :delete
+    # and data is either the doc id or the full doc hash. Druid is empty for
+    # non-SDR content.
     def actions
-      @contexts.map do |c|
-        if c.skip?
-          id = Array(c.output_hash['id']).first
-          [:delete, id] if id
+      @actions ||= @contexts.map do |context|
+        if context.skip?
+          id = Array(context.output_hash['id']).first
+          [:delete, context.source_record&.druid, id] if id
         else
-          [:add, c.output_hash]
+          [:add, context.source_record&.druid, context.output_hash]
         end
       end.compact
     end
 
     # Make a JSON string for sending to solr /update API
     def generate_json
-      actions.map do |action, data|
+      actions.map do |action, _druid, data|
         case action
         when :delete
-          "delete: #{JSON.generate(data)}"
+          "\"delete\":#{JSON.generate(data)}"
         when :add
-          "add: #{JSON.generate(doc: data)}"
+          "\"add\":#{JSON.generate(doc: data)}"
         end
       end.join(",\n").prepend('{').concat('}')
     end
