@@ -133,11 +133,14 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     # non-SDR content.
     def actions
       @actions ||= @contexts.map do |context|
+        record = context.source_record
+        druid = record&.druid if record.respond_to?(:druid)
+
         if context.skip?
           id = Array(context.output_hash['id']).first
-          [:delete, context.source_record&.druid, id] if id
+          [:delete, druid, id] if id
         else
-          [:add, context.source_record&.druid, context.output_hash]
+          [:add, druid, context.output_hash]
         end
       end.compact
     end

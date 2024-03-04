@@ -96,6 +96,15 @@ describe Traject::SolrBetterJsonWriter do
         end
       ]
     end
+    let(:folio_doc) do
+      Traject::Indexer::Context.new.tap do |doc|
+        doc.output_hash['id'] = [3]
+        doc.source_record = FolioRecord.new_from_source_record(
+          JSON.parse(File.read(file_fixture('a14185492.json'))),
+          nil
+        )
+      end
+    end
 
     before do
       allow(Settings.sdr_events).to receive(:enabled).and_return(true)
@@ -114,6 +123,17 @@ describe Traject::SolrBetterJsonWriter do
 
       it 'does not report any events' do
         writer.send_batch(sdr_docs)
+        expect(Dor::Event::Client).not_to have_received(:create)
+      end
+    end
+
+    context 'with a FolioRecord' do
+      before do
+        allow(Dor::Event::Client).to receive(:create)
+      end
+
+      it 'does not report any events' do
+        writer.send_batch([folio_doc])
         expect(Dor::Event::Client).not_to have_received(:create)
       end
     end
