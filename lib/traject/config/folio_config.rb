@@ -2101,11 +2101,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
     next if item.skipped?
 
     call_number = item.call_number.to_s
-    shelfkey_obj = item.call_number.shelfkey(serial:)
-    scheme = item.call_number.type.upcase
-    shelfkey = shelfkey_obj.forward
-    volume_sort = shelfkey_obj.forward
-    reverse_shelfkey = shelfkey_obj.reverse
+    volume_sort = item.call_number.shelfkey(serial:).forward
     lopped_call_number = item.call_number.base_call_number
 
     if item.shelved_by_location?
@@ -2120,17 +2116,13 @@ to_field 'item_display_struct' do |record, accumulator, context|
 
     call_number_data = if item.call_number.to_s.empty? || item.ignored_call_number?
                          {
-                           callnumber: call_number,
-                           scheme: 'OTHER'
+                           callnumber: call_number
                          }
                        else
                          {
                            lopped_callnumber: lopped_call_number,
-                           shelfkey:,
-                           reverse_shelfkey:,
                            callnumber: call_number,
-                           full_shelfkey: volume_sort,
-                           scheme:
+                           full_shelfkey: volume_sort
                          }
                        end
 
@@ -2145,25 +2137,32 @@ end
 # 3. For non-serial publications, choose the earliest item (e.g. V.1 instead of V.57)
 #
 # The earliest/latest logic is already baked into the full shelfkey.
-to_field 'browse_nearby_struct' do |_record, accumulator, context|
-  next unless context.output_hash['item_display_struct']
-
+to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
-
-  grouped_items = context.output_hash['item_display_struct']
-                         .select { |v| v[:shelfkey].present? && v[:reverse_shelfkey].present? && %w[LC DEWEY ALPHANUM].include?(v[:scheme]) && v[:type] != 'ONLINE' }
-                         .group_by { |v| v[:lopped_callnumber] }
+  grouped_items = items(record, context)
+                  .reject(&:skipped?)
+                  .select { |item| item.call_number.to_s.present? && %w[LC DEWEY ALPHANUM].include?(item.call_number.type) && item.type != 'ONLINE' }
+                  .group_by { |item| item.call_number.base_call_number }
 
   browseable_items = grouped_items.map do |_base_call_number, items|
     if items.one?
       items.first
     else
-      items.min_by { |item| item[:full_shelfkey] }
+      items.min_by { |item| item.call_number.shelfkey(serial:).forward }
     end
   end
 
-  accumulator.concat(browseable_items.map do |v|
-    v.slice(:lopped_callnumber, :shelfkey, :reverse_shelfkey, :callnumber, :scheme).merge(item_id: v[:id])
+  accumulator.concat(browseable_items.map do |item|
+    shelfkey_obj = item.call_number.shelfkey(serial:)
+
+    {
+      lopped_callnumber: item.call_number.base_call_number,
+      shelfkey: shelfkey_obj.forward,
+      reverse_shelfkey: shelfkey_obj.reverse,
+      callnumber: item.call_number.to_s,
+      scheme: item.call_number.type.upcase,
+      item_id: item.id
+    }
   end)
 end
 
