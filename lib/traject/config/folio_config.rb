@@ -2180,13 +2180,12 @@ end
 # Inject a special browse nearby entry for e-resources, using either the call number from the holdings record
 # or from the MARC data.
 to_field 'browse_nearby_struct' do |record, accumulator|
-  eresource = Folio::EresourceHoldingsBuilder.new(record.hrid, record.holdings, record.marc_record).build.first
-
-  next unless eresource
+  next unless record.eresource?
 
   callnumber = begin
-    value = eresource.holding&.dig('callNumber')
-    type = FolioItem.call_number_type_code(eresource.holding&.dig('callNumberType', 'name'))
+    holding = record.electronic_holdings.first
+    value = holding&.dig('callNumber')
+    type = FolioItem.call_number_type_code(holding&.dig('callNumberType', 'name'))
     FolioItem::CallNumber.new(value, type) if value.present?
   end
 

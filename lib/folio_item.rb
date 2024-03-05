@@ -99,8 +99,7 @@ class FolioItem
 
   def ignored_call_number?
     SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
-      temp_call_number? ||
-      internet_resource?
+      temp_call_number?
   end
 
   def temp_call_number?
@@ -167,10 +166,6 @@ class FolioItem
       course_id: course[:course_id],
       loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
     }
-  end
-
-  def internet_resource?
-    type == Folio::EresourceHoldingsBuilder::TYPE
   end
 
   private

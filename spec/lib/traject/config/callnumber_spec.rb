@@ -142,13 +142,5 @@ RSpec.describe 'Call Numbers' do
 
       it { is_expected.to be_nil }
     end
-
-    context 'when it is an online resource' do
-      let(:holdings) do
-        [build(:lc_holding, type: 'ONLINE')]
-      end
-
-      it { is_expected.to be_nil }
-    end
   end
 end

@@ -53,9 +53,5 @@ FactoryBot.define do
       call_number { '71 15446' }
       scheme { 'OTHER' }
     end
-
-    trait :internet_holding do
-      type { 'ONLINE' }
-    end
   end
 end
