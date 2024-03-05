@@ -219,7 +219,7 @@ RSpec.describe 'FOLIO indexing' do
                                                                                         'callnumber' => 'PR3562 .L385 2014',
                                                                                         'lopped_call_number' => 'PR3562 .L385 2014',
                                                                                         'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
-                                                                                        'reserve_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
+                                                                                        'reverse_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
                                                                                         'scheme' => 'LC'
                                                                                       ))
     end

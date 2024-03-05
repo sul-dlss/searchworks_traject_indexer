@@ -2201,7 +2201,7 @@ to_field 'browse_nearby_struct' do |record, accumulator|
   accumulator << {
     lopped_call_number: callnumber.base_call_number,
     shelfkey: callnumber.shelfkey.forward,
-    reserve_shelfkey: callnumber.shelfkey.reverse,
+    reverse_shelfkey: callnumber.shelfkey.reverse,
     callnumber: callnumber.call_number,
     scheme: callnumber.type.upcase
   }
