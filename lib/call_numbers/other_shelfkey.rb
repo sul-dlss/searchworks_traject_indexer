@@ -2,13 +2,11 @@
 
 module CallNumbers
   class OtherShelfkey < ShelfkeyBase
-    delegate :scheme, to: :call_number
-
     # shortcutting a shelfkey class as we just need the normalization/reverse methods
     def forward
       [
         shelfkey_scheme,
-        CallNumbers::ShelfkeyBase.pad_all_digits(call_number.call_number),
+        CallNumbers::ShelfkeyBase.pad_all_digits(base_call_number),
         volume_info_with_serial_behavior
       ].filter_map(&:presence).join(' ')
     end

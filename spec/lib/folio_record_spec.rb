@@ -701,4 +701,58 @@ RSpec.describe FolioRecord do
       end
     end
   end
+
+  describe '#eresource?' do
+    let(:items_and_holdings) do
+      { 'items' => [],
+        'holdings' =>
+        [{ 'holdingsType' => { 'name' => 'Electronic' },
+           'location' =>
+            { 'permanentLocation' =>
+              { 'code' => 'SUL-ELECTRONIC' },
+              'effectiveLocation' =>
+              { 'code' => 'SUL-ELECTRONIC', 'library' => { 'code' => 'SUL' } } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [] }] }
+    end
+
+    let(:source_record_json) do
+      JSON.parse(File.read(file_fixture('a12451243.json')))
+    end
+
+    let(:folio_record) do
+      FolioRecord.new_from_source_record(source_record_json, client)
+    end
+
+    before do
+      allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
+    end
+
+    context 'record does not have any fulltext links (but does have an 856/956)' do
+      let(:source_record_json) do
+        JSON.parse(File.read(file_fixture('a14185492.json')))
+      end
+
+      it { is_expected.to be_eresource }
+    end
+
+    context 'the holding library is Lane (without a explicit holdingsType)' do
+      let(:items_and_holdings) do
+        { 'items' => [],
+          'holdings' =>
+          [{ 'location' =>
+            { 'permanentLocation' =>
+              { 'code' => 'LANE-EDATA' },
+              'effectiveLocation' =>
+              { 'code' => 'LANE-EDATA', 'library' => { 'code' => 'LANE' }, 'details' => { 'holdingsTypeName' => 'Electronic' } } },
+             'holdingsType' => { 'name' => 'Monograph' },
+             'suppressFromDiscovery' => false,
+             'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+             'holdingsStatements' => [] }] }
+      end
+
+      it { is_expected.to be_eresource }
+    end
+  end
 end

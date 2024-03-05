@@ -386,37 +386,6 @@ RSpec.describe 'All_search config' do
     end
   end
 
-  context 'with an online item' do
-    let(:index_items) do
-      [
-        build(:sudoc_holding, :internet_holding, barcode: 'onlineByCallnum')
-      ]
-    end
-    it { is_expected.to eq nil }
-  end
-
-  context 'with an online item with a bib callnumber' do
-    let(:folio_record) do
-      marc_to_folio(
-        MARC::Record.new.tap do |r|
-          r.leader = '01952cas  2200457Ia 4500'
-          r.append(MARC::ControlField.new('008', '780930m19391944nyu           000 0 eng d'))
-          r.append(MARC::DataField.new('050', ' ', ' ',
-                                       MARC::Subfield.new('a', 'AB123'),
-                                       MARC::Subfield.new('b', 'C45')))
-        end
-      )
-    end
-
-    let(:index_items) do
-      [
-        build(:sudoc_holding, :internet_holding, barcode: 'onlineByCallnum')
-      ]
-    end
-
-    it { is_expected.to eq ['onlineByCallnum'] }
-  end
-
   context 'with an item with an online item with callnum matches another group' do
     let(:index_items) do
       [

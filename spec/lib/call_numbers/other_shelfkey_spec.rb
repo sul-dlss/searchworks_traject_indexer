@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-RSpec.describe CallNumbers::Other do
+RSpec.describe CallNumbers::OtherShelfkey do
   describe '#shelfkey' do
     before { I18n.config.available_locales = :en } # No idea why this is needed
-    let(:shelfkey) { described_class.new('ZDVD 1234').shelfkey.forward }
-    let(:reverse_shelfkey) { described_class.new('ZDVD 1234').shelfkey.reverse }
+    let(:shelfkey) { described_class.new('ZDVD 1234').forward }
+    let(:reverse_shelfkey) { described_class.new('ZDVD 1234').reverse }
 
     it 'Normalizes the call nubmer into a shelfey' do
       expect(shelfkey).to start_with('other')
@@ -24,12 +24,12 @@ RSpec.describe CallNumbers::Other do
 
   describe '#shelfkey_scheme' do
     it 'is "sudoc" when "SUDOC" is passed' do
-      expect(described_class.new('ZDVD 1234', scheme: 'SUDOC').shelfkey.forward).to start_with 'sudoc'
+      expect(described_class.new('ZDVD 1234', scheme: 'SUDOC').forward).to start_with 'sudoc'
     end
 
     it 'is "other" for any other value or nil' do
-      expect(described_class.new('ZDVD 1234', scheme: 'LITERALLY ANYTHING ELSE').shelfkey.forward).to start_with 'other'
-      expect(described_class.new('ZDVD 1234').shelfkey.forward).to start_with 'other'
+      expect(described_class.new('ZDVD 1234', scheme: 'LITERALLY ANYTHING ELSE').forward).to start_with 'other'
+      expect(described_class.new('ZDVD 1234').forward).to start_with 'other'
     end
   end
 end

@@ -21,10 +21,13 @@ module CallNumbers
       '-' => '~'
     )
 
-    attr_reader :call_number
+    attr_reader :base_call_number, :volume_info, :serial, :scheme
 
-    def initialize(call_number)
-      @call_number = call_number
+    def initialize(base_call_number, volume_info = '', serial: false, scheme: nil)
+      @base_call_number = base_call_number
+      @volume_info = volume_info
+      @serial = serial
+      @scheme = scheme
     end
 
     def forward
@@ -37,10 +40,10 @@ module CallNumbers
 
     # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
     def volume_info_with_serial_behavior
-      return if call_number.volume_info.blank?
-      return self.class.pad_all_digits(call_number.volume_info) unless call_number.serial
+      return if volume_info.blank?
+      return self.class.pad_all_digits(volume_info) unless serial
 
-      self.class.reverse(self.class.pad_all_digits(call_number.volume_info)).strip.ljust(50, '~')
+      self.class.reverse(self.class.pad_all_digits(volume_info)).strip.ljust(50, '~')
     end
 
     delegate :pad, :pad_all_digits, :pad_cutter, to: :class

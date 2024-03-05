@@ -99,8 +99,7 @@ class FolioItem
 
   def ignored_call_number?
     SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
-      temp_call_number? ||
-      internet_resource?
+      temp_call_number?
   end
 
   def temp_call_number?
@@ -167,10 +166,6 @@ class FolioItem
       course_id: course[:course_id],
       loan_period: item['temporaryLoanType']&.gsub('reserve', 'loan')
     }
-  end
-
-  def internet_resource?
-    type == Folio::EresourceHoldingsBuilder::TYPE
   end
 
   private
@@ -262,14 +257,14 @@ class FolioItem
       [base_call_number.to_s, volume_info].compact.join(' ')
     end
 
-    def call_number_object(serial: false)
+    def shelfkey(serial: false)
       case type
       when 'LC'
-        CallNumbers::LC.new(base_call_number.to_s, volume_info, serial:)
+        CallNumbers::LcShelfkey.new(base_call_number.to_s, volume_info, serial:)
       when 'DEWEY'
-        CallNumbers::Dewey.new(base_call_number.to_s, volume_info, serial:)
+        CallNumbers::DeweyShelfkey.new(base_call_number.to_s, volume_info, serial:)
       else
-        CallNumbers::Other.new(
+        CallNumbers::OtherShelfkey.new(
           base_call_number.to_s,
           volume_info,
           scheme: type,

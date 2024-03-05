@@ -2,8 +2,6 @@
 
 module CallNumbers
   class LcShelfkey < ShelfkeyBase
-    delegate :base_call_number, to: :call_number
-
     def forward
       [
         'lc',

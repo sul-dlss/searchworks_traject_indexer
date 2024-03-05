@@ -422,8 +422,7 @@ RSpec.describe 'ItemInfo config' do
 
         it 'is shelved by title' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946',
-                                                                                          'scheme' => 'LC')
+                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946')
                                                                          ])
         end
       end
@@ -437,8 +436,7 @@ RSpec.describe 'ItemInfo config' do
 
         it 'is shelved by title' do
           expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.',
-                                                                                          'scheme' => 'ALPHANUM')
+                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.')
                                                                          ])
         end
       end
@@ -496,8 +494,8 @@ RSpec.describe 'ItemInfo config' do
 
       it {
         is_expected.to match_array([
-                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...'),
-                                     hash_including('lopped_callnumber' => 'E184.S75 R47A ...')
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A'),
+                                     hash_including('lopped_callnumber' => 'E184.S75 R47A')
                                    ])
       }
     end
@@ -511,22 +509,8 @@ RSpec.describe 'ItemInfo config' do
       # TODO:  suboptimal - it finds V.31, so it doesn't look for SUPPL. preceding it.
       it {
         is_expected.to match_array([
-                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL ...'),
-                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL ...')
-                                   ])
-      }
-    end
-
-    describe 'forward sort key (shelfkey)' do
-      let(:holdings) do
-        [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
-         build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
-      end
-
-      it {
-        is_expected.to match_array([
-                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...'),
-                                     hash_including('shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a ...')
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL'),
+                                     hash_including('lopped_callnumber' => 'CB3 .A6 SUPPL')
                                    ])
       }
     end
@@ -545,20 +529,6 @@ RSpec.describe 'ItemInfo config' do
       end
     end
 
-    describe 'reverse shelfkeys' do
-      let(:holdings) do
-        [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
-         build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
-      end
-
-      it {
-        is_expected.to match_array([
-                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~~~~~~~~~~~'),
-                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~~~~~~~~~~~')
-                                   ])
-      }
-    end
-
     describe 'full call numbers' do
       let(:holdings) do
         [
@@ -573,134 +543,6 @@ RSpec.describe 'ItemInfo config' do
                                      hash_including('callnumber' => 'E184.S75 R47A V.2 1980')
                                    ])
       }
-    end
-
-    describe 'call number type' do
-      context 'ALPHANUM' do
-        let(:holdings) do
-          [
-            build(:alphanum_holding, call_number: 'YUGOSLAV SERIAL 1973')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('ALPHANUM'))
-                                                                         ])
-        end
-      end
-
-      context 'DEWEY' do
-        let(:holdings) do
-          [
-            build(:dewey_holding, call_number: '370.1 .S655')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('DEWEY'))
-                                                                         ])
-        end
-      end
-
-      context 'LC' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('LC'))
-                                                                         ])
-        end
-      end
-
-      context 'SUDOC' do
-        let(:holdings) do
-          [
-            build(:sudoc_holding, call_number: 'E 1.28:COO-4274-1')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('SUDOC'))
-                                                                         ])
-        end
-      end
-
-      context 'OTHER' do
-        let(:holdings) do
-          [
-            build(:other_holding, call_number: '71 15446')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                         ])
-        end
-      end
-
-      context 'XX' do
-        let(:holdings) do
-          [
-            build(:holding, item: { 'callNumberType' => { 'name' => 'XX' } }, call_number: 'XX(3195846.2579)')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                         ])
-        end
-      end
-
-      context 'Hoover Archives with call numbers starting with XX' do
-        let(:holdings) do
-          [
-            build(:alphanum_holding, call_number: 'XX066 BOX 11', library: 'HILA')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('ALPHANUM'))
-                                                                         ])
-        end
-      end
-
-      context 'when the item is an electronic resource' do
-        let(:holdings) do
-          [
-            build(:other_holding, :internet_holding)
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                         ])
-        end
-      end
-
-      context 'with an callnumber "X X"' do
-        let(:holdings) do
-          [
-            build(:other_holding, call_number: 'X X')
-          ]
-        end
-
-        it 'includes the correct data' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('scheme' => end_with('OTHER'))
-                                                                         ])
-        end
-      end
     end
 
     describe 'volsort/full shelfkey' do
@@ -746,28 +588,17 @@ RSpec.describe 'ItemInfo config' do
                                                       'full_shelfkey' => 'dewey 553.28050000 p187 4}zzzzzy~zzzzzx~zzyqyq~zzyqxz~~~~~~~~~~~~~~~~~~~~~')
                                      ])
         }
-
-        # The Education library has a collection of call numbers w/ a scheme of DEWEY but begin w/ TX
-        context 'with a DEWEY call number that begins with TX' do
-          let(:holdings) do
-            [
-              build(:dewey_holding, call_number: 'TX 443.21 A3', permanent_location_code: 'STACKS', library: 'CUBBERLY')
-            ]
-          end
-
-          # this is potentially incidental since we don't fall back for non-valid DEWEY
-          it 'is handled' do
-            expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                             hash_including('shelfkey' => 'dewey 443.21000000 a3')
-                                                                           ])
-          end
-        end
       end
     end
+  end
 
-    describe 'shefkey field data is the same as the field in the item_display_struct' do
+  describe 'browse_nearby_struct' do
+    let(:field) { 'browse_nearby_struct' }
+    subject(:value) { result[field].map { |x| JSON.parse(x) } }
+
+    describe 'shelfkey field data is the same as the field in the item_display_struct' do
       let(:fixture_name) { 'shelfkeyMatchItemDispTests.jsonl' }
-      let(:item_display_shelfkey) { subject.first.fetch('shelfkey') }
+      let(:browse_shelfkey) { subject.first.fetch('shelfkey') }
       let(:shelfkey) { result['shelfkey'] }
 
       let(:holdings) do
@@ -776,8 +607,109 @@ RSpec.describe 'ItemInfo config' do
       end
 
       it 'has the same shelfkey in the field as it does in the item_display' do
-        expect(item_display_shelfkey).to eq 'other calif a000125 .a000034 ...'
-        expect(shelfkey).to eq ['other calif a000125 .a000034 ...']
+        expect(browse_shelfkey).to eq 'other calif a000125 .a000034 002002'
+        expect(shelfkey).to eq ['other calif a000125 .a000034 002002']
+      end
+    end
+
+    describe 'forward sort key (shelfkey)' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
+      end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including(
+                                       'lopped_callnumber' => 'E184.S75 R47A',
+                                       'shelfkey' => 'lc e   0184.000000 s0.750000 r0.470000a v.000001 001980'
+                                     )
+                                   ])
+      }
+    end
+
+    describe 'reverse shelfkeys' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980'),
+         build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.2 1980')]
+      end
+
+      it {
+        is_expected.to match_array([
+                                     hash_including('reverse_shelfkey' => 'en~l~~~zyrv}zzzzzz~7z}suzzzz~8z}vszzzzp~4}zzzzzy~zzyqrz')
+                                   ])
+      }
+    end
+
+    describe 'call number type' do
+      context 'ALPHANUM' do
+        let(:holdings) do
+          [
+            build(:alphanum_holding, call_number: 'YUGOSLAV SERIAL 1973')
+          ]
+        end
+
+        it 'includes the correct data' do
+          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
+                                                                           hash_including('scheme' => end_with('ALPHANUM'))
+                                                                         ])
+        end
+      end
+
+      context 'DEWEY' do
+        let(:holdings) do
+          [
+            build(:dewey_holding, call_number: '370.1 .S655')
+          ]
+        end
+
+        it 'includes the correct data' do
+          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
+                                                                           hash_including('scheme' => end_with('DEWEY'))
+                                                                         ])
+        end
+      end
+
+      # The Education library has a collection of call numbers w/ a scheme of DEWEY but begin w/ TX
+      context 'with a DEWEY call number that begins with TX' do
+        let(:holdings) do
+          [
+            build(:dewey_holding, call_number: 'TX 443.21 A3', permanent_location_code: 'STACKS', library: 'CUBBERLY')
+          ]
+        end
+
+        # this is potentially incidental since we don't fall back for non-valid DEWEY
+        it 'is handled' do
+          expect(result[field].map { |x| JSON.parse(x) }).to match_array([hash_including('shelfkey' => 'dewey 443.21000000 a3')])
+        end
+      end
+
+      context 'LC' do
+        let(:holdings) do
+          [
+            build(:lc_holding, call_number: 'E184.S75 R47A', enumeration: 'V.1 1980')
+          ]
+        end
+
+        it 'includes the correct data' do
+          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
+                                                                           hash_including('scheme' => end_with('LC'))
+                                                                         ])
+        end
+      end
+
+      context 'Hoover Archives with call numbers starting with XX' do
+        let(:holdings) do
+          [
+            build(:alphanum_holding, call_number: 'XX066 BOX 11', library: 'HILA')
+          ]
+        end
+
+        it 'includes the correct data' do
+          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
+                                                                           hash_including('scheme' => end_with('ALPHANUM'))
+                                                                         ])
+        end
       end
     end
   end

@@ -14,7 +14,7 @@ RSpec.describe CallNumbers::DeweyShelfkey do
         '1.123 .M32 2002'
       ].shuffle
 
-      sorted_call_numbers = call_number_strings.map { |x| CallNumbers::Dewey.new(x) }.sort_by { |x| x.shelfkey.forward }.map(&:call_number)
+      sorted_call_numbers = call_number_strings.map { |x| described_class.new(x) }.sort_by(&:forward).map(&:base_call_number)
 
       expect(sorted_call_numbers).to eq(
         [
@@ -36,7 +36,7 @@ RSpec.describe CallNumbers::DeweyShelfkey do
         '123 .MS32 2002'
       ].shuffle
 
-      sorted_call_numbers = call_number_strings.map { |x| CallNumbers::Dewey.new(x) }.sort_by { |x| x.shelfkey.forward }.map(&:call_number)
+      sorted_call_numbers = call_number_strings.map { |x| described_class.new(x) }.sort_by(&:forward).map(&:base_call_number)
 
       expect(sorted_call_numbers).to eq(
         [

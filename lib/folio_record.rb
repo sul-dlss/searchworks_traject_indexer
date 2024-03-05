@@ -47,9 +47,8 @@ class FolioRecord
   def index_items
     @index_items ||= begin
       items = item_holdings.concat(bound_with_holdings)
-      items = eresource_holdings if items.empty?
 
-      unless all_items.any?
+      unless all_items.any? || eresource?
         items = on_order_holdings if items.empty?
         items = on_order_stub_holdings if items.empty?
       end
@@ -139,7 +138,13 @@ class FolioRecord
   end
 
   def eresource?
-    eresource_holdings.any?
+    return false unless electronic_holdings.any?
+
+    (marc_record || []).any? { |field| %w[856 956].include?(field.tag) && field.codes.include?('u') }
+  end
+
+  def electronic_holdings
+    holdings.select { |h| h.dig('holdingsType', 'name') == 'Electronic' || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
   end
 
   private
@@ -175,10 +180,6 @@ class FolioRecord
         bound_with_holding: holding
       )
     end
-  end
-
-  def eresource_holdings
-    @eresource_holdings ||= Folio::EresourceHoldingsBuilder.build(hrid, holdings, marc_record)
   end
 
   def on_order_holdings

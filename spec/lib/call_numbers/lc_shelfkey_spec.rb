@@ -11,7 +11,7 @@ RSpec.describe CallNumbers::LcShelfkey do
         'A1.12 .M32 2002', 'A1.123 .M32 2002'
       ].shuffle
 
-      sorted_call_numbers = call_number_strings.map { |x| CallNumbers::LC.new(x) }.sort_by { |x| x.shelfkey.forward }.map(&:call_number)
+      sorted_call_numbers = call_number_strings.map { |x| described_class.new(x) }.sort_by(&:forward).map(&:base_call_number)
 
       expect(sorted_call_numbers).to eq(
         [
@@ -34,7 +34,7 @@ RSpec.describe CallNumbers::LcShelfkey do
         'A123 .MS32AB 2002', 'A123 .MS32A 2002', 'A123 .MS32ABA 2002'
       ].shuffle
 
-      sorted_call_numbers = call_number_strings.map { |x| CallNumbers::LC.new(x) }.sort_by { |x| x.shelfkey.forward }.map(&:call_number)
+      sorted_call_numbers = call_number_strings.map { |x| described_class.new(x) }.sort_by(&:forward).map(&:base_call_number)
 
       expect(sorted_call_numbers).to eq(
         [
