@@ -2039,6 +2039,10 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   accumulator << preferred_item.barcode if preferred_item
 end
 
+to_field 'holdings_library_code_ssim' do |record, accumulator|
+  accumulator.concat(record.holdings.map { |holding| holding.dig('location', 'effectiveLocation', 'library', 'code') }.uniq)
+end
+
 to_field 'library_code_facet_ssim' do |record, accumulator, context|
   items(record, context).reject(&:skipped?).each do |item|
     next unless item.display_location&.dig('library')
