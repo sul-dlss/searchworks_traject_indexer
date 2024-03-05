@@ -241,6 +241,7 @@ RSpec.describe 'FOLIO indexing' do
     it { expect(result['access_facet']).to eq ['Online'] }
     it { expect(result['shelfkey']).to eq ['lc pr  3562.000000 l0.385000 002014'] }
     it { expect(result['building_facet']).to be_nil }
+    it { expect(result['holdings_library_code_ssim']).to eq ['SUL'] }
 
     context 'when the holding library is Law' do
       let(:items_and_holdings) do
@@ -260,6 +261,7 @@ RSpec.describe 'FOLIO indexing' do
       end
 
       it { expect(result['building_facet']).to eq ['Law (Crown)'] }
+      it { expect(result['holdings_library_code_ssim']).to eq ['LAW'] }
     end
 
     context 'when the holding does not include an electronic location' do
