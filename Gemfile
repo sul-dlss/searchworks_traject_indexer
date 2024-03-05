@@ -42,4 +42,5 @@ gem 'activesupport', '~> 7.0'
 gem 'slop'
 
 gem 'dor-event-client'
+gem 'dor-services-client', '~> 14.0'
 gem 'factory_bot', '~> 6.2'
