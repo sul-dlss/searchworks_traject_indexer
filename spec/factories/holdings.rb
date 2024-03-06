@@ -65,7 +65,7 @@ FactoryBot.define do
             'holding' => {},
             'item' => {
               'volume' => nil,
-              'callNumber' => '630.654 .I39M',
+              'callNumber' => { 'callNumber' => '630.654 .I39M' },
               'chronology' => nil,
               'enumeration' => 'V.5:NO.1'
             }
