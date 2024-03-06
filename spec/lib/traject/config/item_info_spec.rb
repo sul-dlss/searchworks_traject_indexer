@@ -657,6 +657,26 @@ RSpec.describe 'ItemInfo config' do
       }
     end
 
+    context 'instances with an item and also a MARC 050' do
+      let(:holdings) do
+        [
+          build(:lc_holding, call_number: 'E184.S75 R47A')
+        ]
+      end
+
+      let(:record) do
+        JSON.parse(File.read(file_fixture('a12451243.json'))).dig('parsedRecord', 'content')
+      end
+
+      before do
+        allow(folio_record).to receive(:electronic_holdings).and_return([{}])
+      end
+
+      it 'excludes the MARC 050 data if there already is a browseable item' do
+        is_expected.not_to include(hash_including('lopped_callnumber' => 'PR3562 .L385 2014'))
+      end
+    end
+
     describe 'call number type' do
       context 'ALPHANUM' do
         let(:holdings) do
