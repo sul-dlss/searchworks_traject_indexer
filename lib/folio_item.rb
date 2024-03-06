@@ -148,8 +148,23 @@ class FolioItem
       # FOLIO data used to drive circulation rules
       effective_location_id: temporary_location&.dig('id') || permanent_location&.dig('id'),
       material_type_id: item&.dig('materialTypeId'),
-      loan_type_id: item&.dig('temporaryLoanTypeId') || item&.dig('permanentLoanTypeId')
+      loan_type_id: item&.dig('temporaryLoanTypeId') || item&.dig('permanentLoanTypeId'),
+      bound_with:
     }.merge(course_reserves_data)
+  end
+
+  # The represenation of the bound with that goes on the item_display_struct
+  def bound_with
+    return unless bound_with_holding
+
+    {
+      hrid: bound_with_holding.dig('boundWith', 'instance', 'hrid'),
+      title: bound_with_holding.dig('boundWith', 'instance', 'title'),
+      call_number: bound_with_holding.dig('boundWith', 'item', 'callNumber'),
+      volume: bound_with_holding.dig('boundWith', 'item', 'volume'),
+      enumeration: bound_with_holding.dig('boundWith', 'item', 'enumeration'),
+      chronology: bound_with_holding.dig('boundWith', 'item', 'chronology')
+    }
   end
 
   def course_reserves_data
