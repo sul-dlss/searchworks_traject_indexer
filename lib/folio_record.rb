@@ -176,7 +176,8 @@ class FolioRecord
         item: parent_item,
         holding: parent_holding,
         instance: holding.dig('boundWith', 'instance'),
-        bound_with_holding: holding
+        bound_with_holding: holding,
+        record: self
       )
     end
   end
@@ -190,7 +191,8 @@ class FolioRecord
       FolioItem.new(
         holding:,
         instance:,
-        status: 'On order'
+        status: 'On order',
+        record: self
       )
     end
   end
@@ -206,7 +208,8 @@ class FolioRecord
       FolioItem.new(
         instance:,
         library: lib,
-        status: 'On order'
+        status: 'On order',
+        record: self
       )
     end
   end
