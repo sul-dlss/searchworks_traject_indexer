@@ -217,7 +217,7 @@ RSpec.describe 'FOLIO indexing' do
     it 'includes the item in the browse_nearby_struct' do
       expect(result['browse_nearby_struct'].map { |x| JSON.parse(x) }).to match_array(hash_including(
                                                                                         'callnumber' => 'PR3562 .L385 2014',
-                                                                                        'lopped_call_number' => 'PR3562 .L385 2014',
+                                                                                        'lopped_callnumber' => 'PR3562 .L385 2014',
                                                                                         'shelfkey' => 'lc pr  3562.000000 l0.385000 002014',
                                                                                         'reverse_shelfkey' => 'en~a8~~wutx}zzzzzz~ez}wruzzz~zzxzyv~~~~~~~~~~~~~~~',
                                                                                         'scheme' => 'LC'
