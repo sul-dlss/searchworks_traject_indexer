@@ -373,7 +373,7 @@ module Traject
                                 'id', parentItem.id,
                                 'hrid', parentItem.jsonb ->> 'hrid',
                                 'barcode', parentItem.jsonb ->> 'barcode',
-                                'callNumber', parentItem.jsonb #>> '{effectiveCallNumberComponents, callNumber}',
+                                'callNumber', parentItem.jsonb -> 'effectiveCallNumberComponents',
                                 'status', parentItem.jsonb #>> '{status, name}',
                                 'enumeration', parentItem.jsonb->>'enumeration',
                                 'volume', parentItem.jsonb->>'volume',

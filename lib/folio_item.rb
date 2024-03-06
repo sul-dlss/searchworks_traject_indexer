@@ -160,7 +160,7 @@ class FolioItem
     {
       hrid: bound_with_holding.dig('boundWith', 'instance', 'hrid'),
       title: bound_with_holding.dig('boundWith', 'instance', 'title'),
-      call_number: bound_with_holding.dig('boundWith', 'item', 'callNumber'),
+      call_number: bound_with_holding.dig('boundWith', 'item', 'callNumber', 'callNumber'),
       volume: bound_with_holding.dig('boundWith', 'item', 'volume'),
       enumeration: bound_with_holding.dig('boundWith', 'item', 'enumeration'),
       chronology: bound_with_holding.dig('boundWith', 'item', 'chronology')
