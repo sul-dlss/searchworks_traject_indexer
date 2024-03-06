@@ -170,7 +170,7 @@ class FolioRecord
   # TODO: remove this when we stop using FolioItem
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
-      parent_item = holding.dig('boundWith', 'item') || {}
+      parent_item = holding.dig('boundWith', 'item').excluding('callNumber') || {}
       parent_holding = holding.dig('boundWith', 'holding') || holding
 
       FolioItem.new(
