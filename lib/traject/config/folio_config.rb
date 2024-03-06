@@ -2179,8 +2179,8 @@ end
 
 # Inject a special browse nearby entry for e-resources, using either the call number from the holdings record
 # or from the MARC data.
-to_field 'browse_nearby_struct' do |record, accumulator|
-  next unless record.eresource?
+to_field 'browse_nearby_struct' do |record, accumulator, context|
+  next if !record.eresource? || context.output_hash['browse_nearby_struct'].present?
 
   callnumber = begin
     holding = record.electronic_holdings.first
