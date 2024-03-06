@@ -165,9 +165,8 @@ class FolioRecord
   end
 
   # since FOLIO Bound-with records don't have items, we generate a FolioItem using data from the parent
-  # item and child holding, # or, if there is no parent item, we generate a stub FolioItem from the original
+  # item and child holding, or, if there is no parent item, we generate a stub FolioItem from the original
   # bound-with holding.
-  # TODO: remove this when we stop using FolioItem
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
