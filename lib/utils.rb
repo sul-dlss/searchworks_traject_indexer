@@ -31,10 +31,11 @@ module Utils
   end
 
   def self.longest_common_call_number_prefix(*strs)
-    return '' if strs.empty?
-    return strs.first if strs.one?
+    return '' if strs.empty? || strs.one?
 
     min, max = strs.minmax
+    return '' if min == max
+
     idx = min.size.times { |i| break i if min[i] != max[i] }
     return min if idx == min.length
 
