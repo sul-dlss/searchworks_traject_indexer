@@ -2198,7 +2198,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.type.upcase)
 
   accumulator << {
-    lopped_call_number: callnumber.base_call_number,
+    lopped_callnumber: callnumber.base_call_number,
     shelfkey: callnumber.shelfkey.forward,
     reverse_shelfkey: callnumber.shelfkey.reverse,
     callnumber: callnumber.call_number,
