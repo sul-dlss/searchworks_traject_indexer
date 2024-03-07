@@ -1,0 +1,962 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/image",
+  "externalIdentifier": "druid:dc482zx1528",
+  "label": "Joshu Kusatsu Onsen zu",
+  "version": 6,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "Property rights reside with the repository. To obtain permission to publish or reproduce, please contact the East Asia Library at eastasialibrary@stanford.edu."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:xw330hm5827",
+    "releaseTags": [
+      {
+        "who": "blalbrit",
+        "what": "self",
+        "date": "2016-10-28T00:17:09.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      },
+      {
+        "who": "bergeraj",
+        "what": "self",
+        "date": "2023-04-14T00:47:05.000+00:00",
+        "to": "Earthworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Jōshū Kusatsu Onsenzu",
+            "identifier": [],
+            "note": [],
+            "valueLanguage": {
+              "note": [],
+              "valueScript": {
+                "code": "Latn",
+                "note": [],
+                "source": {
+                  "code": "iso15924",
+                  "note": []
+                }
+              }
+            },
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "上州草津温泉圖",
+            "identifier": [],
+            "note": [],
+            "valueLanguage": {
+              "note": [],
+              "valueScript": {
+                "code": "Latn",
+                "note": [],
+                "source": {
+                  "code": "iso15924",
+                  "note": []
+                }
+              }
+            },
+            "appliesTo": []
+          }
+        ],
+        "groupedValue": [],
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Jōshū Kusatsu Onsen zu",
+        "type": "alternative",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Kikyōya Genkichi.",
+                "identifier": [],
+                "note": [],
+                "valueLanguage": {
+                  "note": [],
+                  "valueScript": {
+                    "code": "Latn",
+                    "note": [],
+                    "source": {
+                      "code": "iso15924",
+                      "note": []
+                    }
+                  }
+                },
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "桔梗屋源吉.",
+                "identifier": [],
+                "note": [],
+                "valueLanguage": {
+                  "note": [],
+                  "valueScript": {
+                    "code": "Latn",
+                    "note": [],
+                    "source": {
+                      "code": "iso15924",
+                      "note": []
+                    }
+                  }
+                },
+                "appliesTo": []
+              }
+            ],
+            "groupedValue": [],
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [],
+        "contributor": [],
+        "location": [],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": [
+          {
+            "structuredValue": [],
+            "date": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "[between 1603 and 1868]",
+                "type": "publication",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [
+                  {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "1603",
+                    "type": "start",
+                    "identifier": [],
+                    "note": [],
+                    "appliesTo": []
+                  },
+                  {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "1868",
+                    "type": "end",
+                    "identifier": [],
+                    "note": [],
+                    "appliesTo": []
+                  }
+                ],
+                "parallelValue": [],
+                "groupedValue": [],
+                "type": "publication",
+                "encoding": {
+                  "code": "marc",
+                  "note": []
+                },
+                "identifier": [],
+                "qualifier": "questionable",
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "contributor": [
+              {
+                "name": [
+                  {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "Kikyōya Genkichi han",
+                    "identifier": [],
+                    "note": [],
+                    "appliesTo": []
+                  }
+                ],
+                "type": "organization",
+                "role": [
+                  {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "publisher",
+                    "code": "pbl",
+                    "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                    "identifier": [],
+                    "source": {
+                      "code": "marcrelator",
+                      "uri": "http://id.loc.gov/vocabulary/relators/",
+                      "note": []
+                    },
+                    "note": [],
+                    "appliesTo": []
+                  }
+                ],
+                "identifier": [],
+                "note": [],
+                "parallelContributor": []
+              }
+            ],
+            "location": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "[Japan]",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "code": "ja",
+                "identifier": [],
+                "source": {
+                  "code": "marccountry",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "monographic",
+                "type": "issuance",
+                "identifier": [],
+                "source": {
+                  "value": "MODS issuance terms",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "valueLanguage": {
+              "note": [],
+              "valueScript": {
+                "code": "Latn",
+                "note": [],
+                "source": {
+                  "code": "iso15924",
+                  "note": []
+                }
+              }
+            }
+          },
+          {
+            "structuredValue": [],
+            "date": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "[between 1603 and 1868]",
+                "type": "publication",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "contributor": [
+              {
+                "name": [
+                  {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "桔梗屋源吉板,",
+                    "identifier": [],
+                    "note": [],
+                    "appliesTo": []
+                  }
+                ],
+                "type": "organization",
+                "role": [
+                  {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "publisher",
+                    "code": "pbl",
+                    "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                    "identifier": [],
+                    "source": {
+                      "code": "marcrelator",
+                      "uri": "http://id.loc.gov/vocabulary/relators/",
+                      "note": []
+                    },
+                    "note": [],
+                    "appliesTo": []
+                  }
+                ],
+                "identifier": [],
+                "note": [],
+                "parallelContributor": []
+              }
+            ],
+            "location": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "[Japan] :",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [],
+            "valueLanguage": {
+              "note": [],
+              "valueScript": {
+                "code": "Latn",
+                "note": [],
+                "source": {
+                  "code": "iso15924",
+                  "note": []
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "map",
+        "type": "genre",
+        "identifier": [],
+        "source": {
+          "code": "marcgt",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic image-cri",
+        "type": "genre",
+        "identifier": [],
+        "source": {
+          "code": "rdacontent",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": {
+          "value": "MODS resource types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "map",
+        "type": "form",
+        "identifier": [],
+        "source": {
+          "code": "marccategory",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "map",
+        "type": "form",
+        "identifier": [],
+        "source": {
+          "code": "marcsmd",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "unmediated",
+        "type": "media",
+        "identifier": [],
+        "source": {
+          "code": "rdamedia",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "sheet",
+        "type": "carrier",
+        "identifier": [],
+        "source": {
+          "code": "rdacarrier",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "1 map : col. ; 40 x 59 cm",
+        "type": "extent",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Not drawn to scale.",
+        "type": "map scale",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "image/jpeg",
+            "type": "media type",
+            "identifier": [],
+            "source": {
+              "value": "IANA media type terms",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Image",
+            "type": "media type",
+            "identifier": [],
+            "source": {
+              "value": "DCMI Type Vocabulary",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "138.523426",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "036.597519",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "138.630362",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "036.656354",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "encoding": {
+              "value": "decimal",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "jpn",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": {
+          "code": "iso639-2b",
+          "note": []
+        },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Publication date estimate from dealer description.",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Shows views of tourist attractions.",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Includes distance chart in inset.",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Hand-painted.",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "G7964 .K92 E635 1868Z .J6 bound with G7964 .K2368 E635 1912Z .I2.",
+        "type": "local",
+        "identifier": [],
+        "displayLabel": "Local note",
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Gunma prefecture",
+        "identifier": [],
+        "displayLabel": "Donor tags",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "911302487",
+        "type": "OCLC",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "subject": [
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Hot springs",
+            "type": "topic",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Japan",
+            "type": "place",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Kusatsu-machi",
+            "type": "place",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Maps",
+            "type": "genre",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [],
+      "digitalLocation": [],
+      "accessContact": [],
+      "digitalRepository": [],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "electronic resource",
+          "type": "display label",
+          "identifier": [],
+          "note": [],
+          "appliesTo": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "purl",
+              "identifier": [],
+              "note": []
+            }
+          ]
+        }
+      ]
+    },
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "code": "STF",
+              "identifier": [],
+              "source": {
+                "code": "marcorg",
+                "note": []
+              },
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "type": "organization",
+          "role": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "original cataloging agency",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [
+        {
+          "structuredValue": [],
+          "type": "creation",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "150622",
+              "encoding": {
+                "code": "marc",
+                "note": []
+              },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        },
+        {
+          "structuredValue": [],
+          "type": "modification",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "20150622023121.0",
+              "encoding": {
+                "code": "iso8601",
+                "note": []
+              },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        }
+      ],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          },
+          "structuredValue": []
+        }
+      ],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "Converted from MARCXML to MODS version 3.4 using MARC21slim2MODS3-4_SDR.xsl (Version 1.2.5 2013/08/11)",
+          "type": "record origin",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "metadataStandard": [
+        {
+          "code": "aacr",
+          "note": []
+        }
+      ],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "a10702106",
+          "type": "OCoLC",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/dc482zx1528"
+  },
+  "identification": {
+    "catalogLinks": [
+      {
+        "catalog": "folio",
+        "refresh": true,
+        "catalogRecordId": "a10702106"
+      },
+      {
+        "catalog": "symphony",
+        "refresh": true,
+        "catalogRecordId": "10702106"
+      }
+    ],
+    "sourceId": "EAL:Souvenir_Print_Kanto_06"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/image",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/dc482zx1528-dc482zx1528_1",
+        "label": "Image 1",
+        "version": 6,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/dc482zx1528-dc482zx1528_1/dc482zx1528_00_0001.jp2",
+              "label": "dc482zx1528_00_0001.jp2",
+              "filename": "dc482zx1528_00_0001.jp2",
+              "size": 28788818,
+              "version": 6,
+              "hasMimeType": "image/jp2",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "55ecd11b30b8bed41c0806209dad677c56dea291"
+                },
+                {
+                  "type": "md5",
+                  "digest": "61ae5cefc326f24293251e96ea265e5b"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              },
+              "presentation": {
+                "height": 14864,
+                "width": 10276
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": [
+      "druid:bf420qj4978"
+    ]
+  },
+  "created": "2016-02-24T21:34:52.000+00:00",
+  "modified": "2023-04-14T00:47:05.000+00:00",
+  "lock": "druid:dc482zx1528=0"
+}
