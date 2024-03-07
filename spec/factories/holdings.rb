@@ -65,7 +65,7 @@ FactoryBot.define do
           'enumeration' => 'V.5:NO.1'
         }
       end
-      bound_with_holding do
+      holding do
         {
           'boundWith' => {
             'instance' => {

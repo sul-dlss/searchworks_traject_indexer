@@ -173,7 +173,7 @@ RSpec.describe FolioItem do
     end
 
     context 'with a bound-with holding' do
-      subject(:hash) { described_class.new(item:, holding:, instance:, bound_with_holding:).to_item_display_hash }
+      subject(:hash) { described_class.new(item:, holding:, instance:).to_item_display_hash }
       let(:item) do
         {
           id: 'uuid',
@@ -191,6 +191,11 @@ RSpec.describe FolioItem do
         {
           location: {
             effectiveLocation: { code: 'SAL3-STACKS' }
+          },
+          boundWith: {
+            holding: {
+              callNumber: 'bound-with-callnumber'
+            }
           }
         }.with_indifferent_access
       end
@@ -198,11 +203,6 @@ RSpec.describe FolioItem do
         {
           id: 'instance-uuid',
           hrid: 'instance-hrid'
-        }.with_indifferent_access
-      end
-      let(:bound_with_holding) do
-        {
-          callNumber: 'bound-with-callnumber'
         }.with_indifferent_access
       end
 
