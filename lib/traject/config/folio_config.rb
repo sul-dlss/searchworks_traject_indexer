@@ -2192,7 +2192,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
     holding = record.electronic_holdings.first
     value = holding&.dig('callNumber')
     type = FolioItem.call_number_type_code(holding&.dig('callNumberType', 'name'))
-    FolioItem::CallNumber.new(value, type) if value.present?
+    FolioItem::CallNumber.new(value, type) if value.present? && %w[LC DEWEY ALPHANUM].include?(type&.upcase)
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|

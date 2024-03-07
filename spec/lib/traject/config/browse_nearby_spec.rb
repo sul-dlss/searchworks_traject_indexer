@@ -199,4 +199,55 @@ RSpec.describe 'Browse nearby' do
 
     it { is_expected.to include(hash_including('lopped_callnumber' => 'QA987 V.5:NO.5')) }
   end
+
+  context 'with a LANE e-resource' do
+    before do
+      allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
+      allow(folio_record).to receive(:pieces).and_return([])
+    end
+
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = '15069nam a2200409 a 4500'
+        r.append(MARC::ControlField.new('008', '091123s2014    si a    sb    101 0 eng d'))
+        r.append(MARC::DataField.new('050', ' ', '0',
+                                     MARC::Subfield.new('a', 'F1356'),
+                                     MARC::Subfield.new('b', '.M464 2005')))
+        r.append(MARC::DataField.new('856', ' ', '0', MARC::Subfield.new('u', 'http://example.com')))
+      end
+    end
+
+    let(:items_and_holdings) do
+      { 'items' => [],
+        'holdings' =>
+         [
+           { 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
+             'notes' => [],
+             'location' =>
+             { 'effectiveLocation' =>
+               { 'code' => 'LANE-STACKS',
+                 'name' => 'Lane Stacks',
+                 'campusName' => 'Lane',
+                 'libraryName' => 'Lane',
+                 'institutionName' => 'Stanford University',
+                 'details' => {
+                   'holdingsTypeName' => 'Electronic'
+                 } },
+               'permanentLocation' => {},
+               'temporaryLocation' => {} },
+             'formerIds' => [],
+             'callNumber' => 'Karger',
+             'holdingsType' => {},
+             'electronicAccess' => [],
+             'receivingHistory' => { 'entries' => [] },
+             'statisticalCodes' => [],
+             'holdingsStatements' => [],
+             'suppressFromDiscovery' => false,
+             'holdingsStatementsForIndexes' => [],
+             'holdingsStatementsForSupplements' => [] }
+         ] }
+    end
+
+    it { is_expected.to include(hash_including('lopped_callnumber' => 'F1356 .M464 2005')) }
+  end
 end
