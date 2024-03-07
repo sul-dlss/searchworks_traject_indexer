@@ -2223,8 +2223,8 @@ end
 ##
 # Skip records for missing `item_display` field
 each_record do |_record, context|
-  if context.output_hash['item_display_struct'].blank? && context.output_hash['url_fulltext'].blank? && settings['skip_empty_item_display'] > -1
-    context.skip!('No item_display_struct or url_fulltext field')
+  if context.output_hash['item_display_struct'].blank? && context.output_hash['marc_links_struct'].blank? && settings['skip_empty_item_display'] > -1
+    context.skip!('No item_display_struct or marc_links_struct field')
   end
 end
 
