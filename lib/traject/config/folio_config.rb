@@ -2579,7 +2579,7 @@ end
 
 # This allows Searchworks to query the boundWith children.
 to_field 'bound_with_parent_item_ids_ssim' do |record, accumulator|
-  accumulator.concat record.index_items.filter_map { |item| item.bound_with&.dig('item', 'id') }
+  accumulator.concat record.index_items.select(&:bound_with?).filter_map(&:id)
 end
 
 each_record do |_record, context|
