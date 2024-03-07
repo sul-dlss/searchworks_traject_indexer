@@ -6,7 +6,7 @@ RSpec.describe 'FOLIO indexing' do
   subject(:result) { indexer.map_record(folio_record) }
 
   let(:indexer) do
-    Traject::Indexer.new('okapi.url' => 'https://example.com').tap do |i|
+    Traject::Indexer.new('okapi.url' => 'https://example.com', 'skip_empty_item_display' => '0').tap do |i|
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
