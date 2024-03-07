@@ -27,19 +27,17 @@ class FolioItem
   SKIPPED_LOCS = %w[SUL-BORROW-DIRECT].freeze
   TEMP_CALLNUM_PREFIX = 'XX('
 
-  attr_reader :item, :holding, :instance, :bound_with_holding,
+  attr_reader :item, :holding, :instance,
               :id, :type, :barcode, :course_reserves, :status
 
   # rubocop:disable Metrics/ParameterLists
   def initialize(item: nil, holding: nil, instance: nil,
-                 bound_with_holding: nil,
                  course_reserves: [],
                  type: nil, status: nil,
                  library: nil, record: nil)
     @item = item
     @holding = holding
     @instance = instance
-    @bound_with_holding = bound_with_holding
     @id = @item&.dig('id')
     @status = status || item&.dig('status')
     @library = library
@@ -86,7 +84,7 @@ class FolioItem
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type
-    @call_number_type ||= self.class.call_number_type_code(item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || bound_with_holding&.dig('callNumberType', 'name') || holding&.dig('callNumberType', 'name'))
+    @call_number_type ||= self.class.call_number_type_code(item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || holding&.dig('callNumberType', 'name') || bound_with&.dig('holding', 'callNumberType', 'name'))
   end
 
   def bad_lc_lane_call_number?
@@ -126,7 +124,7 @@ class FolioItem
   alias eql? ==
 
   def hash
-    [@item, @holding, @bound_with_holding, @id].hash
+    [@item, @holding, @id].hash
   end
 
   def to_item_display_hash
@@ -138,8 +136,8 @@ class FolioItem
       current_location: temporary_location&.dig('code'),
       type:,
       note: public_note.presence,
-      instance_id: instance&.dig('id'),
-      instance_hrid: instance&.dig('hrid'),
+      instance_id: bound_with&.dig('instance', 'id') || instance&.dig('id'),
+      instance_hrid: bound_with&.dig('instance', 'hrid') || instance&.dig('hrid'),
       # FOLIO item data to replace library/home_location/current_location some day
       effective_permanent_location_code: display_location_code,
       temporary_location_code: temporary_location&.dig('code'),
@@ -149,21 +147,21 @@ class FolioItem
       effective_location_id: temporary_location&.dig('id') || permanent_location&.dig('id'),
       material_type_id: item&.dig('materialTypeId'),
       loan_type_id: item&.dig('temporaryLoanTypeId') || item&.dig('permanentLoanTypeId'),
-      bound_with:
+      bound_with: bound_with_data
     }.merge(course_reserves_data)
   end
 
   # The represenation of the bound with that goes on the item_display_struct
-  def bound_with
-    return unless bound_with_holding
+  def bound_with_data
+    return unless bound_with?
 
     {
-      hrid: bound_with_holding.dig('boundWith', 'instance', 'hrid'),
-      title: bound_with_holding.dig('boundWith', 'instance', 'title'),
-      call_number: bound_with_holding.dig('boundWith', 'item', 'callNumber', 'callNumber'),
-      volume: bound_with_holding.dig('boundWith', 'item', 'volume'),
-      enumeration: bound_with_holding.dig('boundWith', 'item', 'enumeration'),
-      chronology: bound_with_holding.dig('boundWith', 'item', 'chronology')
+      hrid: bound_with.dig('instance', 'hrid'),
+      title: bound_with.dig('instance', 'title'),
+      call_number: item.dig('callNumber', 'callNumber'),
+      volume: item['volume'],
+      enumeration: item['enumeration'],
+      chronology: item['chronology']
     }
   end
 
@@ -183,6 +181,14 @@ class FolioItem
     }
   end
 
+  def bound_with
+    holding&.dig('boundWith')
+  end
+
+  def bound_with?
+    bound_with.present?
+  end
+
   private
 
   attr_reader :record
@@ -193,13 +199,15 @@ class FolioItem
 
   def permanent_location
     item&.dig('location', 'permanentLocation') ||
+      bound_with&.dig('holding', 'location', 'effectiveLocation') ||
       holding&.dig('location', 'effectiveLocation')
   end
 
   def build_call_number
-    base_call_number = @bound_with_holding&.dig('callNumber') ||
-                       @item&.dig('callNumber', 'callNumber') ||
-                       @holding&.dig('callNumber')
+    base_call_number = @holding&.dig('callNumber') if bound_with?
+    base_call_number ||= @item&.dig('callNumber', 'callNumber') ||
+                         @holding&.dig('callNumber') ||
+                         bound_with&.dig('holding', 'callNumber')
 
     volume_info = normalize_call_number([@item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ').presence) if @item
 
@@ -212,7 +220,7 @@ class FolioItem
       # The prefix is the shared characters from the beginning of the call number up to the first space or punctuation before
       # the call numbers start to diverge.
 
-      all_holdings = record.holdings.select { |x| x&.dig('location', 'effectiveLocation') == holding&.dig('location', 'effectiveLocation') }
+      all_holdings = record.holdings.select { |x| x&.dig('location', 'effectiveLocation') == (bound_with&.dig('holding', 'location', 'effectiveLocation') || holding&.dig('location', 'effectiveLocation')) }
       callnums_in_the_same_location = all_holdings.filter_map { |x| x&.dig('callNumber') }.select { |cn| cn[0..4] == base_call_number[0..4] }
 
       prefix = Utils.longest_common_call_number_prefix(*callnums_in_the_same_location)

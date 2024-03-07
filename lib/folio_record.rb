@@ -170,13 +170,11 @@ class FolioRecord
   def bound_with_holdings
     @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
-      parent_holding = holding.dig('boundWith', 'holding') || holding
 
       FolioItem.new(
         item: parent_item,
-        holding: parent_holding,
-        instance: holding.dig('boundWith', 'instance'),
-        bound_with_holding: holding,
+        holding:,
+        instance:,
         record: self
       )
     end

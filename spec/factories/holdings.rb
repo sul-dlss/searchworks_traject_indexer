@@ -19,6 +19,7 @@ FactoryBot.define do
           json.merge!('enumeration' => enumeration) if enumeration
         end
       end
+      holding { {} }
       permanent_location_code { '' }
       permanent_location { { 'code' => permanent_location_code } }
       call_number { nil }
@@ -27,7 +28,7 @@ FactoryBot.define do
     library { 'GREEN' }
     type { '' }
 
-    initialize_with { new(**attributes, item: default_item_attributes.merge(item).merge(additional_item_attributes.deep_stringify_keys)) }
+    initialize_with { new(**attributes, holding:, item: default_item_attributes.merge(item).merge(additional_item_attributes.deep_stringify_keys)) }
 
     factory :lc_holding do
       call_number { 'QE538.8 .N36 1975-1977' }
@@ -55,7 +56,16 @@ FactoryBot.define do
     end
 
     trait :bound_with do
-      bound_with_holding do
+      additional_item_attributes do
+        {
+          'id' => 'f947bd93-a1eb-5613-8745-1063f948c461',
+          'volume' => nil,
+          'callNumber' => { 'callNumber' => '630.654 .I39M' },
+          'chronology' => nil,
+          'enumeration' => 'V.5:NO.1'
+        }
+      end
+      holding do
         {
           'boundWith' => {
             'instance' => {
