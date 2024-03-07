@@ -2182,6 +2182,12 @@ end
 to_field 'browse_nearby_struct' do |record, accumulator, context|
   next if !record.eresource? || context.output_hash['browse_nearby_struct'].present?
 
+  # Also exclude the browseable call number if we had items (with a call number) that we skipped because they
+  # weren't the right type (e.g. SUDOC)
+  next if items(record, context)
+          .reject(&:skipped?)
+          .any? { |item| item.call_number.to_s.present? && !%w[LC DEWEY ALPHANUM].include?(item.call_number.type) }
+
   callnumber = begin
     holding = record.electronic_holdings.first
     value = holding&.dig('callNumber')
