@@ -64,6 +64,7 @@ FactoryBot.define do
             },
             'holding' => {},
             'item' => {
+              'id' => 'f947bd93-a1eb-5613-8745-1063f948c461',
               'volume' => nil,
               'callNumber' => { 'callNumber' => '630.654 .I39M' },
               'chronology' => nil,

@@ -2577,6 +2577,11 @@ to_field 'holdings_json_struct' do |record, accumulator|
   }
 end
 
+# This allows Searchworks to query the boundWith children.
+to_field 'bound_with_parent_item_ids_ssim' do |record, accumulator|
+  accumulator.concat record.index_items.filter_map { |holding| holding.bound_with_holding&.dig('boundWith', 'item', 'id') }
+end
+
 each_record do |_record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }

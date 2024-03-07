@@ -608,6 +608,17 @@ RSpec.describe 'ItemInfo config' do
     end
   end
 
+  describe 'bound_with_parent_item_ids_ssim' do
+    let(:field) { 'bound_with_parent_item_ids_ssim' }
+
+    context 'with bound with holdings' do
+      let(:holdings) { [build(:lc_holding, :bound_with)] }
+      it 'contains a bound_with parent' do
+        expect(value).to eq ['f947bd93-a1eb-5613-8745-1063f948c461']
+      end
+    end
+  end
+
   describe 'browse_nearby_struct' do
     let(:field) { 'browse_nearby_struct' }
     subject(:value) { result[field].map { |x| JSON.parse(x) } }
