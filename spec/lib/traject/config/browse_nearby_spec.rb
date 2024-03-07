@@ -132,4 +132,71 @@ RSpec.describe 'Browse nearby' do
 
     it { is_expected.to include(hash_including('lopped_callnumber' => 'QE538.8 .N36 1975-1977'), hash_including('lopped_callnumber' => '888.4 .J788')) }
   end
+
+  context 'with a bound-with holding with a common call number' do
+    before do
+      allow(folio_record).to receive(:index_items).and_return(index_items)
+    end
+
+    let(:holding) do
+      {
+        'boundWith' => {
+          'instance' => {
+            'hrid' => 'a5488000',
+            'title' => 'The gases of swamp rice soils ...'
+          },
+          'holding' => {},
+          'item' => {
+            'id' => 'f947bd93-a1eb-5613-8745-1063f948c461',
+            'volume' => nil,
+            'callNumber' => { 'callNumber' => '630.654 .I39M' },
+            'chronology' => nil,
+            'enumeration' => 'V.5:NO.1'
+          }
+        }
+      }
+    end
+
+    let(:index_items) do
+      [
+        build(:dewey_holding, call_number: '630.654 .I39M', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => '630.654 .I39M V.5:NO.5')),
+        build(:dewey_holding, call_number: '630.654 .I39M', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => '630.654 .I39M V.5:NO.6'))
+      ]
+    end
+
+    it { is_expected.to include(hash_including('lopped_callnumber' => '630.654 .I39M', 'callnumber' => '630.654 .I39M V.5:NO.5')) }
+  end
+
+  context 'with a bound-with holding with a distinct call number' do
+    before do
+      allow(folio_record).to receive(:index_items).and_return(index_items)
+    end
+
+    let(:holding) do
+      {
+        'boundWith' => {
+          'instance' => {
+            'hrid' => 'a5488000',
+            'title' => 'The gases of swamp rice soils ...'
+          },
+          'holding' => {},
+          'item' => {
+            'id' => 'f947bd93-a1eb-5613-8745-1063f948c461',
+            'volume' => nil,
+            'callNumber' => { 'callNumber' => '630.654 .I39M' },
+            'chronology' => nil,
+            'enumeration' => 'V.5:NO.1'
+          }
+        }
+      }
+    end
+
+    let(:index_items) do
+      [
+        build(:dewey_holding, call_number: 'AB1234', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => 'QA987 V.5:NO.5'))
+      ]
+    end
+
+    it { is_expected.to include(hash_including('lopped_callnumber' => 'QA987 V.5:NO.5')) }
+  end
 end

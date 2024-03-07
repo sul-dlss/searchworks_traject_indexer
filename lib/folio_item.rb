@@ -203,13 +203,26 @@ class FolioItem
       holding&.dig('location', 'effectiveLocation')
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def build_call_number
-    base_call_number = @holding&.dig('callNumber') if bound_with?
     base_call_number ||= @item&.dig('callNumber', 'callNumber') ||
                          @holding&.dig('callNumber') ||
                          bound_with&.dig('holding', 'callNumber')
 
     volume_info = normalize_call_number([@item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ').presence) if @item
+
+    if bound_with?
+      # bound-withs are a special case; the call number for the holding includes the base call number and any volume information. We can try
+      # to extract the volume information from this call number by using the parent item's base call number (but sometimes the parent + child
+      # call numbers are different... at least we tried)
+      if @item&.dig('callNumber', 'callNumber') && @holding&.dig('callNumber')&.start_with?(@item&.dig('callNumber', 'callNumber'))
+        base_call_number = @item&.dig('callNumber', 'callNumber')
+        volume_info = @holding&.dig('callNumber')&.delete_prefix(base_call_number)&.strip
+      else
+        base_call_number = @holding&.dig('callNumber')
+        volume_info = nil
+      end
+    end
 
     if volume_info.blank? && (call_number_type == 'ALPHANUM' || call_number_type == 'SUDOC') && record
       # ALPHANUM call numbers seem to be problematic; sometimes they use the volume/enumeration/chronology fields under one holdings record
@@ -233,6 +246,7 @@ class FolioItem
 
     CallNumber.new(normalize_call_number(base_call_number), call_number_type, volume_info:)
   end
+  # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   # Call number normalization ported from solrmarc code
   def normalize_call_number(call_number)
