@@ -2012,27 +2012,6 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   accumulator << item_with_the_most_recent_shelfkey.barcode
 end
 
-# In the first pass (above), we ignored items without a call number (e.g. e-resources, in-process items, etc).
-# E-resources, in particular, sometimes have a call number in the MARC metadata that we can use to drive the
-# browse behavior, so here we take a second pass through the records loosening some of the initial restrictions
-# to try to select an item.
-to_field 'preferred_barcode' do |record, accumulator, context|
-  next if context.output_hash['preferred_barcode']
-  next unless record['050'] || record['090'] || record['086']
-
-  non_skipped_items = items(record, context).sort_by(&:call_number).reject do |item|
-    item.skipped? || item.call_number.bad_lc_lane_call_number?
-  end
-
-  next if non_skipped_items.length == 0
-
-  preferred_item = non_skipped_items.find do |item|
-    item.call_number.ignored_call_number?
-  end
-
-  accumulator << preferred_item.barcode if preferred_item
-end
-
 to_field 'holdings_library_code_ssim' do |record, accumulator|
   accumulator.concat(record.holdings.map { |holding| holding.dig('location', 'effectiveLocation', 'library', 'code') }.uniq)
 end
