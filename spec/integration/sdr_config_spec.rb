@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'SDR indexing' do
+RSpec.describe 'SDR indexing' do
   subject(:result) { indexer.map_record(record) }
 
   let(:indexer) do

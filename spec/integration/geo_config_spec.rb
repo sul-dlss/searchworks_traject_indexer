@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'EarthWorks indexing' do
+RSpec.describe 'EarthWorks indexing' do
   subject(:result) { indexer.map_record(record) }
 
   let(:druid) { 'dc482zx1528' }
