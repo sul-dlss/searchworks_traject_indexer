@@ -75,5 +75,10 @@ end
 to_field 'dct_identifier_sm' do |record, accumulator|
   accumulator << "#{settings['purl.url']}/#{record.druid}"
 end
+
+to_field 'dct_title_s' do |record, accumulator|
+  accumulator << record.title
+end
+
 # rubocop:enable Style/GlobalVars
 # rubocop:enable Style/CombinableLoops
