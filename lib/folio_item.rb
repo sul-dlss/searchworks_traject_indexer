@@ -240,7 +240,6 @@ class FolioItem
   end
 
   class CallNumber
-    BEGIN_CUTTER_REGEX = %r{( +|(\.[A-Z])| */)}
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
     VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
     TEMP_CALLNUM_PREFIX = 'XX('
@@ -326,21 +325,7 @@ class FolioItem
     def with_leading_zeros
       raise ArgumentError unless valid_dewey?
 
-      decimal_index = before_cutter.index('.') || 0
-      call_number_class = if decimal_index.positive?
-                            call_number[0, decimal_index].strip
-                          else
-                            before_cutter
-                          end
-
-      case call_number_class.length
-      when 1
-        "00#{call_number}"
-      when 2
-        "0#{call_number}"
-      else
-        call_number
-      end
+      call_number.sub(/^\d{1,3}/) { |x| x.rjust(3, '0') }
     end
 
     def normalized_lc
@@ -349,10 +334,6 @@ class FolioItem
       call_number.gsub(/\s\s+/, ' ') # change all multiple whitespace chars to a single space
                  .gsub(/\s?\.\s?/, '.') # remove a space before or after a period
                  .gsub(/^([A-Z][A-Z]?[A-Z]?) ([0-9])/, '\1\2') # remove space between class letters and digits
-    end
-
-    def before_cutter
-      call_number[/^.*(?=#{BEGIN_CUTTER_REGEX})/].to_s.strip
     end
   end
 end
