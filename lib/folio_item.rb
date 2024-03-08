@@ -306,10 +306,6 @@ class FolioItem
       call_number
     end
 
-    def valid_dewey?
-      call_number&.match?(VALID_DEWEY_REGEX)
-    end
-
     def valid_lc?
       call_number&.match?(VALID_LC_REGEX)
     end
@@ -322,18 +318,30 @@ class FolioItem
       purported_type == 'LC'
     end
 
-    def with_leading_zeros
-      raise ArgumentError unless valid_dewey?
+    def classification
+      return if ignored_call_number? || bad_lc_lane_call_number?
 
-      call_number.sub(/^\d{1,3}/) { |x| x.rjust(3, '0') }
+      if type == 'DEWEY' && valid_dewey?
+        call_number.sub(/^\d{1,3}/) { |x| x.rjust(3, '0') }
+      elsif type == 'LC' && (lc = (self if valid_lc?) || normalized_lc.valid_lc?)
+        lc.to_s[/^[A-Z]{1,3}/]
+      end
+    end
+
+    private
+
+    def valid_dewey?
+      call_number&.match?(VALID_DEWEY_REGEX)
     end
 
     def normalized_lc
       return unless call_number
 
-      call_number.gsub(/\s\s+/, ' ') # change all multiple whitespace chars to a single space
-                 .gsub(/\s?\.\s?/, '.') # remove a space before or after a period
-                 .gsub(/^([A-Z][A-Z]?[A-Z]?) ([0-9])/, '\1\2') # remove space between class letters and digits
+      value = call_number.gsub(/\s\s+/, ' ') # change all multiple whitespace chars to a single space
+                         .gsub(/\s?\.\s?/, '.') # remove a space before or after a period
+                         .gsub(/^([A-Z][A-Z]?[A-Z]?) ([0-9])/, '\1\2') # remove space between class letters and digits
+
+      FolioItem::CallNumber.new(value, purported_type, volume_info:, library:)
     end
   end
 end

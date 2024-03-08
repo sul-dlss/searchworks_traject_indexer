@@ -1665,16 +1665,14 @@ end
 # For LC call numbers
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
-    next if item.skipped?
-    next unless item.call_number_type == 'LC'
-    next if item.call_number.bad_lc_lane_call_number? ||
+    next if item.skipped? ||
             item.shelved_by_location? ||
             item.lost_or_missing? ||
-            item.call_number.ignored_call_number?
+            item.call_number.type != 'LC'
 
     translation_map = Traject::TranslationMap.new('call_number')
-    cn = item.call_number.normalized_lc
-    next unless FolioItem::CallNumber.new(cn).valid_lc?
+    cn = item.call_number.classification
+    next unless cn && cn.start_with?(/[A-Z]/)
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1692,16 +1690,14 @@ end
 # For Dewey call numbers, or ones that are coded as LC, but are infact valid Dewey
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
-    next if item.skipped?
-    unless item.call_number_type == 'DEWEY' || (item.call_number_type == 'LC' && item.call_number.valid_dewey?)
-      next
-    end
-    next unless item.call_number.valid_dewey?
-    next if item.call_number.ignored_call_number? ||
+    next if item.skipped? ||
             item.shelved_by_location? ||
-            item.lost_or_missing?
+            item.lost_or_missing? ||
+            item.call_number.type != 'DEWEY'
 
-    cn = item.call_number.with_leading_zeros
+    cn = item.call_number.classification
+    next unless cn && cn.start_with?(/\d{2}/)
+
     first_digit = "#{cn[0, 1]}00s"
     two_digits = "#{cn[0, 2]}0s"
 
