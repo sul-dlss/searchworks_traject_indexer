@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/GlobalVars
-# rubocop:disable Style/CombinableLoops
-
 require_relative '../../../config/boot'
 require 'digest/md5'
 
@@ -16,13 +13,10 @@ def log_skip(context)
   writer.put(context)
 end
 
-$druid_title_cache = {}
-
 indexer = self
 
 SdrEvents.configure
 
-# rubocop:disable Metrics/BlockLength
 settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV.fetch('SOLR_URL', nil)
@@ -70,8 +64,10 @@ settings do
     indexer.send(:default_mapping_rescue).call(traject_context, err)
   end)
 end
-# rubocop:enable Metrics/BlockLength
 
+def get_descriptive_value(record, field)
+  record.cocina_description.public_send(field).map(&:value).join(' ')
+end
 to_field 'dct_identifier_sm' do |record, accumulator|
   accumulator << "#{settings['purl.url']}/#{record.druid}"
 end
@@ -80,5 +76,14 @@ to_field 'dct_title_s' do |record, accumulator|
   accumulator << record.title
 end
 
-# rubocop:enable Style/GlobalVars
-# rubocop:enable Style/CombinableLoops
+to_field 'dct_description_s' do |record, accumulator|
+  accumulator << get_descriptive_value(record, 'note')
+end
+
+to_field 'dct_accessRights_s' do |record, accumulator|
+  if record.public?
+    accumulator << 'Public'
+  elsif record.stanford_only?
+    accumulator << 'Restricted'
+  end
+end

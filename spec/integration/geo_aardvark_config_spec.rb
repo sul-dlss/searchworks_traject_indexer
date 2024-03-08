@@ -25,5 +25,12 @@ describe 'EarthWorks Aardvark indexing' do
         'dct_title_s' => ['Jōshū Kusatsu Onsenzu']
       )
     end
+
+    it 'contains description with abstract and notes' do
+      expect(result['dct_description_s'].first).to eq 'Publication date estimat' \
+                                                      'e from dealer description. Shows views of tourist attractions. Includes ' \
+                                                      'distance chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 bound ' \
+                                                      'with G7964 .K2368 E635 1912Z .I2. Gunma prefecture'
+    end
   end
 end
