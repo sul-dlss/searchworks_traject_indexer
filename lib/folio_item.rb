@@ -20,12 +20,10 @@ class FolioItem
     end
   end
 
-  delegate %i[dewey? valid_lc?] => :call_number
-
   SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SHELBYTITL SCI-SHELBYSERIES].freeze
-  SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
   SKIPPED_LOCS = %w[SUL-BORROW-DIRECT].freeze
-  TEMP_CALLNUM_PREFIX = 'XX('
+
+  delegate [:temp_call_number?] => :call_number
 
   attr_reader :item, :holding, :instance,
               :id, :type, :barcode, :course_reserves, :status
@@ -85,23 +83,6 @@ class FolioItem
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
   def call_number_type
     @call_number_type ||= self.class.call_number_type_code(item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || holding&.dig('callNumberType', 'name') || bound_with&.dig('holding', 'callNumberType', 'name'))
-  end
-
-  def bad_lc_lane_call_number?
-    return false if valid_lc?
-    return false if library != 'LANE'
-    return false if dewey?
-
-    call_number_type == 'LC'
-  end
-
-  def ignored_call_number?
-    SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
-      temp_call_number?
-  end
-
-  def temp_call_number?
-    call_number.to_s.blank? || call_number.to_s.start_with?(TEMP_CALLNUM_PREFIX)
   end
 
   def lost_or_missing?
@@ -244,7 +225,7 @@ class FolioItem
       end
     end
 
-    CallNumber.new(normalize_call_number(base_call_number), call_number_type, volume_info:)
+    CallNumber.new(normalize_call_number(base_call_number), call_number_type, volume_info:, library:)
   end
   # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
@@ -262,21 +243,24 @@ class FolioItem
     BEGIN_CUTTER_REGEX = %r{( +|(\.[A-Z])| */)}
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
     VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
+    TEMP_CALLNUM_PREFIX = 'XX('
+    SKIPPED_CALL_NUMS = ['NO CALL NUMBER'].freeze
 
-    attr_reader :base_call_number, :purported_type, :volume_info
+    attr_reader :base_call_number, :purported_type, :volume_info, :library
 
     # NOTE: call_number may be nil (when used for an on-order item)
-    def initialize(base_call_number, purported_type = nil, volume_info: nil)
+    def initialize(base_call_number, purported_type = nil, volume_info: nil, library: nil)
       @base_call_number = base_call_number
       @purported_type = purported_type
       @volume_info = volume_info
+      @library = library
     end
 
     def type
       @type ||= if purported_type == 'LC'
                   if valid_lc?
                     'LC'
-                  elsif dewey?
+                  elsif valid_dewey?
                     'DEWEY'
                   else
                     'OTHER'
@@ -292,6 +276,15 @@ class FolioItem
 
     def call_number
       [base_call_number.to_s, volume_info].compact.join(' ')
+    end
+
+    def ignored_call_number?
+      SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
+        temp_call_number?
+    end
+
+    def temp_call_number?
+      to_s.blank? || to_s.start_with?(TEMP_CALLNUM_PREFIX)
     end
 
     def shelfkey(serial: false)
@@ -314,7 +307,7 @@ class FolioItem
       call_number
     end
 
-    def dewey?
+    def valid_dewey?
       call_number&.match?(VALID_DEWEY_REGEX)
     end
 
@@ -322,8 +315,16 @@ class FolioItem
       call_number&.match?(VALID_LC_REGEX)
     end
 
+    def bad_lc_lane_call_number?
+      return false if valid_lc?
+      return false if library != 'LANE'
+      return false if valid_dewey?
+
+      purported_type == 'LC'
+    end
+
     def with_leading_zeros
-      raise ArgumentError unless dewey?
+      raise ArgumentError unless valid_dewey?
 
       decimal_index = before_cutter.index('.') || 0
       call_number_class = if decimal_index.positive?

@@ -1667,11 +1667,10 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
     next if item.skipped?
     next unless item.call_number_type == 'LC'
-    next if item.call_number.to_s.empty? ||
-            item.bad_lc_lane_call_number? ||
+    next if item.call_number.bad_lc_lane_call_number? ||
             item.shelved_by_location? ||
             item.lost_or_missing? ||
-            item.ignored_call_number?
+            item.call_number.ignored_call_number?
 
     translation_map = Traject::TranslationMap.new('call_number')
     cn = item.call_number.normalized_lc
@@ -1694,11 +1693,11 @@ end
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
     next if item.skipped?
-    unless item.call_number_type == 'DEWEY' || (item.call_number_type == 'LC' && item.call_number.dewey?)
+    unless item.call_number_type == 'DEWEY' || (item.call_number_type == 'LC' && item.call_number.valid_dewey?)
       next
     end
-    next unless item.dewey?
-    next if item.ignored_call_number? ||
+    next unless item.call_number.valid_dewey?
+    next if item.call_number.ignored_call_number? ||
             item.shelved_by_location? ||
             item.lost_or_missing?
 
@@ -1810,10 +1809,9 @@ to_field 'callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped?
-    next if item.call_number.to_s.empty? ||
-            item.shelved_by_location? ||
-            item.ignored_call_number? ||
-            item.bad_lc_lane_call_number?
+    next if item.shelved_by_location? ||
+            item.call_number.ignored_call_number? ||
+            item.call_number.bad_lc_lane_call_number?
 
     call_number = item.call_number.to_s
 
@@ -1972,7 +1970,7 @@ end
 to_field 'preferred_barcode' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   non_skipped_items = items(record, context).sort_by(&:call_number).reject do |item|
-    item.skipped? || item.bad_lc_lane_call_number? || item.ignored_call_number?
+    item.skipped? || item.call_number.bad_lc_lane_call_number? || item.call_number.ignored_call_number?
   end
 
   next if non_skipped_items.length == 0
@@ -2027,13 +2025,13 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   next unless record['050'] || record['090'] || record['086']
 
   non_skipped_items = items(record, context).sort_by(&:call_number).reject do |item|
-    item.skipped? || item.bad_lc_lane_call_number?
+    item.skipped? || item.call_number.bad_lc_lane_call_number?
   end
 
   next if non_skipped_items.length == 0
 
   preferred_item = non_skipped_items.find do |item|
-    item.ignored_call_number?
+    item.call_number.ignored_call_number?
   end
 
   accumulator << preferred_item.barcode if preferred_item
@@ -2125,7 +2123,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
       call_number = [shelved_by_text, item.call_number.volume_info].compact.join(' ')
     end
 
-    call_number_data = if item.call_number.to_s.empty? || item.ignored_call_number?
+    call_number_data = if item.call_number.ignored_call_number?
                          {
                            callnumber: call_number
                          }
