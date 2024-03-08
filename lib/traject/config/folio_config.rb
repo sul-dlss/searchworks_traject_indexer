@@ -1665,16 +1665,14 @@ end
 # For LC call numbers
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
-    next if item.skipped?
-    next unless item.call_number_type == 'LC'
-    next if item.call_number.bad_lc_lane_call_number? ||
+    next if item.skipped? ||
             item.shelved_by_location? ||
             item.lost_or_missing? ||
-            item.call_number.ignored_call_number?
+            item.call_number.type != 'LC'
 
     translation_map = Traject::TranslationMap.new('call_number')
-    cn = item.call_number.normalized_lc
-    next unless FolioItem::CallNumber.new(cn).valid_lc?
+    cn = item.call_number.classification
+    next unless cn && cn.start_with?(/[A-Z]/)
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1692,16 +1690,14 @@ end
 # For Dewey call numbers, or ones that are coded as LC, but are infact valid Dewey
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
-    next if item.skipped?
-    unless item.call_number_type == 'DEWEY' || (item.call_number_type == 'LC' && item.call_number.valid_dewey?)
-      next
-    end
-    next unless item.call_number.valid_dewey?
-    next if item.call_number.ignored_call_number? ||
+    next if item.skipped? ||
             item.shelved_by_location? ||
-            item.lost_or_missing?
+            item.lost_or_missing? ||
+            item.call_number.type != 'DEWEY'
 
-    cn = item.call_number.with_leading_zeros
+    cn = item.call_number.classification
+    next unless cn && cn.start_with?(/\d{2}/)
+
     first_digit = "#{cn[0, 1]}00s"
     two_digits = "#{cn[0, 2]}0s"
 
@@ -2014,27 +2010,6 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   end
 
   accumulator << item_with_the_most_recent_shelfkey.barcode
-end
-
-# In the first pass (above), we ignored items without a call number (e.g. e-resources, in-process items, etc).
-# E-resources, in particular, sometimes have a call number in the MARC metadata that we can use to drive the
-# browse behavior, so here we take a second pass through the records loosening some of the initial restrictions
-# to try to select an item.
-to_field 'preferred_barcode' do |record, accumulator, context|
-  next if context.output_hash['preferred_barcode']
-  next unless record['050'] || record['090'] || record['086']
-
-  non_skipped_items = items(record, context).sort_by(&:call_number).reject do |item|
-    item.skipped? || item.call_number.bad_lc_lane_call_number?
-  end
-
-  next if non_skipped_items.length == 0
-
-  preferred_item = non_skipped_items.find do |item|
-    item.call_number.ignored_call_number?
-  end
-
-  accumulator << preferred_item.barcode if preferred_item
 end
 
 to_field 'holdings_library_code_ssim' do |record, accumulator|

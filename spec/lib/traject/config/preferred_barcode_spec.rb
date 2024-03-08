@@ -386,16 +386,6 @@ RSpec.describe 'All_search config' do
     end
   end
 
-  context 'with an item with an online item with callnum matches another group' do
-    let(:index_items) do
-      [
-        build(:lc_holding, barcode: 'onlineByLoc', call_number: 'AB123 .C45', type: 'ONLINE'),
-        build(:lc_holding, barcode: 'notOnline', call_number: 'AB123 .C45')
-      ]
-    end
-    it { is_expected.to eq ['notOnline'] }
-  end
-
   context 'with an ignored call number' do
     let(:index_items) do
       [

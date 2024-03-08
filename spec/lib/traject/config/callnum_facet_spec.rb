@@ -70,12 +70,10 @@ RSpec.describe 'Call Number Facet' do
 
     it 'handles ignored call numbers (by not including them)' do
       # LC
-      expect(record_with_holdings(type: 'ONLINE', item: { 'callNumberType' => { 'name' => 'ASIC' } }, indexer:)[field]).to be_nil
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'XX stuff' } }, indexer:)[field]).to be_nil
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'NO CALL NUMBER' } }, indexer:)[field]).to be_nil
 
       # Dewey
-      expect(record_with_holdings(type: 'ONLINE', item: { 'callNumberType' => { 'name' => 'DEWEY' } }, indexer:)[field]).to be_nil
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => 'XX stuff' } }, indexer:)[field]).to be_nil
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => 'NO CALL NUMBER' } }, indexer:)[field]).to be_nil
     end
@@ -121,7 +119,6 @@ RSpec.describe 'Call Number Facet' do
     it 'does not return call numbers w/ the scheme ASIS' do
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'ASIS' }, 'callNumber' => { 'callNumber' => '(ADL4044.1)XX' } }, indexer:)[field]).to be_nil
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'ASIS' }, 'callNumber' => { 'callNumber' => '134776' } }, indexer:)[field]).to be_nil
-      expect(record_with_holdings(type: 'ONLINE', item: { 'callNumberType' => { 'name' => 'ASIS' } }, indexer:)[field]).to be_nil
     end
   end
 
