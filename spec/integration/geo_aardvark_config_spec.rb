@@ -20,7 +20,10 @@ describe 'EarthWorks Aardvark indexing' do
 
   context 'when image, map, or book content' do
     it 'maps things to the right places' do
-      expect(result).to include('dct_identifier_sm' => ['https://purl.stanford.edu/dc482zx1528'])
+      expect(result).to include(
+        'dct_identifier_sm' => ['https://purl.stanford.edu/dc482zx1528'],
+        'dct_title_s' => ['Jōshū Kusatsu Onsenzu']
+      )
     end
   end
 end

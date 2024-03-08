@@ -26,4 +26,12 @@ class PublicCocinaRecord
   def public_cocina_doc
     @public_cocina_doc ||= JSON.parse(public_cocina)
   end
+
+  def cocina_description
+    @cocina_description ||= Cocina::Models::Description.new(public_cocina_doc['description'])
+  end
+
+  def title
+    @title ||= Cocina::Models::Builders::TitleBuilder.build(cocina_description.title)
+  end
 end
