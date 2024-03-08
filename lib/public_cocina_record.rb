@@ -27,6 +27,18 @@ class PublicCocinaRecord
     @public_cocina_doc ||= JSON.parse(public_cocina)
   end
 
+  def cocina_access
+    @cocina_access ||= Cocina::Models::DROAccess.new(public_cocina_doc['access'])
+  end
+
+  def public?
+    [cocina_access.view, cocina_access.download].include? 'world'
+  end
+
+  def stanford_only?
+    [cocina_access.view, cocina_access.download].include? 'stanford'
+  end
+
   def cocina_description
     @cocina_description ||= Cocina::Models::Description.new(public_cocina_doc['description'])
   end
