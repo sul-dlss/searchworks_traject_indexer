@@ -76,7 +76,7 @@ module Traject
 
     def self.encoding_cleanup(row)
       # cleans up cyrlic encoding i︠a︡ to i͡a
-      row.gsub(/[?=\ufe20](.{1,2})[?<=\ufe21]/, "\u0361\\1")
+      row.gsub(/\ufe20(.{1,2})\ufe21/, "\u0361\\1")
     end
 
     def sql_server_current_time
