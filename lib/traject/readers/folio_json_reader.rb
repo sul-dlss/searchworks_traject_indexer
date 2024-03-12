@@ -11,7 +11,7 @@ module Traject
       return enum_for(:each) unless block_given?
 
       @input_stream.each_with_index do |json, i|
-        yield FolioRecord.new(JSON.parse(json), nil)
+        yield FolioRecord.new(JSON.parse(Utils.encoding_cleanup(json)), nil)
       rescue StandardError => e
         logger.error("Problem with JSON record on line #{i}: #{e.message}")
       end
