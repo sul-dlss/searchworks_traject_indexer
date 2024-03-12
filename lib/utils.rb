@@ -4,9 +4,10 @@ require 'logger'
 require_relative '../config/boot'
 
 module Utils
-  def self.encoding_cleanup(row)
+  def self.encoding_cleanup(value)
     # cleans up cyrlic encoding i︠a︡ to i͡a
-    row.gsub(/\ufe20(.{1,2})\ufe21/, "\u0361\\1")
+    # value.gsub(/\ufe20(.{1,2})\ufe21/, "\u0361\\1")
+    value
   end
 
   def self.balance_parentheses(string)
