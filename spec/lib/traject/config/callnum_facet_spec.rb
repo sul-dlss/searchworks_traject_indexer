@@ -52,10 +52,10 @@ RSpec.describe 'Call Number Facet' do
       #   ['LC Classification|M - Music|M - Music']
       # )
       # LC
-      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
+      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITLE', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
                                   indexer:)[field]).to be_nil
       # Dewey
-      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
+      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITLE', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
                                   indexer:)[field]).to be_nil
     end
 

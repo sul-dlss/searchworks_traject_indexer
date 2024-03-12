@@ -20,7 +20,7 @@ class FolioItem
     end
   end
 
-  SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SHELBYTITL SCI-SHELBYSERIES].freeze
+  SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SCI-SHELBYSERIES].freeze
   SKIPPED_LOCS = %w[SUL-BORROW-DIRECT].freeze
 
   delegate [:temp_call_number?] => :call_number
@@ -77,7 +77,7 @@ class FolioItem
   end
 
   def shelved_by_location?
-    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITL')
+    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITLE')
   end
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name

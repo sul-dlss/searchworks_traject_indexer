@@ -398,7 +398,7 @@ RSpec.describe 'All_search config' do
   context 'with a shelby location' do
     let(:index_items) do
       [
-        build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', permanent_location_code: 'MAR-SHELBYTITL')
+        build(:lc_holding, barcode: 'shelby', call_number: 'M1503 .A5 VOL.22', permanent_location_code: 'MAR-SHELBYTITLE')
       ]
     end
 
