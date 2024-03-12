@@ -59,7 +59,8 @@ module Traject
           break if response.nil?
 
           response.each do |row|
-            data = JSON.parse(row['jsonb_build_object'])
+            jsonb_build_object = Utils.encoding_cleanup(row['jsonb_build_object'])
+            data = JSON.parse(jsonb_build_object)
 
             merge_separately_queried_data!(data)
 
