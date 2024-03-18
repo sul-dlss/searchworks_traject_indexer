@@ -1666,8 +1666,6 @@ end
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
     next if item.skipped? ||
-            item.shelved_by_location? ||
-            item.lost_or_missing? ||
             item.call_number.type != 'LC'
 
     translation_map = Traject::TranslationMap.new('call_number')
@@ -1691,8 +1689,6 @@ end
 to_field 'callnum_facet_hsim' do |record, accumulator, context|
   items(record, context).each do |item|
     next if item.skipped? ||
-            item.shelved_by_location? ||
-            item.lost_or_missing? ||
             item.call_number.type != 'DEWEY'
 
     cn = item.call_number.classification
@@ -1805,8 +1801,7 @@ to_field 'callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped?
-    next if item.shelved_by_location? ||
-            item.call_number.ignored_call_number? ||
+    next if item.call_number.ignored_call_number? ||
             item.call_number.bad_lc_lane_call_number?
 
     call_number = item.call_number.to_s

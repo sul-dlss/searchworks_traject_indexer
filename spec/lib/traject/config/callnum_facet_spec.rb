@@ -46,26 +46,12 @@ RSpec.describe 'Call Number Facet' do
 
   describe 'call numbers excluded for various reasons' do
     it 'assigns value for valid LC even if it is a shelve by location' do
-      # valid LC
-      # FIXME: we DO want a value if there is valid LC for shelby location
-      # expect(record_with_holdings(call_number: 'M123 .M456', scheme: 'LC', permanent_location_code: loc, indexer: indexer)[field]).to eq(
-      #   ['LC Classification|M - Music|M - Music']
-      # )
       # LC
       expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITLE', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
-                                  indexer:)[field]).to be_nil
+                                  indexer:)[field]).to eq ['LC Classification|M - Music|M - Music']
       # Dewey
       expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITLE', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
-                                  indexer:)[field]).to be_nil
-    end
-
-    it 'handles missing or lost call numbers (by not including them)' do
-      # LC
-      expect(record_with_holdings(status: 'Missing', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
-                                  indexer:)[field]).to be_nil
-      # Dewey
-      expect(record_with_holdings(status: 'Missing', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
-                                  indexer:)[field]).to be_nil
+                                  indexer:)[field]).to eq ['Dewey Classification|100s - Philosophy|120s - Epistemology, Causation, Humankind']
     end
 
     it 'handles ignored call numbers (by not including them)' do

@@ -85,18 +85,6 @@ class FolioItem
     @call_number_type ||= self.class.call_number_type_code(item&.dig('callNumberType', 'name') || item&.dig('callNumber', 'typeName') || holding&.dig('callNumberType', 'name') || bound_with&.dig('holding', 'callNumberType', 'name'))
   end
 
-  def lost_or_missing?
-    status == 'Missing' || status == 'Long missing'
-  end
-
-  def in_process?
-    temp_call_number? && (status == 'In process' || status == 'In process (non-requestable)')
-  end
-
-  def on_order?
-    temp_call_number? && status == 'On order'
-  end
-
   def ==(other)
     other.is_a?(self.class) and
       other.id == @id
