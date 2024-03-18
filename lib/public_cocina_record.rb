@@ -46,4 +46,16 @@ class PublicCocinaRecord
   def title
     @title ||= Cocina::Models::Builders::TitleBuilder.build(cocina_description.title)
   end
+
+  def resource_type
+    @resource_type ||= cocina_description.geographic.first.form.find { |form| form.type == 'type' }
+  end
+
+  def event_dates
+    @event_dates ||= cocina_description.event.find { |event| !event.date.nil? }.date
+  end
+
+  def publication_date
+    @publication_date ||= event_dates.find { |event_date| event_date.type == 'publication' }
+  end
 end

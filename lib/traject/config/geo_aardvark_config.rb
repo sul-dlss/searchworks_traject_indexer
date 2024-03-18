@@ -73,7 +73,6 @@ def identifier_for(record)
   "#{settings['purl.url']}/#{record.druid}"
 end
 
-
 to_field 'id' do |record, accumulator|
   accumulator << identifier_for(record)
 end
@@ -96,4 +95,16 @@ to_field 'dct_accessRights_s' do |record, accumulator|
   elsif record.stanford_only?
     accumulator << 'Restricted'
   end
+end
+
+to_field 'gbl_resourceType_sm' do |record, accumulator|
+  next unless record.resource_type
+
+  accumulator << record.resource_type.value.gsub('Dataset#', '')
+end
+
+to_field 'gbl_mdModified_dt' do |record, accumulator|
+  next unless record.publication_date
+
+  accumulator << record.publication_date.value
 end
