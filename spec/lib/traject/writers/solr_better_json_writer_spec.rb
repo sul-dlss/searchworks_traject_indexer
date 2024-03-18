@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Traject::SolrBetterJsonWriter do
+RSpec.describe Traject::SolrBetterJsonWriter do
   subject(:writer) do
     described_class.new(
       'solr_json_writer.http_client' => http_client,

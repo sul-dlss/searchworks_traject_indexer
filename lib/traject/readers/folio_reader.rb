@@ -23,7 +23,7 @@ module Traject
 
         buffer.each_line do |line|
           if line.end_with?("\n")
-            record = JSON.parse(line)
+            record = JSON.parse(Utils.encoding_cleanup(line))
             yield FolioRecord.new_from_source_record(record, client)
           else
             newbuffer += line

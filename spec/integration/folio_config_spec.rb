@@ -319,6 +319,29 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  context 'with a complex bound-with case' do
+    let(:folio_record) do
+      FolioRecord.new(source_record_json, client)
+    end
+
+    let(:source_record_json) do
+      JSON.parse(File.read(file_fixture('a10791164.json')))
+    end
+
+    let(:item_display_structs) do
+      Array(result['item_display_struct']).map { |x| JSON.parse(x) }
+    end
+
+    it 'contains the original call numbers, because we are unable to find a long-enough common prefix' do
+      expect(item_display_structs.pluck('lopped_callnumber')).to contain_exactly(
+        'FS 2.77/2:952-957',
+        'FS 2.77/2:958-963',
+        'FS 2.77/2:964-967',
+        'FS 2.8:180'
+      )
+    end
+  end
+
   describe 'item_display_struct' do
     context 'item status is checked out' do
       let(:items) do

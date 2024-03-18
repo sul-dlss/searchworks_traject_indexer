@@ -405,12 +405,12 @@ RSpec.describe 'ItemInfo config' do
     end
 
     describe 'location implies item is shelved by title' do
-      context 'with SCI-SHELBYTITL' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYTITL', type: 'STKS-MONO')] }
+      context 'with SCI-SHELBYTITLE' do
+        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYTITLE', type: 'STKS-MONO')] }
 
         it {
           is_expected.to match_array([
-                                       hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'permanent_location_code' => 'SCI-SHELBYTITL',
+                                       hash_including('barcode' => '36105129694373', 'library' => 'SCIENCE', 'permanent_location_code' => 'SCI-SHELBYTITLE',
                                                       'callnumber' => 'Shelved by title VOL 1 1946')
                                      ])
         }
@@ -460,7 +460,7 @@ RSpec.describe 'ItemInfo config' do
       context 'volume includes an O.S. (old series) designation' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'O.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
+            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'O.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITLE')
           ]
         end
 
@@ -474,7 +474,7 @@ RSpec.describe 'ItemInfo config' do
       context 'volume includes an N.S. (new series) designation' do
         let(:holdings) do
           [
-            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'N.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITL')
+            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'N.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITLE')
           ]
         end
 

@@ -59,7 +59,7 @@ module Traject
           break if response.nil?
 
           response.each do |row|
-            jsonb_build_object = Traject::FolioPostgresReader.encoding_cleanup(row['jsonb_build_object'])
+            jsonb_build_object = Utils.encoding_cleanup(row['jsonb_build_object'])
             data = JSON.parse(jsonb_build_object)
 
             merge_separately_queried_data!(data)
@@ -72,11 +72,6 @@ module Traject
         # but just in case we keep the reader around...
         @connection.exec("CLOSE #{cursor_name}")
       end
-    end
-
-    def self.encoding_cleanup(row)
-      # cleans up cyrlic encoding i︠a︡ to i͡a
-      row.gsub(/[?=\ufe20](.{1,2})[?<=\ufe21]/, "\u0361\\1")
     end
 
     def sql_server_current_time

@@ -20,7 +20,7 @@ class FolioItem
     end
   end
 
-  SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SHELBYTITL SCI-SHELBYSERIES].freeze
+  SHELBY_LOCS = %w[BUS-PER BUS-MAKENA BUS-NEWS-STKS SCI-SHELBYSERIES].freeze
   SKIPPED_LOCS = %w[SUL-BORROW-DIRECT].freeze
 
   delegate [:temp_call_number?] => :call_number
@@ -77,7 +77,7 @@ class FolioItem
   end
 
   def shelved_by_location?
-    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITL')
+    [display_location&.dig('code'), temporary_location&.dig('code')].intersect?(SHELBY_LOCS) || display_location&.dig('code')&.end_with?('-SHELBYTITLE')
   end
 
   # From https://okapi-test.stanford.edu/call-number-types?limit=1000&query=cql.allRecords=1%20sortby%20name
@@ -202,14 +202,18 @@ class FolioItem
       # The prefix is the shared characters from the beginning of the call number up to the first space or punctuation before
       # the call numbers start to diverge.
 
-      all_holdings = record.holdings.select { |x| x&.dig('location', 'effectiveLocation') == (bound_with&.dig('holding', 'location', 'effectiveLocation') || holding&.dig('location', 'effectiveLocation')) }
+      all_holdings = record.holdings.select do |x|
+        x&.dig('boundWith', 'holding', 'location', 'effectiveLocation', 'id') == holding&.dig('location', 'effectiveLocation', 'id') ||
+          x&.dig('location', 'effectiveLocation', 'id') == bound_with&.dig('holding', 'location', 'effectiveLocation', 'id') ||
+          x&.dig('location', 'effectiveLocation', 'id') == holding&.dig('location', 'effectiveLocation', 'id')
+      end
       callnums_in_the_same_location = all_holdings.filter_map { |x| x&.dig('callNumber') }.select { |cn| cn[0..4] == base_call_number[0..4] }
 
       prefix = Utils.longest_common_call_number_prefix(*callnums_in_the_same_location)
       if prefix.length > 4
         original_call_number = base_call_number
         base_call_number = prefix.strip
-        volume_info = original_call_number[prefix.length..].strip
+        volume_info = original_call_number.delete_prefix(prefix).strip
       end
     end
 

@@ -47,10 +47,10 @@ RSpec.describe 'Call Number Facet' do
   describe 'call numbers excluded for various reasons' do
     it 'assigns value for valid LC even if it is a shelve by location' do
       # LC
-      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
+      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITLE', item: { 'callNumberType' => { 'name' => 'LC' }, 'callNumber' => { 'callNumber' => 'M123 .M456' } },
                                   indexer:)[field]).to eq ['LC Classification|M - Music|M - Music']
       # Dewey
-      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITL', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
+      expect(record_with_holdings(permanent_location_code: 'GRE-SHELBYTITLE', item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '123.4 .B45' } },
                                   indexer:)[field]).to eq ['Dewey Classification|100s - Philosophy|120s - Epistemology, Causation, Humankind']
     end
 
