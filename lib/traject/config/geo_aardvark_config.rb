@@ -68,8 +68,18 @@ end
 def get_descriptive_value(record, field)
   record.cocina_description.public_send(field).map(&:value).join(' ')
 end
+
+def identifier_for(record)
+  "#{settings['purl.url']}/#{record.druid}"
+end
+
+
+to_field 'id' do |record, accumulator|
+  accumulator << identifier_for(record)
+end
+
 to_field 'dct_identifier_sm' do |record, accumulator|
-  accumulator << "#{settings['purl.url']}/#{record.druid}"
+  accumulator << identifier_for(record)
 end
 
 to_field 'dct_title_s' do |record, accumulator|
