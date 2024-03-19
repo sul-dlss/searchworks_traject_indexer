@@ -62,4 +62,9 @@ class PublicCocinaRecord
   def data_format
     @data_format ||= cocina_description.geographic.first.form.find { |form| form.type == 'data format' }
   end
+
+  # TODO: Determine how to provide the value (i.e. English) with the code (i.e. eng)
+  def languages
+    @languages ||= cocina_description.language.map { |lang| { code: lang.code } if lang.code }.compact
+  end
 end
