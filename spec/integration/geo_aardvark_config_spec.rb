@@ -29,7 +29,8 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
         'gbl_resourceType_sm' => ['Polygon'],
         'gbl_mdModified_dt' => ['2009'],
         'dct_issued_s' => ['2009'],
-        'dc_format_s' => ['Shapefile']
+        'dc_format_s' => ['Shapefile'],
+        'dct_language_sm' => ['eng']
       )
     end
 

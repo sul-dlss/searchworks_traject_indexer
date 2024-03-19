@@ -120,3 +120,9 @@ to_field 'dc_format_s' do |record, accumulator|
 
   accumulator << record.data_format.value
 end
+
+to_field 'dct_language_sm' do |record, accumulator|
+  next unless record.languages
+
+  accumulator << record.languages.first[:code]
+end
