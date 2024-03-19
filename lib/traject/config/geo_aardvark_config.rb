@@ -85,7 +85,7 @@ to_field 'dct_title_s' do |record, accumulator|
   accumulator << record.title
 end
 
-to_field 'dct_description_s' do |record, accumulator|
+to_field 'dct_description_sm' do |record, accumulator|
   accumulator << get_descriptive_value(record, 'note')
 end
 
@@ -104,6 +104,12 @@ to_field 'gbl_resourceType_sm' do |record, accumulator|
 end
 
 to_field 'gbl_mdModified_dt' do |record, accumulator|
+  next unless record.publication_date
+
+  accumulator << record.publication_date.value
+end
+
+to_field 'dct_issued_s'do |record, accumulator|
   next unless record.publication_date
 
   accumulator << record.publication_date.value
