@@ -58,4 +58,8 @@ class PublicCocinaRecord
   def publication_date
     @publication_date ||= event_dates.find { |event_date| event_date.type == 'publication' }
   end
+
+  def data_format
+    @data_format ||= cocina_description.geographic.first.form.find { |form| form.type == 'data format' }
+  end
 end

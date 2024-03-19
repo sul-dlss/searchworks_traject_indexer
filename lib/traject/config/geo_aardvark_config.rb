@@ -114,3 +114,9 @@ to_field 'dct_issued_s'do |record, accumulator|
 
   accumulator << record.publication_date.value
 end
+
+to_field 'dc_format_s' do |record, accumulator|
+  next unless record.data_format
+
+  accumulator << record.data_format.value
+end
