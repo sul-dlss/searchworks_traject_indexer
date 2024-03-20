@@ -30,7 +30,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
         'gbl_mdModified_dt' => ['2009'],
         'dct_issued_s' => ['2009'],
         'dc_format_s' => ['Shapefile'],
-        'dct_language_sm' => ['eng']
+        'dct_language_sm' => ['eng'],
+        'dct_subject_sm' => ['Marine habitat conservation', 'Freshwater habitat conservation',
+                             'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters'],
+        'dct_spatial_sm' => ['North Pacific Ocean']
       )
     end
 

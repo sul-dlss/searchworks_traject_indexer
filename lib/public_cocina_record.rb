@@ -67,4 +67,16 @@ class PublicCocinaRecord
   def languages
     @languages ||= cocina_description.language.map { |lang| { code: lang.code } if lang.code }.compact
   end
+
+  def topics
+    @topics ||= cocina_description.subject.select { |subject| subject.type == 'topic' }
+  end
+
+  def geographic
+    @geographic ||= cocina_description.geographic
+  end
+
+  def geographic_spatial
+    @geographic_spatial ||= geographic.find(&:subject).subject.find { |subject| subject.type == 'coverage' }
+  end
 end

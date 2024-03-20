@@ -126,3 +126,15 @@ to_field 'dct_language_sm' do |record, accumulator|
 
   accumulator << record.languages.first[:code]
 end
+
+to_field 'dct_subject_sm' do |record, accumulator|
+  next unless record.topics
+
+  accumulator.concat(record.topics.map(&:value))
+end
+
+to_field 'dct_spatial_sm' do |record, accumulator|
+  next unless record.geographic_spatial
+
+  accumulator << record.geographic_spatial.value
+end
