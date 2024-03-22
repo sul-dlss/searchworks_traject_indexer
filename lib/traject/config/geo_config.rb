@@ -230,6 +230,7 @@ to_field 'layer_geom_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//d
   accumulator.replace(data)
 end
 
+# layer_geom_type_s is deprecated in GBL 1.0/Aardvark
 to_field 'layer_geom_type_s' do |record, accumulator, context|
   next if context.output_hash['layer_geom_type_s'] && !context.output_hash['layer_geom_type_s'].empty?
 
@@ -246,11 +247,13 @@ to_field 'dct_issued_s', mods_xpath('mods:originInfo/mods:dateIssued') do |_reco
   accumulator.replace(data)
 end
 
+# dc_type_s is deprecated in GBL 1.0/Aardvark
 to_field 'dc_type_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:type') do |_record, accumulator|
   data = accumulator.flatten.map(&:text).uniq.map { |v| v.split('#', 2).first }.slice(0..0)
   accumulator.replace(data)
 end
 
+# dc_type_s is deprecated in GBL 1.0/Aardvark
 to_field 'dc_type_s' do |record, accumulator, context|
   next if context.output_hash['dc_type_s'] && !context.output_hash['dc_type_s'].empty?
 
@@ -270,11 +273,13 @@ to_field 'dc_format_s', mods_xpath('mods:extension[@displayLabel="geo"]//dc:form
   end
 end
 
+# TODO
 to_field 'dc_format_s' do |record, accumulator, context|
   next if context.output_hash['dc_format_s'] && !context.output_hash['dc_format_s'].empty?
 
   accumulator << 'JPEG 2000' if %w[image map book].include?(record.dor_content_type)
 end
+
 
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
 to_field 'dc_subject_sm', stanford_mods(:subject_other_search) do |_record, accumulator|
