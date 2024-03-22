@@ -103,4 +103,21 @@ class PublicCocinaRecord
   def temporal
     @temporal ||= cocina_description.subject.map { |subject| subject.structuredValue.map(&:value) if subject.type == 'time' }.compact
   end
+
+  # TODO: add logic for -> subject*.structuredValue*.type=genre AND subject*.structuredValue*.value=Maps
+  def map?
+    cocina_description.form.map(&:value).include?('map') || cocina_description.title.include?('(Raster Image)')
+  end
+
+  def dataset?
+    cocina_description.form.map(&:value).include?('Dataset')
+  end
+
+  def collection?
+    cocina_description.form.map(&:value).include?('collection')
+  end
+
+  def extent
+    @extent ||= cocina_description.form.find { |form| form.type == 'extent' }
+  end
 end

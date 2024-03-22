@@ -40,7 +40,8 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
         'dct_temporal_sm' => ['1978', '2005'],
         'gbl_dateRange_drsim' => ['1978 TO 2005'],
         'gbl_indexYear_im' => (1978..2005).to_a,
-        'schema_provider_s' => ['Stanford']
+        'schema_provider_s' => ['Stanford'],
+        'gbl_fileSize_s' => ['7.793']
       )
     end
 
