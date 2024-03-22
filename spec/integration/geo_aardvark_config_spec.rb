@@ -33,7 +33,8 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
         'dct_language_sm' => ['eng'],
         'dct_subject_sm' => ['Marine habitat conservation', 'Freshwater habitat conservation',
                              'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters'],
-        'dct_spatial_sm' => ['North Pacific Ocean']
+        'dct_spatial_sm' => ['North Pacific Ocean'],
+        'dct_creator_sm' => ['Pinsky, Malin L.', 'Springmeyer, Dane B.', 'Goslin, Matthew N.', 'Augerot, Xanthippe']
       )
     end
 

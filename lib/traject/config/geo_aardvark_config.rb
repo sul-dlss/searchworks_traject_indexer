@@ -138,3 +138,33 @@ to_field 'dct_spatial_sm' do |record, accumulator|
 
   accumulator << record.geographic_spatial.value
 end
+
+to_field 'dct_creator_sm' do |record, accumulator|
+  next unless record.creators
+
+  record.creators.each do |creator|
+    accumulator << creator.name.map(&:value)
+  end
+  accumulator.flatten!
+end
+# to_field 'dct_alternative_sm'
+
+# to_field 'dct_publisher_sm'
+# to_field 'dcat_theme_sm'
+# to_field 'dct_temporal_sm'
+# to_field 'gbl_dateRange_drsim'
+# to_field 'gbl_indexYear_im'
+# to_field 'schema_provider_s'
+# to_field 'gbl_resourceClass_sm'
+# to_field 'gbl_fileSize_s'
+# to_field 'locn_geometry'
+# to_field 'dcat_bbox'
+# to_field 'dct_source_sm'
+# to_field 'gbl_georeferenced_b'
+# to_field 'pcdm_memberOf_sm'
+# to_field 'dct_rights_sm'
+# to_field 'dct_license_sm'
+# to_field 'gbl_mdVersion_s'
+# to_field 'gbl_suppressed_b'
+# to_field 'gbl_wxsIdentifier_s'
+# to_field 'dct_references_s'
