@@ -55,6 +55,10 @@ class PublicCocinaRecord
     @event_dates ||= cocina_description.event.find { |event| !event.date.nil? }.date
   end
 
+  def event_contributors
+    @event_contributors ||= cocina_description.event.map { |event| event.contributor if !event.contributor.empty? }.flatten
+  end
+
   def publication_date
     @publication_date ||= event_dates.find { |event_date| event_date.type == 'publication' }
   end
@@ -72,6 +76,10 @@ class PublicCocinaRecord
     @topics ||= cocina_description.subject.select { |subject| subject.type == 'topic' }
   end
 
+  def themes
+    @themes ||= topics.select { |topic| topic.source.code == 'ISO19115TopicCategory' }
+  end
+
   def geographic
     @geographic ||= cocina_description.geographic
   end
@@ -86,5 +94,13 @@ class PublicCocinaRecord
 
   def creators
     @creators ||= contibutors.select { |contributor| contributor.role.find { |role| role.value == 'creator' } }
+  end
+
+  def publishers
+    @publishers ||= event_contributors.select { |contributor| contributor.role.find { |role| role.value == 'publisher' } }
+  end
+
+  def temporal
+    @temporal ||= cocina_description.subject.map { |subject| subject.structuredValue.map(&:value) if subject.type == 'time' }.compact
   end
 end

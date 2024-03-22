@@ -34,7 +34,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
         'dct_subject_sm' => ['Marine habitat conservation', 'Freshwater habitat conservation',
                              'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters'],
         'dct_spatial_sm' => ['North Pacific Ocean'],
-        'dct_creator_sm' => ['Pinsky, Malin L.', 'Springmeyer, Dane B.', 'Goslin, Matthew N.', 'Augerot, Xanthippe']
+        'dct_creator_sm' => ['Pinsky, Malin L.', 'Springmeyer, Dane B.', 'Goslin, Matthew N.', 'Augerot, Xanthippe'],
+        'dct_publisher_sm' => ['Stanford Digital Repository'],
+        'dcat_theme_sm' => ['Environment', 'Oceans', 'Inland Waters'],
+        'dct_temporal_sm' => ['1978', '2005'],
+        'gbl_dateRange_drsim' => ['1978 TO 2005'],
+        'gbl_indexYear_im' => (1978..2005).to_a,
+        'schema_provider_s' => ['Stanford']
       )
     end
 
