@@ -79,4 +79,12 @@ class PublicCocinaRecord
   def geographic_spatial
     @geographic_spatial ||= geographic.find(&:subject).subject.find { |subject| subject.type == 'coverage' }
   end
+
+  def contibutors
+    @contibutors ||= cocina_description.contributor
+  end
+
+  def creators
+    @creators ||= contibutors.select { |contributor| contributor.role.find { |role| role.value == 'creator' } }
+  end
 end
