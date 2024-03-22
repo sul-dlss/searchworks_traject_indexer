@@ -190,10 +190,20 @@ end
 
 to_field 'schema_provider_s', literal('Stanford')
 
+to_field 'gbl_resourceClass_sm' do |record, accumulator|
+  accumulator << 'Maps' if record.map?
+  accumulator << 'Datasets' if record.dataset?
+  accumulator << 'Collections' if record.collection?
+end
+
+to_field 'gbl_fileSize_s' do |record, accumulator|
+  next unless record.extent
+
+  accumulator << record.extent.value
+end
+
 # to_field 'dct_alternative_sm'
 
-# to_field 'gbl_resourceClass_sm'
-# to_field 'gbl_fileSize_s'
 # to_field 'locn_geometry'
 # to_field 'dcat_bbox'
 # to_field 'dct_source_sm'
