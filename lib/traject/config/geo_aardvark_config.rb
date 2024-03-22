@@ -147,14 +147,51 @@ to_field 'dct_creator_sm' do |record, accumulator|
   end
   accumulator.flatten!
 end
+
+to_field 'dct_publisher_sm' do |record, accumulator|
+  next unless record.publishers
+
+  record.publishers.each do |publisher|
+    accumulator << publisher.name.map(&:value)
+  end
+  accumulator.flatten!
+end
+
+to_field 'dcat_theme_sm' do |record, accumulator|
+  next unless record.themes
+
+  record.themes.each do |theme|
+    accumulator << theme.value
+  end
+end
+
+to_field 'dct_temporal_sm' do |record, accumulator|
+  next unless record.temporal
+
+  accumulator.replace(record.temporal.flatten)
+end
+
+to_field 'gbl_dateRange_drsim' do |record, accumulator|
+  next unless record.temporal
+
+  record.temporal.each do |range|
+    accumulator << "#{range.first} TO #{range.last}"
+  end
+end
+
+to_field 'gbl_indexYear_im' do |record, accumulator|
+  next unless record.temporal
+
+  record.temporal.each do |range|
+    accumulator << (range.first.to_i..range.last.to_i).to_a
+  end
+  accumulator.flatten!.uniq
+end
+
+to_field 'schema_provider_s', literal('Stanford')
+
 # to_field 'dct_alternative_sm'
 
-# to_field 'dct_publisher_sm'
-# to_field 'dcat_theme_sm'
-# to_field 'dct_temporal_sm'
-# to_field 'gbl_dateRange_drsim'
-# to_field 'gbl_indexYear_im'
-# to_field 'schema_provider_s'
 # to_field 'gbl_resourceClass_sm'
 # to_field 'gbl_fileSize_s'
 # to_field 'locn_geometry'
