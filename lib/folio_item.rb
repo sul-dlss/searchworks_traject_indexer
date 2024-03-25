@@ -172,7 +172,7 @@ class FolioItem
       holding&.dig('location', 'effectiveLocation')
   end
 
-  # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def build_call_number
     base_call_number ||= @item&.dig('callNumber', 'callNumber') ||
                          @holding&.dig('callNumber') ||
@@ -219,7 +219,7 @@ class FolioItem
 
     CallNumber.new(normalize_call_number(base_call_number), call_number_type, volume_info:, library:)
   end
-  # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   # Call number normalization ported from solrmarc code
   def normalize_call_number(call_number)
