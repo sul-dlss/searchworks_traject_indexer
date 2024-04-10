@@ -1935,8 +1935,8 @@ to_field 'stanford_dept_sim' do |record, accumulator, context|
   accumulator.map!(&method(:trim_punctuation_custom))
   accumulator.map!(&method(:clean_facet_punctuation))
   accumulator.replace(accumulator.map do |value|
-    value = value.gsub('Dept.', 'Department')
-    value = value.gsub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[.{2,}]|[LAE][arn][wtg])\.$/, '\1')
+    value.gsub('Dept.', 'Department')
+      .gsub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[.{2,}]|[LAE][arn][wtg])\.$/, '\1')
   end)
 end
 #
