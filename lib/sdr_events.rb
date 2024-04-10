@@ -17,7 +17,7 @@ class SdrEvents
     end
 
     def enabled?
-      ::Settings.sdr_events.enabled == true
+      ::Settings.sdr_events.enabled
     end
 
     # Item was added/updated in the index
