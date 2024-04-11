@@ -153,7 +153,7 @@ This traject config uses the special setting `SKIP_EMPTY_ITEM_DISPLAY`, which te
 ## Environments
 
 ### SDR
-The indexing machines also have scheduled cron tasks for loading data from purl-fetcher into a kafka topic. This task records a state file (in `./tmp`) that contains the timestamp of the most recent entry from purl-fetcher that was processed. Every minute, the cron task runs, retrieves the purl-fetcher changes since that most recent timestamp, and adds the message to a kafka topic.
+The indexing machines also have processes for loading data from the `purl_fetcher_(stage/prod)` kafka topic.
 
 #### Reporting events
 Indexers for SDR content can report the status of indexing events to [dor-services-app](https://github.com/sul-dlss/dor-services-app) using the [dor-event-client](https://github.com/sul-dlss/dor-event-client) gem. When the feature is enabled and configured in `settings.yml` or via environment variables, the indexer will create events for each record that is indexed, skipped, deleted, etc. These events are visible in the Argo UI and can be used to troubleshoot items released from SDR that are not appearing in search indices.
