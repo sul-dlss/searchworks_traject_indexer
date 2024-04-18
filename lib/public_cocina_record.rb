@@ -56,7 +56,7 @@ class PublicCocinaRecord
   end
 
   def event_contributors
-    @event_contributors ||= cocina_description.event.map { |event| event.contributor if !event.contributor.empty? }.flatten
+    @event_contributors ||= cocina_description.event.map { |event| event.contributor unless event.contributor.empty? }.flatten
   end
 
   def publication_date
@@ -97,7 +97,9 @@ class PublicCocinaRecord
   end
 
   def publishers
-    @publishers ||= event_contributors.select { |contributor| contributor.role.find { |role| role.value == 'publisher' } }
+    @publishers ||= event_contributors.select do |contributor|
+      unless contributor.role.empty? contributor.role.find { |role| role.value == 'publisher' }
+    end
   end
 
   def temporal

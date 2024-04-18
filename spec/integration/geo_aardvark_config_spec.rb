@@ -37,7 +37,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
         'dct_creator_sm' => ['Pinsky, Malin L.', 'Springmeyer, Dane B.', 'Goslin, Matthew N.', 'Augerot, Xanthippe'],
         'dct_publisher_sm' => ['Stanford Digital Repository'],
         'dcat_theme_sm' => ['Environment', 'Oceans', 'Inland Waters'],
-        'dct_temporal_sm' => ['1978', '2005'],
+        'dct_temporal_sm' => %w[1978 2005],
         'gbl_dateRange_drsim' => ['1978 TO 2005'],
         'gbl_indexYear_im' => (1978..2005).to_a,
         'schema_provider_s' => ['Stanford'],
@@ -47,10 +47,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'contains description with abstract and notes' do
       expect(result['dct_description_sm'].first).to start_with 'This dataset is a visualization of abundance estimates ' \
-                                                              'for six species of Pacific salmon (Oncorhynchus spp.): ' \
-                                                              'Chinook, Chum, Pink, Steelhead, Sockeye, and Coho in catchment ' \
-                                                              'areas of the Northern Pacific Ocean, including Canada, China, ' \
-                                                              'Japan, Russia, and the United States.'
+                                                               'for six species of Pacific salmon (Oncorhynchus spp.): ' \
+                                                               'Chinook, Chum, Pink, Steelhead, Sockeye, and Coho in catchment ' \
+                                                               'areas of the Northern Pacific Ocean, including Canada, China, ' \
+                                                               'Japan, Russia, and the United States.'
     end
   end
 
@@ -68,9 +68,9 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'contains description with abstract and notes' do
       expect(result['dct_description_sm'].first).to start_with 'Publication date estimate from dealer description. ' \
-                                                              'Shows views of tourist attractions. Includes distance ' \
-                                                              'chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 ' \
-                                                              'bound with G7964 .K2368 E635 1912Z .I2. Gunma prefecture'
+                                                               'Shows views of tourist attractions. Includes distance ' \
+                                                               'chart in inset. Hand-painted. G7964 .K92 E635 1868Z .J6 ' \
+                                                               'bound with G7964 .K2368 E635 1912Z .I2. Gunma prefecture'
     end
   end
 end

@@ -109,7 +109,7 @@ to_field 'gbl_mdModified_dt' do |record, accumulator|
   accumulator << record.publication_date.value
 end
 
-to_field 'dct_issued_s'do |record, accumulator|
+to_field 'dct_issued_s' do |record, accumulator|
   next unless record.publication_date
 
   accumulator << record.publication_date.value
@@ -203,7 +203,6 @@ to_field 'gbl_fileSize_s' do |record, accumulator|
 end
 
 # to_field 'dct_alternative_sm'
-
 # to_field 'locn_geometry'
 # to_field 'dcat_bbox'
 # to_field 'dct_source_sm'

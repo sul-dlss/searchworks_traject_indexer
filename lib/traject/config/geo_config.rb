@@ -280,7 +280,6 @@ to_field 'dc_format_s' do |record, accumulator, context|
   accumulator << 'JPEG 2000' if %w[image map book].include?(record.dor_content_type)
 end
 
-
 to_field 'dc_language_s', stanford_mods(:sw_language_facet), first_only
 to_field 'dc_subject_sm', stanford_mods(:subject_other_search) do |_record, accumulator|
   accumulator.map! { |val| val&.sub(/[\\,;]$/, '')&.strip }
