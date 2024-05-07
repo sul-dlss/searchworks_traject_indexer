@@ -26,7 +26,10 @@ RSpec.describe Traject::KafkaPurlFetcherReader do
                                                                    druid: 'z', true_targets: ['SomethingElse']
                                                                  }.to_json))
 
-      allow(PurlRecord).to receive(:fetch).and_return('<publicObject />')
+      stub_request(:get, 'https://example.com/x.xml')
+        .to_return(status: 200, body: '<publicObject />')
+      stub_request(:get, 'https://example.com/y.xml')
+        .to_return(status: 200, body: '<publicObject />')
     end
 
     it 'passes the purl url through' do
