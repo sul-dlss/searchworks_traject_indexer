@@ -17,10 +17,6 @@ RSpec.describe 'EarthWorks indexing' do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
   end
 
-  def stub_mods_request(druid, body)
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.mods").to_return(status: 200, body:)
-  end
-
   before do
     stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
   end
@@ -228,7 +224,7 @@ RSpec.describe 'EarthWorks indexing' do
     let(:druid) { 'bk359yt4418' }
 
     before do
-      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
 
     it 'builds a description' do
@@ -240,7 +236,7 @@ RSpec.describe 'EarthWorks indexing' do
     let(:druid) { 'bq589tv8583' }
 
     before do
-      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
 
     it 'has expected fields' do
@@ -293,7 +289,7 @@ RSpec.describe 'EarthWorks indexing' do
     let(:druid) { 'mc977kq8162' }
 
     before do
-      stub_mods_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
     end
 
     it 'builds a solr_geom from coordinate parsing' do

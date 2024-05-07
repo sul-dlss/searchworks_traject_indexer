@@ -16,10 +16,6 @@ RSpec.describe 'SDR indexing' do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
   end
 
-  def stub_mods_request(druid, body)
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.mods").to_return(status: 200, body:)
-  end
-
   context 'with a missing object' do
     let(:druid) { 'abc' }
 
@@ -567,7 +563,6 @@ RSpec.describe 'SDR indexing' do
 
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
-      stub_mods_request(druid, File.read(file_fixture("#{druid}.mods")))
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
 
