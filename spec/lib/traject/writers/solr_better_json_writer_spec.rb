@@ -88,11 +88,11 @@ RSpec.describe Traject::SolrBetterJsonWriter do
       [
         Traject::Indexer::Context.new.tap do |doc|
           doc.output_hash['id'] = [1]
-          doc.source_record = PublicXmlRecord.new('bb112zx3193')
+          doc.source_record = PurlRecord.new('bb112zx3193')
         end,
         Traject::Indexer::Context.new.tap do |doc|
           doc.output_hash['id'] = [2]
-          doc.source_record = PublicXmlRecord.new('py305sy7961')
+          doc.source_record = PurlRecord.new('py305sy7961')
         end
       ]
     end
@@ -146,7 +146,7 @@ RSpec.describe Traject::SolrBetterJsonWriter do
       end
 
       it 'reports docs that are successfully deleted' do
-        skipped_doc.source_record = PublicXmlRecord.new('bj057dg6517')
+        skipped_doc.source_record = PurlRecord.new('bj057dg6517')
         writer.send_batch([skipped_doc])
         expect(SdrEvents).to have_received(:report_indexing_deleted).with('bj057dg6517', target: 'Searchworks')
       end

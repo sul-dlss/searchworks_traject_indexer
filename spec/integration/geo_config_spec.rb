@@ -11,7 +11,7 @@ RSpec.describe 'EarthWorks indexing' do
       i.load_config_file('./lib/traject/config/geo_config.rb')
     end
   end
-  let(:record) { PublicXmlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
+  let(:record) { PurlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
 
   def stub_purl_request(druid, body)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)

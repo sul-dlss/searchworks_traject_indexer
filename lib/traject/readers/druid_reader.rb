@@ -13,7 +13,7 @@ module Traject
       return to_enum(:each) unless block_given?
 
       @input_stream.each_line do |druid|
-        yield PublicXmlRecord.new(druid.strip, purl_url: @settings['purl.url'])
+        yield PurlRecord.new(druid.strip, purl_url: @settings['purl.url'])
       end
     end
   end
