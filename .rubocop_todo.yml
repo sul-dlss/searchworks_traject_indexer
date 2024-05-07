@@ -12,78 +12,78 @@
 # SupportedStyles: symmetrical, new_line, same_line
 Layout/MultilineMethodCallBraceLayout:
   Exclude:
-    - 'spec/lib/traject/config/genre_spec.rb'
+    - "spec/lib/traject/config/genre_spec.rb"
 
 # Offense count: 5
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Lint/AmbiguousBlockAssociation:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/config/sdr_config.rb'
-    - 'spec/integration/compare_against_solrmarc_docs_spec.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/config/sdr_config.rb"
+    - "spec/integration/compare_against_solrmarc_docs_spec.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
   Exclude:
-    - 'lib/traject/readers/folio_reader.rb'
+    - "lib/traject/readers/folio_reader.rb"
 
 # Offense count: 1
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums
 Lint/ConstantDefinitionInBlock:
   Exclude:
-    - 'spec/lib/traject/config/author_spec.rb'
+    - "spec/lib/traject/config/author_spec.rb"
 
 # Offense count: 6
 # Configuration parameters: IgnoreLiteralBranches, IgnoreConstantBranches.
 Lint/DuplicateBranch:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 1
 # Configuration parameters: AllowComments.
 Lint/EmptyWhen:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 4
 Lint/NoReturnInBeginEndBlocks:
   Exclude:
-    - 'lib/marc_links.rb'
+    - "lib/marc_links.rb"
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Lint/RedundantCopDisableDirective:
   Exclude:
-    - 'lib/traject/config/geo_config.rb'
+    - "lib/traject/config/geo_config.rb"
 
 # Offense count: 1
 Lint/ShadowingOuterLocalVariable:
   Exclude:
-    - 'lib/folio_record.rb'
+    - "lib/folio_record.rb"
 
 # Offense count: 1
 # Configuration parameters: AllowComments, AllowNil.
 Lint/SuppressedException:
   Exclude:
-    - 'lib/traject/writers/solr_better_json_writer.rb'
+    - "lib/traject/writers/solr_better_json_writer.rb"
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AutoCorrect, AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
 Lint/UnusedMethodArgument:
   Exclude:
-    - 'lib/traject/common/marc_utils.rb'
+    - "lib/traject/common/marc_utils.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AutoCorrect.
 Lint/UselessAssignment:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 31
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
@@ -129,7 +129,7 @@ Metrics/PerceivedComplexity:
 # Offense count: 1
 Naming/AccessorMethodName:
   Exclude:
-    - 'lib/utils.rb'
+    - "lib/utils.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -137,14 +137,14 @@ Naming/AccessorMethodName:
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional
 Naming/MemoizedInstanceVariableName:
   Exclude:
-    - 'lib/public_xml_record.rb'
+    - "lib/purl_record.rb"
 
 # Offense count: 10
 # Configuration parameters: EnforcedStyle, AllowedIdentifiers, AllowedPatterns.
 # SupportedStyles: snake_case, camelCase
 Naming/VariableName:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 298
 # Configuration parameters: EnforcedStyle, CheckMethodNames, CheckSymbols, AllowedIdentifiers, AllowedPatterns.
@@ -152,8 +152,8 @@ Naming/VariableName:
 # AllowedIdentifiers: capture3, iso8601, rfc1123_date, rfc822, rfc2822, rfc3339, x86_64
 Naming/VariableNumber:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'spec/lib/traject/config/date_spec.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "spec/lib/traject/config/date_spec.rb"
 
 # Offense count: 10
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -161,10 +161,10 @@ Naming/VariableNumber:
 # SupportedStyles: always, conditionals
 Style/AndOr:
   Exclude:
-    - 'lib/marc_links.rb'
-    - 'lib/traject/common/marc_utils.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/writers/solr_better_json_writer.rb'
+    - "lib/marc_links.rb"
+    - "lib/traject/common/marc_utils.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/writers/solr_better_json_writer.rb"
 
 # Offense count: 6
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -172,25 +172,25 @@ Style/AndOr:
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/extractors/folio_kafka_extractor.rb'
-    - 'lib/traject/extractors/marc_kafka_extractor.rb'
-    - 'lib/traject/readers/kafka_folio_reader.rb'
-    - 'lib/traject/readers/kafka_purl_fetcher_reader.rb'
-    - 'lib/traject/writers/solr_better_json_writer.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/extractors/folio_kafka_extractor.rb"
+    - "lib/traject/extractors/marc_kafka_extractor.rb"
+    - "lib/traject/readers/kafka_folio_reader.rb"
+    - "lib/traject/readers/kafka_purl_fetcher_reader.rb"
+    - "lib/traject/writers/solr_better_json_writer.rb"
 
 # Offense count: 8
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/CombinableLoops:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/config/sdr_config.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/config/sdr_config.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ConcatArrayLiterals:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 25
 # Configuration parameters: AllowedConstants.
@@ -201,7 +201,7 @@ Style/Documentation:
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
   Exclude:
-    - 'lib/traject/config/sdr_config.rb'
+    - "lib/traject/config/sdr_config.rb"
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -209,47 +209,47 @@ Style/GlobalVars:
 # AllowedReceivers: Thread.current
 Style/HashEachMethods:
   Exclude:
-    - 'lib/traject/config/sdr_config.rb'
+    - "lib/traject/config/sdr_config.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/HashExcept:
   Exclude:
-    - 'spec/integration/compare_against_solrmarc_docs_spec.rb'
+    - "spec/integration/compare_against_solrmarc_docs_spec.rb"
 
 # Offense count: 1
 # Configuration parameters: MinBranchesCount.
 Style/HashLikeCase:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 19
 # This cop supports safe autocorrection (--autocorrect).
 Style/IfUnlessModifier:
   Exclude:
-    - 'lib/traject/common/marc_utils.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/config/sdr_config.rb'
+    - "lib/traject/common/marc_utils.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/config/sdr_config.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: InverseMethods, InverseBlocks.
 Style/InverseMethods:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 5
 Style/MixinUsage:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/config/sdr_config.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/config/sdr_config.rb"
 
 # Offense count: 19
 Style/MultilineBlockChain:
   Exclude:
-    - 'lib/marc_links.rb'
-    - 'lib/traject/common/marc_utils.rb'
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/marc_links.rb"
+    - "lib/traject/common/marc_utils.rb"
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 6
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -257,8 +257,8 @@ Style/MultilineBlockChain:
 # SupportedStyles: literals, strict
 Style/MutableConstant:
   Exclude:
-    - 'lib/constants.rb'
-    - 'spec/lib/traject/config/author_spec.rb'
+    - "lib/constants.rb"
+    - "spec/lib/traject/config/author_spec.rb"
 
 # Offense count: 10
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -266,38 +266,38 @@ Style/MutableConstant:
 # SupportedStyles: predicate, comparison
 Style/NumericPredicate:
   Exclude:
-    - 'spec/**/*'
-    - 'lib/public_xml_record.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/utils.rb'
+    - "spec/**/*"
+    - "lib/purl_record.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/utils.rb"
 
 # Offense count: 1
 Style/OpenStructUse:
   Exclude:
-    - 'lib/utils.rb'
+    - "lib/utils.rb"
 
 # Offense count: 4
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Methods.
 Style/RedundantArgument:
   Exclude:
-    - 'lib/call_numbers/dewey_shelfkey.rb'
-    - 'lib/call_numbers/shelfkey_base.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/extractors/marc_kafka_extractor.rb'
+    - "lib/call_numbers/dewey_shelfkey.rb"
+    - "lib/call_numbers/shelfkey_base.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/extractors/marc_kafka_extractor.rb"
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/RedundantInterpolation:
   Exclude:
-    - 'config/deploy.rb'
-    - 'lib/public_xml_record.rb'
+    - "config/deploy.rb"
+    - "lib/purl_record.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/RedundantSort:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
+    - "lib/traject/config/folio_config.rb"
 
 # Offense count: 8
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -305,26 +305,26 @@ Style/RedundantSort:
 # AllowedMethods: present?, blank?, presence, try, try!
 Style/SafeNavigation:
   Exclude:
-    - 'lib/marc_links.rb'
-    - 'lib/public_xml_record.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/readers/kafka_purl_fetcher_reader.rb'
+    - "lib/marc_links.rb"
+    - "lib/purl_record.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/readers/kafka_purl_fetcher_reader.rb"
 
 # Offense count: 5
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/SelectByRegexp:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/config/geo_config.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/config/geo_config.rb"
 
 # Offense count: 6
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Mode.
 Style/StringConcatenation:
   Exclude:
-    - 'lib/public_xml_record.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/writers/solr_better_json_writer.rb'
+    - "lib/purl_record.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/writers/solr_better_json_writer.rb"
 
 # Offense count: 13
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -332,16 +332,16 @@ Style/StringConcatenation:
 # AllowedMethods: define_method
 Style/SymbolProc:
   Exclude:
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/traject/config/sdr_config.rb'
-    - 'lib/traject/extractors/marc_kafka_extractor.rb'
-    - 'spec/integration/compare_against_solrmarc_docs_spec.rb'
-    - 'spec/lib/traject/writers/solr_better_json_writer_spec.rb'
+    - "lib/traject/config/folio_config.rb"
+    - "lib/traject/config/sdr_config.rb"
+    - "lib/traject/extractors/marc_kafka_extractor.rb"
+    - "spec/integration/compare_against_solrmarc_docs_spec.rb"
+    - "spec/lib/traject/writers/solr_better_json_writer_spec.rb"
 
 # Offense count: 9
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ZeroLengthPredicate:
   Exclude:
-    - 'lib/public_xml_record.rb'
-    - 'lib/traject/config/folio_config.rb'
-    - 'lib/utils.rb'
+    - "lib/purl_record.rb"
+    - "lib/traject/config/folio_config.rb"
+    - "lib/utils.rb"

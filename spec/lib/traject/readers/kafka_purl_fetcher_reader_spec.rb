@@ -26,19 +26,19 @@ RSpec.describe Traject::KafkaPurlFetcherReader do
                                                                    druid: 'z', true_targets: ['SomethingElse']
                                                                  }.to_json))
 
-      allow(PublicXmlRecord).to receive(:fetch).and_return('<publicObject />')
+      allow(PurlRecord).to receive(:fetch).and_return('<publicObject />')
     end
 
     it 'passes the purl url through' do
-      expect(reader.each.select { |x| x.is_a? PublicXmlRecord }.first.purl_url).to eq 'https://example.com'
+      expect(reader.each.select { |x| x.is_a? PurlRecord }.first.purl_url).to eq 'https://example.com'
     end
 
     it 'returns objects from the purl-fetcher api' do
-      expect(reader.each.select { |x| x.is_a? PublicXmlRecord }.map(&:druid)).to eq %w[x y]
+      expect(reader.each.select { |x| x.is_a? PurlRecord }.map(&:druid)).to eq %w[x y]
     end
 
     it 'returns deletes for objects with a catkey' do
-      expect(reader.each.reject { |x| x.is_a? PublicXmlRecord }.map { |x| x[:id] }).to eq ['deleted']
+      expect(reader.each.reject { |x| x.is_a? PurlRecord }.map { |x| x[:id] }).to eq ['deleted']
     end
   end
 end

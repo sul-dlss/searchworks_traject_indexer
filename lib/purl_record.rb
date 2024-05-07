@@ -6,7 +6,7 @@ require 'active_support/core_ext/module/delegation'
 require 'mods_display'
 require 'dor/rights_auth'
 
-class PublicXmlRecord
+class PurlRecord
   attr_reader :druid, :purl_url
 
   def self.fetch(url)
@@ -163,13 +163,13 @@ class PublicXmlRecord
 
   def collections
     @collections ||= predicate_druids('isMemberOfCollection').map do |druid|
-      PublicXmlRecord.new(druid, purl_url:)
+      PurlRecord.new(druid, purl_url:)
     end
   end
 
   def constituents
     @constituents ||= predicate_druids('isConstituentOf').map do |druid|
-      PublicXmlRecord.new(druid, purl_url:)
+      PurlRecord.new(druid, purl_url:)
     end
   end
 
