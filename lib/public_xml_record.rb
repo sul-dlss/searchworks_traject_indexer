@@ -147,26 +147,7 @@ class PublicXmlRecord
     return if public_xml_doc.nil?
 
     thumb = public_xml_doc.xpath('//thumb')
-    # first try and parse what is in the thumb node of publicXML, but fallback to the first image if needed
-    if thumb.size == 1
-      thumb.first.content
-    elsif thumb.empty? && parse_sw_image_ids.size.positive?
-      parse_sw_image_ids.first
-    end
-  end
-
-  # the druid and id attribute of resource/file and objectId and fileId of the
-  # resource/externalFile elements that match the image, page, or thumb resource type, including extension
-  # Also, prepends the corresponding druid and / specifically for Searchworks use
-  # @return [Array<String>] filenames
-  def parse_sw_image_ids
-    public_xml_doc.xpath('//resource[@type="page" or @type="image" or @type="thumb"]').map do |node|
-      node.xpath('./file[@mimetype="image/jp2"]/@id').map do |x|
-        "#{@druid.gsub('druid:', '')}/" + x
-      end << node.xpath('./externalFile[@mimetype="image/jp2"]').map do |y|
-               "#{y.attributes['objectId'].text.split(':').last}/#{(y.attributes['fileId'])}"
-             end
-    end.flatten
+    thumb.first&.content
   end
 
   # the thumbnail in publicXML properly URI encoded, including the slash separator
