@@ -61,11 +61,7 @@ class PurlRecord
   end
 
   def mods
-    @mods ||= if public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').any?
-                public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
-              else
-                Nokogiri::XML self.class.fetch("#{purl_url}/#{druid}.mods")
-              end
+    @mods ||= public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
   end
 
   def rights
