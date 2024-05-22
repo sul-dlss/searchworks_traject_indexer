@@ -188,6 +188,7 @@ RSpec.describe FolioRecord do
               }
             }
           }],
+          'items' => [],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' },
@@ -229,6 +230,7 @@ RSpec.describe FolioRecord do
               }
             }
           }],
+          'items' => [],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' }
