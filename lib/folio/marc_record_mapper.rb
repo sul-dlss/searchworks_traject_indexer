@@ -2,8 +2,8 @@
 
 module Folio
   class MarcRecordMapper
-    def self.build(stripped_marc_json, holdings, instance)
-      record = MARC::Record.new_from_hash(stripped_marc_json || Folio::MarcRecordInstanceMapper.build(instance, holdings))
+    def self.build(stripped_marc_json, folio_record)
+      record = MARC::Record.new_from_hash(stripped_marc_json || Folio::MarcRecordInstanceMapper.build(folio_record))
 
       record.fields.each do |field|
         next unless field.respond_to? :subfields
@@ -17,7 +17,7 @@ module Folio
 
       # Copy FOLIO Holdings electronic access data to an 856 (used by Lane)
       # overwriting any existing 856 fields (to avoid having to reconcile/merge data)
-      eholdings = holdings.flat_map { |h| h['electronicAccess'] }.compact
+      eholdings = folio_record.holdings.flat_map { |h| h['electronicAccess'] }.compact
 
       if eholdings.any?
         record.fields.delete_if { |field| field.tag == '856' }
@@ -51,10 +51,10 @@ module Folio
       # if 590 with Bound-with related subfields are present, return the record as is
       unless record.fields('590').any? { |f| f['a'] && f['c'] }
         # if 590 or one of its Bound-with related subfields is missing, and FOLIO says this record is Bound-with, append the relevant data from FOLIO
-        holdings.select { |holding| holding['boundWith'].present? }.each do |holding|
+        folio_record.bound_with_holdings.each do |item|
           field590 = MARC::DataField.new('590', ' ', ' ')
-          field590.subfields << MARC::Subfield.new('a', "#{holding['callNumber']} bound with #{holding.dig('boundWith', 'instance', 'title')}")
-          field590.subfields << MARC::Subfield.new('c', "#{holding.dig('boundWith', 'instance', 'hrid')} (parent record)")
+          field590.subfields << MARC::Subfield.new('a', "#{item.holding['callNumber']} bound with #{item.holding.dig('boundWith', 'instance', 'title')}")
+          field590.subfields << MARC::Subfield.new('c', "#{item.holding.dig('boundWith', 'instance', 'hrid')} (parent record)")
           record.append(field590)
         end
       end

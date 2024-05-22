@@ -3,10 +3,12 @@
 module Folio
   # Creates a Marc Record for an Folio instance
   class MarcRecordInstanceMapper
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
-    def self.build(instance, holdings)
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/BlockLength
+    def self.build(folio_record)
       MARC::Record.new.tap do |marc|
-        marc.append(MARC::ControlField.new('001', instance['hrid']))
+        marc.append(MARC::ControlField.new('001', folio_record.hrid))
+
+        instance = folio_record.instance
         # mode of issuance
         # identifiers
         instance['identifiers'].each do |identifier|
@@ -99,7 +101,7 @@ module Folio
           marc.append(MARC::DataField.new('856', '4', ind2, *subfields.to_a))
         end
 
-        holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
+        folio_record.holdings.flat_map { |h| h['electronicAccess'] }.each do |eresource|
           ind2 = case eresource['name']
                  when 'Resource'
                    '0'
@@ -124,12 +126,12 @@ module Folio
         end
 
         # nature of content
-        marc.append(MARC::DataField.new('999', '', '', ['i', instance['id']]))
+        marc.append(MARC::DataField.new('999', '', '', ['i', folio_record.instance_id]))
         # date creaetd
         # date updated
       end.to_hash
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/BlockLength
 
     # The FOLIO data can either be a plain string (pre-Poppy) or a hash (post-Poppy)
     def self.folio_value(folio_data)

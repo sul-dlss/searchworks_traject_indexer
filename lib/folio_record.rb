@@ -41,7 +41,7 @@ class FolioRecord
   # to create parity with the data contained in the Symphony record.
   # @return [MARC::Record]
   def marc_record
-    @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, holdings, instance)
+    @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, self)
   end
 
   def index_items
@@ -147,10 +147,8 @@ class FolioRecord
     holdings.select { |h| h.dig('holdingsType', 'name') == 'Electronic' || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
   end
 
-  private
-
   def item_holdings
-    items.filter_map do |item|
+    @item_holdings ||= items.filter_map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
@@ -168,17 +166,23 @@ class FolioRecord
   # item and child holding, or, if there is no parent item, we generate a stub FolioItem from the original
   # bound-with holding.
   def bound_with_holdings
-    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
+    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.filter_map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
+
+      # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
+      next if parent_item['id'].in? item_holdings.select { |item| item.holding['id'] == holding['id'] }.map(&:id)
 
       FolioItem.new(
         item: parent_item,
         holding:,
         instance:,
-        record: self
+        record: self,
+        bound_with: true
       )
     end
   end
+
+  private
 
   def on_order_holdings
     on_order_holdings = holdings.select do |holding|
@@ -239,7 +243,7 @@ class FolioRecord
   end
 
   def instance_derived_marc_record
-    Folio::MarcRecordInstanceMapper.build(instance, holdings)
+    Folio::MarcRecordInstanceMapper.build(folio_record)
   end
 end
 # rubocop:enable Metrics/ClassLength

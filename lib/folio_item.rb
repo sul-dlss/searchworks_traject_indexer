@@ -32,7 +32,7 @@ class FolioItem
   def initialize(item: nil, holding: nil, instance: nil,
                  course_reserves: [],
                  type: nil, status: nil,
-                 library: nil, record: nil)
+                 library: nil, record: nil, bound_with: false)
     @item = item
     @holding = holding
     @instance = instance
@@ -43,6 +43,7 @@ class FolioItem
     @barcode = @item&.dig('barcode')
     @course_reserves = course_reserves
     @record = record
+    @bound_with = bound_with
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -151,11 +152,13 @@ class FolioItem
   end
 
   def bound_with
+    return unless bound_with?
+
     holding&.dig('boundWith')
   end
 
   def bound_with?
-    bound_with.present?
+    @bound_with && holding&.dig('boundWith').present?
   end
 
   private

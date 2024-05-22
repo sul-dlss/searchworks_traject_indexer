@@ -17,6 +17,8 @@ Style/MultilineIfModifier:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
+    - 'spec/factories/**/*'
+
 Style/RedundantConstantBase:  # new in 1.40
   Enabled: true
   Exclude:

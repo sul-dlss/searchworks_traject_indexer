@@ -1,0 +1,402 @@
+{
+  "pieces": [
+    null
+  ],
+  "instance": {
+    "id": "0bd14032-6811-5361-a55b-14e0bafbbf0f",
+    "hrid": "a290907",
+    "tags": {
+      "tagList": [
+
+      ]
+    },
+    "notes": [
+      {
+        "note": "At head of title: Robert Schumann's compositionen für das pianoforte, kritisch rev., phrasirt und mit fingersatz versehen von Conrad Kühner",
+        "staffOnly": false,
+        "instanceNoteTypeId": "6a2533a7-4de2-4e64-8466-074c2fa9308c"
+      },
+      {
+        "note": "Stanford copy 1 (MUSC): Bound with: Album für die Jugend / Robert Schumann. Leipzig: C.F. Peters, [18--?]",
+        "staffOnly": false,
+        "instanceNoteTypeId": "265c4910-3997-4242-9269-6a4a2e91392b"
+      }
+    ],
+    "title": "Fantasiestücke, op 12.",
+    "series": [
+
+    ],
+    "source": "MARC",
+    "_version": 2,
+    "editions": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-20T16:22:12.308Z",
+      "updatedDate": "2024-05-20T17:14:56.187Z",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedByUserId": "6f1cddbc-69fb-4ea9-8a06-13e809179239"
+    },
+    "statusId": "9634a5ab-9228-4703-baf2-4d12ebc77d56",
+    "subjects": [
+      "Piano music"
+    ],
+    "languages": [
+      "zxx"
+    ],
+    "indexTitle": "Fantasiestücke, op 12.",
+    "identifiers": [
+      {
+        "value": "(Sirsi) ABL9231",
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
+      },
+      {
+        "value": "(CStRLIN)CSUG89-C2632",
+        "identifierTypeId": "7e591197-f335-4afb-bc6d-a6d76ca3bace"
+      },
+      {
+        "value": "(OCoLC-M)4396611",
+        "identifierTypeId": "439bfbae-75bc-4f74-9fc7-b2a2d47ce3ef"
+      },
+      {
+        "value": "(OCoLC-I)272205514",
+        "identifierTypeId": "439bfbae-75bc-4f74-9fc7-b2a2d47ce3ef"
+      }
+    ],
+    "publication": [
+      {
+        "place": "Braunschweig",
+        "publisher": "H. Litolff",
+        "dateOfPublication": "[18--?]"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "Schumann, Robert, 1810-1856",
+        "primary": true,
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a"
+      },
+      {
+        "name": "Kühner, Conrad, 1851-1909",
+        "primary": false,
+        "contributorNameTypeId": "2b94c631-fca9-4892-a730-03ee529ffe2a"
+      }
+    ],
+    "catalogedDate": "1993-12-20",
+    "staffSuppress": false,
+    "instanceTypeId": "30fffe0e-e985-4144-b2e2-1e8179bdb41f",
+    "previouslyHeld": false,
+    "classifications": [
+
+    ],
+    "instanceFormats": [
+
+    ],
+    "electronicAccess": [
+
+    ],
+    "holdingsRecords2": [
+
+    ],
+    "modeOfIssuanceId": "9d18a02f-5897-4c31-9106-c9abb5c7ae8b",
+    "publicationRange": [
+
+    ],
+    "statisticalCodes": [
+
+    ],
+    "alternativeTitles": [
+      {
+        "alternativeTitle": "Fantasiestücke, piano, op. 12",
+        "alternativeTitleTypeId": "30512027-cdc9-4c79-af75-1565b3bd888d"
+      }
+    ],
+    "discoverySuppress": false,
+    "instanceFormatIds": [
+
+    ],
+    "statusUpdatedDate": "2023-08-20T16:22:12.302+0000",
+    "statisticalCodeIds": [
+
+    ],
+    "administrativeNotes": [
+
+    ],
+    "physicalDescriptions": [
+      "39, [1] p. 31 cm."
+    ],
+    "publicationFrequency": [
+
+    ],
+    "suppressFromDiscovery": false,
+    "natureOfContentTermIds": [
+
+    ]
+  },
+  "holdingSummaries": [
+    {
+      "poLineId": null,
+      "orderType": null,
+      "orderStatus": null,
+      "poLineNumber": null,
+      "orderSentDate": null,
+      "orderCloseReason": null,
+      "polReceiptStatus": null
+    }
+  ],
+  "holdings": [
+    {
+      "id": "61a02b20-39db-52a1-879a-34e3be8f0368",
+      "hrid": "ah290907_1",
+      "notes": [
+
+      ],
+      "_version": 2,
+      "metadata": {
+        "createdDate": "2023-08-20T16:25:07.169Z",
+        "updatedDate": "2024-05-20T17:25:22.982Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      },
+      "sourceId": "f32d531e-df79-46b3-8932-cdd35f7a2264",
+      "boundWith": {
+        "item": {
+          "id": "2b9ba8c6-f25c-5ba2-a159-418a0c335703",
+          "hrid": "ai290907_1_1",
+          "status": "Available",
+          "volume": null,
+          "barcode": "36105042167762",
+          "callNumber": {
+            "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+            "callNumber": "M23 .S39 F2D"
+          },
+          "chronology": null,
+          "enumeration": null
+        },
+        "holding": {
+          "effectiveLocationId": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+          "location": {
+            "effectiveLocation": {
+              "id": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+              "code": "MUS-SCORES",
+              "name": "Scores",
+              "campus": {
+                "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                "code": "SUL",
+                "name": "Stanford Libraries"
+              },
+              "details": {
+              },
+              "library": {
+                "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+                "code": "MUSIC",
+                "name": "Music Library"
+              },
+              "isActive": true,
+              "institution": {
+                "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "code": "SU",
+                "name": "Stanford University"
+              }
+            }
+          }
+        },
+        "instance": {
+          "id": "0bd14032-6811-5361-a55b-14e0bafbbf0f",
+          "hrid": "a290907",
+          "title": "Fantasiestücke, op 12."
+        }
+      },
+      "formerIds": [
+
+      ],
+      "illPolicy": null,
+      "callNumber": "M23 .S39 F2D",
+      "instanceId": "0bd14032-6811-5361-a55b-14e0bafbbf0f",
+      "holdingsType": {
+        "id": "dacfaaab-ee77-425a-b34a-7c0140860b6d",
+        "name": "Score",
+        "source": "local"
+      },
+      "holdingsItems": [
+
+      ],
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "holdingsTypeId": "dacfaaab-ee77-425a-b34a-7c0140860b6d",
+      "callNumberTypeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+      "electronicAccess": [
+
+      ],
+      "bareHoldingsItems": [
+
+      ],
+      "holdingsStatements": [
+
+      ],
+      "statisticalCodeIds": [
+
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+      "permanentLocationId": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+      "suppressFromDiscovery": false,
+      "holdingsStatementsForIndexes": [
+
+      ],
+      "holdingsStatementsForSupplements": [
+
+      ],
+      "location": {
+        "effectiveLocation": {
+          "id": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+          "code": "MUS-SCORES",
+          "name": "Scores",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        },
+        "permanentLocation": {
+          "id": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+          "code": "MUS-SCORES",
+          "name": "Scores",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "2b9ba8c6-f25c-5ba2-a159-418a0c335703",
+      "hrid": "ai290907_1_1",
+      "notes": [
+
+      ],
+      "status": "Available",
+      "barcode": "36105042167762",
+      "request": null,
+      "_version": 6,
+      "metadata": {
+        "createdDate": "2023-08-20T16:27:39.792Z",
+        "updatedDate": "2024-05-20T17:38:32.403Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "6f1cddbc-69fb-4ea9-8a06-13e809179239"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "M23 .S39 F2D"
+      },
+      "copyNumber": "1",
+      "lastCheckIn": {
+        "dateTime": "2024-05-20T17:38:32.119+00:00",
+        "staffMemberId": "6f1cddbc-69fb-4ea9-8a06-13e809179239",
+        "servicePointId": "4d77d74b-271e-421a-91c6-992afa9afb3c"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "score",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "8cea2cd7-6a61-494e-a602-17045da7e3cb",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "61a02b20-39db-52a1-879a-34e3be8f0368",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+        "e6f1059b-4ab2-4bb2-adcb-af66acb6f4fa"
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "M 223 S39 F2 D 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "M23 .S39 F2D"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+          "code": "MUS-SCORES",
+          "name": "Scores",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      },
+      "courses": [
+
+      ]
+    }
+  ]
+}

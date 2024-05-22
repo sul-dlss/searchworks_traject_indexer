@@ -188,6 +188,7 @@ RSpec.describe FolioRecord do
               }
             }
           }],
+          'items' => [],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' },
@@ -229,6 +230,7 @@ RSpec.describe FolioRecord do
               }
             }
           }],
+          'items' => [],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' }
@@ -343,6 +345,14 @@ RSpec.describe FolioRecord do
         it 'adds SEE-OTHER as the display_location' do
           skip('Unclear whether we need to preserve this behavior in FOLIO')
           expect(index_items.first.display_location_code).to eq('SEE-OTHER')
+        end
+      end
+
+      context 'for a bound-with principal' do
+        let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_principal.json'))), client) }
+
+        it 'includes the bound-with principal only once' do
+          expect(index_items).to contain_exactly(have_attributes(id: '2b9ba8c6-f25c-5ba2-a159-418a0c335703'))
         end
       end
 
