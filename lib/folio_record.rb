@@ -178,7 +178,8 @@ class FolioRecord
         item: parent_item,
         holding:,
         instance:,
-        record: self
+        record: self,
+        bound_with: true
       )
     end
   end

@@ -159,8 +159,8 @@ RSpec.describe 'Browse nearby' do
 
     let(:index_items) do
       [
-        build(:dewey_holding, call_number: '630.654 .I39M', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => '630.654 .I39M V.5:NO.5')),
-        build(:dewey_holding, call_number: '630.654 .I39M', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => '630.654 .I39M V.5:NO.6'))
+        build(:dewey_holding, bound_with: true, call_number: '630.654 .I39M', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => '630.654 .I39M V.5:NO.5')),
+        build(:dewey_holding, bound_with: true, call_number: '630.654 .I39M', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => '630.654 .I39M V.5:NO.6'))
       ]
     end
 
@@ -193,7 +193,7 @@ RSpec.describe 'Browse nearby' do
 
     let(:index_items) do
       [
-        build(:dewey_holding, call_number: 'AB1234', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => 'QA987 V.5:NO.5'))
+        build(:dewey_holding, bound_with: true, call_number: 'AB1234', enumeration: 'V.5:NO.1', holding: holding.merge('callNumber' => 'QA987 V.5:NO.5'))
       ]
     end
 
