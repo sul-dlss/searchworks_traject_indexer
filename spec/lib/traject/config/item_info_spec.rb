@@ -221,6 +221,12 @@ RSpec.describe 'ItemInfo config' do
 
       context 'with holdings' do
         let(:holdings) { [build(:lc_holding, :bound_with)] }
+
+        before do
+          allow(folio_record).to receive(:item_holdings).and_return([])
+          allow(folio_record).to receive(:bound_with_holdings).and_return(holdings)
+        end
+
         it 'contains a bound_with parent' do
           expect(value).to match_array([
                                          hash_including('bound_with' => {

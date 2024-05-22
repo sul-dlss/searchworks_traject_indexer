@@ -147,8 +147,6 @@ class FolioRecord
     holdings.select { |h| h.dig('holdingsType', 'name') == 'Electronic' || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
   end
 
-  private
-
   def item_holdings
     @item_holdings ||= items.filter_map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
@@ -172,7 +170,7 @@ class FolioRecord
       parent_item = holding.dig('boundWith', 'item') || {}
 
       # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
-      next if parent_item['id'].in? item_holdings.map(&:id)
+      next if parent_item['id'].in? item_holdings.select { |item| item.holding['id'] == holding['id'] }.map(&:id)
 
       FolioItem.new(
         item: parent_item,
@@ -183,6 +181,8 @@ class FolioRecord
       )
     end
   end
+
+  private
 
   def on_order_holdings
     on_order_holdings = holdings.select do |holding|
