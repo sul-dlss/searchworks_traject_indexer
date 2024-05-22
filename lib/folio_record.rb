@@ -41,7 +41,7 @@ class FolioRecord
   # to create parity with the data contained in the Symphony record.
   # @return [MARC::Record]
   def marc_record
-    @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, holdings, instance)
+    @marc_record ||= Folio::MarcRecordMapper.build(stripped_marc_json, self)
   end
 
   def index_items
@@ -242,7 +242,7 @@ class FolioRecord
   end
 
   def instance_derived_marc_record
-    Folio::MarcRecordInstanceMapper.build(instance, holdings)
+    Folio::MarcRecordInstanceMapper.build(folio_record)
   end
 end
 # rubocop:enable Metrics/ClassLength
