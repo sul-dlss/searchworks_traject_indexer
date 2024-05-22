@@ -150,7 +150,7 @@ class FolioRecord
   private
 
   def item_holdings
-    items.filter_map do |item|
+    @item_holdings ||= items.filter_map do |item|
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
@@ -168,8 +168,11 @@ class FolioRecord
   # item and child holding, or, if there is no parent item, we generate a stub FolioItem from the original
   # bound-with holding.
   def bound_with_holdings
-    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.map do |holding|
+    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.filter_map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
+
+      # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
+      next if parent_item['id'].in? item_holdings.map(&:id)
 
       FolioItem.new(
         item: parent_item,

@@ -346,6 +346,14 @@ RSpec.describe FolioRecord do
         end
       end
 
+      context 'for a bound-with principal' do
+        let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_principal.json'))), client) }
+
+        it 'includes the bound-with principal only once' do
+          expect(index_items).to contain_exactly(have_attributes(id: '2b9ba8c6-f25c-5ba2-a159-418a0c335703'))
+        end
+      end
+
       context 'with Symphony migrated data without the right linkages between the bound-with holding and item' do
         let(:record) do
           {
