@@ -22,6 +22,12 @@ class Traject::KafkaPurlFetcherReader
       else
         change = JSON.parse(message.value)
         record = PurlRecord.new(change['druid'].sub('druid:', ''), purl_url: @settings['purl.url'])
+        Utils.logger.debug("change: #{change.inspect}")
+        Utils.logger.debug("target: #{target}")
+        Utils.logger.debug("target match? #{target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))}")
+        Utils.logger.debug("delete? #{should_be_deleted?(change, record)}")
+        Utils.logger.debug("catkey? #{(change['catkey'].presence || record.catkey)}")
+        Utils.logger.debug("public_xml? #{record.public_xml?}")
         if should_be_deleted?(change, record)
           yield({ id: message.key, delete: true })
         elsif target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))

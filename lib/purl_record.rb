@@ -11,6 +11,7 @@ class PurlRecord
 
   def self.fetch(url)
     response = HTTP.get(url)
+    Utils.logger.debug("purl response: #{response.inspect}; #{Time.now.iso8601(3)}")
     response.body if response.status.ok?
   end
 
