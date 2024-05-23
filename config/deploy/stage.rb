@@ -29,6 +29,7 @@ set :indexers, [
       'kafka.consumer_group_id' => 'earthworks-stage-indexer',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-stage',
       'purl.url' => 'https://sul-purl-stage.stanford.edu',
+      'purl_fetcher.target' => 'Earthworks',
       'stacks.url' => 'https://sul-stacks-stage.stanford.edu',
       'geoserver.pub_url' => 'https://earthworks-geoserver-stage-b.stanford.edu/geoserver',
       'geoserver.stan_url' => 'https://earthworks-geoserver-stage-a.stanford.edu/geoserver'
