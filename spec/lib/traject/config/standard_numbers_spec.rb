@@ -19,6 +19,7 @@ RSpec.describe 'Standard Numbers' do
     it 'has the right data' do
       expect(select_by_id('035withOCoLC-M')[field]).to eq(['656729'])
       expect(select_by_id('035withOCoLC-MnoParens')[field]).not_to eq(['656729'])
+      expect(select_by_id('035withOCoLC-M-on')[field]).to eq(['656729'])
 
       # doc should have oclc from good 035 and none from bad 035s
       expect(select_by_id('Mult035onlyOneGood')[field]).to eq(['656729'])

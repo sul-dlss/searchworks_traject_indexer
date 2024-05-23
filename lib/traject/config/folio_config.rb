@@ -902,9 +902,9 @@ to_field 'oclc' do |record, accumulator|
   marc035_without_m_suffix = []
   Traject::MarcExtractor.new('035a', separator: nil).extract(record).map do |data|
     if data.start_with?('(OCoLC-M)')
-      marc035_with_m_suffix << data.sub(/^\(OCoLC-M\)\s*/, '')
+      marc035_with_m_suffix << data.sub(/^\(OCoLC-M\)\s*(ocm|ocn|on)?\s*/, '')
     elsif data.start_with?('(OCoLC)')
-      marc035_without_m_suffix << data.sub(/^\(OCoLC\)\s*/, '')
+      marc035_without_m_suffix << data.sub(/^\(OCoLC\)\s*(ocm|ocn|on)?\s*/, '')
     end
   end.flatten.compact.uniq
 
