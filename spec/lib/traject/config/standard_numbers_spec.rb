@@ -58,7 +58,7 @@ RSpec.describe 'Standard Numbers' do
     let(:fixture_name) { 'isbnTests.jsonl' }
     let(:field) { 'isbn_display' }
 
-    it 'has the correct data' do #
+    it 'has the correct data' do
       # no isbn
       expect(select_by_id('No020')[field]).to be_nil
       expect(select_by_id('020noSubaOrz')[field]).to be_nil
