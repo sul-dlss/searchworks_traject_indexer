@@ -1,0 +1,52 @@
+# Map values coming from cocina to DCAT "theme" values
+# Related ISO 19115 topic categories are also mapped
+# See: https://opengeometadata.org/ogm-aardvark/#theme
+
+# 1:1 mapping
+Agriculture: Agriculture
+Biology: Biology
+Boundaries: Boundaries
+Climate: Climate
+Economy: Economy
+Elevation: Elevation
+Environment: Environment
+Events: Events
+Geology: Geology
+Health: Health
+Imagery: Imagery
+Inland Waters: Inland Waters
+Land Cover: Land Cover
+Location: Location
+Military: Military
+Oceans: Oceans
+Property: Property
+Society: Society
+Structure: Structure
+Transportation: Transportation
+Utilities: Utilities
+
+# ISO 19115 topic categories mapping
+farming: Agriculture
+biota: Biology
+boundaries: Boundaries
+climatologyMeteorologyAtmosphere:
+  - Events
+  - Climate
+economy: Economy
+elevation: Elevation
+environment: Environment
+geoscientificInformation: Geology
+health: Health
+imageryBaseMapsEarthCover:
+  - Imagery
+  - Land Cover
+location: Location
+intelligenceMilitary: Military
+oceans: Oceans
+planningCadastre: Property
+society:
+  - Events
+  - Society
+structure: Structure
+transportation: Transportation
+utilitiesCommunication: Utilities

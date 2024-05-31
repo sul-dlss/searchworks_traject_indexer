@@ -1,0 +1,30 @@
+# Map values coming from cocina to OpenGeoMetadata "resource class" values
+# See: https://opengeometadata.org/ogm-aardvark/#resource-class-values
+
+## description -> form (type=genre)
+
+map: Maps
+Dataset: Datasets
+
+## description -> form (type=form)
+
+# GeoTIFFs are rasters (dataset + map)
+GeoTIFF:
+  - Datasets
+  - Maps
+
+# Anything with 'dataset' is a dataset
+Dataset#Polygon: Datasets
+Dataset#Point: Datasets
+Dataset#Line: Datasets
+Dataset#Mixed: Datasets
+Dataset#LineString: Datasets
+"Dataset#": Datasets
+
+# Rasters are both datasets and maps
+Raster:
+  - Datasets
+  - Maps
+Dataset#Raster:
+  - Datasets
+  - Maps

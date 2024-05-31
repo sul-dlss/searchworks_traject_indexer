@@ -1,0 +1,1201 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/geo",
+  "externalIdentifier": "druid:vv853br8653",
+  "label": "Watersheds of the Pacific Salmon Conservation Assessment Study Area, 1950-2005",
+  "version": 11,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.",
+    "license": "https://creativecommons.org/licenses/by-nc/3.0/legalcode"
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:zw306xn5593",
+    "releaseTags": [
+      {
+        "who": "blalbrit",
+        "what": "self",
+        "date": "2016-03-30T19:21:28.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Pinsky, Malin L.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": {
+              "code": "marcrelator",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      },
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Springmeyer, Dane B.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": {
+              "code": "marcrelator",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      },
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Goslin, Matthew N.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": {
+              "code": "marcrelator",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      },
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Augerot, Xanthippe",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": {
+              "code": "marcrelator",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2009",
+            "type": "publication",
+            "status": "primary",
+            "encoding": {
+              "code": "w3cdtf",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "1978",
+                "type": "start",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "2005",
+                "type": "end",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "validity",
+            "encoding": {
+              "code": "w3cdtf",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Stanford Digital Repository",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "organization",
+            "role": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "publisher",
+                "code": "pbl",
+                "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                "identifier": [],
+                "source": {
+                  "code": "marcrelator",
+                  "uri": "http://id.loc.gov/vocabulary/relators/",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          }
+        ],
+        "location": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Stanford, California, US",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geospatial data",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026297",
+        "identifier": [],
+        "source": {
+          "code": "lcgft",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic dataset",
+        "type": "genre",
+        "uri": "http://rdvocab.info/termList/RDAContentType/1001",
+        "identifier": [],
+        "source": {
+          "code": "rdacontent",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": {
+          "value": "MODS resource types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "software, multimedia",
+        "type": "resource type",
+        "identifier": [],
+        "source": {
+          "value": "MODS resource types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Shapefile",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "7.793",
+        "type": "extent",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "born digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": {
+          "value": "MODS digital origin terms",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Scale not given.",
+        "type": "map scale",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4267",
+        "type": "map projection",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4326",
+        "type": "map projection",
+        "uri": "http://opengis.net/def/crs/EPSG/0/4326",
+        "identifier": [],
+        "source": {
+          "code": "EPSG",
+          "note": []
+        },
+        "displayLabel": "WGS84",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "application/x-esri-shapefile",
+            "type": "media type",
+            "identifier": [],
+            "source": {
+              "value": "IANA media type terms",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Shapefile",
+            "type": "data format",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dataset#Polygon",
+            "type": "type",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-180.0",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "24.23126",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "180.0",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "73.990866",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": {
+              "code": "EPSG:4326",
+              "note": []
+            },
+            "encoding": {
+              "value": "decimal",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "North Pacific Ocean",
+            "type": "coverage",
+            "uri": "http://sws.geonames.org/4030875/about.rdf",
+            "identifier": [],
+            "note": [],
+            "valueLanguage": {
+              "code": "eng",
+              "note": []
+            },
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": {
+          "code": "iso639-2b",
+          "note": []
+        },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This dataset is a visualization of abundance estimates for six species of Pacific salmon (Oncorhynchus spp.): Chinook, Chum, Pink, Steelhead, Sockeye, and Coho in catchment areas of the Northern Pacific Ocean, including Canada, China, Japan, Russia, and the United States. Catchment polygons included in this layer range in dates from 1978 to 2008. Sources dating from 1950 to 2005, including published literature and agency reports were consulted in order to create these data. In addition to abundance estimates, the PCSA database includes information on distribution, diversity, run-timings, land cover/land-use, dams, hatcheries, data sources, drainages, and administrative categories and provides a consistent format for comparing watersheds across the range of wild Pacific salmon.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Abstract",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "The Conservation Science team at the Wild Salmon Center has created a geographic database, the Pacific Salmon Conservation Assessment (PSCA) that covers the whole range of wild Pacific Salmon. By providing estimations of salmon abundance and diversity, these data can provide opportunities to conduct range-wide analysis for conservation planning, prioritizing, and assessments.  The primary goal in developing the PSCA database is to guide proactive international salmon conservation.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Purpose",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Pinsky, M.L., Springmeyer, D.B., Goslin, M.N., Augerot, X (2009). Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008. Stanford Digital Repository. Available at: http://purl.stanford.edu/vv853br8653",
+        "identifier": [],
+        "displayLabel": "Preferred citation",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Based upon expert opinion and validation with the literature, the PSCA database accurately represents broad, range-wide patterns of salmon abundance and diversity.  Much of the data, particularly in the Russian Far East, is based upon modeling. The database offers a geo-referenced watershed dataset and twenty tables that all join on a common primary key attribute.",
+        "identifier": [],
+        "displayLabel": "Supplemental information",
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This layer is presented in the WGS84 coordinate system for web display purposes. Downloadable data are provided in native coordinate system or projection.",
+        "identifier": [],
+        "displayLabel": "WGS84 Cartographics",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Marine habitat conservation",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Freshwater habitat conservation",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Pacific salmon",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Conservation",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Watersheds",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "North Pacific Ocean",
+        "type": "place",
+        "uri": "http://sws.geonames.org/4030875/",
+        "identifier": [],
+        "source": {
+          "code": "geonames",
+          "uri": "http://www.geonames.org/ontology#",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1978",
+            "type": "start",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2005",
+            "type": "end",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "type": "time",
+        "encoding": {
+          "code": "w3cdtf",
+          "note": []
+        },
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Environment",
+        "type": "topic",
+        "uri": "environment",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Oceans",
+        "type": "topic",
+        "uri": "oceans",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Inland Waters",
+        "type": "topic",
+        "uri": "inlandWaters",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "W 180°--E 180°/N 73°59ʹ27ʺ--N 24°13ʹ53ʺ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "relatedResource": [
+      {
+        "type": "referenced by",
+        "title": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Range-Wide Selection of Catchments for Pacific Salmon Conservation",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Pinsky, Malin L.",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "person",
+            "role": [],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          },
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Springmeyer, Dane B.",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "person",
+            "role": [],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          },
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Goslin, Matthew N.",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "person",
+            "role": [],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          },
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Augerot, Xanthippe",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "person",
+            "role": [],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          }
+        ],
+        "event": [
+          {
+            "structuredValue": [],
+            "date": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "2009",
+                "type": "publication",
+                "encoding": {
+                  "code": "w3cdtf",
+                  "note": []
+                },
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "contributor": [],
+            "location": [],
+            "identifier": [],
+            "note": [],
+            "parallelEvent": []
+          }
+        ],
+        "form": [],
+        "language": [],
+        "note": [],
+        "identifier": [],
+        "subject": [],
+        "access": {
+          "url": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "http://onlinelibrary.wiley.com/doi/10.1111/j.1523-1739.2008.01156.x/full",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "physicalLocation": [],
+          "digitalLocation": [],
+          "accessContact": [],
+          "digitalRepository": [],
+          "note": []
+        },
+        "relatedResource": []
+      },
+      {
+        "title": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "\n      Data Supplement for \"Range-wide selection of catchments for Pacific salmon conservation.\"\n      ",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "event": [],
+        "form": [],
+        "language": [],
+        "note": [],
+        "identifier": [],
+        "subject": [],
+        "purl": "https://purl.stanford.edu/zc193vn8689",
+        "relatedResource": []
+      }
+    ],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "Stanford",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "role": [],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": {
+            "code": "iso639-2b",
+            "note": []
+          },
+          "structuredValue": []
+        }
+      ],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "This record was translated from ISO 19139 to MODS v.3 using an xsl transformation.",
+          "type": "record origin",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "metadataStandard": [],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "edu.stanford.purl:vv853br8653",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/vv853br8653"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "branner:Pinsky2009"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/vv853br8653-vv853br8653_1",
+        "label": "Data",
+        "version": 11,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/vv853br8653-vv853br8653_1/data.zip",
+              "label": "data.zip",
+              "filename": "data.zip",
+              "size": 6506889,
+              "version": 11,
+              "hasMimeType": "application/zip",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "31a19eed00a929e56c91e6a4804d3014aa6df34f"
+                },
+                {
+                  "type": "md5",
+                  "digest": "d409ad7996d20caab95836efbac6284c"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/vv853br8653-vv853br8653_1/data_EPSG_4326.zip",
+              "label": "data_EPSG_4326.zip",
+              "filename": "data_EPSG_4326.zip",
+              "size": 6039278,
+              "version": 11,
+              "hasMimeType": "application/zip",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "c90c7982c19fdfa527e20f454696006170939cec"
+                },
+                {
+                  "type": "md5",
+                  "digest": "db98f5ba3544e0a9b0bfc01df16ba611"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/preview",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/vv853br8653-vv853br8653_2",
+        "label": "Preview",
+        "version": 11,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/vv853br8653-vv853br8653_2/preview.jpg",
+              "label": "preview.jpg",
+              "filename": "preview.jpg",
+              "size": 273966,
+              "version": 11,
+              "hasMimeType": "image/jpeg",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "92a50fbdccf4f26d276d19a6eb5a0525d3f2913d"
+                },
+                {
+                  "type": "md5",
+                  "digest": "76a64336848f9d5b0a8d841e0b43e5e6"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              },
+              "presentation": {
+                "height": 785,
+                "width": 1024
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": []
+  },
+  "geographic": {
+    "iso19139": "\u003crdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\u003e\n              \u003crdf:Description rdf:about=\"http://purl.stanford.edu/vv853br8653\"\u003e\n                \u003cMD_Metadata xmlns=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xmlns:gts=\"http://www.isotc211.org/2005/gts\" xmlns:srv=\"http://www.isotc211.org/2005/srv\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\u003e\n  \u003cfileIdentifier\u003e\n    \u003cgco:CharacterString\u003eedu.stanford.purl:vv853br8653\u003c/gco:CharacterString\u003e\n  \u003c/fileIdentifier\u003e\n  \u003clanguage\u003e\n    \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n  \u003c/language\u003e\n  \u003ccharacterSet\u003e\n    \u003cMD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"\u003eutf8\u003c/MD_CharacterSetCode\u003e\n  \u003c/characterSet\u003e\n  \u003cparentIdentifier\u003e\n    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/zc193vn8689.mods\u003c/gco:CharacterString\u003e\n  \u003c/parentIdentifier\u003e\n  \u003chierarchyLevel\u003e\n    \u003cMD_ScopeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode\" codeListValue=\"dataset\" codeSpace=\"ISOTC211/19115\"\u003edataset\u003c/MD_ScopeCode\u003e\n  \u003c/hierarchyLevel\u003e\n  \u003chierarchyLevelName\u003e\n    \u003cgco:CharacterString\u003edataset\u003c/gco:CharacterString\u003e\n  \u003c/hierarchyLevelName\u003e\n  \u003ccontact\u003e\n    \u003cCI_ResponsibleParty\u003e\n      \u003corganisationName\u003e\n        \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n      \u003c/organisationName\u003e\n      \u003ccontactInfo\u003e\n        \u003cCI_Contact\u003e\n          \u003cphone\u003e\n            \u003cCI_Telephone\u003e\n              \u003cvoice\u003e\n                \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n              \u003c/voice\u003e\n            \u003c/CI_Telephone\u003e\n          \u003c/phone\u003e\n          \u003caddress\u003e\n            \u003cCI_Address\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003eMitchell Bldg. 2nd floor\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003e397 Panama Mall\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003ccity\u003e\n                \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n              \u003c/city\u003e\n              \u003cadministrativeArea\u003e\n                \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n              \u003c/administrativeArea\u003e\n              \u003cpostalCode\u003e\n                \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n              \u003c/postalCode\u003e\n              \u003ccountry\u003e\n                \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n              \u003c/country\u003e\n              \u003celectronicMailAddress\u003e\n                \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n              \u003c/electronicMailAddress\u003e\n            \u003c/CI_Address\u003e\n          \u003c/address\u003e\n        \u003c/CI_Contact\u003e\n      \u003c/contactInfo\u003e\n      \u003crole\u003e\n        \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n      \u003c/role\u003e\n    \u003c/CI_ResponsibleParty\u003e\n  \u003c/contact\u003e\n  \u003cdateStamp\u003e\n    \u003cgco:Date\u003e2015-02-18\u003c/gco:Date\u003e\n  \u003c/dateStamp\u003e\n  \u003cmetadataStandardName\u003e\n    \u003cgco:CharacterString\u003eISO 19139 Geographic Information - Metadata - Implementation Specification\u003c/gco:CharacterString\u003e\n  \u003c/metadataStandardName\u003e\n  \u003cmetadataStandardVersion\u003e\n    \u003cgco:CharacterString\u003e2007\u003c/gco:CharacterString\u003e\n  \u003c/metadataStandardVersion\u003e\n  \u003cdataSetURI\u003e\n    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/vv853br8653\u003c/gco:CharacterString\u003e\n  \u003c/dataSetURI\u003e\n  \u003cspatialRepresentationInfo\u003e\n    \u003cMD_VectorSpatialRepresentation\u003e\n      \u003ctopologyLevel\u003e\n        \u003cMD_TopologyLevelCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopologyLevelCode\" codeListValue=\"geometryOnly\" codeSpace=\"ISOTC211/19115\"\u003egeometryOnly\u003c/MD_TopologyLevelCode\u003e\n      \u003c/topologyLevel\u003e\n      \u003cgeometricObjects\u003e\n        \u003cMD_GeometricObjects\u003e\n          \u003cgeometricObjectType\u003e\n            \u003cMD_GeometricObjectTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode\" codeListValue=\"composite\" codeSpace=\"ISOTC211/19115\"\u003ecomposite\u003c/MD_GeometricObjectTypeCode\u003e\n          \u003c/geometricObjectType\u003e\n          \u003cgeometricObjectCount\u003e\n            \u003cgco:Integer\u003e1420\u003c/gco:Integer\u003e\n          \u003c/geometricObjectCount\u003e\n        \u003c/MD_GeometricObjects\u003e\n      \u003c/geometricObjects\u003e\n    \u003c/MD_VectorSpatialRepresentation\u003e\n  \u003c/spatialRepresentationInfo\u003e\n  \u003creferenceSystemInfo\u003e\n    \u003cMD_ReferenceSystem\u003e\n      \u003creferenceSystemIdentifier\u003e\n        \u003cRS_Identifier\u003e\n          \u003ccode\u003e\n            \u003cgco:CharacterString\u003e4267\u003c/gco:CharacterString\u003e\n          \u003c/code\u003e\n          \u003ccodeSpace\u003e\n            \u003cgco:CharacterString\u003eEPSG\u003c/gco:CharacterString\u003e\n          \u003c/codeSpace\u003e\n          \u003cversion\u003e\n            \u003cgco:CharacterString\u003e2.4.0\u003c/gco:CharacterString\u003e\n          \u003c/version\u003e\n        \u003c/RS_Identifier\u003e\n      \u003c/referenceSystemIdentifier\u003e\n    \u003c/MD_ReferenceSystem\u003e\n  \u003c/referenceSystemInfo\u003e\n  \u003cidentificationInfo\u003e\n    \u003cMD_DataIdentification\u003e\n      \u003ccitation\u003e\n        \u003cCI_Citation\u003e\n          \u003ctitle\u003e\n            \u003cgco:CharacterString\u003eAbundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008\u003c/gco:CharacterString\u003e\n          \u003c/title\u003e\n          \u003cdate\u003e\n            \u003cCI_Date\u003e\n              \u003cdate\u003e\n                \u003cgco:Date\u003e2009-01-01\u003c/gco:Date\u003e\n              \u003c/date\u003e\n              \u003cdateType\u003e\n                \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n              \u003c/dateType\u003e\n            \u003c/CI_Date\u003e\n          \u003c/date\u003e\n          \u003cidentifier\u003e\n            \u003cMD_Identifier\u003e\n              \u003ccode\u003e\n                \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/vv853br8653\u003c/gco:CharacterString\u003e\n              \u003c/code\u003e\n            \u003c/MD_Identifier\u003e\n          \u003c/identifier\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eSpringmeyer, Dane B.\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eGoslin, Matthew N.\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eAugerot, Xanthippe\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eStanford Digital Repository\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003ccountry\u003e\n                        \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                      \u003c/country\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"publisher\" codeSpace=\"ISOTC211/19115\"\u003epublisher\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003cpresentationForm\u003e\n            \u003cCI_PresentationFormCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode\" codeListValue=\"mapDigital\" codeSpace=\"ISOTC211/19115\"\u003emapDigital\u003c/CI_PresentationFormCode\u003e\n          \u003c/presentationForm\u003e\n          \u003cotherCitationDetails\u003e\n            \u003cgco:CharacterString\u003eThis dataset is a visualization created by Darren Hardy, Stanford University Libraries.\u003c/gco:CharacterString\u003e\n          \u003c/otherCitationDetails\u003e\n        \u003c/CI_Citation\u003e\n      \u003c/citation\u003e\n      \u003cabstract\u003e\n        \u003cgco:CharacterString\u003eThis dataset is a visualization of abundance estimates for six species of Pacific salmon (Oncorhynchus spp.): Chinook, Chum, Pink, Steelhead, Sockeye, and Coho in catchment areas of the Northern Pacific Ocean, including Canada, China, Japan, Russia, and the United States. Catchment polygons included in this layer range in dates from 1978 to 2008. Sources dating from 1950 to 2005, including published literature and agency reports were consulted in order to create these data. In addition to abundance estimates, the PCSA database includes information on distribution, diversity, run-timings, land cover/land-use, dams, hatcheries, data sources, drainages, and administrative categories and provides a consistent format for comparing watersheds across the range of wild Pacific salmon.\u003c/gco:CharacterString\u003e\n      \u003c/abstract\u003e\n      \u003cpurpose\u003e\n        \u003cgco:CharacterString\u003eThe Conservation Science team at the Wild Salmon Center has created a geographic database, the Pacific Salmon Conservation Assessment (PSCA) that covers the whole range of wild Pacific Salmon. By providing estimations of salmon abundance and diversity, these data can provide opportunities to conduct range-wide analysis for conservation planning, prioritizing, and assessments.  The primary goal in developing the PSCA database is to guide proactive international salmon conservation.\u003c/gco:CharacterString\u003e\n      \u003c/purpose\u003e\n      \u003ccredit\u003e\n        \u003cgco:CharacterString\u003ePinsky, M.L., Springmeyer, D.B., Goslin, M.N., Augerot, X (2009). Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008. Stanford Digital Repository.\u003c/gco:CharacterString\u003e\n      \u003c/credit\u003e\n      \u003cstatus\u003e\n        \u003cMD_ProgressCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode\" codeListValue=\"completed\" codeSpace=\"ISOTC211/19115\"\u003ecompleted\u003c/MD_ProgressCode\u003e\n      \u003c/status\u003e\n      \u003cpointOfContact\u003e\n        \u003cCI_ResponsibleParty\u003e\n          \u003cindividualName\u003e\n            \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n          \u003c/individualName\u003e\n          \u003ccontactInfo\u003e\n            \u003cCI_Contact\u003e\n              \u003caddress\u003e\n                \u003cCI_Address\u003e\n                  \u003celectronicMailAddress\u003e\n                    \u003cgco:CharacterString\u003emalin.pinsky@gmail.com\u003c/gco:CharacterString\u003e\n                  \u003c/electronicMailAddress\u003e\n                \u003c/CI_Address\u003e\n              \u003c/address\u003e\n            \u003c/CI_Contact\u003e\n          \u003c/contactInfo\u003e\n          \u003crole\u003e\n            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n          \u003c/role\u003e\n        \u003c/CI_ResponsibleParty\u003e\n      \u003c/pointOfContact\u003e\n      \u003cresourceMaintenance\u003e\n        \u003cMD_MaintenanceInformation\u003e\n          \u003cmaintenanceAndUpdateFrequency\u003e\n            \u003cMD_MaintenanceFrequencyCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode\" codeListValue=\"notPlanned\" codeSpace=\"ISOTC211/19115\"\u003enotPlanned\u003c/MD_MaintenanceFrequencyCode\u003e\n          \u003c/maintenanceAndUpdateFrequency\u003e\n        \u003c/MD_MaintenanceInformation\u003e\n      \u003c/resourceMaintenance\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eNorth Pacific Ocean\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"place\" codeSpace=\"ISOTC211/19115\"\u003eplace\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n          \u003cthesaurusName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003egeonames\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate\u003e\n                \u003cCI_Date\u003e\n                  \u003cdate\u003e\n                    \u003cgco:Date\u003e2012-11-01\u003c/gco:Date\u003e\n                  \u003c/date\u003e\n                  \u003cdateType\u003e\n                    \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"revision\" codeSpace=\"ISOTC211/19115\"\u003erevision\u003c/CI_DateTypeCode\u003e\n                  \u003c/dateType\u003e\n                \u003c/CI_Date\u003e\n              \u003c/date\u003e\n              \u003cedition\u003e\n                \u003cgco:CharacterString\u003e3.1\u003c/gco:CharacterString\u003e\n              \u003c/edition\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://www.geonames.org/ontology#\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/thesaurusName\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003e1978-2005\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"temporal\" codeSpace=\"ISOTC211/19115\"\u003etemporal\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eMarine habitat conservation\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eFreshwater habitat conservation\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003ePacific salmon\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eConservation\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eWatersheds\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"theme\" codeSpace=\"ISOTC211/19115\"\u003etheme\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n          \u003cthesaurusName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003elcsh\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate\u003e\n                \u003cCI_Date\u003e\n                  \u003cdate\u003e\n                    \u003cgco:Date\u003e2011-04-26\u003c/gco:Date\u003e\n                  \u003c/date\u003e\n                  \u003cdateType\u003e\n                    \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"revision\" codeSpace=\"ISOTC211/19115\"\u003erevision\u003c/CI_DateTypeCode\u003e\n                  \u003c/dateType\u003e\n                \u003c/CI_Date\u003e\n              \u003c/date\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://id.loc.gov/authorities/subjects.html\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/thesaurusName\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eDownloadable Data\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003cthesaurusName uuidref=\"723f6998-058e-11dc-8314-0800200c9a66\"/\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cresourceConstraints\u003e\n        \u003cMD_LegalConstraints\u003e\n          \u003cuseLimitation\u003e\n            \u003cgco:CharacterString\u003eThis work is licensed under an Open Data Commons Public Domain Dedication and License (PDDL) http://opendatacommons.org/licenses/pddl\u003c/gco:CharacterString\u003e\n          \u003c/useLimitation\u003e\n          \u003caccessConstraints\u003e\n            \u003cMD_RestrictionCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode\" codeListValue=\"license\" codeSpace=\"ISOTC211/19115\"\u003elicense\u003c/MD_RestrictionCode\u003e\n          \u003c/accessConstraints\u003e\n          \u003cuseConstraints\u003e\n            \u003cMD_RestrictionCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode\" codeListValue=\"license\" codeSpace=\"ISOTC211/19115\"\u003elicense\u003c/MD_RestrictionCode\u003e\n          \u003c/useConstraints\u003e\n        \u003c/MD_LegalConstraints\u003e\n      \u003c/resourceConstraints\u003e\n      \u003caggregationInfo\u003e\n        \u003cMD_AggregateInformation\u003e\n          \u003caggregateDataSetName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003eData Supplement for \"Range-wide selection of catchments for Pacific Salmon Conservation\"\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate\u003e\n                \u003cCI_Date\u003e\n                  \u003cdate\u003e\n                    \u003cgco:Date\u003e2009-01-01\u003c/gco:Date\u003e\n                  \u003c/date\u003e\n                  \u003cdateType\u003e\n                    \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n                  \u003c/dateType\u003e\n                \u003c/CI_Date\u003e\n              \u003c/date\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/zc193vn8689\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eSpringmeyer, Dane B.\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eGoslin, Matthew N.\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eAugerot, Xanthippe\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003cotherCitationDetails\u003e\n                \u003cgco:CharacterString\u003eThis supplement contains the Watersheds shapefile (HYDRO1K) and the 2008 Abundance database (.csv) as well as other data sources related to the PCSA project.\u003c/gco:CharacterString\u003e\n              \u003c/otherCitationDetails\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/aggregateDataSetName\u003e\n          \u003cassociationType\u003e\n            \u003cDS_AssociationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_AssociationTypeCode\" codeListValue=\"largerWorkCitation\" codeSpace=\"ISOTC211/19115\"\u003elargerWorkCitation\u003c/DS_AssociationTypeCode\u003e\n          \u003c/associationType\u003e\n          \u003cinitiativeType\u003e\n            \u003cDS_InitiativeTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_InitiativeTypeCode\" codeListValue=\"collection\" codeSpace=\"ISOTC211/19115\"\u003ecollection\u003c/DS_InitiativeTypeCode\u003e\n          \u003c/initiativeType\u003e\n        \u003c/MD_AggregateInformation\u003e\n      \u003c/aggregationInfo\u003e\n      \u003caggregationInfo\u003e\n        \u003cMD_AggregateInformation\u003e\n          \u003caggregateDataSetName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003eRange-Wide Selection of Catchments for Pacific Salmon Conservation\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate\u003e\n                \u003cCI_Date\u003e\n                  \u003cdate\u003e\n                    \u003cgco:Date\u003e2009-02-10\u003c/gco:Date\u003e\n                  \u003c/date\u003e\n                  \u003cdateType\u003e\n                    \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n                  \u003c/dateType\u003e\n                \u003c/CI_Date\u003e\n              \u003c/date\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://onlinelibrary.wiley.com/doi/10.1111/j.1523-1739.2008.01156.x/full\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eSpringmeyer, Dane B.\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eGoslin, Matthew N.\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003ccitedResponsibleParty\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eAugerot, Xanthippe\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/citedResponsibleParty\u003e\n              \u003cpresentationForm\u003e\n                \u003cCI_PresentationFormCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode\" codeListValue=\"documentDigital\" codeSpace=\"ISOTC211/19115\"\u003edocumentDigital\u003c/CI_PresentationFormCode\u003e\n              \u003c/presentationForm\u003e\n              \u003cotherCitationDetails\u003e\n                \u003cgco:CharacterString\u003ePINSKY, M. L., SPRINGMEYER, D. B., GOSLIN, M. N. and AUGEROT, X. (2009), Range-Wide Selection of Catchments for Pacific Salmon Conservation. Conservation Biology, 23: 680\u0026#x2013;691. doi: 10.1111/j.1523-1739.2008.01156.x\u003c/gco:CharacterString\u003e\n              \u003c/otherCitationDetails\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/aggregateDataSetName\u003e\n          \u003cassociationType\u003e\n            \u003cDS_AssociationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_AssociationTypeCode\" codeListValue=\"crossReference\" codeSpace=\"ISOTC211/19115\"\u003ecrossReference\u003c/DS_AssociationTypeCode\u003e\n          \u003c/associationType\u003e\n        \u003c/MD_AggregateInformation\u003e\n      \u003c/aggregationInfo\u003e\n      \u003cspatialRepresentationType\u003e\n        \u003cMD_SpatialRepresentationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode\" codeListValue=\"vector\" codeSpace=\"ISOTC211/19115\"\u003evector\u003c/MD_SpatialRepresentationTypeCode\u003e\n      \u003c/spatialRepresentationType\u003e\n      \u003clanguage\u003e\n        \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n      \u003c/language\u003e\n      \u003ccharacterSet\u003e\n        \u003cMD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"\u003eutf8\u003c/MD_CharacterSetCode\u003e\n      \u003c/characterSet\u003e\n      \u003ctopicCategory\u003e\n        \u003cMD_TopicCategoryCode\u003eenvironment\u003c/MD_TopicCategoryCode\u003e\n      \u003c/topicCategory\u003e\n      \u003ctopicCategory\u003e\n        \u003cMD_TopicCategoryCode\u003eoceans\u003c/MD_TopicCategoryCode\u003e\n      \u003c/topicCategory\u003e\n      \u003ctopicCategory\u003e\n        \u003cMD_TopicCategoryCode\u003einlandWaters\u003c/MD_TopicCategoryCode\u003e\n      \u003c/topicCategory\u003e\n      \u003cenvironmentDescription\u003e\n        \u003cgco:CharacterString\u003eMicrosoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.2.2.3552\u003c/gco:CharacterString\u003e\n      \u003c/environmentDescription\u003e\n      \u003cextent\u003e\n        \u003cEX_Extent\u003e\n          \u003cdescription\u003e\n            \u003cgco:CharacterString\u003eground condition\u003c/gco:CharacterString\u003e\n          \u003c/description\u003e\n          \u003ctemporalElement\u003e\n            \u003cEX_TemporalExtent\u003e\n              \u003cextent\u003e\n                \u003cgml:TimePeriod gml:id=\"idm6288\"\u003e\n                  \u003cgml:beginPosition\u003e1978-01-01T00:00:00\u003c/gml:beginPosition\u003e\n                  \u003cgml:endPosition\u003e2005-12-31T00:00:00\u003c/gml:endPosition\u003e\n                \u003c/gml:TimePeriod\u003e\n              \u003c/extent\u003e\n            \u003c/EX_TemporalExtent\u003e\n          \u003c/temporalElement\u003e\n        \u003c/EX_Extent\u003e\n      \u003c/extent\u003e\n      \u003cextent\u003e\n        \u003cEX_Extent\u003e\n          \u003cgeographicElement\u003e\n            \u003cEX_GeographicBoundingBox\u003e\n              \u003cextentTypeCode\u003e\n                \u003cgco:Boolean\u003etrue\u003c/gco:Boolean\u003e\n              \u003c/extentTypeCode\u003e\n              \u003cwestBoundLongitude\u003e\n                \u003cgco:Decimal\u003e-180\u003c/gco:Decimal\u003e\n              \u003c/westBoundLongitude\u003e\n              \u003ceastBoundLongitude\u003e\n                \u003cgco:Decimal\u003e180\u003c/gco:Decimal\u003e\n              \u003c/eastBoundLongitude\u003e\n              \u003csouthBoundLatitude\u003e\n                \u003cgco:Decimal\u003e24.23126\u003c/gco:Decimal\u003e\n              \u003c/southBoundLatitude\u003e\n              \u003cnorthBoundLatitude\u003e\n                \u003cgco:Decimal\u003e73.990866\u003c/gco:Decimal\u003e\n              \u003c/northBoundLatitude\u003e\n            \u003c/EX_GeographicBoundingBox\u003e\n          \u003c/geographicElement\u003e\n        \u003c/EX_Extent\u003e\n      \u003c/extent\u003e\n      \u003csupplementalInformation\u003e\n        \u003cgco:CharacterString\u003eBased upon expert opinion and validation with the literature, the PSCA database accurately represents broad, range-wide patterns of salmon abundance and diversity.  Much of the data, particularly in the Russian Far East, is based upon modeling. The database offers a geo-referenced watershed dataset and twenty tables that all join on a common primary key attribute.\u003c/gco:CharacterString\u003e\n      \u003c/supplementalInformation\u003e\n    \u003c/MD_DataIdentification\u003e\n  \u003c/identificationInfo\u003e\n  \u003ccontentInfo\u003e\n    \u003cMD_FeatureCatalogueDescription\u003e\n      \u003ccomplianceCode\u003e\n        \u003cgco:Boolean\u003efalse\u003c/gco:Boolean\u003e\n      \u003c/complianceCode\u003e\n      \u003clanguage\u003e\n        \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n      \u003c/language\u003e\n      \u003cincludedWithDataset\u003e\n        \u003cgco:Boolean\u003etrue\u003c/gco:Boolean\u003e\n      \u003c/includedWithDataset\u003e\n      \u003cfeatureCatalogueCitation\u003e\n        \u003cCI_Citation\u003e\n          \u003ctitle\u003e\n            \u003cgco:CharacterString\u003eFeature Catalog for Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008\u003c/gco:CharacterString\u003e\n          \u003c/title\u003e\n          \u003cdate\u003e\n            \u003cCI_Date\u003e\n              \u003cdate\u003e\n                \u003cgco:Date\u003e2009-01-01\u003c/gco:Date\u003e\n              \u003c/date\u003e\n              \u003cdateType\u003e\n                \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n              \u003c/dateType\u003e\n            \u003c/CI_Date\u003e\n          \u003c/date\u003e\n          \u003cidentifier\u003e\n            \u003cMD_Identifier\u003e\n              \u003ccode\u003e\n                \u003cgco:CharacterString\u003e3e03e3dd-0254-463b-b90c-deab57eaa1ab\u003c/gco:CharacterString\u003e\n              \u003c/code\u003e\n            \u003c/MD_Identifier\u003e\n          \u003c/identifier\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eSpringmeyer, Dane B.\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eGoslin, Matthew N.\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eAugerot, Xanthippe\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n        \u003c/CI_Citation\u003e\n      \u003c/featureCatalogueCitation\u003e\n    \u003c/MD_FeatureCatalogueDescription\u003e\n  \u003c/contentInfo\u003e\n  \u003cdistributionInfo\u003e\n    \u003cMD_Distribution\u003e\n      \u003cdistributionFormat\u003e\n        \u003cMD_Format\u003e\n          \u003cname\u003e\n            \u003cgco:CharacterString\u003eShapefile\u003c/gco:CharacterString\u003e\n          \u003c/name\u003e\n          \u003cversion gco:nilReason=\"missing\"/\u003e\n        \u003c/MD_Format\u003e\n      \u003c/distributionFormat\u003e\n      \u003cdistributor\u003e\n        \u003cMD_Distributor\u003e\n          \u003cdistributorContact\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eMitchell Bldg. 2nd floor\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e397 Panama Mall\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003ccountry\u003e\n                        \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                      \u003c/country\u003e\n                      \u003celectronicMailAddress\u003e\n                        \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n                      \u003c/electronicMailAddress\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"distributor\" codeSpace=\"ISOTC211/19115\"\u003edistributor\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/distributorContact\u003e\n        \u003c/MD_Distributor\u003e\n      \u003c/distributor\u003e\n      \u003ctransferOptions\u003e\n        \u003cMD_DigitalTransferOptions\u003e\n          \u003ctransferSize\u003e\n            \u003cgco:Real\u003e7.793\u003c/gco:Real\u003e\n          \u003c/transferSize\u003e\n          \u003conLine\u003e\n            \u003cCI_OnlineResource\u003e\n              \u003clinkage\u003e\n                \u003cURL\u003ehttp://purl.stanford.edu/vv853br8653\u003c/URL\u003e\n              \u003c/linkage\u003e\n              \u003cprotocol\u003e\n                \u003cgco:CharacterString\u003ehttp\u003c/gco:CharacterString\u003e\n              \u003c/protocol\u003e\n              \u003cname\u003e\n                \u003cgco:CharacterString\u003ePSCA_study_area_PAKM2.shp\u003c/gco:CharacterString\u003e\n              \u003c/name\u003e\n              \u003cfunction\u003e\n                \u003cCI_OnLineFunctionCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode\" codeListValue=\"download\" codeSpace=\"ISOTC211/19115\"\u003edownload\u003c/CI_OnLineFunctionCode\u003e\n              \u003c/function\u003e\n            \u003c/CI_OnlineResource\u003e\n          \u003c/onLine\u003e\n        \u003c/MD_DigitalTransferOptions\u003e\n      \u003c/transferOptions\u003e\n    \u003c/MD_Distribution\u003e\n  \u003c/distributionInfo\u003e\n  \u003cdataQualityInfo\u003e\n    \u003cDQ_DataQuality\u003e\n      \u003cscope\u003e\n        \u003cDQ_Scope\u003e\n          \u003clevel\u003e\n            \u003cMD_ScopeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode\" codeListValue=\"dataset\" codeSpace=\"ISOTC211/19115\"\u003edataset\u003c/MD_ScopeCode\u003e\n          \u003c/level\u003e\n        \u003c/DQ_Scope\u003e\n      \u003c/scope\u003e\n      \u003clineage\u003e\n        \u003cLI_Lineage\u003e\n          \u003cstatement\u003e\n            \u003cgco:CharacterString\u003eA Watersheds shapefile (derived from the HYDRO1k world dataset) and the 2008 Abundance database (.csv) were joined in order to create this visualization. \u003c/gco:CharacterString\u003e\n          \u003c/statement\u003e\n          \u003cprocessStep\u003e\n            \u003cLI_ProcessStep\u003e\n              \u003cdescription\u003e\n                \u003cgco:CharacterString\u003eTo generate the abundance visulaization, the CatchmentID in the Abundance database was linked to NLEVEL5 in the Watersheds shapefile. The data were then visualized as a clorpleth map using a different color to represent each  salmon species.\u003c/gco:CharacterString\u003e\n              \u003c/description\u003e\n              \u003cdateTime\u003e\n                \u003cgco:DateTime\u003e2014-01-31T00:00:00\u003c/gco:DateTime\u003e\n              \u003c/dateTime\u003e\n              \u003cprocessor\u003e\n                \u003cCI_ResponsibleParty\u003e\n                  \u003cindividualName\u003e\n                    \u003cgco:CharacterString\u003eHardy, Darren\u003c/gco:CharacterString\u003e\n                  \u003c/individualName\u003e\n                  \u003crole\u003e\n                    \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"processor\" codeSpace=\"ISOTC211/19115\"\u003eprocessor\u003c/CI_RoleCode\u003e\n                  \u003c/role\u003e\n                \u003c/CI_ResponsibleParty\u003e\n              \u003c/processor\u003e\n              \u003csource\u003e\n                \u003cLI_Source\u003e\n                  \u003cdescription\u003e\n                    \u003cgco:CharacterString\u003eThe Watersheds PCSA layer was derived form the HYDRO1K Drainage Basins dataset which is based on a one-kilometer resolution Digital Elevation Model (DEM). Modifications were made to the original HYDRO 1k dataset to create the watersheds feature class. Data sources ranging from 1950-2005, including published literature and agency reports were consulted in order to create these data. This dataset includes catchments of the Northern Pacific across Canada, China, Japan, Russia, and the United States.\u003c/gco:CharacterString\u003e\n                  \u003c/description\u003e\n                  \u003csourceCitation\u003e\n                    \u003cCI_Citation\u003e\n                      \u003ctitle\u003e\n                        \u003cgco:CharacterString\u003eWatersheds of the Pacific Salmon Conservation Assessment Study Area\u003c/gco:CharacterString\u003e\n                      \u003c/title\u003e\n                      \u003cdate\u003e\n                        \u003cCI_Date\u003e\n                          \u003cdate\u003e\n                            \u003cgco:Date\u003e2009-01-01\u003c/gco:Date\u003e\n                          \u003c/date\u003e\n                          \u003cdateType\u003e\n                            \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n                          \u003c/dateType\u003e\n                        \u003c/CI_Date\u003e\n                      \u003c/date\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003eAugerot, Xanthippe\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003eSpringmeyer, Dane B.\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003eGoslin, Matthew N.\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                    \u003c/CI_Citation\u003e\n                  \u003c/sourceCitation\u003e\n                \u003c/LI_Source\u003e\n              \u003c/source\u003e\n              \u003csource\u003e\n                \u003cLI_Source\u003e\n                  \u003cdescription\u003e\n                    \u003cgco:CharacterString\u003eAbundance Database (.csv) published in 2008\u003c/gco:CharacterString\u003e\n                  \u003c/description\u003e\n                  \u003csourceCitation\u003e\n                    \u003cCI_Citation\u003e\n                      \u003ctitle\u003e\n                        \u003cgco:CharacterString\u003eAbundance Database of the Pacific Salmon Conservation Assessment\u003c/gco:CharacterString\u003e\n                      \u003c/title\u003e\n                      \u003cdate\u003e\n                        \u003cCI_Date\u003e\n                          \u003cdate\u003e\n                            \u003cgco:Date\u003e2009-01-01\u003c/gco:Date\u003e\n                          \u003c/date\u003e\n                          \u003cdateType\u003e\n                            \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n                          \u003c/dateType\u003e\n                        \u003c/CI_Date\u003e\n                      \u003c/date\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003eAugerot, Xanthippe\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003eSpringmeyer, Dane B.\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003ccitedResponsibleParty\u003e\n                        \u003cCI_ResponsibleParty\u003e\n                          \u003cindividualName\u003e\n                            \u003cgco:CharacterString\u003eGoslin, Matthew N.\u003c/gco:CharacterString\u003e\n                          \u003c/individualName\u003e\n                          \u003crole\u003e\n                            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n                          \u003c/role\u003e\n                        \u003c/CI_ResponsibleParty\u003e\n                      \u003c/citedResponsibleParty\u003e\n                      \u003cotherCitationDetails\u003e\n                        \u003cgco:CharacterString\u003eThis database was linked with the Watersheds shapefile in order to create the results layer.\u003c/gco:CharacterString\u003e\n                      \u003c/otherCitationDetails\u003e\n                    \u003c/CI_Citation\u003e\n                  \u003c/sourceCitation\u003e\n                \u003c/LI_Source\u003e\n              \u003c/source\u003e\n            \u003c/LI_ProcessStep\u003e\n          \u003c/processStep\u003e\n        \u003c/LI_Lineage\u003e\n      \u003c/lineage\u003e\n    \u003c/DQ_DataQuality\u003e\n  \u003c/dataQualityInfo\u003e\n\u003c/MD_Metadata\u003e\n              \u003c/rdf:Description\u003e\n              \u003crdf:Description rdf:about=\"http://purl.stanford.edu/vv853br8653\"\u003e\n                \u003cgfc:FC_FeatureCatalogue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xmlns:gfc=\"http://www.isotc211.org/2005/gfc\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gmx=\"http://www.isotc211.org/2005/gmx\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.isotc211.org/2005/gfc\" xsi:schemaLocation=\"http://www.isotc211.org/2005/gfc http://www.isotc211.org/2005/gfc/gfc.xsd\" uuid=\"3e03e3dd-0254-463b-b90c-deab57eaa1ab\"\u003e\n  \u003cgmx:name\u003e\n    \u003cgco:CharacterString\u003eFeature Catalog for Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008\u003c/gco:CharacterString\u003e\n  \u003c/gmx:name\u003e\n  \u003cgmx:scope\u003e\n    \u003cgco:CharacterString\u003eMarine habitat conservation; Freshwater habitat conservation; Pacific salmon; Conservation; Watersheds\u003c/gco:CharacterString\u003e\n  \u003c/gmx:scope\u003e\n  \u003cgmx:versionNumber gco:nilReason=\"unknown\"/\u003e\n  \u003cgmx:versionDate\u003e\n    \u003cgco:Date\u003e2009\u003c/gco:Date\u003e\n  \u003c/gmx:versionDate\u003e\n  \u003cgmx:language\u003e\n    \u003cgco:CharacterString\u003eeng; US\u003c/gco:CharacterString\u003e\n  \u003c/gmx:language\u003e\n  \u003cgmx:characterSet\u003e\n    \u003cgmd:MD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"/\u003e\n  \u003c/gmx:characterSet\u003e\n  \u003cgfc:producer\u003e\n    \u003cgmd:CI_ResponsibleParty\u003e\n      \u003cgmd:individualName\u003e\n        \u003cgco:CharacterString\u003ePinsky, Malin L.\u003c/gco:CharacterString\u003e\n      \u003c/gmd:individualName\u003e\n      \u003cgmd:role\u003e\n        \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"006\"/\u003e\n      \u003c/gmd:role\u003e\n    \u003c/gmd:CI_ResponsibleParty\u003e\n  \u003c/gfc:producer\u003e\n  \u003cgfc:featureType\u003e\n    \u003cgfc:FC_FeatureType\u003e\n      \u003cgfc:typeName\u003e\n        \u003cgco:LocalName\u003ePSCA_study_area_PAKM2\u003c/gco:LocalName\u003e\n      \u003c/gfc:typeName\u003e\n      \u003cgfc:definition\u003e\n        \u003cgco:CharacterString\u003eWatersheds Study Area\u003c/gco:CharacterString\u003e\n      \u003c/gfc:definition\u003e\n      \u003cgfc:isAbstract\u003e\n        \u003cgco:Boolean\u003efalse\u003c/gco:Boolean\u003e\n      \u003c/gfc:isAbstract\u003e\n      \u003cgfc:featureCatalogue uuidref=\"3e03e3dd-0254-463b-b90c-deab57eaa1ab\"/\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eOBJECTID_1\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eInternal feature number.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eESRI\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eESRI\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eInteger\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eShape\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eFeature geometry.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eESRI\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eESRI\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eGeometry\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eNLEVEL5\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eID for each Watershed\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eCONS_UNIT\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eWild Salmon Center Conservation Unit name\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinksy\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinksy\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eFID\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eInternal feature number.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eESRI\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eESRI\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eOID\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSTUDAREA\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003e1 if in the study area, 0 otherwise\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eInteger\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eAREAKM\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eWatershed area in square kilometers\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eNAME\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eName of the watershed.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eLAMAZI_KM\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eWatershed area in square km, calculated using Lambert Azimuthal Equal Area projection.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eNAME2\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eAlternative watershed name.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eLAT\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eWatershed latitude\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eLONG\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eWatershed longitude\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003ePA_KM2\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eArea of watershed covered by protected areas (as defined by the World Database on Protected Areas)\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003ePAI_IV_KM2\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eArea of watershed covered by Class IV protected areas\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eCountry\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eCountry in which the watershed is found\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eContinent\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eContinent on which the watershed is found\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eName3\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eSecond alternative watershed name\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eDrainName\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eName of the drainage basin in which this watershed is found (basin that drains to the ocean)\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eTransNat\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003e1 if the watershed crossed national boundaries, 0 otherwise\n\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eM. Pinsky\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eSmallInteger\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n    \u003c/gfc:FC_FeatureType\u003e\n  \u003c/gfc:featureType\u003e\n\u003c/gfc:FC_FeatureCatalogue\u003e\n              \u003c/rdf:Description\u003e\n            \u003c/rdf:RDF\u003e"
+  },
+  "created": "2014-02-03T18:33:02.000+00:00",
+  "modified": "2022-09-28T21:48:32.000+00:00",
+  "lock": "druid:vv853br8653=0"
+}

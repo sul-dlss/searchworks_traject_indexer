@@ -1,0 +1,760 @@
+{
+  "cocinaVersion": "0.96.0",
+  "type": "https://cocina.sul.stanford.edu/models/geo",
+  "externalIdentifier": "druid:fk339wc1276",
+  "label": "Stanford Temperature Model 4km",
+  "version": 4,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.",
+    "license": "https://creativecommons.org/licenses/by/3.0/legalcode"
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:bc198wr8388",
+    "releaseTags": [
+      {
+        "who": "kdurante",
+        "what": "collection",
+        "date": "2024-02-21T16:13:44.000+00:00",
+        "to": "Earthworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Stanford Temperature Model 4km",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Aljubran, Mohammad J.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": { "code": "marcrelator", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      },
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Horne, Roland N.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": { "code": "marcrelator", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2024",
+            "type": "publication",
+            "status": "primary",
+            "encoding": { "code": "w3cdtf", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "location": [],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geospatial data",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026297",
+        "identifier": [],
+        "source": { "code": "lcgft", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic dataset",
+        "type": "genre",
+        "uri": "http://rdvocab.info/termList/RDAContentType/1001",
+        "identifier": [],
+        "source": { "code": "rdacontent", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "software, multimedia",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "born digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": { "value": "MODS digital origin terms", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Dataset",
+        "type": "genre",
+        "identifier": [],
+        "source": { "value": "local", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "GeoJSON",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4326",
+        "type": "map projection",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "91.2 MB",
+        "type": "extent",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "application/geo+json",
+            "type": "media type",
+            "identifier": [],
+            "source": { "value": "IANA media type terms", "note": [] },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "GeoJSON",
+            "type": "data format",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dataset#Point",
+            "type": "type",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-124.74059",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "24.543573",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-66.972373",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "49.369703",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": { "code": "EPSG:4326", "note": [] },
+            "encoding": { "value": "decimal", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": { "code": "ISO639-2", "note": [] },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This is a temperature-at-depth model for the conterminous Untied States, at 0 kilometers. It involves multiple physical quantities, such as bottomhole temperature, depth and spatial coordinates, heat flow, thermal conductivity, elevation, sediment thickness, magnetic anomaly, gravity anomaly, and gamma-ray flux of radioactive elements.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Abstract",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "https://doi.org/10.25740/fk339wc1276",
+        "identifier": [],
+        "source": { "code": "doi", "note": [] },
+        "displayLabel": "DOI",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "United States",
+        "type": "place",
+        "uri": "http://sws.geonames.org/6252001/",
+        "identifier": [],
+        "source": {
+          "code": "geonames",
+          "uri": "http://www.geonames.org/ontology#",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Temperature",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Climatology, Meteorology and Atmosphere",
+        "type": "topic",
+        "uri": "climatologyMeteorologyAtmosphere",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "2024",
+        "type": "time",
+        "encoding": { "code": "w3cdtf", "note": [] },
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "E 0°--E 0°/N 0°--N 0°",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [],
+      "digitalLocation": [],
+      "accessContact": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "aljubrmj@stanford.edu",
+          "type": "email",
+          "identifier": [],
+          "displayLabel": "Contact",
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalRepository": [],
+      "note": []
+    },
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "Stanford",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "role": [],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [
+        {
+          "structuredValue": [],
+          "type": "creation",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "2024-01-17",
+              "encoding": { "code": "w3cdtf", "note": [] },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        },
+        {
+          "structuredValue": [],
+          "type": "modification",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "2024-01-17",
+              "encoding": { "code": "w3cdtf", "note": [] },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        },
+        {
+          "structuredValue": [],
+          "type": "modification",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "2024-01-17",
+              "encoding": { "code": "w3cdtf", "note": [] },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        }
+      ],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": { "code": "ISO639-2", "note": [] },
+          "structuredValue": []
+        }
+      ],
+      "note": [],
+      "metadataStandard": [],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "edu.stanford.purl:qp917dm2243",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/fk339wc1276"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "branner:Stanford_Temperature_Model_4km.geojson"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "fk339wc1276_1",
+        "label": "Data",
+        "version": 4,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/cde1d011-afae-41df-ba28-aa56fa9eaa5e",
+              "label": "Stanford_Temperature_Model_4km.geojson",
+              "filename": "Stanford_Temperature_Model_4km.geojson",
+              "size": 177158316,
+              "version": 4,
+              "hasMimeType": "application/geo+json",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "a3ebbf79cc53b6b8eaf59f4bc92e2066c26b5389"
+                },
+                { "type": "md5", "digest": "61893747513dc5630744b75bc4873c06" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/preview",
+        "externalIdentifier": "fk339wc1276_2",
+        "label": "Preview",
+        "version": 4,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/235fa1c2-5836-4759-9ea0-a82468793ea7",
+              "label": "preview.jpg",
+              "filename": "preview.jpg",
+              "size": 10727,
+              "version": 4,
+              "hasMimeType": "image/jpeg",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "1c4cbe7f79cd5c7957caea65dd9c771a8e7a407f"
+                },
+                { "type": "md5", "digest": "b7b235ed4c6486eb0bc599abd77b8c60" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              },
+              "presentation": { "height": 480, "width": 640 }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "fk339wc1276_3",
+        "label": "Metadata",
+        "version": 4,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/77d474c1-65c0-4008-92a9-56e9b7690386",
+              "label": "Stanford_Temperature_Model_4km.geojson.xml",
+              "filename": "Stanford_Temperature_Model_4km.geojson.xml",
+              "size": 28879,
+              "version": 4,
+              "hasMimeType": "application/xml",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "e68a441138c27c0fba9583143fe80d76035e7974"
+                },
+                { "type": "md5", "digest": "cc40b5e3192a0d35f29bac5d1f84a681" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/ed7a493c-b843-4d5a-ab25-6c7ebfda578c",
+              "label": "Stanford_Temperature_Model_4km-iso19139.xml",
+              "filename": "Stanford_Temperature_Model_4km-iso19139.xml",
+              "size": 21480,
+              "version": 4,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "e52f8c8931cf480b69523f1e5293ea4b079d2c36"
+                },
+                { "type": "md5", "digest": "dada6272f1a78fc551a7f318dbe4cc4a" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/af8dcb2b-3114-45b0-b75c-e1f9e6aec6d2",
+              "label": "Stanford_Temperature_Model_4km-iso19110.xml",
+              "filename": "Stanford_Temperature_Model_4km-iso19110.xml",
+              "size": 2070,
+              "version": 4,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "e8539a95633207ef92bfb00da4ceee1f256aca0c"
+                },
+                { "type": "md5", "digest": "009e1a9003b5a49a997abd40792ee28a" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/98e9feff-1c62-4281-ad0e-db9df1513527",
+              "label": "Stanford_Temperature_Model_4km-fgdc.xml",
+              "filename": "Stanford_Temperature_Model_4km-fgdc.xml",
+              "size": 4634,
+              "version": 4,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "46830e17496d12e8d6f24ac030f021faf5816f6a"
+                },
+                { "type": "md5", "digest": "383b58ed906b5ab943be01757acb0154" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": ["druid:pf117pt7874"]
+  },
+  "created": "2024-05-13T19:30:24.000+00:00",
+  "modified": "2024-05-13T19:32:58.000+00:00",
+  "lock": "druid:fk339wc1276="
+}

@@ -1,0 +1,965 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/geo",
+  "externalIdentifier": "druid:bc559yb0972",
+  "label": "Mineral Resources: Santa Cruz County, California, 2015",
+  "version": 3,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "copyright": "This work is in the Public Domain, meaning that it is not subject to copyright.",
+    "useAndReproductionStatement": "This item is in the public domain.  There are no restrictions on use."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:bz466cq3451",
+    "releaseTags": [
+      {
+        "who": "kdurante",
+        "what": "collection",
+        "date": "2018-07-19T18:18:00.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      },
+      {
+        "who": "bergeraj",
+        "what": "collection",
+        "date": "2023-04-13T20:41:09.000+00:00",
+        "to": "Earthworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Mineral Resources: Santa Cruz County, California, 2015",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Garcia, Paul",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": { "code": "marcrelator", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      },
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Price, Matt",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": { "code": "marcrelator", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2015",
+            "type": "publication",
+            "status": "primary",
+            "encoding": { "code": "w3cdtf", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2015",
+            "type": "validity",
+            "encoding": { "code": "w3cdtf", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "County of Santa Cruz Information Services Department",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "organization",
+            "role": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "publisher",
+                "code": "pbl",
+                "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                "identifier": [],
+                "source": {
+                  "code": "marcrelator",
+                  "uri": "http://id.loc.gov/vocabulary/relators/",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          }
+        ],
+        "location": [],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geospatial data",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026297",
+        "identifier": [],
+        "source": { "code": "lcgft", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic dataset",
+        "type": "genre",
+        "uri": "http://rdvocab.info/termList/RDAContentType/1001",
+        "identifier": [],
+        "source": { "code": "rdacontent", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "software, multimedia",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "born digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": { "value": "MODS digital origin terms", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Dataset",
+        "type": "genre",
+        "identifier": [],
+        "source": { "value": "local", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Shapefile",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::2227",
+        "type": "map projection",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "application/x-esri-shapefile",
+            "type": "media type",
+            "identifier": [],
+            "source": { "value": "IANA media type terms", "note": [] },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Shapefile",
+            "type": "data format",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dataset#Polygon",
+            "type": "type",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-122.190056",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "36.915758",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-121.809863",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "37.081958",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": { "code": "EPSG:4326", "note": [] },
+            "encoding": { "value": "decimal", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": { "code": "ISO639-2", "note": [] },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This polygon shapefile contains mineral resource areas as defined in the General Plan adopted May 24, 1994 for the County of Santa Cruz, California. These Areas were classified by the State Geologist and designated by the State Mining and Geology Board as regionally or statewide significant Mineral Resource Areas and Areas classified by the State as MRZ-2 Zones (areas containing significant mineral deposits), excluding those areas with existing land uses and/or land use designations which conflict with mineral resource extraction. Mineral Resource Areas are classified via Special Report 146 Part IV, Mineral Land Classification: Aggregate Materials in the San Francisco and Monterey Bay Area; and designated by the State Mining and Geology Board via the California Surface Mining and Reclamation Act (SMARA) Designation Report No. 7, Designation of Regionally Significant Construction Aggregate Resource Areas in the South San Francisco Bay, North San Francisco Bay, Monterey Bay Production - Consumption Regions. This layer is part of a collection of GIS data created for Santa Cruz County, California.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Abstract",
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "The Geographic Information Systems (GIS) Unit falls under the purview of the County of Santa Cruz Information Services Department. The GIS Unit serves all County departments and external customers and provides data on land, features and people of Santa Cruz County. Santa Cruz County encompasses 4 cities and approximately 265,000 people. This coverage can be used for basic applications such as viewing, querying and map output production, or to provide a basemap to support graphical overlays and analyses of geospatial data.",
+        "type": "other",
+        "identifier": [],
+        "displayLabel": "Purpose",
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "GIS Layer Number = 53/ Original Mapping Source: Growth Management Environmental Report Timber and Mineral Resource Map. Map Used to Convert to GIS: Source Map. New Information Acceptable for Updating Maps: General Plan and Local Coastal Plan Amendment. Parcel Specific Overiding Information: Not Applicable. Source maps boundaries were traced or transferred to USGS 7.5 minute quadrangle sheets. Boundaries were then digitized using known control points or intersections of roads for reference. For some sheets, as few as two known control points were available. The boundaries were plotted and reviewed by the County's Advanced Planning staff. ",
+        "type": "other",
+        "identifier": [],
+        "displayLabel": "Supplemental information",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Santa Cruz County (Calif.)",
+        "type": "place",
+        "identifier": [],
+        "source": {
+          "code": "geonames",
+          "uri": "http://geonames.org/ontology#",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Mine surveying",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Mines and mineral resources",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Quarries and quarrying",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Building materials",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geoscientific Information",
+        "type": "topic",
+        "uri": "geoscientificInformation",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "2015",
+        "type": "time",
+        "encoding": { "code": "w3cdtf", "note": [] },
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "W 122°11ʹ29ʺ--W 121°48ʹ35ʺ/N 37°5ʹ6ʺ--N 36°54ʹ39ʺ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [],
+      "digitalLocation": [],
+      "accessContact": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "paul.garcia@santacruzcounty.us",
+          "type": "email",
+          "identifier": [],
+          "displayLabel": "Contact",
+          "note": [],
+          "appliesTo": []
+        },
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "matt.price@santacruzcounty.us",
+          "type": "email",
+          "identifier": [],
+          "displayLabel": "Contact",
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalRepository": [],
+      "note": []
+    },
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "Stanford",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "role": [],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [
+        {
+          "structuredValue": [],
+          "type": "creation",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "2015-11-03",
+              "encoding": { "code": "w3cdtf", "note": [] },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        }
+      ],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": { "code": "ISO639-2", "note": [] },
+          "structuredValue": []
+        }
+      ],
+      "note": [],
+      "metadataStandard": [],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "edu.stanford.purl:bc559yb0972",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/bc559yb0972"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "branner:SCruz_GIS_MineralResources.shp"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "bc559yb0972_1",
+        "label": "Data",
+        "version": 3,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/985c3969-89f0-475e-884b-7717a17b27e8",
+              "label": "MineralResources.shp",
+              "filename": "MineralResources.shp",
+              "size": 11852,
+              "version": 3,
+              "hasMimeType": "application/vnd.shp",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "db2ae494bb71346cea84cf6d9da1a313d4540c95"
+                },
+                { "type": "md5", "digest": "8184764742ba5421d6ecf5ead4849548" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/7e19e088-34e4-413a-896b-23a88867e19b",
+              "label": "MineralResources.shx",
+              "filename": "MineralResources.shx",
+              "size": 172,
+              "version": 3,
+              "hasMimeType": "application/vnd.shx",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "3281c2394c7f13665cc136cd4456ba7358c994bc"
+                },
+                { "type": "md5", "digest": "60123a09c8c8875784ce77736bba74b2" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/ccdb57b5-f6c2-46a1-8272-7920fd8d9fc4",
+              "label": "MineralResources.dbf",
+              "filename": "MineralResources.dbf",
+              "size": 918,
+              "version": 3,
+              "hasMimeType": "application/vnd.dbf",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "472f18d4022d8ea58e89775153a9a56cf7ef56e1"
+                },
+                { "type": "md5", "digest": "10e3aa715607c48ec10c6911d5e992b0" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/1ef7d262-12ca-49bf-b8f6-5486cdcecde3",
+              "label": "MineralResources.sbn",
+              "filename": "MineralResources.sbn",
+              "size": 220,
+              "version": 3,
+              "hasMimeType": "application/octet-stream",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "bc66b8e4371be288d645cdce0e278cd71b469071"
+                },
+                { "type": "md5", "digest": "3eab0d0edac957905b2687d5b1b8d4f7" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/2cdfaa4a-7bec-4757-9e6f-29e479045172",
+              "label": "MineralResources.prj",
+              "filename": "MineralResources.prj",
+              "size": 726,
+              "version": 3,
+              "hasMimeType": "text/plain",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "3b2407b81bb1598bc4f58ed5d39424b06231aea9"
+                },
+                { "type": "md5", "digest": "c0afdee69c62822e6ea15a74f7cc195b" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/30d21e5e-f7d7-4f99-abcf-efc8d84566e5",
+              "label": "MineralResources.cpg",
+              "filename": "MineralResources.cpg",
+              "size": 5,
+              "version": 3,
+              "hasMimeType": "text/plain",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "663b90c899fa25a111067be0c22ffc64dcf581c2"
+                },
+                { "type": "md5", "digest": "ae3b3df9970b49b6523e608759bc957d" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/preview",
+        "externalIdentifier": "bc559yb0972_2",
+        "label": "Preview",
+        "version": 3,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/2b5878d3-de90-40df-a982-b03c21109a6e",
+              "label": "preview.jpg",
+              "filename": "preview.jpg",
+              "size": 22673,
+              "version": 3,
+              "hasMimeType": "image/jpeg",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "8fe70771588e0cc4b6697537734acdd8ffe03d66"
+                },
+                { "type": "md5", "digest": "8bdce7720001e58a6a9a744d37b29cab" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              },
+              "presentation": { "height": 532, "width": 1095 }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "bc559yb0972_3",
+        "label": "Metadata",
+        "version": 3,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/9ec34716-eff7-4dc1-b465-628e4bb93f8a",
+              "label": "MineralResources.shp.xml",
+              "filename": "MineralResources.shp.xml",
+              "size": 53430,
+              "version": 3,
+              "hasMimeType": "application/xml",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "eb85ba9fe5b3ebcfede64b1a00691da684731974"
+                },
+                { "type": "md5", "digest": "45423c56f9a50277795fecdfebf64e41" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/37397a85-f5a9-4a75-b60c-5091019b8e91",
+              "label": "MineralResources-iso19139.xml",
+              "filename": "MineralResources-iso19139.xml",
+              "size": 35056,
+              "version": 3,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "6797ae34ea54335ee811b1cb31ea01afe5736260"
+                },
+                { "type": "md5", "digest": "14dfa4bf13ded73e4063b4ec50e3d917" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/3abeb5e6-70e4-4f08-a1b8-13b37a3482ae",
+              "label": "MineralResources-iso19110.xml",
+              "filename": "MineralResources-iso19110.xml",
+              "size": 7777,
+              "version": 3,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "328d4add819157b5ac9bb657c574dce44e829810"
+                },
+                { "type": "md5", "digest": "6ede05f7f1c27ae719c5aee9fa661693" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/0febe15c-7a8f-41fa-9cda-b46a88b4e30e",
+              "label": "MineralResources-fgdc.xml",
+              "filename": "MineralResources-fgdc.xml",
+              "size": 9544,
+              "version": 3,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "8b750b6b7fe1ef710def38df8478d13db450cbe3"
+                },
+                { "type": "md5", "digest": "2b281908d9cd0e7f3b503ffa06b79d16" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": ["druid:kn733hp1726"]
+  },
+  "geographic": {
+    "iso19139": "\u003crdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\u003e\n              \u003crdf:Description rdf:about=\"http://purl.stanford.edu/bc559yb0972\"\u003e\n                \u003cMD_Metadata xmlns=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xmlns:gts=\"http://www.isotc211.org/2005/gts\" xmlns:srv=\"http://www.isotc211.org/2005/srv\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\u003e\n  \u003cfileIdentifier\u003e\n    \u003cgco:CharacterString\u003eedu.stanford.purl:bc559yb0972\u003c/gco:CharacterString\u003e\n  \u003c/fileIdentifier\u003e\n  \u003clanguage\u003e\n    \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n  \u003c/language\u003e\n  \u003ccharacterSet\u003e\n    \u003cMD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"\u003eutf8\u003c/MD_CharacterSetCode\u003e\n  \u003c/characterSet\u003e\n  \u003cparentIdentifier\u003e\n    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/kn733hp1726.mods\u003c/gco:CharacterString\u003e\n  \u003c/parentIdentifier\u003e\n  \u003chierarchyLevel\u003e\n    \u003cMD_ScopeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode\" codeListValue=\"dataset\" codeSpace=\"ISOTC211/19115\"\u003edataset\u003c/MD_ScopeCode\u003e\n  \u003c/hierarchyLevel\u003e\n  \u003chierarchyLevelName\u003e\n    \u003cgco:CharacterString\u003edataset\u003c/gco:CharacterString\u003e\n  \u003c/hierarchyLevelName\u003e\n  \u003ccontact\u003e\n    \u003cCI_ResponsibleParty\u003e\n      \u003corganisationName\u003e\n        \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n      \u003c/organisationName\u003e\n      \u003cpositionName\u003e\n        \u003cgco:CharacterString\u003eMetadata Analyst\u003c/gco:CharacterString\u003e\n      \u003c/positionName\u003e\n      \u003ccontactInfo\u003e\n        \u003cCI_Contact\u003e\n          \u003cphone\u003e\n            \u003cCI_Telephone\u003e\n              \u003cvoice\u003e\n                \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n              \u003c/voice\u003e\n            \u003c/CI_Telephone\u003e\n          \u003c/phone\u003e\n          \u003caddress\u003e\n            \u003cCI_Address\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003e397 Panama Mall, Mitchell Bldg., 2nd Flr.\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003ccity\u003e\n                \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n              \u003c/city\u003e\n              \u003cadministrativeArea\u003e\n                \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n              \u003c/administrativeArea\u003e\n              \u003cpostalCode\u003e\n                \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n              \u003c/postalCode\u003e\n              \u003ccountry\u003e\n                \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n              \u003c/country\u003e\n              \u003celectronicMailAddress\u003e\n                \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n              \u003c/electronicMailAddress\u003e\n            \u003c/CI_Address\u003e\n          \u003c/address\u003e\n        \u003c/CI_Contact\u003e\n      \u003c/contactInfo\u003e\n      \u003crole\u003e\n        \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n      \u003c/role\u003e\n    \u003c/CI_ResponsibleParty\u003e\n  \u003c/contact\u003e\n  \u003cdateStamp\u003e\n    \u003cgco:Date\u003e2015-11-03\u003c/gco:Date\u003e\n  \u003c/dateStamp\u003e\n  \u003cmetadataStandardName\u003e\n    \u003cgco:CharacterString\u003eISO 19139 Geographic Information - Metadata - Implementation Specification\u003c/gco:CharacterString\u003e\n  \u003c/metadataStandardName\u003e\n  \u003cmetadataStandardVersion\u003e\n    \u003cgco:CharacterString\u003e2007\u003c/gco:CharacterString\u003e\n  \u003c/metadataStandardVersion\u003e\n  \u003cdataSetURI\u003e\n    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/bc559yb0972\u003c/gco:CharacterString\u003e\n  \u003c/dataSetURI\u003e\n  \u003cspatialRepresentationInfo\u003e\n    \u003cMD_VectorSpatialRepresentation\u003e\n      \u003ctopologyLevel\u003e\n        \u003cMD_TopologyLevelCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopologyLevelCode\" codeListValue=\"geometryOnly\" codeSpace=\"ISOTC211/19115\"\u003egeometryOnly\u003c/MD_TopologyLevelCode\u003e\n      \u003c/topologyLevel\u003e\n      \u003cgeometricObjects\u003e\n        \u003cMD_GeometricObjects\u003e\n          \u003cgeometricObjectType\u003e\n            \u003cMD_GeometricObjectTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode\" codeListValue=\"composite\" codeSpace=\"ISOTC211/19115\"\u003ecomposite\u003c/MD_GeometricObjectTypeCode\u003e\n          \u003c/geometricObjectType\u003e\n          \u003cgeometricObjectCount\u003e\n            \u003cgco:Integer\u003e9\u003c/gco:Integer\u003e\n          \u003c/geometricObjectCount\u003e\n        \u003c/MD_GeometricObjects\u003e\n      \u003c/geometricObjects\u003e\n    \u003c/MD_VectorSpatialRepresentation\u003e\n  \u003c/spatialRepresentationInfo\u003e\n  \u003creferenceSystemInfo\u003e\n    \u003cMD_ReferenceSystem\u003e\n      \u003creferenceSystemIdentifier\u003e\n        \u003cRS_Identifier\u003e\n          \u003ccode\u003e\n            \u003cgco:CharacterString\u003e2227\u003c/gco:CharacterString\u003e\n          \u003c/code\u003e\n          \u003ccodeSpace\u003e\n            \u003cgco:CharacterString\u003eEPSG\u003c/gco:CharacterString\u003e\n          \u003c/codeSpace\u003e\n          \u003cversion\u003e\n            \u003cgco:CharacterString\u003e8.6.2\u003c/gco:CharacterString\u003e\n          \u003c/version\u003e\n        \u003c/RS_Identifier\u003e\n      \u003c/referenceSystemIdentifier\u003e\n    \u003c/MD_ReferenceSystem\u003e\n  \u003c/referenceSystemInfo\u003e\n  \u003cidentificationInfo\u003e\n    \u003cMD_DataIdentification\u003e\n      \u003ccitation\u003e\n        \u003cCI_Citation\u003e\n          \u003ctitle\u003e\n            \u003cgco:CharacterString\u003eMineral Resources: Santa Cruz County, California, 2015\u003c/gco:CharacterString\u003e\n          \u003c/title\u003e\n          \u003cdate\u003e\n            \u003cCI_Date\u003e\n              \u003cdate\u003e\n                \u003cgco:Date\u003e2015-01-01\u003c/gco:Date\u003e\n              \u003c/date\u003e\n              \u003cdateType\u003e\n                \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n              \u003c/dateType\u003e\n            \u003c/CI_Date\u003e\n          \u003c/date\u003e\n          \u003cidentifier\u003e\n            \u003cMD_Identifier\u003e\n              \u003ccode\u003e\n                \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/bc559yb0972\u003c/gco:CharacterString\u003e\n              \u003c/code\u003e\n            \u003c/MD_Identifier\u003e\n          \u003c/identifier\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003eGarcia, Paul\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eCounty of Santa Cruz Information Services Department\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003cpositionName\u003e\n                \u003cgco:CharacterString\u003eSenior GIS Analyst\u003c/gco:CharacterString\u003e\n              \u003c/positionName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e831-454-3094\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e831-454-2030\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eGIS Unit\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e701 Ocean St., Rm. 530\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eSanta Cruz\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e95060\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003ccountry\u003e\n                        \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                      \u003c/country\u003e\n                      \u003celectronicMailAddress\u003e\n                        \u003cgco:CharacterString\u003epaul.garcia@santacruzcounty.us\u003c/gco:CharacterString\u003e\n                      \u003c/electronicMailAddress\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003cindividualName\u003e\n                \u003cgco:CharacterString\u003ePrice, Matt\u003c/gco:CharacterString\u003e\n              \u003c/individualName\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eCounty of Santa Cruz Information Services Department\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003cpositionName\u003e\n                \u003cgco:CharacterString\u003eGIS Manager\u003c/gco:CharacterString\u003e\n              \u003c/positionName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e831-454-3101\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e831-454-2030\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eGIS Unit\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e701 Ocean St., Rm. 530\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eSanta Cruz\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e95060\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003ccountry\u003e\n                        \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                      \u003c/country\u003e\n                      \u003celectronicMailAddress\u003e\n                        \u003cgco:CharacterString\u003ematt.price@santacruzcounty.us\u003c/gco:CharacterString\u003e\n                      \u003c/electronicMailAddress\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eCounty of Santa Cruz Information Services Department\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e831-454-2030\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eGIS Unit\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e701 Ocean St., Rm. 530\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eSanta Cruz\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e95060\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003ccountry\u003e\n                        \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                      \u003c/country\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"publisher\" codeSpace=\"ISOTC211/19115\"\u003epublisher\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003cpresentationForm\u003e\n            \u003cCI_PresentationFormCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode\" codeListValue=\"mapDigital\" codeSpace=\"ISOTC211/19115\"\u003emapDigital\u003c/CI_PresentationFormCode\u003e\n          \u003c/presentationForm\u003e\n          \u003cotherCitationDetails\u003e\n            \u003cgco:CharacterString\u003eRetrieved on September 15, 2015 from the County of Santa Cruz Geographic Information Systems (GIS) Data web page at http://www.co.santa-cruz.ca.us/default.aspx?tabid=93.\u003c/gco:CharacterString\u003e\n          \u003c/otherCitationDetails\u003e\n          \u003ccollectiveTitle\u003e\n            \u003cgco:CharacterString\u003eSanta Cruz County, California GIS Maps and Data\u003c/gco:CharacterString\u003e\n          \u003c/collectiveTitle\u003e\n        \u003c/CI_Citation\u003e\n      \u003c/citation\u003e\n      \u003cabstract\u003e\n        \u003cgco:CharacterString\u003eThis polygon shapefile contains mineral resource areas as defined in the General Plan adopted May 24, 1994 for the County of Santa Cruz, California. These Areas were classified by the State Geologist and designated by the State Mining and Geology Board as regionally or statewide significant Mineral Resource Areas and Areas classified by the State as MRZ-2 Zones (areas containing significant mineral deposits), excluding those areas with existing land uses and/or land use designations which conflict with mineral resource extraction. Mineral Resource Areas are classified via Special Report 146 Part IV, Mineral Land Classification: Aggregate Materials in the San Francisco and Monterey Bay Area; and designated by the State Mining and Geology Board via the California Surface Mining and Reclamation Act (SMARA) Designation Report No. 7, Designation of Regionally Significant Construction Aggregate Resource Areas in the South San Francisco Bay, North San Francisco Bay, Monterey Bay Production - Consumption Regions. This layer is part of a collection of GIS data created for Santa Cruz County, California.\u003c/gco:CharacterString\u003e\n      \u003c/abstract\u003e\n      \u003cpurpose\u003e\n        \u003cgco:CharacterString\u003eThe Geographic Information Systems (GIS) Unit falls under the purview of the County of Santa Cruz Information Services Department. The GIS Unit serves all County departments and external customers and provides data on land, features and people of Santa Cruz County. Santa Cruz County encompasses 4 cities and approximately 265,000 people. This coverage can be used for basic applications such as viewing, querying and map output production, or to provide a basemap to support graphical overlays and analyses of geospatial data.\u003c/gco:CharacterString\u003e\n      \u003c/purpose\u003e\n      \u003ccredit\u003e\n        \u003cgco:CharacterString\u003eCounty of Santa Cruz Information Services Department. (2015). Mineral Resources: Santa Cruz County, California, 2015. Santa Cruz County, California. Available at http://purl.stanford.edu/bc559yb0972.\u003c/gco:CharacterString\u003e\n      \u003c/credit\u003e\n      \u003cpointOfContact\u003e\n        \u003cCI_ResponsibleParty\u003e\n          \u003cindividualName\u003e\n            \u003cgco:CharacterString\u003eGarcia, Paul\u003c/gco:CharacterString\u003e\n          \u003c/individualName\u003e\n          \u003corganisationName\u003e\n            \u003cgco:CharacterString\u003eCounty of Santa Cruz Information Services Department\u003c/gco:CharacterString\u003e\n          \u003c/organisationName\u003e\n          \u003cpositionName\u003e\n            \u003cgco:CharacterString\u003eSenior GIS Analyst\u003c/gco:CharacterString\u003e\n          \u003c/positionName\u003e\n          \u003ccontactInfo\u003e\n            \u003cCI_Contact\u003e\n              \u003cphone\u003e\n                \u003cCI_Telephone\u003e\n                  \u003cvoice\u003e\n                    \u003cgco:CharacterString\u003e831-454-3094\u003c/gco:CharacterString\u003e\n                  \u003c/voice\u003e\n                  \u003cvoice\u003e\n                    \u003cgco:CharacterString\u003e831-454-2030\u003c/gco:CharacterString\u003e\n                  \u003c/voice\u003e\n                \u003c/CI_Telephone\u003e\n              \u003c/phone\u003e\n              \u003caddress\u003e\n                \u003cCI_Address\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003eGIS Unit\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003e701 Ocean St., Rm. 530\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003ccity\u003e\n                    \u003cgco:CharacterString\u003eSanta Cruz\u003c/gco:CharacterString\u003e\n                  \u003c/city\u003e\n                  \u003cadministrativeArea\u003e\n                    \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                  \u003c/administrativeArea\u003e\n                  \u003cpostalCode\u003e\n                    \u003cgco:CharacterString\u003e95060\u003c/gco:CharacterString\u003e\n                  \u003c/postalCode\u003e\n                  \u003ccountry\u003e\n                    \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                  \u003c/country\u003e\n                  \u003celectronicMailAddress\u003e\n                    \u003cgco:CharacterString\u003epaul.garcia@santacruzcounty.us\u003c/gco:CharacterString\u003e\n                  \u003c/electronicMailAddress\u003e\n                \u003c/CI_Address\u003e\n              \u003c/address\u003e\n            \u003c/CI_Contact\u003e\n          \u003c/contactInfo\u003e\n          \u003crole\u003e\n            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n          \u003c/role\u003e\n        \u003c/CI_ResponsibleParty\u003e\n      \u003c/pointOfContact\u003e\n      \u003cpointOfContact\u003e\n        \u003cCI_ResponsibleParty\u003e\n          \u003cindividualName\u003e\n            \u003cgco:CharacterString\u003ePrice, Matt\u003c/gco:CharacterString\u003e\n          \u003c/individualName\u003e\n          \u003corganisationName\u003e\n            \u003cgco:CharacterString\u003eCounty of Santa Cruz Information Services Department\u003c/gco:CharacterString\u003e\n          \u003c/organisationName\u003e\n          \u003cpositionName\u003e\n            \u003cgco:CharacterString\u003eGIS Manager\u003c/gco:CharacterString\u003e\n          \u003c/positionName\u003e\n          \u003ccontactInfo\u003e\n            \u003cCI_Contact\u003e\n              \u003cphone\u003e\n                \u003cCI_Telephone\u003e\n                  \u003cvoice\u003e\n                    \u003cgco:CharacterString\u003e831-454-3101\u003c/gco:CharacterString\u003e\n                  \u003c/voice\u003e\n                  \u003cvoice\u003e\n                    \u003cgco:CharacterString\u003e831-454-2030\u003c/gco:CharacterString\u003e\n                  \u003c/voice\u003e\n                \u003c/CI_Telephone\u003e\n              \u003c/phone\u003e\n              \u003caddress\u003e\n                \u003cCI_Address\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003eGIS Unit\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003e701 Ocean St., Rm. 530\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003ccity\u003e\n                    \u003cgco:CharacterString\u003eSanta Cruz\u003c/gco:CharacterString\u003e\n                  \u003c/city\u003e\n                  \u003cadministrativeArea\u003e\n                    \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                  \u003c/administrativeArea\u003e\n                  \u003cpostalCode\u003e\n                    \u003cgco:CharacterString\u003e95060\u003c/gco:CharacterString\u003e\n                  \u003c/postalCode\u003e\n                  \u003ccountry\u003e\n                    \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                  \u003c/country\u003e\n                  \u003celectronicMailAddress\u003e\n                    \u003cgco:CharacterString\u003ematt.price@santacruzcounty.us\u003c/gco:CharacterString\u003e\n                  \u003c/electronicMailAddress\u003e\n                \u003c/CI_Address\u003e\n              \u003c/address\u003e\n            \u003c/CI_Contact\u003e\n          \u003c/contactInfo\u003e\n          \u003crole\u003e\n            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n          \u003c/role\u003e\n        \u003c/CI_ResponsibleParty\u003e\n      \u003c/pointOfContact\u003e\n      \u003cresourceMaintenance\u003e\n        \u003cMD_MaintenanceInformation\u003e\n          \u003cmaintenanceAndUpdateFrequency\u003e\n            \u003cMD_MaintenanceFrequencyCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode\" codeListValue=\"unknown\" codeSpace=\"ISOTC211/19115\"\u003eunknown\u003c/MD_MaintenanceFrequencyCode\u003e\n          \u003c/maintenanceAndUpdateFrequency\u003e\n        \u003c/MD_MaintenanceInformation\u003e\n      \u003c/resourceMaintenance\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eSanta Cruz County (Calif.)\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"place\" codeSpace=\"ISOTC211/19115\"\u003eplace\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n          \u003cthesaurusName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003egeonames\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate gco:nilReason=\"missing\"/\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://geonames.org/ontology#\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/thesaurusName\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003e2015\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"temporal\" codeSpace=\"ISOTC211/19115\"\u003etemporal\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eMine surveying\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eMines and mineral resources\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eQuarries and quarrying\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eBuilding materials\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"theme\" codeSpace=\"ISOTC211/19115\"\u003etheme\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n          \u003cthesaurusName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003elcsh\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate gco:nilReason=\"missing\"/\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://id.loc.gov/authorities/subjects\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/thesaurusName\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eDownloadable Data\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003cthesaurusName uuidref=\"723f6998-058e-11dc-8314-0800200c9a66\"/\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cresourceConstraints\u003e\n        \u003cMD_Constraints\u003e\n          \u003cuseLimitation\u003e\n            \u003cgco:CharacterString\u003eThese data were compiled from many different sources; therefore, the accuracy of the individual layers varies significantly, and some layers do not align exactly with others. In the urban areas, data are generally accurate within five to ten feet of their true geographic coordinates, but in the rural areas, data may be accurate to only within three hundred feet. With these limitations, the County of Santa Cruz disclaims any responsibility for the accuracy or correctness of this data. This disclaimer is exclusive and in lieu of any warranties, fitness for particular purpose, and/or any other type of warranty, whether expressed or implied.\u003c/gco:CharacterString\u003e\n          \u003c/useLimitation\u003e\n        \u003c/MD_Constraints\u003e\n      \u003c/resourceConstraints\u003e\n      \u003caggregationInfo\u003e\n        \u003cMD_AggregateInformation\u003e\n          \u003caggregateDataSetName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003eSanta Cruz County, California GIS Maps and Data\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate gco:nilReason=\"missing\"/\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/kn733hp1726\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/aggregateDataSetName\u003e\n          \u003cassociationType\u003e\n            \u003cDS_AssociationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_AssociationTypeCode\" codeListValue=\"largerWorkCitation\" codeSpace=\"ISOTC211/19115\"\u003elargerWorkCitation\u003c/DS_AssociationTypeCode\u003e\n          \u003c/associationType\u003e\n          \u003cinitiativeType\u003e\n            \u003cDS_InitiativeTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_InitiativeTypeCode\" codeListValue=\"collection\" codeSpace=\"ISOTC211/19115\"\u003ecollection\u003c/DS_InitiativeTypeCode\u003e\n          \u003c/initiativeType\u003e\n        \u003c/MD_AggregateInformation\u003e\n      \u003c/aggregationInfo\u003e\n      \u003cspatialRepresentationType\u003e\n        \u003cMD_SpatialRepresentationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode\" codeListValue=\"vector\" codeSpace=\"ISOTC211/19115\"\u003evector\u003c/MD_SpatialRepresentationTypeCode\u003e\n      \u003c/spatialRepresentationType\u003e\n      \u003clanguage\u003e\n        \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n      \u003c/language\u003e\n      \u003ccharacterSet\u003e\n        \u003cMD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"\u003eutf8\u003c/MD_CharacterSetCode\u003e\n      \u003c/characterSet\u003e\n      \u003ctopicCategory\u003e\n        \u003cMD_TopicCategoryCode\u003egeoscientificInformation\u003c/MD_TopicCategoryCode\u003e\n      \u003c/topicCategory\u003e\n      \u003cenvironmentDescription\u003e\n        \u003cgco:CharacterString\u003eMicrosoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.3.1.4959\u003c/gco:CharacterString\u003e\n      \u003c/environmentDescription\u003e\n      \u003cextent\u003e\n        \u003cEX_Extent\u003e\n          \u003cdescription\u003e\n            \u003cgco:CharacterString\u003epublication date\u003c/gco:CharacterString\u003e\n          \u003c/description\u003e\n          \u003ctemporalElement\u003e\n            \u003cEX_TemporalExtent\u003e\n              \u003cextent\u003e\n                \u003cgml:TimeInstant gml:id=\"idp99056\"\u003e\n                  \u003cgml:timePosition\u003e2015-01-01T00:00:00\u003c/gml:timePosition\u003e\n                \u003c/gml:TimeInstant\u003e\n              \u003c/extent\u003e\n            \u003c/EX_TemporalExtent\u003e\n          \u003c/temporalElement\u003e\n        \u003c/EX_Extent\u003e\n      \u003c/extent\u003e\n      \u003cextent\u003e\n        \u003cEX_Extent\u003e\n          \u003cgeographicElement\u003e\n            \u003cEX_GeographicBoundingBox\u003e\n              \u003cextentTypeCode\u003e\n                \u003cgco:Boolean\u003etrue\u003c/gco:Boolean\u003e\n              \u003c/extentTypeCode\u003e\n              \u003cwestBoundLongitude\u003e\n                \u003cgco:Decimal\u003e-122.191431\u003c/gco:Decimal\u003e\n              \u003c/westBoundLongitude\u003e\n              \u003ceastBoundLongitude\u003e\n                \u003cgco:Decimal\u003e-121.809813\u003c/gco:Decimal\u003e\n              \u003c/eastBoundLongitude\u003e\n              \u003csouthBoundLatitude\u003e\n                \u003cgco:Decimal\u003e36.91092\u003c/gco:Decimal\u003e\n              \u003c/southBoundLatitude\u003e\n              \u003cnorthBoundLatitude\u003e\n                \u003cgco:Decimal\u003e37.0851\u003c/gco:Decimal\u003e\n              \u003c/northBoundLatitude\u003e\n            \u003c/EX_GeographicBoundingBox\u003e\n          \u003c/geographicElement\u003e\n        \u003c/EX_Extent\u003e\n      \u003c/extent\u003e\n      \u003csupplementalInformation\u003e\n        \u003cgco:CharacterString\u003eGIS Layer Number = 53/ Original Mapping Source: Growth Management Environmental Report Timber and Mineral Resource Map. Map Used to Convert to GIS: Source Map. New Information Acceptable for Updating Maps: General Plan and Local Coastal Plan Amendment. Parcel Specific Overiding Information: Not Applicable. Source maps boundaries were traced or transferred to USGS 7.5 minute quadrangle sheets. Boundaries were then digitized using known control points or intersections of roads for reference. For some sheets, as few as two known control points were available. The boundaries were plotted and reviewed by the County's Advanced Planning staff. \u003c/gco:CharacterString\u003e\n      \u003c/supplementalInformation\u003e\n    \u003c/MD_DataIdentification\u003e\n  \u003c/identificationInfo\u003e\n  \u003ccontentInfo\u003e\n    \u003cMD_FeatureCatalogueDescription\u003e\n      \u003ccomplianceCode\u003e\n        \u003cgco:Boolean\u003efalse\u003c/gco:Boolean\u003e\n      \u003c/complianceCode\u003e\n      \u003clanguage\u003e\n        \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n      \u003c/language\u003e\n      \u003cincludedWithDataset\u003e\n        \u003cgco:Boolean\u003etrue\u003c/gco:Boolean\u003e\n      \u003c/includedWithDataset\u003e\n      \u003cfeatureCatalogueCitation\u003e\n        \u003cCI_Citation\u003e\n          \u003ctitle\u003e\n            \u003cgco:CharacterString\u003eFeature catalog for Mineral Resources: Santa Cruz County, California, 2015\u003c/gco:CharacterString\u003e\n          \u003c/title\u003e\n          \u003cdate gco:nilReason=\"missing\"/\u003e\n          \u003cidentifier\u003e\n            \u003cMD_Identifier\u003e\n              \u003ccode\u003e\n                \u003cgco:CharacterString\u003e6a2e3c5f-f557-4cc1-92de-41c177199554\u003c/gco:CharacterString\u003e\n              \u003c/code\u003e\n            \u003c/MD_Identifier\u003e\n          \u003c/identifier\u003e\n        \u003c/CI_Citation\u003e\n      \u003c/featureCatalogueCitation\u003e\n    \u003c/MD_FeatureCatalogueDescription\u003e\n  \u003c/contentInfo\u003e\n  \u003cdistributionInfo\u003e\n    \u003cMD_Distribution\u003e\n      \u003cdistributionFormat\u003e\n        \u003cMD_Format\u003e\n          \u003cname\u003e\n            \u003cgco:CharacterString\u003eShapefile\u003c/gco:CharacterString\u003e\n          \u003c/name\u003e\n          \u003cversion gco:nilReason=\"missing\"/\u003e\n        \u003c/MD_Format\u003e\n      \u003c/distributionFormat\u003e\n      \u003cdistributor\u003e\n        \u003cMD_Distributor\u003e\n          \u003cdistributorContact\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003cpositionName\u003e\n                \u003cgco:CharacterString\u003eMetadata Analyst\u003c/gco:CharacterString\u003e\n              \u003c/positionName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e397 Panama Mall, Mitchell Bldg., 2nd Flr.\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003ccountry\u003e\n                        \u003cgco:CharacterString\u003eUS\u003c/gco:CharacterString\u003e\n                      \u003c/country\u003e\n                      \u003celectronicMailAddress\u003e\n                        \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n                      \u003c/electronicMailAddress\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"distributor\" codeSpace=\"ISOTC211/19115\"\u003edistributor\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/distributorContact\u003e\n        \u003c/MD_Distributor\u003e\n      \u003c/distributor\u003e\n      \u003ctransferOptions\u003e\n        \u003cMD_DigitalTransferOptions\u003e\n          \u003ctransferSize\u003e\n            \u003cgco:Real\u003e4.516\u003c/gco:Real\u003e\n          \u003c/transferSize\u003e\n          \u003conLine\u003e\n            \u003cCI_OnlineResource\u003e\n              \u003clinkage\u003e\n                \u003cURL\u003ehttp://purl.stanford.edu/bc559yb0972\u003c/URL\u003e\n              \u003c/linkage\u003e\n              \u003cprotocol\u003e\n                \u003cgco:CharacterString\u003ehttp\u003c/gco:CharacterString\u003e\n              \u003c/protocol\u003e\n              \u003cname\u003e\n                \u003cgco:CharacterString\u003eMineralResources.shp\u003c/gco:CharacterString\u003e\n              \u003c/name\u003e\n              \u003cfunction\u003e\n                \u003cCI_OnLineFunctionCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode\" codeListValue=\"download\" codeSpace=\"ISOTC211/19115\"\u003edownload\u003c/CI_OnLineFunctionCode\u003e\n              \u003c/function\u003e\n            \u003c/CI_OnlineResource\u003e\n          \u003c/onLine\u003e\n        \u003c/MD_DigitalTransferOptions\u003e\n      \u003c/transferOptions\u003e\n    \u003c/MD_Distribution\u003e\n  \u003c/distributionInfo\u003e\n  \u003cdataQualityInfo\u003e\n    \u003cDQ_DataQuality\u003e\n      \u003cscope\u003e\n        \u003cDQ_Scope\u003e\n          \u003clevel\u003e\n            \u003cMD_ScopeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode\" codeListValue=\"dataset\" codeSpace=\"ISOTC211/19115\"\u003edataset\u003c/MD_ScopeCode\u003e\n          \u003c/level\u003e\n        \u003c/DQ_Scope\u003e\n      \u003c/scope\u003e\n    \u003c/DQ_DataQuality\u003e\n  \u003c/dataQualityInfo\u003e\n  \u003cmetadataMaintenance\u003e\n    \u003cMD_MaintenanceInformation\u003e\n      \u003cmaintenanceAndUpdateFrequency\u003e\n        \u003cMD_MaintenanceFrequencyCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode\" codeListValue=\"unknown\" codeSpace=\"ISOTC211/19115\"\u003eunknown\u003c/MD_MaintenanceFrequencyCode\u003e\n      \u003c/maintenanceAndUpdateFrequency\u003e\n    \u003c/MD_MaintenanceInformation\u003e\n  \u003c/metadataMaintenance\u003e\n\u003c/MD_Metadata\u003e\n              \u003c/rdf:Description\u003e\n              \u003crdf:Description rdf:about=\"http://purl.stanford.edu/bc559yb0972\"\u003e\n                \u003cgfc:FC_FeatureCatalogue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xmlns:gfc=\"http://www.isotc211.org/2005/gfc\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gmx=\"http://www.isotc211.org/2005/gmx\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.isotc211.org/2005/gfc\" xsi:schemaLocation=\"http://www.isotc211.org/2005/gfc http://www.isotc211.org/2005/gfc/gfc.xsd\" uuid=\"\u0026#10;               6a2e3c5f-f557-4cc1-92de-41c177199554\"\u003e\n  \u003cgmx:name\u003e\n    \u003cgco:CharacterString\u003eFeature catalog for Mineral Resources: Santa Cruz County, California, 2015\u003c/gco:CharacterString\u003e\n  \u003c/gmx:name\u003e\n  \u003cgmx:scope\u003e\n    \u003cgco:CharacterString\u003eMine surveying; Mines and mineral resources; Quarries and quarrying; Building materials\u003c/gco:CharacterString\u003e\n  \u003c/gmx:scope\u003e\n  \u003cgmx:versionNumber gco:nilReason=\"unknown\"/\u003e\n  \u003cgmx:versionDate\u003e\n    \u003cgco:Date\u003e2015\u003c/gco:Date\u003e\n  \u003c/gmx:versionDate\u003e\n  \u003cgmx:language\u003e\n    \u003cgco:CharacterString\u003eeng; US\u003c/gco:CharacterString\u003e\n  \u003c/gmx:language\u003e\n  \u003cgmx:characterSet\u003e\n    \u003cgmd:MD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"/\u003e\n  \u003c/gmx:characterSet\u003e\n  \u003cgfc:featureType\u003e\n    \u003cgfc:FC_FeatureType\u003e\n      \u003cgfc:typeName\u003e\n        \u003cgco:LocalName\u003eMineralResources\u003c/gco:LocalName\u003e\n      \u003c/gfc:typeName\u003e\n      \u003cgfc:definition/\u003e\n      \u003cgfc:isAbstract\u003e\n        \u003cgco:Boolean\u003efalse\u003c/gco:Boolean\u003e\n      \u003c/gfc:isAbstract\u003e\n      \u003cgfc:featureCatalogue uuidref=\"\u0026#10;               6a2e3c5f-f557-4cc1-92de-41c177199554\"/\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eFID\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eInternal feature number.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eOID\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eShape\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eFeature geometry.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eGeometry\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eOBJECTID\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eInteger\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eMin_Res\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSHAPE_STAr\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSHAPE_STLe\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n    \u003c/gfc:FC_FeatureType\u003e\n  \u003c/gfc:featureType\u003e\n\u003c/gfc:FC_FeatureCatalogue\u003e\n              \u003c/rdf:Description\u003e\n            \u003c/rdf:RDF\u003e"
+  },
+  "created": "2024-05-08T14:57:51.000+00:00",
+  "modified": "2024-05-08T14:58:32.000+00:00",
+  "lock": "druid:bc559yb0972=0"
+}
