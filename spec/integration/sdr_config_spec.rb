@@ -16,6 +16,10 @@ RSpec.describe 'SDR indexing' do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
   end
 
+  before do
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404)
+  end
+
   context 'with a missing object' do
     let(:druid) { 'abc' }
 

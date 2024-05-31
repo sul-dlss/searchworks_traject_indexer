@@ -19,6 +19,7 @@ RSpec.describe 'EarthWorks indexing' do
 
   before do
     stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404)
   end
 
   context 'when image, map, or book content' do

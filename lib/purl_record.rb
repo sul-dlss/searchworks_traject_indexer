@@ -18,21 +18,32 @@ class PurlRecord
     catkey.nil? ? druid : catkey
   end
 
-  def public_xml?
-    !!public_xml
+  def druid_tree
+    druid.match(/(..)(...)(..)(....)/).captures.join('/')
   end
 
   def public_xml
-    @public_xml ||= PublicXmlRecord.fetch(purl_url, druid)
+    @public_xml ||= PublicXmlRecord.fetch(druid, purl_url:)
   end
 
-  delegate :mods, :rights, :public?, :stanford_only?, :rights_xml, :collection?,
+  def public_cocina
+    @public_cocina ||= PublicCocinaRecord.fetch(druid, purl_url:)
+  end
+
+  def public_xml?
+    public_xml.present?
+  end
+
+  def public_cocina?
+    public_cocina.present?
+  end
+
+  delegate :mods, :rights, :rights_xml, :collection?, :public?, :stanford_only?,
            :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
            :dor_resource_count, :dor_read_rights, :collections, :constituents,
            :catkey, :label, :stanford_mods, :mods_display,
            :public_xml_doc, to: :public_xml
 
-  def druid_tree
-    druid.match(/(..)(...)(..)(....)/).captures.join('/')
-  end
+  delegate :cocina_access, :cocina_structural, :cocina_description, :cocina_titles,
+           :created, :modified, :public_cocina_doc, :content_type, to: :public_cocina
 end
