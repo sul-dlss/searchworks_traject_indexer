@@ -11,7 +11,6 @@ class PublicXmlRecord
 
   def self.fetch(purl_url, druid)
     response = HTTP.get("#{purl_url}/#{druid}.xml")
-    response.body if response.status.ok?
     new(purl_url, druid, response.body) if response.status.ok?
   end
 
