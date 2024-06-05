@@ -85,7 +85,7 @@ set :indexers, [
     }
   },
   {
-    key: 'sw_solr9_indexer',
+    key: 'sw_solr9_sdr_indexer',
     count: 4,
     config: './lib/traject/config/sdr_config.rb',
     settings: {
