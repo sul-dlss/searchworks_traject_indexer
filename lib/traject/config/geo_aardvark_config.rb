@@ -182,9 +182,13 @@ to_field 'id', druid, prepend('stanford-')
 to_field 'dct_title_s', cocina_titles(type: :main), first_only, default('[Untitled]')
 
 # https://opengeometadata.org/ogm-aardvark/#alternative-title
+# - indexed but not displayed in the UI
 to_field 'dct_alternative_sm', cocina_titles(type: :additional)
 
 # https://opengeometadata.org/ogm-aardvark/#description
+# - geo data usually has a note with type "abstract"
+# - scanned maps usually have many short, non-typed and/or heterogenous notes
+# - we concatenate these as <p> elements in the UI
 to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { description_note?(note) }), extract_values
 
 # https://opengeometadata.org/ogm-aardvark/#language
@@ -221,6 +225,7 @@ to_field 'dct_temporal_sm', cocina_descriptive('event'), select_type('validity')
 to_field 'dct_temporal_sm', cocina_descriptive('event'), select_type('validity'), extract_structured_values, join('–')
 
 # https://opengeometadata.org/ogm-aardvark/#date-range
+# - currently unused in the UI
 to_field 'gbl_dateRange_drsim' do |_record, accumulator, context|
   next if context.output_hash['dct_temporal_sm'].blank?
 
@@ -229,6 +234,7 @@ to_field 'gbl_dateRange_drsim' do |_record, accumulator, context|
 end
 
 # https://opengeometadata.org/ogm-aardvark/#index-year
+# - used to power the year facet in the UI
 to_field 'gbl_indexYear_im' do |_record, accumulator, context|
   next if context.output_hash['dct_temporal_sm'].blank?
 
@@ -240,9 +246,12 @@ end
 to_field 'schema_provider_s', literal('Stanford')
 
 # https://opengeometadata.org/ogm-aardvark/#identifier
+# - we could add other links here if desired
 to_field 'dct_identifier_sm', cocina_descriptive('purl')
 
 # https://opengeometadata.org/ogm-aardvark/#resource-class
+# - if the item is a collection, set the resource class to "Collections" (only)
+# - if we didn't find anything, fall back to "Other" because the field is required
 to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, translation_map('geo_resource_class')
 to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
 to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_class')
@@ -263,16 +272,24 @@ to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('
 to_field 'dct_format_s', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_format')
 
 # https://opengeometadata.org/ogm-aardvark/#geometry
+# - powers the map search in the UI
+# - was required in schema v1.0 but is no longer a required field in Aardvark
+# - geo data will have a bounding box as a geographic subject
+# - scanned maps will have coordinates as a subject
 to_field 'locn_geometry', cocina_descriptive('geographic', 'subject'), select_type('bounding box coordinates'), format_envelope_bbox, first_only
 to_field 'locn_geometry', cocina_descriptive('subject'), select_type('map coordinates'), format_envelope_dms, first_only
 
 # https://opengeometadata.org/ogm-aardvark/#bounding-box
+# - will always be the same as locn_geometry since we use the ENVELOPE syntax
 to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.output_hash['locn_geometry'].first if context.output_hash['locn_geometry'].present? }
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
+# - currently unused in the UI
 to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << true if context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
 
 # https://opengeometadata.org/ogm-aardvark/#member-of
+# - links items to collections and collections to their items via a box on the show page
+# - a separate 'relations' solr query using this field is performed in the app to render the box
 to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'stanford-')
 
 # https://opengeometadata.org/ogm-aardvark/#rights_1
@@ -285,7 +302,8 @@ to_field 'dct_license_sm', cocina_access('license')
 to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public_cocina.public? ? 'Public' : 'Restricted') }
 
 # https://opengeometadata.org/ogm-aardvark/#modified
-# Use the most recent adminMetadata event, falling back to top-level dates
+# - required, but not used in the UI
+# - use the most recent adminMetadata event, falling back to top-level dates
 to_field 'gbl_mdModified_dt', cocina_descriptive('adminMetadata', 'event'), extract_dates, extract_values, parse_dates, sort(reverse: true), format_datetimes, first_only
 to_field 'gbl_mdModified_dt', modified, format_datetimes
 to_field 'gbl_mdModified_dt', created, format_datetimes
@@ -294,9 +312,12 @@ to_field 'gbl_mdModified_dt', created, format_datetimes
 to_field 'gbl_mdVersion_s', literal('Aardvark')
 
 # https://opengeometadata.org/ogm-aardvark/#wxs-identifier
+# - needed to request layers from our GeoServer
 to_field('gbl_wxsIdentifier_s') { |record, accumulator| accumulator << "druid:#{record.druid}" if record.content_type == 'geo' }
 
 # https://opengeometadata.org/ogm-aardvark/#references
+# - powers the map preview functionality, download links, and more
+# - links are evaluated in a preset order to determine which one to use for the preview
 to_field 'dct_references_s' do |record, accumulator, context|
   # All items have a purl link
   references = { 'http://schema.org/url' => "#{settings['purl.url']}/#{record.druid}" }
