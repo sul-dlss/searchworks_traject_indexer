@@ -137,7 +137,7 @@ end
 # True if the note should be used to form the item's description
 # @param note [Cocina::Models::DescriptiveValue]
 def description_note?(note)
-  ['Local note', 'Preferred citation', 'Supplemental information'].exclude?(note.displayLabel)
+  ['Local note', 'Preferred citation', 'Supplemental information', 'Donor tags'].exclude?(note.displayLabel)
 end
 
 # Time the indexing of each record
@@ -285,7 +285,10 @@ to_field 'dct_license_sm', cocina_access('license')
 to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public_cocina.public? ? 'Public' : 'Restricted') }
 
 # https://opengeometadata.org/ogm-aardvark/#modified
-to_field 'gbl_mdModified_dt', cocina_descriptive('adminMetadata', 'event'), extract_dates, extract_values, parse_dates, sort, first_only, default(Time.now), transform(->(dt) { dt.strftime('%Y-%m-%dT%H:%M:%SZ') })
+# Use the most recent adminMetadata event, falling back to top-level dates
+to_field 'gbl_mdModified_dt', cocina_descriptive('adminMetadata', 'event'), extract_dates, extract_values, parse_dates, sort(reverse: true), format_datetimes, first_only
+to_field 'gbl_mdModified_dt', modified, format_datetimes
+to_field 'gbl_mdModified_dt', created, format_datetimes
 
 # https://opengeometadata.org/ogm-aardvark/#metadata-version
 to_field 'gbl_mdVersion_s', literal('Aardvark')
@@ -356,7 +359,7 @@ end
 # Make single-valued fields in solr into single values instead of arrays
 unless settings['writer_class_name'] == 'Traject::DebugWriter'
   each_record do |_record, context|
-    context.output_hash.select { |k, _v| k =~ /_(s|b|bbox|geometry)$/ }.each do |k, v|
+    context.output_hash.select { |k, _v| k =~ /_(s|b|dt|bbox|geometry)$/ }.each do |k, v|
       context.output_hash[k] = context.output_hash[k].first if v.is_a?(Array)
     end
   end
