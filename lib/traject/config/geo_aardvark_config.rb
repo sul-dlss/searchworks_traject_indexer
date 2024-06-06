@@ -94,17 +94,32 @@ def find_object_file(record, filename)
         .find { |file| file.filename.match? filename }
 end
 
-# Generate a solr-formatted ENVELOPE string from a bounding box
-# @param coordinates [Array<Hash>] the bounding box coordinates
-def format_envelope(coordinates = [])
-  west = coordinates.find { |c| c[:type] == 'west' }.value
-  east = coordinates.find { |c| c[:type] == 'east' }.value
-  north = coordinates.find { |c| c[:type] == 'north' }.value
-  south = coordinates.find { |c| c[:type] == 'south' }.value
+# Macro: generate a solr-formatted ENVELOPE string from a DMS-format string
+def format_envelope_dms
+  lambda do |_record, accumulator, _context|
+    accumulator.map! do |subject|
+      coordinates = Stanford::Geo::Coordinate.new(subject.value)
+      coordinates.as_envelope if coordinates.valid?
+    rescue StandardError
+      raise "Error parsing bounding box coordinates: #{coordinates}"
+    end.compact!
+  end
+end
 
-  "ENVELOPE(#{west}, #{east}, #{north}, #{south})"
-rescue StandardError
-  raise "Error parsing bounding box coordinates: #{coordinates}"
+# Macro: Generate a solr-formatted ENVELOPE string from a bounding box
+def format_envelope_bbox
+  lambda do |_record, accumulator, _context|
+    accumulator.map! do |subject|
+      west = subject.structuredValue.find { |c| c[:type] == 'west' }.value
+      east = subject.structuredValue.find { |c| c[:type] == 'east' }.value
+      north = subject.structuredValue.find { |c| c[:type] == 'north' }.value
+      south = subject.structuredValue.find { |c| c[:type] == 'south' }.value
+      coordinates = Stanford::Geo::Coordinate.from_bbox(west, south, east, north)
+      coordinates.as_envelope if coordinates.valid?
+    rescue StandardError
+      raise "Error parsing bounding box coordinates: #{coordinates}"
+    end.compact!
+  end
 end
 
 # Extract all the parseable unique years from a list of dates and sort them
@@ -241,13 +256,11 @@ to_field 'dct_format_s', cocina_descriptive('form'), select_type('form'), extrac
 to_field('dct_format_s') { |_record, accumulator| accumulator.slice!(1, accumulator.length) }
 
 # https://opengeometadata.org/ogm-aardvark/#geometry
-to_field 'locn_geometry', cocina_descriptive('geographic', 'subject'), select_type('bounding box coordinates'), transform(->(subject) { format_envelope(subject.structuredValue) }), first_only
+to_field 'locn_geometry', cocina_descriptive('geographic', 'subject'), select_type('bounding box coordinates'), format_envelope_bbox, first_only
+to_field 'locn_geometry', cocina_descriptive('subject'), select_type('map coordinates'), format_envelope_dms, first_only
 
 # https://opengeometadata.org/ogm-aardvark/#bounding-box
-to_field 'dcat_bbox', cocina_descriptive('geographic', 'subject'), select_type('bounding box coordinates'), transform(->(subject) { format_envelope(subject.structuredValue) }), first_only
-
-# https://opengeometadata.org/ogm-aardvark/#source
-# TODO?
+to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.output_hash['locn_geometry'].first if context.output_hash['locn_geometry'].present? }
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
 # TODO?
