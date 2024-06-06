@@ -153,7 +153,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the embed URL' do
-      expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url=https://purl.stanford.edu/#{druid}"
+      expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url%5B%5D=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
     end
 
     it 'maps the WMS URL' do
@@ -177,11 +177,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the ISO19139 URL' do
-        expect(references['http://www.isotc211.org/schemas/2005/gmd/']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/MineralResources-iso19139.xml"
+        expect(references['http://www.isotc211.org/schemas/2005/gmd']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/MineralResources-iso19139.xml"
       end
 
       it 'maps the ISO19110 URL' do
-        expect(references['http://www.isotc211.org/schemas/2005/gco/']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/MineralResources-iso19110.xml"
+        expect(references['http://www.isotc211.org/schemas/2005/gco']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/MineralResources-iso19110.xml"
       end
 
       it 'maps the FGDC URL' do
@@ -366,7 +366,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       end
 
       it 'maps the embed URL' do
-        expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url=https://purl.stanford.edu/#{druid}"
+        expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url%5B%5D=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
       end
     end
   end
@@ -430,11 +430,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the ISO19139 URL' do
-        expect(references['http://www.isotc211.org/schemas/2005/gmd/']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/Stanford_Temperature_Model_4km-iso19139.xml"
+        expect(references['http://www.isotc211.org/schemas/2005/gmd']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/Stanford_Temperature_Model_4km-iso19139.xml"
       end
 
       it 'maps the ISO19110 URL' do
-        expect(references['http://www.isotc211.org/schemas/2005/gco/']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/Stanford_Temperature_Model_4km-iso19110.xml"
+        expect(references['http://www.isotc211.org/schemas/2005/gco']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/Stanford_Temperature_Model_4km-iso19110.xml"
       end
 
       it 'maps the FGDC URL' do

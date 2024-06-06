@@ -6,15 +6,24 @@ require_relative '../../../../lib/traject/macros/cocina'
 RSpec.describe Traject::Macros::Cocina do
   include Traject::Macros::Cocina
 
-  subject(:result) { macro.call(record, [], {}) }
-
-  let(:druid) { 'vv853br8653' }
+  subject(:result) { macro.call(record, accumulator, context) }
+  let(:accumulator) { [] }
+  let(:context) { Traject::Indexer::Context.new(source_record: record) }
+  let(:output_hash) { {} }
+  let(:druid) { 'fk339wc1276' }
   let(:body) { File.read(file_fixture("#{druid}.json")) }
   let(:record) { PurlRecord.new(druid) }
+  let(:settings) do
+    {
+      'purl.url' => 'https://purl.stanford.edu',
+      'stacks.url' => 'https://stacks.stanford.edu'
+    }
+  end
 
   before do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
+    allow(context).to receive(:output_hash).and_return(output_hash)
   end
 
   describe 'cocina_descriptive' do
@@ -31,6 +40,116 @@ RSpec.describe Traject::Macros::Cocina do
 
       it 'returns the nested items as a flattened array' do
         expect(result).to eq record.cocina_description.event.flat_map(&:date)
+      end
+    end
+  end
+
+  describe 'stacks_file_url' do
+    let(:macro) { stacks_file_url }
+
+    context 'with file objects' do
+      let(:accumulator) { record.cocina_structural.contains[0].structural.contains }
+
+      it 'returns the URLs for the files' do
+        expect(result).to eq [
+          'https://stacks.stanford.edu/file/druid:fk339wc1276/Stanford_Temperature_Model_4km.geojson'
+        ]
+      end
+    end
+
+    context 'with no files' do
+      it 'returns an empty array' do
+        expect(result).to eq []
+      end
+    end
+  end
+
+  describe 'select_files' do
+    context 'with a filename string' do
+      let(:macro) { select_files('preview.jpg') }
+
+      it 'returns the files with the matching filename' do
+        expect(result.map(&:filename)).to eq ['preview.jpg']
+      end
+    end
+
+    context 'with a filename regex' do
+      let(:macro) { select_files(/\.xml$/) }
+
+      it 'returns the files with filenames matching the regex' do
+        expect(result.map(&:filename)).to eq [
+          'Stanford_Temperature_Model_4km.geojson.xml',
+          'Stanford_Temperature_Model_4km-iso19139.xml',
+          'Stanford_Temperature_Model_4km-iso19110.xml',
+          'Stanford_Temperature_Model_4km-fgdc.xml'
+        ]
+      end
+    end
+
+    context 'with a filtered list of files' do
+      let(:accumulator) { record.cocina_structural.contains[2].structural.contains }
+      let(:macro) { select_files(/-iso/) }
+
+      it 'operates on the files in the list' do
+        expect(result.map(&:filename)).to eq [
+          'Stanford_Temperature_Model_4km-iso19139.xml',
+          'Stanford_Temperature_Model_4km-iso19110.xml'
+        ]
+      end
+    end
+
+    context 'when there are no matches' do
+      let(:macro) { select_files('missing.jpg') }
+
+      it 'returns an empty array' do
+        expect(result).to eq []
+      end
+    end
+  end
+
+  describe 'find_file' do
+    context 'with a filename string' do
+      let(:macro) { find_file('preview.jpg') }
+
+      it 'returns the file with the matching filename' do
+        expect(result.first.filename).to eq 'preview.jpg'
+      end
+    end
+
+    context 'with a filename regex' do
+      let(:macro) { find_file(/\.xml$/) }
+
+      it 'returns the first file with a filename matching the regex' do
+        expect(result.first.filename).to eq 'Stanford_Temperature_Model_4km.geojson.xml'
+      end
+    end
+
+    context 'when the file is not found' do
+      let(:macro) { find_file('missing.jpg') }
+
+      it 'returns an empty array' do
+        expect(result).to eq []
+      end
+    end
+  end
+
+  describe 'keep_if' do
+    context 'with a block that uses the record only' do
+      let(:macro) { keep_if { |rec, _val, _ctx| rec.content_type == 'foo' } }
+      let(:accumulator) { %w[foo bar baz] }
+
+      it 'filters the accumulator based on the record' do
+        expect(result).to eq []
+      end
+    end
+
+    context 'with a block that compares the value to an existing field' do
+      let(:macro) { keep_if { |_rec, val, ctx| val == ctx.output_hash['field'] } }
+      let(:output_hash) { { 'field' => 'correct' } }
+      let(:accumulator) { %w[incorrect correct] }
+
+      it 'filters the accumulator based on the context' do
+        expect(result).to eq %w[correct]
       end
     end
   end

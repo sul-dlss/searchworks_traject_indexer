@@ -57,6 +57,10 @@ class PublicCocinaRecord
     public_cocina_doc['type'].split('/').last
   end
 
+  def files
+    cocina_structural.contains.flat_map { |fileset| fileset.structural.contains }
+  end
+
   def public_cocina?
     public_cocina.present?
   end

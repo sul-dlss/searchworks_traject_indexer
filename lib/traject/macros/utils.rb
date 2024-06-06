@@ -27,6 +27,14 @@ module Traject
           accumulator.map! { |dt| dt&.strftime('%Y-%m-%dT%H:%M:%SZ') }.compact!
         end
       end
+
+      # Like #select, but calls the callable and provides the record and context too
+      # Use to filter values based on another macro
+      def filter(callable)
+        lambda do |record, accumulator, context|
+          accumulator.select! { |value| callable.call(record, value, context) }
+        end
+      end
     end
   end
 end

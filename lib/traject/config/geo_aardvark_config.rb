@@ -78,24 +78,6 @@ def geoserver_url(record)
   record.public_cocina.public? ? settings['geoserver.pub_url'] : settings['geoserver.stan_url']
 end
 
-# Generate a stacks file url for a given item and file
-# @param record [PublicCocinaRecord] the item being indexed
-# @param file [Cocina::Models::File] the file to generate a url for
-def stacks_file_url(record, file)
-  "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}"
-end
-
-# Find the (first) file in an item that matches the given filename
-# Limit to only files that are in "object" type filesets (not "image", "preview", etc.)
-# @param record [PublicCocinaRecord] the item being indexed
-# @param filename [Regexp] the filename to match
-def find_object_file(record, filename)
-  record.cocina_structural.contains
-        .select { |fileset| fileset.type == 'https://cocina.sul.stanford.edu/models/resources/object' }
-        .flat_map { |fileset| fileset.structural.contains }
-        .find { |file| file.filename.match? filename }
-end
-
 # Macro: generate a solr-formatted ENVELOPE string from a DMS-format string
 def format_envelope_dms
   lambda do |_record, accumulator, _context|
@@ -124,6 +106,12 @@ def format_envelope_bbox
   end
 end
 
+def as_reference(uri)
+  lambda do |_record, accumulator, _context|
+    accumulator.map! { |reference| { uri => reference } }
+  end
+end
+
 # Extract all the parseable unique years from a list of dates and sort them
 # @param dates [Array<String>] the list of dates
 def extract_years(dates)
@@ -138,6 +126,24 @@ end
 # @param note [Cocina::Models::DescriptiveValue]
 def description_note?(note)
   ['Local note', 'Preferred citation', 'Supplemental information', 'Donor tags'].exclude?(note.displayLabel)
+end
+
+def wms_url
+  lambda do |record, accumulator, _context|
+    accumulator << "#{geoserver_url(record)}/wms" if record.content_type == 'geo'
+  end
+end
+
+def wfs_url
+  lambda do |record, accumulator, context|
+    accumulator << "#{geoserver_url(record)}/wfs" if %w[GeoJSON Shapefile].intersect? context.output_hash['dct_format_s'].to_a
+  end
+end
+
+def wcs_url
+  lambda do |record, accumulator, context|
+    accumulator << "#{geoserver_url(record)}/wcs" if %w[GeoTIFF ArcGRID].intersect? context.output_hash['dct_format_s'].to_a
+  end
 end
 
 # Time the indexing of each record
@@ -317,57 +323,31 @@ to_field('gbl_wxsIdentifier_s') { |record, accumulator| accumulator << "druid:#{
 
 # https://opengeometadata.org/ogm-aardvark/#references
 # - powers the map preview functionality, download links, and more
+# - everything gets encoded as a single JSON object and serialized to a string
 # - links are evaluated in a preset order to determine which one to use for the preview
-to_field 'dct_references_s' do |record, accumulator, context|
-  # All items have a purl link
-  references = { 'http://schema.org/url' => "#{settings['purl.url']}/#{record.druid}" }
-
-  # Non-collection items have an embed link
-  # TODO: should they have a stacks .zip download link too?
-  references.merge!('https://oembed.com' => "#{settings['purl.url']}/embed.json?hide_title=true&url=#{settings['purl.url']}/#{record.druid}") unless record.public_cocina.collection?
-
-  # IIIF items have a IIIF manifest link
-  references.merge!('http://iiif.io/api/presentation#manifest' => "#{settings['purl.url']}/#{record.druid}/iiif3/manifest") if %w[image map book].include? record.content_type
-
-  # Geo items have a WMS link
-  references.merge!('http://www.opengis.net/def/serviceType/ogc/wms' => "#{geoserver_url(record)}/wms") if record.content_type == 'geo'
-
-  # Vectors have a WFS link
-  references.merge!('http://www.opengis.net/def/serviceType/ogc/wfs' => "#{geoserver_url(record)}/wfs") if %w[GeoJSON Shapefile].intersect? context.output_hash['dct_format_s'].to_a
-
-  # Rasters have a WCS link
-  references.merge!('http://www.opengis.net/def/serviceType/ogc/wcs' => "#{geoserver_url(record)}/wcs") if %w[GeoTIFF ArcGRID].intersect? context.output_hash['dct_format_s'].to_a
-
-  # If the item has a map index, link it
-  if (file = find_object_file(record, /index_map\.(json|geojson)/))
-    references.merge!('https://openindexmaps.org' => "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}")
-  end
-
-  # If the item has ISO19139 metadata, link it
-  if (file = find_object_file(record, /iso19139\.xml/))
-    references.merge!('http://www.isotc211.org/schemas/2005/gmd/' => "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}")
-  end
-
-  # If the item has ISO19110 metadata, link it
-  if (file = find_object_file(record, /iso19110\.xml/))
-    references.merge!('http://www.isotc211.org/schemas/2005/gco/' => "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}")
-  end
-
-  # If the item has FGDC metadata, link it
-  if (file = find_object_file(record, /fgdc\.xml/))
-    references.merge!('http://www.opengis.net/cat/csw/csdgm' => "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}")
-  end
-
-  # If the item has a GeoJSON file, link it
-  if (file = find_object_file(record, /\.geojson/))
-    references.merge!('http://geojson.org/geojson-spec.html' => "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}")
-  end
-
-  # Encode everything as a JSON string
-  accumulator << references.to_json
-end
+# - all items get a PURL link
+# - all non-collection items get an embed link
+# - all geo items get a WMS link
+# - vectors get a WFS link
+# - rasters get a WCS link
+# - index maps have a specially named geojson file that is linked
+# - if XML metadata files exist (not in data.zip), we link them
+# - data that is in geoJSON format (including index maps) gets a link to the spec
+to_field 'dct_references_s', purl_url, as_reference('http://schema.org/url')
+to_field 'dct_references_s', embed_url({ hide_title: true }), as_reference('https://oembed.com')
+to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
+to_field 'dct_references_s', wms_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wms')
+to_field 'dct_references_s', wfs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wfs')
+to_field 'dct_references_s', wcs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wcs')
+to_field 'dct_references_s', find_file(/index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
+to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
+to_field 'dct_references_s', find_file(/iso19110\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gco')
+to_field 'dct_references_s', find_file(/fgdc\.xml/), stacks_file_url, as_reference('http://www.opengis.net/cat/csw/csdgm')
+to_field 'dct_references_s', find_file(/\.geojson/), stacks_file_url, as_reference('http://geojson.org/geojson-spec.html')
+each_record { |_record, context| context.output_hash['dct_references_s'] = context.output_hash['dct_references_s'].reduce(:merge!).to_json }
 
 # Make single-valued fields in solr into single values instead of arrays
+# The DebugWriter doesn't like this, so skip it for that writer
 unless settings['writer_class_name'] == 'Traject::DebugWriter'
   each_record do |_record, context|
     context.output_hash.select { |k, _v| k =~ /_(s|b|dt|bbox|geometry)$/ }.each do |k, v|

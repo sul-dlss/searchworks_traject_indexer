@@ -45,5 +45,5 @@ class PurlRecord
            :public_xml_doc, to: :public_xml
 
   delegate :cocina_access, :cocina_structural, :cocina_description, :cocina_titles,
-           :created, :modified, :public_cocina_doc, :content_type, to: :public_cocina
+           :created, :modified, :public_cocina_doc, :content_type, :files, to: :public_cocina
 end
