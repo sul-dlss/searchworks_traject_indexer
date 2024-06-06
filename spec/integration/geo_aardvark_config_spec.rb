@@ -19,7 +19,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
   end
 
-  it 'generates an id' do
+  it 'maps an id' do
     expect(result['id']).to eq ["stanford-#{druid}"]
   end
 
@@ -27,10 +27,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['dct_title_s']).to eq 'Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'
   end
 
-  it 'maps the description including all description note fields' do
+  it 'maps the description including all relevant description note fields' do
     expect(result['dct_description_sm'].first).to start_with 'This dataset is a visualization of abundance estimates for six species of Pacific salmon'
     expect(result['dct_description_sm'].last).to start_with 'This layer is presented in the WGS84 coordinate system for web display purposes'
-    expect(result['dct_description_sm'].size).to eq 4
+    expect(result['dct_description_sm'].size).to eq 3
   end
 
   it 'maps the languages' do
@@ -103,18 +103,16 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['gbl_resourceType_sm']).to eq ['Polygon data']
   end
 
-  it 'calculates the file size in MB'
-
   it 'maps the file format' do
     expect(result['dct_format_s']).to eq 'Shapefile'
   end
 
   it 'maps the geometry' do
-    expect(result['locn_geometry']).to eq ['ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)']
+    expect(result['locn_geometry']).to eq 'ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)'
   end
 
   it 'maps the bounding box' do
-    expect(result['dcat_bbox']).to eq ['ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)']
+    expect(result['dcat_bbox']).to eq 'ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)'
   end
 
   it 'maps the rights' do
@@ -134,15 +132,16 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['dct_accessRights_s']).to eq 'Public'
   end
 
-  it 'maps the metadata modification date' do
-    expect(result['gbl_mdModified_dt']).to eq ['2022-09-28T21:48:32Z']
+  # No events in cocina descriptive adminMetadata, so we use the top-level one
+  it 'maps the top-level modification date as the metadata modification date' do
+    expect(result['gbl_mdModified_dt']).to eq '2022-09-28T21:48:32Z'
   end
 
   it 'maps the metadata version as Aardvark' do
     expect(result['gbl_mdVersion_s']).to eq 'Aardvark'
   end
 
-  it 'includes the WFS/WMS/WCS identifier' do
+  it 'maps the WFS/WMS/WCS identifier' do
     expect(result['gbl_wxsIdentifier_s']).to eq 'druid:vv853br8653'
   end
 
@@ -169,8 +168,9 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   context 'with a shapefile with unzipped metadata' do
     let(:druid) { 'bc559yb0972' }
 
-    it 'uses the creation date as the metadata modification date' do
-      expect(result['gbl_mdModified_dt']).to eq ['2015-11-03T00:00:00Z']
+    # There is an event in cocina descriptive adminMetadata, so we use that (even though it's creation)
+    it 'maps the creation date as the metadata modification date' do
+      expect(result['gbl_mdModified_dt']).to eq '2015-11-03T00:00:00Z'
     end
 
     describe 'URL references' do
@@ -193,17 +193,12 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   context 'with a scanned map' do
     let(:druid) { 'dc482zx1528' }
 
-    xit 'maps the creators' do
-      expect(result['dct_creator_sm']).to eq ['Kikyōya Genkichi', '桔梗屋源吉']
-    end
-
-    it 'maps the description including all non-local note fields' do
+    it 'maps the description including all relevant note fields' do
       expect(result['dct_description_sm']).to eq [
         'Publication date estimate from dealer description.',
         'Shows views of tourist attractions.',
         'Includes distance chart in inset.',
-        'Hand-painted.',
-        'Gunma prefecture'
+        'Hand-painted.'
       ]
     end
 
@@ -467,8 +462,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(result['dct_spatial_sm']).to eq ['San Francisco Bay Area']
     end
 
-    it 'uses the modification date as the metadata modification date' do
-      expect(result['gbl_mdModified_dt']).to eq ['2015-11-03T00:00:00Z']
+    # This record has two differently-formatted events in cocina descriptive
+    # adminMetadata; we want to parse both and use the more recent (modified)
+    it 'maps the modification date as the metadata modification date' do
+      expect(result['gbl_mdModified_dt']).to eq '2002-06-18T15:56:43Z'
     end
 
     it 'maps the themes' do

@@ -6,7 +6,7 @@ require_relative '../../../../lib/traject/macros/cocina'
 RSpec.describe Traject::Macros::Cocina do
   include Traject::Macros::Cocina
 
-  subject(:result) { macro.call(record, []) }
+  subject(:result) { macro.call(record, [], {}) }
 
   let(:druid) { 'vv853br8653' }
   let(:body) { File.read(file_fixture("#{druid}.json")) }
