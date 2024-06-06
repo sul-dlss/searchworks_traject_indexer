@@ -24,12 +24,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the title' do
-    expect(result['dct_title_s']).to eq ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008']
+    expect(result['dct_title_s']).to eq 'Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'
   end
 
-  it 'maps the description including all abstract fields' do
+  it 'maps the description including all description note fields' do
     expect(result['dct_description_sm'].first).to start_with 'This dataset is a visualization of abundance estimates for six species of Pacific salmon'
-    expect(result['dct_description_sm'].last).to start_with 'The Conservation Science team at the Wild Salmon Center has created a geographic database'
+    expect(result['dct_description_sm'].last).to start_with 'This layer is presented in the WGS84 coordinate system for web display purposes'
+    expect(result['dct_description_sm'].size).to eq 4
   end
 
   it 'maps the languages' do
@@ -50,7 +51,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the date issued' do
-    expect(result['dct_issued_s']).to eq ['2009']
+    expect(result['dct_issued_s']).to eq '2009'
   end
 
   it 'maps the subjects' do
@@ -87,7 +88,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the provider as stanford' do
-    expect(result['schema_provider_s']).to eq ['Stanford']
+    expect(result['schema_provider_s']).to eq 'Stanford'
   end
 
   it 'uses the purl url as an identifier' do
@@ -105,7 +106,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   it 'calculates the file size in MB'
 
   it 'maps the file format' do
-    expect(result['dct_format_s']).to eq ['Shapefile']
+    expect(result['dct_format_s']).to eq 'Shapefile'
   end
 
   it 'maps the geometry' do
@@ -130,7 +131,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the access rights' do
-    expect(result['dct_accessRights_s']).to eq ['Public']
+    expect(result['dct_accessRights_s']).to eq 'Public'
   end
 
   it 'maps the metadata modification date' do
@@ -138,15 +139,15 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the metadata version as Aardvark' do
-    expect(result['gbl_mdVersion_s']).to eq ['Aardvark']
+    expect(result['gbl_mdVersion_s']).to eq 'Aardvark'
   end
 
   it 'includes the WFS/WMS/WCS identifier' do
-    expect(result['gbl_wxsIdentifier_s']).to eq ['druid:vv853br8653']
+    expect(result['gbl_wxsIdentifier_s']).to eq 'druid:vv853br8653'
   end
 
   describe 'URL references' do
-    let(:references) { JSON.parse result['dct_references_s'].first }
+    let(:references) { JSON.parse result['dct_references_s'] }
 
     it 'maps the purl URL' do
       expect(references['http://schema.org/url']).to eq "https://purl.stanford.edu/#{druid}"
@@ -168,8 +169,12 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   context 'with a shapefile with unzipped metadata' do
     let(:druid) { 'bc559yb0972' }
 
+    it 'uses the creation date as the metadata modification date' do
+      expect(result['gbl_mdModified_dt']).to eq ['2015-11-03T00:00:00Z']
+    end
+
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the ISO19139 URL' do
         expect(references['http://www.isotc211.org/schemas/2005/gmd/']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/MineralResources-iso19139.xml"
@@ -192,8 +197,18 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(result['dct_creator_sm']).to eq ['Kikyōya Genkichi', '桔梗屋源吉']
     end
 
+    it 'maps the description including all non-local note fields' do
+      expect(result['dct_description_sm']).to eq [
+        'Publication date estimate from dealer description.',
+        'Shows views of tourist attractions.',
+        'Includes distance chart in inset.',
+        'Hand-painted.',
+        'Gunma prefecture'
+      ]
+    end
+
     it 'maps the main title' do
-      expect(result['dct_title_s']).to eq ['Jōshū Kusatsu Onsenzu']
+      expect(result['dct_title_s']).to eq 'Jōshū Kusatsu Onsenzu'
     end
 
     it 'maps the alternative titles' do
@@ -205,7 +220,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the file format' do
-      expect(result['dct_format_s']).to eq ['JPEG']
+      expect(result['dct_format_s']).to eq 'JPEG'
     end
 
     it 'maps the collection membership as memberOf' do
@@ -217,7 +232,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the IIIF manifest URL' do
         expect(references['http://iiif.io/api/presentation#manifest']).to eq 'https://purl.stanford.edu/dc482zx1528/iiif3/manifest'
@@ -226,8 +241,19 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   context 'with a scanned map that was georeferenced' do
-    it 'maps the source as the georeferenced map'
-    it 'maps the georeferenced status'
+    let(:druid) { 'kd514jp1398' }
+
+    it 'maps the resource class' do
+      expect(result['gbl_resourceClass_sm']).to eq %w[Datasets Maps]
+    end
+
+    it 'maps the resource types' do
+      expect(result['gbl_resourceType_sm']).to eq ['Raster data']
+    end
+
+    it 'maps the georeferenced status' do
+      expect(result['gbl_georeferenced_b']).to eq true
+    end
   end
 
   context 'with a stanford-only raster image' do
@@ -254,11 +280,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the access rights' do
-      expect(result['dct_accessRights_s']).to eq ['Restricted']
+      expect(result['dct_accessRights_s']).to eq 'Restricted'
     end
 
     it 'maps the file format' do
-      expect(result['dct_format_s']).to eq ['GeoTIFF']
+      expect(result['dct_format_s']).to eq 'GeoTIFF'
     end
 
     it 'maps the collection membership as memberOf' do
@@ -266,7 +292,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the WMS URL' do
         expect(references['http://www.opengis.net/def/serviceType/ogc/wms']).to eq 'https://geowebservices-restricted.stanford.edu/geoserver/wms'
@@ -306,7 +332,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the file format' do
-      expect(result['dct_format_s']).to eq ['Shapefile']
+      expect(result['dct_format_s']).to eq 'Shapefile'
     end
 
     it 'maps the collection membership as memberOf' do
@@ -314,7 +340,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the OpenIndexMaps URL' do
         expect(references['https://openindexmaps.org']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/index_map.json"
@@ -326,7 +352,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     let(:druid) { 'pq479rm6462' }
 
     it 'maps the access rights' do
-      expect(result['dct_accessRights_s']).to eq ['Restricted']
+      expect(result['dct_accessRights_s']).to eq 'Restricted'
     end
 
     it 'maps the resource class' do
@@ -334,11 +360,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the file format' do
-      expect(result['dct_format_s']).to eq ['Geodatabase']
+      expect(result['dct_format_s']).to eq 'Geodatabase'
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the purl URL' do
         expect(references['http://schema.org/url']).to eq "https://purl.stanford.edu/#{druid}"
@@ -378,7 +404,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the file format' do
-      expect(result['dct_format_s']).to eq ['Shapefile']
+      expect(result['dct_format_s']).to eq 'Shapefile'
     end
 
     it 'maps the collection membership as memberOf' do
@@ -386,7 +412,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the WMS URL' do
         expect(references['http://www.opengis.net/def/serviceType/ogc/wms']).to eq 'https://geowebservices.stanford.edu/geoserver/wms'
@@ -406,7 +432,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the ISO19139 URL' do
         expect(references['http://www.isotc211.org/schemas/2005/gmd/']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/Stanford_Temperature_Model_4km-iso19139.xml"
@@ -441,6 +467,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(result['dct_spatial_sm']).to eq ['San Francisco Bay Area']
     end
 
+    it 'uses the modification date as the metadata modification date' do
+      expect(result['gbl_mdModified_dt']).to eq ['2015-11-03T00:00:00Z']
+    end
+
     it 'maps the themes' do
       expect(result['dcat_theme_sm']).to eq %w[Transportation Boundaries]
     end
@@ -450,7 +480,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'].first }
+      let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'has no download URL' do
         expect(references['http://schema.org/downloadUrl']).to be_nil

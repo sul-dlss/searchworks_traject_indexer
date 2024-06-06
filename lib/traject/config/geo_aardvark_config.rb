@@ -132,6 +132,12 @@ def extract_years(dates)
        .uniq
 end
 
+# True if the note should be used to form the item's description
+# @param note [Cocina::Models::DescriptiveValue]
+def description_note?(note)
+  ['Local note', 'Preferred citation', 'Supplemental information'].exclude?(note.displayLabel)
+end
+
 # Time the indexing of each record
 each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
@@ -143,6 +149,7 @@ each_record do |record, context|
 
   druid = record[:id].sub('druid:', '')
   context.output_hash['id'] = ["stanford-#{druid}"]
+  logger.debug "Delete: #{druid}"
   context.skip!("Delete: #{druid}")
 end
 
@@ -150,8 +157,9 @@ end
 each_record do |record, context|
   next if record.public_cocina?
 
-  message = 'Item is in processing or does not exist'
+  message = 'No public metadata for item'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.warn "#{message}: #{record.druid}"
   context.skip!("#{message}: #{record.druid}")
 end
 
@@ -161,6 +169,7 @@ each_record do |record, context|
 
   message = "Item content type \"#{record.content_type}\" is not supported"
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.warn "#{message}: #{record.druid}"
   context.skip!("#{message}: #{record.druid}")
 end
 
@@ -168,13 +177,13 @@ end
 to_field 'id', druid, prepend('stanford-')
 
 # https://opengeometadata.org/ogm-aardvark/#title
-to_field 'dct_title_s', cocina_titles(type: :main), first_only
+to_field 'dct_title_s', cocina_titles(type: :main), first_only, default('[Untitled]')
 
 # https://opengeometadata.org/ogm-aardvark/#alternative-title
 to_field 'dct_alternative_sm', cocina_titles(type: :additional)
 
 # https://opengeometadata.org/ogm-aardvark/#description
-to_field 'dct_description_sm', cocina_descriptive('note'), select_type('abstract'), extract_values
+to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { description_note?(note) }), extract_values
 
 # https://opengeometadata.org/ogm-aardvark/#language
 to_field 'dct_language_sm', cocina_descriptive('language'), transform(&:code)
@@ -237,8 +246,8 @@ to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'
 to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_class')
 to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
 to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_class')
-to_field('gbl_resourceClass_sm') { |record, accumulator| accumulator << 'Collections' if record.public_cocina.collection? }
-to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].empty? }
+to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
+to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.public_cocina.collection? }
 
 # https://opengeometadata.org/ogm-aardvark/#resource-type
 to_field 'gbl_resourceType_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_type')
@@ -246,14 +255,10 @@ to_field 'gbl_resourceType_sm', cocina_descriptive('form'), select_type('form'),
 to_field 'gbl_resourceType_sm', cocina_descriptive('subject'), select_type('topic'), extract_values, translation_map('geo_resource_type')
 to_field 'gbl_resourceType_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_type')
 
-# https://opengeometadata.org/ogm-aardvark/#file-size
-# TODO?
-
 # https://opengeometadata.org/ogm-aardvark/#format
 to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('data format'), extract_values, translation_map('geo_format')
 to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('media type'), extract_values, translation_map('geo_format')
 to_field 'dct_format_s', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_format')
-to_field('dct_format_s') { |_record, accumulator| accumulator.slice!(1, accumulator.length) }
 
 # https://opengeometadata.org/ogm-aardvark/#geometry
 to_field 'locn_geometry', cocina_descriptive('geographic', 'subject'), select_type('bounding box coordinates'), format_envelope_bbox, first_only
@@ -263,7 +268,7 @@ to_field 'locn_geometry', cocina_descriptive('subject'), select_type('map coordi
 to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.output_hash['locn_geometry'].first if context.output_hash['locn_geometry'].present? }
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
-# TODO?
+to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << true if context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
 
 # https://opengeometadata.org/ogm-aardvark/#member-of
 to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'stanford-')
@@ -278,7 +283,7 @@ to_field 'dct_license_sm', cocina_access('license')
 to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public_cocina.public? ? 'Public' : 'Restricted') }
 
 # https://opengeometadata.org/ogm-aardvark/#modified
-to_field('gbl_mdModified_dt') { |record, accumulator| accumulator << record.modified.strftime('%Y-%m-%dT%H:%M:%SZ') }
+to_field 'gbl_mdModified_dt', cocina_descriptive('adminMetadata', 'event'), extract_dates, extract_values, parse_dates, sort, first_only, default(Time.now), transform(->(dt) { dt.strftime('%Y-%m-%dT%H:%M:%SZ') })
 
 # https://opengeometadata.org/ogm-aardvark/#metadata-version
 to_field 'gbl_mdVersion_s', literal('Aardvark')
@@ -292,7 +297,7 @@ to_field 'dct_references_s' do |record, accumulator, context|
   references = { 'http://schema.org/url' => "#{settings['purl.url']}/#{record.druid}" }
 
   # Non-collection items have an embed link
-  # TODO: should they have a stacks download link too?
+  # TODO: should they have a stacks .zip download link too?
   references.merge!('https://oembed.com' => "#{settings['purl.url']}/embed.json?hide_title=true&url=#{settings['purl.url']}/#{record.druid}") unless record.public_cocina.collection?
 
   # IIIF items have a IIIF manifest link
