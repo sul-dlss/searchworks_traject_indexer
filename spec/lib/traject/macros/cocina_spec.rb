@@ -132,25 +132,4 @@ RSpec.describe Traject::Macros::Cocina do
       end
     end
   end
-
-  describe 'keep_if' do
-    context 'with a block that uses the record only' do
-      let(:macro) { keep_if { |rec, _val, _ctx| rec.content_type == 'foo' } }
-      let(:accumulator) { %w[foo bar baz] }
-
-      it 'filters the accumulator based on the record' do
-        expect(result).to eq []
-      end
-    end
-
-    context 'with a block that compares the value to an existing field' do
-      let(:macro) { keep_if { |_rec, val, ctx| val == ctx.output_hash['field'] } }
-      let(:output_hash) { { 'field' => 'correct' } }
-      let(:accumulator) { %w[incorrect correct] }
-
-      it 'filters the accumulator based on the context' do
-        expect(result).to eq %w[correct]
-      end
-    end
-  end
 end

@@ -153,12 +153,6 @@ module Traject
           accumulator.replace(accumulator.first(1))
         end
       end
-
-      def keep_if(&block)
-        lambda do |record, accumulator, context|
-          accumulator.select! { |value| block.call(record, value, context) }
-        end
-      end
     end
   end
 end
