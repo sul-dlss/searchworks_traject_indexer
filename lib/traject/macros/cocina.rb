@@ -9,6 +9,18 @@ module Traject
         end
       end
 
+      def modified
+        lambda do |record, accumulator, _context|
+          accumulator << record.modified
+        end
+      end
+
+      def created
+        lambda do |record, accumulator, _context|
+          accumulator << record.created
+        end
+      end
+
       def cocina_descriptive(*fields)
         lambda do |record, accumulator, _context|
           accumulator.concat(fields.reduce([record.cocina_description]) do |nodes, field|
@@ -84,24 +96,6 @@ module Traject
       def extract_names
         lambda do |_record, accumulator, _context|
           accumulator.map! { |node| node.name.map(&:value) }.flatten!.compact! unless accumulator.empty?
-        end
-      end
-
-      def join(separator)
-        lambda do |_record, accumulator, _context|
-          accumulator.map! { |values| values.join(separator) if values.any? }.compact!
-        end
-      end
-
-      def flatten
-        lambda do |_record, accumulator, _context|
-          accumulator.flatten! if accumulator.any?
-        end
-      end
-
-      def sort
-        lambda do |_record, accumulator, _context|
-          accumulator.sort!
         end
       end
     end

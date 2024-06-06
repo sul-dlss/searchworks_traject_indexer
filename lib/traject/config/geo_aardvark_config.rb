@@ -4,12 +4,14 @@
 
 require_relative '../../../config/boot'
 require_relative '../macros/cocina'
+require_relative '../macros/utils'
 require 'digest/md5'
 
 Utils.logger = logger
 
 # rubocop:disable Style/MixinUsage
 extend Traject::SolrBetterJsonWriter::IndexerPatch
+extend Traject::Macros::Utils
 extend Traject::Macros::Cocina
 # rubocop:enable Style/MixinUsage
 
