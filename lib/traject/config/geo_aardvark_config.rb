@@ -323,4 +323,31 @@ to_field 'dct_references_s' do |record, accumulator, context|
   accumulator << references.to_json
 end
 
+# Skip processing if we don't have geometry, because it won't be searchable
+each_record do |record, context|
+  next if context.output_hash['locn_geometry'].present?
+
+  message = 'No geometry available for item'
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.warn "#{message}: #{record.druid}"
+  context.skip!("#{message}: #{record.druid}")
+end
+
+# Make single-valued fields in solr into single values instead of arrays
+unless settings['writer_class_name'] == 'Traject::DebugWriter'
+  each_record do |_record, context|
+    context.output_hash.select { |k, _v| k =~ /_(s|b|bbox|geometry)$/ }.each do |k, v|
+      context.output_hash[k] = context.output_hash[k].first if v.is_a?(Array)
+    end
+  end
+end
+
+# Log the indexing time for each record
+each_record do |record, context|
+  t0 = context.clipboard[:benchmark_start_time]
+  t1 = Time.now
+
+  logger.debug "Processed #{record.druid} (#{t1 - t0}s)"
+end
+
 # rubocop:enable Style/CombinableLoops
