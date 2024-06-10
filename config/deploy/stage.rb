@@ -2,8 +2,6 @@
 
 server 'sw-indexing-stage-a.stanford.edu', user: 'indexer', roles: %w[app stage]
 
-set :ruby_version, 'ruby-3.3.1'
-
 Capistrano::OneTimeKey.generate_one_time_key!
 
 set :indexers, [
