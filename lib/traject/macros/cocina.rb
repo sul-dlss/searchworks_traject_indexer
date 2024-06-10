@@ -2,6 +2,7 @@
 
 module Traject
   module Macros
+    # Traject macros for working with data from Cocina models
     module Cocina
       def druid
         lambda do |record, accumulator, _context|

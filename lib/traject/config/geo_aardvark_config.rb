@@ -3,8 +3,9 @@
 # rubocop:disable Style/CombinableLoops
 
 require_relative '../../../config/boot'
-require_relative '../macros/cocina'
 require_relative '../macros/extras'
+require_relative '../macros/cocina'
+require_relative '../macros/geo'
 require 'digest/md5'
 
 Utils.logger = logger
@@ -13,6 +14,7 @@ Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
 extend Traject::Macros::Cocina
 extend Traject::Macros::Extras
+extend Traject::Macros::Geo
 # rubocop:enable Style/MixinUsage
 
 def log_skip(context)
@@ -72,46 +74,6 @@ settings do
   end)
 end
 
-# Get the right geoserver url for an item given its access rights
-# @param record [PublicCocinaRecord] the item being indexed
-def geoserver_url(record)
-  record.public_cocina.public? ? settings['geoserver.pub_url'] : settings['geoserver.stan_url']
-end
-
-# Macro: generate a solr-formatted ENVELOPE string from a DMS-format string
-def format_envelope_dms
-  lambda do |_record, accumulator, _context|
-    accumulator.map! do |subject|
-      coordinates = Stanford::Geo::Coordinate.new(subject.value)
-      coordinates.as_envelope if coordinates.valid?
-    rescue StandardError
-      raise "Error parsing bounding box coordinates: #{coordinates}"
-    end.compact!
-  end
-end
-
-# Macro: Generate a solr-formatted ENVELOPE string from a bounding box
-def format_envelope_bbox
-  lambda do |_record, accumulator, _context|
-    accumulator.map! do |subject|
-      west = subject.structuredValue.find { |c| c[:type] == 'west' }.value
-      east = subject.structuredValue.find { |c| c[:type] == 'east' }.value
-      north = subject.structuredValue.find { |c| c[:type] == 'north' }.value
-      south = subject.structuredValue.find { |c| c[:type] == 'south' }.value
-      coordinates = Stanford::Geo::Coordinate.from_bbox(west, south, east, north)
-      coordinates.as_envelope if coordinates.valid?
-    rescue StandardError
-      raise "Error parsing bounding box coordinates: #{coordinates}"
-    end.compact!
-  end
-end
-
-def as_reference(uri)
-  lambda do |_record, accumulator, _context|
-    accumulator.map! { |reference| { uri => reference } }
-  end
-end
-
 # Extract all the parseable unique years from a list of dates and sort them
 # @param dates [Array<String>] the list of dates
 def extract_years(dates)
@@ -120,30 +82,6 @@ def extract_years(dates)
        .map(&:to_i)
        .sort
        .uniq
-end
-
-# True if the note should be used to form the item's description
-# @param note [Cocina::Models::DescriptiveValue]
-def description_note?(note)
-  ['Local note', 'Preferred citation', 'Supplemental information', 'Donor tags'].exclude?(note.displayLabel)
-end
-
-def wms_url
-  lambda do |record, accumulator, _context|
-    accumulator << "#{geoserver_url(record)}/wms" if record.content_type == 'geo'
-  end
-end
-
-def wfs_url
-  lambda do |record, accumulator, context|
-    accumulator << "#{geoserver_url(record)}/wfs" if %w[GeoJSON Shapefile].intersect? context.output_hash['dct_format_s'].to_a
-  end
-end
-
-def wcs_url
-  lambda do |record, accumulator, context|
-    accumulator << "#{geoserver_url(record)}/wcs" if %w[GeoTIFF ArcGRID].intersect? context.output_hash['dct_format_s'].to_a
-  end
 end
 
 # Time the indexing of each record
@@ -194,8 +132,10 @@ to_field 'dct_alternative_sm', cocina_titles(type: :additional)
 # https://opengeometadata.org/ogm-aardvark/#description
 # - geo data usually has a note with type "abstract"
 # - scanned maps usually have many short, non-typed and/or heterogenous notes
+# - we only want to use certain notes for the description
 # - we concatenate these as <p> elements in the UI
-to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { description_note?(note) }), extract_values
+SKIP_NOTE_TYPES = ['Local note', 'Preferred citation', 'Supplemental information', 'Donor tags'].freeze
+to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { SKIP_NOTE_TYPES.exclude? note.displayLabel }), extract_values
 
 # https://opengeometadata.org/ogm-aardvark/#language
 to_field 'dct_language_sm', cocina_descriptive('language'), transform(&:code)

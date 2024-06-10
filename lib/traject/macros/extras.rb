@@ -2,6 +2,7 @@
 
 module Traject
   module Macros
+    # Generic traject macros inspired by enumerable methods
     module Extras
       def join(separator)
         lambda do |_record, accumulator, _context|
