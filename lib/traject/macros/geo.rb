@@ -32,8 +32,6 @@ module Traject
           accumulator.map! do |subject|
             coordinates = Stanford::Geo::Coordinate.new(subject.value)
             coordinates.as_envelope if coordinates.valid?
-          rescue StandardError
-            raise "Error parsing bounding box coordinates: #{coordinates}"
           end.compact!
         end
       end
@@ -43,14 +41,12 @@ module Traject
       def format_envelope_bbox
         lambda do |_record, accumulator, _context|
           accumulator.map! do |subject|
-            west = subject.structuredValue.find { |c| c[:type] == 'west' }.value
-            east = subject.structuredValue.find { |c| c[:type] == 'east' }.value
-            north = subject.structuredValue.find { |c| c[:type] == 'north' }.value
-            south = subject.structuredValue.find { |c| c[:type] == 'south' }.value
+            west = subject.structuredValue.find { |c| c[:type] == 'west' }&.value
+            east = subject.structuredValue.find { |c| c[:type] == 'east' }&.value
+            north = subject.structuredValue.find { |c| c[:type] == 'north' }&.value
+            south = subject.structuredValue.find { |c| c[:type] == 'south' }&.value
             coordinates = Stanford::Geo::Coordinate.from_bbox(west, south, east, north)
             coordinates.as_envelope if coordinates.valid?
-          rescue StandardError
-            raise "Error parsing bounding box coordinates: #{coordinates}"
           end.compact!
         end
       end

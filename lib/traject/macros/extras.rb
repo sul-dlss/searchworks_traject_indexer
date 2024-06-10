@@ -33,6 +33,13 @@ module Traject
           accumulator.map! { |dt| dt&.strftime('%Y-%m-%dT%H:%M:%SZ') }.compact!
         end
       end
+
+      # Add the value of a field that has already been processed to the accumulator
+      def use_field(field)
+        lambda do |_record, accumulator, context|
+          accumulator << context.output_hash[field] if context.output_hash[field].present?
+        end
+      end
     end
   end
 end
