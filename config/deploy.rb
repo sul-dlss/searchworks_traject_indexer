@@ -46,6 +46,7 @@ append :linked_dirs, 'tmp', 'log', 'config/settings'
 # set :ssh_options, verify_host_key: :secure
 
 set :whenever_roles, [:app]
+set :ruby_version, 'ruby-3.2.2'
 
 namespace :deploy do
   desc "config for monitoring the deployment's traject workers"
@@ -84,7 +85,7 @@ namespace :deploy do
                 WorkingDirectory=#{current_path}
                 Environment=PS=#{service[:key]}.#{i + 1}
                 Environment=LANG=en_US.UTF-8
-                ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm ruby-3.2.2 do bundle exec traject -c #{service[:config]} #{fetch(:default_settings).merge(service[:settings]).map { |k, v| "-s #{k}=#{v}" }.join(' ')}'
+                ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm #{fetch(:ruby_version)} do bundle exec traject -c #{service[:config]} #{fetch(:default_settings).merge(service[:settings]).map { |k, v| "-s #{k}=#{v}" }.join(' ')}'
                 Restart=always
                 RestartSec=14s
                 StandardInput=null
