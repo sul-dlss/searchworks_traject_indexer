@@ -364,9 +364,17 @@ module Traject
                               'instance', jsonb_build_object(
                                 'id', parentInstance.id,
                                 'hrid', parentInstance.jsonb ->> 'hrid',
-                                'title', parentInstance.jsonb ->> 'title'
+                                'title', parentInstance.jsonb ->> 'title',
+                                'suppressFromDiscovery', COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false),
                               ),
-                              'holding', jsonb_build_object('effectiveLocationId', parentHolding.jsonb ->> 'effectiveLocationId'),
+                              'holding', jsonb_build_object(
+                                'effectiveLocationId', parentHolding.jsonb ->> 'effectiveLocationId',
+                                'suppressFromDiscovery',
+                                CASE WHEN parentHolding.id IS NOT NULL THEN
+                                  COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
+                                  COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false)
+                                ELSE NULL END::bool,
+                              ),
                               'item', jsonb_build_object(
                                 'id', parentItem.id,
                                 'hrid', parentItem.jsonb ->> 'hrid',
@@ -375,7 +383,13 @@ module Traject
                                 'status', parentItem.jsonb #>> '{status, name}',
                                 'enumeration', parentItem.jsonb->>'enumeration',
                                 'volume', parentItem.jsonb->>'volume',
-                                'chronology', parentItem.jsonb->>'chronology'
+                                'chronology', parentItem.jsonb->>'chronology',
+                                'suppressFromDiscovery',
+                                CASE WHEN parentItem.id IS NOT NULL THEN
+                                  COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
+                                  COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false) OR
+                                  COALESCE((parentItem.jsonb ->> 'discoverySuppress')::bool, false)
+                                ELSE NULL END::bool,
                               )
                             )
                           ELSE NULL END::jsonb
