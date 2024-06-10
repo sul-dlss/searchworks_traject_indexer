@@ -34,10 +34,17 @@ module Traject
         end
       end
 
-      # Add the value of a field that has already been processed to the accumulator
+      # Replace the accumulator with its min and max values
+      def minmax
+        lambda do |_record, accumulator, _context|
+          accumulator.replace [accumulator.minmax] if accumulator.any?
+        end
+      end
+
+      # Add the value(s) of a field that has already been processed to the accumulator
       def use_field(field)
         lambda do |_record, accumulator, context|
-          accumulator << context.output_hash[field] if context.output_hash[field].present?
+          accumulator.concat Array.wrap(context.output_hash[field]) if context.output_hash[field].present?
         end
       end
     end

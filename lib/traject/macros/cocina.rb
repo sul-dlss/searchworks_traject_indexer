@@ -147,6 +147,16 @@ module Traject
         end
       end
 
+      # Get all of the four-digit years from the accumulator
+      def extract_years
+        lambda do |_record, accumulator, _context|
+          accumulator.select! { |date| date.match?(/^\d{1,4}([–-]\d{1,4})?$/) }
+          accumulator.map! { |date| date.split(/[–-]/) }
+          accumulator.flatten!
+          accumulator.map!(&:to_i)
+        end
+      end
+
       # Pull out all structured values from the accumulator
       def extract_structured_values(flatten: false)
         lambda do |_record, accumulator, _context|

@@ -74,16 +74,6 @@ settings do
   end)
 end
 
-# Extract all the parseable unique years from a list of dates and sort them
-# @param dates [Array<String>] the list of dates
-def extract_years(dates)
-  dates.filter { |date| date.match?(/^\d{1,4}([–-]\d{1,4})?$/) }
-       .flat_map { |date| date.split(/[–-]/) }
-       .map(&:to_i)
-       .sort
-       .uniq
-end
-
 # Time the indexing of each record
 each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
@@ -172,21 +162,11 @@ to_field 'dct_temporal_sm', cocina_descriptive('event'), select_type('validity')
 
 # https://opengeometadata.org/ogm-aardvark/#date-range
 # - currently unused in the UI
-to_field 'gbl_dateRange_drsim' do |_record, accumulator, context|
-  next if context.output_hash['dct_temporal_sm'].blank?
-
-  dates = extract_years(context.output_hash['dct_temporal_sm'])
-  accumulator << "[#{dates.first} TO #{dates.last}]" if dates.any?
-end
+to_field 'gbl_dateRange_drsim', use_field('dct_temporal_sm'), extract_years, minmax, transform(->(years) { "[#{years.first} TO #{years.last}]" if years.any? })
 
 # https://opengeometadata.org/ogm-aardvark/#index-year
 # - used to power the year facet in the UI
-to_field 'gbl_indexYear_im' do |_record, accumulator, context|
-  next if context.output_hash['dct_temporal_sm'].blank?
-
-  dates = extract_years(context.output_hash['dct_temporal_sm'])
-  accumulator.concat (dates.first.to_i..dates.last.to_i).to_a if dates.any?
-end
+to_field 'gbl_indexYear_im', use_field('dct_temporal_sm'), extract_years, minmax, transform(->(years) { (years.first.to_i..years.last.to_i).to_a if years.any? }), flatten
 
 # https://opengeometadata.org/ogm-aardvark/#provider
 to_field 'schema_provider_s', literal('Stanford')

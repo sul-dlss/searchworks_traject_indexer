@@ -74,5 +74,13 @@ RSpec.describe Traject::Macros::Extras do
         expect(accumulator).to eq []
       end
     end
+
+    context 'with a multi-valued field' do
+      let(:output_hash) { { 'field' => %w[value1 value2] } }
+
+      it 'adds the field values to the accumulator' do
+        expect(accumulator).to eq %w[value1 value2]
+      end
+    end
   end
 end

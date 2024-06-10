@@ -6,7 +6,6 @@ require_relative '../../../../lib/traject/macros/cocina'
 RSpec.describe Traject::Macros::Cocina do
   include Traject::Macros::Cocina
 
-  subject(:result) { macro.call(record, accumulator, context) }
   let(:accumulator) { [] }
   let(:context) { Traject::Indexer::Context.new(source_record: record) }
   let(:output_hash) { {} }
@@ -24,6 +23,7 @@ RSpec.describe Traject::Macros::Cocina do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
     allow(context).to receive(:output_hash).and_return(output_hash)
+    macro.call(record, accumulator, context)
   end
 
   describe 'cocina_descriptive' do
@@ -31,7 +31,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { cocina_descriptive(:note) }
 
       it 'returns the items in the field' do
-        expect(result).to eq record.cocina_description.note
+        expect(accumulator).to eq record.cocina_description.note
       end
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { cocina_descriptive(:event, :date) }
 
       it 'returns the nested items as a flattened array' do
-        expect(result).to eq record.cocina_description.event.flat_map(&:date)
+        expect(accumulator).to eq record.cocina_description.event.flat_map(&:date)
       end
     end
   end
@@ -51,7 +51,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:accumulator) { record.cocina_structural.contains[0].structural.contains }
 
       it 'returns the URLs for the files' do
-        expect(result).to eq [
+        expect(accumulator).to eq [
           'https://stacks.stanford.edu/file/druid:fk339wc1276/Stanford_Temperature_Model_4km.geojson'
         ]
       end
@@ -59,7 +59,7 @@ RSpec.describe Traject::Macros::Cocina do
 
     context 'with no files' do
       it 'returns an empty array' do
-        expect(result).to eq []
+        expect(accumulator).to eq []
       end
     end
   end
@@ -69,7 +69,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { select_files('preview.jpg') }
 
       it 'returns the files with the matching filename' do
-        expect(result.map(&:filename)).to eq ['preview.jpg']
+        expect(accumulator.map(&:filename)).to eq ['preview.jpg']
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { select_files(/\.xml$/) }
 
       it 'returns the files with filenames matching the regex' do
-        expect(result.map(&:filename)).to eq [
+        expect(accumulator.map(&:filename)).to eq [
           'Stanford_Temperature_Model_4km.geojson.xml',
           'Stanford_Temperature_Model_4km-iso19139.xml',
           'Stanford_Temperature_Model_4km-iso19110.xml',
@@ -91,7 +91,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { select_files(/-iso/) }
 
       it 'operates on the files in the list' do
-        expect(result.map(&:filename)).to eq [
+        expect(accumulator.map(&:filename)).to eq [
           'Stanford_Temperature_Model_4km-iso19139.xml',
           'Stanford_Temperature_Model_4km-iso19110.xml'
         ]
@@ -102,7 +102,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { select_files('missing.jpg') }
 
       it 'returns an empty array' do
-        expect(result).to eq []
+        expect(accumulator).to eq []
       end
     end
   end
@@ -112,7 +112,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { find_file('preview.jpg') }
 
       it 'returns the file with the matching filename' do
-        expect(result.first.filename).to eq 'preview.jpg'
+        expect(accumulator.first.filename).to eq 'preview.jpg'
       end
     end
 
@@ -120,7 +120,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { find_file(/\.xml$/) }
 
       it 'returns the first file with a filename matching the regex' do
-        expect(result.first.filename).to eq 'Stanford_Temperature_Model_4km.geojson.xml'
+        expect(accumulator.first.filename).to eq 'Stanford_Temperature_Model_4km.geojson.xml'
       end
     end
 
@@ -128,7 +128,33 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { find_file('missing.jpg') }
 
       it 'returns an empty array' do
-        expect(result).to eq []
+        expect(accumulator).to eq []
+      end
+    end
+  end
+
+  describe 'extract_unique_years_sorted' do
+    let(:macro) { extract_unique_years_sorted }
+
+    context 'with an array of dates' do
+      let(:accumulator) { %w[2020 2020-2021 2021 2019 2019-2020] }
+
+      it 'returns the unique years sorted' do
+        expect(accumulator).to eq [2019, 2020, 2021]
+      end
+    end
+
+    context 'with an array of dates and other strings' do
+      let(:accumulator) { ['2020', '2020-2021', '2021', '2019', '2019-2020', 'not a date'] }
+
+      it 'returns the unique years sorted' do
+        expect(accumulator).to eq [2019, 2020, 2021]
+      end
+    end
+
+    context 'with an empty array' do
+      it 'returns an empty array' do
+        expect(accumulator).to eq []
       end
     end
   end
