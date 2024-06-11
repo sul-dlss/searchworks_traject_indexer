@@ -64,6 +64,50 @@ RSpec.describe Traject::Macros::Cocina do
     end
   end
 
+  describe 'purl_url' do
+    let(:macro) { purl_url }
+
+    it 'returns the purl URL for the record' do
+      expect(accumulator).to eq ['https://purl.stanford.edu/fk339wc1276']
+    end
+  end
+
+  describe 'embed_url' do
+    let(:macro) { embed_url }
+
+    it 'returns the embed URL for the record' do
+      expect(accumulator).to eq ['https://purl.stanford.edu/embed.json?url=https%3A%2F%2Fpurl.stanford.edu%2Ffk339wc1276']
+    end
+
+    context 'with additional parameters' do
+      let(:macro) { embed_url(hide_title: true) }
+
+      it 'returns the embed URL with the parameters' do
+        expect(accumulator).to eq ['https://purl.stanford.edu/embed.json?hide_title=true&url=https%3A%2F%2Fpurl.stanford.edu%2Ffk339wc1276']
+      end
+    end
+  end
+
+  describe 'iiif_manifest_url' do
+    let(:macro) { iiif_manifest_url }
+
+    context 'with an image object' do
+      let(:druid) { 'dc482zx1528' }
+
+      it 'returns the IIIF manifest URL' do
+        expect(accumulator).to eq ['https://purl.stanford.edu/dc482zx1528/iiif3/manifest']
+      end
+    end
+
+    context 'with a non-image object' do
+      let(:druid) { 'nq544bf8960' }
+
+      it 'returns an empty array' do
+        expect(accumulator).to eq []
+      end
+    end
+  end
+
   describe 'select_files' do
     context 'with a filename string' do
       let(:macro) { select_files('preview.jpg') }
@@ -133,22 +177,22 @@ RSpec.describe Traject::Macros::Cocina do
     end
   end
 
-  describe 'extract_unique_years_sorted' do
-    let(:macro) { extract_unique_years_sorted }
+  describe 'extract_years' do
+    let(:macro) { extract_years }
 
     context 'with an array of dates' do
       let(:accumulator) { %w[2020 2020-2021 2021 2019 2019-2020] }
 
-      it 'returns the unique years sorted' do
-        expect(accumulator).to eq [2019, 2020, 2021]
+      it 'returns all the parseable years' do
+        expect(accumulator).to eq [2020, 2020, 2021, 2021, 2019, 2019, 2020]
       end
     end
 
     context 'with an array of dates and other strings' do
       let(:accumulator) { ['2020', '2020-2021', '2021', '2019', '2019-2020', 'not a date'] }
 
-      it 'returns the unique years sorted' do
-        expect(accumulator).to eq [2019, 2020, 2021]
+      it 'returns all the parseable years' do
+        expect(accumulator).to eq [2020, 2020, 2021, 2021, 2019, 2019, 2020]
       end
     end
 

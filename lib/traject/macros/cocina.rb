@@ -37,7 +37,7 @@ module Traject
         lambda do |record, accumulator, context|
           return if record.content_type == 'collection'
 
-          params[:url] = purl_url.call(record, [], context)
+          params[:url] = purl_url.call(record, [], context).first
           accumulator << "#{settings['purl.url']}/embed.json?#{params.to_query}"
         end
       end
