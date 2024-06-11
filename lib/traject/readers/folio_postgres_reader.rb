@@ -365,7 +365,7 @@ module Traject
                                 'id', parentInstance.id,
                                 'hrid', parentInstance.jsonb ->> 'hrid',
                                 'title', parentInstance.jsonb ->> 'title',
-                                'suppressFromDiscovery', COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false),
+                                'suppressFromDiscovery', COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false)
                               ),
                               'holding', jsonb_build_object(
                                 'effectiveLocationId', parentHolding.jsonb ->> 'effectiveLocationId',
@@ -373,7 +373,7 @@ module Traject
                                 CASE WHEN parentHolding.id IS NOT NULL THEN
                                   COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
                                   COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false)
-                                ELSE NULL END::bool,
+                                ELSE NULL END::bool
                               ),
                               'item', jsonb_build_object(
                                 'id', parentItem.id,
@@ -389,7 +389,7 @@ module Traject
                                   COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
                                   COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false) OR
                                   COALESCE((parentItem.jsonb ->> 'discoverySuppress')::bool, false)
-                                ELSE NULL END::bool,
+                                ELSE NULL END::bool
                               )
                             )
                           ELSE NULL END::jsonb
