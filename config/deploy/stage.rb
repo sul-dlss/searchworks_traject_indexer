@@ -22,12 +22,12 @@ set :indexers, [
   {
     key: 'earthworks_stage_indexer',
     count: 1,
-    config: './lib/traject/config/geo_config.rb',
+    config: './lib/traject/config/geo_aardvark_config.rb',
     settings: {
       'log.file' => 'log/traject_earthworks-stage-indexer.log',
       'kafka.topic' => 'purl_fetcher_stage',
       'kafka.consumer_group_id' => 'earthworks-stage-indexer',
-      'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-stage',
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-aardvark-stage',
       'purl.url' => 'https://sul-purl-stage.stanford.edu',
       'stacks.url' => 'https://sul-stacks-stage.stanford.edu',
       'geoserver.pub_url' => 'https://earthworks-geoserver-stage-b.stanford.edu/geoserver',
