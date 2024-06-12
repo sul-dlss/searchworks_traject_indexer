@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/sul-dlss/stanford-geo.git
+  revision: 8fb8f30d0cf36b92565fc45a74a953978ca44b15
+  branch: bbox-parsing
+  specs:
+    stanford-geo (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -143,10 +150,6 @@ GEM
     erubi (1.13.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
-    faraday (2.9.1)
-      faraday-net_http (>= 2.0, < 3.2)
-    faraday-net_http (3.1.0)
-      net-http
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
@@ -204,8 +207,6 @@ GEM
       view_component
     multi_json (1.15.0)
     mutex_m (0.2.0)
-    net-http (0.4.1)
-      uri
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
     net-sftp (4.0.0)
@@ -322,7 +323,6 @@ GEM
       net-scp (>= 1.1.2)
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
-    stanford-geo (0.1.0)
     stanford-mods (3.3.9)
       activesupport
       mods (~> 3.0, >= 3.0.4)
@@ -351,7 +351,6 @@ GEM
       unf_ext
     unf_ext (0.0.9.1)
     unicode-display_width (2.5.0)
-    uri (0.13.0)
     view_component (3.12.1)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
@@ -387,7 +386,6 @@ DEPENDENCIES
   dor-event-client
   dor-rights-auth
   factory_bot (~> 6.2)
-  faraday
   honeybadger
   http
   i18n
@@ -402,7 +400,7 @@ DEPENDENCIES
   ruby-kafka
   simplecov
   slop
-  stanford-geo
+  stanford-geo!
   stanford-mods (~> 3.0)
   statsd-ruby
   traject (~> 3.0)

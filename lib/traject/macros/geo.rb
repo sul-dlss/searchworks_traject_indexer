@@ -30,7 +30,7 @@ module Traject
       def format_envelope_dms
         lambda do |_record, accumulator, _context|
           accumulator.map! do |subject|
-            coordinates = Stanford::Geo::Coordinate.new(subject.value)
+            coordinates = Stanford::Geo::Coordinate.parse(subject.value)
             coordinates.as_envelope if coordinates.valid?
           end.compact!
         end
@@ -45,7 +45,7 @@ module Traject
             east = subject.structuredValue.find { |c| c[:type] == 'east' }&.value
             north = subject.structuredValue.find { |c| c[:type] == 'north' }&.value
             south = subject.structuredValue.find { |c| c[:type] == 'south' }&.value
-            coordinates = Stanford::Geo::Coordinate.from_bbox(west, south, east, north)
+            coordinates = Stanford::Geo::Coordinate.new(min_x: west, min_y: south, max_x: east, max_y: north)
             coordinates.as_envelope if coordinates.valid?
           end.compact!
         end
