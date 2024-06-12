@@ -153,7 +153,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the embed URL' do
-      expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url%5B%5D=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
+      expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
     end
 
     it 'maps the WMS URL' do
@@ -370,7 +370,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       end
 
       it 'maps the embed URL' do
-        expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url%5B%5D=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
+        expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
       end
     end
   end

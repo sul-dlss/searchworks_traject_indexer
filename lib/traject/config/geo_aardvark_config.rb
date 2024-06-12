@@ -269,12 +269,15 @@ to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_ref
 to_field 'dct_references_s', find_file(/iso19110\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gco')
 to_field 'dct_references_s', find_file(/fgdc\.xml/), stacks_file_url, as_reference('http://www.opengis.net/cat/csw/csdgm')
 to_field 'dct_references_s', find_file(/\.geojson/), stacks_file_url, as_reference('http://geojson.org/geojson-spec.html')
-each_record { |_record, context| context.output_hash['dct_references_s'] = context.output_hash['dct_references_s'].reduce(:merge!).to_json }
 
 # Make single-valued fields in solr into single values instead of arrays
 # The DebugWriter doesn't like this, so skip it for that writer
 unless settings['writer_class_name'] == 'Traject::DebugWriter'
   each_record do |_record, context|
+    # Encode the references as a JSON string
+    context.output_hash['dct_references_s'] = context.output_hash['dct_references_s'].reduce(:merge!).to_json
+
+    # Pick the first value for single-valued fields
     context.output_hash.select { |k, _v| k =~ /_(s|b|dt|bbox|geometry)$/ }.each do |k, v|
       context.output_hash[k] = context.output_hash[k].first if v.is_a?(Array)
     end
