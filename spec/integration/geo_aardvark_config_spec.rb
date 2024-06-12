@@ -173,6 +173,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(result['gbl_mdModified_dt']).to eq '2015-11-03T00:00:00Z'
     end
 
+    it 'maps the copyright info' do
+      expect(result['dct_rightsHolder_sm']).to eq ['This work is in the Public Domain, meaning that it is not subject to copyright.']
+    end
+
     describe 'URL references' do
       let(:references) { JSON.parse result['dct_references_s'] }
 

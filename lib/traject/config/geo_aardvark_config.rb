@@ -221,6 +221,9 @@ to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'st
 # https://opengeometadata.org/ogm-aardvark/#rights_1
 to_field 'dct_rights_sm', cocina_access('useAndReproductionStatement')
 
+# https://opengeometadata.org/ogm-aardvark/#rights-holder
+to_field 'dct_rightsHolder_sm', cocina_access('copyright')
+
 # https://opengeometadata.org/ogm-aardvark/#license
 to_field 'dct_license_sm', cocina_access('license')
 
