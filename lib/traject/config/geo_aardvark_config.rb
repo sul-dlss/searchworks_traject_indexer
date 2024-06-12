@@ -196,6 +196,7 @@ to_field 'gbl_resourceType_sm', cocina_descriptive('geographic', 'form'), select
 to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('data format'), extract_values, translation_map('geo_format')
 to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('media type'), extract_values, translation_map('geo_format')
 to_field 'dct_format_s', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_format')
+to_field 'dct_format_s', cocina_structural('contains', 'structural', 'contains', 'hasMimeType'), translation_map('geo_format')
 
 # https://opengeometadata.org/ogm-aardvark/#geometry
 # - powers the map search in the UI
