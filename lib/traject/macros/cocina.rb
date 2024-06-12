@@ -45,7 +45,9 @@ module Traject
       # Generate a stacks download URL for the entire object (.zip)
       def stacks_object_url
         lambda do |record, accumulator, _context|
-          accumulator << "#{settings['stacks.url']}/object/druid:#{record.druid}"
+          return if record.content_type == 'collection'
+
+          accumulator << "#{settings['stacks.url']}/object/#{record.druid}"
         end
       end
 

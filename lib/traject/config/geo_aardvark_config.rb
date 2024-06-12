@@ -257,6 +257,7 @@ to_field('gbl_wxsIdentifier_s') { |record, accumulator| accumulator << "druid:#{
 # - if XML metadata files exist (not in data.zip), we link them
 # - data that is in geoJSON format (including index maps) gets a link to the spec
 to_field 'dct_references_s', purl_url, as_reference('http://schema.org/url')
+to_field 'dct_references_s', stacks_object_url, as_reference('http://schema.org/downloadUrl')
 to_field 'dct_references_s', embed_url({ hide_title: true }), as_reference('https://oembed.com')
 to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
 to_field 'dct_references_s', wms_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wms')
