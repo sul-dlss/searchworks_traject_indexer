@@ -51,4 +51,7 @@ gem 'stanford-geo', '0.2.0'
 # traject brings in httpclient, and we'll need this for ruby 3.4 support:
 gem 'mutex_m'
 
+gem 'faraday', '~> 2.9'
+gem 'faraday-net_http_persistent', '~> 2.1'
 gem 'match_map', '~> 3.0'
+gem 'progress_bar'
