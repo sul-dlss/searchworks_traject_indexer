@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
-require 'http'
-
 class PublicCocinaRecord
   attr_reader :public_cocina_doc, :druid, :purl_url
 
-  def self.fetch(druid, purl_url: 'https://purl.stanford.edu')
-    response = HTTP.get("#{purl_url}/#{druid}.json")
+  def self.fetch(druid, purl_url: 'https://purl.stanford.edu', client: Faraday.new)
+    response = client.get("#{purl_url}/#{druid}.json")
     new(druid, response.body, purl_url:) if response.status.ok?
   end
 
   def initialize(druid, public_cocina, purl_url: 'https://purl.stanford.edu')
     @druid = druid
     @purl_url = purl_url
-    @public_cocina_doc = JSON.parse(public_cocina)
+    @public_cocina_doc = public_cocina
   end
 
   def cocina_access
@@ -43,11 +41,11 @@ class PublicCocinaRecord
   end
 
   def created
-    Time.parse(public_cocina_doc['created'])
+    Time.parse(public_cocina_doc['created']) if public_cocina_doc['created']
   end
 
   def modified
-    Time.parse(public_cocina_doc['modified'])
+    Time.parse(public_cocina_doc['modified']) if public_cocina_doc['modified']
   end
 
   def content_type
