@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-require 'http'
 require 'mods_display'
 require 'dor/rights_auth'
 
 class PublicXmlRecord
   attr_reader :public_xml_doc, :druid, :purl_url
 
-  def self.fetch(druid, purl_url: 'https://purl.stanford.edu')
-    response = HTTP.get("#{purl_url}/#{druid}.xml")
-    new(druid, response.body, purl_url:) if response.status.ok?
+  def self.fetch(druid, purl_url: 'https://purl.stanford.edu', client: Faraday.new)
+    response = client.get("#{purl_url}/#{druid}.xml")
+    new(druid, response.body, purl_url:) if response.success?
   end
 
   def initialize(druid, public_xml, purl_url: 'https://purl.stanford.edu')
