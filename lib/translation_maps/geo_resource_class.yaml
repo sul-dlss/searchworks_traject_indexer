@@ -2,8 +2,11 @@
 # See: https://opengeometadata.org/ogm-aardvark/#resource-class-values
 
 ## description -> form (type=genre)
+## subject -> structuredValue (type=genre)
 
 map: Maps
+Maps: Maps
+Datasets: Datasets
 Dataset: Datasets
 
 ## description -> form (type=form)
