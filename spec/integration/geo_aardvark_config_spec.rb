@@ -253,6 +253,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     it 'maps the georeferenced status' do
       expect(result['gbl_georeferenced_b']).to eq true
     end
+
+    it 'maps the source map' do
+      expect(result['dct_source_sm']).to eq ['stanford-df334jk2963']
+    end
   end
 
   context 'with a stanford-only raster image' do

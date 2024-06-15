@@ -220,6 +220,13 @@ to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator <<
 # - a separate 'relations' solr query using this field is performed in the app to render the box
 to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'stanford-')
 
+# https://opengeometadata.org/ogm-aardvark/#source
+# - links items that were georeferenced to their original version
+to_field 'dct_source_sm', cocina_descriptive('relatedResource'), select_type('has other format'),
+         select(->(res) { res.displayLabel == 'Scanned map' }),
+         transform(->(res) { res.identifier.first&.value }),
+         transform(->(purl) { "stanford-#{purl.split('/').last}" if purl })
+
 # https://opengeometadata.org/ogm-aardvark/#rights_1
 to_field 'dct_rights_sm', cocina_access('useAndReproductionStatement')
 
