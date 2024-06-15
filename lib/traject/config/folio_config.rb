@@ -369,6 +369,10 @@ to_field 'author_title_search' do |record, accumulator|
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
+to_field 'best_author_title_search' do |_record, accumulator, context|
+  accumulator << context.output_hash['author_title_search'].first if context.output_hash['author_title_search']
+end
+
 # # Author Search Fields
 # # IFF relevancy of author search needs improvement, unstemmed flavors for author search
 # #   (keep using stemmed version for everything search to match stemmed query)
