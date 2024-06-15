@@ -16,10 +16,6 @@ class PublicCocinaRecord
     @public_cocina_doc = JSON.parse(public_cocina)
   end
 
-  def public_cocina
-    @public_cocina ||= self.class.fetch("#{purl_url}/#{druid}.json")
-  end
-
   def cocina_access
     @cocina_access ||= Cocina::Models::DROAccess.new(public_cocina_doc['access'])
   end
