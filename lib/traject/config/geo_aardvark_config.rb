@@ -125,10 +125,10 @@ to_field 'dct_alternative_sm', cocina_titles(type: :additional)
 # - we only want to use certain notes for the description
 # - we concatenate these as <p> elements in the UI
 SKIP_NOTE_TYPES = ['Local note', 'Preferred citation', 'Supplemental information', 'Donor tags'].freeze
-to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { SKIP_NOTE_TYPES.exclude? note.displayLabel }), extract_values
+to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { SKIP_NOTE_TYPES.exclude? note['displayLabel'] }), extract_values
 
 # https://opengeometadata.org/ogm-aardvark/#language
-to_field 'dct_language_sm', cocina_descriptive('language'), transform(&:code)
+to_field 'dct_language_sm', cocina_descriptive('language'), transform(->(lang) { lang['code'] })
 
 # https://opengeometadata.org/ogm-aardvark/#creator
 to_field 'dct_creator_sm', cocina_descriptive('contributor'), select_role('creator'), extract_names
@@ -223,8 +223,8 @@ to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'st
 # https://opengeometadata.org/ogm-aardvark/#source
 # - links items that were georeferenced to their original version
 to_field 'dct_source_sm', cocina_descriptive('relatedResource'), select_type('has other format'),
-         select(->(res) { res.displayLabel == 'Scanned map' }),
-         transform(->(res) { res.identifier.first&.value }),
+         select(->(res) { res['displayLabel'] == 'Scanned map' }),
+         transform(->(res) { res.fetch('identifier', []).dig(0, 'value') }),
          transform(->(purl) { "stanford-#{purl.split('/').last}" if purl })
 
 # https://opengeometadata.org/ogm-aardvark/#rights_1

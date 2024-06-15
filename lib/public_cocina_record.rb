@@ -17,25 +17,26 @@ class PublicCocinaRecord
   end
 
   def cocina_access
-    @cocina_access ||= Cocina::Models::DROAccess.new(public_cocina_doc['access'])
+    @cocina_access ||= public_cocina_doc['access']
   end
 
   def cocina_structural
-    @cocina_structural ||= Cocina::Models::DROStructural.new(public_cocina_doc['structural'])
+    @cocina_structural ||= public_cocina_doc['structural']
   end
 
   def cocina_description
-    @cocina_description ||= Cocina::Models::Description.new(public_cocina_doc['description'])
+    @cocina_description ||= public_cocina_doc['description']
   end
 
   def cocina_titles(type: :main)
+    titles = cocina_description['title'].map { |title| Cocina::Models::Title.new(title) }
     case type
     when :main
-      Cocina::Models::Builders::TitleBuilder.main_title(cocina_description.title)
+      Cocina::Models::Builders::TitleBuilder.main_title(titles)
     when :full
-      Cocina::Models::Builders::TitleBuilder.full_title(cocina_description.title)
+      Cocina::Models::Builders::TitleBuilder.full_title(titles)
     when :additional
-      Cocina::Models::Builders::TitleBuilder.additional_titles(cocina_description.title)
+      Cocina::Models::Builders::TitleBuilder.additional_titles(titles)
     else
       raise ArgumentError, "Invalid title type: #{type}"
     end
@@ -54,7 +55,7 @@ class PublicCocinaRecord
   end
 
   def files
-    cocina_structural.contains.flat_map { |fileset| fileset.structural.contains }
+    cocina_structural&.fetch('contains', [])&.flat_map { |fileset| fileset.dig('structural', 'contains') } || []
   end
 
   def public_cocina?
@@ -66,10 +67,10 @@ class PublicCocinaRecord
   end
 
   def public?
-    [cocina_access.view, cocina_access.download].include? 'world'
+    [cocina_access['view'], cocina_access['download']].include? 'world'
   end
 
   def stanford_only?
-    [cocina_access.view, cocina_access.download].include? 'stanford'
+    [cocina_access['view'], cocina_access['download']].include? 'stanford'
   end
 end

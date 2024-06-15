@@ -55,7 +55,7 @@ module Traject
       def stacks_file_url
         lambda do |record, accumulator, _context|
           accumulator.map! do |file|
-            "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file.filename}"
+            "#{settings['stacks.url']}/file/druid:#{record.druid}/#{file['filename']}"
           end
         end
       end
@@ -78,7 +78,7 @@ module Traject
       def cocina_descriptive(*fields)
         lambda do |record, accumulator, _context|
           accumulator.concat(fields.reduce([record.cocina_description]) do |nodes, field|
-            nodes.flat_map { |node| node.public_send(field) }.compact
+            nodes.flat_map { |node| node[field] if node }.compact
           end)
         end
       end
@@ -87,7 +87,7 @@ module Traject
       def cocina_structural(*fields)
         lambda do |record, accumulator, _context|
           accumulator.concat(fields.reduce([record.cocina_structural]) do |nodes, field|
-            nodes.flat_map { |node| node.public_send(field) }.compact
+            nodes.flat_map { |node| node[field] if node }.compact
           end)
         end
       end
@@ -96,7 +96,7 @@ module Traject
       def cocina_access(*fields)
         lambda do |record, accumulator, _context|
           accumulator.concat(fields.reduce([record.cocina_access]) do |nodes, field|
-            nodes.flat_map { |node| node.public_send(field) }.compact
+            nodes.flat_map { |node| node[field] if node }.compact
           end)
         end
       end
@@ -112,7 +112,7 @@ module Traject
       # Filter nodes in the accumulator by type
       def select_type(type)
         lambda do |_record, accumulator, _context|
-          accumulator.map! { |node| node if node.type == type }.compact!
+          accumulator.map! { |node| node if node['type'] == type }.compact!
         end
       end
 
@@ -120,21 +120,21 @@ module Traject
       # Used when the accumulator is e.g. an array of contributor nodes
       def select_role(role)
         lambda do |_record, accumulator, _context|
-          accumulator.map! { |node| node if node.role.find { |r| r.value == role } }.compact!
+          accumulator.map! { |node| node if node.fetch('role', []).find { |r| r['value'] == role } }.compact!
         end
       end
 
       # Get the value of the 'date' attribute from each node in the accumulator
       def extract_dates
         lambda do |_record, accumulator, _context|
-          accumulator.map!(&:date).flatten!.compact! if accumulator.any?
+          accumulator.map! { |node| node['date'] }.flatten!.compact! if accumulator.any?
         end
       end
 
       # Get the value of the 'value' attribute from each node in the accumulator
       def extract_values
         lambda do |_record, accumulator, _context|
-          accumulator.map!(&:value).compact!
+          accumulator.map! { |node| node['value'] }.compact!
         end
       end
 
@@ -162,7 +162,7 @@ module Traject
       # Pull out all structured values from the accumulator
       def extract_structured_values(flatten: false)
         lambda do |_record, accumulator, _context|
-          accumulator.map! { |node| node.structuredValue.map(&:value) }
+          accumulator.map! { |node| node.fetch('structuredValue', []).map { |n| n['value'] } }
           accumulator.flatten! if flatten && accumulator.any?
           accumulator.compact!
         end
@@ -172,7 +172,7 @@ module Traject
       # Used when the accumulator is e.g. an array of contributor nodes
       def extract_names
         lambda do |_record, accumulator, _context|
-          accumulator.map! { |node| node.name.map(&:value) }.flatten!.compact! unless accumulator.empty?
+          accumulator.map! { |node| node.fetch('name', []).map { |n| n['value'] } }.flatten!.compact! unless accumulator.empty?
         end
       end
 
@@ -181,7 +181,7 @@ module Traject
       def select_files(pattern)
         lambda do |record, accumulator, _context|
           accumulator.concat record.files if accumulator.empty?
-          accumulator.select! { |file| file.filename.match?(pattern) }
+          accumulator.select! { |file| file['filename'].match?(pattern) }
         end
       end
 

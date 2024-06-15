@@ -30,7 +30,7 @@ module Traject
       def format_envelope_dms
         lambda do |_record, accumulator, _context|
           accumulator.map! do |subject|
-            coordinates = Stanford::Geo::Coordinate.parse(subject.value)
+            coordinates = Stanford::Geo::Coordinate.parse(subject['value'])
             coordinates.as_envelope if coordinates.valid?
           end.compact!
         end
@@ -41,11 +41,17 @@ module Traject
       def format_envelope_bbox
         lambda do |_record, accumulator, _context|
           accumulator.map! do |subject|
-            west = subject.structuredValue.find { |c| c[:type] == 'west' }&.value
-            east = subject.structuredValue.find { |c| c[:type] == 'east' }&.value
-            north = subject.structuredValue.find { |c| c[:type] == 'north' }&.value
-            south = subject.structuredValue.find { |c| c[:type] == 'south' }&.value
-            coordinates = Stanford::Geo::Coordinate.new(min_x: west, min_y: south, max_x: east, max_y: north)
+            structured_values = subject['structuredValue'] || []
+            west = structured_values.find { |val| val['type'] == 'west' }
+            east = structured_values.find { |val| val['type'] == 'east' }
+            north = structured_values.find { |val| val['type'] == 'north' }
+            south = structured_values.find { |val| val['type'] == 'south' }
+            coordinates = Stanford::Geo::Coordinate.new(
+              min_x: west['value'],
+              min_y: south['value'],
+              max_x: east['value'],
+              max_y: north['value']
+            )
             coordinates.as_envelope if coordinates.valid?
           end.compact!
         end
