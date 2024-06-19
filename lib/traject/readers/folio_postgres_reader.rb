@@ -113,6 +113,10 @@ module Traject
         holding['boundWith']['holding']['location'] = {
           'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
         } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
+
+        holding['boundWith']['item']['location'] = {
+          'effectiveLocation' => locations[holding['boundWith']['item']['effectiveLocationId']]
+        } if holding.dig('boundWith', 'item', 'effectiveLocationId')
       end
     end
 
@@ -384,6 +388,10 @@ module Traject
                                 'enumeration', parentItem.jsonb->>'enumeration',
                                 'volume', parentItem.jsonb->>'volume',
                                 'chronology', parentItem.jsonb->>'chronology',
+                                'effectiveLocationId', parentItem.jsonb ->> 'effectiveLocationId',
+                                'materialTypeId', parentItem.jsonb ->> 'materialTypeId',
+                                'permanentLoanTypeId', parentItem.jsonb ->> 'permanentLoanTypeId',
+                                'temporaryLoanTypeId', parentItem.jsonb ->> 'temporaryLoanTypeId',
                                 'suppressFromDiscovery',
                                 CASE WHEN parentItem.id IS NOT NULL THEN
                                   COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
