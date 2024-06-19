@@ -117,7 +117,8 @@ class FolioItem
       effective_location_id: temporary_location&.dig('id') || permanent_location&.dig('id'),
       material_type_id: item&.dig('materialTypeId'),
       loan_type_id: item&.dig('temporaryLoanTypeId') || item&.dig('permanentLoanTypeId'),
-      bound_with: bound_with_data
+      bound_with: bound_with_data,
+      is_bound_with_principal: bound_with_principal?
     }.merge(course_reserves_data)
   end
 
@@ -133,6 +134,12 @@ class FolioItem
       enumeration: item['enumeration'],
       chronology: item['chronology']
     }
+  end
+
+  def bound_with_principal?
+    return false if bound_with? || holding.blank?
+
+    holding['boundWith'].present?
   end
 
   def course_reserves_data

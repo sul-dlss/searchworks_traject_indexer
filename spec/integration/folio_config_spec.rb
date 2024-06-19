@@ -342,6 +342,24 @@ RSpec.describe 'FOLIO indexing' do
     end
   end
 
+  context 'with a bound-with principal' do
+    let(:folio_record) do
+      FolioRecord.new(source_record_json, client)
+    end
+
+    let(:source_record_json) do
+      JSON.parse(File.read(file_fixture('folio_bw_principal.json')))
+    end
+
+    let(:item_display_structs) do
+      Array(result['item_display_struct']).map { |x| JSON.parse(x) }
+    end
+
+    it 'identifies the bound-with principals' do
+      expect(item_display_structs).to contain_exactly(include('barcode' => '36105042167762', 'is_bound_with_principal' => true))
+    end
+  end
+
   describe 'item_display_struct' do
     context 'item status is checked out' do
       let(:items) do
