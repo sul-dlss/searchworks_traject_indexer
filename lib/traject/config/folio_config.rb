@@ -435,11 +435,11 @@ end
 
 to_field 'works_struct' do |record, accumulator|
   struct = {
-    included: works_struct(record, '700:710:711:730:740', indicator2: '2'),
-    related: works_struct(record, '700:710:711:730:740', indicator2: nil)
+    included: works_struct(record, '700:710:711:730:740', indicator2: '2')&.compact,
+    related: works_struct(record, '700:710:711:730:740', indicator2: nil)&.compact
   }
 
-  accumulator << struct unless struct.empty?
+  accumulator << struct unless struct.values.all?(&:empty?)
 end
 
 to_field 'author_authorities_ssim',
