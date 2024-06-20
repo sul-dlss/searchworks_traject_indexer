@@ -44,6 +44,6 @@ gem 'slop'
 gem 'cocina-models'
 gem 'dor-event-client'
 gem 'factory_bot', '~> 6.2'
-git 'https://github.com/sul-dlss/stanford-geo.git', branch: 'bbox-parsing' do
+git 'https://github.com/sul-dlss/stanford-geo.git' do
   gem 'stanford-geo'
 end
