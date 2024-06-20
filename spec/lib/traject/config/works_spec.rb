@@ -41,5 +41,23 @@ RSpec.describe 'Author config' do
         expect(data[:post_text]).not_to include "#{code}_subfield_text"
       end
     end
+
+    context 'when there are no linked works' do
+      let(:marc_record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '15069nam a2200409 a 4500'
+          r.append(MARC::ControlField.new('008', '091123s2014    si a    sb    101 0 eng d'))
+          r.append(MARC::DataField.new('650', ' ', '0',
+                                       MARC::Subfield.new('a', 'subject'),
+                                       MARC::Subfield.new('v', 'Congresses')))
+        end
+      end
+
+      let(:records) { [marc_record] }
+
+      it 'is blank' do
+        expect(results.first[field]).to be_blank
+      end
+    end
   end
 end
