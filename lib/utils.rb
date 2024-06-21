@@ -73,6 +73,22 @@ module Utils
   end
 
   def self.env_config
-    Settings.environments[ENV.fetch('TRAJECT_ENV', nil)] || OpenStruct.new
+    Settings.environments[env] || OpenStruct.new
+  end
+
+  def self.env
+    @env ||= ENV.fetch('TRAJECT_ENV', nil)
+  end
+
+  def self.env=(env)
+    @env = env
+  end
+
+  def self.in_blackout_period?
+    return false unless env_config.blackout_periods.present?
+
+    env_config.blackout_periods.none? do |period|
+      (Time.parse(period['start'])..Time.parse(period['end'])).cover?(Time.now)
+    end
   end
 end

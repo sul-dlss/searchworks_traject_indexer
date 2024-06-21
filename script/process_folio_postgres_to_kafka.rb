@@ -10,6 +10,7 @@ opts = Slop.parse do |o|
     puts o
     exit
   end
+  o.string '--traject-env', default: nil
   o.string '--kafka-topic', 'The kafka topic used for writing records', default: Utils.env_config.kafka_topic
   o.bool '--verbose', default: false
   o.int '--processes', 'Number of parallel processes to spawn to handle querying', default: nil
@@ -33,16 +34,21 @@ opts = Slop.parse do |o|
   o.int '--chunk-size', 'Number of IDs to process per query', default: 100
 end
 
+Utils.env = opts[:traject_env] if opts[:traject_env]
+
+if Utils.in_blackout_period?
+  Utils.logger.info 'Skipping processing due to blackout period'
+  exit
+end
+
 unless opts[:verbose]
   log_file = File.expand_path("../log/process_folio_postgres_to_kafka_#{opts[:kafka_topic]}.log", __dir__)
   Utils.set_log_file(log_file)
 end
 
-temp_state_file = Tempfile.new('searchworks_traject_folio_postgres_indexer') if opts[:no_state_file]
-
 state_file = opts[:state_file]
+state_file ||= Tempfile.new('searchworks_traject_folio_postgres_indexer').path if opts[:no_state_file]
 state_file ||= File.expand_path("../tmp/searchworks_traject_folio_postgres_indexer_last_run_#{opts[:kafka_topic]}", __dir__)
-state_file = temp_state_file.path if temp_state_file
 
 # Make sure there's a state file
 File.open(state_file, 'w') { |f| f.puts '' } if !File.exist?(state_file) || opts[:full]
