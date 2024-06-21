@@ -10,6 +10,7 @@ opts = Slop.parse do |o|
     puts o
     exit
   end
+  o.string '--traject-env', default: nil
   o.string '--kafka-topic', 'The kafka topic used for writing records', default: Utils.env_config.kafka_topic
   o.bool '--verbose', default: false
   o.int '--processes', 'Number of parallel processes to spawn to handle querying', default: nil
@@ -31,6 +32,13 @@ opts = Slop.parse do |o|
   o.string '--ids-file', 'A file containing a list of IDs to process', default: nil
   o.string '--catkeys-file', 'A file containing a list of hrids to process', default: nil
   o.int '--chunk-size', 'Number of IDs to process per query', default: 100
+end
+
+Utils.env = opts[:traject_env] if opts[:traject_env]
+
+if Utils.in_blackout_period?
+  Utils.logger.info 'Skipping processing due to blackout period'
+  exit
 end
 
 unless opts[:verbose]
