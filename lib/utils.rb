@@ -87,7 +87,7 @@ module Utils
   def self.in_blackout_period?
     return false unless env_config.blackout_periods.present?
 
-    env_config.blackout_periods.none? do |period|
+    env_config.blackout_periods.any? do |period|
       (Time.parse(period['start'])..Time.parse(period['end'])).cover?(Time.now)
     end
   end
