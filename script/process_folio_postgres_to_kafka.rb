@@ -36,14 +36,14 @@ end
 
 Utils.env = opts[:traject_env] if opts[:traject_env]
 
-if Utils.in_blackout_period?
-  Utils.logger.info 'Skipping processing due to blackout period'
-  exit
-end
-
 unless opts[:verbose]
   log_file = File.expand_path("../log/process_folio_postgres_to_kafka_#{opts[:kafka_topic]}.log", __dir__)
   Utils.set_log_file(log_file)
+end
+
+if Utils.in_blackout_period?
+  Utils.logger.info 'Skipping processing due to blackout period'
+  exit
 end
 
 state_file = opts[:state_file]
