@@ -71,6 +71,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    csv (3.3.0)
     debouncer (0.2.2)
     debug (1.9.2)
       irb (~> 1.10)
@@ -315,6 +316,7 @@ DEPENDENCIES
   capistrano-rvm
   capistrano-shared_configs
   config
+  csv
   debouncer
   debug
   dlss-capistrano

@@ -13,6 +13,7 @@ group :development, :test do
 end
 
 gem 'config'
+gem 'csv'
 gem 'debouncer'
 gem 'dor-rights-auth'
 gem 'honeybadger'
