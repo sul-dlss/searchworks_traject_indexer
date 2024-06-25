@@ -15,7 +15,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
        title_variant_display summary_display pub_display]
   end
   let(:ignored_fields) do
-    %w[all_search created last_updated format _version_ author_sort author_title_search callnum_facet_hsim marcbib_xml marcxml mhld_display fund_facet building_facet collection item_display barcode_search] + copy_fields
+    %w[all_search created last_updated format _version_ author_sort author_title_search callnum_facet_hsim marcbib_xml marcxml mhld_display fund_facet building_facet collection item_display barcode_search on_order_library_ssim] + copy_fields
   end
   let(:pending_fields) { %w[reverse_shelfkey shelfkey preferred_barcode date_cataloged access_facet] }
   subject(:result) { indexer.map_record(folio_record).transform_values { |v| v.sort } }

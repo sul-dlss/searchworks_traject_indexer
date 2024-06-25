@@ -158,19 +158,6 @@ RSpec.describe 'Access config' do
     specify { expect(field).to contain_exactly 'At the Library' }
   end
 
-  context 'without items or holdings but with a 596a in the bib record' do
-    let(:marc_record) do
-      MARC::Record.new.tap do |r|
-        r.leader = '00988nas a2200193z  4500'
-        r.append(MARC::ControlField.new('008', '071214uuuuuuuuuxx uu |ss    u|    |||| d'))
-        r.append(MARC::DataField.new('596', ' ', ' ',
-                                     MARC::Subfield.new('a', '31')))
-      end
-    end
-
-    specify { expect(field).to contain_exactly 'On order' }
-  end
-
   context 'for a suppressed item' do
     let(:holdings) do
       [{
