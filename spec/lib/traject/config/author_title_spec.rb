@@ -25,6 +25,15 @@ RSpec.describe 'Author-title config' do
       expect(select_by_id('110no240')[field]).to eq ['110a 110b 110c 110d 110f 110g 110k 110l 110n 110p 110t 110u 245a']
       expect(select_by_id('111no240')[field]).to eq ['111a 111c 111d 111e 111f 111g 111j 111k 111l 111n 111p 111q 111t 111u 245a']
     end
+
+    it 'ignores related works' do
+      expect(select_by_id('700')[field]).to eq nil
+      expect(select_by_id('710')[field]).to eq nil
+      expect(select_by_id('711')[field]).to eq nil
+      expect(select_by_id('810')[field]).to eq nil
+      expect(select_by_id('800')[field]).to eq nil
+      expect(select_by_id('811')[field]).to eq nil
+    end
   end
 
   # rubocop:disable Layout/LineLength
