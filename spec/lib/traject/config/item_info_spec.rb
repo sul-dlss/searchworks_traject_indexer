@@ -184,22 +184,6 @@ RSpec.describe 'ItemInfo config' do
     let(:field) { 'item_display_struct' }
     subject(:value) { result[field].map { |x| JSON.parse(x) } }
 
-    context 'when an item is on-order' do
-      # NOTE: This test exercises on_order_stub_holdings
-      let(:record) do
-        MARC::Record.new.tap do |r|
-          r.append(
-            MARC::DataField.new(
-              '596', ' ', ' ',
-              MARC::Subfield.new('a', '1 2 22')
-            )
-          )
-        end
-      end
-
-      it { is_expected.to match_array([hash_including('library' => 'GREEN'), hash_including('library' => 'ART')]) }
-    end
-
     context 'when an item is bound-with' do
       let(:record) do
         MARC::Record.new.tap do |r|

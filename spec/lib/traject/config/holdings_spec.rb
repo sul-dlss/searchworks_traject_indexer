@@ -9,16 +9,6 @@ RSpec.describe 'Holdings config' do
 
   subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
-  describe 'on_order_library_ssim' do
-    let(:field) { 'on_order_library_ssim' }
-    let(:fixture_name) { '44794.json' }
-    let(:records) { MARC::JSONLReader.new(file_fixture(fixture_name).to_s).to_a }
-    let(:record) { records.first }
-
-    subject(:value) { result[field] }
-    it { is_expected.to eq ['SAL3'] }
-  end
-
   describe 'bookplates_display' do
     let(:field) { 'bookplates_display' }
     describe 'population of bookplates_display' do

@@ -2206,8 +2206,6 @@ each_record do |_record, context|
   end
 end
 
-to_field 'on_order_library_ssim', extract_marc('596a', translation_map: 'library_on_order_map')
-
 to_field 'mhld_display' do |record, accumulator, _context|
   record.mhld.each { |holding| accumulator << holding }
 end

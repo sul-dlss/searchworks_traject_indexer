@@ -48,10 +48,7 @@ class FolioRecord
     @index_items ||= begin
       items = item_holdings.concat(bound_with_holdings)
 
-      unless all_items.any? || eresource?
-        items = on_order_holdings if items.empty?
-        items = on_order_stub_holdings if items.empty?
-      end
+      items = on_order_holdings if !(all_items.any? || eresource?) && items.empty?
 
       items
     end
@@ -193,23 +190,6 @@ class FolioRecord
       FolioItem.new(
         holding:,
         instance:,
-        status: 'On order',
-        record: self
-      )
-    end
-  end
-
-  def on_order_stub_holdings
-    order_libs = Traject::MarcExtractor.cached('596a', alternate_script: false).extract(marc_record)
-    translation_map = Traject::TranslationMap.new('library_on_order_map')
-
-    lib_codes = order_libs.flat_map(&:split).map { |order_lib| translation_map[order_lib] }.uniq
-    # exclude generic SUL if there's a more specific library
-    lib_codes -= ['SUL'] if lib_codes.length > 1
-    lib_codes.map do |lib|
-      FolioItem.new(
-        instance:,
-        library: lib,
         status: 'On order',
         record: self
       )
