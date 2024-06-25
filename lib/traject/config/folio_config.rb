@@ -2218,7 +2218,7 @@ to_field 'bookplates_display' do |record, accumulator|
     next if file =~ /no content metadata/i
 
     fund_name = field['f']
-    druid = field['b'].split(':')
+    druid = field['b']&.split(':') || []
     text = field['d']
     accumulator << [fund_name, druid[1], file, text].join(' -|- ')
   end
@@ -2228,7 +2228,7 @@ to_field 'fund_facet' do |record, accumulator|
     file = field['c']
     next if file =~ /no content metadata/i
 
-    druid = field['b'].split(':')
+    druid = field['b']&.split(':') || []
     accumulator << field['f']
     accumulator << druid[1]
   end
