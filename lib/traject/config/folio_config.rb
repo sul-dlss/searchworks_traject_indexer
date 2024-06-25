@@ -334,6 +334,10 @@ to_field 'author_title_search' do |record, accumulator|
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
 end
 
+to_field 'best_author_title_search' do |_record, accumulator, context|
+  accumulator << context.output_hash['author_title_search'].first if context.output_hash['author_title_search']
+end
+
 to_field 'author_title_search' do |record, accumulator|
   Traject::MarcExtractor.cached('700abcdfghjklmnopqrstuvwyz:710abcdfghjklmnopqrstuvwyz:711abcdefghjklmnopqrstuvwyz',
                                 alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
@@ -367,10 +371,6 @@ to_field 'author_title_search' do |record, accumulator|
 
   twoxx = Traject::MarcExtractor.cached('245aa', alternate_script: :only).extract(record).first
   accumulator << [onexx, twoxx].compact.reject(&:empty?).map(&:strip).join(' ') if onexx && twoxx
-end
-
-to_field 'best_author_title_search' do |_record, accumulator, context|
-  accumulator << context.output_hash['author_title_search'].first if context.output_hash['author_title_search']
 end
 
 # # Author Search Fields
