@@ -44,6 +44,25 @@ RSpec.describe 'Managed purl config' do
       expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to contain_exactly 'sirsi', 'folio'
       expect(select_by_id('NoManagedPurlItem')[field]).to contain_exactly 'sirsi', 'folio'
     end
+
+    context 'with an 856 prefixed with a' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01737cam a2200445Ka 4500'
+          r.append(MARC::ControlField.new('001', 'a4820195'))
+          r.append(MARC::DataField.new('856', ' ', ' ',
+                                       MARC::Subfield.new('x', 'SDR-PURL'),
+                                       MARC::Subfield.new('x', 'item'),
+                                       MARC::Subfield.new('x', 'collection:yg867hg1375:a9615156:Francis E. Stafford photographs, 1909-1933')))
+        end
+      end
+
+      subject(:result) { indexer.map_record(marc_to_folio(record)) }
+
+      it 'strips the a from the catkey' do
+        expect(result[field]).to include '9615156'
+      end
+    end
   end
 
   describe 'collection_with_title' do
@@ -91,6 +110,25 @@ RSpec.describe 'Managed purl config' do
       expect(select_by_id('managedPurlCollection')[field]).to eq nil
       expect(select_by_id('ManagedAnd2UnmanagedPurlCollection')[field]).to eq nil
       expect(select_by_id('NoManagedPurlItem')[field]).to eq nil
+    end
+
+    context 'with an 856 prefixed with a' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01737cam a2200445Ka 4500'
+          r.append(MARC::ControlField.new('001', 'a4820195'))
+          r.append(MARC::DataField.new('856', ' ', ' ',
+                                       MARC::Subfield.new('x', 'SDR-PURL'),
+                                       MARC::Subfield.new('x', 'item'),
+                                       MARC::Subfield.new('x', 'set:aa000bb1111:123456789:Test Set, 1963-2015')))
+        end
+      end
+
+      subject(:result) { indexer.map_record(marc_to_folio(record)) }
+
+      it 'strips the a from the catkey' do
+        expect(result[field]).to include '123456789'
+      end
     end
   end
 
