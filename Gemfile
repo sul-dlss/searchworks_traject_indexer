@@ -42,5 +42,7 @@ end
 gem 'activesupport', '~> 7.0'
 gem 'slop'
 
+gem 'cocina-models'
 gem 'dor-event-client'
 gem 'factory_bot', '~> 6.2'
+gem 'stanford-geo', '0.2.0'

@@ -1,0 +1,37 @@
+# Map values coming from cocina to OpenGeoMetadata "format" values
+# See: https://opengeometadata.org/ogm-aardvark/#format
+
+# Literals
+ArcGRID: ArcGRID
+CD-ROM: CD-ROM
+DEM: DEM
+DVD-ROM: DVD-ROM
+Feature Class: Feature Class
+Geodatabase: Geodatabase
+GeoJPEG: GeoJPEG
+GeoJSON: GeoJSON
+GeoPackage: GeoPackage
+GeoPDF: GeoPDF
+GeoTIFF: GeoTIFF
+JPEG: JPEG
+JPEG2000: JPEG2000
+KML: KML
+KMZ: KMZ
+LAS: LAS
+LAZ: LAZ
+Mixed: Mixed
+MrSID: MrSID
+PDF: PDF
+PNG: PNG
+Pulsewaves: Pulsewaves
+Raster Dataset: Raster Dataset
+Shapefile: Shapefile
+SQLite Database: SQLite Database
+Tabular Data: Tabular Data
+TIFF: TIFF
+
+# MIME types (mainly for maps)
+image/jpeg: JPEG
+image/jp2: JPEG2000
+image/png: PNG
+application/pdf: PDF

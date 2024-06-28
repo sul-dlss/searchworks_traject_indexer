@@ -1,0 +1,815 @@
+{
+  "cocinaVersion": "0.90.0",
+  "type": "https://cocina.sul.stanford.edu/models/geo",
+  "externalIdentifier": "druid:nq544bf8960",
+  "label": "[西伯利 / 満州及西伯利 / 蒙古及西伯利] 十万分一圖 ネルチンスク -- 1:100,000 Neruchinsuku, Maps Index",
+  "version": 1,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "copyright": "This work is in the Public Domain, meaning that it is not subject to copyright.",
+    "useAndReproductionStatement": "This item is in the public domain.  There are no restrictions on use."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:bz466cq3451",
+    "releaseTags": [
+      {
+        "who": "kdurante",
+        "what": "collection",
+        "date": "2021-10-06T17:22:17.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      },
+      {
+        "who": "bergeraj",
+        "what": "collection",
+        "date": "2023-04-13T20:44:30.000+00:00",
+        "to": "Earthworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "[西伯利 / 満州及西伯利 / 蒙古及西伯利] 十万分一圖 ネルチンスク -- 1:100,000 Neruchinsuku, Maps Index",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Stanford Geospatial Center",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "organization",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": { "code": "marcrelator", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2023",
+            "type": "publication",
+            "status": "primary",
+            "encoding": { "code": "w3cdtf", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Stanford Digital Repository",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "organization",
+            "role": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "publisher",
+                "code": "pbl",
+                "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                "identifier": [],
+                "source": {
+                  "code": "marcrelator",
+                  "uri": "http://id.loc.gov/vocabulary/relators/",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          }
+        ],
+        "location": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Stanford, California, ",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geospatial data",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026297",
+        "identifier": [],
+        "source": { "code": "lcgft", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic dataset",
+        "type": "genre",
+        "uri": "http://rdvocab.info/termList/RDAContentType/1001",
+        "identifier": [],
+        "source": { "code": "rdacontent", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "software, multimedia",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Shapefile",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "born digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": { "value": "MODS digital origin terms", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Scale not given.",
+        "type": "map scale",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Custom projection",
+        "type": "map projection",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4326",
+        "type": "map projection",
+        "uri": "http://opengis.net/def/crs/EPSG/0/4326",
+        "identifier": [],
+        "source": { "code": "EPSG", "note": [] },
+        "displayLabel": "WGS84",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "application/x-esri-shapefile",
+            "type": "media type",
+            "identifier": [],
+            "source": { "value": "IANA media type terms", "note": [] },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Shapefile",
+            "type": "data format",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dataset#",
+            "type": "type",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "115.0",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "50.0",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "120.0",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "53.333333",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": { "code": "EPSG:4326", "note": [] },
+            "encoding": { "value": "decimal", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Zabaĭkalʹskiĭ kraĭ (Russia)",
+            "type": "coverage",
+            "identifier": [],
+            "note": [],
+            "valueLanguage": { "code": "eng", "note": [] },
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": { "code": "iso639-2b", "note": [] },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This polygon shapefile is an index to the map series, '[西伯利 / 満州及西伯利 / 蒙古及西伯利] 十万分一圖 ネルチンスク -- 1:100,000 Neruchinsuku.' This map series was originally produced by the Japanese Land Survey Department of the General Staff Headquarters [1938-1940]. Stanford University Libraries holds a large collection of Japanese military and imperial maps, referred to as gaihōzu, or\n'maps of outer lands.' These maps were produced starting in the early Meiji (1868-1912) era and the end of World War II by the Land Survey Department of the General Staff Headquarters, the former Japanese Army. The Library is in the process of scanning and making available all of the maps in the collection.",
+        "identifier": [],
+        "displayLabel": "Abstract",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": " This layer provides an index map that can be used to locate individual scanned map sheets.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Purpose",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This layer is presented in the WGS84 coordinate system for web display purposes. Downloadable data are provided in native coordinate system or projection.",
+        "identifier": [],
+        "displayLabel": "WGS84 Cartographics",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Military maps",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Topographic maps",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Index maps",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Grids (Cartography)",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Zabaĭkalʹskiĭ kraĭ (Russia)",
+        "type": "place",
+        "identifier": [],
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "1938-1940",
+        "type": "time",
+        "encoding": { "code": "w3cdtf", "note": [] },
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Military",
+        "type": "topic",
+        "uri": "intelligenceMilitary",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "E 121°45ʹ--E 124°20ʹ/N 15°--N 12°30ʹ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "E 115°--E 120°/N 53°20ʹ--N 50°",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [],
+      "digitalLocation": [],
+      "accessContact": [],
+      "digitalRepository": [],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "This item is in the public domain. There are no restrictions on access or use.",
+          "type": "use and reproduction",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "relatedResource": [
+      {
+        "type": "referenced by",
+        "title": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "[西伯利 / 満州及西伯利 / 蒙古及西伯利] 十万分一圖 ネルチンスク -- 1:100,000 Neruchinsuku",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "event": [],
+        "form": [],
+        "language": [],
+        "note": [],
+        "identifier": [],
+        "subject": [],
+        "access": {
+          "url": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "https://searchworks.stanford.edu/view/12372180",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "physicalLocation": [],
+          "digitalLocation": [],
+          "accessContact": [],
+          "digitalRepository": [],
+          "note": []
+        },
+        "relatedResource": []
+      }
+    ],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "Stanford",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "role": [],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": { "code": "iso639-2b", "note": [] },
+          "structuredValue": []
+        }
+      ],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "This record was translated from ISO 19139 to MODS v.3 using an xsl transformation.",
+          "type": "record origin",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "metadataStandard": [],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "edu.stanford.purl:nq544bf8960",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/nq544bf8960"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "branner:jmm_index_12372180.shp"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "nq544bf8960_1",
+        "label": "Data",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/d531be64-dc07-4fb0-8f3d-6d8328c11b2b",
+              "label": "data.zip",
+              "filename": "data.zip",
+              "size": 15798,
+              "version": 1,
+              "hasMimeType": "application/zip",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "1752893bbc0ed7195ad9583e7548e029367e53b8"
+                },
+                { "type": "md5", "digest": "0c9ee6e24d4dc31ed7db57644e5c74ff" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/8f21499f-21bb-4e87-bc2b-5b28857f9d61",
+              "label": "data_EPSG_4326.zip",
+              "filename": "data_EPSG_4326.zip",
+              "size": 2943,
+              "version": 1,
+              "hasMimeType": "application/zip",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "7120875309eae152e372e998dbd19e7368eadbe4"
+                },
+                { "type": "md5", "digest": "b912ddb2c875b1a585a7ce38fb25cf28" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/dd7b0e5c-2836-458a-a86a-222a115c065c",
+              "label": "index_map.json",
+              "filename": "index_map.json",
+              "size": 13473,
+              "version": 1,
+              "hasMimeType": "application/json",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "3ad9dea1b30a9c84fd92afd67959b186dbe88eb6"
+                },
+                { "type": "md5", "digest": "1f8e8d04280a23a6aeb8530d6139aa43" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/preview",
+        "externalIdentifier": "nq544bf8960_2",
+        "label": "Preview",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/d14c6eff-1deb-4ef1-87dd-0ab16f888062",
+              "label": "preview.jpg",
+              "filename": "preview.jpg",
+              "size": 9063,
+              "version": 1,
+              "hasMimeType": "image/jpeg",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "ace645f698e3435eab61f0968679cab57bac68e3"
+                },
+                { "type": "md5", "digest": "4266d822720c362be0e15b95e935c962" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              },
+              "presentation": { "height": 480, "width": 640 }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": ["druid:ch237ht4777"]
+  },
+  "geographic": {
+    "iso19139": "\u003c?xml version=\"1.0\"?\u003e\n\u003crdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\u003e\n              \u003crdf:Description rdf:about=\"https://purl.stanford.edu/nq544bf8960\"\u003e\n                \u003cMD_Metadata xmlns=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xmlns:gts=\"http://www.isotc211.org/2005/gts\" xmlns:srv=\"http://www.isotc211.org/2005/srv\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\u003e\n  \u003cfileIdentifier\u003e\n    \u003cgco:CharacterString\u003eedu.stanford.purl:nq544bf8960\u003c/gco:CharacterString\u003e\n  \u003c/fileIdentifier\u003e\n  \u003clanguage\u003e\n    \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n  \u003c/language\u003e\n  \u003ccharacterSet\u003e\n    \u003cMD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"\u003eutf8\u003c/MD_CharacterSetCode\u003e\n  \u003c/characterSet\u003e\n  \u003cparentIdentifier\u003e\n    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/ch237ht4777.mods\u003c/gco:CharacterString\u003e\n  \u003c/parentIdentifier\u003e\n  \u003chierarchyLevel\u003e\n    \u003cMD_ScopeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode\" codeListValue=\"dataset\" codeSpace=\"ISOTC211/19115\"\u003edataset\u003c/MD_ScopeCode\u003e\n  \u003c/hierarchyLevel\u003e\n  \u003chierarchyLevelName\u003e\n    \u003cgco:CharacterString\u003edataset\u003c/gco:CharacterString\u003e\n  \u003c/hierarchyLevelName\u003e\n  \u003ccontact\u003e\n    \u003cCI_ResponsibleParty\u003e\n      \u003corganisationName\u003e\n        \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n      \u003c/organisationName\u003e\n      \u003ccontactInfo\u003e\n        \u003cCI_Contact\u003e\n          \u003cphone\u003e\n            \u003cCI_Telephone\u003e\n              \u003cvoice\u003e\n                \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n              \u003c/voice\u003e\n            \u003c/CI_Telephone\u003e\n          \u003c/phone\u003e\n          \u003caddress\u003e\n            \u003cCI_Address\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003eMitchell Building, 2nd Floor\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003cdeliveryPoint\u003e\n                \u003cgco:CharacterString\u003e397 Panama Mall\u003c/gco:CharacterString\u003e\n              \u003c/deliveryPoint\u003e\n              \u003ccity\u003e\n                \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n              \u003c/city\u003e\n              \u003cadministrativeArea\u003e\n                \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n              \u003c/administrativeArea\u003e\n              \u003cpostalCode\u003e\n                \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n              \u003c/postalCode\u003e\n              \u003celectronicMailAddress\u003e\n                \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n              \u003c/electronicMailAddress\u003e\n            \u003c/CI_Address\u003e\n          \u003c/address\u003e\n        \u003c/CI_Contact\u003e\n      \u003c/contactInfo\u003e\n      \u003crole\u003e\n        \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n      \u003c/role\u003e\n    \u003c/CI_ResponsibleParty\u003e\n  \u003c/contact\u003e\n  \u003cdateStamp\u003e\n    \u003cgco:Date\u003e2023-08-16\u003c/gco:Date\u003e\n  \u003c/dateStamp\u003e\n  \u003cmetadataStandardName\u003e\n    \u003cgco:CharacterString\u003eISO 19139 Geographic Information - Metadata - Implementation Specification\u003c/gco:CharacterString\u003e\n  \u003c/metadataStandardName\u003e\n  \u003cmetadataStandardVersion\u003e\n    \u003cgco:CharacterString\u003e2007\u003c/gco:CharacterString\u003e\n  \u003c/metadataStandardVersion\u003e\n  \u003cdataSetURI\u003e\n    \u003cgco:CharacterString\u003ehttps://purl.stanford.edu/nq544bf8960\u003c/gco:CharacterString\u003e\n  \u003c/dataSetURI\u003e\n  \u003cspatialRepresentationInfo\u003e\n    \u003cMD_VectorSpatialRepresentation\u003e\n      \u003ctopologyLevel\u003e\n        \u003cMD_TopologyLevelCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopologyLevelCode\" codeListValue=\"geometryOnly\" codeSpace=\"ISOTC211/19115\"\u003egeometryOnly\u003c/MD_TopologyLevelCode\u003e\n      \u003c/topologyLevel\u003e\n      \u003cgeometricObjects\u003e\n        \u003cMD_GeometricObjects\u003e\n          \u003cgeometricObjectType\u003e\n            \u003cMD_GeometricObjectTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode\" codeListValue=\"composite\" codeSpace=\"ISOTC211/19115\"\u003ecomposite\u003c/MD_GeometricObjectTypeCode\u003e\n          \u003c/geometricObjectType\u003e\n          \u003cgeometricObjectCount\u003e\n            \u003cgco:Integer\u003e29\u003c/gco:Integer\u003e\n          \u003c/geometricObjectCount\u003e\n        \u003c/MD_GeometricObjects\u003e\n      \u003c/geometricObjects\u003e\n    \u003c/MD_VectorSpatialRepresentation\u003e\n  \u003c/spatialRepresentationInfo\u003e\n  \u003creferenceSystemInfo\u003e\n    \u003cMD_ReferenceSystem\u003e\n      \u003creferenceSystemIdentifier\u003e\n        \u003cRS_Identifier\u003e\n          \u003ccode\u003e\n            \u003cgco:CharacterString\u003e4326\u003c/gco:CharacterString\u003e\n          \u003c/code\u003e\n          \u003ccodeSpace\u003e\n            \u003cgco:CharacterString\u003eEPSG\u003c/gco:CharacterString\u003e\n          \u003c/codeSpace\u003e\n          \u003cversion\u003e\n            \u003cgco:CharacterString\u003e6.14(3.0.1)\u003c/gco:CharacterString\u003e\n          \u003c/version\u003e\n        \u003c/RS_Identifier\u003e\n      \u003c/referenceSystemIdentifier\u003e\n    \u003c/MD_ReferenceSystem\u003e\n  \u003c/referenceSystemInfo\u003e\n  \u003cidentificationInfo\u003e\n    \u003cMD_DataIdentification\u003e\n      \u003ccitation\u003e\n        \u003cCI_Citation\u003e\n          \u003ctitle\u003e\n            \u003cgco:CharacterString\u003e[\u0026#x897F;\u0026#x4F2F;\u0026#x5229; / \u0026#x6E80;\u0026#x5DDE;\u0026#x53CA;\u0026#x897F;\u0026#x4F2F;\u0026#x5229; / \u0026#x8499;\u0026#x53E4;\u0026#x53CA;\u0026#x897F;\u0026#x4F2F;\u0026#x5229;] \u0026#x5341;\u0026#x4E07;\u0026#x5206;\u0026#x4E00;\u0026#x5716; \u0026#x30CD;\u0026#x30EB;\u0026#x30C1;\u0026#x30F3;\u0026#x30B9;\u0026#x30AF; -- 1:100,000 Neruchinsuku, Maps Index\u003c/gco:CharacterString\u003e\n          \u003c/title\u003e\n          \u003cdate\u003e\n            \u003cCI_Date\u003e\n              \u003cdate\u003e\n                \u003cgco:Date\u003e2023-08-16\u003c/gco:Date\u003e\n              \u003c/date\u003e\n              \u003cdateType\u003e\n                \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"publication\" codeSpace=\"ISOTC211/19115\"\u003epublication\u003c/CI_DateTypeCode\u003e\n              \u003c/dateType\u003e\n            \u003c/CI_Date\u003e\n          \u003c/date\u003e\n          \u003cidentifier\u003e\n            \u003cMD_Identifier\u003e\n              \u003ccode\u003e\n                \u003cgco:CharacterString\u003ehttps://purl.stanford.edu/nq544bf8960\u003c/gco:CharacterString\u003e\n              \u003c/code\u003e\n            \u003c/MD_Identifier\u003e\n          \u003c/identifier\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eMitchell Building, 2nd Floor\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e397 Panama Mall\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003celectronicMailAddress\u003e\n                        \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n                      \u003c/electronicMailAddress\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"originator\" codeSpace=\"ISOTC211/19115\"\u003eoriginator\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003ccitedResponsibleParty\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eStanford Digital Repository\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"publisher\" codeSpace=\"ISOTC211/19115\"\u003epublisher\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/citedResponsibleParty\u003e\n          \u003cpresentationForm\u003e\n            \u003cCI_PresentationFormCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode\" codeListValue=\"mapDigital\" codeSpace=\"ISOTC211/19115\"\u003emapDigital\u003c/CI_PresentationFormCode\u003e\n          \u003c/presentationForm\u003e\n          \u003ccollectiveTitle\u003e\n            \u003cgco:CharacterString\u003eGaihozu Index Maps\u003c/gco:CharacterString\u003e\n          \u003c/collectiveTitle\u003e\n        \u003c/CI_Citation\u003e\n      \u003c/citation\u003e\n      \u003cabstract\u003e\n        \u003cgco:CharacterString\u003eThis polygon shapefile is an index to the map series, '[\u0026#x897F;\u0026#x4F2F;\u0026#x5229; / \u0026#x6E80;\u0026#x5DDE;\u0026#x53CA;\u0026#x897F;\u0026#x4F2F;\u0026#x5229; / \u0026#x8499;\u0026#x53E4;\u0026#x53CA;\u0026#x897F;\u0026#x4F2F;\u0026#x5229;] \u0026#x5341;\u0026#x4E07;\u0026#x5206;\u0026#x4E00;\u0026#x5716; \u0026#x30CD;\u0026#x30EB;\u0026#x30C1;\u0026#x30F3;\u0026#x30B9;\u0026#x30AF; -- 1:100,000 Neruchinsuku.' This map series was originally produced by the Japanese Land Survey Department of the General Staff Headquarters [1938-1940]. Stanford University Libraries holds a large collection of Japanese military and imperial maps, referred to as gaih\u0026#x14D;zu, or\n'maps of outer lands.' These maps were produced starting in the early Meiji (1868-1912) era and the end of World War II by the Land Survey Department of the General Staff Headquarters, the former Japanese Army. The Library is in the process of scanning and making available all of the maps in the collection.\u003c/gco:CharacterString\u003e\n      \u003c/abstract\u003e\n      \u003cpurpose\u003e\n        \u003cgco:CharacterString\u003e This layer provides an index map that can be used to locate individual scanned map sheets.\u003c/gco:CharacterString\u003e\n      \u003c/purpose\u003e\n      \u003cstatus\u003e\n        \u003cMD_ProgressCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode\" codeListValue=\"completed\" codeSpace=\"ISOTC211/19115\"\u003ecompleted\u003c/MD_ProgressCode\u003e\n      \u003c/status\u003e\n      \u003cpointOfContact\u003e\n        \u003cCI_ResponsibleParty\u003e\n          \u003corganisationName\u003e\n            \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n          \u003c/organisationName\u003e\n          \u003ccontactInfo\u003e\n            \u003cCI_Contact\u003e\n              \u003cphone\u003e\n                \u003cCI_Telephone\u003e\n                  \u003cvoice\u003e\n                    \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n                  \u003c/voice\u003e\n                \u003c/CI_Telephone\u003e\n              \u003c/phone\u003e\n              \u003caddress\u003e\n                \u003cCI_Address\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003eMitchell Building, 2nd Floor\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003cdeliveryPoint\u003e\n                    \u003cgco:CharacterString\u003e397 Panama Mall\u003c/gco:CharacterString\u003e\n                  \u003c/deliveryPoint\u003e\n                  \u003ccity\u003e\n                    \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                  \u003c/city\u003e\n                  \u003cadministrativeArea\u003e\n                    \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                  \u003c/administrativeArea\u003e\n                  \u003cpostalCode\u003e\n                    \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n                  \u003c/postalCode\u003e\n                  \u003celectronicMailAddress\u003e\n                    \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n                  \u003c/electronicMailAddress\u003e\n                \u003c/CI_Address\u003e\n              \u003c/address\u003e\n            \u003c/CI_Contact\u003e\n          \u003c/contactInfo\u003e\n          \u003crole\u003e\n            \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"pointOfContact\" codeSpace=\"ISOTC211/19115\"\u003epointOfContact\u003c/CI_RoleCode\u003e\n          \u003c/role\u003e\n        \u003c/CI_ResponsibleParty\u003e\n      \u003c/pointOfContact\u003e\n      \u003cresourceMaintenance\u003e\n        \u003cMD_MaintenanceInformation\u003e\n          \u003cmaintenanceAndUpdateFrequency\u003e\n            \u003cMD_MaintenanceFrequencyCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode\" codeListValue=\"asNeeded\" codeSpace=\"ISOTC211/19115\"\u003easNeeded\u003c/MD_MaintenanceFrequencyCode\u003e\n          \u003c/maintenanceAndUpdateFrequency\u003e\n        \u003c/MD_MaintenanceInformation\u003e\n      \u003c/resourceMaintenance\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eZaba\u0026#x12D;kal\u0026#x2B9;ski\u0026#x12D; kra\u0026#x12D; (Russia)\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"place\" codeSpace=\"ISOTC211/19115\"\u003eplace\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n          \u003cthesaurusName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003egeonames\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate\u003e\n                \u003cCI_Date\u003e\n                  \u003cdate\u003e\n                    \u003cgco:Date\u003e2012-11-01\u003c/gco:Date\u003e\n                  \u003c/date\u003e\n                  \u003cdateType\u003e\n                    \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"revision\" codeSpace=\"ISOTC211/19115\"\u003erevision\u003c/CI_DateTypeCode\u003e\n                  \u003c/dateType\u003e\n                \u003c/CI_Date\u003e\n              \u003c/date\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://www.geonames.org/ontology#\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/thesaurusName\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eMilitary maps\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eTopographic maps\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eIndex maps\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eGrids (Cartography)\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003ctype\u003e\n            \u003cMD_KeywordTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode\" codeListValue=\"theme\" codeSpace=\"ISOTC211/19115\"\u003etheme\u003c/MD_KeywordTypeCode\u003e\n          \u003c/type\u003e\n          \u003cthesaurusName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003elcsh\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate\u003e\n                \u003cCI_Date\u003e\n                  \u003cdate\u003e\n                    \u003cgco:Date\u003e2011-04-26\u003c/gco:Date\u003e\n                  \u003c/date\u003e\n                  \u003cdateType\u003e\n                    \u003cCI_DateTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode\" codeListValue=\"revision\" codeSpace=\"ISOTC211/19115\"\u003erevision\u003c/CI_DateTypeCode\u003e\n                  \u003c/dateType\u003e\n                \u003c/CI_Date\u003e\n              \u003c/date\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://id.loc.gov/authorities/subjects.html\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/thesaurusName\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cdescriptiveKeywords\u003e\n        \u003cMD_Keywords\u003e\n          \u003ckeyword\u003e\n            \u003cgco:CharacterString\u003eDownloadable Data\u003c/gco:CharacterString\u003e\n          \u003c/keyword\u003e\n          \u003cthesaurusName uuidref=\"723f6998-058e-11dc-8314-0800200c9a66\"/\u003e\n        \u003c/MD_Keywords\u003e\n      \u003c/descriptiveKeywords\u003e\n      \u003cresourceConstraints\u003e\n        \u003cMD_LegalConstraints\u003e\n          \u003cuseConstraints\u003e\n            \u003cMD_RestrictionCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode\" codeListValue=\"otherRestrictions\" codeSpace=\"ISOTC211/19115\"\u003eotherRestrictions\u003c/MD_RestrictionCode\u003e\n          \u003c/useConstraints\u003e\n          \u003cotherConstraints\u003e\n            \u003cgco:CharacterString\u003eThis item is in the public domain. There are no restrictions on access or use.\u003c/gco:CharacterString\u003e\n          \u003c/otherConstraints\u003e\n        \u003c/MD_LegalConstraints\u003e\n      \u003c/resourceConstraints\u003e\n      \u003caggregationInfo\u003e\n        \u003cMD_AggregateInformation\u003e\n          \u003caggregateDataSetName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003eGaihozu Index Maps\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate gco:nilReason=\"missing\"/\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttp://purl.stanford.edu/ch237ht4777\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/aggregateDataSetName\u003e\n          \u003cassociationType\u003e\n            \u003cDS_AssociationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_AssociationTypeCode\" codeListValue=\"largerWorkCitation\" codeSpace=\"ISOTC211/19115\"\u003elargerWorkCitation\u003c/DS_AssociationTypeCode\u003e\n          \u003c/associationType\u003e\n          \u003cinitiativeType\u003e\n            \u003cDS_InitiativeTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_InitiativeTypeCode\" codeListValue=\"collection\" codeSpace=\"ISOTC211/19115\"\u003ecollection\u003c/DS_InitiativeTypeCode\u003e\n          \u003c/initiativeType\u003e\n        \u003c/MD_AggregateInformation\u003e\n      \u003c/aggregationInfo\u003e\n      \u003caggregationInfo\u003e\n        \u003cMD_AggregateInformation\u003e\n          \u003caggregateDataSetName\u003e\n            \u003cCI_Citation\u003e\n              \u003ctitle\u003e\n                \u003cgco:CharacterString\u003e[\u0026#x897F;\u0026#x4F2F;\u0026#x5229; / \u0026#x6E80;\u0026#x5DDE;\u0026#x53CA;\u0026#x897F;\u0026#x4F2F;\u0026#x5229; / \u0026#x8499;\u0026#x53E4;\u0026#x53CA;\u0026#x897F;\u0026#x4F2F;\u0026#x5229;] \u0026#x5341;\u0026#x4E07;\u0026#x5206;\u0026#x4E00;\u0026#x5716; \u0026#x30CD;\u0026#x30EB;\u0026#x30C1;\u0026#x30F3;\u0026#x30B9;\u0026#x30AF; -- 1:100,000 Neruchinsuku\u003c/gco:CharacterString\u003e\n              \u003c/title\u003e\n              \u003cdate gco:nilReason=\"missing\"/\u003e\n              \u003cidentifier\u003e\n                \u003cMD_Identifier\u003e\n                  \u003ccode\u003e\n                    \u003cgco:CharacterString\u003ehttps://searchworks.stanford.edu/view/12372180\u003c/gco:CharacterString\u003e\n                  \u003c/code\u003e\n                \u003c/MD_Identifier\u003e\n              \u003c/identifier\u003e\n            \u003c/CI_Citation\u003e\n          \u003c/aggregateDataSetName\u003e\n          \u003cassociationType\u003e\n            \u003cDS_AssociationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_AssociationTypeCode\" codeListValue=\"crossReference\" codeSpace=\"ISOTC211/19115\"\u003ecrossReference\u003c/DS_AssociationTypeCode\u003e\n          \u003c/associationType\u003e\n          \u003cinitiativeType\u003e\n            \u003cDS_InitiativeTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#DS_InitiativeTypeCode\" codeListValue=\"collection\" codeSpace=\"ISOTC211/19115\"\u003ecollection\u003c/DS_InitiativeTypeCode\u003e\n          \u003c/initiativeType\u003e\n        \u003c/MD_AggregateInformation\u003e\n      \u003c/aggregationInfo\u003e\n      \u003cspatialRepresentationType\u003e\n        \u003cMD_SpatialRepresentationTypeCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode\" codeListValue=\"vector\" codeSpace=\"ISOTC211/19115\"\u003evector\u003c/MD_SpatialRepresentationTypeCode\u003e\n      \u003c/spatialRepresentationType\u003e\n      \u003clanguage\u003e\n        \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n      \u003c/language\u003e\n      \u003ccharacterSet\u003e\n        \u003cMD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"\u003eutf8\u003c/MD_CharacterSetCode\u003e\n      \u003c/characterSet\u003e\n      \u003ctopicCategory\u003e\n        \u003cMD_TopicCategoryCode\u003eintelligenceMilitary\u003c/MD_TopicCategoryCode\u003e\n      \u003c/topicCategory\u003e\n      \u003cenvironmentDescription\u003e\n        \u003cgco:CharacterString\u003e Version 6.2 (Build 9200) ; Esri ArcGIS 10.4.1.5686\u003c/gco:CharacterString\u003e\n      \u003c/environmentDescription\u003e\n      \u003cextent\u003e\n        \u003cEX_Extent\u003e\n          \u003cgeographicElement\u003e\n            \u003cEX_GeographicBoundingBox\u003e\n              \u003cextentTypeCode\u003e\n                \u003cgco:Boolean\u003etrue\u003c/gco:Boolean\u003e\n              \u003c/extentTypeCode\u003e\n              \u003cwestBoundLongitude\u003e\n                \u003cgco:Decimal\u003e121.75\u003c/gco:Decimal\u003e\n              \u003c/westBoundLongitude\u003e\n              \u003ceastBoundLongitude\u003e\n                \u003cgco:Decimal\u003e124.333333\u003c/gco:Decimal\u003e\n              \u003c/eastBoundLongitude\u003e\n              \u003csouthBoundLatitude\u003e\n                \u003cgco:Decimal\u003e12.5\u003c/gco:Decimal\u003e\n              \u003c/southBoundLatitude\u003e\n              \u003cnorthBoundLatitude\u003e\n                \u003cgco:Decimal\u003e15\u003c/gco:Decimal\u003e\n              \u003c/northBoundLatitude\u003e\n            \u003c/EX_GeographicBoundingBox\u003e\n          \u003c/geographicElement\u003e\n        \u003c/EX_Extent\u003e\n      \u003c/extent\u003e\n      \u003cextent\u003e\n        \u003cEX_Extent\u003e\n          \u003cdescription\u003e\n            \u003cgco:CharacterString\u003eground condition\u003c/gco:CharacterString\u003e\n          \u003c/description\u003e\n          \u003ctemporalElement\u003e\n            \u003cEX_TemporalExtent\u003e\n              \u003cextent\u003e\n                \u003cgml:TimePeriod gml:id=\"idm122\"\u003e\n                  \u003cgml:beginPosition\u003e1938-01-01T00:00:00\u003c/gml:beginPosition\u003e\n                  \u003cgml:endPosition\u003e1940-01-01T00:00:00\u003c/gml:endPosition\u003e\n                \u003c/gml:TimePeriod\u003e\n              \u003c/extent\u003e\n            \u003c/EX_TemporalExtent\u003e\n          \u003c/temporalElement\u003e\n        \u003c/EX_Extent\u003e\n      \u003c/extent\u003e\n    \u003c/MD_DataIdentification\u003e\n  \u003c/identificationInfo\u003e\n  \u003ccontentInfo\u003e\n    \u003cMD_FeatureCatalogueDescription\u003e\n      \u003ccomplianceCode\u003e\n        \u003cgco:Boolean\u003efalse\u003c/gco:Boolean\u003e\n      \u003c/complianceCode\u003e\n      \u003clanguage\u003e\n        \u003cLanguageCode codeList=\"http://www.loc.gov/standards/iso639-2/php/code_list.php\" codeListValue=\"eng\" codeSpace=\"ISO639-2\"\u003eeng\u003c/LanguageCode\u003e\n      \u003c/language\u003e\n      \u003cincludedWithDataset\u003e\n        \u003cgco:Boolean\u003etrue\u003c/gco:Boolean\u003e\n      \u003c/includedWithDataset\u003e\n      \u003cfeatureCatalogueCitation\u003e\n        \u003cCI_Citation\u003e\n          \u003ctitle\u003e\n            \u003cgco:CharacterString\u003eEntity and attribute information\u003c/gco:CharacterString\u003e\n          \u003c/title\u003e\n          \u003cdate gco:nilReason=\"missing\"/\u003e\n          \u003cidentifier\u003e\n            \u003cMD_Identifier\u003e\n              \u003ccode\u003e\n                \u003cgco:CharacterString\u003eab0d25da-c48e-4348-9f3d-c0d36995c299\u003c/gco:CharacterString\u003e\n              \u003c/code\u003e\n            \u003c/MD_Identifier\u003e\n          \u003c/identifier\u003e\n        \u003c/CI_Citation\u003e\n      \u003c/featureCatalogueCitation\u003e\n    \u003c/MD_FeatureCatalogueDescription\u003e\n  \u003c/contentInfo\u003e\n  \u003cdistributionInfo\u003e\n    \u003cMD_Distribution\u003e\n      \u003cdistributionFormat\u003e\n        \u003cMD_Format\u003e\n          \u003cname\u003e\n            \u003cgco:CharacterString\u003eShapefile\u003c/gco:CharacterString\u003e\n          \u003c/name\u003e\n          \u003cversion gco:nilReason=\"missing\"/\u003e\n        \u003c/MD_Format\u003e\n      \u003c/distributionFormat\u003e\n      \u003cdistributor\u003e\n        \u003cMD_Distributor\u003e\n          \u003cdistributorContact\u003e\n            \u003cCI_ResponsibleParty\u003e\n              \u003corganisationName\u003e\n                \u003cgco:CharacterString\u003eStanford Geospatial Center\u003c/gco:CharacterString\u003e\n              \u003c/organisationName\u003e\n              \u003ccontactInfo\u003e\n                \u003cCI_Contact\u003e\n                  \u003cphone\u003e\n                    \u003cCI_Telephone\u003e\n                      \u003cvoice\u003e\n                        \u003cgco:CharacterString\u003e650-723-2746\u003c/gco:CharacterString\u003e\n                      \u003c/voice\u003e\n                    \u003c/CI_Telephone\u003e\n                  \u003c/phone\u003e\n                  \u003caddress\u003e\n                    \u003cCI_Address\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eBranner Earth Sciences Library\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003eMitchell Building, 2nd Floor\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003cdeliveryPoint\u003e\n                        \u003cgco:CharacterString\u003e397 Panama Mall\u003c/gco:CharacterString\u003e\n                      \u003c/deliveryPoint\u003e\n                      \u003ccity\u003e\n                        \u003cgco:CharacterString\u003eStanford\u003c/gco:CharacterString\u003e\n                      \u003c/city\u003e\n                      \u003cadministrativeArea\u003e\n                        \u003cgco:CharacterString\u003eCalifornia\u003c/gco:CharacterString\u003e\n                      \u003c/administrativeArea\u003e\n                      \u003cpostalCode\u003e\n                        \u003cgco:CharacterString\u003e94305\u003c/gco:CharacterString\u003e\n                      \u003c/postalCode\u003e\n                      \u003celectronicMailAddress\u003e\n                        \u003cgco:CharacterString\u003ebrannerlibrary@stanford.edu\u003c/gco:CharacterString\u003e\n                      \u003c/electronicMailAddress\u003e\n                    \u003c/CI_Address\u003e\n                  \u003c/address\u003e\n                \u003c/CI_Contact\u003e\n              \u003c/contactInfo\u003e\n              \u003crole\u003e\n                \u003cCI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"distributor\" codeSpace=\"ISOTC211/19115\"\u003edistributor\u003c/CI_RoleCode\u003e\n              \u003c/role\u003e\n            \u003c/CI_ResponsibleParty\u003e\n          \u003c/distributorContact\u003e\n        \u003c/MD_Distributor\u003e\n      \u003c/distributor\u003e\n      \u003ctransferOptions\u003e\n        \u003cMD_DigitalTransferOptions/\u003e\n      \u003c/transferOptions\u003e\n    \u003c/MD_Distribution\u003e\n  \u003c/distributionInfo\u003e\n  \u003cdataQualityInfo\u003e\n    \u003cDQ_DataQuality\u003e\n      \u003cscope gco:nilReason=\"missing\"/\u003e\n      \u003clineage\u003e\n        \u003cLI_Lineage\u003e\n          \u003csource\u003e\n            \u003cLI_Source\u003e\n              \u003cdescription\u003e\n                \u003cgco:CharacterString\u003ePaper map series\u003c/gco:CharacterString\u003e\n              \u003c/description\u003e\n              \u003csourceCitation\u003e\n                \u003cCI_Citation\u003e\n                  \u003ctitle\u003e\n                    \u003cgco:CharacterString\u003eFirippin gomanbun no ichi zu [cartographic material]\u003c/gco:CharacterString\u003e\n                  \u003c/title\u003e\n                  \u003cdate gco:nilReason=\"missing\"/\u003e\n                \u003c/CI_Citation\u003e\n              \u003c/sourceCitation\u003e\n            \u003c/LI_Source\u003e\n          \u003c/source\u003e\n        \u003c/LI_Lineage\u003e\n      \u003c/lineage\u003e\n    \u003c/DQ_DataQuality\u003e\n  \u003c/dataQualityInfo\u003e\n\u003c/MD_Metadata\u003e\n              \u003c/rdf:Description\u003e\n              \u003crdf:Description rdf:about=\"https://purl.stanford.edu/nq544bf8960\"\u003e\n                \u003cgfc:FC_FeatureCatalogue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xmlns:gfc=\"http://www.isotc211.org/2005/gfc\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gmx=\"http://www.isotc211.org/2005/gmx\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.isotc211.org/2005/gfc\" xsi:schemaLocation=\"http://www.isotc211.org/2005/gfc http://www.isotc211.org/2005/gfc/gfc.xsd\" uuid=\"ab0d25da-c48e-4348-9f3d-c0d36995c299\"\u003e\n  \u003cgmx:name\u003e\n    \u003cgco:CharacterString\u003eEntity and attribute information\u003c/gco:CharacterString\u003e\n  \u003c/gmx:name\u003e\n  \u003cgmx:scope\u003e\n    \u003cgco:CharacterString\u003eMilitary maps; Topographic maps; Index maps; Grids (Cartography)\u003c/gco:CharacterString\u003e\n  \u003c/gmx:scope\u003e\n  \u003cgmx:versionNumber gco:nilReason=\"unknown\"/\u003e\n  \u003cgmx:versionDate\u003e\n    \u003cgco:Date\u003e2023\u003c/gco:Date\u003e\n  \u003c/gmx:versionDate\u003e\n  \u003cgmx:language\u003e\n    \u003cgco:CharacterString\u003eeng; US\u003c/gco:CharacterString\u003e\n  \u003c/gmx:language\u003e\n  \u003cgmx:characterSet\u003e\n    \u003cgmd:MD_CharacterSetCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode\" codeListValue=\"utf8\" codeSpace=\"ISOTC211/19115\"/\u003e\n  \u003c/gmx:characterSet\u003e\n  \u003cgfc:featureType\u003e\n    \u003cgfc:FC_FeatureType\u003e\n      \u003cgfc:typeName\u003e\n        \u003cgco:LocalName\u003eJMM_B35_J95\u003c/gco:LocalName\u003e\n      \u003c/gfc:typeName\u003e\n      \u003cgfc:definition/\u003e\n      \u003cgfc:isAbstract\u003e\n        \u003cgco:Boolean\u003efalse\u003c/gco:Boolean\u003e\n      \u003c/gfc:isAbstract\u003e\n      \u003cgfc:featureCatalogue uuidref=\"ab0d25da-c48e-4348-9f3d-c0d36995c299\"/\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eFID\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eInternal feature number.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eOID\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eShape\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eFeature geometry.\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:definitionReference\u003e\n            \u003cgfc:FC_DefinitionReference\u003e\n              \u003cgfc:definitionSource\u003e\n                \u003cgfc:FC_DefinitionSource\u003e\n                  \u003cgfc:source\u003e\n                    \u003cgmd:CI_Citation\u003e\n                      \u003cgmd:title\u003e\n                        \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                      \u003c/gmd:title\u003e\n                      \u003cgmd:date gco:nilReason=\"unknown\"/\u003e\n                      \u003cgmd:citedResponsibleParty\u003e\n                        \u003cgmd:CI_ResponsibleParty\u003e\n                          \u003cgmd:organisationName\u003e\n                            \u003cgco:CharacterString\u003eEsri\u003c/gco:CharacterString\u003e\n                          \u003c/gmd:organisationName\u003e\n                          \u003cgmd:role\u003e\n                            \u003cgmd:CI_RoleCode codeList=\"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode\" codeListValue=\"resourceProvider\" codeSpace=\"001\"/\u003e\n                          \u003c/gmd:role\u003e\n                        \u003c/gmd:CI_ResponsibleParty\u003e\n                      \u003c/gmd:citedResponsibleParty\u003e\n                    \u003c/gmd:CI_Citation\u003e\n                  \u003c/gfc:source\u003e\n                \u003c/gfc:FC_DefinitionSource\u003e\n              \u003c/gfc:definitionSource\u003e\n            \u003c/gfc:FC_DefinitionReference\u003e\n          \u003c/gfc:definitionReference\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eGeometry\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eId\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eInteger\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eCall_Short\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eShort call number\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSheet_ID\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSheet_Num\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eSheet number\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eCall_numbe\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eCall number\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003erecId\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eDRUID\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003ewebsiteUrl\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003ePURL\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eTitle\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eTitle\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSymphony_B\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eDouble\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eCkey\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eCatalog key\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eweb_map\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString/\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eSum_Sheet\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eInteger\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eavailable\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eAvailable\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n      \u003cgfc:carrierOfCharacteristics\u003e\n        \u003cgfc:FC_FeatureAttribute\u003e\n          \u003cgfc:memberName\u003e\n            \u003cgco:LocalName\u003eiiifUrl\u003c/gco:LocalName\u003e\n          \u003c/gfc:memberName\u003e\n          \u003cgfc:definition\u003e\n            \u003cgco:CharacterString\u003eIIIF URL\u003c/gco:CharacterString\u003e\n          \u003c/gfc:definition\u003e\n          \u003cgfc:cardinality gco:nilReason=\"unknown\"/\u003e\n          \u003cgfc:valueType\u003e\n            \u003cgco:TypeName\u003e\n              \u003cgco:aName\u003e\n                \u003cgco:CharacterString\u003eString\u003c/gco:CharacterString\u003e\n              \u003c/gco:aName\u003e\n            \u003c/gco:TypeName\u003e\n          \u003c/gfc:valueType\u003e\n        \u003c/gfc:FC_FeatureAttribute\u003e\n      \u003c/gfc:carrierOfCharacteristics\u003e\n    \u003c/gfc:FC_FeatureType\u003e\n  \u003c/gfc:featureType\u003e\n\u003c/gfc:FC_FeatureCatalogue\u003e\n              \u003c/rdf:Description\u003e\n            \u003c/rdf:RDF\u003e\n"
+  },
+  "created": "2023-08-15T21:51:53.000+00:00",
+  "modified": "2023-08-15T21:51:53.000+00:00",
+  "lock": "druid:nq544bf8960="
+}

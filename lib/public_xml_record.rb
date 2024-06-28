@@ -1,22 +1,20 @@
 # frozen_string_literal: true
 
 require 'http'
-require 'active_support' # some transitive dependencies don't require active_support this first, as they must in Rails 7
-require 'active_support/core_ext/module/delegation'
 require 'mods_display'
 require 'dor/rights_auth'
 
 class PublicXmlRecord
   attr_reader :public_xml_doc, :druid, :purl_url
 
-  def self.fetch(purl_url, druid)
+  def self.fetch(druid, purl_url: 'https://purl.stanford.edu')
     response = HTTP.get("#{purl_url}/#{druid}.xml")
-    new(purl_url, druid, response.body) if response.status.ok?
+    new(druid, response.body, purl_url:) if response.status.ok?
   end
 
-  def initialize(purl_url, druid, public_xml)
-    @purl_url = purl_url
+  def initialize(druid, public_xml, purl_url: 'https://purl.stanford.edu')
     @druid = druid
+    @purl_url = purl_url
     @public_xml_doc = Nokogiri::XML(public_xml)
   end
 

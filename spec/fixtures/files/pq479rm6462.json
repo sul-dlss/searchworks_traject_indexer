@@ -1,0 +1,621 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/object",
+  "externalIdentifier": "druid:pq479rm6462",
+  "label": "Oil and Gas Wells in the United States, February 2020",
+  "version": 7,
+  "access": {
+    "view": "stanford",
+    "download": "stanford",
+    "controlledDigitalLending": false,
+    "copyright": "Copyright ownership resides with the originator.",
+    "useAndReproductionStatement": "These data are licensed by Stanford Libraries and are available to Stanford University affiliates only. Affiliates are limited to current faculty, staff and students. Non affiliates seeking access should contact the publisher directly. These data may not be reproduced or used for any purpose without permission."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:gz830zp4734",
+    "releaseTags": [
+      {
+        "who": "kdurante",
+        "what": "self",
+        "date": "2020-09-25T12:32:28.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      },
+      {
+        "who": "kdurante",
+        "what": "self",
+        "date": "2021-05-28T16:51:28.000+00:00",
+        "to": "Earthworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Oil and Gas Wells in the United States, February 2020",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Hart Energy Publishing",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "organization",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": { "code": "marcrelator", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2020",
+            "type": "publication",
+            "status": "primary",
+            "encoding": { "code": "w3cdtf", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Hart Energy Publishing",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "organization",
+            "role": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "publisher",
+                "code": "pbl",
+                "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                "identifier": [],
+                "source": {
+                  "code": "marcrelator",
+                  "uri": "http://id.loc.gov/vocabulary/relators/",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          }
+        ],
+        "location": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "San Diego, California, US",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1047 Update",
+            "type": "edition",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Dataset",
+        "type": "genre",
+        "identifier": [],
+        "source": { "code": "local", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geodatabases",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026293",
+        "identifier": [],
+        "source": { "code": "lcgft", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geospatial data",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026297",
+        "identifier": [],
+        "source": { "code": "lcgft", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic dataset",
+        "type": "genre",
+        "uri": "http://rdvocab.info/termList/RDAContentType/1001",
+        "identifier": [],
+        "source": { "code": "rdacontent", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "software, multimedia",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geodatabase",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "2.59 GB",
+        "type": "extent",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "born digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": { "value": "MODS digital origin terms", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Scale not given.",
+        "type": "map scale",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4269",
+        "type": "map projection",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4326",
+        "type": "map projection",
+        "uri": "http://opengis.net/def/crs/EPSG/0/4326",
+        "identifier": [],
+        "source": { "code": "EPSG", "note": [] },
+        "displayLabel": "WGS84",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Geodatabase",
+            "type": "media type",
+            "identifier": [],
+            "source": { "value": "IANA media type terms", "note": [] },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dataset#Mixed",
+            "type": "type",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-159.352202",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "19.582703",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-68.790611",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "64.869313",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": { "code": "EPSG:4326", "note": [] },
+            "encoding": { "value": "decimal", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "United States",
+            "type": "coverage",
+            "uri": "http://sws.geonames.org/6252001/",
+            "identifier": [],
+            "note": [],
+            "valueLanguage": { "code": "eng", "note": [] },
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": { "code": "iso639-2b", "note": [] },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This geodatabase contains a point feature class layer of oil and gas wells in the United States. This layer is from February 2020.",
+        "identifier": [],
+        "displayLabel": "Abstract",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "The purpose of this file is to combine multiple oil and gas well data sources into one national file. This dataset is intended to assist users in locating and analyzing United States oil and gas field data and may be used for basic applications such as viewing, querying, and map output production, or to provide a basemap to support graphical overlays and analysis with other spatial data.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Purpose",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Hart Energy Publishing. (2020). Oil and Gas Wells in the United States, February 2020. Hart Energy Publishing. Available at: http://purl.stanford.edu/pq479rm6462.",
+        "identifier": [],
+        "displayLabel": "Preferred citation",
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Oil wells",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Gas wells",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Petroleum",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Natural Gas",
+        "type": "topic",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "United States",
+        "type": "place",
+        "uri": "http://sws.geonames.org/6252001/",
+        "identifier": [],
+        "source": {
+          "code": "geonames",
+          "uri": "http://www.geonames.org/ontology#",
+          "note": []
+        },
+        "note": [],
+        "valueLanguage": {
+          "code": "eng",
+          "note": [],
+          "source": { "code": "iso639-2b", "note": [] }
+        },
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "W 178°17ʹ33ʺ--W 94°36ʹ17ʺ/N 71°51ʹ14ʺ--N 31°22ʹ12ʺ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "W 159°21ʹ8ʺ--W 68°47ʹ26ʺ/N 64°52ʹ10ʺ--N 19°34ʹ58ʺ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "purl": "https://purl.stanford.edu/pq479rm6462"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "branner:rex_1047_Rextag_Oil_and_Gas_Wells.gdb"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/file",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/pq479rm6462-pq479rm6462_1",
+        "label": "File 1",
+        "version": 7,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/pq479rm6462-pq479rm6462_1/Rextag_Oil_and_Gas_Wells.gdb.zip",
+              "label": "Rextag_Oil_and_Gas_Wells.gdb.zip",
+              "filename": "Rextag_Oil_and_Gas_Wells.gdb.zip",
+              "size": 614062989,
+              "version": 7,
+              "hasMimeType": "application/zip",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "a2c8b01749cf300e90eb0c29e9cf7d8011187c75"
+                },
+                { "type": "md5", "digest": "cdbe0e48637050282939c8156bb2263f" }
+              ],
+              "access": {
+                "view": "stanford",
+                "download": "stanford",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": ["druid:ft287vn5051"]
+  },
+  "created": "2022-04-29T20:26:22.000+00:00",
+  "modified": "2022-04-29T20:26:22.000+00:00",
+  "lock": "druid:pq479rm6462=0"
+}
