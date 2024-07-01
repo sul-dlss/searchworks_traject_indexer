@@ -21,12 +21,12 @@ set :indexers, [
   {
     key: 'earthworks_prod_indexer',
     count: 1,
-    config: './lib/traject/config/geo_config.rb',
+    config: './lib/traject/config/geo_aardvark_config.rb',
     settings: {
       'log.file' => 'log/traject_earthworks-prod-indexer.log',
       'kafka.topic' => 'purl_fetcher_prod',
       'kafka.consumer_group_id' => 'earthworks-prod-indexer',
-      'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-prod'
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-aardvark-prod'
     }
   },
   {
