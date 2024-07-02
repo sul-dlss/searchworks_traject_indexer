@@ -496,4 +496,76 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       end
     end
   end
+
+  describe 'SDR events' do
+    let(:logger) { instance_double(Logger) }
+
+    before do
+      allow(Settings.sdr_events).to receive(:enabled).and_return(true)
+      allow(indexer).to receive(:logger).and_return(logger)
+      allow(SdrEvents).to receive_messages(
+        report_indexing_success: true,
+        report_indexing_deleted: true,
+        report_indexing_skipped: true,
+        report_indexing_errored: true
+      )
+      allow(logger).to receive_messages(warn: true, debug: true, error: true)
+      allow(Honeybadger).to receive(:notify)
+    end
+
+    context 'when the item has no public cocina' do
+      before { allow(record).to receive(:public_cocina?).and_return(false) }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'No public metadata for item', target: 'Earthworks')
+      end
+    end
+
+    context 'when the item has an unsupported content type' do
+      before { allow(record).to receive(:content_type).and_return('document') }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'Item content type "document" is not supported', target: 'Earthworks')
+      end
+    end
+
+    context 'when the item does not have a modification timestamp' do
+      before { allow(record).to receive(:modified).and_return(nil) }
+
+      it 'creates an indexing skipped event with message' do
+        expect(result).to be_nil
+        expect(SdrEvents).to have_received(:report_indexing_skipped)
+          .with(druid, message: 'Item has no modification timestamp', target: 'Earthworks')
+      end
+
+      it 'notifies honeybadger' do
+        expect(result).to be_nil
+        expect(Honeybadger).to have_received(:notify)
+      end
+    end
+
+    context 'when indexing raised an error' do
+      before do
+        allow(record).to receive(:cocina_titles).and_raise('Error message')
+      end
+
+      it 'creates an indexing error event with message and context' do
+        expect { result }.to raise_error('Error message')
+        expect(SdrEvents).to have_received(:report_indexing_errored)
+          .with(
+            druid,
+            target: 'Earthworks',
+            message: 'Error message',
+            context: a_hash_including(
+              index_step: an_instance_of(String),
+              record: an_instance_of(String)
+            )
+          )
+      end
+    end
+  end
 end
