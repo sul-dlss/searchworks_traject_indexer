@@ -43,11 +43,11 @@ class PublicCocinaRecord
   end
 
   def created
-    Time.parse(public_cocina_doc['created'])
+    Time.parse(public_cocina_doc['created']) if public_cocina_doc['created']
   end
 
   def modified
-    Time.parse(public_cocina_doc['modified'])
+    Time.parse(public_cocina_doc['modified']) if public_cocina_doc['modified']
   end
 
   def content_type
