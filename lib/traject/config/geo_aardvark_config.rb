@@ -109,6 +109,17 @@ each_record do |record, context|
   context.skip!("#{message}: #{record.druid}")
 end
 
+# Skip records that are missing a modification timestamp & warn about it
+each_record do |record, context|
+  next if record.modified
+
+  message = 'Item has no modification timestamp'
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  Honeybadger.notify({ error_message: message }, context: { record: context.record_inspect })
+  logger.warn "#{message}: #{record.druid}"
+  context.skip!("#{message}: #{record.druid}")
+end
+
 # https://opengeometadata.org/ogm-aardvark/#id
 to_field 'id', druid, prepend('stanford-')
 
@@ -241,10 +252,9 @@ to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.pu
 
 # https://opengeometadata.org/ogm-aardvark/#modified
 # - required, but not used in the UI
-# - use the most recent adminMetadata event, falling back to top-level dates
+# - use the most recent adminMetadata event, falling back to top-level modification date
 to_field 'gbl_mdModified_dt', cocina_descriptive('adminMetadata', 'event'), extract_dates, extract_values, parse_dates, sort(reverse: true), format_datetimes, first_only
 to_field 'gbl_mdModified_dt', modified, format_datetimes
-to_field 'gbl_mdModified_dt', created, format_datetimes
 
 # https://opengeometadata.org/ogm-aardvark/#metadata-version
 to_field 'gbl_mdVersion_s', literal('Aardvark')
