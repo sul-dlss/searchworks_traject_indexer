@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'http'
 require 'active_support' # some transitive dependencies don't require active_support this first, as they must in Rails 7
+require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/module/delegation'
-require 'mods_display'
-require 'dor/rights_auth'
 
 class PurlRecord
   attr_reader :druid, :purl_url
@@ -15,7 +13,7 @@ class PurlRecord
   end
 
   def searchworks_id
-    catkey.nil? ? druid : catkey
+    catkey.presence || druid
   end
 
   def druid_tree
@@ -38,10 +36,13 @@ class PurlRecord
     public_cocina.present?
   end
 
+  # Ensure all objects, even those missing public xml/cocina have a (nil) catkey and a label
+  delegate :catkey, :label, to: :public_xml, allow_nil: true
+
   delegate :mods, :rights, :rights_xml, :collection?, :public?, :stanford_only?,
            :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
            :dor_resource_count, :dor_read_rights, :collections, :constituents,
-           :catkey, :label, :stanford_mods, :mods_display,
+           :stanford_mods, :mods_display,
            :public_xml_doc, to: :public_xml
 
   delegate :cocina_access, :cocina_structural, :cocina_description, :cocina_titles,
