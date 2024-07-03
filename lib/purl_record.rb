@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'http'
 require 'active_support' # some transitive dependencies don't require active_support this first, as they must in Rails 7
+require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/module/delegation'
-require 'mods_display'
-require 'dor/rights_auth'
 
 class PurlRecord
   attr_reader :druid, :purl_url
@@ -15,7 +13,7 @@ class PurlRecord
   end
 
   def searchworks_id
-    catkey.nil? ? druid : catkey
+    catkey.presence || druid
   end
 
   def druid_tree
