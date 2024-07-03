@@ -1132,6 +1132,13 @@ to_field 'format_main_ssim' do |record, accumulator, context|
 end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
+  if items(record, context).any?(&:equipment?)
+    context.output_hash['format_main_ssim']&.replace([])
+    accumulator << 'Equipment'
+  end
+end
+
+to_field 'format_main_ssim' do |record, accumulator, context|
   if context.output_hash['format_main_ssim'].nil? || context.output_hash['format_main_ssim'].include?('Other')
     format = Traject::MarcExtractor.new('245h',
                                         alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
