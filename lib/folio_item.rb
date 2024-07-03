@@ -168,6 +168,10 @@ class FolioItem
     @bound_with && holding&.dig('boundWith').present?
   end
 
+  def equipment?
+    holding.dig('holdingsType', 'name') == 'Equipment'
+  end
+
   private
 
   attr_reader :record

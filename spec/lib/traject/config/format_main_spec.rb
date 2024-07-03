@@ -403,6 +403,24 @@ RSpec.describe 'Format main config' do
     end
   end
 
+  context 'holdings type equipment' do
+    let(:folio_record) do
+      FolioRecord.new({
+                        'source_record' => source_record,
+                        'instance' => {}
+                      }, stub_folio_client)
+    end
+
+    let(:source_record) do
+      [{ 'leader' => '          22        4500', 'fields' => [] }]
+    end
+    let(:holdings) { [build(:lc_holding, holding: { 'holdingsType' => { 'name' => 'Equipment' } })] }
+
+    it 'is equipment' do
+      expect(result[field]).to eq ['Equipment']
+    end
+  end
+
   context 'not equipment' do
     let(:record) do
       MARC::Record.new.tap do |r|
