@@ -122,8 +122,7 @@ RSpec.describe FolioItem do
           id: 'uuid',
           barcode: '36105000',
           status: 'Available',
-          home_location: 'SAL3-STACKS',
-          current_location: 'GRE-STACKS',
+          effective_permanent_location_code: 'SAL3-STACKS',
           temporary_location_code: 'GRE-STACKS',
           permanent_location_code: 'SAL3-STACKS',
           material_type_id: 'mt-uuid',
@@ -148,7 +147,7 @@ RSpec.describe FolioItem do
         end
 
         it 'is the holdings effective location' do
-          expect(hash).to include(home_location: 'GRE-CRES')
+          expect(hash).to include(effective_permanent_location_code: 'GRE-CRES')
         end
       end
     end

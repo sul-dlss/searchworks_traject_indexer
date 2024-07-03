@@ -102,13 +102,10 @@ class FolioItem
       id:,
       barcode:,
       library:,
-      home_location: display_location&.dig('code'),
-      current_location: temporary_location&.dig('code'),
       type:,
       note: public_note.presence,
       instance_id: bound_with&.dig('instance', 'id') || instance&.dig('id'),
       instance_hrid: bound_with&.dig('instance', 'hrid') || instance&.dig('hrid'),
-      # FOLIO item data to replace library/home_location/current_location some day
       effective_permanent_location_code: display_location_code,
       temporary_location_code: temporary_location&.dig('code'),
       permanent_location_code: permanent_location&.dig('code'),
