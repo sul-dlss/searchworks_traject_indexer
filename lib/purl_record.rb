@@ -28,12 +28,20 @@ class PurlRecord
     @public_cocina ||= PublicCocinaRecord.fetch(druid, purl_url:)
   end
 
+  def public_meta_json
+    @public_meta_json ||= PublicMetaJsonRecord.fetch(druid, purl_url:)
+  end
+
   def public_xml?
     public_xml.present?
   end
 
   def public_cocina?
     public_cocina.present?
+  end
+
+  def public_meta_json?
+    public_meta_json.present?
   end
 
   # Ensure all objects, even those missing public xml/cocina have a (nil) catkey and a label
@@ -47,4 +55,6 @@ class PurlRecord
 
   delegate :cocina_access, :cocina_structural, :cocina_description, :cocina_titles,
            :created, :modified, :public_cocina_doc, :content_type, :files, to: :public_cocina
+
+  delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json
 end
