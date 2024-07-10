@@ -166,12 +166,12 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(references['http://www.opengis.net/def/serviceType/ogc/wfs']).to eq 'https://geowebservices.stanford.edu/geoserver/wfs'
     end
 
-    it 'maps the searchworks URL' do
+    it 'maps the searchworks URL when released to searchworks' do
       expect(references['https://schema.org/relatedLink']).to eq 'https://searchworks.stanford.edu/view/vv853br8653'
     end
   end
 
-  context 'with a shapefile with unzipped metadata' do
+  context 'with a shapefile with unzipped metadata (not released to searchworks)' do
     let(:druid) { 'bc559yb0972' }
 
     # There is an event in cocina descriptive adminMetadata, so we use that (even though it's creation)
