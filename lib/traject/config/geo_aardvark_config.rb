@@ -6,7 +6,6 @@ require_relative '../../../config/boot'
 require_relative '../macros/extras'
 require_relative '../macros/cocina'
 require_relative '../macros/geo'
-require_relative '../macros/meta_json'
 require 'digest/md5'
 
 Utils.logger = logger
@@ -16,7 +15,6 @@ extend Traject::SolrBetterJsonWriter::IndexerPatch
 extend Traject::Macros::Cocina
 extend Traject::Macros::Extras
 extend Traject::Macros::Geo
-extend Traject::Macros::MetaJson
 # rubocop:enable Style/MixinUsage
 
 def log_skip(context)

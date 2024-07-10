@@ -73,6 +73,13 @@ module Traject
         end
       end
 
+      # Generate a Searchworks URL if object is released to Searchworks
+      def searchworks_url
+        lambda do |record, accumulator, _context|
+          accumulator << "#{settings['searchworks.url']}/view/#{record.druid}" if record.public_meta_json? && record.released_to_searchworks?
+        end
+      end
+
       # Traverse nested fields in the cocina descriptive metadata and return the result
       # Example: cocina_descriptive('geographic', 'form')
       def cocina_descriptive(*fields)
