@@ -47,6 +47,7 @@ settings do
 
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
   provide 'stacks.url', ENV.fetch('STACKS_URL', 'https://stacks.stanford.edu')
+  provide 'searchworks.url', ENV.fetch('SEARCHWORKS_URL', 'https://searchworks.stanford.edu')
   provide 'geoserver.pub_url', ENV.fetch('GEOSERVER_PUB_URL', 'https://geowebservices.stanford.edu/geoserver')
   provide 'geoserver.stan_url', ENV.fetch('GEOSERVER_STAN_URL', 'https://geowebservices-restricted.stanford.edu/geoserver')
 
@@ -272,6 +273,7 @@ to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api
 to_field 'dct_references_s', wms_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wms')
 to_field 'dct_references_s', wfs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wfs')
 to_field 'dct_references_s', wcs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wcs')
+to_field 'dct_references_s', searchworks_url, as_reference('https://schema.org/relatedLink')
 to_field 'dct_references_s', find_file(/index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
 to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
 to_field 'dct_references_s', find_file(/iso19110\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gco')

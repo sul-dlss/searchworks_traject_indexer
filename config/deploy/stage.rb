@@ -30,6 +30,7 @@ set :indexers, [
       'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-aardvark-stage',
       'purl.url' => 'https://sul-purl-stage.stanford.edu',
       'stacks.url' => 'https://sul-stacks-stage.stanford.edu',
+      'searchworks.url' => 'https://searchworks-stage.stanford.edu',
       'geoserver.pub_url' => 'https://earthworks-geoserver-stage-b.stanford.edu/geoserver',
       'geoserver.stan_url' => 'https://earthworks-geoserver-stage-a.stanford.edu/geoserver'
     }
