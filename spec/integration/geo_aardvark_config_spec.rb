@@ -13,10 +13,12 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   let(:druid) { 'vv853br8653' }
   let(:record) { PurlRecord.new(druid) }
   let(:body) { File.new(file_fixture("#{druid}.json")) }
+  let(:metadata_json) { File.new(file_fixture("#{druid}.meta_json")) }
 
   before do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: metadata_json)
   end
 
   it 'maps an id' do
@@ -163,6 +165,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     it 'maps the WFS URL' do
       expect(references['http://www.opengis.net/def/serviceType/ogc/wfs']).to eq 'https://geowebservices.stanford.edu/geoserver/wfs'
     end
+
+    it 'maps the searchworks URL' do
+      expect(references['https://schema.org/relatedLink']).to eq 'https://searchworks.stanford.edu/view/vv853br8653'
+    end
   end
 
   context 'with a shapefile with unzipped metadata' do
@@ -190,6 +196,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
       it 'maps the FGDC URL' do
         expect(references['http://www.opengis.net/cat/csw/csdgm']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/MineralResources-fgdc.xml"
+      end
+
+      it 'does not include a searchworks URL' do
+        expect(references['https://schema.org/relatedLink']).to be_nil
       end
     end
   end
