@@ -25,6 +25,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['id']).to eq ["stanford-#{druid}"]
   end
 
+  it 'maps a hashed id for sitemap generation' do
+    expect(result['hashed_id_ssi']).to eq Digest::MD5.hexdigest("stanford-#{druid}")
+  end
+
   it 'maps the title' do
     expect(result['dct_title_s']).to eq 'Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'
   end

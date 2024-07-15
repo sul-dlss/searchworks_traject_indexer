@@ -113,6 +113,10 @@ end
 # https://opengeometadata.org/ogm-aardvark/#id
 to_field 'id', druid, prepend('stanford-')
 
+# this is used for sitemap generation; pre-hashing the IDs helps with that process
+# note that we do not attempt to hash records coming from outside SDR
+to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
+
 # https://opengeometadata.org/ogm-aardvark/#title
 to_field 'dct_title_s', cocina_titles(type: :main), first_only, default('[Untitled]')
 
@@ -288,7 +292,7 @@ unless settings['writer_class_name'] == 'Traject::DebugWriter'
     context.output_hash['dct_references_s'] = context.output_hash['dct_references_s'].reduce(:merge!).to_json
 
     # Pick the first value for single-valued fields
-    context.output_hash.select { |k, _v| k =~ /_(s|b|dt|bbox|geometry)$/ }.each do |k, v|
+    context.output_hash.select { |k, _v| k =~ /_(s|b|dt|ssi|bbox|geometry)$/ }.each do |k, v|
       context.output_hash[k] = context.output_hash[k].first if v.is_a?(Array)
     end
   end
