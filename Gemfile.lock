@@ -105,7 +105,7 @@ GEM
       capistrano-one_time_key (>= 0.2.0)
       capistrano-shared_configs
       ed25519
-    docile (1.4.0)
+    docile (1.4.1)
     domain_name (0.6.20240107)
     dor-event-client (1.0.0)
       activesupport (>= 4.2, < 8)
@@ -152,7 +152,7 @@ GEM
       rake
     hashdiff (1.1.0)
     hashie (5.0.0)
-    honeybadger (5.15.0)
+    honeybadger (5.15.3)
     http (5.2.0)
       addressable (~> 2.8)
       base64 (~> 0.1)
@@ -206,11 +206,11 @@ GEM
     net-sftp (4.0.0)
       net-ssh (>= 5.0.0, < 8.0.0)
     net-ssh (7.2.3)
-    nokogiri (1.16.6-arm64-darwin)
+    nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.6-x86_64-darwin)
+    nokogiri (1.16.7-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.6-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     nom-xml (1.2.0)
       i18n
@@ -225,10 +225,10 @@ GEM
       racc
     patience_diff (1.2.0)
       optimist (~> 3.0)
-    pg (1.5.6)
+    pg (1.5.7)
     psych (5.1.2)
       stringio
-    public_suffix (6.0.0)
+    public_suffix (6.0.1)
     racc (1.8.0)
     rack (3.1.7)
     rack-session (2.0.0)
