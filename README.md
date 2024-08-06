@@ -125,25 +125,40 @@ processes:
 ```
 in local development, you can invoke traject on the command line and override these settings by passing environment variables:
 ```sh
-SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb my_marc_file.marc
+bundle exec traject -c lib/traject/config/config_name.rb --debug-mode input_file
 ```
-you can also specify a different writer class for traject to use with the `-w` flag, which is helpful when debugging. for example, to get debug output:
-```sh
-SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb -w Traject::DebugWriter my_marc_file.marc
-```
-another option is to use the `JsonWriter` to pipe output directly to somewhere else, so you can see what traject is indexing. an example that strips honeybadger output and uses the `jq` utility to inspect a particular field in the json:
-```sh
-SOLR_URL=http://localhost:8983/solr/core-name bundle exec traject -c lib/traject/config/config_name.rb -w Traject::JsonWriter my_marc_file.marc | tail -n +2 | jq '.pub_country'
-```
+the `--debug-mode` flag will print out the solr document that traject generates, along with extra debugging information. You can read [more about the traject command line](https://github.com/traject/traject?tab=readme-ov-file#the-traject-command-line) in the traject documentation.
+
+#### FOLIO data
+
 when working with non-MARC data held locally (e.g. JSON exports from FOLIO), you can use the `FolioJsonReader` to pipe output into traject from stdin. Note that `FolioJsonReader` must handle newline-delimited JSON (not prettified).
 ```sh
 cat record.json | bundle exec traject -c lib/traject/config/folio_config.rb -s reader_class_name=Traject::FolioJsonReader --stdin --debug-mode
 ```
 note that this approach doesn't use the `FolioClient` to make API calls, so the burden is on the user to create a fully-formed `FolioRecord` prior to indexing.
 
+another option is to use the `JsonWriter`, so you can see exactly what traject is indexing. an example that strips honeybadger output and uses the `jq` utility to inspect a particular field in the json:
+```sh
+cat record.json | bundle exec traject -c lib/traject/config/folio_config.rb -s reader_class_name=Traject::FolioJsonReader -w Traject::JsonWriter --stdin | tail -n +2 | jq '.pub_country'
+```
+
+#### SDR data
+
+To test indexing a single SDR object at a time, you can `echo` its druid and use the `--stdin` flag:
+```sh
+echo 'abc123def4567' | bundle exec traject -c lib/traject/config/sdr_config.rb --stdin --debug-mode
+```
+
+For SDR object released to Earthworks, you can pass the appropriate configuration file:
+```sh
+echo 'druid' | bundle exec traject -c lib/traject/config/geo_aardvark_config.rb --debug-mode
+```
+
 It's also possible to index a group of druids, mimicking the process from SDR.
-`SOLR_URL=http://localhost:8983/solr/blacklight-core bundle exec traject -i xml -c lib/traject/config/sdr_config.rb druidslist.txt`
-You can create a `druids.txt` file containing a list of newline delimitd druids.
+```sh
+bundle exec traject -c lib/traject/config/sdr_config.rb --debug-mode druidslist.txt
+```
+You can create a `druidslist.txt` file containing a list of newline delimited druids.
 
 ### Data sources 
 The indexing machines have scheduled cron tasks (see `./config/schedule.rb`) that retrieve this data from the FOLIO servers and process the data into a kafka topic. Messages in the topic are key-value pairs; the key is the catkey of the record, and the value is either blank (representing a delete) or containing one or more records for the catkey. The topics are regularly compacted by Kafka to remove duplicate data.
