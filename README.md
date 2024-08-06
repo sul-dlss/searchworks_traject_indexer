@@ -151,7 +151,7 @@ echo 'abc123def4567' | bundle exec traject -c lib/traject/config/sdr_config.rb -
 
 For SDR object released to Earthworks, you can pass the appropriate configuration file:
 ```sh
-echo 'druid' | bundle exec traject -c lib/traject/config/geo_aardvark_config.rb --debug-mode
+echo 'druid' | bundle exec traject -c lib/traject/config/geo_aardvark_config.rb --stdin --debug-mode
 ```
 
 It's also possible to index a group of druids, mimicking the process from SDR.
