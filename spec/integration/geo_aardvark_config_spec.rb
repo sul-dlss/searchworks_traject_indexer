@@ -175,6 +175,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
+  context 'with contributor names that are structuredValues' do
+    let(:druid) { 'rk962wd2562' }
+    it 'maps the creators' do
+      expect(result['dct_creator_sm']).to eq ['Ptolemy, active 2nd century', 'Waldseemüller, Martin, 1470-1519', 'Schott, Johann, 1477-1548', 'Übelin, Georg, active 15th century-16th century']
+    end
+  end
+
   context 'with a shapefile with unzipped metadata (not released to searchworks)' do
     let(:druid) { 'bc559yb0972' }
 

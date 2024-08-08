@@ -137,6 +137,7 @@ to_field 'dct_language_sm', cocina_descriptive('language'), transform(->(lang) {
 
 # https://opengeometadata.org/ogm-aardvark/#creator
 to_field 'dct_creator_sm', cocina_descriptive('contributor'), select_role('creator'), extract_names
+to_field 'dct_creator_sm', cocina_descriptive('contributor', 'name'), extract_names_from_structured_values
 
 # https://opengeometadata.org/ogm-aardvark/#publisher
 to_field 'dct_publisher_sm', cocina_descriptive('event', 'contributor'), select_role('publisher'), extract_names
