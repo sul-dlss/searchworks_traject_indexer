@@ -175,6 +175,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
+  context 'with contributor names that are structuredValues' do
+    let(:druid) { 'rk962wd2562' }
+    it 'maps the creators' do
+      expect(result['dct_creator_sm']).to eq ['Ptolemy, active 2nd century', 'Waldseemüller, Martin, 1470-1519', 'Schott, Johann, 1477-1548', 'Übelin, Georg, active 15th century-16th century']
+    end
+  end
+
   context 'with a shapefile with unzipped metadata (not released to searchworks)' do
     let(:druid) { 'bc559yb0972' }
 
@@ -205,6 +212,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       it 'does not include a searchworks URL' do
         expect(references['https://schema.org/relatedLink']).to be_nil
       end
+    end
+  end
+
+  context 'with a DOI and a Purl' do
+    let(:druid) { 'fk339wc1276' }
+    it 'finds the DOI and appends it to dct_identifier_sm with the purl' do
+      expect(result['dct_identifier_sm']).to eq ["https://purl.stanford.edu/#{druid}", "https://doi.org/10.25740/#{druid}"]
     end
   end
 
@@ -257,6 +271,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     let(:druid) { 'kd514jp1398' }
 
     it 'maps the resource class' do
+      # Dataset#Raster has "Maps" added in the translation_map step
       expect(result['gbl_resourceClass_sm']).to eq %w[Datasets Maps]
     end
 
@@ -270,6 +285,14 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the source map' do
       expect(result['dct_source_sm']).to eq ['stanford-df334jk2963']
+    end
+  end
+
+  context 'with metadata that has "Digital Map" as its form>genre metadata' do
+    let(:druid) { 'df451fk6628' }
+
+    it 'maps the resource class to Map' do
+      expect(result['gbl_resourceClass_sm']).to eq ['Maps']
     end
   end
 

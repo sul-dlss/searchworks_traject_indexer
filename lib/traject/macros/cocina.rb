@@ -32,6 +32,18 @@ module Traject
         end
       end
 
+      def doi
+        lambda do |_record, accumulator, _context|
+          accumulator.each do |node|
+            doi = node['type'] == 'DOI' ||
+                  node['displayLabel'] == 'DOI' ||
+                  (node['source'] && node['source']['code'] == 'doi')
+
+            accumulator << node['value'] if doi
+          end
+        end
+      end
+
       # Generate an embed url for the object, with optional parameters
       def embed_url(params = {})
         lambda do |record, accumulator, context|
@@ -180,6 +192,29 @@ module Traject
       def extract_names
         lambda do |_record, accumulator, _context|
           accumulator.map! { |node| node.fetch('name', []).map { |n| n['value'] } }.flatten!.compact! unless accumulator.empty?
+        end
+      end
+
+      # Accepts nested name data such as:
+      # { "structuredValue" : [{
+      #   "value"=>"Ptolemy",
+      #   "type"=>"name",
+      # },
+      # {
+      #   "value"=>"active 2nd century",
+      #   "type"=>"activity dates",
+      # }] }
+      # returns ["Ptolemy, active 2nd century"]
+      def extract_names_from_structured_values
+        lambda do |_record, accumulator, _context|
+          accumulator.map! { |node| node.fetch('structuredValue', []) } unless accumulator.empty?
+          name_fields = ['name', 'surname', 'forename', 'ordinal', 'term of address', 'activity dates', 'life dates']
+          accumulator.map! do |name_group|
+            # Filter each inner array based on the 'type' field, then extract the 'value' field
+            name_group.select { |node| name_fields.include?(node['type']) }
+            name_group.map! { |node| node['value'] }
+          end
+          accumulator.map! { |name_group| name_group.join(', ') }.reject!(&:empty?)
         end
       end
 
