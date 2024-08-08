@@ -184,12 +184,18 @@ to_field 'dct_identifier_sm', cocina_descriptive('purl')
 # https://opengeometadata.org/ogm-aardvark/#resource-class
 # - if the item is a collection, set the resource class to "Collections" (only)
 # - if we didn't find anything, fall back to "Other" because the field is required
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, translation_map('geo_resource_class')
+# - we use a custom assign_resource_class_values macro to detect possible valid values (map/s and dataset/s) within phrases
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), assign_resource_class_values, translation_map('geo_resource_class')
+
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), assign_resource_class_values, translation_map('geo_resource_class')
+
+to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+
+# Fallbacks
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
 to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.public_cocina.collection? }
 

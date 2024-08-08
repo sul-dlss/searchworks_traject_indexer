@@ -1,0 +1,232 @@
+{
+    "cocinaVersion": "0.75.0",
+    "type": "https://cocina.sul.stanford.edu/models/image",
+    "externalIdentifier": "druid:df451fk6628",
+    "label": "McLaughlin_df451fk6628",
+    "version": 9,
+    "access": {
+        "view": "world",
+        "download": "world",
+        "controlledDigitalLending": false,
+        "copyright": "This work has been identified as being free of known restrictions under copyright law, including all related and neighboring rights. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.",
+        "useAndReproductionStatement": "Image from the Glen McLaughlin Map Collection of California as an Island courtesy Stanford University Libraries. This item is in the public domain. There are no restrictions on use. If you have questions, please contact the David Rumsey Map Center at rumseymapcenter@stanford.edu.",
+        "license": "https://creativecommons.org/publicdomain/mark/1.0/"
+    },
+    "administrative": {
+        "hasAdminPolicy": "druid:nk327xn8125"
+    },
+    "description": {
+        "title": [
+            {
+                "value": "A Map of Mexico or New Spain Florida now called Louisiana and Part of California & c.",
+                "status": "primary"
+            }
+        ],
+        "contributor": [
+            {
+                "name": [
+                    {
+                        "value": "Moll, Herman, d. 1732.",
+                        "source": {
+                            "code": "local"
+                        }
+                    }
+                ],
+                "type": "person"
+            }
+        ],
+        "event": [
+            {
+                "date": [
+                    {
+                        "value": "1717",
+                        "type": "creation",
+                        "status": "primary",
+                        "encoding": {
+                            "code": "w3cdtf"
+                        },
+                        "qualifier": "questionable"
+                    }
+                ]
+            }
+        ],
+        "form": [
+            {
+                "value": "Early Maps",
+                "type": "genre"
+            },
+            {
+                "value": "Digital Maps",
+                "type": "genre"
+            },
+            {
+                "value": "cartographic",
+                "type": "resource type",
+                "source": {
+                    "value": "MODS resource types"
+                }
+            },
+            {
+                "value": "image/tiff",
+                "type": "media type",
+                "source": {
+                    "value": "IANA media types"
+                }
+            },
+            {
+                "value": "digitized other analog",
+                "type": "digital origin",
+                "source": {
+                    "value": "MODS digital origin terms"
+                }
+            }
+        ],
+        "note": [
+            {
+                "value": "in book: Atlas Geographus: or, a compleat System of Geography, (Ancient and Modern) for America. 1717"
+            },
+            {
+                "value": "Includes bibliographical references (p. xv-xvi) and indexes."
+            },
+            {
+                "value": "Glen McLaughlin with Nancy H. Mayo.",
+                "type": "statement of responsibility",
+                "displayLabel": "Statement of responsibility"
+            }
+        ],
+        "identifier": [
+            {
+                "value": "108-02",
+                "type": "local",
+                "source": {
+                    "code": "local"
+                },
+                "displayLabel": "Original McLaughlin book number (1995 edition) with latest state information"
+            }
+        ],
+        "subject": [
+            {
+                "value": "W 173°00ʹ --W 10°00ʹ/N 84°00ʹ --N 7°10ʹ",
+                "type": "map coordinates"
+            }
+        ],
+        "adminMetadata": {
+            "contributor": [
+                {
+                    "name": [
+                        {
+                            "value": "Lyberteam Metadata ToolKit"
+                        }
+                    ]
+                }
+            ]
+        },
+        "purl": "https://purl.stanford.edu/df451fk6628"
+    },
+    "identification": {
+        "catalogLinks": [
+            {
+                "catalog": "folio",
+                "refresh": true,
+                "catalogRecordId": "a10624817"
+            },
+            {
+                "catalog": "symphony",
+                "refresh": true,
+                "catalogRecordId": "10624817"
+            }
+        ],
+        "sourceId": "sul:10624817-2001"
+    },
+    "structural": {
+        "contains": [
+            {
+                "type": "https://cocina.sul.stanford.edu/models/resources/image",
+                "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/df451fk6628-df451fk6628_1",
+                "label": "mclaughlin_df451fk6628",
+                "version": 8,
+                "structural": {
+                    "contains": [
+                        {
+                            "type": "https://cocina.sul.stanford.edu/models/file",
+                            "externalIdentifier": "https://cocina.sul.stanford.edu/file/df451fk6628-df451fk6628_1/df451fk6628_05_0001.jp2",
+                            "label": "df451fk6628_05_0001.jp2",
+                            "filename": "df451fk6628_05_0001.jp2",
+                            "size": 3635735,
+                            "version": 8,
+                            "hasMimeType": "image/jp2",
+                            "sdrGeneratedText": false,
+                            "correctedForAccessibility": false,
+                            "hasMessageDigests": [
+                                {
+                                    "type": "sha1",
+                                    "digest": "d7d788405747d09677bf1f695aa65900db383e20"
+                                },
+                                {
+                                    "type": "md5",
+                                    "digest": "2de088bbe7758d74fc8f5c0432c66df8"
+                                }
+                            ],
+                            "access": {
+                                "view": "world",
+                                "download": "world",
+                                "controlledDigitalLending": false
+                            },
+                            "administrative": {
+                                "publish": true,
+                                "sdrPreserve": true,
+                                "shelve": true
+                            },
+                            "presentation": {
+                                "height": 3792,
+                                "width": 5089
+                            }
+                        },
+                        {
+                            "type": "https://cocina.sul.stanford.edu/models/file",
+                            "externalIdentifier": "https://cocina.sul.stanford.edu/file/df451fk6628-df451fk6628_1/df451fk6628_00_0001.tif",
+                            "label": "df451fk6628_00_0001.tif",
+                            "filename": "df451fk6628_00_0001.tif",
+                            "size": 57917516,
+                            "version": 8,
+                            "hasMimeType": "image/tiff",
+                            "sdrGeneratedText": false,
+                            "correctedForAccessibility": false,
+                            "hasMessageDigests": [
+                                {
+                                    "type": "sha1",
+                                    "digest": "195ade5801ff748dad9656979aaebe21f89013a8"
+                                },
+                                {
+                                    "type": "md5",
+                                    "digest": "eec641398fde40ac1625032df3a9a3c7"
+                                }
+                            ],
+                            "access": {
+                                "view": "world",
+                                "download": "world",
+                                "controlledDigitalLending": false
+                            },
+                            "administrative": {
+                                "publish": false,
+                                "sdrPreserve": true,
+                                "shelve": false
+                            },
+                            "presentation": {
+                                "height": 3792,
+                                "width": 5089
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "hasMemberOrders": [],
+        "isMemberOf": [
+            "druid:zb871zd0767"
+        ]
+    },
+    "created": "2022-07-26T23:19:06.000+00:00",
+    "modified": "2024-06-13T06:27:07.000+00:00",
+    "lock": "W/\"druid:df451fk6628=0=1-gzip\""
+}

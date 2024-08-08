@@ -4,10 +4,10 @@
 ## description -> form (type=genre)
 ## subject -> structuredValue (type=genre)
 
+# Note: we detect and manipulate resource class values in Traject::Macros::Geo#assign_resource_class_values
+# Transform our assigned, singular values to plural categories
 map: Maps
-Maps: Maps
-Datasets: Datasets
-Dataset: Datasets
+dataset: Datasets
 
 ## description -> form (type=form)
 
@@ -15,14 +15,6 @@ Dataset: Datasets
 GeoTIFF:
   - Datasets
   - Maps
-
-# Anything with 'dataset' is a dataset
-Dataset#Polygon: Datasets
-Dataset#Point: Datasets
-Dataset#Line: Datasets
-Dataset#Mixed: Datasets
-Dataset#LineString: Datasets
-"Dataset#": Datasets
 
 # Rasters are both datasets and maps
 Raster:

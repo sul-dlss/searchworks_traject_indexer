@@ -264,6 +264,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     let(:druid) { 'kd514jp1398' }
 
     it 'maps the resource class' do
+      # Dataset#Raster has "Maps" added in the translation_map step
       expect(result['gbl_resourceClass_sm']).to eq %w[Datasets Maps]
     end
 
@@ -277,6 +278,14 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the source map' do
       expect(result['dct_source_sm']).to eq ['stanford-df334jk2963']
+    end
+  end
+
+  context 'with metadata that has "Digital Map" as its form>genre metadata' do
+    let(:druid) { 'df451fk6628' }
+
+    it 'maps the resource class to Map' do
+      expect(result['gbl_resourceClass_sm']).to eq ['Maps']
     end
   end
 

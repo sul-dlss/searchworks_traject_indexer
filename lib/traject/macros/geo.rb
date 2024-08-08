@@ -66,6 +66,32 @@ module Traject
         end
       end
 
+      # Assigns "map" or "dataset" to the accumulator based on the presence of those substrings
+      # For example, "Digital Map" "Digital Maps" and "Maps and Atlases" will be assigned "map"
+      # "Dataset#Raster" will be assigned "dataset"
+      # We do not want to remove the original values, so we append our value
+      # (Original values, in addition to these appended values, are used by the translation_map for resource class)
+      def assign_resource_class_values
+        lambda do |_record, accumulator, _context|
+          resource_classes = %w[dataset map]
+
+          accumulator.map! do |value|
+            # Find a matching substring, or return nil if none found
+            matching_substring = resource_classes.find { |substr| value.downcase.include?(substr) }
+
+            if matching_substring
+              [matching_substring, value]
+            else
+              value
+            end
+          end if accumulator.any?
+
+          # Remove neseting, duplicates
+          accumulator.flatten! if accumulator.any?
+          accumulator.uniq! if accumulator.any?
+        end
+      end
+
       private
 
       # Get the right geoserver url for an item given its access rights
