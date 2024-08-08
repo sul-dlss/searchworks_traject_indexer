@@ -32,6 +32,18 @@ module Traject
         end
       end
 
+      def doi
+        lambda do |_record, accumulator, _context|
+          accumulator.each do |node|
+            doi = node['type'] == 'DOI' ||
+                  node['displayLabel'] == 'DOI' ||
+                  (node['source'] && node['source']['code'] == 'doi')
+
+            accumulator << node['value'] if doi
+          end
+        end
+      end
+
       # Generate an embed url for the object, with optional parameters
       def embed_url(params = {})
         lambda do |record, accumulator, context|

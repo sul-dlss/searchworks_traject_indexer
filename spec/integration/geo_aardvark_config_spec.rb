@@ -215,6 +215,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
+  context 'with a DOI and a Purl' do
+    let(:druid) { 'fk339wc1276' }
+    it 'finds the DOI and appends it to dct_identifier_sm with the purl' do
+      expect(result['dct_identifier_sm']).to eq ["https://purl.stanford.edu/#{druid}", "https://doi.org/10.25740/#{druid}"]
+    end
+  end
+
   context 'with a scanned map' do
     let(:druid) { 'dc482zx1528' }
 

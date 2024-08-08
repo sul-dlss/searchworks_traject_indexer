@@ -180,6 +180,7 @@ to_field 'schema_provider_s', literal('Stanford')
 # https://opengeometadata.org/ogm-aardvark/#identifier
 # - we could add other links here if desired
 to_field 'dct_identifier_sm', cocina_descriptive('purl')
+to_field 'dct_identifier_sm', cocina_descriptive('identifier'), extract_values, doi
 
 # https://opengeometadata.org/ogm-aardvark/#resource-class
 # - if the item is a collection, set the resource class to "Collections" (only)
