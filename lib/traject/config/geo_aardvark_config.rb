@@ -226,7 +226,10 @@ to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.o
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
 # - currently unused in the UI
-to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << true if context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
+to_field 'gbl_georeferenced_b', cocina_descriptive('access', 'url'),
+         transform(->(res) { true if res['displayLabel'] == 'Georeferenced map in EarthWorks' })
+to_field 'gbl_georeferenced_b', cocina_descriptive('relatedResource', 'url'), select_type('has other format'),
+         transform(->(res) { true if res['displayLabel'] == 'Georeferenced Map' })
 
 # https://opengeometadata.org/ogm-aardvark/#member-of
 # - links items to collections and collections to their items via a box on the show page

@@ -1,0 +1,613 @@
+{
+    "cocinaVersion": "0.75.0",
+    "type": "https://cocina.sul.stanford.edu/models/image",
+    "externalIdentifier": "druid:gm036df2527",
+    "label": "Map of Africa Showing its most Recent Discoveries",
+    "version": 21,
+    "access": {
+        "view": "world",
+        "download": "world",
+        "controlledDigitalLending": false,
+        "copyright": "This work has been identified as being free of known restrictions under copyright law, including all related and neighboring rights. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.",
+        "useAndReproductionStatement": "Image from the Dr. Oscar I. Norwich collection of maps of Africa and its islands, 1486 - ca. 1865 courtesy Stanford University Libraries. This item is in the public domain. There are no restrictions on use. If you have questions, please contact the David Rumsey Map Center at rumseymapcenter@stanford.edu.",
+        "license": "https://creativecommons.org/publicdomain/mark/1.0/"
+    },
+    "administrative": {
+        "hasAdminPolicy": "druid:ww057vk7675",
+        "releaseTags": [
+            {
+                "who": "lkrueger",
+                "what": "self",
+                "date": "2022-08-17T00:14:52.000+00:00",
+                "to": "Searchworks",
+                "release": true
+            },
+            {
+                "who": "bergeraj",
+                "what": "self",
+                "date": "2023-04-14T00:56:07.000+00:00",
+                "to": "Earthworks",
+                "release": true
+            }
+        ]
+    },
+    "description": {
+        "title": [
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Map of Africa Showing its most Recent Discoveries",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            }
+        ],
+        "contributor": [
+            {
+                "name": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "Mitchell, S. Augustus (Samuel Augustus), 1792-1868",
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "type": "person",
+                "status": "primary",
+                "role": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "creator",
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "identifier": [],
+                "note": [],
+                "parallelContributor": []
+            },
+            {
+                "name": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "Williams, W. (Wellington)",
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "type": "person",
+                "role": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "engraver",
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "identifier": [],
+                "note": [],
+                "parallelContributor": []
+            }
+        ],
+        "event": [
+            {
+                "structuredValue": [],
+                "date": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "1881",
+                        "type": "publication",
+                        "encoding": {
+                            "code": "marc",
+                            "note": []
+                        },
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "contributor": [],
+                "location": [],
+                "identifier": [],
+                "note": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "monographic",
+                        "type": "issuance",
+                        "identifier": [],
+                        "source": {
+                            "value": "MODS issuance terms",
+                            "note": []
+                        },
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "parallelEvent": []
+            }
+        ],
+        "form": [
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "map",
+                "type": "genre",
+                "identifier": [],
+                "source": {
+                    "code": "marcgt",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "cartographic image",
+                "type": "genre",
+                "identifier": [],
+                "source": {
+                    "code": "rdacontent",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Maps",
+                "type": "genre",
+                "identifier": [],
+                "source": {
+                    "code": "lcgft",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "cartographic",
+                "type": "resource type",
+                "identifier": [],
+                "source": {
+                    "value": "MODS resource types",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "map",
+                "type": "form",
+                "identifier": [],
+                "source": {
+                    "code": "marccategory",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "map",
+                "type": "form",
+                "identifier": [],
+                "source": {
+                    "code": "marcsmd",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "unmediated",
+                "type": "media",
+                "identifier": [],
+                "source": {
+                    "code": "rdamedia",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "sheet",
+                "type": "carrier",
+                "identifier": [],
+                "source": {
+                    "code": "rdacarrier",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "1 map ; 27 x 34 cm",
+                "type": "extent",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Scale in miles",
+                "type": "map scale",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            }
+        ],
+        "geographic": [],
+        "language": [],
+        "note": [
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "\"First appeared in Mitchell's New General Atlas in 1867\". Map shows expedition routes of\n        Stanley and Livingstone. Inset: Island of St. Helena (place where Napoleon was buried). Top\n        right: 120; Prime meridian through Washington.",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Colored",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Dr. Oscar I. Norwich",
+                "type": "acquisition",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "David Rumsey Map Center copy 1: Norwich no. NOR\n        0146.",
+                "type": "local",
+                "identifier": [],
+                "displayLabel": "Local note",
+                "note": [],
+                "appliesTo": []
+            }
+        ],
+        "identifier": [],
+        "subject": [
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Africa--Maps",
+                "type": "place",
+                "identifier": [],
+                "source": {
+                    "code": "lcsh",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "G8200 1881 .M5",
+                "type": "classification",
+                "identifier": [],
+                "source": {
+                    "code": "lcc",
+                    "note": []
+                },
+                "note": [],
+                "appliesTo": []
+            },
+            {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "W 18°--E 51°/N 37°--S 35°",
+                "type": "map coordinates",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+            }
+        ],
+        "access": {
+            "url": [
+                {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "https://searchworks.stanford.edu/view/px984sn6906",
+                    "identifier": [],
+                    "displayLabel": "Georeferenced map in SearchWorks",
+                    "note": [],
+                    "appliesTo": []
+                },
+                {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "https://earthworks.stanford.edu/catalog/stanford-px984sn6906",
+                    "identifier": [],
+                    "displayLabel": "Georeferenced map in EarthWorks",
+                    "note": [],
+                    "appliesTo": []
+                }
+            ],
+            "physicalLocation": [],
+            "digitalLocation": [],
+            "accessContact": [],
+            "digitalRepository": [],
+            "note": []
+        },
+        "relatedResource": [
+            {
+                "type": "referenced by",
+                "title": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "Norwich, I., Pam Kolbe, and Jeffrey C Stone. Norwich's Maps of Africa: An\n            Illustrated and Annotated Carto-Bibliography. 2nd ed. / rev. and edited by Jeffrey C.\n            Stone. Norwich, Vt.: Terra Nova Press, 1997, map 0146, p. 165",
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "contributor": [],
+                "event": [],
+                "form": [],
+                "language": [],
+                "note": [],
+                "identifier": [],
+                "subject": [],
+                "relatedResource": []
+            },
+            {
+                "type": "has other format",
+                "displayLabel": "Georeferenced Map",
+                "title": [
+                    {
+                        "structuredValue": [],
+                        "parallelValue": [],
+                        "groupedValue": [],
+                        "value": "Map of Africa Showing its most Recent Discoveries (Raster Image)",
+                        "identifier": [],
+                        "note": [],
+                        "appliesTo": []
+                    }
+                ],
+                "contributor": [],
+                "event": [],
+                "form": [],
+                "language": [],
+                "note": [],
+                "identifier": [],
+                "subject": [],
+                "relatedResource": []
+            }
+        ],
+        "marcEncodedData": [],
+        "adminMetadata": {
+            "contributor": [
+                {
+                    "name": [
+                        {
+                            "structuredValue": [],
+                            "parallelValue": [],
+                            "groupedValue": [],
+                            "code": "CSt",
+                            "identifier": [],
+                            "source": {
+                                "code": "marcorg",
+                                "note": []
+                            },
+                            "note": [],
+                            "appliesTo": []
+                        }
+                    ],
+                    "type": "organization",
+                    "role": [
+                        {
+                            "structuredValue": [],
+                            "parallelValue": [],
+                            "groupedValue": [],
+                            "value": "original cataloging agency",
+                            "identifier": [],
+                            "note": [],
+                            "appliesTo": []
+                        }
+                    ],
+                    "identifier": [],
+                    "note": [],
+                    "parallelContributor": []
+                }
+            ],
+            "event": [
+                {
+                    "structuredValue": [],
+                    "type": "modification",
+                    "date": [
+                        {
+                            "structuredValue": [],
+                            "parallelValue": [],
+                            "groupedValue": [],
+                            "value": "20170805011746.0",
+                            "encoding": {
+                                "code": "iso8601",
+                                "note": []
+                            },
+                            "identifier": [],
+                            "note": [],
+                            "appliesTo": []
+                        }
+                    ],
+                    "contributor": [],
+                    "location": [],
+                    "identifier": [],
+                    "note": [],
+                    "parallelEvent": []
+                }
+            ],
+            "language": [
+                {
+                    "appliesTo": [],
+                    "code": "eng",
+                    "groupedValue": [],
+                    "note": [],
+                    "parallelValue": [],
+                    "source": {
+                        "code": "iso639-2b",
+                        "note": []
+                    },
+                    "structuredValue": []
+                }
+            ],
+            "note": [
+                {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "Converted from MARCXML to MODS version 3.4 using MARC21slim2MODS3-4_SDR.xsl\n          (Version 1.2.5 2013/08/11)",
+                    "type": "record origin",
+                    "identifier": [],
+                    "note": [],
+                    "appliesTo": []
+                }
+            ],
+            "metadataStandard": [],
+            "identifier": [
+                {
+                    "structuredValue": [],
+                    "parallelValue": [],
+                    "groupedValue": [],
+                    "value": "a12113468",
+                    "type": "SIRSI",
+                    "identifier": [],
+                    "note": [],
+                    "appliesTo": []
+                }
+            ]
+        },
+        "purl": "https://purl.stanford.edu/gm036df2527"
+    },
+    "identification": {
+        "catalogLinks": [
+            {
+                "catalog": "folio",
+                "refresh": true,
+                "catalogRecordId": "a12113468"
+            },
+            {
+                "catalog": "symphony",
+                "refresh": true,
+                "catalogRecordId": "12113468"
+            }
+        ],
+        "sourceId": "sul:MOA0175"
+    },
+    "structural": {
+        "contains": [
+            {
+                "type": "https://cocina.sul.stanford.edu/models/resources/image",
+                "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/gm036df2527-http://cocina.sul.stanford.edu/fileSet/202c6b5e-4cf5-4ef6-9910-58ba15e19c4f",
+                "label": "Image 1",
+                "version": 20,
+                "structural": {
+                    "contains": [
+                        {
+                            "type": "https://cocina.sul.stanford.edu/models/file",
+                            "externalIdentifier": "https://cocina.sul.stanford.edu/file/gm036df2527-202c6b5e-4cf5-4ef6-9910-58ba15e19c4f/AM_0100.jp2",
+                            "label": "AM_0100.jp2",
+                            "filename": "AM_0100.jp2",
+                            "size": 12359006,
+                            "version": 20,
+                            "hasMimeType": "image/jp2",
+                            "hasMessageDigests": [
+                                {
+                                    "type": "sha1",
+                                    "digest": "0f7d4f121a706faf849d312d86158af8419474fc"
+                                },
+                                {
+                                    "type": "md5",
+                                    "digest": "cc4e737b7c056b1c19991bc44bbbbb77"
+                                }
+                            ],
+                            "access": {
+                                "view": "world",
+                                "download": "world",
+                                "controlledDigitalLending": false
+                            },
+                            "administrative": {
+                                "publish": true,
+                                "sdrPreserve": false,
+                                "shelve": true
+                            },
+                            "presentation": {
+                                "height": 7557,
+                                "width": 8686
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "hasMemberOrders": [],
+        "isMemberOf": [
+            "druid:qb438pg7646"
+        ]
+    },
+    "created": "2022-07-26T23:22:32.000+00:00",
+    "modified": "2022-07-26T23:22:32.000+00:00",
+    "lock": "druid:gm036df2527=0"
+}
