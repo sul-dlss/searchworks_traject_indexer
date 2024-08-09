@@ -323,10 +323,12 @@ to_field 'collection_with_title' do |record, accumulator|
   end)
 end
 
+# This drives the AppearsInComponent in Searchworks (see fn851zf9475)
 to_field 'set' do |record, accumulator|
   accumulator.concat record.constituents.map(&:searchworks_id)
 end
 
+# This drives the "Appears In" section of the "Bibliograpic information" in Searchworks (see fn851zf9475)
 to_field 'set_with_title' do |record, accumulator|
   accumulator.concat(record.constituents.map do |constituent|
     $druid_title_cache[constituent.druid] ||= cached_title_value.call(constituent)
