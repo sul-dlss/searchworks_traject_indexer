@@ -231,6 +231,11 @@ to_field 'gbl_georeferenced_b', cocina_descriptive('access', 'url'),
 to_field 'gbl_georeferenced_b', cocina_descriptive('relatedResource', 'url'), select_type('has other format'),
          transform(->(res) { true if res['displayLabel'] == 'Georeferenced Map' })
 
+# https://opengeometadata.org/ogm-aardvark/#relation
+# - we are choosing to use this field to hold the georefereced link if it exists
+to_field 'dct_relation_sm', cocina_descriptive('access', 'url'),
+         transform(->(res) { res['value'] if res['displayLabel'] == 'Georeferenced map in EarthWorks' })
+
 # https://opengeometadata.org/ogm-aardvark/#member-of
 # - links items to collections and collections to their items via a box on the show page
 # - a separate 'relations' solr query using this field is performed in the app to render the box

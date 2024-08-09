@@ -286,6 +286,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     it 'maps the source map' do
       expect(result['dct_source_sm']).to eq ['stanford-df334jk2963']
     end
+
+    it 'does not populate dct_relation_sm' do
+      expect(result['dct_relation_sm']).to be_nil
+    end
   end
 
   context 'with a scanned map that has a georeferenced map' do
@@ -293,6 +297,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the georeferenced status' do
       expect(result['gbl_georeferenced_b']).to eq true
+    end
+
+    it 'populates the link to the georeferenced map in dct_relation_sm' do
+      expect(result['dct_relation_sm']).to eq ['https://earthworks.stanford.edu/catalog/stanford-px984sn6906']
     end
   end
 
