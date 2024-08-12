@@ -86,7 +86,7 @@ module Traject
             end
           end if accumulator.any?
 
-          # Remove neseting, duplicates
+          # Remove nesting, duplicates
           accumulator.flatten! if accumulator.any?
           accumulator.uniq! if accumulator.any?
         end
