@@ -137,6 +137,7 @@ to_field 'dct_language_sm', cocina_descriptive('language'), transform(->(lang) {
 
 # https://opengeometadata.org/ogm-aardvark/#creator
 to_field 'dct_creator_sm', cocina_descriptive('contributor'), select_role('creator'), extract_names
+to_field 'dct_creator_sm', cocina_descriptive('contributor', 'name'), extract_names_from_structured_values
 
 # https://opengeometadata.org/ogm-aardvark/#publisher
 to_field 'dct_publisher_sm', cocina_descriptive('event', 'contributor'), select_role('publisher'), extract_names
@@ -179,16 +180,23 @@ to_field 'schema_provider_s', literal('Stanford')
 # https://opengeometadata.org/ogm-aardvark/#identifier
 # - we could add other links here if desired
 to_field 'dct_identifier_sm', cocina_descriptive('purl')
+to_field 'dct_identifier_sm', cocina_descriptive('identifier'), extract_values, doi
 
 # https://opengeometadata.org/ogm-aardvark/#resource-class
 # - if the item is a collection, set the resource class to "Collections" (only)
 # - if we didn't find anything, fall back to "Other" because the field is required
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, translation_map('geo_resource_class')
+# - we use a custom assign_resource_class_values macro to detect possible valid values (map/s and dataset/s) within phrases
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), assign_resource_class_values, translation_map('geo_resource_class')
+
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), assign_resource_class_values, translation_map('geo_resource_class')
+
+to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
+
+# Fallbacks
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
 to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.public_cocina.collection? }
 
@@ -218,7 +226,15 @@ to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.o
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
 # - currently unused in the UI
-to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << true if context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
+to_field 'gbl_georeferenced_b', cocina_descriptive('access', 'url'),
+         transform(->(res) { true if res['displayLabel'] == 'Georeferenced map in EarthWorks' })
+to_field 'gbl_georeferenced_b', cocina_descriptive('relatedResource', 'url'), select_type('has other format'),
+         transform(->(res) { true if res['displayLabel'] == 'Georeferenced Map' })
+
+# https://opengeometadata.org/ogm-aardvark/#relation
+# - we are choosing to use this field to hold the georeferenced link if it exists
+to_field 'dct_relation_sm', cocina_descriptive('access', 'url'),
+         transform(->(res) { res['value'] if res['displayLabel'] == 'Georeferenced map in EarthWorks' })
 
 # https://opengeometadata.org/ogm-aardvark/#member-of
 # - links items to collections and collections to their items via a box on the show page

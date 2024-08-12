@@ -175,6 +175,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
+  context 'with contributor names that are structuredValues' do
+    let(:druid) { 'rk962wd2562' }
+    it 'maps the creators' do
+      expect(result['dct_creator_sm']).to eq ['Ptolemy, active 2nd century', 'Waldseemüller, Martin, 1470-1519', 'Schott, Johann, 1477-1548', 'Übelin, Georg, active 15th century-16th century']
+    end
+  end
+
   context 'with a shapefile with unzipped metadata (not released to searchworks)' do
     let(:druid) { 'bc559yb0972' }
 
@@ -205,6 +212,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       it 'does not include a searchworks URL' do
         expect(references['https://schema.org/relatedLink']).to be_nil
       end
+    end
+  end
+
+  context 'with a DOI and a Purl' do
+    let(:druid) { 'fk339wc1276' }
+    it 'finds the DOI and appends it to dct_identifier_sm with the purl' do
+      expect(result['dct_identifier_sm']).to eq ["https://purl.stanford.edu/#{druid}", "https://doi.org/10.25740/#{druid}"]
     end
   end
 
@@ -253,10 +267,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
-  context 'with a scanned map that was georeferenced' do
+  context 'with the georeferenced map version of a scanned map' do
     let(:druid) { 'kd514jp1398' }
 
     it 'maps the resource class' do
+      # Dataset#Raster has "Maps" added in the translation_map step
       expect(result['gbl_resourceClass_sm']).to eq %w[Datasets Maps]
     end
 
@@ -265,11 +280,35 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the georeferenced status' do
-      expect(result['gbl_georeferenced_b']).to eq true
+      expect(result['gbl_georeferenced_b']).to be_nil
     end
 
     it 'maps the source map' do
       expect(result['dct_source_sm']).to eq ['stanford-df334jk2963']
+    end
+
+    it 'does not populate dct_relation_sm' do
+      expect(result['dct_relation_sm']).to be_nil
+    end
+  end
+
+  context 'with a scanned map that has a georeferenced map' do
+    let(:druid) { 'gm036df2527' }
+
+    it 'maps the georeferenced status' do
+      expect(result['gbl_georeferenced_b']).to eq true
+    end
+
+    it 'populates the link to the georeferenced map in dct_relation_sm' do
+      expect(result['dct_relation_sm']).to eq ['https://earthworks.stanford.edu/catalog/stanford-px984sn6906']
+    end
+  end
+
+  context 'with metadata that has "Digital Map" as its form>genre metadata' do
+    let(:druid) { 'df451fk6628' }
+
+    it 'maps the resource class to Map' do
+      expect(result['gbl_resourceClass_sm']).to eq ['Maps']
     end
   end
 
