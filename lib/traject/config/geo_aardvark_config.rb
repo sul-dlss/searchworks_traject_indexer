@@ -287,7 +287,15 @@ to_field('gbl_wxsIdentifier_s') { |record, accumulator| accumulator << "druid:#{
 # - if XML metadata files exist (not in data.zip), we link them
 # - data that is in geoJSON format (including index maps) gets a link to the spec
 to_field 'dct_references_s', purl_url, as_reference('http://schema.org/url')
-to_field 'dct_references_s', stacks_object_url, as_reference('http://schema.org/downloadUrl')
+# Create a hash verion of downloadUrl so that we always have a label for display without relying on dct_format_s
+# See https://github.com/geoblacklight/geoblacklight/blob/9ce0dccdc2336dad520dfc0578743b20d421b0f6/app/components/geoblacklight/download_links_component.html.erb#L12
+# Also see https://opengeometadata.org/configure-references-links/#multiple-downloads
+to_field 'dct_references_s', stacks_object_url, transform(lambda { |url|
+  [{
+    url:,
+    label: 'Zipped object'
+  }]
+}), as_reference('http://schema.org/downloadUrl')
 to_field 'dct_references_s', embed_url({ hide_title: true }), as_reference('https://oembed.com')
 to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
 to_field 'dct_references_s', wms_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wms')
