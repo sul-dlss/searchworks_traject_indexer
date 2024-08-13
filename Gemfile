@@ -45,3 +45,6 @@ gem 'cocina-models'
 gem 'dor-event-client'
 gem 'factory_bot', '~> 6.2'
 gem 'stanford-geo', '0.2.0'
+
+# traject brings in httpclient, and we'll need this for ruby 3.4 support:
+gem 'mutex_m'
