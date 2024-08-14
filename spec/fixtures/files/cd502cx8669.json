@@ -1,0 +1,578 @@
+{
+    "cocinaVersion": "0.75.0",
+    "type": "https://cocina.sul.stanford.edu/models/map",
+    "externalIdentifier": "druid:cd502cx8669",
+    "label": "Carta particolareche mostra il Capo buona Speranza con il Mare Verso Ponte e con\n          L'isole di Tristan D'Acunha e di Martin Vaz",
+    "version": 2,
+    "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "copyright": " Property rights reside with the repository. Copyright © Stanford University. All Rights Reserved.",
+    "useAndReproductionStatement": "To obtain permission to publish or reproduce, please contact the Special Collections Public Services Librarian at speccollref@stanford.edu."
+    },
+    "administrative": {
+    "hasAdminPolicy": "druid:fp733rq3615",
+    "releaseTags": [
+    {
+    "who": "lkrueger",
+    "what": "self",
+    "date": "2022-08-17T00:14:31.000+00:00",
+    "to": "Searchworks",
+    "release": true
+    }
+    ]
+    },
+    "description": {
+    "title": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Carta particolareche mostra il Capo buona Speranza con il Mare Verso Ponte e con\n          L'isole di Tristan D'Acunha e di Martin Vaz",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Map showing the Cape of Good Hope and islands of Tristan da Cunha and Martin\n          Vaz",
+    "type": "translated",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "contributor": [
+    {
+    "name": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Dudley, Robert, Sir, 1574-1649",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "type": "person",
+    "status": "primary",
+    "role": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "creator",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "identifier": [],
+    "note": [],
+    "parallelContributor": []
+    },
+    {
+    "name": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Lucini, Antonio Francesco, 1605-",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "type": "person",
+    "role": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "engraver",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "identifier": [],
+    "note": [],
+    "parallelContributor": []
+    }
+    ],
+    "event": [
+    {
+    "structuredValue": [],
+    "date": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "1646",
+    "type": "publication",
+    "encoding": {
+    "code": "marc",
+    "note": []
+    },
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "contributor": [],
+    "location": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "code": "it",
+    "identifier": [],
+    "source": {
+    "code": "marccountry",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "identifier": [],
+    "note": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "monographic",
+    "type": "issuance",
+    "identifier": [],
+    "source": {
+    "value": "MODS issuance terms",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "parallelEvent": []
+    }
+    ],
+    "form": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "map",
+    "type": "genre",
+    "identifier": [],
+    "source": {
+    "code": "marcgt",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "cartographic image",
+    "type": "genre",
+    "identifier": [],
+    "source": {
+    "code": "rdacontent",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Early maps",
+    "type": "genre",
+    "identifier": [],
+    "source": {
+    "code": "lcgft",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Maps",
+    "type": "genre",
+    "identifier": [],
+    "source": {
+    "code": "lcgft",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "cartographic",
+    "type": "resource type",
+    "identifier": [],
+    "source": {
+    "value": "MODS resource types",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "map",
+    "type": "form",
+    "identifier": [],
+    "source": {
+    "code": "marccategory",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "map",
+    "type": "form",
+    "identifier": [],
+    "source": {
+    "code": "marcsmd",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "unmediated",
+    "type": "media",
+    "identifier": [],
+    "source": {
+    "code": "rdamedia",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "sheet",
+    "type": "carrier",
+    "identifier": [],
+    "source": {
+    "code": "rdacarrier",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "1 map ; 47 x 74 cm",
+    "type": "extent",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "No scale given",
+    "type": "map scale",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "geographic": [],
+    "language": [
+    {
+    "appliesTo": [],
+    "code": "ita",
+    "groupedValue": [],
+    "note": [],
+    "parallelValue": [],
+    "source": {
+    "code": "iso639-2b",
+    "note": []
+    },
+    "structuredValue": []
+    }
+    ],
+    "note": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Calligraphy covers much of the South Atlantic. A compass rose and two sailing vessels\n        decorate the sea.",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Sea chart",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Uncolored",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Dr. Oscar I. Norwich",
+    "type": "acquisition",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "David Rumsey Map Center copy 1: Norwich no. NOR\n        0247.",
+    "type": "local",
+    "identifier": [],
+    "displayLabel": "Local note",
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "identifier": [],
+    "subject": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Ocean",
+    "type": "place",
+    "identifier": [],
+    "source": {
+    "code": "lcsh",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    },
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "G8480 [1647] .D82",
+    "type": "classification",
+    "identifier": [],
+    "source": {
+    "code": "lcc",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "relatedResource": [
+    {
+    "type": "referenced by",
+    "title": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Norwich, I., Pam Kolbe, and Jeffrey C Stone. Norwich's Maps of Africa: An\n            Illustrated and Annotated Carto-Bibliography. 2nd ed. / rev. and edited by Jeffrey C.\n            Stone. Norwich, Vt.: Terra Nova Press, 1997, map 0247, p. 284",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "contributor": [],
+    "event": [],
+    "form": [],
+    "language": [],
+    "note": [],
+    "identifier": [],
+    "subject": [],
+    "relatedResource": []
+    }
+    ],
+    "marcEncodedData": [],
+    "adminMetadata": {
+    "contributor": [
+    {
+    "name": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "code": "CSt",
+    "identifier": [],
+    "source": {
+    "code": "marcorg",
+    "note": []
+    },
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "type": "organization",
+    "role": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "original cataloging agency",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "identifier": [],
+    "note": [],
+    "parallelContributor": []
+    }
+    ],
+    "event": [],
+    "language": [
+    {
+    "appliesTo": [],
+    "code": "eng",
+    "groupedValue": [],
+    "note": [],
+    "parallelValue": [],
+    "source": {
+    "code": "iso639-2b",
+    "note": []
+    },
+    "structuredValue": []
+    }
+    ],
+    "note": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "Converted from MARCXML to MODS version 3.4 using MARC21slim2MODS3-4_SDR.xsl\n          (Version 1.2.5 2013/08/11)",
+    "type": "record origin",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ],
+    "metadataStandard": [],
+    "identifier": [
+    {
+    "structuredValue": [],
+    "parallelValue": [],
+    "groupedValue": [],
+    "value": "a12113419",
+    "identifier": [],
+    "note": [],
+    "appliesTo": []
+    }
+    ]
+    },
+    "purl": "https://purl.stanford.edu/cd502cx8669"
+    },
+    "identification": {
+    "barcode": "36105229145839",
+    "catalogLinks": [
+    {
+    "catalog": "folio",
+    "refresh": true,
+    "catalogRecordId": "a12113419"
+    },
+    {
+    "catalog": "symphony",
+    "refresh": true,
+    "catalogRecordId": "12113419"
+    }
+    ],
+    "sourceId": "sul:36105229145839"
+    },
+    "structural": {
+    "contains": [
+    {
+    "type": "https://cocina.sul.stanford.edu/models/resources/image",
+    "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/cd502cx8669-cd502cx8669_1",
+    "label": "Image 1",
+    "version": 2,
+    "structural": {
+    "contains": [
+    {
+    "type": "https://cocina.sul.stanford.edu/models/file",
+    "externalIdentifier": "https://cocina.sul.stanford.edu/file/cd502cx8669-cd502cx8669_1/cd502cx8669_00_0001.jp2",
+    "label": "cd502cx8669_00_0001.jp2",
+    "filename": "cd502cx8669_00_0001.jp2",
+    "size": 54521691,
+    "version": 2,
+    "hasMimeType": "image/jp2",
+    "hasMessageDigests": [
+    {
+    "type": "sha1",
+    "digest": "f05b5ecb17649e31a7ec4d3db391ff199cacb8a2"
+    },
+    {
+    "type": "md5",
+    "digest": "911ed59a68126dee747354aa5c9ce99b"
+    }
+    ],
+    "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false
+    },
+    "administrative": {
+    "publish": true,
+    "sdrPreserve": false,
+    "shelve": true
+    },
+    "presentation": {
+    "height": 13772,
+    "width": 21017
+    }
+    }
+    ]
+    }
+    }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": [
+    "druid:yk797xf6603"
+    ]
+    },
+    "created": "2022-04-27T01:57:51.000+00:00",
+    "modified": "2022-04-27T01:57:51.000+00:00",
+    "lock": "druid:cd502cx8669=0"
+    }
