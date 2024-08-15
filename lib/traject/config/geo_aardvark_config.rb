@@ -314,6 +314,14 @@ unless settings['writer_class_name'] == 'Traject::DebugWriter'
   end
 end
 
+each_record do |record, context|
+  next if context.output_hash.key?('locn_geometry')
+
+  message = 'No geometry available for item'
+  SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  context.skip!("#{message}: #{context.output_hash['id']}")
+end
+
 # Log the indexing time for each record
 each_record do |record, context|
   t0 = context.clipboard[:benchmark_start_time]
