@@ -25,4 +25,4 @@ environments:
     folio_version: poppy
     blackout_periods:
       - start: '2024-08-23T20:00:00-07:00'
-        end: '2024-08-24T02:00:00-07:00'
+        end: '2024-08-25T02:00:00-07:00'
