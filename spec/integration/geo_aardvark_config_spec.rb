@@ -173,6 +173,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     it 'maps the searchworks URL when released to searchworks' do
       expect(references['https://schema.org/relatedLink']).to eq 'https://searchworks.stanford.edu/view/vv853br8653'
     end
+
+    it 'maps the downloadUrl as an array of objects with url and label' do
+      expect(references['http://schema.org/downloadUrl']).to eq [{ 'label' => 'Zipped object', 'url' => 'https://stacks.stanford.edu/object/vv853br8653' }]
+    end
   end
 
   context 'with contributor names that are structuredValues' do
