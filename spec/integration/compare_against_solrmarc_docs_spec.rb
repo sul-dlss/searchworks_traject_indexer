@@ -112,7 +112,8 @@ RSpec.describe 'comparing against a well-known location full of documents genera
       end
 
       it 'maps barcode_search' do
-        expect(result['barcode_search']).to include(*expected_doc['barcode_search']&.reject { |x| x.end_with?('-1001') })
+        expected_barcodes = expected_doc['barcode_search']&.reject { |x| x.end_with?('-1001') }
+        expect(result['barcode_search']).to include(*expected_barcodes) if expected_barcodes.any?
       end
 
       it 'maps building_facet' do
