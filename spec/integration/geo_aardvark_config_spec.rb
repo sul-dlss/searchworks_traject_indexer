@@ -271,7 +271,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
-  context 'with the georeferenced map version of a scanned map' do
+  context 'with a scanned map that was georeferenced' do
     let(:druid) { 'kd514jp1398' }
 
     it 'maps the resource class' do
@@ -284,7 +284,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the georeferenced status' do
-      expect(result['gbl_georeferenced_b']).to be_nil
+      expect(result['gbl_georeferenced_b']).to eq true
     end
 
     it 'maps the source map' do
@@ -296,11 +296,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
-  context 'with a scanned map that has a georeferenced map' do
+  context 'with a scanned map that has a georeferenced version' do
     let(:druid) { 'gm036df2527' }
 
     it 'maps the georeferenced status' do
-      expect(result['gbl_georeferenced_b']).to eq true
+      expect(result['gbl_georeferenced_b']).to eq false
     end
 
     it 'populates the link to the georeferenced map in dct_relation_sm' do
