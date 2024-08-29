@@ -30,9 +30,8 @@ farming: Agriculture
 biota: Biology
 Biota: Biology
 boundaries: Boundaries
-climatologyMeteorologyAtmosphere:
-  - Events
-  - Climate
+Climatology, Meteorology and Atmosphere: Climate
+climatologyMeteorologyAtmosphere: Climate
 economy: Economy
 elevation: Elevation
 environment: Environment
@@ -52,10 +51,29 @@ Intelligence and Military: Military
 oceans: Oceans
 planningCadastre: Property
 Planning and Cadastral: Property
-society:
-  - Events
-  - Society
+society: Society
 structure: Structure
 transportation: Transportation
 utilitiesCommunication: Utilities
 Utilities and Communication: Utilities
+
+# Misc. other Stanford data
+Aerial photographs: Imagery
+Aerial surveys: Imagery
+Bathymetric maps: Imagery
+California as an island--Maps: Imagery
+Composite map: Imagery
+Landsat satellites: Imagery
+Multibeam mapping: Imagery
+Nautical charts: Imagery
+Remote sensing: Imagery
+Remote sensing images: Imagery
+Satellite image maps: Imagery
+Coasts: Land cover
+Forests: Land cover
+Forest canopies: Land cover
+Forests and forestry: Land cover
+Hydrology: Land cover
+Hydrography: Land cover
+Landforms: Land cover
+Vegetation mapping: Land cover
