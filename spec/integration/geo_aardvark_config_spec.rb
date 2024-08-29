@@ -294,6 +294,14 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     it 'does not populate dct_relation_sm' do
       expect(result['dct_relation_sm']).to be_nil
     end
+
+    context 'when the source map does not have a purl' do
+      let(:druid) { 'yx324nv8969' }
+
+      it 'does not populate dct_source_sm' do
+        expect(result['dct_source_sm']).to be_nil
+      end
+    end
   end
 
   context 'with a scanned map that has a georeferenced version' do

@@ -239,11 +239,13 @@ to_field 'dct_relation_sm', cocina_descriptive('access', 'url'),
 to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'stanford-')
 
 # https://opengeometadata.org/ogm-aardvark/#source
-# - links items that were georeferenced to their original version
+# - links items that were georeferenced to their original version, if it is in SDR
+# - extracts the druid from the purl URL and uses it to construct an EarthWorks URL
 to_field 'dct_source_sm', cocina_descriptive('relatedResource'), select_type('has other format'),
          select(->(res) { res['displayLabel'] == 'Scanned map' }),
-         transform(->(res) { res.fetch('identifier', []).dig(0, 'value') }),
-         transform(->(purl) { "stanford-#{purl.split('/').last}" if purl })
+         transform(->(res) { res.fetch('identifier', []).dig(0, 'value')&.split('/')&.last }),
+         select(->(id) { id.match?(/[a-z]{2}\d{3}[a-z]{2}\d{4}/) if id }),
+         transform(->(druid) { "stanford-#{druid.split('/').last}" if druid })
 
 # https://opengeometadata.org/ogm-aardvark/#rights_1
 to_field 'dct_rights_sm', cocina_access('useAndReproductionStatement')
