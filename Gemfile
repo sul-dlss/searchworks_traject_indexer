@@ -48,3 +48,5 @@ gem 'stanford-geo', '0.2.0'
 
 # traject brings in httpclient, and we'll need this for ruby 3.4 support:
 gem 'mutex_m'
+
+gem 'match_map', '~> 3.0'
