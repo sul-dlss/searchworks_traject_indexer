@@ -190,6 +190,7 @@ GEM
       unf
     marc-fastxmlwriter (1.1.0)
       marc (~> 1.0)
+    match_map (3.0.0)
     method_source (1.1.0)
     minitest (5.25.1)
     mods (3.0.4)
@@ -385,6 +386,7 @@ DEPENDENCIES
   http
   i18n
   iso-639
+  match_map (~> 3.0)
   mods_display (~> 1.0)
   mutex_m
   parallel

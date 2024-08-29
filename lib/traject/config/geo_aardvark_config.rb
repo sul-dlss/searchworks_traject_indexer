@@ -182,21 +182,23 @@ to_field 'schema_provider_s', literal('Stanford')
 to_field 'dct_identifier_sm', cocina_descriptive('purl')
 to_field 'dct_identifier_sm', cocina_descriptive('identifier'), extract_values, doi
 
+# https://opengeometadata.org/ogm-aardvark/#georeferenced
+# - currently anything with "(Raster Image)" in the title is known to be georeferenced
+to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
+
 # https://opengeometadata.org/ogm-aardvark/#resource-class
+# - we use a regex-matching translation map to find "map" or "dataset" across various fields
+# - if georeferenced, it's always both a map and a dataset
 # - if the item is a collection, set the resource class to "Collections" (only)
 # - if we didn't find anything, fall back to "Other" because the field is required
-# - we use a custom assign_resource_class_values macro to detect possible valid values (map/s and dataset/s) within phrases
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
-
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), assign_resource_class_values, translation_map('geo_resource_class')
-
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), assign_resource_class_values, translation_map('geo_resource_class')
-
-to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, assign_resource_class_values, translation_map('geo_resource_class')
-
-# Fallbacks
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('type'), extract_values, translation_map('geo_resource_class')
+to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator.push('Maps', 'Datasets') if context.output_hash['gbl_georeferenced_b'].first }
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
 to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.public_cocina.collection? }
 
@@ -223,10 +225,6 @@ to_field 'locn_geometry', cocina_descriptive('subject'), select_type('map coordi
 # https://opengeometadata.org/ogm-aardvark/#bounding-box
 # - will always be the same as locn_geometry since we use the ENVELOPE syntax
 to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.output_hash['locn_geometry'].first if context.output_hash['locn_geometry'].present? }
-
-# https://opengeometadata.org/ogm-aardvark/#georeferenced
-# - currently unused in the UI
-to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
 
 # https://opengeometadata.org/ogm-aardvark/#relation
 # - we are choosing to use this field to hold the georeferenced link if it exists
