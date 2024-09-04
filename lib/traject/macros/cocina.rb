@@ -88,7 +88,7 @@ module Traject
       # Generate a Searchworks URL if object is released to Searchworks
       def searchworks_url
         lambda do |record, accumulator, _context|
-          accumulator << "#{settings['searchworks.url']}/view/#{record.druid}" if record.public_meta_json? && record.released_to_searchworks?
+          accumulator << "#{settings['searchworks.url']}/view/#{record.searchworks_id}" if record.public_meta_json? && record.released_to_searchworks?
         end
       end
 

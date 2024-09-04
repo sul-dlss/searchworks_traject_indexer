@@ -1,5 +1,5 @@
 {
     "sitemap": false,
-    "searchworks": false,
+    "searchworks": true,
     "earthworks": true
 }
