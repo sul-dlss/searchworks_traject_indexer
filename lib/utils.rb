@@ -49,6 +49,40 @@ module Utils
     substr.sub(/(\s|[[:punct:]])+\z/, '')
   end
 
+  # Extract century and decade from year.
+  # "Obsolete. to take a tenth of or from." - https://www.dictionary.com/browse/decimate
+  #
+  # @param maybe_year [Integer] an int that (hopefully) represents a year
+  def self.centimate_and_decimate(maybe_year)
+    parsed_date = Date.new(maybe_year)
+    [century_from_date(parsed_date), decade_from_date(parsed_date)]
+  rescue Date::Error
+    %w[unknown_century unknown_decade] # guess not
+  end
+
+  # Given a Date, return a String for the century that contains it.
+  #
+  # This uses the colloquial grouping of centuries, because it's more intuitive at a glance, and the code is easier:
+  # https://en.wikipedia.org/wiki/Century#Start_and_end_of_centuries
+  #
+  # @param date [Date] a Date object on which we can call strftime
+  # @return [String] a String representing the century in which the date belongs (e.g. 1500-1599)
+  def self.century_from_date(date)
+    date.strftime('%C00-%C99')
+  end
+
+  # Given a Date, return a String for the decade that contains it.
+  #
+  # This uses the more colloquial/popular decade boundary, because it's easier to code and more intuitive for users.
+  # https://en.wikipedia.org/wiki/Decade#0-to-9_decade
+  #
+  # @param date [Date] a Date object on which we can call strftime
+  # @return [String] a String representing the decade in which the date belongs (e.g. 1990-1999)
+  def self.decade_from_date(date)
+    decade_prefix = (date.strftime('%Y').to_i / 10).to_s
+    "#{decade_prefix}0-#{decade_prefix}9"
+  end
+
   def self.version
     @version ||= begin
       file = File.expand_path('../REVISION', __dir__)

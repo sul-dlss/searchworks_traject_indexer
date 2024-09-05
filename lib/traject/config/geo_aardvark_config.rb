@@ -174,6 +174,8 @@ to_field 'gbl_dateRange_drsim', use_field('dct_temporal_sm'), extract_years, min
 # - used to power the year facet in the UI
 to_field 'gbl_indexYear_im', use_field('dct_temporal_sm'), extract_years, minmax, transform(->(years) { (years.first.to_i..years.last.to_i).to_a if years.any? }), flatten
 
+to_field 'date_hierarchy_sm', use_field('gbl_indexYear_im'), hierarchicalize_year_list
+
 # https://opengeometadata.org/ogm-aardvark/#provider
 to_field 'schema_provider_s', literal('Stanford')
 

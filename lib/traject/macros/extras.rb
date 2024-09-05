@@ -47,6 +47,31 @@ module Traject
           accumulator.concat Array.wrap(context.output_hash[field]) if context.output_hash[field].present?
         end
       end
+
+      # Given a list of years, return a list with the unique centuries and decades covered by those years, and prefixes on the
+      # decade and year strings for easy parsing of century and decade when using the Solr results for hierarchical facet display.
+      # E.g.,
+      # * given: [1701, 1980, 1991, 1995]
+      # * return: ["1700-1799", "1900-1999",
+      #            "1700-1799:1700-1710", "1900-1999:1980-1989", "1900-1999:1990-1999",
+      #            "1700-1799:1700-1710:1701", "1900-1999:1980-1989:1980", "1900-1999:1990-1999:1991", "1900-1999:1990-1999:1995"]
+      # The standalone century and decade ranges make those ranges facetable/searchable, and including the ranges on the year strings
+      # themselves makes it faster for consumers to parse out century/decade info, without duplicating the logic defined in this module.
+      def hierarchicalize_year_list
+        # @param accumulator [Array<Integer>] an array of strings or ints representing calendar years
+        # @return [Array<String>] a list of strings with exploded century and decade info per the above description
+        lambda do |_record, accumulator, _context|
+          centuries = Set.new
+          decades = Set.new
+          hierarchicalized_years = accumulator.map do |year|
+            century, decade = Utils.centimate_and_decimate(year)
+            centuries << century
+            decades << [century, decade].join(':')
+            [century, decade, year].join(':')
+          end
+          accumulator.replace(centuries.to_a + decades.to_a + hierarchicalized_years)
+        end
+      end
     end
   end
 end
