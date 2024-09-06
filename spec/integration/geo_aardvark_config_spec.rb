@@ -98,6 +98,14 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['gbl_indexYear_im']).to eq (1978..2005).to_a
   end
 
+  it 'hierarchicalizes the index years and maps that to a separate field' do
+    expect(result['date_hierarchy_sm'].length).to eq 34 # 28 years, 4 decades, 2 centuries
+    expect(result['date_hierarchy_sm']).to include('1900-1999', '2000-2099',
+                                                   '1900-1999:1970-1979', '1900-1999:1980-1989', '1900-1999:1990-1999',
+                                                   '2000-2099:2000-2009',
+                                                   '1900-1999:1980-1989:1980', '2000-2099:2000-2009:2004')
+  end
+
   it 'maps the provider as stanford' do
     expect(result['schema_provider_s']).to eq 'Stanford'
   end
@@ -347,6 +355,12 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(result['gbl_indexYear_im']).to eq [2014]
     end
 
+    it 'hierarchicalizes the index years and maps that to a separate field' do
+      expect(result['date_hierarchy_sm'].sort).to eq(%w[2000-2099
+                                                        2000-2099:2010-2019
+                                                        2000-2099:2010-2019:2014].sort)
+    end
+
     it 'maps the date range' do
       expect(result['gbl_dateRange_drsim']).to eq ['[2014 TO 2014]']
     end
@@ -393,6 +407,13 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the index year' do
       expect(result['gbl_indexYear_im']).to eq (1938..1940).to_a
+    end
+
+    it 'hierarchicalizes the index years and maps that to a separate field' do
+      expect(result['date_hierarchy_sm'].sort).to eq(%w[1900-1999
+                                                        1900-1999:1930-1939 1900-1999:1940-1949
+                                                        1900-1999:1930-1939:1938 1900-1999:1930-1939:1939
+                                                        1900-1999:1940-1949:1940].sort)
     end
 
     it 'maps the date range' do
@@ -461,6 +482,12 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the index year' do
       expect(result['gbl_indexYear_im']).to eq [2002]
+    end
+
+    it 'hierarchicalizes the index years and maps that to a separate field' do
+      expect(result['date_hierarchy_sm'].sort).to eq(%w[2000-2099
+                                                        2000-2099:2000-2009
+                                                        2000-2099:2000-2009:2002].sort)
     end
 
     it 'maps the date range' do
