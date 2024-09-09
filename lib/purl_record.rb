@@ -5,11 +5,12 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/module/delegation'
 
 class PurlRecord
-  attr_reader :druid, :purl_url
+  attr_reader :druid, :purl_url, :client
 
-  def initialize(druid, purl_url: 'https://purl.stanford.edu')
+  def initialize(druid, purl_url: 'https://purl.stanford.edu', client: Faraday.new)
     @druid = druid
     @purl_url = purl_url
+    @client = client
   end
 
   def searchworks_id
@@ -21,11 +22,11 @@ class PurlRecord
   end
 
   def public_xml
-    @public_xml ||= PublicXmlRecord.fetch(druid, purl_url:)
+    @public_xml ||= PublicXmlRecord.fetch(druid, purl_url:, client:)
   end
 
   def public_cocina
-    @public_cocina ||= PublicCocinaRecord.fetch(druid, purl_url:)
+    @public_cocina ||= PublicCocinaRecord.fetch(druid, purl_url:, client:)
   end
 
   def public_meta_json
