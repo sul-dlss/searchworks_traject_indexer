@@ -154,7 +154,8 @@ GEM
       rake
     hashdiff (1.1.1)
     hashie (5.0.0)
-    honeybadger (5.15.6)
+    honeybadger (5.16.0)
+      logger
     http (5.2.0)
       addressable (~> 2.8)
       base64 (~> 0.1)
@@ -326,7 +327,7 @@ GEM
       mods (~> 3.0, >= 3.0.4)
     statsd-ruby (1.5.0)
     stringio (3.1.1)
-    super_diff (0.12.1)
+    super_diff (0.13.0)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
