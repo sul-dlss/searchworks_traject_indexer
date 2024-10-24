@@ -1221,7 +1221,7 @@ to_field 'format_physical_ssim', extract_marc('007') do |_record, accumulator, c
         case value[1]
         when 'd'
           case value[3]
-          when 'b'
+          when 'b', 'c'
             'Vinyl disc'
           when 'd'
             '78 rpm (shellac)'
