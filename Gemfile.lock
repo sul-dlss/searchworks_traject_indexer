@@ -158,7 +158,7 @@ GEM
       rake
     hashdiff (1.1.2)
     hashie (5.0.0)
-    honeybadger (5.22.0)
+    honeybadger (5.24.0)
       logger
     http (5.2.0)
       addressable (~> 2.8)
@@ -198,7 +198,7 @@ GEM
       marc (~> 1.0)
     match_map (3.0.0)
     method_source (1.1.0)
-    minitest (5.25.1)
+    minitest (5.25.2)
     mods (3.0.5)
       csv (~> 3.3)
       edtf (~> 3.0)
@@ -211,7 +211,7 @@ GEM
       stanford-mods (~> 3.3, >= 3.3.9)
       view_component
     multi_json (1.15.0)
-    mutex_m (0.2.0)
+    mutex_m (0.3.0)
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
     net-sftp (4.0.0)
@@ -271,7 +271,7 @@ GEM
     rainbow (3.1.1)
     rake (13.2.1)
     rbtree (0.4.6)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.2)
     reline (0.5.11)
