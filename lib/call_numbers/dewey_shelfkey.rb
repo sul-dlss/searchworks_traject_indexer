@@ -21,6 +21,7 @@ module CallNumbers
 
     private
 
+    # rubocop:disable Lint/MixedRegexpCaptureTypes
     def parsed
       @parsed ||= %r{
         (?<klass_number>\d{1,3})(?<klass_decimal>\.?\d+)?\s*
@@ -35,6 +36,7 @@ module CallNumbers
       }x.match(base_call_number)
       @parsed ||= {}
     end
+    # rubocop:enable Lint/MixedRegexpCaptureTypes
 
     def klass_number_and_decimal
       [

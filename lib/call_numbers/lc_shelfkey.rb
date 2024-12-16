@@ -21,6 +21,7 @@ module CallNumbers
 
     private
 
+    # rubocop:disable Lint/MixedRegexpCaptureTypes
     def parsed
       @parsed ||= /
         (?<klass>[A-Z]{0,3})\s*
@@ -37,5 +38,6 @@ module CallNumbers
 
       @parsed ||= {}
     end
+    # rubocop:enable Lint/MixedRegexpCaptureTypes
   end
 end
