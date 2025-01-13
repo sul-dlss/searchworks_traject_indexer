@@ -204,7 +204,7 @@ class FolioItem
       end
     end
 
-    if volume_info.blank? && (call_number_type == 'ALPHANUM' || call_number_type == 'SUDOC') && record
+    if volume_info.blank? && (%w[ALPHANUM SUDOC].include?(call_number_type)) && record
       # ALPHANUM call numbers seem to be problematic; sometimes they use the volume/enumeration/chronology fields under one holdings record
       # but sometimes they create unique holdings records for each item... so we get to do a little extra work to try to generate
       # the volume information as best we can...:

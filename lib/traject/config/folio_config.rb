@@ -543,7 +543,7 @@ end
 to_field 'pub_search' do |record, accumulator|
   Traject::MarcExtractor.new('260:264',
                              alternate_script: false).collect_matching_lines(record) do |field, _spec, _extractor|
-    data = field.subfields.select { |x| x.code == 'a' || x.code == 'b' }
+    data = field.subfields.select { |x| %w[a b].include?(x.code) }
                 .reject { |x| x.code == 'a' && (x.value =~ /s\.l\./i || x.value =~ /place of .* not identified/i) }
                 .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
                 .map(&:value)
@@ -1106,7 +1106,7 @@ end
 to_field 'format_main_ssim' do |record, accumulator, context|
   if items(record, context).any? do |item|
        item.library == 'LANE'
-     end && ((record.leader[6] == 'a' || record.leader[6] == 't') && (record.leader[7] == 'c' || record.leader[7] == 'd'))
+     end && ((%w[a t].include?(record.leader[6])) && (%w[c d].include?(record.leader[7])))
     context.output_hash.fetch('format_main_ssim', []).delete('Archive/Manuscript')
     accumulator << 'Book'
   end
@@ -1404,7 +1404,7 @@ end
 # Based upon SW-1056, added the following to the algorithm to determine if something is a conference proceeding:
 # Leader/07 = 'm' or 's' and 008/29 = '1'
 to_field 'genre_ssim' do |record, accumulator|
-  if (record.leader[7] == 'm' || record.leader[7] == 's') && (record['008'] && record['008'].value[29] == '1')
+  if (%w[m s].include?(record.leader[7])) && (record['008'] && record['008'].value[29] == '1')
     accumulator << 'Conference proceedings'
   end
 end
@@ -1431,12 +1431,12 @@ end
 # **/
 to_field 'genre_ssim' do |record, accumulator|
   if record['008'] && record['008'].value.length >= 28
-    if (record.leader[6] == 'a' || record.leader[6] == 't') && record['008'].value[24..27] =~ /t/
+    if (%w[a t].include?(record.leader[6])) && record['008'].value[24..27] =~ /t/
       accumulator << 'Technical report'
     end
   elsif record['027'] || record['088']
     accumulator << 'Technical report'
-  elsif record['006'] && (record['006'].value[0] == 'a' || record['006'].value[0] == 't') && record['006'].value[7..10] =~ /t/
+  elsif record['006'] && (%w[a t].include?(record['006'].value[0])) && record['006'].value[7..10] =~ /t/
     accumulator << 'Technical report'
   end
 end
@@ -1513,7 +1513,7 @@ to_field 'toc_struct' do |marc, accumulator|
         end
       end
 
-      label = 'Partial contents' if field.indicator1 == '1' || field.indicator1 == '2'
+      label = 'Partial contents' if %w[1 2].include?(field.indicator1)
 
       data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') unless buffer.empty?
       fields << data
@@ -1817,7 +1817,7 @@ to_field 'callnum_search' do |record, accumulator, context|
 
     call_number = item.call_number.to_s
 
-    if item.call_number_type == 'DEWEY' || item.call_number_type == 'LC'
+    if %w[DEWEY LC].include?(item.call_number_type)
       call_number = call_number.strip
       call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
       call_number = call_number.gsub('. .', ' .') # reduce multiple whitespace chars to a single space
@@ -2273,7 +2273,7 @@ to_field 'collection_struct' do |record, accumulator|
   vern_fields.select { |f| parse_linkage(f)[:number] == '00' }.each do |f|
     accumulator << {
       source: 'marc',
-      vernacular: f.select { |sub| sub.code == 'a' || sub.code == 'p' }.map(&:value).join(' ')
+      vernacular: f.select { |sub| %w[a p].include?(sub.code) }.map(&:value).join(' ')
     }
   end
 end
