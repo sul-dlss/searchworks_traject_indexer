@@ -96,8 +96,8 @@ settings do
   provide 'purl_fetcher.skip_catkey', false
 
   provide 'solr_writer.commit_on_close', true
-  provide 'solr_json_writer.http_client', (HTTPClient.new.tap { |x| x.receive_timeout = 600 })
-  provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
+  provide 'solr_json_writer.http_client', (HTTP.timeout(read: 600))
+  provide 'solr_json_writer.skippable_exceptions', [HTTP::TimeoutError, StandardError]
 
   # On error, log to Honeybadger and report as SDR event if we can tie the error to a druid
   provide 'mapping_rescue', (lambda do |traject_context, err|
