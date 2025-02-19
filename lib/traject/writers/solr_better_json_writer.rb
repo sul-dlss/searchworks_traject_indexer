@@ -43,7 +43,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     return if batch.empty?
 
     begin
-      resp = @http_client.post @solr_update_url, batch.generate_json, 'Content-type' => 'application/json'
+      resp = @http_client.headers('Content-Type' => 'application/json').post(@solr_update_url, json: JSON.parse(batch.generate_json))
     rescue StandardError => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
     end
 
@@ -78,7 +78,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     batch = Batch.new([context])
 
     begin
-      resp = @http_client.post @solr_update_url, batch.generate_json, 'Content-type' => 'application/json'
+      resp = @http_client.headers('Content-Type' => 'application/json').post(@solr_update_url, json: JSON.parse(batch.generate_json))
       # Catch Timeouts and network errors as skipped records, but otherwise
       # allow unexpected errors to propagate up.
     rescue *skippable_exceptions => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
