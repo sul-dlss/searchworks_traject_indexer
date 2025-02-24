@@ -331,7 +331,7 @@ GEM
       net-ssh (>= 2.8.0)
       ostruct
     stanford-geo (0.2.0)
-    stanford-mods (3.3.9)
+    stanford-mods (3.3.10)
       activesupport
       mods (~> 3.0, >= 3.0.4)
     statsd-ruby (1.5.0)
