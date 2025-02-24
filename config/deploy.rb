@@ -46,7 +46,7 @@ append :linked_dirs, 'tmp', 'log', 'config/settings'
 # set :ssh_options, verify_host_key: :secure
 
 set :whenever_roles, [:app]
-set :ruby_version, 'ruby-3.3.1'
+set :ruby_version, 'ruby-3.4.2'
 
 namespace :deploy do
   desc "config for monitoring the deployment's traject workers"
