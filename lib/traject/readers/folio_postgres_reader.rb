@@ -458,12 +458,14 @@ module Traject
       LEFT JOIN sul_mod_source_record_storage.marc_records_lb mr
           ON mr.id = rs.id
       -- Holding Summaries (purchase order) relation
+      LEFT JOIN sul_mod_orders_storage.titles titles
+          ON (titles.jsonb ->> 'instanceId')::uuid = vi.id
       LEFT JOIN sul_mod_orders_storage.po_line po_line
-          ON (po_line.jsonb ->> 'instanceId')::uuid = vi.id
+          ON po_line.id = titles.polineid
       LEFT JOIN sul_mod_orders_storage.purchase_order purchase_order
           ON purchase_order.id = po_line.purchaseOrderId
       LEFT JOIN sul_mod_orders_storage.pieces pieces
-          ON pieces.polineid = po_line.id
+          ON pieces.polineid = titles.polineid
       -- Bound with parts relation
       LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
           ON bw.holdingsrecordid = hr.id
