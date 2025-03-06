@@ -390,9 +390,6 @@ to_field 'hashed_id_ssi' do |_record, accumulator, context|
 end
 
 to_field 'dct_provenance_s', literal('Stanford')
-to_field 'stanford_rights_metadata_s' do |record, accumulator|
-  accumulator << record.rights_xml
-end
 
 to_field 'stanford_license_s' do |record, accumulator|
   field = record.mods_display.accessCondition.find { |x| x.label == 'License:' }

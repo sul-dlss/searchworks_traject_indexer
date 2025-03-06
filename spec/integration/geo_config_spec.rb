@@ -45,10 +45,6 @@ RSpec.describe 'EarthWorks indexing' do
       expect(result['solr_geom']).to eq 'ENVELOPE(138.523426, 138.630362, 036.656354, 036.597519)'
     end
 
-    it 'contains rights metadata' do
-      expect(result['stanford_rights_metadata_s']).to include(/<rightsMetadata>/)
-    end
-
     it 'contains creator metadata' do
       expect(result['dc_creator_sm']).to include('Kikyōya Genkichi', '桔梗屋源吉')
     end
@@ -163,10 +159,6 @@ RSpec.describe 'EarthWorks indexing' do
 
     it 'contains dct_issued_s' do
       expect(result).to include 'dct_issued_s' => ['2009']
-    end
-
-    it 'contains rights metadata' do
-      expect(result['stanford_rights_metadata_s']).to include(/<rightsMetadata>/)
     end
 
     it 'contains dc_language_s' do
