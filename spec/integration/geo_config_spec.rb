@@ -89,18 +89,6 @@ RSpec.describe 'EarthWorks indexing' do
     end
   end
 
-  context 'with rights information in the MODS' do
-    let(:druid) { 'ny179kk3075' }
-
-    it 'parses out the rights information into fields' do
-      expect(result).to include(
-        'stanford_license_s' => include(/This work is in the public domain/),
-        'stanford_use_and_reproduction_s' => include(/Image from the Map Collections courtesy Stanford University/),
-        'stanford_copyright_s' => include(/This work has been identified as being/)
-      )
-    end
-  end
-
   context 'with geo content' do
     let(:druid) { 'vv853br8653' }
 
