@@ -47,7 +47,7 @@ class PurlRecord
   # Ensure all objects, even those missing public xml/cocina have a (nil) catkey and a label
   delegate :catkey, :label, to: :public_xml, allow_nil: true
 
-  delegate :mods, :rights, :rights_xml, :collection?, :public?, :stanford_only?,
+  delegate :mods, :collection?, :stanford_only?,
            :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
            :dor_resource_count, :dor_read_rights, :collections, :constituents,
            :stanford_mods, :mods_display,

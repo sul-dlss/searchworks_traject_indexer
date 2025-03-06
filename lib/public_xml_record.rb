@@ -63,10 +63,6 @@ class PublicXmlRecord
     @rights ||= ::Dor::RightsAuth.parse(rights_xml)
   end
 
-  def public?
-    rights.world_rights.first
-  end
-
   def stanford_only?
     rights.stanford_only_rights.first
   end
