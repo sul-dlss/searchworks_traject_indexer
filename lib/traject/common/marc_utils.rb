@@ -223,7 +223,7 @@ module Traject
         if subfield.code == 'e'
           relator_text << subfield.value
         elsif subfield.code == '4'
-          (relator_text << Constants::RELATOR_TERMS[subfield.value]) || subfield.value
+          relator_text << (Constants::RELATOR_TERMS[subfield.value] || subfield.value)
         elsif field.tag == '711' && subfield.code == 'j'
           extra_text << subfield.value
         elsif subfield.code != 'e' and subfield.code != '4'
