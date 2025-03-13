@@ -45,7 +45,7 @@ module Folio
 
     def self.extract_multiple_sortable_dates(date_str)
       # Break apart on spaces, after replacing commas with spaces
-      ds = date_str.gsub(',', ' ')
+      ds = date_str.gsub(/[,:]/, ' ')
       ds_array = ds.split(/\s+/)
       ds_tokens = []
       # For each portion of the string, check if a slash is present and create an array
