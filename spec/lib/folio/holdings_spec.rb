@@ -80,6 +80,15 @@ RSpec.describe Folio::Holdings do
       end
     end
 
+    context 'when chronology has a YYYY:MON/MON pattern' do
+      let(:target) { { 'chronology' => '2021:Aug/Sep' } }
+      let(:options) { [{ 'chronology' => '2017:Nov/Dec' }, target, { 'chronology' => '2019:Feb/Mar' }] }
+
+      it 'selects the target by correctly parsing YYYY:MON/MON' do
+        expect(latest).to include(target)
+      end
+    end
+
     context 'when chronology has a MON/MON YYYY/YYYY pattern' do
       let(:target) { { 'chronology' => 'Aug/Sep 2021/2022' } }
       let(:options) { [{ 'chronology' => 'Nov/Dec 2017/2018' }, target, { 'chronology' => 'Feb/Mar 2018/2019' }] }
