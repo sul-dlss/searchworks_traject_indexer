@@ -1767,7 +1767,7 @@ RSpec.describe 'Format main config' do
     end
   end
 
-  context 'based on 7911837 - integrating' do
+  context 'based on 7911837 - integrating loose-leaf' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02444cai a2200433 a 4500'
@@ -1776,11 +1776,11 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a Book' do
-      expect(result[field]).to eq ['Book']
+      expect(result[field]).to eq ['Loose-leaf']
     end
   end
 
-  context 'based on 7911837 - serial' do
+  context 'based on 7911837 - serial loose-leaf' do
     let(:record) do
       MARC::Record.new.tap do |r|
         r.leader = '02444cas a2200433 a 4500'
@@ -1789,7 +1789,7 @@ RSpec.describe 'Format main config' do
     end
 
     it 'is a Book' do
-      expect(result[field]).to eq ['Book']
+      expect(result[field]).to eq ['Loose-leaf']
     end
   end
 
