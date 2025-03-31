@@ -38,7 +38,7 @@ group :deployment do
   gem 'dlss-capistrano'
 end
 
-gem 'activesupport', '~> 7.0'
+gem 'activesupport', '~> 8.0'
 gem 'slop'
 
 gem 'cocina-models'
