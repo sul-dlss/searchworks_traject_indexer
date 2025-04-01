@@ -86,7 +86,7 @@ module CallNumbers
       end
 
       def pad(value, by: PADDING, direction: :right, character: '0')
-        raise ArugmentError unless %i[left right].include?(direction.to_sym)
+        raise ArgumentError unless %i[left right].include?(direction.to_sym)
 
         value ||= ''
 
