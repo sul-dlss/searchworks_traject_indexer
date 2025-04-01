@@ -42,15 +42,13 @@ module CallNumbers
       return '' if remainder.empty?
 
       tokens = tokenize_remainder(remainder)
-      normalized_tokens = []
-
       previous_token = nil
-      tokens.each do |token|
-        normalized_tokens << normalize_token(token, previous_token)
-        previous_token = token
-      end
 
-      normalized_tokens.compact.join(' ')
+      tokens.filter_map do |token|
+        result = normalize_token(token, previous_token)
+        previous_token = token
+        result
+      end.join(' ')
     end
 
     def tokenize_remainder(remainder)
