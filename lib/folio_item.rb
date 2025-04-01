@@ -234,12 +234,28 @@ class FolioItem
 
   # Call number normalization ported from solrmarc code
   def normalize_call_number(call_number)
-    return call_number unless call_number && %w[LC DEWEY].include?(call_number_type) # Normalization only applied to LC/Dewey
+    return call_number unless call_number && %w[LC DEWEY SUDOC].include?(call_number_type)
 
     call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     call_number = call_number.gsub('. .', ' .') # reduce double periods to a single period
     call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
-    call_number.sub(/\.$/, '') # remove trailing period
+    call_number = call_number.sub(/\.$/, '') # remove trailing period
+    call_number = normalize_sudoc_call_number(call_number) if call_number_type == 'SUDOC'
+    call_number
+  end
+
+  def normalize_sudoc_call_number(call_number)
+    stem, suffix = call_number.split(':', 2)
+    return call_number unless suffix
+
+    # Drop everything after the first slash or second whitespace in the suffix.
+    # This is the best guess at the Sudoc "book number". Consistency/meaning goes way down after this.
+    if suffix.include?('/')
+      "#{stem}:#{suffix.split('/', 2).first}".strip
+    else
+      parts = suffix.split(/\s+/, 3)
+      parts.size >= 3 ? "#{stem}:#{parts[0]} #{parts[1]}".strip : call_number
+    end
   end
 
   class CallNumber
@@ -295,6 +311,8 @@ class FolioItem
         CallNumbers::LcShelfkey.new(base_call_number.to_s, volume_info, serial:)
       when 'DEWEY'
         CallNumbers::DeweyShelfkey.new(base_call_number.to_s, volume_info, serial:)
+      when 'SUDOC'
+        CallNumbers::SudocShelfkey.new(base_call_number.to_s, volume_info, serial:)
       else
         CallNumbers::OtherShelfkey.new(
           base_call_number.to_s,
