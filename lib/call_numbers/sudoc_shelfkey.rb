@@ -110,7 +110,7 @@ module CallNumbers
 
     def four_digit_year_string(year_string, basis = '1000')
       return year_string if year_string.length == 4
-      return nil unless year_string.length.positive? && year_string.length < 4
+      return nil unless year_string.length.between?(1, 3)
 
       basis[0..-(year_string.length + 1)] + year_string
     end
