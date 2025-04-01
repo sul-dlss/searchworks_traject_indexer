@@ -55,40 +55,44 @@ module CallNumbers
       remainder.scan(%r{[:.;/+]|[^:.;/+]+})
     end
 
+    def with_type_prefix(type, value)
+      "#{TYPE_PRECEDENCE[type]} #{value}"
+    end
+
     def normalize_token(token, previous_token = nil)
       return nil if token =~ /^\s*$/
 
       if DELIMITER_PRECEDENCE.key?(token)
         DELIMITER_PRECEDENCE[token]
       elsif token =~ /^[a-zA-Z\-]+$/
-        "#{TYPE_PRECEDENCE[:alphabetic]} #{token.downcase}"
+        with_type_prefix(:alphabetic, token.downcase)
       elsif token =~ /^\d+-\d+$/
         normalize_number_range(token, previous_token)
       elsif token =~ /^\d{3,4}$/
         normalize_potential_year(token, previous_token)
       elsif token =~ /^\d+$/
-        "#{TYPE_PRECEDENCE[:numeric]} #{pad_all_digits(token)}"
+        with_type_prefix(:numeric, pad_all_digits(token))
       else
-        "#{TYPE_PRECEDENCE[:alphabetic]} #{pad_all_digits(token)}"
+        with_type_prefix(:alphabetic, pad_all_digits(token))
       end
     end
 
     def normalize_potential_year(token, previous_token)
       if possible_year?(token, previous_token)
-        "#{TYPE_PRECEDENCE[:year]} #{four_digit_year_string(token)}"
+        with_type_prefix(:year, four_digit_year_string(token))
       else
-        "#{TYPE_PRECEDENCE[:numeric]} #{pad_all_digits(token)}"
+        with_type_prefix(:numeric, pad_all_digits(token))
       end
     end
 
     def normalize_number_range(token, previous_token)
       range_start, range_end = token.split('-')
       if year_range?(range_start, range_end)
-        "#{TYPE_PRECEDENCE[:year]} #{four_digit_year_string(range_start)}-#{four_digit_year_string(range_end, range_start)}"
+        with_type_prefix(:year, "#{four_digit_year_string(range_start)}-#{four_digit_year_string(range_end, range_start)}")
       elsif possible_year?(range_start, previous_token)
-        "#{TYPE_PRECEDENCE[:year]} #{four_digit_year_string(range_start)}-#{TYPE_PRECEDENCE[:numeric]} #{pad_all_digits(range_end)}"
+        [with_type_prefix(:year, four_digit_year_string(range_start)), with_type_prefix(:numeric, pad_all_digits(range_end))].join('-')
       else
-        "#{TYPE_PRECEDENCE[:numeric]} #{pad_all_digits(token)}"
+        with_type_prefix(:numeric, pad_all_digits(token))
       end
     end
 
