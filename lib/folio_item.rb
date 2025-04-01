@@ -295,6 +295,8 @@ class FolioItem
         CallNumbers::LcShelfkey.new(base_call_number.to_s, volume_info, serial:)
       when 'DEWEY'
         CallNumbers::DeweyShelfkey.new(base_call_number.to_s, volume_info, serial:)
+      when 'SUDOC'
+        CallNumbers::SudocShelfkey.new(base_call_number.to_s, volume_info, serial:)
       else
         CallNumbers::OtherShelfkey.new(
           base_call_number.to_s,
