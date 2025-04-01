@@ -41,7 +41,7 @@ module CallNumbers
     def normalize_remainder(remainder)
       return '' if remainder.empty?
 
-      tokens = remainder.scan(%r{[:.;/+]|[^:.;/+]+})
+      tokens = tokenize_remainder(remainder)
       normalized_tokens = []
 
       previous_token = nil
@@ -51,6 +51,10 @@ module CallNumbers
       end
 
       normalized_tokens.compact.join(' ')
+    end
+
+    def tokenize_remainder(remainder)
+      remainder.scan(%r{[:.;/+]|[^:.;/+]+})
     end
 
     def normalize_token(token, previous_token = nil)
