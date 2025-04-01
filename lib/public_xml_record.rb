@@ -121,8 +121,9 @@ class PublicXmlRecord
   end
 
   def collections
-    @collections ||= predicate_druids('isMemberOfCollection').map do |druid|
-      PurlRecord.new(druid, purl_url:)
+    @collections ||= predicate_druids('isMemberOfCollection').filter_map do |druid|
+      record = PurlRecord.new(druid, purl_url:)
+      record if record.released_to_searchworks?
     end
   end
 
