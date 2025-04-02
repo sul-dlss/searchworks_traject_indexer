@@ -3,17 +3,17 @@
 module CallNumbers
   class SudocShelfkey < ShelfkeyBase
     DELIMITER_PRECEDENCE = {
-      ':' => '10',
-      '.' => '11',
-      ';' => '12',
-      '/' => '14',
-      '+' => '15'
+      ':' => 'a',
+      '.' => 'b',
+      ';' => 'c',
+      '/' => 'd',
+      '+' => 'e'
     }.freeze
 
     TYPE_PRECEDENCE = {
-      alphabetic: '20',
-      year: '30',
-      numeric: '40'
+      alphabetic: 'q',
+      year: 'r',
+      numeric: 's'
     }.freeze
 
     def forward
@@ -44,19 +44,26 @@ module CallNumbers
       tokens = tokenize_remainder(remainder.downcase)
       previous_token = nil
 
-      tokens.filter_map do |token|
-        result = normalize_token(token, previous_token)
+      result = tokens.filter_map do |token|
+        normalized_token = normalize_token(token, previous_token)
         previous_token = token
-        result
+        normalized_token
       end.join(' ')
+
+      terminate_remainder(result)
     end
 
     def tokenize_remainder(remainder)
       remainder.scan(%r{[:.;/+\s]|[^:.;/+\s]+})
     end
 
+    # This assists reverse dealing with arbitrary length strings
+    def terminate_remainder(remainder)
+      "#{remainder} !"
+    end
+
     def with_type_prefix(type, value)
-      "#{TYPE_PRECEDENCE[type]} #{value}"
+      "#{TYPE_PRECEDENCE[type]}#{value}"
     end
 
     def normalize_token(token, previous_token = nil)
@@ -88,17 +95,17 @@ module CallNumbers
 
     def normalize_mixed_range(token, previous_token)
       range_start, range_end = token.split('-')
-      [normalize_token(range_start, previous_token), normalize_token(range_end, '-')].join('-')
+      [normalize_token(range_start, previous_token), normalize_token(range_end, '-')].join
     end
 
     def normalize_number_range(token, previous_token)
       range_start, range_end = token.split('-')
       if year_range?(range_start, range_end)
-        with_type_prefix(:year, "#{four_digit_year_string(range_start)}-#{four_digit_year_string(range_end, range_start)}")
+        with_type_prefix(:year, "#{four_digit_year_string(range_start)}*#{four_digit_year_string(range_end, range_start)}")
       elsif possible_year?(range_start, previous_token)
-        [with_type_prefix(:year, four_digit_year_string(range_start)), with_type_prefix(:numeric, pad_all_digits(range_end))].join('-')
+        [with_type_prefix(:year, four_digit_year_string(range_start)), with_type_prefix(:numeric, pad_all_digits(range_end))].join
       else
-        with_type_prefix(:numeric, pad_all_digits(token))
+        [with_type_prefix(:numeric, pad_all_digits(range_start)), with_type_prefix(:numeric, pad_all_digits(range_end))].join
       end
     end
 
