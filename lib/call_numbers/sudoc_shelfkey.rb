@@ -41,7 +41,7 @@ module CallNumbers
     def normalize_remainder(remainder)
       return '' if remainder.empty?
 
-      tokens = tokenize_remainder(remainder)
+      tokens = tokenize_remainder(remainder.downcase)
       previous_token = nil
 
       tokens.filter_map do |token|
@@ -52,7 +52,7 @@ module CallNumbers
     end
 
     def tokenize_remainder(remainder)
-      remainder.scan(%r{[:.;/+]|[^:.;/+]+})
+      remainder.scan(%r{[:.;/+\s]|[^:.;/+\s]+})
     end
 
     def with_type_prefix(type, value)
@@ -62,15 +62,16 @@ module CallNumbers
     def normalize_token(token, previous_token = nil)
       return nil if token =~ /^\s*$/
 
-      if DELIMITER_PRECEDENCE.key?(token)
+      case token
+      when ->(t) { DELIMITER_PRECEDENCE.key?(t) }
         DELIMITER_PRECEDENCE[token]
-      elsif token =~ /^[a-zA-Z\-]+$/
-        with_type_prefix(:alphabetic, token.downcase)
-      elsif token =~ /^\d+-\d+$/
+      when /^\d+-\d+$/
         normalize_number_range(token, previous_token)
-      elsif token =~ /^\d{3,4}$/
+      when /^\d+-[a-z]+$/, /^[a-z]+-\d+$/
+        normalize_mixed_range(token, previous_token)
+      when /^\d{3,4}$/
         normalize_potential_year(token, previous_token)
-      elsif token =~ /^\d+$/
+      when /^\d+$/
         with_type_prefix(:numeric, pad_all_digits(token))
       else
         with_type_prefix(:alphabetic, pad_all_digits(token))
@@ -83,6 +84,11 @@ module CallNumbers
       else
         with_type_prefix(:numeric, pad_all_digits(token))
       end
+    end
+
+    def normalize_mixed_range(token, previous_token)
+      range_start, range_end = token.split('-')
+      [normalize_token(range_start, previous_token), normalize_token(range_end, '-')].join('-')
     end
 
     def normalize_number_range(token, previous_token)
