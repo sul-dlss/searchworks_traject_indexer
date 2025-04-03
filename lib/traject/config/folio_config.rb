@@ -2131,7 +2131,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   grouped_items = items(record, context)
                   .reject(&:skipped?)
-                  .select { |item| item.call_number.to_s.present? && %w[LC DEWEY ALPHANUM].include?(item.call_number.type) }
+                  .select { |item| item.call_number.to_s.present? && %w[LC DEWEY ALPHANUM SUDOC].include?(item.call_number.type) }
                   .group_by { |item| item.call_number.base_call_number }
 
   browseable_items = grouped_items.map do |_base_call_number, items|

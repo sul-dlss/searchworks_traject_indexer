@@ -23,10 +23,6 @@ RSpec.describe CallNumbers::OtherShelfkey do
   end
 
   describe '#shelfkey_scheme' do
-    it 'is "sudoc" when "SUDOC" is passed' do
-      expect(described_class.new('ZDVD 1234', scheme: 'SUDOC').forward).to start_with 'sudoc'
-    end
-
     it 'is "other" for any other value or nil' do
       expect(described_class.new('ZDVD 1234', scheme: 'LITERALLY ANYTHING ELSE').forward).to start_with 'other'
       expect(described_class.new('ZDVD 1234').forward).to start_with 'other'

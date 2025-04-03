@@ -52,13 +52,13 @@ RSpec.describe 'Browse nearby' do
     end
   end
 
-  context 'when the item does not have a sortable call number (e.g. SUDOC type)' do
+  context 'when the item does not have a sortable call number (e.g. OTHER type)' do
     before do
       allow(folio_record).to receive(:index_items).and_return(index_items)
     end
 
     let(:index_items) do
-      [build(:sudoc_holding, call_number: 'I 19.76:98-600-B')]
+      [build(:other_holding)]
     end
 
     it { is_expected.to be_blank }
