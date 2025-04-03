@@ -272,10 +272,9 @@ module Traject
 
       onexx ||= Constants::MAX_CODE_POINT
 
-      titles = []
-      title_fields.split(':').each do |title_spec|
-        titles << Traject::MarcExtractor.cached(title_spec, alternate_script: false,
-                                                            separator: false).collect_matching_lines(record) do |field, spec, extractor|
+      titles = title_fields.split(':').map do |title_spec|
+        Traject::MarcExtractor.cached(title_spec, alternate_script: false,
+                                                  separator: false).collect_matching_lines(record) do |field, spec, extractor|
           non_filing = field.indicator2.to_i
           subfields = extractor.collect_subfields(field, spec).compact
           next if subfields.empty?
@@ -323,7 +322,7 @@ module Traject
       best_match ||= ("#{Regexp.last_match(1)}0" if value =~ /((?:20|19|18|17|16|15)[0-9])[-?]/)
 
       # is the date no more than 1 year in the future?
-      best_match.to_i.to_s if best_match.to_i >= 500 && best_match.to_i <= Time.now.year + 1
+      best_match.to_i.to_s if best_match.to_i.between?(500, Time.now.year + 1)
     end
 
     def clean_marc_008_date(year, u_replacement: '0')

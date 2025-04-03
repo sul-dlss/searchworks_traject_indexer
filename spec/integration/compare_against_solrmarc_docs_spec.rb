@@ -100,9 +100,7 @@ RSpec.describe 'comparing against a well-known location full of documents genera
       it 'maps the same general output' do
         skip unless pending_fields.any?
         pending
-        expect(result.select { |k, _v| pending_fields.include? k }).to include expected_doc.select { |k, _v|
-                                                                                 pending_fields.include? k
-                                                                               }
+        expect(result.slice(*pending_fields)).to include expected_doc.slice(*pending_fields)
         expect(false).to eq true # keep rspec happy if the above happens to pass
       end
 

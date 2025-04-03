@@ -47,11 +47,10 @@ module Folio
       # Break apart on spaces, after replacing commas with spaces
       ds = date_str.gsub(/[,:]/, ' ')
       ds_array = ds.split(/\s+/)
-      ds_tokens = []
       # For each portion of the string, check if a slash is present and create an array
       # e.g. "Dec/Jan 2016" would become [["Dec", "Jan"] ["2016"]]
-      ds_array.each do |d|
-        ds_tokens.push(d.split('/'))
+      ds_tokens = ds_array.map do |d|
+        d.split('/')
       end
 
       # Break apart combined dates into separate date strings

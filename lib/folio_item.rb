@@ -197,7 +197,7 @@ class FolioItem
       # call numbers are different... at least we tried)
       if @item&.dig('callNumber', 'callNumber') && @holding&.dig('callNumber')&.start_with?(@item&.dig('callNumber', 'callNumber'))
         base_call_number = @item&.dig('callNumber', 'callNumber')
-        volume_info = @holding&.dig('callNumber')&.delete_prefix(base_call_number)&.strip
+        volume_info = @holding&.dig('callNumber')&.delete_prefix(base_call_number)&.strip # rubocop:disable Style/SafeNavigationChainLength
       else
         base_call_number = @holding&.dig('callNumber')
         volume_info = nil

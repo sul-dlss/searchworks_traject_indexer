@@ -1477,7 +1477,6 @@ end
 to_field 'toc_struct' do |marc, accumulator|
   fields = []
   vern = []
-  unmatched_vern = []
   label = 'Contents'
 
   tag = '905' if marc['905'] && (marc['505'].nil? or (marc['505']['t'].nil? and marc['505']['r'].nil?))
@@ -1524,8 +1523,8 @@ to_field 'toc_struct' do |marc, accumulator|
   end
 
   unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
-  unmatched_vern_fields.each do |vern_field|
-    unmatched_vern << vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+  unmatched_vern = unmatched_vern_fields.map do |vern_field|
+    vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
   end
 
   new_vern = vern unless vern.empty?

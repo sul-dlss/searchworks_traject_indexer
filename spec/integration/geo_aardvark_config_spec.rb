@@ -603,7 +603,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
   context 'with a record with no geometry' do
     before do
-      allow(indexer).to receive(:logger).and_return(Logger.new('/dev/null')) # suppress logger output
+      allow(indexer).to receive(:logger).and_return(Logger.new(File::NULL)) # suppress logger output
       allow(Settings.sdr_events).to receive(:enabled).and_return(true)
       allow(SdrEvents).to receive_messages(
         report_indexing_skipped: true
