@@ -33,7 +33,7 @@ RSpec.describe Traject::KafkaPurlFetcherReader do
     end
 
     it 'passes the purl url through' do
-      expect(reader.each.select { |x| x.is_a? PurlRecord }.first.purl_url).to eq 'https://example.com'
+      expect(reader.each.find { |x| x.is_a? PurlRecord }.purl_url).to eq 'https://example.com'
     end
 
     it 'returns objects from the purl-fetcher api' do

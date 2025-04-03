@@ -134,10 +134,11 @@ class FolioRecord
     item_courses.uniq { |c| c[:course_id] }
   end
 
+  ELECTRONIC_LOCATION_FIELDS = %w[856 956].freeze
   def eresource?
     return false unless electronic_holdings.any?
 
-    (marc_record || []).any? { |field| %w[856 956].include?(field.tag) && field.codes.include?('u') }
+    (marc_record || []).any? { |field| ELECTRONIC_LOCATION_FIELDS.include?(field.tag) && field.codes.include?('u') }
   end
 
   def electronic_holdings

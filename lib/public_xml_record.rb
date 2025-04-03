@@ -71,10 +71,11 @@ class PublicXmlRecord
     @rights_xml ||= public_xml_doc.xpath('//rightsMetadata').to_s
   end
 
+  COLLECTION_TYPES = %w[collection set].freeze
   # @return true if the identityMetadata has <objectType>collection</objectType>, false otherwise
   def collection?
     object_type_nodes = public_xml_doc.xpath('//objectType')
-    object_type_nodes.find_index { |n| %w[collection set].include? n.text.downcase }
+    object_type_nodes.find_index { |n| COLLECTION_TYPES.include? n.text.downcase }
   end
 
   # value is used to tell SearchWorks UI app of specific display needs for objects

@@ -71,7 +71,7 @@ namespace :deploy do
               [Unit]
               PartOf=traject.target
               StopWhenUnneeded=yes
-              Wants=#{service[:count].times.map { |i| "traject-#{service[:key]}.#{i + 1}.service" }.join(' ')}
+              Wants=#{Array.new(service[:count]) { |i| "traject-#{service[:key]}.#{i + 1}.service" }.join(' ')}
             SYSTEMD
             upload! StringIO.new(str), "service_templates/traject-#{service[:key]}.target"
 

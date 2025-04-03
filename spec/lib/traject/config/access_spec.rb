@@ -10,10 +10,11 @@ RSpec.describe 'Access config' do
   let(:result) { indexer.map_record(record) }
   let(:record) { FolioRecord.new(folio_response, client) }
   let(:folio_response) do
+    empty_holdings = { 'holdingsStatements' => [], 'holdingsStatementsForIndexes' => [], 'holdingsStatementsForSupplements' => [] }
     {
       'source_record' => [marc_record.to_hash],
       'instance' => { 'hrid' => 'in0001', 'statisticalCodes' => [] }.merge(instance),
-      'holdings' => holdings.map { |h| { 'holdingsStatements' => [], 'holdingsStatementsForIndexes' => [], 'holdingsStatementsForSupplements' => [] }.merge(h) },
+      'holdings' => holdings.map { |h| empty_holdings.merge(h) },
       'items' => items,
       'pieces' => pieces
     }

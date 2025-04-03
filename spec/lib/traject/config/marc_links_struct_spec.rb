@@ -119,7 +119,7 @@ RSpec.describe 'marc_links_struct' do
     it 'should identify all the permutations of the Stanford Only string as Stanford Only resources' do
       expect(result_field).to be_present
       expect(result_field.all? { |x| x[:stanford_only] }).to be_truthy
-      expect(result_field.select { |x| x[:additional_text].present? }.length).to eq 1
+      expect(result_field.count { |x| x[:additional_text].present? }).to eq 1
     end
   end
 

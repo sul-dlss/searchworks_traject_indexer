@@ -61,7 +61,7 @@ module Traject
         # single square bracket characters if they are the start and/or end
         #   chars and there are no internal square brackets.
         str = str.sub(/\A\[?([^\[\]]+)\]?\Z/, '\1')
-        str = str.sub(/\A\[/, '') if str.index(']').nil? # no closing bracket
+        str = str.delete_prefix('[') if str.index(']').nil? # no closing bracket
         str = str.sub(/\]\Z/, '') if str.index('[').nil? # no opening bracket
 
         str
@@ -145,6 +145,7 @@ module Traject
       end
     end
 
+    POST_TEXT_SUBFIELDS = %w[e 4].freeze
     def linked_author_struct(record, tag)
       Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, _spec, _extractor|
         subfields = field.subfields.reject { |subfield| (Constants::EXCLUDE_FIELDS + ['7']).include?(subfield.code) }
@@ -156,8 +157,7 @@ module Traject
           post_text: subfields.reject do |subfield|
                        subfield.code == 'i'
                      end.select do |subfield|
-                       %w[e
-                          4].include?(subfield.code) || !linked?(tag, subfield)
+                       POST_TEXT_SUBFIELDS.include?(subfield.code) || !linked?(tag, subfield)
                      end.each do |subfield|
                        if subfield.code == '4'
                          subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value
@@ -326,10 +326,10 @@ module Traject
     end
 
     def clean_marc_008_date(year, u_replacement: '0')
-      return unless year =~ /(\d{4}|\d{3}[u-])/
+      return unless /(\d{4}|\d{3}[u-])/.match?(year)
 
       year = year.gsub(/[u-]$/, u_replacement)
-      return unless (500..(Time.now.year + 10)).include? year.to_i
+      return unless (500..(Time.now.year + 10)).cover? year.to_i
 
       year.to_i.to_s
     end
@@ -381,7 +381,7 @@ module Traject
       isbn13_pattern = /^(978|979)\d{9}[\dX].*/
       isbn13_any = /^\d{12}[\dX].*/
 
-      if value =~ isbn13_pattern
+      if value&.match?(isbn13_pattern)
         value[0, 13]
       elsif value =~ isbn10_pattern && value !~ isbn13_any
         value[0, 10]
@@ -400,7 +400,7 @@ module Traject
         /(?=(?:\s{2,}\d+\s+))/i # or even just a number with a little extra whitespace in front of it
       ]
       formatted_chapter_regexes.each do |regex|
-        chapters = value.split(regex).map { |w| w.strip unless w.strip.empty? }.compact
+        chapters = value.split(regex).filter_map { |w| w.strip unless w.strip.empty? }
         # if the split found a match and actually split the string, we are done
         return chapters if chapters.length > 1
       end

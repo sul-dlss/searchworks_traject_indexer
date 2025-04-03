@@ -64,8 +64,9 @@ module MarcLinks
       field.indicator2 == '2' || supplemental_resource_label?
     end
 
+    LOCATION_NOTE_SUBFIELDS = %w[z 3].freeze
     def stanford_only?
-      field.subfields.select { |f| %w[z 3].include?(f.code) }
+      field.subfields.select { |f| LOCATION_NOTE_SUBFIELDS.include?(f.code) }
            .map(&:value).any? { |v| STANFORD_AFFILIATED_REGEX.match?(v) }
     end
 
@@ -86,7 +87,7 @@ module MarcLinks
 
       @link_host ||= begin
         # Not sure why I need this, but it fails on certain URLs w/o it.  The link printed still has character in it
-        fixed_url = field['u'].gsub('^', '').strip
+        fixed_url = field['u'].delete('^').strip
         link = URI.parse(fixed_url)
 
         return link.host unless PROXY_URL_REGEX.match?(link.to_s) && link.to_s.include?('url=')
@@ -158,7 +159,7 @@ module MarcLinks
     end
 
     def supplemental_resource_label?
-      field.subfields.select { |f| %w[z 3].include?(f.code) }
+      field.subfields.select { |f| LOCATION_NOTE_SUBFIELDS.include?(f.code) }
            .map(&:value).any? { |v| SUPPLEMENTAL_LABEL_REGEX.match?(v) }
     end
 

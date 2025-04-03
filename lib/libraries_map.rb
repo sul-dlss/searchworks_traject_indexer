@@ -14,7 +14,7 @@ class LibrariesMap
     folio_name = library&.fetch('name')
 
     # We strip 'Library' from the name because it appears in a facet called 'Library'.. except Hoover
-    return folio_name if folio_name&.match?(/Hoover/)
+    return folio_name if folio_name&.include?('Hoover')
 
     folio_name&.sub(' Library', '')
   end
