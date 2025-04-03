@@ -1775,7 +1775,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a Book' do
+    it 'is a Loose-leaf' do
       expect(result[field]).to eq ['Loose-leaf']
     end
   end
@@ -1788,7 +1788,7 @@ RSpec.describe 'Format main config' do
       end
     end
 
-    it 'is a Book' do
+    it 'is a Loose-leaf' do
       expect(result[field]).to eq ['Loose-leaf']
     end
   end
