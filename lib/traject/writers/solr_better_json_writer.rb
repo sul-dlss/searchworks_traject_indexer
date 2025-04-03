@@ -44,12 +44,12 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
     begin
       resp = @http_client.post @solr_update_url, batch.generate_json, 'Content-type' => 'application/json'
-    rescue StandardError => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
+    rescue StandardError => e
     end
 
-    if exception || resp.status != 200
-      error_message = if exception
-                        Traject::Util.exception_to_log_message(exception)
+    if e || resp.status != 200
+      error_message = if e
+                        Traject::Util.exception_to_log_message(e)
                       else
                         "Solr response: #{resp.status}: #{resp.body}"
                       end
@@ -81,18 +81,18 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       resp = @http_client.post @solr_update_url, batch.generate_json, 'Content-type' => 'application/json'
       # Catch Timeouts and network errors as skipped records, but otherwise
       # allow unexpected errors to propagate up.
-    rescue *skippable_exceptions => exception # rubocop:disable Naming/RescuedExceptionsVariableName https://github.com/rubocop/rubocop/issues/11809
+    rescue *skippable_exceptions => e
       # no body, local variable exception set above will be used below
     end
 
-    if exception || resp.status != 200
-      msg = if exception
-              Traject::Util.exception_to_log_message(exception)
+    if e || resp.status != 200
+      msg = if e
+              Traject::Util.exception_to_log_message(e)
             else
               "Solr error response: #{resp.status}: #{resp.body}"
             end
       logger.error "Could not add record #{context.record_inspect}: #{msg}"
-      logger.debug("\t" + exception.backtrace.join("\n\t")) if exception
+      logger.debug("\t" + e.backtrace.join("\n\t")) if e
       logger.debug(context.source_record.to_s) if context.source_record
 
       @skipped_record_incrementer.increment

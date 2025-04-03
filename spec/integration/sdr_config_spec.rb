@@ -626,7 +626,7 @@ RSpec.describe 'SDR indexing' do
     context 'when indexing raised an error' do
       before do
         allow(Honeybadger).to receive(:notify)
-        allow(indexer).to receive(:logger).and_return(Logger.new('/dev/null')) # suppress logger output
+        allow(indexer).to receive(:logger).and_return(Logger.new(File::NULL)) # suppress logger output
         allow(record).to receive(:dor_content_type).and_raise('Error message')
       end
 
