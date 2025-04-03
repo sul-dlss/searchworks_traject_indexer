@@ -77,9 +77,9 @@ end
 # joining them, for parity with solrmarc.
 class Traject::MarcExtractor
   def collect_subfields(field, spec)
-    subfields = field.subfields.collect do |subfield|
+    subfields = field.subfields.filter_map do |subfield|
       subfield.value if spec.includes_subfield_code?(subfield.code)
-    end.compact
+    end
 
     return subfields if subfields.empty? # empty array, just return it.
 
@@ -185,29 +185,29 @@ to_field 'vern_title_related_search',
          )
 # Title Display Fields
 to_field 'title_245a_display', extract_marc('245a', first: true, alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { clean_facet_punctuation(it) }
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'vern_title_245a_display',
          extract_marc('245aa', first: true, alternate_script: :only) do |_record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'title_245c_display', extract_marc('245c', first: true, alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { clean_facet_punctuation(it) }
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'vern_title_245c_display',
          extract_marc('245cc', first: true, alternate_script: :only) do |_record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'title_display',
          extract_marc('245abdefghijklmnopqrstuvwxyz', first: true, alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { clean_facet_punctuation(it) }
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'vern_title_display',
          extract_marc('245abdefghijklmnopqrstuvwxyz', first: true, alternate_script: :only) do |_record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: false)
 to_field 'vern_title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :only)
@@ -246,11 +246,11 @@ to_field 'uniform_title_display_struct' do |record, accumulator|
   author = []
   unless record['730']
     auth_field = record['100'] || record['110'] || record['111']
-    author = auth_field.map do |sub_field|
+    author = auth_field.filter_map do |sub_field|
       next if (Constants::EXCLUDE_FIELDS + %w[4 e]).include?(sub_field.code)
 
       sub_field.value
-    end.compact if auth_field
+    end if auth_field
   end
 
   vern = get_marc_vernacular(record, uniform_title)
@@ -284,7 +284,7 @@ to_field 'series_search', extract_marc('440anpv:490av', alternate_script: false)
 
 to_field 'series_search',
          extract_marc("800#{A_X}:810#{A_X}:811#{A_X}:830#{A_X}", alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff))
+  accumulator.map! { trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(it) }
 end
 
 to_field 'vern_series_search',
@@ -390,24 +390,24 @@ to_field 'vern_author_8xx_search', extract_marc('800abcdegjqu:810abcdegnu:811acd
 # # Author Facet Fields
 to_field 'author_person_facet', extract_marc('100abcdq:700abcdq', alternate_script: false) do |_record, accumulator|
   accumulator.map! { |v| v.gsub(/([)-])[\\,;:]\.?$/, '\1') }
-  accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { clean_facet_punctuation(it) }
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'author_other_facet',
          extract_marc('110abcdn:111acdn:710abcdn:711acdn', alternate_script: false) do |_record, accumulator|
   accumulator.map! { |v| v.gsub(/(\))\.?$/, '\1') }
-  accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { clean_facet_punctuation(it) }
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 # # Author Display Fields
 to_field 'author_person_display',
          extract_marc('100abcdq', first: true, alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { clean_facet_punctuation(it) }
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'vern_author_person_display',
          extract_marc('100abcdq', first: true, alternate_script: :only) do |_record, accumulator|
-  accumulator.map!(&method(:trim_punctuation_custom))
+  accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'author_person_full_display', extract_marc("100#{ALPHABET}", first: true, alternate_script: false)
 to_field 'vern_author_person_full_display', extract_marc("100#{ALPHABET}", first: true, alternate_script: :only)
@@ -513,7 +513,7 @@ end.join(':'), alternate_script: :only)
 to_field 'topic_facet',
          extract_marc('600abcdq:600t:610ab:610t:630a:630t:650a', alternate_script: false) do |_record, accumulator|
   accumulator.map! { |v| trim_punctuation_custom(v, /([\p{L}\p{N}]{4}|[A-Za-z]{3}|\))\. *\Z/) }
-  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { clean_facet_punctuation(it) }
   accumulator.reject! { |v| v.start_with?('nomesh') }
 end
 
@@ -533,7 +533,7 @@ to_field 'geographic_facet' do |record, accumulator|
 end
 
 to_field 'era_facet', extract_marc('650y:651y:660y:661y', alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { clean_facet_punctuation(it) }
   accumulator.map! { |v| trim_punctuation_custom(v, /([A-Za-z0-9]{2})\. *\Z/) }
 end
 
@@ -601,16 +601,16 @@ to_field 'pub_date' do |record, accumulator|
          end
 
   # find a valid year in the 264c with ind2 = 1
-  year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).map do |field, spec, extractor|
+  year ||= Traject::MarcExtractor.new('264c').to_enum(:collect_matching_lines, record).filter_map do |field, spec, extractor|
     next unless field.indicator2 == '1'
 
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
-  end.compact.first
+  end.first
 
   year ||= Traject::MarcExtractor.new('260c:264c').to_enum(:collect_matching_lines,
-                                                           record).map do |field, spec, extractor|
+                                                           record).filter_map do |field, spec, extractor|
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
-  end.compact.first
+  end.first
 
   accumulator << year.to_s if year
 end
@@ -647,16 +647,16 @@ to_field 'pub_date_sort' do |record, accumulator|
 
   # find a valid year in the 264c with ind2 = 1
   year ||= Traject::MarcExtractor.new('264c', alternate_script: false).to_enum(:collect_matching_lines,
-                                                                               record).map do |field, spec, extractor|
+                                                                               record).filter_map do |field, spec, extractor|
     next unless field.indicator2 == '1'
 
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
-  end.compact.first
+  end.first
 
   year ||= Traject::MarcExtractor.new('260c:264c', alternate_script: false).to_enum(:collect_matching_lines,
-                                                                                    record).map do |field, spec, extractor|
+                                                                                    record).filter_map do |field, spec, extractor|
     extractor.collect_subfields(field, spec).map { |value| clean_date_string(value) }.first
-  end.compact.first
+  end.first
 
   # hyphens sort before 0, so the lexical sorting will be correct. I think.
   year ||= if f008_bytes7to10 =~ (/\d\d[u-][u-]/) && (record['008'].value[7..8] <= Time.now.year.to_s[0..1])
@@ -765,10 +765,10 @@ to_field 'other_year_isi' do |record, accumulator|
   Traject::MarcExtractor.new('008').collect_matching_lines(record) do |field, _spec, _extractor|
     unless %w[c d e i k m p q r s t u].include? field.value[6]
       year = field.value[7..10]
-      next unless year =~ /(\d{4}|\d{3}[u-])/
+      next unless /(\d{4}|\d{3}[u-])/.match?(year)
 
       year.gsub!(/[u-]$/, '0')
-      next unless (500..(Time.now.year + 10)).include? year.to_i
+      next unless (500..(Time.now.year + 10)).cover? year.to_i
 
       accumulator << year.to_i.to_s
     end
@@ -817,7 +817,7 @@ end
 to_field 'date_cataloged' do |record, accumulator|
   timestamp = record.instance['catalogedDate']
   begin
-    accumulator << Time.parse(timestamp).utc.at_beginning_of_day.iso8601 if timestamp =~ /^\d{4}-\d{2}-\d{2}/
+    accumulator << Time.parse(timestamp).utc.at_beginning_of_day.iso8601 if /^\d{4}-\d{2}-\d{2}/.match?(timestamp)
   rescue ArgumentError
     nil
   end
@@ -1098,7 +1098,7 @@ end
 to_field 'format_main_ssim' do |record, accumulator, context|
   if items(record, context).any? { |item| item.library == 'LANE' }
     Traject::MarcExtractor.new('245h').collect_matching_lines(record) do |field, spec, extractor|
-      accumulator << 'Book' if extractor.collect_subfields(field, spec).join(' ') =~ /manuscript/
+      accumulator << 'Book' if extractor.collect_subfields(field, spec).join(' ').include?('manuscript')
     end
   end
 end
@@ -1114,7 +1114,7 @@ end
 
 to_field 'format_main_ssim' do |record, accumulator|
   Traject::MarcExtractor.new('590a', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    if extractor.collect_subfields(field, spec).any? { |x| x =~ /MARCit brief record/ }
+    if extractor.collect_subfields(field, spec).any? { |x| x.include?('MARCit brief record') }
       accumulator << 'Journal/Periodical'
     end
   end
@@ -1191,11 +1191,11 @@ to_field 'format_physical_ssim' do |record, accumulator, context|
   items(record, context).each do |item|
     call_number = item.call_number.to_s
 
-    accumulator << 'Blu-ray' if call_number =~ /BLU-RAY/
-    accumulator << 'Videocassette (VHS)' if call_number =~ Regexp.union(/ZVC/, /ARTVC/, /MVC/)
-    accumulator << 'DVD' if call_number =~ Regexp.union(/ZDVD/, /ARTDVD/, /MDVD/, /ADVD/)
-    accumulator << 'Videocassette' if call_number =~ /AVC/
-    accumulator << 'Laser disc' if call_number =~ Regexp.union(/ZVD/, /MVD/)
+    accumulator << 'Blu-ray' if call_number.include?('BLU-RAY')
+    accumulator << 'Videocassette (VHS)' if call_number&.match?(Regexp.union(/ZVC/, /ARTVC/, /MVC/))
+    accumulator << 'DVD' if call_number&.match?(Regexp.union(/ZDVD/, /ARTDVD/, /MDVD/, /ADVD/))
+    accumulator << 'Videocassette' if call_number.include?('AVC')
+    accumulator << 'Laser disc' if call_number&.match?(Regexp.union(/ZVD/, /MVD/))
   end
 end
 
@@ -1205,9 +1205,9 @@ to_field 'format_physical_ssim', extract_marc('007') do |_record, accumulator, c
     when 'g'
       'Slide' if value[1] == 's'
     when 'h'
-      if value[1] =~ /[bcdhj]/
+      if /[bcdhj]/.match?(value[1])
         'Microfilm'
-      elsif value[1] =~ /[efg]/
+      elsif /[efg]/.match?(value[1])
         'Microfiche'
       end
     when 'k'
@@ -1264,11 +1264,11 @@ to_field 'format_physical_ssim', extract_marc('538a', alternate_script: false) d
   accumulator.replace([])
 
   video_formats.each do |value|
-    accumulator << 'Blu-ray' if value =~ Regexp.union(/Bluray/, /Blu-ray/, /Blu ray/)
-    accumulator << 'Videocassette (VHS)' if value =~ Regexp.union(/VHS/)
-    accumulator << 'DVD' if value =~ Regexp.union(/DVD/)
-    accumulator << 'Laser disc' if value =~ Regexp.union(/CAV/, /CLV/)
-    accumulator << 'Video CD' if value =~ Regexp.union(/VCD/, /Video CD/, /VideoCD/)
+    accumulator << 'Blu-ray' if value&.match?(Regexp.union(/Bluray/, /Blu-ray/, /Blu ray/))
+    accumulator << 'Videocassette (VHS)' if value&.match?(Regexp.union(/VHS/))
+    accumulator << 'DVD' if value&.match?(Regexp.union(/DVD/))
+    accumulator << 'Laser disc' if value&.match?(Regexp.union(/CAV/, /CLV/))
+    accumulator << 'Video CD' if value&.match?(Regexp.union(/VCD/, /Video CD/, /VideoCD/))
   end
 end
 
@@ -1335,11 +1335,11 @@ to_field 'characteristics_ssim' do |marc, accumulator|
   }.each do |tag, label|
     next unless marc[tag]
 
-    characteristics_fields = String.new
+    characteristics_fields = +''
     marc.find_all { |f| tag == f.tag }.each do |field|
-      subfields = field.map do |subfield|
-        subfield.value if ('a'..'z').include?(subfield.code) && !Constants::EXCLUDE_FIELDS.include?(subfield.code)
-      end.compact.join('; ')
+      subfields = field.filter_map do |subfield|
+        subfield.value if ('a'..'z').cover?(subfield.code) && !Constants::EXCLUDE_FIELDS.include?(subfield.code)
+      end.join('; ')
       characteristics_fields << "#{subfields}." unless subfields.empty?
     end
 
@@ -1351,11 +1351,11 @@ to_field 'format_physical_ssim', extract_marc('300a', alternate_script: false) d
   values = accumulator.dup.join("\n")
   accumulator.replace([])
 
-  accumulator << 'Microfiche' if values =~ /microfiche/i
-  accumulator << 'Microfilm' if values =~ /microfilm/i
-  accumulator << 'Photo' if values =~ /photograph/i
-  accumulator << 'Remote-sensing image' if values =~ Regexp.union(/remote-sensing image/i, /remote sensing image/i)
-  accumulator << 'Slide' if values =~ /slide/i
+  accumulator << 'Microfiche' if /microfiche/i.match?(values)
+  accumulator << 'Microfilm' if /microfilm/i.match?(values)
+  accumulator << 'Photo' if /photograph/i.match?(values)
+  accumulator << 'Remote-sensing image' if values&.match?(Regexp.union(/remote-sensing image/i, /remote sensing image/i))
+  accumulator << 'Slide' if /slide/i.match?(values)
 end
 
 # look for thesis by existence of 502 field
@@ -1374,7 +1374,7 @@ to_field 'genre_ssim', extract_marc('655av', alternate_script: false) do |_recor
     v
   end
 
-  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { clean_facet_punctuation(it) }
 end
 
 to_field 'genre_ssim',
@@ -1390,7 +1390,7 @@ to_field 'genre_ssim',
     v
   end
 
-  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { clean_facet_punctuation(it) }
 end
 
 #  look for conference proceedings in 6xx sub x or v
@@ -1431,12 +1431,12 @@ end
 # **/
 to_field 'genre_ssim' do |record, accumulator|
   if record['008'] && record['008'].value.length >= 28
-    if (%w[a t].include?(record.leader[6])) && record['008'].value[24..27] =~ /t/
+    if (%w[a t].include?(record.leader[6])) && record['008'].value[24..27].include?('t')
       accumulator << 'Technical report'
     end
   elsif record['027'] || record['088']
     accumulator << 'Technical report'
-  elsif record['006'] && (%w[a t].include?(record['006'].value[0])) && record['006'].value[7..10] =~ /t/
+  elsif record['006'] && (%w[a t].include?(record['006'].value[0])) && record['006'].value[7..10].include?('t')
     accumulator << 'Technical report'
   end
 end
@@ -1488,7 +1488,7 @@ to_field 'toc_struct' do |marc, accumulator|
       buffer = []
       field.each do |sub_field|
         if sub_field.code == 'a'
-          data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
+          data << buffer.filter_map { |w| w.strip unless w.strip.empty? }.join(' ') if buffer.any?
           buffer = []
           chapters = split_toc_chapters(sub_field.value)
           if chapters.length > 1
@@ -1497,14 +1497,14 @@ to_field 'toc_struct' do |marc, accumulator|
             data.concat([sub_field.value])
           end
         elsif sub_field.code == '1' && !Constants::SOURCES[sub_field.value.strip].nil?
-          data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') if buffer.any?
+          data << buffer.filter_map { |w| w.strip unless w.strip.empty? }.join(' ') if buffer.any?
           buffer = []
           data << Constants::SOURCES[sub_field.value.strip]
         elsif !(Constants::EXCLUDE_FIELDS + ['x']).include?(sub_field.code)
           # we could probably just do /\s--\s/ but this works so we'll stick w/ it.
-          if sub_field.value =~ /[^\S]--\s*$/
+          if /[^\S]--\s*$/.match?(sub_field.value)
             buffer << sub_field.value.sub(/[^\S]--\s*$/, '')
-            data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ')
+            data << buffer.filter_map { |w| w.strip unless w.strip.empty? }.join(' ')
             buffer = []
           else
             buffer << sub_field.value
@@ -1514,17 +1514,17 @@ to_field 'toc_struct' do |marc, accumulator|
 
       label = 'Partial contents' if %w[1 2].include?(field.indicator1)
 
-      data << buffer.map { |w| w.strip unless w.strip.empty? }.compact.join(' ') unless buffer.empty?
+      data << buffer.filter_map { |w| w.strip unless w.strip.empty? }.join(' ') unless buffer.empty?
       fields << data
 
       vernacular = get_marc_vernacular(marc, field)
-      vern << split_toc_chapters(vernacular).map { |w| w.strip unless w.strip.empty? }.compact unless vernacular.nil?
+      vern << split_toc_chapters(vernacular).filter_map { |w| w.strip unless w.strip.empty? } unless vernacular.nil?
     end
   end
 
   unmatched_vern_fields = get_unmatched_vernacular(marc, '505')
   unmatched_vern = unmatched_vern_fields.map do |vern_field|
-    vern_field.split(/[^\S]--[^\S]/).map { |w| w.strip unless w.strip.empty? }.compact
+    vern_field.split(/[^\S]--[^\S]/).filter_map { |w| w.strip unless w.strip.empty? }
   end
 
   new_vern = vern unless vern.empty?
@@ -1611,7 +1611,7 @@ to_field 'isbn_search',
          extract_marc(
            '020a:020z:770z:771z:772z:773z:774z:775z:776z:777z:778z:779z:780z:781z:782z:783z:784z:785z:786z:787z:788z:789z', alternate_script: false
          ) do |_record, accumulator|
-  accumulator.map!(&method(:extract_isbn))
+  accumulator.map! { extract_isbn(it) }
 end
 
 # # Added fields for searching based upon list from Kay Teel in JIRA ticket INDEX-142
@@ -1625,14 +1625,14 @@ to_field 'issn_search',
 end
 
 to_field 'isbn_display', extract_marc('020a', alternate_script: false) do |_record, accumulator|
-  accumulator.map!(&method(:extract_isbn))
+  accumulator.map! { extract_isbn(it) }
 end
 
 to_field 'isbn_display' do |record, accumulator, context|
   next unless context.output_hash['isbn_display'].nil?
 
   marc020z = Traject::MarcExtractor.new('020z', alternate_script: false).extract(record)
-  accumulator.concat marc020z.map(&method(:extract_isbn))
+  accumulator.concat marc020z.map { extract_isbn(it) }
 end
 
 to_field 'issn_display', extract_marc('022a', alternate_script: false) do |_record, accumulator|
@@ -1724,7 +1724,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless cn =~ FolioItem::CallNumber::VALID_LC_REGEX
+    next unless FolioItem::CallNumber::VALID_LC_REGEX.match?(cn)
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1748,7 +1748,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless cn =~ FolioItem::CallNumber::VALID_LC_REGEX
+    next unless FolioItem::CallNumber::VALID_LC_REGEX.match?(cn)
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1865,7 +1865,7 @@ end
 to_field 'stanford_work_facet_hsim' do |record, accumulator|
   Traject::MarcExtractor.cached('502').collect_matching_lines(record) do |field, spec, extractor|
     str = extractor.collect_subfields(field, spec).join(' ').downcase
-    if str =~ /(.*)[Ss]tanford(.*)/
+    if /(.*)[Ss]tanford(.*)/.match?(str)
       degree = case str
                when /^thesis\s?.?b\.?\s?a\.?\s?(.*)/
                  'Thesis/Dissertation|Bachelor\'s|Bachelor of Arts (BA)'
@@ -1927,7 +1927,7 @@ to_field 'stanford_dept_sim' do |record, accumulator, context|
     Traject::MarcExtractor.cached('710ab').collect_matching_lines(record) do |field, _spec, _extractor|
       sub_a ||= field['a']
       sub_b ||= field['b']
-      if sub_a =~ /stanford/i
+      if /stanford/i.match?(sub_a)
         if sub_b.nil? # subfield b does not exist, subfield a is Stanford
           accumulator << sub_a
         else # subfield b exists
@@ -1942,8 +1942,8 @@ to_field 'stanford_dept_sim' do |record, accumulator, context|
     end
   end
 
-  accumulator.map!(&method(:trim_punctuation_custom))
-  accumulator.map!(&method(:clean_facet_punctuation))
+  accumulator.map! { trim_punctuation_custom(it) }
+  accumulator.map! { clean_facet_punctuation(it) }
   accumulator.replace(accumulator.map do |value|
     value.gsub('Dept.', 'Department')
       .gsub(/([\p{L}\p{N}]{4}|\.*?[\s)]|[.{2,}]|[LAE][arn][wtg])\.$/, '\1')
@@ -2061,7 +2061,7 @@ end
 
 to_field 'building_facet' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, _spec, _extractor|
-    accumulator << 'Stanford Digital Repository' if field['x'] =~ /SDR-PURL/ || field['u'] =~ /purl\.stanford\.edu/
+    accumulator << 'Stanford Digital Repository' if field['x']&.include?('SDR-PURL') || field['u']&.include?('purl.stanford.edu')
   end
 end
 
@@ -2119,6 +2119,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
+CALL_TYPE = %w[LC DEWEY ALPHANUM].freeze
 # Each (browseable) base call number is represented by a single browse nearby entry; we choose
 # the representative item by the following rules:
 # 1. If there's only one item with the base call number, then we use that item
@@ -2130,7 +2131,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   grouped_items = items(record, context)
                   .reject(&:skipped?)
-                  .select { |item| item.call_number.to_s.present? && %w[LC DEWEY ALPHANUM].include?(item.call_number.type) }
+                  .select { |item| item.call_number.to_s.present? && CALL_TYPE.include?(item.call_number.type) }
                   .group_by { |item| item.call_number.base_call_number }
 
   browseable_items = grouped_items.map do |_base_call_number, items|
@@ -2164,13 +2165,13 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   # weren't the right type (e.g. SUDOC)
   next if items(record, context)
           .reject(&:skipped?)
-          .any? { |item| item.call_number.to_s.present? && !%w[LC DEWEY ALPHANUM].include?(item.call_number.type) }
+          .any? { |item| item.call_number.to_s.present? && !CALL_TYPE.include?(item.call_number.type) }
 
   callnumber = begin
     holding = record.electronic_holdings.first
     value = holding&.dig('callNumber')
     type = FolioItem.call_number_type_code(holding&.dig('callNumberType', 'name'))
-    FolioItem::CallNumber.new(value, type) if value.present? && %w[LC DEWEY ALPHANUM].include?(type&.upcase)
+    FolioItem::CallNumber.new(value, type) if value.present? && CALL_TYPE.include?(type&.upcase)
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
@@ -2179,7 +2180,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
     cn if cn.valid_lc?
   end.first
 
-  next unless callnumber.present? && %w[LC DEWEY ALPHANUM].include?(callnumber.type.upcase)
+  next unless callnumber.present? && CALL_TYPE.include?(callnumber.type.upcase)
 
   accumulator << {
     lopped_callnumber: callnumber.base_call_number,
@@ -2191,7 +2192,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
 end
 
 to_field 'shelfkey' do |_record, accumulator, context|
-  accumulator.concat context.output_hash['browse_nearby_struct']&.map { |v| v[:shelfkey] }&.compact || []
+  accumulator.concat context.output_hash['browse_nearby_struct']&.filter_map { |v| v[:shelfkey] } || []
 end
 
 # given a shelfkey (a lexicaly sortable call number), return the reverse
@@ -2201,7 +2202,7 @@ end
 # return the reverse String value, mapping A --> 9, B --> 8, ...
 #   9 --> A and also non-alphanum to sort properly (before or after alphanum)
 to_field 'reverse_shelfkey' do |_record, accumulator, context|
-  accumulator.concat context.output_hash['browse_nearby_struct']&.map { |v| v[:reverse_shelfkey] }&.compact || []
+  accumulator.concat context.output_hash['browse_nearby_struct']&.filter_map { |v| v[:reverse_shelfkey] } || []
 end
 
 ##
@@ -2219,7 +2220,7 @@ end
 to_field 'bookplates_display' do |record, accumulator|
   Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, _spec, _extractor|
     file = field['c']
-    next if file =~ /no content metadata/i
+    next if /no content metadata/i.match?(file)
 
     fund_name = field['f']
     druid = field['b']&.split(':') || []
@@ -2230,7 +2231,7 @@ end
 to_field 'fund_facet' do |record, accumulator|
   Traject::MarcExtractor.new('979').collect_matching_lines(record) do |field, _spec, _extractor|
     file = field['c']
-    next if file =~ /no content metadata/i
+    next if /no content metadata/i.match?(file)
 
     druid = field['b']&.split(':') || []
     accumulator << field['f']
@@ -2241,7 +2242,7 @@ end
 # # Digitized Items Fields
 to_field 'managed_purl_urls' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
-    accumulator.concat extractor.collect_subfields(field, spec) if field['x'] =~ /SDR-PURL/
+    accumulator.concat extractor.collect_subfields(field, spec) if field['x']&.include?('SDR-PURL')
   end
 end
 
@@ -2282,7 +2283,7 @@ to_field 'collection_struct' do |record, accumulator|
     source, item_type, *other_data = extractor.collect_subfields(field, spec)
     next unless source == 'SDR-PURL' && item_type == 'item'
 
-    data = other_data.select { |v| v =~ /:/ }.to_h { |v| v.split(':', 2) }
+    data = other_data.select { |v| v.include?(':') }.to_h { |v| v.split(':', 2) }
 
     next unless data['collection']
 
@@ -2415,11 +2416,11 @@ to_field 'crez_instructor_search' do |record, _accumulator, context|
 end
 
 to_field 'crez_course_name_search' do |record, _accumulator, context|
-  context.output_hash['crez_course_name_search'] = record.courses.map { |course| course[:course_name] }.compact.sort.uniq
+  context.output_hash['crez_course_name_search'] = record.courses.filter_map { |course| course[:course_name] }.sort.uniq
 end
 
 to_field 'crez_course_id_search' do |record, _accumulator, context|
-  context.output_hash['crez_course_id_search'] = record.courses.map { |course| course[:course_id] }.compact.sort.uniq
+  context.output_hash['crez_course_id_search'] = record.courses.filter_map { |course| course[:course_id] }.sort.uniq
 end
 
 # This allows SW to match the folio coursereserves data with the Solr record

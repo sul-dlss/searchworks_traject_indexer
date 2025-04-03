@@ -15,7 +15,7 @@ FactoryBot.define do
           'barcode' => barcode,
           'notes' => notes
         }.tap do |json|
-          json.merge!('callNumber' => { 'callNumber' => call_number }) if call_number
+          json['callNumber'] = { 'callNumber' => call_number } if call_number
           json.merge!('enumeration' => enumeration) if enumeration
         end
       end

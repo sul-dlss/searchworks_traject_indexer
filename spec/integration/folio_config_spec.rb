@@ -315,7 +315,7 @@ RSpec.describe 'FOLIO indexing' do
           'holdings' => holdings }
       end
 
-      it { expect(result['item_display_struct'].find { |h| h.match?(/INTERNET/) }).to be_nil }
+      it { expect(result['item_display_struct'].find { |h| h.include?('INTERNET') }).to be_nil }
     end
   end
 
@@ -477,7 +477,7 @@ RSpec.describe 'FOLIO indexing' do
         allow(client).to receive(:pieces).and_return([])
       end
 
-      it { expect(result['item_display_struct'].find { |h| h.match?(/Checked out/) }).to be_present }
+      it { expect(result['item_display_struct'].find { |h| h.include?('Checked out') }).to be_present }
 
       it 'includes the item UUID in the item_display_struct field' do
         expect(result['item_display_struct'].map { |x| JSON.parse(x) }).to match_array([
@@ -612,7 +612,7 @@ RSpec.describe 'FOLIO indexing' do
         allow(client).to receive(:pieces).and_return([])
       end
 
-      it { expect(result['item_display_struct'].find { |h| h.match?(/In transit/) }).to be_present }
+      it { expect(result['item_display_struct'].find { |h| h.include?('In transit') }).to be_present }
     end
 
     context 'item is awaiting pickup' do

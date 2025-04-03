@@ -54,7 +54,7 @@ module CallNumbers
           char = I18n.transliterate(char).downcase
           if CHAR_MAP[char]
             CHAR_MAP[char]
-          elsif char =~ /\w/
+          elsif /\w/.match?(char)
             # if it's not a character in our map, it's probably a non-latin, non-digit
             # which ordinarily sorts after 0-9, A-Z, so sort it first.
             '0'

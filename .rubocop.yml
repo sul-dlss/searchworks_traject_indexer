@@ -1,5 +1,8 @@
 inherit_from: .rubocop_todo.yml
 
+plugins:
+  - rubocop-performance
+
 # Query: .
 # ContextLines: 1
 
@@ -290,4 +293,44 @@ Style/SafeNavigationChainLength: # new in 1.68
 Style/SendWithLiteralMethodName: # new in 1.64
   Enabled: true
 Style/SuperArguments: # new in 1.64
+  Enabled: true
+Performance/AncestorsInclude: # new in 1.7
+  Enabled: true
+Performance/BigDecimalWithNumericArgument: # new in 1.7
+  Enabled: true
+Performance/CollectionLiteralInLoop: # new in 1.8
+  Enabled: true
+Performance/ConcurrentMonotonicTime: # new in 1.12
+  Enabled: true
+Performance/ConstantRegexp: # new in 1.9
+  Enabled: true
+Performance/MapCompact: # new in 1.11
+  Enabled: true
+Performance/MapMethodChain: # new in 1.19
+  Enabled: true
+Performance/MethodObjectAsBlock: # new in 1.9
+  Enabled: true
+Performance/RedundantEqualityComparisonBlock: # new in 1.10
+  Enabled: true
+Performance/RedundantSortBlock: # new in 1.7
+  Enabled: true
+Performance/RedundantSplitRegexpArgument: # new in 1.10
+  Enabled: true
+Performance/RedundantStringChars: # new in 1.7
+  Enabled: true
+Performance/ReverseFirst: # new in 1.7
+  Enabled: true
+Performance/SortReverse: # new in 1.7
+  Enabled: true
+Performance/Squeeze: # new in 1.7
+  Enabled: true
+Performance/StringBytesize: # new in 1.23
+  Enabled: true
+Performance/StringIdentifierArgument: # new in 1.13
+  Enabled: true
+Performance/StringInclude: # new in 1.7
+  Enabled: true
+Performance/Sum: # new in 1.8
+  Enabled: true
+Performance/ZipWithoutBlock: # new in 1.24
   Enabled: true

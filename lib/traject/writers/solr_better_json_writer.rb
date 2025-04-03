@@ -16,7 +16,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
   def initialize(*args)
     super
 
-    @debouncer = Debouncer.new(@settings['solr_better_json_writer.debounce_timeout'] || 60, &method(:drain_queue))
+    @debouncer = Debouncer.new(@settings['solr_better_json_writer.debounce_timeout'] || 60) { drain_queue }
     @retry_count = 0
   end
 
@@ -132,7 +132,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     # and data is either the doc id or the full doc hash. Druid is empty for
     # non-SDR content.
     def actions
-      @actions ||= @contexts.map do |context|
+      @actions ||= @contexts.filter_map do |context|
         record = context.source_record
         druid = record&.druid if record.respond_to?(:druid)
 
@@ -142,7 +142,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
         else
           [:add, druid, context.output_hash]
         end
-      end.compact
+      end
     end
 
     # Make a JSON string for sending to solr /update API

@@ -186,7 +186,7 @@ to_field 'dct_identifier_sm', cocina_descriptive('identifier'), extract_values, 
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
 # - currently anything with "(Raster Image)" in the title is known to be georeferenced
-to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << context.output_hash['dct_title_s'].first.match?(/\(Raster Image\)/) }
+to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << context.output_hash['dct_title_s'].first.include?('(Raster Image)') }
 
 # https://opengeometadata.org/ogm-aardvark/#resource-class
 # - we use a regex-matching translation map to find "map" or "dataset" across various fields
