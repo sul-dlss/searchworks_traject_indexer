@@ -37,6 +37,7 @@ module MarcLinks
         link_title:,
         additional_text:,
         material_type: field['3'],
+        note: field['z'],
         href: field['u'],
         sort: purl_info['sort'],
         casalini: link_is_casalini?,
