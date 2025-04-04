@@ -37,12 +37,12 @@ module MarcLinks
         link_title:,
         additional_text:,
         material_type: field['3'],
+        note: field['z'],
         href: field['u'],
         sort: purl_info['sort'],
         casalini: link_is_casalini?,
 
         fulltext: link_is_fulltext?,
-        finding_aid: link_is_finding_aid?,
         managed_purl: link_is_managed_purl?,
         file_id: purl_info['file'],
         druid:,
@@ -148,10 +148,6 @@ module MarcLinks
       @purl_info ||= field.subfields.select do |subfield|
                        subfield.code == 'x'
                      end.map { |subfield| subfield.value.split(':', 2).map(&:strip) }.select { |x| x.length == 2 }.to_h
-    end
-
-    def link_is_finding_aid?
-      "#{field['3']} #{field['z']}".downcase.include?('finding aid')
     end
 
     def stanford_law_only?
