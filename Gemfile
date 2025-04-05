@@ -29,7 +29,7 @@ gem 'retriable'
 gem 'ruby-kafka'
 gem 'stanford-mods', '~> 3.0'
 gem 'statsd-ruby'
-gem 'whenever'
+gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 gem 'zeitwerk'
 
 group :deployment do
