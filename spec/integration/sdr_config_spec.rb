@@ -11,9 +11,17 @@ RSpec.describe 'SDR indexing' do
     end
   end
   let(:record) { PurlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
+  let(:meta_json_body) do
+    { '$schemaVersion': 1, sitemap: false, searchworks: searchworks, earthworks: false }
+  end
+  let(:searchworks) { true }
 
   def stub_purl_request(druid, body)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
+  end
+
+  def stub_meta_json_request(druid)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: meta_json_body.to_json)
   end
 
   before do
@@ -25,6 +33,7 @@ RSpec.describe 'SDR indexing' do
 
     before do
       stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
+      stub_meta_json_request(druid)
     end
 
     it 'maps the data the same way as it does currently' do
@@ -39,6 +48,7 @@ RSpec.describe 'SDR indexing' do
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_meta_json_request(collection_druid)
     end
 
     it 'maps the data the same way as it does currently' do
@@ -90,6 +100,11 @@ RSpec.describe 'SDR indexing' do
         'set', 'set_with_title'
       )
     end
+
+    context 'not released to searchworks' do
+      let(:searchworks) { false }
+      it { expect(result['collection_with_title']).to be nil }
+    end
   end
 
   context 'with vv853br8653' do
@@ -99,6 +114,7 @@ RSpec.describe 'SDR indexing' do
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_meta_json_request(collection_druid)
     end
 
     it 'maps schema.org data for geo content' do
@@ -163,6 +179,7 @@ RSpec.describe 'SDR indexing' do
     before do
       stub_purl_request(druid, data)
       stub_purl_request(collection_druid, collection_data)
+      stub_meta_json_request(collection_druid)
     end
 
     context 'with an honors thesis' do
@@ -549,6 +566,7 @@ RSpec.describe 'SDR indexing' do
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_meta_json_request(collection_druid)
     end
 
     it 'maps the data' do
@@ -568,6 +586,7 @@ RSpec.describe 'SDR indexing' do
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_meta_json_request(collection_druid)
     end
 
     it 'turns mods author data into a structure' do
@@ -594,6 +613,7 @@ RSpec.describe 'SDR indexing' do
     before do
       stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_meta_json_request(collection_druid)
       allow(Settings.sdr_events).to receive(:enabled).and_return(true)
       allow(SdrEvents).to receive_messages(
         report_indexing_success: true,
