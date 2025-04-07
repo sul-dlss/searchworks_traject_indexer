@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Utils do
-  xdescribe '.encoding_cleanup' do
+  describe '.encoding_cleanup' do
     it 'encodes cyrilic correctly' do
       expect(described_class.encoding_cleanup('Strategii︠a︡ planirovanii︠a︡ izbiratelʹnoĭ kampanii')).to eq('Strategii͡a planirovanii͡a izbiratelʹnoĭ kampanii')
     end
