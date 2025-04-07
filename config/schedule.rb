@@ -13,7 +13,7 @@ every '*/5 * * * *', roles: [:prod] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres.sh', traject_env: 'folio_prod'
 end
 
-every '4 3 * * 6', roles: [:stage] do
+every '4 3 * * *', roles: [:stage] do
   honeybadger_wrapped_ruby_script 'load_folio_postgres_full.sh', traject_env: 'folio_test'
 end
 
