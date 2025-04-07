@@ -2289,6 +2289,7 @@ to_field 'collection_struct' do |record, accumulator|
 
     druid, id, title = data['collection'].split(':')
 
+    meta_json = PublicMetaJsonRecord.fetch(druid).public_meta_json_doc
     accumulator << {
       source:,
       item_type:,
@@ -2296,7 +2297,7 @@ to_field 'collection_struct' do |record, accumulator|
       druid:,
       id:,
       title:
-    }
+    }.merge(meta_json)
   end
 
   accumulator.uniq!

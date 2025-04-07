@@ -12,6 +12,21 @@ RSpec.describe 'Managed purl config' do
   let(:fixture_name) { 'managedPurlTests.xml' }
   subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
 
+  before do
+    records.each do |record|
+      record.fields('856').each do |electronic_access|
+        electronic_access.subfields.each do |collection|
+          if collection.value.include?('http')
+            stub_request(:get, "#{collection.value}.meta_json").to_return(status: 200, body: { '$schemaVersion': 1, sitemap: false, searchworks: true, earthworks: false }.to_json)
+          elsif collection.value.include?('collection')
+            collection_id = collection.value.split(':')[1]
+            stub_request(:get, "https://purl.stanford.edu/#{collection_id}.meta_json").to_return(status: 200, body: { '$schemaVersion': 1, sitemap: false, searchworks: true, earthworks: false }.to_json)
+          end
+        end
+      end
+    end
+  end
+
   describe 'managed_purl_urls' do
     let(:field) { 'managed_purl_urls' }
 
@@ -84,7 +99,8 @@ RSpec.describe 'Managed purl config' do
       it 'maps the right data' do
         expect(select_by_id('managedPurlItem1Collection')[field].map do |x|
                  JSON.parse(x)
-               end).to match_array [{ 'druid' => 'yg867hg1375', 'id' => '9615156', 'item_type' => 'item', 'source' => 'SDR-PURL', 'title' => 'Francis E. Stafford photographs, 1909-1933', 'type' => 'collection' }]
+               end).to match_array [{ '$schemaVersion' => 1, 'druid' => 'yg867hg1375', 'earthworks' => false, 'id' => '9615156', 'item_type' => 'item', 'searchworks' => true, 'sitemap' => false, 'source' => 'SDR-PURL',
+                                      'title' => 'Francis E. Stafford photographs, 1909-1933', 'type' => 'collection' }]
       end
     end
   end

@@ -20,6 +20,10 @@ RSpec.describe 'SDR indexing' do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404)
   end
 
+  before do
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: { earthworks: true }.to_json)
+  end
+
   context 'with a missing object' do
     let(:druid) { 'abc' }
 

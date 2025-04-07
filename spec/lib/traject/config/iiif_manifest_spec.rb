@@ -11,6 +11,10 @@ RSpec.describe 'IIIF Manifest config' do
   let(:record) { records.first }
   subject(:result) { indexer.map_record(marc_to_folio(record)) }
 
+  before do
+    stub_request(:get, 'https://purl.stanford.edu/xh235dd9059.meta_json').to_return(status: 200, body: {}.to_json)
+  end
+
   describe 'iiif_manifest_url_ssim' do
     it '' do
       expect(result['iiif_manifest_url_ssim']).to eq ['https://purl.stanford.edu/rj429xs9509/iiif/manifest']

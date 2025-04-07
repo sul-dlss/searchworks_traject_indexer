@@ -338,7 +338,7 @@ end
 to_field 'schema_dot_org_struct' do |record, accumulator, context|
   ## Schema.org representation for content type geo objects
   if record.dor_content_type == 'geo'
-    accumulator << {
+    schema_dot_org_json = {
       '@context': 'http://schema.org',
       '@type': 'Dataset',
       citation: record.mods.xpath('//mods:note[@displayLabel="Preferred citation"]', mods: 'http://www.loc.gov/mods/v3').text,
@@ -348,10 +348,6 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
       description: context.output_hash['summary_search'],
       sameAs: "https://searchworks.stanford.edu/view/#{record.druid}",
       keywords: context.output_hash['subject_all_search'],
-      includedInDataCatalog: {
-        '@type': 'DataCatalog',
-        name: 'https://earthworks.stanford.edu'
-      },
       distribution: [
         {
           '@type': 'DataDownload',
@@ -360,6 +356,11 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
         }
       ]
     }
+    schema_dot_org_json['includedInDataCatalog'] = {
+      '@type': 'DataCatalog',
+      name: 'https://earthworks.stanford.edu'
+    } if record.released_to_earthworks?
+    accumulator << schema_dot_org_json
   end
 end
 
