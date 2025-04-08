@@ -4,10 +4,9 @@ module CallNumbers
   class SudocShelfkey < ShelfkeyBase
     DELIMITER_PRECEDENCE = {
       ':' => 'a',
-      '.' => 'b',
-      ';' => 'c',
-      '/' => 'd',
-      '+' => 'e'
+      ';' => 'b',
+      '/' => 'c',
+      '+' => 'd'
     }.freeze
 
     TYPE_PRECEDENCE = {
@@ -31,17 +30,19 @@ module CallNumbers
       @parsed ||= /
         ^\s*(?:\[[^\]]+\]\s*)?
         (?<agency>[A-Z]+)\s*
-        (?<class_num>\d+)
+        (?<class_num>\d+)\.?
         (?<remainder>.*)
       /ix.match(base_call_number)
 
       @parsed ||= {}
     end
 
+    # Remainder is the title number (e.g., "23" or "23/4") and the suffix
     def normalize_remainder(remainder)
       return nil unless remainder.present?
 
-      tokens = tokenize_remainder(remainder.downcase)
+      remainder = normalize_remainder_periods(remainder.downcase)
+      tokens = tokenize_remainder(remainder)
       previous_token = nil
 
       result = tokens.filter_map do |token|
@@ -54,7 +55,12 @@ module CallNumbers
     end
 
     def tokenize_remainder(remainder)
-      remainder.scan(%r{[:.;/+\s]|[^:.;/+\s]+})
+      remainder.scan(%r{[:;/+\s]|[^:;/+\s]+})
+    end
+
+    def normalize_remainder_periods(remainder)
+      remainder = remainder.gsub(/(\d+)\.(\d+)/, '\1 \2')
+      remainder.tr('.', '')
     end
 
     # This assists reverse dealing with arbitrary length strings
