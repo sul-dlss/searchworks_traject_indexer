@@ -55,60 +55,20 @@ RSpec.describe CallNumbers::SudocShelfkey do
       expect(sorted_call_numbers).to eq(call_numbers)
     end
 
-    it 'handles the Northwestern nothing before something example' do
-      call_numbers = [
-        'GS1.2:So2',
-        'GS1.2:So2/4',
-        'L2.3;16:',
-        'L2.3/16-2:',
-        'Y4.F76/1:C42/4',
-        'Y4.F76/1:C42/4/985',
-        'Y4.F76/1:C76/13/982',
-        'Y4.F76/1:C76/13/982-2',
-        'Y4.F76/2:Af8/12',
-        'Y4.F76/2:Af8/12/rev.',
-        'Y4.F76/2:S.prt.101-105',
-        'Y4.F76/2:Sa2/7/982',
-        'Y4.G74/7:N21/5',
-        'Y4.G74/7:N21a'
-      ]
-      unsorted_call_numbers = call_numbers.shuffle
-      sorted_call_numbers = unsorted_call_numbers.map { |x| described_class.new(x) }
-                                                 .sort_by(&:forward)
-                                                 .map(&:base_call_number)
-
-      expect(sorted_call_numbers).to eq(call_numbers)
-    end
-
-    it 'handles the Northwestern sample sudoc sequence' do
-      call_numbers = [
-        'T22.19:M54',
-        'T22.19:M54/990',
-        'T22.19/2:P94',
-        'T22.19/2:P94/2',
-        'T22.19/2:V88/retest',
-        'T22.19/2:V88/retest/989',
-        'T22.19/2:V88/test/989',
-        'T22.19/2:V88/test-2/988',
-        'T22.19/2:V88/test-2/989',
-        'T22.19/2:V88/989/student/militia',
-        'T22.19/2:V88/989/student/spanish',
-        'T22.19/2:V88/989/student/text',
-        'T22.19/2:V88/990/student/spanish',
-        'T22.19/2:V88/2',
-        'T22.19/2:V88/2/989'
-      ]
-
-      unsorted_call_numbers = call_numbers.shuffle
-      sorted_call_numbers = unsorted_call_numbers.map { |x| described_class.new(x) }
-                                                 .sort_by(&:forward)
-                                                 .map(&:base_call_number)
-
-      expect(sorted_call_numbers).to eq(call_numbers)
-    end
-
     it 'sorts this list of sudoc call numbers' do
       call_numbers = [
+        'A 13.2:T 73/4',
+        'A 93.2:N 95/3',
+        'A 93.73:76',
+        'A 93.73:89',
+        'A 93.73/2:62',
+        'C 13.58:7564',
+        'C 13.58:7611',
+        'EP 1.23:600/998-103',
+        'EP 1.23:600/R-98-23',
+        'HE 20.4002:AD 9/2',
+        'HE 20.4002:AD9/5',
+        'HE 20.4002:F 94',
         'I 29.2:W 58/12/2022/FALL',
         'I 29.2:W 58/12/2022/SPRING',
         'I 53.11/4:36121-E 1-TM-100/2022',
@@ -127,6 +87,8 @@ RSpec.describe CallNumbers::SudocShelfkey do
         'ITC 1.12:731-TA-1054-1055/PRELIM.',
         'J 32.2:C 43/CHILD',
         'J 32.2:C 43/EARLY',
+        'J 32.21:999',
+        'J 32.21:M',
         'NAS 1.83:NP-2019-06-2726-HQ',
         'NAS 1.83:NP-2019-07-2735-HQ',
         'NAS 1.83:NP-2019-07-2739-HQ',

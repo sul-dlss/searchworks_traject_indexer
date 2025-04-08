@@ -11,8 +11,8 @@ module CallNumbers
     }.freeze
 
     TYPE_PRECEDENCE = {
-      alphabetic: 'q',
-      year: 'r',
+      year: 'q',
+      alphabetic: 'r',
       numeric: 's'
     }.freeze
 
