@@ -11,6 +11,7 @@ RSpec.describe 'SDR indexing' do
     end
   end
   let(:record) { PurlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
+  let(:earthworks) { true }
 
   def stub_purl_request(druid, body)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
@@ -18,6 +19,10 @@ RSpec.describe 'SDR indexing' do
 
   before do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404)
+  end
+
+  before do
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: { earthworks: }.to_json)
   end
 
   context 'with a missing object' do
@@ -101,34 +106,66 @@ RSpec.describe 'SDR indexing' do
       stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
 
-    it 'maps schema.org data for geo content' do
-      expect(JSON.parse(result['schema_dot_org_struct'].first)).to include(
-        {
-          '@context' => 'http://schema.org',
-          '@type' => 'Dataset',
-          'citation' => /Pinsky/,
-          'description' => [/This dataset/,
-                            /The Conservation/],
-          'distribution' => [
-            {
-              '@type' => 'DataDownload',
-              'contentUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
-              'encodingFormat' => 'application/zip'
-            }
-          ],
-          'identifier' => ['https://purl.stanford.edu/vv853br8653'],
-          'includedInDataCatalog' => {
-            '@type' => 'DataCatalog',
-            'name' => 'https://earthworks.stanford.edu'
-          },
-          'keywords' => ['Marine habitat conservation',
-                         'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
-                         'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
-          'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
-          'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
-          'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
-        }
-      )
+    context 'geo is released to earthworks' do
+      it 'maps schema.org data for geo content' do
+        expect(JSON.parse(result['schema_dot_org_struct'].first)).to include(
+          {
+            '@context' => 'http://schema.org',
+            '@type' => 'Dataset',
+            'citation' => /Pinsky/,
+            'description' => [/This dataset/,
+                              /The Conservation/],
+            'distribution' => [
+              {
+                '@type' => 'DataDownload',
+                'contentUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+                'encodingFormat' => 'application/zip'
+              }
+            ],
+            'identifier' => ['https://purl.stanford.edu/vv853br8653'],
+            'includedInDataCatalog' => {
+              '@type' => 'DataCatalog',
+              'name' => 'https://earthworks.stanford.edu'
+            },
+            'keywords' => ['Marine habitat conservation',
+                           'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
+                           'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+            'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
+            'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
+            'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
+          }
+        )
+      end
+    end
+
+    context 'geo is not released to earthworks' do
+      let(:earthworks) { false }
+
+      it 'maps schema.org data for geo content' do
+        expect(JSON.parse(result['schema_dot_org_struct'].first)).to include(
+          {
+            '@context' => 'http://schema.org',
+            '@type' => 'Dataset',
+            'citation' => /Pinsky/,
+            'description' => [/This dataset/,
+                              /The Conservation/],
+            'distribution' => [
+              {
+                '@type' => 'DataDownload',
+                'contentUrl' => 'https://stacks.stanford.edu/file/druid:vv853br8653/data.zip',
+                'encodingFormat' => 'application/zip'
+              }
+            ],
+            'identifier' => ['https://purl.stanford.edu/vv853br8653'],
+            'keywords' => ['Marine habitat conservation',
+                           'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
+                           'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+            'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
+            'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
+            'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
+          }
+        )
+      end
     end
   end
 
