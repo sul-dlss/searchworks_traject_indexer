@@ -55,7 +55,7 @@ RSpec.describe CallNumbers::SudocShelfkey do
       expect(sorted_call_numbers).to eq(call_numbers)
     end
 
-    it 'considers periods in the suffix a significant delimiter only between numbers' do
+    it 'considers periods in the suffix a significant delimiter only when involving numbers' do
       call_numbers = [
         'SSA 1.2:AG 8/SWEDEN',
         'SSA 1.2:AG 8/SWITZ.',
@@ -67,7 +67,11 @@ RSpec.describe CallNumbers::SudocShelfkey do
         'SSA 1.2:AG 8/USA',
         'SSA 1.2:AG 8/USA/VERISON 1.2',
         'SSA 1.2:AG 8/USA/VERISON 1.3',
-        'SSA 1.2:AG 8/USA/VERISON 12'
+        'SSA 1.2:AG 8/USA/VERISON 12',
+        'SSA 1.2:AG 8/USA/VERISON 12 No. 1',
+        'SSA 1.2:AG 8/USA/VERISON 12 No.2',
+        'SSA 1.2:AG 8/USA/VERISON 12 No 2.1',
+        'SSA 1.2:AG 8/USA/VERISON 12 No. 3'
       ]
       unsorted_call_numbers = call_numbers.shuffle
       sorted_call_numbers = unsorted_call_numbers.map { |x| described_class.new(x) }

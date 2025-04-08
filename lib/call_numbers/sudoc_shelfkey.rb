@@ -59,7 +59,9 @@ module CallNumbers
     end
 
     def normalize_remainder_periods(remainder)
-      remainder = remainder.gsub(/(\d+)\.(\d+)/, '\1 \2')
+      remainder = remainder.gsub(/(\d+)\s*\.\s*(\d+)/, '\1 \2')
+      remainder = remainder.gsub(/([a-z]+)\s*\.\s*(\d+)/i, '\1 \2')
+      remainder = remainder.gsub(/(\d+)\s*\.\s*([a-z]+)/i, '\1 \2')
       remainder.tr('.', '')
     end
 
