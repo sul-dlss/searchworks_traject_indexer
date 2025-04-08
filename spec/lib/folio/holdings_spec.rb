@@ -43,6 +43,15 @@ RSpec.describe Folio::Holdings do
       end
     end
 
+    context 'when enumeration/chronology is not present in all records(as in a591005)' do
+      let(:target) { { 'enumeration' => '2025' } }
+      let(:options) { [{ 'chronology' => '2025' }, target, { 'chronology' => '2024' }] }
+
+      it 'selects the target' do
+        expect(latest).to include(target)
+      end
+    end
+
     context 'when chronology is an empty string' do
       let(:target) { { 'chronology' => '', 'enumeration' => 'Episode 8' } }
       let(:options) { [{ 'chronology' => '', 'enumeration' => 'Episode 7' }, target, { 'chronology' => '', 'enumeration' => 'Episode 2' }] }

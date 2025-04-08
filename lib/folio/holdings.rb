@@ -7,13 +7,14 @@ module Folio
 
     # We've seen chronologies that looks like full dates, MON YYYY, WIN YYYY, and nil
     # We've also seen chronologies with slashes designating a range
+    # Note that enumeration is not always present. See a591005
     def self.find_latest(holdings)
       # NOTE: We saw some piece records without 'chronology'. Was this just test data?
       pieces = holdings.filter_map do |piece|
         piece.merge(sortable_date: sortable_date(piece),
                     sortable_tokens: sortable_tokens(piece))
       end
-      pieces.max_by { |piece| [piece.fetch(:sortable_date), piece.fetch(:sortable_tokens), piece['enumeration']] }
+      pieces.max_by { |piece| [piece.fetch(:sortable_date), piece.fetch(:sortable_tokens), piece.fetch('enumeration', '')] }
     end
 
     # @return [Date] a date derived from chronology, enumeration or a really old date (sorts to back) if none are found
