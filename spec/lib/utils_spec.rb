@@ -3,17 +3,21 @@
 require 'spec_helper'
 
 RSpec.describe Utils do
-  xdescribe '.encoding_cleanup' do
-    it 'encodes cyrilic correctly' do
-      expect(described_class.encoding_cleanup('Strategii︠a︡ planirovanii︠a︡ izbiratelʹnoĭ kampanii')).to eq('Strategii͡a planirovanii͡a izbiratelʹnoĭ kampanii')
+  describe '.encoding_cleanup' do
+    subject(:encoded) { described_class.encoding_cleanup(input.force_encoding('ASCII-8BIT')) }
+    context 'cyrilic uncombined' do
+      let(:input) { +'Strategii︠a︡ planirovanii︠a︡ izbiratelʹnoĭ kampanii' }
+      it { is_expected.to eq('Strategii͡a planirovanii͡a izbiratelʹnoĭ kampanii') }
     end
 
-    it 'returns unencoded string without change' do
-      expect(described_class.encoding_cleanup('https://link.gale.com/apps/ECCO?u=stan90222')).to eq('https://link.gale.com/apps/ECCO?u=stan90222')
+    context 'cyrilic pre-combined' do
+      let(:input) { +'Strategiii︠a planirovaniia︡ izbiratelʹnoĭ kampanii' }
+      it { is_expected.to eq input }
     end
 
-    it 'returns encoded string without change' do
-      expect(described_class.encoding_cleanup('Strategiii︠a planirovaniia︡ izbiratelʹnoĭ kampanii')).to eq('Strategiii︠a planirovaniia︡ izbiratelʹnoĭ kampanii')
+    context 'unencoded string' do
+      let(:input) { +'https://link.gale.com/apps/ECCO?u=stan90222' }
+      it { is_expected.to eq input }
     end
   end
 
