@@ -2119,7 +2119,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
-CALL_TYPE = %w[LC DEWEY ALPHANUM SUDOC].freeze
+CALL_TYPE = %w[LC DEWEY ALPHANUM SUDOC CALDOC].freeze
 ERESOURCE_CALL_TYPE = %w[LC DEWEY ALPHANUM].freeze
 # Each (browseable) base call number is represented by a single browse nearby entry; we choose
 # the representative item by the following rules:
