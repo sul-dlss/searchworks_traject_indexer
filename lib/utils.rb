@@ -5,9 +5,11 @@ require_relative '../config/boot'
 
 module Utils
   def self.encoding_cleanup(value)
+    # Messages coming from Kafka are ASCII-8BIT, but since they are JSON, we know they must be UTF-8.
+    # This is also required for the UTF-8 regex
+    value.force_encoding('utf-8')
     # cleans up cyrlic encoding i︠a︡ to i͡a
-    # value.gsub(/\ufe20(.{1,2})\ufe21/, "\u0361\\1")
-    value
+    value.gsub(/\ufe20(.{1,2})\ufe21/, "\u0361\\1")
   end
 
   def self.balance_parentheses(string)
