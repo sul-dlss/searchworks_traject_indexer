@@ -1013,12 +1013,16 @@ to_field 'format_main_ssim' do |record, accumulator, context|
                      'Database'
                    when 'w'
                      'Journal/Periodical'
+                   when 'l'
+                     'Loose-leaf'
                    else
                      'Book'
                    end
                  elsif record['006'] && record['006'].value[0] == 's'
                    case record['006'].value[4]
-                   when 'l', 'm'
+                   when 'l'
+                     'Loose-leaf'
+                   when 'm'
                      'Book'
                    when 'n'
                      'Newspaper'
@@ -1044,7 +1048,7 @@ to_field 'format_main_ssim' do |record, accumulator, context|
                    when 'd'
                      'Database'
                    when 'l'
-                     'Book'
+                     'Loose-leaf'
                    when 'w'
                      'Journal/Periodical'
                    else
