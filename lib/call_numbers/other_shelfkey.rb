@@ -15,8 +15,6 @@ module CallNumbers
 
     # this transfomation only applies when generating shelfkeys
     def shelfkey_scheme
-      return 'sudoc' if scheme == 'SUDOC'
-
       'other'
     end
   end

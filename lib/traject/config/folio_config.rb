@@ -2119,7 +2119,8 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
-CALL_TYPE = %w[LC DEWEY ALPHANUM].freeze
+CALL_TYPE = %w[LC DEWEY ALPHANUM SUDOC].freeze
+ERESOURCE_CALL_TYPE = %w[LC DEWEY ALPHANUM].freeze
 # Each (browseable) base call number is represented by a single browse nearby entry; we choose
 # the representative item by the following rules:
 # 1. If there's only one item with the base call number, then we use that item
@@ -2165,13 +2166,13 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   # weren't the right type (e.g. SUDOC)
   next if items(record, context)
           .reject(&:skipped?)
-          .any? { |item| item.call_number.to_s.present? && !CALL_TYPE.include?(item.call_number.type) }
+          .any? { |item| item.call_number.to_s.present? && !ERESOURCE_CALL_TYPE.include?(item.call_number.type) }
 
   callnumber = begin
     holding = record.electronic_holdings.first
     value = holding&.dig('callNumber')
     type = FolioItem.call_number_type_code(holding&.dig('callNumberType', 'name'))
-    FolioItem::CallNumber.new(value, type) if value.present? && CALL_TYPE.include?(type&.upcase)
+    FolioItem::CallNumber.new(value, type) if value.present? && ERESOURCE_CALL_TYPE.include?(type&.upcase)
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
@@ -2180,7 +2181,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
     cn if cn.valid_lc?
   end.first
 
-  next unless callnumber.present? && CALL_TYPE.include?(callnumber.type.upcase)
+  next unless callnumber.present? && ERESOURCE_CALL_TYPE.include?(callnumber.type.upcase)
 
   accumulator << {
     lopped_callnumber: callnumber.base_call_number,
