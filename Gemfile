@@ -26,6 +26,7 @@ gem 'parallel'
 gem 'pg', platform: :mri
 gem 'rake'
 gem 'retriable'
+gem 'roman_numerals', '~> 1.0'
 gem 'ruby-kafka'
 gem 'stanford-mods', '~> 3.0'
 gem 'statsd-ruby'

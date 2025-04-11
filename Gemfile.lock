@@ -148,6 +148,7 @@ GEM
     erubi (1.13.1)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
+    ffi (1.17.1)
     ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
@@ -199,6 +200,7 @@ GEM
       marc (~> 1.0)
     match_map (3.0.0)
     method_source (1.1.0)
+    mini_portile2 (2.8.8)
     minitest (5.25.5)
     mods (3.0.5)
       csv (~> 3.3)
@@ -218,6 +220,9 @@ GEM
     net-sftp (4.0.0)
       net-ssh (>= 5.0.0, < 8.0.0)
     net-ssh (7.3.0)
+    nokogiri (1.18.7)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.7-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.7-x86_64-darwin)
@@ -283,6 +288,7 @@ GEM
       io-console (~> 0.5)
     retriable (3.1.2)
     rexml (3.4.1)
+    roman_numerals (1.0.0)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -413,6 +419,7 @@ DEPENDENCIES
   pg
   rake
   retriable
+  roman_numerals (~> 1.0)
   rspec
   rubocop
   rubocop-performance

@@ -31,6 +31,11 @@ FactoryBot.define do
 
     initialize_with { new(**attributes, holding:, item: default_item_attributes.merge(item).merge(additional_item_attributes.deep_stringify_keys)) }
 
+    factory :caldoc_holding do
+      call_number { 'CALIF C728 .F6 1973' }
+      scheme { 'Shelving control number' }
+    end
+
     factory :lc_holding do
       call_number { 'QE538.8 .N36 1975-1977' }
       scheme { 'LC' }

@@ -624,8 +624,8 @@ RSpec.describe 'ItemInfo config' do
       end
 
       it 'has the same shelfkey in the field as it does in the item_display' do
-        expect(browse_shelfkey).to eq 'other calif a000125 .a000034 002002'
-        expect(shelfkey).to eq ['other calif a000125 .a000034 002002']
+        expect(browse_shelfkey).to eq 'caldoc a 0125 a000034 0000 0000 0000 2002'
+        expect(shelfkey).to eq ['caldoc a 0125 a000034 0000 0000 0000 2002']
       end
     end
 

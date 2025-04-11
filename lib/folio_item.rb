@@ -259,6 +259,7 @@ class FolioItem
   end
 
   class CallNumber
+    VALID_CALDOC_REGEX = /^.*CALIF\s+[A-Z]\s*\d{3,4}/
     VALID_DEWEY_REGEX = /^\d{1,3}(\.\d+)? *\.? *[A-Z]\d{1,3} *[A-Z]*+.*/
     VALID_LC_REGEX = /(^[A-Z&&[^IOWXY]]{1}[A-Z]{0,2} *\d+(\.\d*)?( +([\da-z]\w*)|([A-Z]\D+\w*))?) *\.?[A-Z]\d+.*/
     TEMP_CALLNUM_PREFIX = 'XX('
@@ -283,6 +284,8 @@ class FolioItem
                   else
                     'OTHER'
                   end
+                elsif purported_type == 'ALPHANUM'
+                  valid_caldoc? ? 'CALDOC' : purported_type.upcase
                 else
                   purported_type.upcase
                 end
@@ -313,6 +316,8 @@ class FolioItem
         CallNumbers::DeweyShelfkey.new(base_call_number.to_s, volume_info, serial:)
       when 'SUDOC'
         CallNumbers::SudocShelfkey.new(base_call_number.to_s, volume_info, serial:)
+      when 'CALDOC'
+        CallNumbers::CaldocShelfkey.new(base_call_number.to_s, volume_info, serial:)
       else
         CallNumbers::OtherShelfkey.new(
           base_call_number.to_s,
@@ -350,6 +355,10 @@ class FolioItem
     end
 
     private
+
+    def valid_caldoc?
+      call_number&.match?(VALID_CALDOC_REGEX)
+    end
 
     def valid_dewey?
       call_number&.match?(VALID_DEWEY_REGEX)
