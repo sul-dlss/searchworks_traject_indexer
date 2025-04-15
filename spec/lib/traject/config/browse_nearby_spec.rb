@@ -115,6 +115,21 @@ RSpec.describe 'Browse nearby' do
     it { is_expected.to include(hash_including('lopped_callnumber' => 'QE538.8 .N36', 'callnumber' => 'QE538.8 .N36 1978-1980')) }
   end
 
+  context 'with some CalDoc call numbers of a series' do
+    before do
+      allow(folio_record).to receive(:index_items).and_return(index_items)
+    end
+
+    let(:index_items) do
+      [
+        build(:caldoc_holding, barcode: 'CalDoc1', call_number: 'CALIF C728 .F6 1973', enumeration: 'V.1'),
+        build(:caldoc_holding, barcode: 'CalDoc1', call_number: 'CALIF C728 .F6 1973', enumeration: 'V.2')
+      ]
+    end
+
+    it { is_expected.to include(hash_including('lopped_callnumber' => 'CALIF C728 .F6 1973', 'callnumber' => 'CALIF C728 .F6 1973 V.1')) }
+  end
+
   context 'with a mix of Sudocs' do
     before do
       allow(folio_record).to receive(:index_items).and_return(index_items)
