@@ -49,6 +49,56 @@ RSpec.describe FolioItem do
     end
   end
 
+  describe '#public_note' do
+    let(:item) do
+      {
+        notes: item_note
+      }.with_indifferent_access
+    end
+
+    let(:holding) do
+      {
+        boundWith: [bound_with],
+        notes: holding_notes
+      }.with_indifferent_access
+    end
+
+    let(:item_note) { [{ 'note' => 'note 1', 'staffOnly' => false, 'itemNoteTypeId' => '', 'itemNoteTypeName' => 'Public' }] }
+    let(:holding_notes) { [{ 'note' => 'note 2', 'staffOnly' => false, 'itemNoteTypeId' => '', 'holdingsNoteTypeName' => 'Public' }] }
+    subject(:public_note) { described_class.new(item:, holding:, bound_with:).public_note }
+    let(:bound_with) { nil }
+
+    context 'with a bound-with item' do
+      let(:bound_with) { { 'id' => 'id' } }
+
+      it 'is the holding and item note' do
+        expect(public_note).to eq ".PUBLIC. note 1\n.PUBLIC. note 2"
+      end
+
+      context 'it does not have a holding note' do
+        let(:holding_notes) { nil }
+
+        it 'correctly renders the item note' do
+          expect(public_note).to eq '.PUBLIC. note 1'
+        end
+      end
+    end
+
+    context 'with an item that has a note' do
+      it 'is the item note' do
+        expect(public_note).to eq '.PUBLIC. note 1'
+      end
+    end
+
+    context 'there are no notes' do
+      let(:item_note) { nil }
+
+      it 'is the item note' do
+        expect(public_note).to be nil
+      end
+    end
+  end
+
   describe '#library' do
     subject(:library) { described_class.new(item:, holding:).library }
 
