@@ -66,7 +66,17 @@ class FolioItem
   end
 
   def public_note
-    @public_note ||= item&.dig('notes')&.map { |n| ".#{n['itemNoteTypeName']&.upcase}. #{n['note']}" }&.join("\n")&.presence
+    @public_note ||= (item_notes + (bound_with? ? holding_notes : []))
+
+    @public_note.map { |n| ".#{n[:type]&.upcase}. #{n[:note]}" }&.join("\n")&.presence
+  end
+
+  def item_notes
+    item&.dig('notes')&.map { |n| { type: n['itemNoteTypeName'], note: n['note'] } } || []
+  end
+
+  def holding_notes
+    holding&.dig('notes')&.map { |n| { type: n['holdingsNoteTypeName'], note: n['note'] } } || []
   end
 
   def call_number
