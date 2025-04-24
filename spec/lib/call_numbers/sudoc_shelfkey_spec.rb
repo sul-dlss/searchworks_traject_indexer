@@ -162,4 +162,8 @@ RSpec.describe CallNumbers::SudocShelfkey do
       expect(reversed_call_numbers).to eq(call_numbers.reverse)
     end
   end
+
+  it 'appends the volume information to the shelfkey' do
+    expect(described_class.new('NAS 1.21:7039', ' /14-18/ABSTR.').forward).to eq 'sudoc nas 000001 s000021 a s007039 ! /000014-000018/abstr.'
+  end
 end
