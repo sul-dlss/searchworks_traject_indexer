@@ -20,7 +20,8 @@ module CallNumbers
         'sudoc',
         pad(parsed[:agency]&.downcase, by: 3),
         pad_all_digits(parsed[:class_num]),
-        normalize_remainder(parsed[:remainder])
+        normalize_remainder(parsed[:remainder]),
+        volume_info_with_serial_behavior
       ].filter_map(&:presence).join(' ').strip
     end
 
