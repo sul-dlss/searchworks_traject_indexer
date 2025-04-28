@@ -50,20 +50,9 @@ module CallNumbers
       return nil unless parsed[:year2]
 
       if parsed[:year2].length == 2
-        expand_two_digit_year(parsed[:year2], parsed[:year]).to_s
+        expand_two_digit_year(parsed[:year2], parsed[:year])
       else
         parsed[:year2]
-      end
-    end
-
-    def expand_two_digit_year(short_year_str, base_year_str)
-      short_year = short_year_str.to_i
-      base_year = base_year_str.to_i
-      century = (base_year / 100) * 100
-      if short_year < (base_year % 100)
-        century + 100 + short_year
-      else
-        century + short_year
       end
     end
 
@@ -72,15 +61,6 @@ module CallNumbers
         number_match[1]
       elsif (roman_match = parsed[:rest]&.match(/NO\.?\s*([MCDLXVI]+)/))
         roman_match[1].r_to_i.to_s
-      end
-    end
-
-    def replace_roman_numerals(text)
-      text.gsub(/(\s|^|\W)([MCDLXVI]+)(\s|$|\W)/i) do
-        prefix = ::Regexp.last_match(1)
-        roman = ::Regexp.last_match(2)
-        suffix = ::Regexp.last_match(3)
-        prefix + roman.r_to_i.to_s + suffix
       end
     end
   end

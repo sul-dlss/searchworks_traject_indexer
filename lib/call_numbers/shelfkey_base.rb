@@ -46,7 +46,7 @@ module CallNumbers
       self.class.reverse(self.class.pad_all_digits(volume_info)).strip.ljust(50, '~')
     end
 
-    delegate :pad, :pad_all_digits, :pad_cutter, to: :class
+    delegate :pad, :pad_all_digits, :pad_cutter, :expand_two_digit_year, :replace_roman_numerals, to: :class
 
     class << self
       def reverse(value)
@@ -97,6 +97,26 @@ module CallNumbers
           value.ljust(by, character)
         when :left
           value.rjust(by, character)
+        end
+      end
+
+      def expand_two_digit_year(short_year_str, base_year_str)
+        short_year = short_year_str.to_i
+        base_year = base_year_str.to_i
+        century = (base_year / 100) * 100
+        if short_year < (base_year % 100)
+          (century + 100 + short_year).to_s
+        else
+          (century + short_year).to_s
+        end
+      end
+
+      def replace_roman_numerals(text)
+        text.gsub(/(\s|^|\W)([MCDLXVI]+)(\s|$|\W)/i) do
+          prefix = ::Regexp.last_match(1)
+          roman = ::Regexp.last_match(2)
+          suffix = ::Regexp.last_match(3)
+          prefix + roman.r_to_i.to_s + suffix
         end
       end
 

@@ -51,6 +51,11 @@ FactoryBot.define do
       scheme { 'Superintendent of Documents classification' }
     end
 
+    factory :undoc_holding do
+      call_number { 'ECE/EAD/PAU/2003/1' }
+      scheme { 'Shelving control number' }
+    end
+
     factory :alphanum_holding do
       call_number { 'ISHII SPRING 2009' }
       scheme { 'Shelving control number' }
