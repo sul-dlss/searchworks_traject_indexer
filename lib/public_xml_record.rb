@@ -186,6 +186,6 @@ class PublicXmlRecord
   end
 
   def get_value(node)
-    node&.first ? node.first.content : nil
+    node.first&.content
   end
 end
