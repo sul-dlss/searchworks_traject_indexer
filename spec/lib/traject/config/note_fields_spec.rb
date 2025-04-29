@@ -568,7 +568,7 @@ RSpec.describe 'Folio config' do
       expect(result.first[:fields].first[:field]).to include '520a', '520b'
     end
 
-    context 'with unmatched vernacular' do
+    context 'with unmatched vernacular for content advice' do
       let(:records) { [record] }
       let(:record) { nil }
       let(:result) { results.first }
@@ -578,7 +578,7 @@ RSpec.describe 'Folio config' do
         MARC::Record.new.tap do |r|
           r.append(
             MARC::DataField.new(
-              '880', '0', '0',
+              '880', indicator1, '0',
               MARC::Subfield.new('6', '520-00'),
               MARC::Subfield.new('a', '本书在综合考察绘画,文人,禅学这三者相互关联的基础上.')
             )
@@ -586,8 +586,23 @@ RSpec.describe 'Folio config' do
         end
       end
 
-      it 'maps the right fields' do
-        expect(result_field.first[:unmatched_vernacular]).to eq ['本书在综合考察绘画,文人,禅学这三者相互关联的基础上.']
+      context 'has 4 indicator' do
+        let(:indicator1) { '4' }
+
+        it 'maps the right fields' do
+          expect(result_field.length).to be 1
+          expect(result_field.first[:unmatched_vernacular]).to eq ['本书在综合考察绘画,文人,禅学这三者相互关联的基础上.']
+          expect(result_field.first[:label]).to eq 'Content advice'
+        end
+      end
+
+      context 'does not have a 4 indicator' do
+        let(:indicator1) { '0' }
+        it 'maps the right fields' do
+          expect(result_field.length).to be 1
+          expect(result_field.first[:unmatched_vernacular]).to eq ['本书在综合考察绘画,文人,禅学这三者相互关联的基础上.']
+          expect(result_field.last[:label]).to eq 'Summary'
+        end
       end
     end
 

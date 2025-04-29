@@ -1563,7 +1563,7 @@ end
 
 def content_advice(marc, accumulator)
   tag = '520'
-  label = 'Content advice'
+  label = CONTENT_ADVICE_LABEL
   matching_fields = marc.find_all do |f|
     f.tag == tag && f.indicator1 == '4'
   end
@@ -1589,7 +1589,7 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
       fields << { field: field_text, vernacular: get_marc_vernacular(marc, field) } unless field_text.empty?
     end
   else
-    unmatched_vern = get_unmatched_vernacular(marc, tag)
+    unmatched_vern = get_unmatched_vernacular(marc, tag, label)
   end
 
   accumulator << { label:, fields:,
