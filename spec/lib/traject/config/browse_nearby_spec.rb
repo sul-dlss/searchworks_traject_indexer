@@ -157,6 +157,26 @@ RSpec.describe 'Browse nearby' do
     }
   end
 
+  context 'with UN document call numbers' do
+    before do
+      allow(folio_record).to receive(:index_items).and_return(index_items)
+    end
+
+    let(:index_items) do
+      [
+        build(:undoc_holding, barcode: 'Undoc1', call_number: 'ECE/EAD/PAU/2003/1'),
+        build(:undoc_holding, barcode: 'Undoc1', call_number: 'ICAO DOC 9941 AN/478'),
+        build(:undoc_holding, barcode: 'Undoc1', call_number: 'ST/ESA/PAD/SER.E/75')
+      ]
+    end
+
+    it {
+      is_expected.to include(hash_including('lopped_callnumber' => 'ECE/EAD/PAU/2003/1'),
+                             hash_including('lopped_callnumber' => 'ICAO DOC 9941 AN/478'),
+                             hash_including('lopped_callnumber' => 'ST/ESA/PAD/SER.E/75'))
+    }
+  end
+
   context 'with a mix of items' do
     before do
       allow(folio_record).to receive(:index_items).and_return(index_items)
@@ -168,7 +188,9 @@ RSpec.describe 'Browse nearby' do
         build(:dewey_holding, barcode: 'Dewey1', call_number: '888.4 .J788', enumeration: 'V.5'),
         build(:dewey_holding, barcode: 'Dewey2', call_number: '888.4 .J788', enumeration: 'V.6'),
         build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.G 74/7-11:110"'),
-        build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'Y 4.G 74/7-11:1101')
+        build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'Y 4.G 74/7-11:1101'),
+        build(:undoc_holding, barcode: 'Undoc1', call_number: 'ECE/EAD/PAU/2003/3'),
+        build(:undoc_holding, barcode: 'Undoc2', call_number: 'ICAO DOC 9941 AN/478')
       ]
     end
 

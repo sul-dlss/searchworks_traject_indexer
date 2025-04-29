@@ -1990,6 +1990,8 @@ to_field 'preferred_barcode' do |record, accumulator, context|
   preferred_callnumber_scheme_items = chosen_items_by_callnumber_type['LC'] ||
                                       chosen_items_by_callnumber_type['DEWEY'] ||
                                       chosen_items_by_callnumber_type['SUDOC'] ||
+                                      chosen_items_by_callnumber_type['CALDOC'] ||
+                                      chosen_items_by_callnumber_type['UNDOC'] ||
                                       chosen_items_by_callnumber_type['ALPHANUM'] ||
                                       chosen_items_by_callnumber_type.values.first
 
@@ -2119,7 +2121,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
   end
 end
 
-CALL_TYPE = %w[LC DEWEY ALPHANUM SUDOC CALDOC].freeze
+CALL_TYPE = %w[LC DEWEY ALPHANUM SUDOC CALDOC UNDOC].freeze
 ERESOURCE_CALL_TYPE = %w[LC DEWEY ALPHANUM].freeze
 # Each (browseable) base call number is represented by a single browse nearby entry; we choose
 # the representative item by the following rules:
