@@ -35,7 +35,7 @@ module CallNumbers
     end
 
     def reverse
-      self.class.reverse(forward).ljust(50, '~')
+      self.class.reverse(forward).strip.ljust(50, '~')
     end
 
     # Unit tests inidcate that serial deweys don't get reversed years justified with tildes
