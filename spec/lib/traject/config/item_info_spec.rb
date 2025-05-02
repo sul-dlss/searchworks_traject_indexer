@@ -164,22 +164,6 @@ RSpec.describe 'ItemInfo config' do
     end
   end
 
-  describe 'building_location_facet_ssim' do
-    let(:field) { 'building_location_facet_ssim' }
-
-    context 'with ARS/STACKS' do
-      let(:holdings) { [build(:lc_holding, library: 'ARS', permanent_location_code: 'STACKS', type: 'STKS-MONO')] }
-
-      it { is_expected.to include 'ARS/STACKS', 'ARS/STACKS/type/STKS-MONO', 'ARS/*/type/STKS-MONO' }
-    end
-
-    context 'with GREEN/STACKS' do
-      let(:holdings) { [build(:lc_holding, library: 'GREEN', permanent_location_code: 'STACKS', type: 'STKS-MONO')] }
-
-      it { is_expected.to include 'GREEN/STACKS', 'GREEN/STACKS/type/STKS-MONO', 'GREEN/*/type/STKS-MONO' }
-    end
-  end
-
   describe 'item_display_struct' do
     let(:field) { 'item_display_struct' }
     subject(:value) { result[field].map { |x| JSON.parse(x) } }

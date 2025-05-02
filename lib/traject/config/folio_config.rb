@@ -2071,24 +2071,6 @@ to_field 'building_facet' do |record, accumulator|
   end
 end
 
-to_field 'building_location_facet_ssim' do |record, accumulator, context|
-  items(record, context).each do |item|
-    next if item.skipped?
-
-    accumulator << [item.library, '*'].join('/')
-    accumulator << [item.library, item.display_location_code].join('/')
-    accumulator << [item.library, '*', 'type', item.type].join('/')
-    accumulator << [item.library, item.display_location_code, 'type', item.type].join('/')
-    next unless item.temporary_location_code
-
-    accumulator << [item.library, '*', 'type', item.type, 'curr', item.temporary_location_code].join('/')
-    accumulator << [item.library, '*', 'type', '*', 'curr', item.temporary_location_code].join('/')
-    accumulator << [item.library, item.display_location_code, 'type', '*', 'curr', item.temporary_location_code].join('/')
-    accumulator << [item.library, item.display_location_code, 'type', item.type, 'curr',
-                    item.temporary_location_code].join('/')
-  end
-end
-
 to_field 'item_display_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
 
