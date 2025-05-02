@@ -2071,6 +2071,7 @@ to_field 'building_facet' do |record, accumulator|
   end
 end
 
+# NOTE: This is not used by Searchworks, but it is handy for finding records for testing + development.
 to_field 'building_location_facet_ssim' do |record, accumulator, context|
   items(record, context).each do |item|
     next if item.skipped?
