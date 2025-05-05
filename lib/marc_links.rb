@@ -20,6 +20,7 @@ module MarcLinks
       link_field
     end
 
+    # @param [MARC::DataField] link_field
     def initialize(link_field)
       @link_field = link_field
     end
@@ -38,7 +39,7 @@ module MarcLinks
         additional_text:,
         material_type: field['3'],
         note: subzs,
-        href: field['u'],
+        href:,
         sort: purl_info['sort'],
         casalini: link_is_casalini?,
 
@@ -49,6 +50,11 @@ module MarcLinks
         druid:,
         sfx: link_is_sfx?
       }
+    end
+
+    # If there is a $g, we should use it as the primary link to the resource
+    def href
+      field['g'] || field['u']
     end
 
     def link_is_fulltext?
@@ -79,16 +85,16 @@ module MarcLinks
     end
 
     def link_is_sfx?
-      SFX_URL_REGEX.match?(field['u'])
+      SFX_URL_REGEX.match?(href)
     end
 
     # Parse a URI object to return the host of the URL in the "url" parameter if it's a proxied resoruce
     def link_host
-      return if field['u'].nil?
+      return if href.nil?
 
       @link_host ||= begin
         # Not sure why I need this, but it fails on certain URLs w/o it.  The link printed still has character in it
-        fixed_url = field['u'].delete('^').strip
+        fixed_url = href.delete('^').strip
         link = URI.parse(fixed_url)
 
         return link.host unless PROXY_URL_REGEX.match?(link.to_s) && link.to_s.include?('url=')
@@ -165,11 +171,11 @@ module MarcLinks
     end
 
     def link_is_managed_purl?
-      field['u'] && SDR_NOTE_REGEX.match?(field['x'])
+      href && SDR_NOTE_REGEX.match?(field['x'])
     end
 
     def druid
-      field['u'] && field['u'].gsub(%r{^https?://purl.stanford.edu/?}, '') if /purl.stanford.edu/.match?(field['u'])
+      href.gsub(%r{^https?://purl.stanford.edu/?}, '') if href && /purl.stanford.edu/.match?(href)
     end
   end
 end

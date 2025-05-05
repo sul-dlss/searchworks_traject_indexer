@@ -5,6 +5,22 @@ require 'spec_helper'
 RSpec.describe MarcLinks::Processor do
   subject(:marc_link) { described_class.new(field) }
 
+  describe '#as_h' do
+    subject { marc_link.as_h }
+
+    context 'with a 856g' do
+      let(:field) do
+        MARC::DataField.new('856', '4', '0',
+                            ['g', 'https://doi.org/10.58748/brujula16'],
+                            ['u', 'https://www.somelink.edu'],
+                            ['n', 'Open Access'],
+                            %w[7 0])
+      end
+
+      it { is_expected.to include(href: 'https://doi.org/10.58748/brujula16', link_text: 'doi.org') }
+    end
+  end
+
   describe '#link_is_fulltext?' do
     context '956 tag with an SFX link' do
       let(:field) { MARC::DataField.new('956', ' ', '0', ['u', 'https://library.stanford.edu/sfx?one=one']) }
