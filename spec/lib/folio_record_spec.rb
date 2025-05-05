@@ -33,6 +33,31 @@ RSpec.describe FolioRecord do
       expect(folio_record.marc_record['001']).to have_attributes(tag: '001', value: 'a14154194')
     end
 
+    context 'with private notes' do
+      let(:record) do
+        {
+          'instance' => {
+            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
+          },
+          'holdings' => [],
+          'source_record' => [{
+            'fields' => [
+              { '243' => {
+                'ind1' => '0',
+                'subfields' => [
+                  { 'a' => 'An example of a private note' }
+                ]
+              } }
+            ]
+          }]
+        }
+      end
+
+      it 'strips the record of that private note entirely' do
+        expect(folio_record.marc_record['243']).to be_blank
+      end
+    end
+
     context 'with subfield 0 data that used to be in the subfield =' do
       let(:record) do
         {
