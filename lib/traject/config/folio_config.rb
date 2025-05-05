@@ -1550,6 +1550,9 @@ def summary(marc, accumulator)
           else
             'Summary'
           end
+
+  field_conditions = tag == '520' ? ->(field) { field.indicator1 != '4' } : nil
+
   matching_fields = marc.find_all do |f|
     if tag == '520'
       f.tag == tag && f.indicator1 != '4'
@@ -1558,20 +1561,23 @@ def summary(marc, accumulator)
     end
   end
 
-  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator, field_conditions:)
 end
 
 def content_advice(marc, accumulator)
   tag = '520'
   label = CONTENT_ADVICE_LABEL
+  field_conditions = ->(field) { field.indicator1 == '4' }
+
   matching_fields = marc.find_all do |f|
-    f.tag == tag && f.indicator1 == '4'
+    f.tag == tag && field_conditions.call(f)
   end
 
-  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator, field_conditions:)
 end
 
-def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+# rubocop:disable Metrics/ParameterLists
+def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator, field_conditions: nil)
   fields = []
   unmatched_vern = []
   if matching_fields.any?
@@ -1589,12 +1595,13 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
       fields << { field: field_text, vernacular: get_marc_vernacular(marc, field) } unless field_text.empty?
     end
   else
-    unmatched_vern = get_unmatched_vernacular(marc, tag, label)
+    unmatched_vern = get_unmatched_vernacular(marc, tag, field_conditions:)
   end
 
   accumulator << { label:, fields:,
                    unmatched_vernacular: unmatched_vern } if !fields.empty? || !unmatched_vern.empty?
 end
+# rubocop:enable Metrics/ParameterLists
 
 to_field 'context_search', extract_marc('518a', alternate_script: false)
 to_field 'vern_context_search', extract_marc('518aa', alternate_script: :only)

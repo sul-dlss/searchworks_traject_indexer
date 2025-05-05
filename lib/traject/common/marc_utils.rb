@@ -347,7 +347,7 @@ module Traject
     end
 
     # @return [Array]
-    def get_unmatched_vernacular(marc, tag, label = '')
+    def get_unmatched_vernacular(marc, tag, field_conditions: nil)
       return [] unless marc['880']
 
       fields = []
@@ -358,8 +358,7 @@ module Traject
 
         next unless link[:number] == '00' && link[:tag] == tag
 
-        content_advice = (tag == '520' && field.indicator1 == '4')
-        next if content_advice != (label == CONTENT_ADVICE_LABEL)
+        next if field_conditions && !field_conditions.call(field)
 
         field.each do |sub|
           next if Constants::EXCLUDE_FIELDS.include?(sub.code)
