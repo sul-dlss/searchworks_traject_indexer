@@ -19,6 +19,20 @@ RSpec.describe MarcLinks::Processor do
 
       it { is_expected.to include(href: 'https://doi.org/10.58748/brujula16', link_text: 'doi.org') }
     end
+
+    context 'with two 856u' do
+      let(:field) do
+        MARC::DataField.new('856', '4', '0',
+                            ['u', 'https://www.somelink.edu'],
+                            ['u', 'https://www.otherlink.edu'],
+                            %w[7 0])
+      end
+
+      it {
+        is_expected.to include(href: 'https://www.somelink.edu', link_text: 'www.somelink.edu',
+                               additional_links: [{ href: 'https://www.otherlink.edu' }])
+      }
+    end
   end
 
   describe '#link_is_fulltext?' do

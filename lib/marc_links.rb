@@ -13,7 +13,7 @@ module MarcLinks
                                            /Access restricted to Stanford community/i)
   STANFORD_LAW_AFFILIATED_REGEX = /Available to Stanford Law School/i
 
-  class Processor
+  class Processor # rubocop:disable Metrics/ClassLength
     attr_reader :link_field
 
     def field
@@ -37,6 +37,7 @@ module MarcLinks
         link_text:,
         link_title:,
         additional_text:,
+        additional_links:,
         material_type: field['3'],
         note: subzs,
         href:,
@@ -54,7 +55,7 @@ module MarcLinks
 
     # If there is a $g, we should use it as the primary link to the resource
     def href
-      field['g'] || field['u']
+      all_links.first
     end
 
     def link_is_fulltext?
@@ -78,6 +79,15 @@ module MarcLinks
     end
 
     private
+
+    def additional_links
+      all_links[1..].map { { href: it } }
+    end
+
+    # All of the links listed in priority order. If there is a $g, we should use it as the primary link to the resource
+    def all_links
+      field.subfields.select { %w[g u].include?(it.code) }.sort_by(&:code).map(&:value)
+    end
 
     def link_is_casalini?
       (field['x'] && field['x'] == 'CasaliniTOC') ||
