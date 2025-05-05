@@ -943,7 +943,7 @@ to_field 'access_facet' do |record, accumulator, context|
 end
 
 to_field 'access_status_ssim' do |record, accumulator, _context|
-  mar8567 = Traject::MarcExtractor.new('8567', separator: nil).extract(record).map do |data|
+  Traject::MarcExtractor.new('8567', separator: nil).extract(record).map do |data|
     accumulator << 'Open Access' if data == '0'
   end
 end
