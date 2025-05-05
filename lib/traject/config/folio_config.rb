@@ -942,6 +942,12 @@ to_field 'access_facet' do |record, accumulator, context|
   accumulator << 'On order' if accumulator.empty? && items(record, context).any? { |item| item.status == 'On order' }
 end
 
+to_field 'access_status_ssim' do |record, accumulator, _context|
+  mar8567 = Traject::MarcExtractor.new('8567', separator: nil).extract(record).map do |data|
+    accumulator << 'Open Access' if data == '0'
+  end
+end
+
 ##
 # Lane Medical Library relies on the underlying logic of "format_main_ssim"
 # data (next ~200+ lines) to accurately represent SUL records in
