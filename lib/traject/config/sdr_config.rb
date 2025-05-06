@@ -270,6 +270,7 @@ to_field 'url_fulltext' do |record, accumulator|
 end
 
 to_field 'access_facet', literal('Online')
+to_field 'library_code_facet_ssim', literal('SDR')
 to_field 'building_facet', literal('Stanford Digital Repository')
 
 to_field 'isbn_search', stanford_mods(:identifier) do |_record, accumulator|
