@@ -151,7 +151,7 @@ RSpec.describe 'FOLIO indexing' do
           'holdings' => holdings }
       end
 
-      it { expect(result['library_code_facet_ssim']).to eq ['LAW'] }
+      it { expect(result['library_code_facet_ssim']).to eq %w[LAW SDR] }
       it { expect(result['location_code_facet_ssim']).to eq ['LAW-BASEMENT'] }
     end
 
@@ -184,7 +184,7 @@ RSpec.describe 'FOLIO indexing' do
           'holdings' => holdings }
       end
 
-      it { expect(result['library_code_facet_ssim']).to contain_exactly 'SAL3', 'ART' }
+      it { expect(result['library_code_facet_ssim']).to contain_exactly 'SAL3', 'ART', 'SDR' }
     end
   end
 

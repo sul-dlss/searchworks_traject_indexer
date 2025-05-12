@@ -2042,6 +2042,12 @@ to_field 'library_code_facet_ssim' do |record, accumulator, context|
   end
 end
 
+to_field 'library_code_facet_ssim' do |record, accumulator|
+  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, _spec, _extractor|
+    accumulator << 'SDR' if field['x']&.include?('SDR-PURL') || field['u']&.include?('purl.stanford.edu')
+  end
+end
+
 to_field 'location_code_facet_ssim' do |record, accumulator, context|
   items(record, context).reject(&:skipped?).each do |item|
     accumulator << item.display_location_code
