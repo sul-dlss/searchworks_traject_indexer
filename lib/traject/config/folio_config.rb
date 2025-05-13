@@ -1827,6 +1827,7 @@ to_field 'callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped?
+    next if %w[SUDOC].include?(item.call_number_type)
     next if item.call_number.ignored_call_number? ||
             item.call_number.bad_lc_lane_call_number?
 
@@ -1840,6 +1841,22 @@ to_field 'callnum_search' do |record, accumulator, context|
       call_number = call_number.gsub(/\s*\.$/, '') # remove trailing period and any spaces before it
     end
 
+    good_call_numbers << call_number
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
+
+to_field 'sudoc_callnum_search' do |record, accumulator, context|
+  good_call_numbers = []
+  items(record, context).each do |item|
+    next if item.skipped?
+    next unless item.call_number_type == 'SUDOC'
+    next if item.call_number.ignored_call_number?
+
+    call_number = item.call_number.to_s
+    call_number = call_number.strip
+    call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     good_call_numbers << call_number
   end
 
