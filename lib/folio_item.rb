@@ -358,6 +358,10 @@ class FolioItem
       call_number&.match?(VALID_LC_REGEX)
     end
 
+    def valid_undoc?
+      call_number&.match?(VALID_UNDOC_REGEX)
+    end
+
     def bad_lc_lane_call_number?
       return false if valid_lc?
       return false if library != 'LANE'
@@ -380,10 +384,6 @@ class FolioItem
 
     def valid_caldoc?
       call_number&.match?(VALID_CALDOC_REGEX)
-    end
-
-    def valid_undoc?
-      call_number&.match?(VALID_UNDOC_REGEX)
     end
 
     def valid_dewey?
