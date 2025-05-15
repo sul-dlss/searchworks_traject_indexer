@@ -135,6 +135,14 @@ RSpec.describe 'Call Numbers' do
       it { is_expected.to eq ['999.85 .P84'] }
     end
 
+    context 'with a LC holding that has a CalDoc callnumber' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'CALIF E3000.S26 L3 2025')]
+      end
+
+      it { is_expected.to be_nil }
+    end
+
     context 'when call number is NO CALL NUMBER' do
       let(:holdings) do
         [build(:lc_holding, call_number: 'NO CALL NUMBER')]
@@ -166,6 +174,22 @@ RSpec.describe 'Call Numbers' do
       end
 
       it { is_expected.to be_nil }
+    end
+
+    context 'with an ALPHANUM that is a CalDoc' do
+      let(:holdings) do
+        [build(:caldoc_holding, call_number: 'CALIF E3000.S26 L3 2025')]
+      end
+
+      it { is_expected.to eq ['CALIF E3000.S26 L3 2025'] }
+    end
+
+    context 'with a LC holding that has a CalDoc callnumber' do
+      let(:holdings) do
+        [build(:lc_holding, call_number: 'CALIF E3000.S26 L3 2025')]
+      end
+
+      it { is_expected.to eq ['CALIF E3000.S26 L3 2025'] }
     end
 
     context 'with an ALPHANUM that is an UNDOC' do

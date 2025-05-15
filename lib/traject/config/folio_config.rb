@@ -1833,7 +1833,8 @@ to_field 'callnum_search' do |record, accumulator, context|
     next if item.skipped?
     next if %w[ALPHANUM SUDOC].include?(item.call_number_type)
     next if item.call_number.ignored_call_number? ||
-            item.call_number.bad_lc_lane_call_number?
+            item.call_number.bad_lc_lane_call_number? ||
+            item.call_number.valid_caldoc?
 
     call_number = item.call_number.to_s
 
@@ -1855,7 +1856,7 @@ to_field 'alphanum_callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped?
-    next unless item.call_number_type == 'ALPHANUM'
+    next unless item.call_number_type == 'ALPHANUM' || item.call_number.valid_caldoc?
     next if spec_coll_item?(item)
     next if item.call_number.valid_undoc?
     next if item.call_number.ignored_call_number?
