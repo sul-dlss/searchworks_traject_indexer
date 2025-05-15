@@ -44,7 +44,7 @@ module Folio
         library_has_for_holding(holding).map do |library_has|
           {
             id: holding.fetch('id'),
-            location: holding.dig('location', 'effectiveLocation'),
+            location: bound_with_parent_or_holding_location(holding),
             note:,
             library_has:
           }
@@ -98,11 +98,17 @@ module Folio
     # Look at the journal Nature (hrid: a3195844) as a pathological case (but pieces aren't loaded there yet)
     # hrid: a567006 has > 1000 on test.
     def pieces_per_location
-      @pieces_per_location ||= pieces.group_by { |piece| holdings_by_id[piece['holdingId']]&.dig('location', 'effectiveLocation', 'code') }
+      @pieces_per_location ||= pieces.group_by { |piece| bound_with_parent_or_holding_location(holdings_by_id[piece['holdingId']])&.dig('code') }
     end
 
     def holdings_by_id
       @holdings_by_id ||= holdings.index_by { |holding| holding['id'] }
+    end
+
+    def bound_with_parent_or_holding_location(holding)
+      return if holding.nil?
+
+      holding.dig('boundWith', 'item', 'location', 'effectiveLocation') || holding.dig('location', 'effectiveLocation')
     end
   end
 end

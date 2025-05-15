@@ -287,6 +287,105 @@ RSpec.describe Folio::MhldBuilder do
       end
     end
 
+    context 'with a bound-with holdings' do
+      let(:holding) do
+        {
+          'id' => 'e9dcd13e-fad7-54b8-9618-7acb3c025570',
+          'hrid' => 'ah3454840_4',
+          'boundWith' => {
+            'item' => {
+              'id' => '5092c7e3-aafc-5d76-a654-87e849e4167d',
+              'hrid' => 'ai58482_1_1',
+              'status' => 'Available',
+              'volume' => nil,
+              'barcode' => '36105047191460',
+              'callNumber' => {
+                typeId: '03dd64d0-5626-4ecd-8ece-4531e0069f35',
+                callNumber: '325.3469 .P8535'
+              },
+              'chronology' => nil,
+              'enumeration' => 'NO.33',
+              'materialTypeId' => '1a54b431-2e4f-452d-9cae-9cee66c9a892',
+              'effectiveLocationId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+              'permanentLoanTypeId' => '2b94c631-fca9-4892-a730-03ee529ffe27',
+              'temporaryLoanTypeId' => nil,
+              'suppressFromDiscovery' => false,
+              'location' => {
+                'effectiveLocation' => {
+                  'id' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
+                  'code' => 'SAL3-STACKS',
+                  'name' => 'Stacks',
+                  'campus' => {
+                    'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                    'code' => 'SUL',
+                    'name' => 'Stanford Libraries'
+                  },
+                  'details' => {
+                    'availabilityClass' => 'Offsite',
+                    'scanServicePointCode' => 'SAL3'
+                  },
+                  'library' => {
+                    'id' => 'ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9',
+                    'code' => 'SAL3',
+                    'name' => 'SAL3 (off-campus storage)'
+                  },
+                  'isActive' => true,
+                  'institution' => {
+                    'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                    'code' => 'SU',
+                    'name' => 'Stanford University'
+                  }
+                }
+              }
+            }
+          },
+          'callNumber' => '325.3469 .P8535 NO.35',
+          'instanceId' => '544c7096-c117-5b00-8a69-bee3dd5d0110',
+          'holdingsType' => {
+            'id' => '5b08b35d-aaa3-4806-998c-9cd85e5bc406',
+            'name' => 'Bound-with',
+            'source' => 'local'
+          },
+          'holdingsStatements' => [
+            {
+              'note' => '<no.35 in series>',
+              'statement' => 'v.2 '
+            }
+          ],
+          'effectiveLocationId' => '158168a3-ede4-4cc1-8c98-61f4feeb22ea',
+          'permanentLocationId' => '158168a3-ede4-4cc1-8c98-61f4feeb22ea',
+          'holdingsStatementsForIndexes' => [],
+          'holdingsStatementsForSupplements' => [],
+          'location' => {
+            'effectiveLocation' => {
+              'id' => '158168a3-ede4-4cc1-8c98-61f4feeb22ea',
+              'code' => 'SAL3-SEE-OTHER',
+              'name' => 'See linked record to request items bound together',
+              'campus' => {
+                'id' => 'c365047a-51f2-45ce-8601-e421ca3615c5',
+                'code' => 'SUL',
+                'name' => 'Stanford Libraries'
+              },
+              'details' => {},
+              'library' => {
+                'id' => 'ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9',
+                'code' => 'SAL3',
+                'name' => 'SAL3 (off-campus storage)'
+              },
+              'isActive' => true,
+              'institution' => {
+                'id' => '8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929',
+                'code' => 'SU',
+                'name' => 'Stanford University'
+              }
+            }
+          }
+        }
+      end
+
+      it { is_expected.to eq ['SAL3 -|- SAL3-STACKS -|-  -|- v.2  <no.35 in series> -|- '] }
+    end
+
     context 'with Electronic holdings types' do
       let(:holding) do
         { 'id' => '4a3a0693-f2a5-4d79-8603-5659ed121ae2',
