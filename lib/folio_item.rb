@@ -354,6 +354,10 @@ class FolioItem
       call_number
     end
 
+    def valid_caldoc?
+      call_number&.match?(VALID_CALDOC_REGEX)
+    end
+
     def valid_lc?
       call_number&.match?(VALID_LC_REGEX)
     end
@@ -381,10 +385,6 @@ class FolioItem
     end
 
     private
-
-    def valid_caldoc?
-      call_number&.match?(VALID_CALDOC_REGEX)
-    end
 
     def valid_dewey?
       call_number&.match?(VALID_DEWEY_REGEX)
