@@ -168,7 +168,7 @@ RSpec.describe 'Call Numbers' do
       it { is_expected.to be_nil }
     end
 
-    context 'with an ALPHANUM that is a UNDOC' do
+    context 'with an ALPHANUM that is an UNDOC' do
       let(:holdings) do
         [build(:undoc_holding)]
       end
