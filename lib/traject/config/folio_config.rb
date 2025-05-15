@@ -1857,6 +1857,7 @@ to_field 'alphanum_callnum_search' do |record, accumulator, context|
     next if item.skipped?
     next unless item.call_number_type == 'ALPHANUM'
     next if spec_coll_item?(item)
+    next if item.call_number.valid_undoc?
     next if item.call_number.ignored_call_number?
 
     call_number = item.call_number.to_s

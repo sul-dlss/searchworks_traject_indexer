@@ -143,4 +143,112 @@ RSpec.describe 'Call Numbers' do
       it { is_expected.to be_nil }
     end
   end
+
+  describe 'alphanum_callnum_search' do
+    let(:field) { 'alphanum_callnum_search' }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:index_items).and_return(holdings)
+    end
+    let(:holdings) { [] }
+
+    context 'with an ALPHANUM' do
+      let(:holdings) do
+        [build(:alphanum_holding, call_number: 'ISHII SPRING  2009')]
+      end
+
+      it { is_expected.to eq ['ISHII SPRING 2009'] }
+    end
+
+    context 'with an ALPHANUM that is from SPEC' do
+      let(:holdings) do
+        [build(:alphanum_holding, call_number: 'SC1003A BOX 1', library: 'SPEC-COLL')]
+      end
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'with an ALPHANUM that is a UNDOC' do
+      let(:holdings) do
+        [build(:undoc_holding)]
+      end
+
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe 'spec_callnum_search' do
+    let(:field) { 'spec_callnum_search' }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:index_items).and_return(holdings)
+    end
+    let(:holdings) { [] }
+
+    context 'with an ALPHANUM that is not from SPEC' do
+      let(:holdings) do
+        [build(:alphanum_holding, call_number: 'ISHII SPRING  2009')]
+      end
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'with an ALPHANUM that is from SPEC' do
+      let(:holdings) do
+        [build(:alphanum_holding, call_number: 'SC1003A  BOX 1', library: 'SPEC-COLL')]
+      end
+
+      it { is_expected.to eq ['SC1003A BOX 1'] }
+    end
+  end
+
+  describe 'sudoc_callnum_search' do
+    let(:field) { 'sudoc_callnum_search' }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:index_items).and_return(holdings)
+    end
+    let(:holdings) { [] }
+
+    context 'with a SUDOC' do
+      let(:holdings) do
+        [build(:sudoc_holding, call_number: 'Y 4.SCI  2:107-46')]
+      end
+
+      it { is_expected.to eq ['Y 4.SCI 2:107-46'] }
+    end
+
+    context 'with a non-SUDOC' do
+      let(:holdings) do
+        [build(:alphanum_holding)]
+      end
+
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe 'undoc_callnum_search' do
+    let(:field) { 'undoc_callnum_search' }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:index_items).and_return(holdings)
+    end
+    let(:holdings) { [] }
+
+    context 'with a valid UNDOC' do
+      let(:holdings) do
+        [build(:undoc_holding, call_number: 'E/  ESCWA/ED/SER. Z/2/2005/2006-2007/2008')]
+      end
+
+      it { is_expected.to eq ['E/ ESCWA/ED/SER. Z/2/2005/2006-2007/2008'] }
+    end
+
+    context 'with an ALPHANUM callnumber that is not a valid UNDOC' do
+      let(:holdings) do
+        [build(:alphanum_holding)]
+      end
+
+      it { is_expected.to be_nil }
+    end
+  end
 end
