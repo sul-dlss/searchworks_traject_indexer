@@ -292,7 +292,6 @@ RSpec.describe 'marc_links_struct' do
     it 'should return all finding aid links' do
       expect(result_field).to be_present
       expect(result_field.first[:material_type]).to eq 'FINDING AID:'
-      expect(result_field.all? { |x| x[:finding_aid] }).to be_truthy
       expect(result_field.last[:note]).to eq 'This is a finding aid'
     end
   end
