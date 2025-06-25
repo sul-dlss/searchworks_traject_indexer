@@ -83,4 +83,12 @@ RSpec.describe Traject::Macros::Extras do
       end
     end
   end
+
+  describe 'literal_multiple' do
+    let(:macro) { literal_multiple('Image', 'Image|Slide') }
+
+    it 'adds all the literal values to the accumulator' do
+      expect(accumulator).to eq ['Image', 'Image|Slide']
+    end
+  end
 end

@@ -72,6 +72,17 @@ module Traject
           accumulator.replace(centuries.to_a + decades.to_a + hierarchicalized_years)
         end
       end
+
+      # Similar to Traject's built-in `literal` macro,
+      # but allows for multiple values to be added to the accumulator.
+      #
+      # Usage:
+      #   to_field 'sample', literal_multiple('Image', 'Image|Slide')
+      def literal_multiple(*values)
+        lambda do |_record, accumulator, _context|
+          values.each { |value| accumulator << value }
+        end
+      end
     end
   end
 end

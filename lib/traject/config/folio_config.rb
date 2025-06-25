@@ -6,6 +6,7 @@ require 'csv'
 require 'i18n'
 require 'digest/md5'
 require 'active_support/core_ext/time'
+require_relative 'folio_format_config'
 
 I18n.available_locales = [:en]
 
@@ -13,6 +14,7 @@ extend Traject::Macros::Marc21
 extend Traject::Macros::Marc21Semantics
 extend Traject::SolrBetterJsonWriter::IndexerPatch
 extend Traject::MarcUtils
+extend FolioFormatConfig
 
 Utils.logger = logger
 
@@ -113,6 +115,9 @@ end
 def items(record, context)
   context.clipboard[:item] ||= record.index_items
 end
+
+# This handles the format_hsim fields in folio_format_config.rb
+add_folio_format_fields
 
 to_field 'id', extract_marc('001') do |_record, accumulator|
   accumulator.map! do |v|
