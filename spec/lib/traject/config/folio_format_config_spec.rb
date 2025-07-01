@@ -45,14 +45,14 @@ RSpec.describe 'format_hsim config' do
         end
       end
 
-      context '245h contains manuscripts' do
+      context '245h contains manuscript or manuscript/digital' do
         let(:record) do
           MARC::Record.new.tap do |r|
             r.leader = '01952c d  2200457Ia 4500'
             # We expect [manuscript] to be in brackets in the string
             r.append(MARC::DataField.new('245', '1', ' ',
                                          MARC::Subfield.new('a', 'manuscript: 245h'),
-                                         MARC::Subfield.new('h', '[manuscript]')))
+                                         MARC::Subfield.new('h', '[manuscript/digital]')))
           end
         end
 
@@ -155,9 +155,8 @@ RSpec.describe 'format_hsim config' do
       end
     end
 
-    # TODO: add Equipment test. Need to stub FOLIO record/holdings.
-    # context 'when record is Equipment' do
-    # end
+    # TODO: Need to stub FOLIO record/holdings.
+    # Then test Equipment and Video/Film|Blue-ray
 
     context 'when record is an Image' do
       context 'when leader[6] = k and 008[33] matches [aciklnopst 0-9|]' do
@@ -192,12 +191,27 @@ RSpec.describe 'format_hsim config' do
             r.leader = '000000a00000000000000000'
             r.append(MARC::DataField.new('245', '1', ' ',
                                          MARC::Subfield.new('a', 'Example title'),
-                                         MARC::Subfield.new('h', 'technical drawing')))
+                                         MARC::Subfield.new('h', 'This is a technical drawing')))
           end
         end
 
         it 'maps to Image' do
           expect(result[field]).to eq ['Image']
+        end
+      end
+
+      context 'when the 245h term contains a partial string match' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000a00000000000000000'
+            r.append(MARC::DataField.new('245', '1', ' ',
+                                         MARC::Subfield.new('a', 'Example title'),
+                                         MARC::Subfield.new('h', 'technical')))
+          end
+        end
+
+        it 'does not map to Image' do
+          expect(result[field]).not_to eq ['Image']
         end
       end
 
@@ -260,6 +274,92 @@ RSpec.describe 'format_hsim config' do
             puts "Result: #{result[field]}"
             expect(result[field]).to eq ['Image', 'Image|Slide']
           end
+        end
+      end
+    end
+
+    context 'when the match is based on regex matching in a MARC subfield' do
+      context 'when 338h term contains piano roll terms' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000a00000000000000000'
+            r.append(MARC::DataField.new('338', '1', ' ',
+                                         MARC::Subfield.new('a', 'This is a sentence containing the phrase piano roll')))
+          end
+        end
+
+        it 'maps to Sound recording|Piano/Organ roll' do
+          expect(result[field]).to eq ['Sound recording', 'Sound recording|Piano/Organ roll']
+        end
+      end
+      context 'when 245n contains video terms' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000000000000000000000'
+            r.append(MARC::DataField.new('245', '1', ' ',
+                                         MARC::Subfield.new('n', 'A set of video recordings')))
+          end
+        end
+
+        it 'maps to Video/Film' do
+          expect(result[field]).to eq ['Video/Film']
+        end
+      end
+
+      context 'when 538a contains blu-ray terms' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000000000000000000000'
+            r.append(MARC::DataField.new('538', '1', ' ',
+                                         MARC::Subfield.new('a', 'A set of blu-ray discs')))
+          end
+        end
+
+        it 'maps to Video/Film' do
+          expect(result[field]).to eq ['Video/Film', 'Video/Film|Blue-ray']
+        end
+      end
+    end
+
+    context 'when record is Software/multimedia' do
+      context 'when leader[6] = m and 008 is missing' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000m00000000000000000'
+          end
+        end
+
+        it 'maps to Software/multimedia' do
+          expect(result[field]).to eq ['Software/multimedia']
+        end
+      end
+
+      context 'when leader[6] = m and 008[26] is not a/g/j' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000m00000000000000000'
+            # 26th position (index 25) = 'z', which is not in excluded_values
+            r.append(MARC::ControlField.new('008', '00000000000000000000000000z00000000000'))
+          end
+        end
+
+        it 'maps to Software/multimedia' do
+          expect(result[field]).to eq ['Software/multimedia']
+        end
+      end
+
+      # If 008[26] is a, g, or j, it should not map to Software/multimedia
+      context 'when leader[6] = m and 008[26] is j' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000m00000000000000000'
+            r.append(MARC::ControlField.new('008', '00000000000000000000000000j00000000000'))
+          end
+        end
+
+        # In this case it is covered by another rule
+        it 'does not map to Software/multimedia' do
+          expect(result[field]).to eq ['Database']
         end
       end
     end
