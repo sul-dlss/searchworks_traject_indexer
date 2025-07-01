@@ -121,20 +121,24 @@ RSpec.describe 'FOLIO indexing' do
       folio_record.instance['hrid'] = 'a12451243'
       allow(client).to receive(:pieces).and_return([])
     end
+    let(:items) do
+      [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
+         'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+         'crez' => [],
+         'hrid' => 'ai1755834_1_1',
+         'notes' => [],
+         'status' => 'Available',
+         'barcode' => '36105043687818',
+         '_version' => 1,
+         'location' => {} }]
+    end
+
+    let(:items_and_holdings) do
+      { 'items' => items,
+        'holdings' => holdings }
+    end
 
     context 'when the holding library is Law' do
-      let(:items) do
-        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
-           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
-           'crez' => [],
-           'hrid' => 'ai1755834_1_1',
-           'notes' => [],
-           'status' => 'Available',
-           'barcode' => '36105043687818',
-           '_version' => 1,
-           'location' => {} }]
-      end
-
       let(:holdings) do
         [{ 'location' =>
           { 'effectiveLocation' =>
@@ -146,32 +150,31 @@ RSpec.describe 'FOLIO indexing' do
            'holdingsStatementsForSupplements' => [] }]
       end
 
-      let(:items_and_holdings) do
-        { 'items' => items,
-          'holdings' => holdings }
-      end
-
       it { expect(result['library_code_facet_ssim']).to eq %w[LAW SDR] }
       it { expect(result['location_code_facet_ssim']).to eq ['LAW-BASEMENT'] }
     end
 
-    context 'when the location provides additional library codes (e.g. PAGE-AR)' do
-      let(:items) do
-        [{ 'id' => '8258dd9f-e0a7-5f82-ba97-e9197fc990eb',
-           'holdingsRecordId' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
-           'crez' => [],
-           'hrid' => 'ai1755834_1_1',
-           'notes' => [],
-           'status' => 'Available',
-           'barcode' => '36105043687818',
-           '_version' => 1,
-           'location' => {} }]
-      end
-
+    context 'when the holding library is SAL3' do
       let(:holdings) do
         [{ 'location' =>
           { 'effectiveLocation' =>
-            { 'code' => 'SAL3-PAGE-AR', 'library' => { 'code' => 'SAL3' }, 'details' => { 'searchworksAdditionalLibraryCodeFacetValues' => 'ART' } } },
+            { 'code' => 'LAW-BASEMENT', 'library' => { 'code' => 'SAL3' } } },
+           'suppressFromDiscovery' => false,
+           'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
+           'holdingsStatements' => [],
+           'holdingsStatementsForIndexes' => [],
+           'holdingsStatementsForSupplements' => [] }]
+      end
+
+      it { expect(result['library_code_facet_ssim']).to eq %w[OFF_CAMPUS SDR] }
+    end
+
+    context 'when the location provides additional library codes (e.g. PAGE-AR)' do
+      let(:holdings) do
+        [{ 'location' =>
+          { 'effectiveLocation' =>
+            { 'code' => 'SAL3-PAGE-AR', 'library' => { 'code' => 'SAL-NEWARK' },
+              'details' => { 'searchworksAdditionalLibraryCodeFacetValues' => 'ART' } } },
            'suppressFromDiscovery' => false,
            'id' => '81a56270-e8dd-5759-8083-5cc96cdf0045',
            'holdingsStatements' => [],
@@ -184,7 +187,7 @@ RSpec.describe 'FOLIO indexing' do
           'holdings' => holdings }
       end
 
-      it { expect(result['library_code_facet_ssim']).to contain_exactly 'SAL3', 'ART', 'SDR' }
+      it { expect(result['library_code_facet_ssim']).to contain_exactly 'OFF_CAMPUS', 'ART', 'SDR' }
     end
   end
 

@@ -257,7 +257,6 @@ RSpec.describe 'format_hsim config' do
           end
 
           it 'maps to Image|Slide' do
-            puts "Result: #{result[field]}"
             expect(result[field]).to eq ['Image', 'Image|Slide']
           end
         end

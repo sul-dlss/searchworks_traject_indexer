@@ -73,6 +73,7 @@ settings do
 
   provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
+  provide 'sal_library_codes', %w[SAL SAL3 SAL-NEWARK]
 end
 
 # Monkey-patch MarcExtractor in order to add logic to strip subfields before
@@ -2042,7 +2043,9 @@ to_field 'library_code_facet_ssim' do |record, accumulator, context|
   items(record, context).reject(&:skipped?).each do |item|
     next unless item.display_location&.dig('library')
 
-    accumulator << item.display_location.dig('library', 'code')
+    code = item.display_location.dig('library', 'code')
+    code = 'OFF_CAMPUS' if settings['sal_library_codes'].include?(code)
+    accumulator << code
     accumulator.concat item.display_location.dig('details', 'searchworksAdditionalLibraryCodeFacetValues')&.split(',')&.map(&:strip) || []
   end
 end
