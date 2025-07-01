@@ -85,7 +85,7 @@ In order to get some content to index locally, you will need to establish a conn
 You can establish an SSH tunnel to the FOLIO database using the following command:
 
 ```sh
-ssh -L 5432:[folio-database-hostname].stanford.edu:5432 indexer@[indexer-hostname]
+ssh -L 5432:[folio-database-hostname].stanford.edu:9999 indexer@[indexer-hostname]
 ```
 
 Then, on your local machine, you can use a helper script for fetching single records at a time. You need to set the `DATABASE_URL` environment variable:
