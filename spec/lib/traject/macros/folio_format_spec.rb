@@ -49,39 +49,50 @@ RSpec.describe Traject::Macros::FolioFormat do
     before { record.leader = '00000cam a2200000 i 4500' }
 
     it 'returns true when byte matches one of the values' do
-      expect(leader?(byte: 6, values: %(a b c)).call(record, context)).to be true
+      expect(leader?(byte: 6, values: %w[a b c]).call(record, context)).to be true
+    end
+
+    it 'returns true when byte matches a single value' do
+      expect(leader?(byte: 6, value: 'a').call(record, context)).to be true
     end
 
     it 'returns false when byte does not match' do
-      expect(leader?(byte: 6, values: %(x y z)).call(record, context)).to be false
+      expect(leader?(byte: 6, values: %w[x y z]).call(record, context)).to be false
     end
 
     it 'returns false when leader is nil' do
       allow(record).to receive(:leader).and_return(nil)
-      expect(leader?(byte: 6, values: %(a b c)).call(record, context)).to be false
+      expect(leader?(byte: 6, values: %w[a b c]).call(record, context)).to be false
     end
   end
 
-  describe '#marc_subfield?' do
+  describe '#marc_subfield_contains?' do
     before do
       record.append(
         MARC::DataField.new('245', '1', '0',
-                            MARC::Subfield.new('h', 'Manuscript'))
+                            MARC::Subfield.new('h', 'A set of video recordings'))
       )
     end
 
-    it 'matches using regex' do
-      condition = marc_subfield?('245', subfield: 'h', values: [/Manu/i])
+    it 'matches phrase' do
+      condition = marc_subfield_contains?('245', subfield: 'h', values: [
+                                            'video recordings', 'audio recordings'
+                                          ])
       expect(condition.call(record, context)).to be true
     end
 
-    it 'returns false if no matching string' do
-      condition = marc_subfield?('245', subfield: 'h', values: ['Databse'])
-      expect(condition.call(record, context)).to be false
+    it 'matches using regex' do
+      condition = marc_subfield_contains?('245', subfield: 'h', value: /video/i)
+      expect(condition.call(record, context)).to be true
     end
 
     it 'returns false if no matching subfield' do
-      condition = marc_subfield?('245', subfield: 'z', values: ['Manuscript'])
+      condition = marc_subfield_contains?('245', subfield: 'z', value: /video/i)
+      expect(condition.call(record, context)).to be false
+    end
+
+    it 'returns false if no matching string' do
+      condition = marc_subfield_contains?('245', subfield: 'h', values: ['vdeo recordings', 'film recordings'])
       expect(condition.call(record, context)).to be false
     end
   end
@@ -99,7 +110,7 @@ RSpec.describe Traject::Macros::FolioFormat do
     end
 
     it 'returns false when no match' do
-      condition = control_field_byte?('008', byte: 32, values: %w[x])
+      condition = control_field_byte?('008', byte: 32, value: 'x')
       expect(condition.call(record, context)).to be false
     end
 
@@ -112,7 +123,7 @@ RSpec.describe Traject::Macros::FolioFormat do
       short_field = MARC::ControlField.new('006', '000')
       record.append(short_field)
 
-      condition = control_field_byte?('006', byte: 10, values: ['x'])
+      condition = control_field_byte?('006', byte: 10, value: 'x')
       expect(condition.call(record, context)).to be false
     end
   end
