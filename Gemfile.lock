@@ -157,7 +157,7 @@ GEM
       rake
     hashdiff (1.2.0)
     hashie (5.0.0)
-    honeybadger (5.28.0)
+    honeybadger (5.29.1)
       logger
       ostruct
     http (5.3.1)
@@ -276,7 +276,7 @@ GEM
     rainbow (3.1.1)
     rake (13.3.0)
     rbtree (0.4.6)
-    rdoc (6.14.1)
+    rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
