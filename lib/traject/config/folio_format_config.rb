@@ -423,6 +423,12 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
+               marc_subfield_contains?('655', subfield: 'a', value: 'Video game'),
+               literal('Video game')
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
                leader?(byte: 6, value: 'm'),
                control_field_byte?('008', byte: 26, value: 'g'),
                literal('Video game')
