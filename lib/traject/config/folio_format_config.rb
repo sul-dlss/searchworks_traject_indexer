@@ -72,6 +72,11 @@ module FolioFormatConfig
                literal('Database')
              )
 
+    # Statistical code is 'Database'
+    to_field 'format_hsim' do |record, accumulator, _context|
+      accumulator << 'Database' if record.statistical_codes.any? { |stat_code| stat_code['name'] == 'Database' }
+    end
+
     to_field 'format_hsim',
              all_conditions(
                leader?(byte: 6, value: 'm'),
@@ -271,14 +276,14 @@ module FolioFormatConfig
              all_conditions(
                control_field_byte?('007', byte: 0, value: 's'),
                control_field_byte?('007', byte: 3, value: 'b'),
-               literal_multiple('Sound recording', 'Sound recording|33 rpm disc (vinyl LP)')
+               literal_multiple('Sound recording', 'Sound recording|Vinyl disc') # 33 rpm disc (vinyl LP)')
              )
 
     to_field 'format_hsim',
              all_conditions(
                control_field_byte?('007', byte: 0, value: 's'),
                control_field_byte?('007', byte: 3, value: 'c'),
-               literal_multiple('Sound recording', 'Sound recording|45 rpm disc (vinyl)')
+               literal_multiple('Sound recording', 'Sound recording|Vinyl disc') # 45 rpm disc (vinyl)')
              )
 
     to_field 'format_hsim',
@@ -376,6 +381,40 @@ module FolioFormatConfig
              )
 
     to_field 'format_hsim',
+             all_conditions(
+               control_field_byte?('007', byte: 0, value: 'v'),
+               control_field_byte?('007', byte: 4, value: 'g'),
+               literal_multiple('Video/Film', 'Video/Film|DVD') # Laser disc
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
+               control_field_byte?('007', byte: 0, value: 'v'),
+               control_field_byte?('007', byte: 4, values: %w[a i j]),
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # Beta
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
+               control_field_byte?('007', byte: 0, value: 'v'),
+               control_field_byte?('007', byte: 4, value: 'b'),
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # VHS
+             )
+
+    to_field 'format_hsim',
+             condition(
+               marc_subfield_contains?('538', subfield: 'a', value: 'VHS'),
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # VHS
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
+               control_field_byte?('007', byte: 0, value: 'v'),
+               control_field_byte?('007', byte: 4, value: 'q'),
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # Hi-8 mm
+             )
+
+    to_field 'format_hsim',
              condition(
                control_field_byte?('007', byte: 0, value: 'm'),
                literal_multiple('Video/Film', 'Video/Film|Film reel')
@@ -383,42 +422,8 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'q'),
-               literal_multiple('Video/Film', 'Video/Film|Hi-8 mm')
-             )
-
-    to_field 'format_hsim',
-             all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'g'),
-               literal_multiple('Video/Film', 'Video/Film|Laser disc')
-             )
-
-    to_field 'format_hsim',
-             all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, values: %w[a i j]),
-               literal_multiple('Video/Film', 'Video/Film|Videocassette (Beta)')
-             )
-
-    to_field 'format_hsim',
-             all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'b'),
-               literal_multiple('Video/Film', 'Video/Film|Videocassette (VHS)')
-             )
-
-    to_field 'format_hsim',
-             condition(
-               marc_subfield_contains?('538', subfield: 'a', value: 'VHS'),
-               literal_multiple('Video/Film', 'Video/Film|Videocassette (VHS)')
-             )
-
-    to_field 'format_hsim',
-             condition(
-               control_field_byte?('007', byte: 0, value: 'm'),
-               literal_multiple('Video game')
+               marc_subfield_contains?('655', subfield: 'a', value: 'Video game'),
+               literal('Video game')
              )
 
     to_field 'format_hsim',
@@ -430,8 +435,8 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               leader?(byte: 6, value: 'm'),
-               control_field_byte?('008', byte: 26, value: 'g'),
+               leader?(byte: 7, value: 's'),
+               control_field_byte?('008', byte: 21, values: %w[h w]),
                literal('Website')
              )
 
