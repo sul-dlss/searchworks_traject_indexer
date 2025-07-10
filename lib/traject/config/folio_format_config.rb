@@ -72,6 +72,11 @@ module FolioFormatConfig
                literal('Database')
              )
 
+    # Statistical code is 'Database'
+    to_field 'format_hsim' do |record, accumulator, _context|
+      accumulator << 'Database' if record.statistical_codes.any? { |stat_code| stat_code['name'] == 'Database' }
+    end
+
     to_field 'format_hsim',
              all_conditions(
                leader?(byte: 6, value: 'm'),
