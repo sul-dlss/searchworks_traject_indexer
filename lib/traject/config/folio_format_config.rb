@@ -418,7 +418,7 @@ module FolioFormatConfig
     to_field 'format_hsim',
              condition(
                control_field_byte?('007', byte: 0, value: 'm'),
-               literal_multiple('Video game')
+               literal_multiple('Video/Film', 'Video/Film|Film reel')
              )
 
     to_field 'format_hsim',
@@ -430,8 +430,8 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               leader?(byte: 6, value: 'm'),
-               control_field_byte?('008', byte: 26, value: 'g'),
+               leader?(byte: 7, value: 's'),
+               control_field_byte?('008', byte: 21, values: %w[h w]),
                literal('Website')
              )
 
