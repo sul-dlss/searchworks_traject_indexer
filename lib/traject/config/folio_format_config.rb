@@ -376,43 +376,37 @@ module FolioFormatConfig
              )
 
     to_field 'format_hsim',
-             condition(
-               control_field_byte?('007', byte: 0, value: 'm'),
-               literal_multiple('Video/Film', 'Video/Film|Film reel')
-             )
-
-    to_field 'format_hsim',
-             all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'q'),
-               literal_multiple('Video/Film', 'Video/Film|Hi-8 mm')
-             )
-
-    to_field 'format_hsim',
              all_conditions(
                control_field_byte?('007', byte: 0, value: 'v'),
                control_field_byte?('007', byte: 4, value: 'g'),
-               literal_multiple('Video/Film', 'Video/Film|Laser disc')
+               literal_multiple('Video/Film', 'Video/Film|DVD') # Laser disc
              )
 
     to_field 'format_hsim',
              all_conditions(
                control_field_byte?('007', byte: 0, value: 'v'),
                control_field_byte?('007', byte: 4, values: %w[a i j]),
-               literal_multiple('Video/Film', 'Video/Film|Videocassette (Beta)')
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # Beta
              )
 
     to_field 'format_hsim',
              all_conditions(
                control_field_byte?('007', byte: 0, value: 'v'),
                control_field_byte?('007', byte: 4, value: 'b'),
-               literal_multiple('Video/Film', 'Video/Film|Videocassette (VHS)')
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # VHS
              )
 
     to_field 'format_hsim',
              condition(
                marc_subfield_contains?('538', subfield: 'a', value: 'VHS'),
-               literal_multiple('Video/Film', 'Video/Film|Videocassette (VHS)')
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # VHS
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
+               control_field_byte?('007', byte: 0, value: 'v'),
+               control_field_byte?('007', byte: 4, value: 'q'),
+               literal_multiple('Video/Film', 'Video/Film|Videocassette') # Hi-8 mm
              )
 
     to_field 'format_hsim',
