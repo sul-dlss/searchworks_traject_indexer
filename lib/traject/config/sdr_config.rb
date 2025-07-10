@@ -258,6 +258,22 @@ to_field 'publication_year_isi' do |record, accumulator|
 end
 
 to_field 'format_main_ssim', stanford_mods(:format_main)
+to_field 'format_hsim' do |_record, accumulator, context|
+  Array(context.output_hash['format_main_ssim']).each do |format|
+    case format
+    when 'Archived website'
+      accumulator << 'Website'
+      accumulator << 'Website|Archived website'
+    when 'Music recording'
+      accumulator << 'Sound recording'
+    when 'Video'
+      accumulator << 'Video/Film'
+    else
+      accumulator << format
+    end
+  end
+end
+
 to_field 'genre_ssim', stanford_mods(:sw_genre)
 to_field 'language', stanford_mods(:sw_language_facet)
 to_field 'physical', stanford_mods(:term_values, %i[physical_description extent])
