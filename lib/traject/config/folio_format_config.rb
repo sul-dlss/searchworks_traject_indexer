@@ -271,14 +271,14 @@ module FolioFormatConfig
              all_conditions(
                control_field_byte?('007', byte: 0, value: 's'),
                control_field_byte?('007', byte: 3, value: 'b'),
-               literal_multiple('Sound recording', 'Sound recording|33 rpm disc (vinyl LP)')
+               literal_multiple('Sound recording', 'Sound recording|Vinyl disc') # 33 rpm disc (vinyl LP)')
              )
 
     to_field 'format_hsim',
              all_conditions(
                control_field_byte?('007', byte: 0, value: 's'),
                control_field_byte?('007', byte: 3, value: 'c'),
-               literal_multiple('Sound recording', 'Sound recording|45 rpm disc (vinyl)')
+               literal_multiple('Sound recording', 'Sound recording|Vinyl disc') # 45 rpm disc (vinyl)')
              )
 
     to_field 'format_hsim',
