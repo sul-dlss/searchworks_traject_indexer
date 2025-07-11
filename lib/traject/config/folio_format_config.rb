@@ -233,7 +233,11 @@ module FolioFormatConfig
                literal('Newspaper')
              )
 
-    # TODO: Object
+    to_field 'format_hsim',
+             all_conditions(
+               leader?(byte: 6, value: 'r'),
+               literal('Object')
+             )
 
     # This condition contains negative logic to exclude certain values.
     # This pattern differs from the custom macros we wrote for other blocks, so it is written out longhand.
