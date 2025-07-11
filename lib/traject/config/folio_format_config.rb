@@ -53,7 +53,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               leader?(byte: 7, value: 's'),
+               leader?(byte: 7, values: %w[i s]),
                control_field_byte?('008', byte: 21, value: 'd'),
                literal('Database')
              )
