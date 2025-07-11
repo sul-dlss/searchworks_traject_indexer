@@ -26,9 +26,24 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              condition(
-               marc_subfield_contains?('245', subfield: 'h', values: ['manuscript', 'manuscript/digital']),
+               marc_subfield_contains?('245', subfield: 'h', values: ['manuscript']),
                literal('Archive/Manuscript')
              )
+
+    # /* If the call number prefixes in the MARC 999a are for Archive/Manuscript items, add Archive/Manuscript format
+    #  * A (e.g. A0015), F (e.g. F0110), M (e.g. M1810), MISC (e.g. MISC 1773), MSS CODEX (e.g. MSS CODEX 0335),
+    #   MSS MEDIA (e.g. MSS MEDIA 0025), MSS PHOTO (e.g. MSS PHOTO 0463), MSS PRINTS (e.g. MSS PRINTS 0417),
+    #   PC (e.g. PC0012), SC (e.g. SC1076), SCD (e.g. SCD0012), SCM (e.g. SCM0348), and V (e.g. V0321).  However,
+    #   A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
+    #   the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
+    #  */
+    to_field 'format_hsim' do |record, accumulator, context|
+      if items(record, context).any? do |item|
+          item.library == 'SPEC-COLL' && item.call_number_type == 'ALPHANUM' && item.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
+        end
+        accumulator << 'Archive/Manuscript'
+      end
+    end
 
     to_field 'format_hsim',
              all_conditions(
