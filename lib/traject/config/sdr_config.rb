@@ -268,6 +268,8 @@ to_field 'format_hsim' do |_record, accumulator, context|
       accumulator << 'Sound recording'
     when 'Video'
       accumulator << 'Video/Film'
+    when 'Software/Multimedia'
+      accumulator << 'Software/multimedia'
     else
       accumulator << format
     end
