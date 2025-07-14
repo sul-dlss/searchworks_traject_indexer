@@ -320,7 +320,7 @@ RSpec.describe 'format_hsim config' do
       end
     end
 
-    context 'when record is Software/multimedia' do
+    context 'when record is Software/Multimedia' do
       context 'when leader[6] = m and 008 is missing' do
         let(:record) do
           MARC::Record.new.tap do |r|
@@ -328,8 +328,8 @@ RSpec.describe 'format_hsim config' do
           end
         end
 
-        it 'maps to Software/multimedia' do
-          expect(result[field]).to eq ['Software/multimedia']
+        it 'maps to Software/Multimedia' do
+          expect(result[field]).to eq ['Software/Multimedia']
         end
       end
 
@@ -342,12 +342,12 @@ RSpec.describe 'format_hsim config' do
           end
         end
 
-        it 'maps to Software/multimedia' do
-          expect(result[field]).to eq ['Software/multimedia']
+        it 'maps to Software/Multimedia' do
+          expect(result[field]).to eq ['Software/Multimedia']
         end
       end
 
-      # If 008[26] is a, g, or j, it should not map to Software/multimedia
+      # If 008[26] is a, g, or j, it should not map to Software/Multimedia
       context 'when leader[6] = m and 008[26] is j' do
         let(:record) do
           MARC::Record.new.tap do |r|
@@ -357,7 +357,7 @@ RSpec.describe 'format_hsim config' do
         end
 
         # In this case it is covered by another rule
-        it 'does not map to Software/multimedia' do
+        it 'does not map to Software/Multimedia' do
           expect(result[field]).to eq ['Database']
         end
       end
