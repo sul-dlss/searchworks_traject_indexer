@@ -248,14 +248,14 @@ module FolioFormatConfig
       field008 = record['008']
       excluded_values = %w[a g j]
       byte26 = field008.value[26] if field008
-      accumulator << 'Software/multimedia' if field008.nil? || byte26.nil? || !excluded_values.include?(byte26)
+      accumulator << 'Software/Multimedia' if field008.nil? || byte26.nil? || !excluded_values.include?(byte26)
     end
 
     to_field 'format_hsim',
              all_conditions(
                marc_subfield_contains?('245', subfield: 'h', value: 'kit'),
                control_field_byte?('007', byte: 0, value: 'c'),
-               literal('Software/multimedia')
+               literal('Software/Multimedia')
              )
 
     to_field 'format_hsim',
