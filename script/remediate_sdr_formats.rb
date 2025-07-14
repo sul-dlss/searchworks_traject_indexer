@@ -19,6 +19,8 @@ def format_hsim(format_main_ssim)
       accumulator << 'Website|Archived website'
     when 'Music recording'
       accumulator << 'Sound recording'
+    when 'Software/Multimedia'
+      accumulator << 'Software/multimedia'      
     when 'Video'
       accumulator << 'Video/Film'
     else
