@@ -353,7 +353,7 @@ module FolioFormatConfig
              all_conditions(
                control_field_byte?('007', byte: 0, value: 'v'),
                control_field_byte?('007', byte: 4, value: 's'),
-               literal_multiple('Video/Film', 'Video/Film|Blue-ray')
+               literal_multiple('Video/Film', 'Video/Film|Blu-ray')
              )
 
     blu_ray_terms = ['Bluray', 'Blu-ray', 'Blu ray']
@@ -361,13 +361,13 @@ module FolioFormatConfig
     to_field 'format_hsim',
              condition(
                marc_subfield_contains?('538', subfield: 'a', values: blu_ray_terms),
-               literal_multiple('Video/Film', 'Video/Film|Blue-ray')
+               literal_multiple('Video/Film', 'Video/Film|Blu-ray')
              )
 
     to_field 'format_hsim' do |record, acc, _ctx|
       if record.holdings.any? { |h| h['callNumber']&.include?('BLU-RAY') }
         acc << 'Video/Film'
-        acc << 'Video/Film|Blue-ray'
+        acc << 'Video/Film|Blu-ray'
       end
     end
 
