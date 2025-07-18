@@ -2051,6 +2051,13 @@ to_field 'library_code_facet_ssim' do |record, accumulator, context|
 end
 
 to_field 'library_code_facet_ssim' do |record, accumulator|
+  next if record.index_items.any?
+
+  eholdings = record.holdings.select { |holding| holding.dig('holdingsType', 'name') == 'Electronic' || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
+  accumulator.concat(eholdings.map { |holding| holding.dig('location', 'effectiveLocation', 'library', 'code') }.uniq)
+end
+
+to_field 'library_code_facet_ssim' do |record, accumulator|
   Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, _spec, _extractor|
     accumulator << 'SDR' if field['x']&.include?('SDR-PURL') || field['u']&.include?('purl.stanford.edu')
   end

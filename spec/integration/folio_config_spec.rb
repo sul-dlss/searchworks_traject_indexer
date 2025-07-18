@@ -249,6 +249,7 @@ RSpec.describe 'FOLIO indexing' do
       end
 
       it { expect(result['building_facet']).to eq ['Law (Crown)'] }
+      it { expect(result['library_code_facet_ssim']).to eq ['LAW'] }
       it { expect(result['holdings_library_code_ssim']).to eq ['LAW'] }
     end
 
