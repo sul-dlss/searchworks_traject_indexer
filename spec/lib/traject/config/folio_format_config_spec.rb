@@ -156,7 +156,7 @@ RSpec.describe 'format_hsim config' do
     end
 
     # TODO: Need to stub FOLIO record/holdings.
-    # Then test Equipment and Video/Film|Blue-ray
+    # Then test Equipment and Video/Film|Blu-ray
 
     context 'when record is an Image' do
       context 'when leader[6] = k and 008[33] matches [aciklnopst 0-9|]' do
@@ -315,7 +315,7 @@ RSpec.describe 'format_hsim config' do
         end
 
         it 'maps to Video/Film' do
-          expect(result[field]).to eq ['Video/Film', 'Video/Film|Blue-ray']
+          expect(result[field]).to eq ['Video/Film', 'Video/Film|Blu-ray']
         end
       end
     end
