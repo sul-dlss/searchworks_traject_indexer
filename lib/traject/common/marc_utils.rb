@@ -2,6 +2,7 @@
 
 CONTENT_ADVICE_LABEL = 'Content advice'
 module Traject
+  # rubocop:disable Metrics/ModuleLength
   module MarcUtils
     def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
       lambda do |record, accumulator, context|
@@ -347,7 +348,21 @@ module Traject
     end
 
     # @return [Array]
-    def get_unmatched_vernacular(marc, tag, label = '')
+    def get_unmatched_vernacular(marc, tag)
+      extract_unmatched_vernacular(marc) do |field, link|
+        link[:number] == '00' && link[:tag] == tag && !(tag == '520' && field.indicator1 == '4')
+      end
+    end
+
+    # @return [Array]
+    def get_content_advice_from_unmatched_vernacular(marc)
+      extract_unmatched_vernacular(marc) do |field, link|
+        link[:number] == '00' && link[:tag] == '520' && field.indicator1 == '4'
+      end
+    end
+
+    # @return [Array]
+    def extract_unmatched_vernacular(marc, &)
       return [] unless marc['880']
 
       fields = []
@@ -356,10 +371,7 @@ module Traject
         text = []
         link = parse_linkage(field)
 
-        next unless link[:number] == '00' && link[:tag] == tag
-
-        content_advice = (tag == '520' && field.indicator1 == '4')
-        next if content_advice != (label == CONTENT_ADVICE_LABEL)
+        next unless yield(field, link)
 
         field.each do |sub|
           next if Constants::EXCLUDE_FIELDS.include?(sub.code)
@@ -411,4 +423,5 @@ module Traject
       [value]
     end
   end
+  # rubocop:enable Metrics/ModuleLength
 end
