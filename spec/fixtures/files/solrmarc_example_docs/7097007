@@ -38,7 +38,7 @@
       "Probabilities.",
       "Electric Power Research Institute Technical Reports."],
     "format":["Book"],
-    "callnum_search":["EPRI NP-1570 V.1",
+    "alphanum_callnum_search":["EPRI NP-1570 V.1",
       "EPRI NP-1570 V.2"],
     "title_sort":"Verification of fault tree analysis",
     "barcode_search":["36105129611187",
