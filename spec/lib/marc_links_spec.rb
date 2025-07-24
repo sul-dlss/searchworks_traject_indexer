@@ -33,6 +33,26 @@ RSpec.describe MarcLinks::Processor do
                                additional_links: [{ href: 'https://www.otherlink.edu' }])
       }
     end
+
+    context 'with a 8567 = 0' do
+      let(:field) do
+        MARC::DataField.new('856', '4', '0',
+                            ['u', 'https://www.somelink.edu'],
+                            %w[7 0])
+      end
+
+      it { is_expected.to include(access: 'open') }
+    end
+
+    context 'with a 8567 = 1' do
+      let(:field) do
+        MARC::DataField.new('856', '4', '0',
+                            ['u', 'https://www.somelink.edu'],
+                            %w[7 1])
+      end
+
+      it { is_expected.to include(access: 'restricted') }
+    end
   end
 
   describe '#link_is_fulltext?' do
