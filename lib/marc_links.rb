@@ -38,6 +38,7 @@ module MarcLinks
         link_title:,
         additional_text:,
         additional_links:,
+        access:,
         material_type: field['3'],
         note: subzs,
         href:,
@@ -132,8 +133,12 @@ module MarcLinks
       end
     end
 
+    def subfields(code, delimiter = ' ')
+      field.subfields.select { |sf| sf.code == code }.map(&:value).join(delimiter)
+    end
+
     def subzs
-      @subzs ||= field.select { |sf| sf.code == 'z' }.map(&:value).join(' ')
+      @subzs ||= subfields('z')
     end
 
     def link_title
@@ -181,6 +186,17 @@ module MarcLinks
 
     def druid
       href.gsub(%r{^https?://purl.stanford.edu/?}, '') if href && /purl.stanford.edu/.match?(href)
+    end
+
+    def access
+      case field['7']
+      when '0'
+        'open'
+      when '1'
+        'restricted'
+      else
+        subfields('n')
+      end
     end
   end
 end
