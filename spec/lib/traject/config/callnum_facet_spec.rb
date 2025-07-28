@@ -119,7 +119,7 @@ RSpec.describe 'Call Number Facet' do
 
       context 'with F call' do
         let(:call_number) { 'F1356 .M464 2005' }
-        it { is_expected.to eq ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)|F - United States, British, Dutch, French, Latin America (Local History)'] }
+        it { is_expected.to eq ['LC Classification|F - United States, British, Dutch, French, Latin America (Local History)'] }
       end
 
       context 'with M call' do

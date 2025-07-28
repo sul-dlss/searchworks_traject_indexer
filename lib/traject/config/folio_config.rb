@@ -1706,7 +1706,7 @@ to_field 'callnum_facet_hsim' do |record, accumulator, context|
     accumulator << [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters]
+      (translation_map[letters] unless first_letter.in?(%w[E F]))
     ].compact.join('|')
   end
 end
@@ -1752,7 +1752,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
     [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters]
+      (translation_map[letters] unless first_letter.in?(%w[E F]))
     ].compact.join('|')
   end
 
@@ -1776,7 +1776,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
     [
       'LC Classification',
       translation_map[first_letter],
-      translation_map[letters]
+      (translation_map[letters] unless first_letter.in?(%w[E F]))
     ].compact.join('|')
   end
 
