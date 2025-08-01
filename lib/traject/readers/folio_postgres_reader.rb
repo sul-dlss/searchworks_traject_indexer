@@ -62,6 +62,7 @@ module Traject
             jsonb_build_object = Utils.encoding_cleanup(row['jsonb_build_object'])
             data = JSON.parse(jsonb_build_object)
 
+            merge_individually_queried_data!(data)
             merge_separately_queried_data!(data)
 
             yield FolioRecord.new(data)
@@ -82,6 +83,14 @@ module Traject
 
     def cursor_name
       "#{@cursor_base_name}_#{cursor_type}"
+    end
+
+    def merge_individually_queried_data!(row)
+      @connection.exec(pieces_sql_query(["vi.id = '#{row.dig('instance', 'id')}'"])).each do |piece_row|
+        row['pieces'] = piece_row['pieces'] if piece_row['pieces']
+        row['holdingSummaries'] = piece_row['holdingSummaries'] if piece_row['holdingSummaries']
+        row.delete('po_lines')
+      end if row['po_lines']&.positive?
     end
 
     # As of December 2023, we found that pulling in this infrequently changed data separate from the main query resulted
@@ -277,6 +286,44 @@ module Traject
       "(#{conditions.join(') UNION (')})"
     end
 
+    def pieces_sql_query(conditions, addl_from: nil)
+      <<-SQL
+      SELECT
+          jsonb_build_object(
+            'pieces',
+              COALESCE(
+                jsonb_agg(
+                  DISTINCT pieces.jsonb
+                ),
+              '[]'::jsonb),
+            'holdingSummaries',
+              COALESCE(
+                jsonb_agg(
+                  DISTINCT jsonb_build_object(
+                    'poLineId', po_line.id,
+                    'poLineNumber', po_line.jsonb ->> 'poLineNumber',
+                    'polReceiptStatus', po_line.jsonb ->> 'receiptStatus',
+                    'orderType', purchase_order.jsonb ->> 'orderType',
+                    'orderStatus', purchase_order.jsonb ->> 'workflowStatus',
+                    'orderSentDate', purchase_order.jsonb ->> 'dateOrdered',
+                    'orderCloseReason', purchase_order.jsonb #> '{closeReason}'
+                  )),
+              '[]'::jsonb)
+          )
+          FROM sul_mod_inventory_storage.instance vi
+        -- Holding Summaries (purchase order) relation
+        LEFT JOIN sul_mod_orders_storage.po_line po_line
+            ON (po_line.jsonb ->> 'instanceId')::uuid = vi.id
+        LEFT JOIN sul_mod_orders_storage.purchase_order purchase_order
+            ON purchase_order.id = po_line.purchaseOrderId
+        LEFT JOIN sul_mod_orders_storage.pieces pieces
+            ON pieces.polineid = po_line.id
+      #{addl_from}
+      WHERE #{conditions.join(' AND ')}
+      GROUP BY vi.id
+      SQL
+    end
+
     def ids_sql_query(conditions, addl_from: nil)
       <<-SQL
       SELECT
@@ -404,25 +451,7 @@ module Traject
                   )
                 ) FILTER (WHERE hr.id IS NOT NULL), '[]'::jsonb
               ),
-            'pieces',
-              COALESCE(
-                jsonb_agg(
-                  DISTINCT pieces.jsonb
-                ),
-              '[]'::jsonb),
-            'holdingSummaries',
-              COALESCE(
-                jsonb_agg(
-                  DISTINCT jsonb_build_object(
-                    'poLineId', po_line.id,
-                    'poLineNumber', po_line.jsonb ->> 'poLineNumber',
-                    'polReceiptStatus', po_line.jsonb ->> 'receiptStatus',
-                    'orderType', purchase_order.jsonb ->> 'orderType',
-                    'orderStatus', purchase_order.jsonb ->> 'workflowStatus',
-                    'orderSentDate', purchase_order.jsonb ->> 'dateOrdered',
-                    'orderCloseReason', purchase_order.jsonb #> '{closeReason}'
-                  )),
-              '[]'::jsonb)
+            'po_lines', COUNT(po_line.id)
             )
       FROM sul_mod_inventory_storage.instance vi
       LEFT JOIN sul_mod_inventory_storage.holdings_record hr
@@ -460,10 +489,6 @@ module Traject
       -- Holding Summaries (purchase order) relation
       LEFT JOIN sul_mod_orders_storage.po_line po_line
           ON (po_line.jsonb ->> 'instanceId')::uuid = vi.id
-      LEFT JOIN sul_mod_orders_storage.purchase_order purchase_order
-          ON purchase_order.id = po_line.purchaseOrderId
-      LEFT JOIN sul_mod_orders_storage.pieces pieces
-          ON pieces.polineid = po_line.id
       -- Bound with parts relation
       LEFT JOIN sul_mod_inventory_storage.bound_with_part bw
           ON bw.holdingsrecordid = hr.id
