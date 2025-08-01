@@ -2128,11 +2128,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
     lopped_call_number = item.call_number.base_call_number
 
     if item.shelved_by_location?
-      shelved_by_text = if [item.display_location_code, item.temporary_location_code].include? 'SCI-SHELBYSERIES'
-                          'Shelved by Series title'
-                        else
-                          'Shelved by title'
-                        end
+      shelved_by_text = item.shelved_by_text
 
       call_number = [shelved_by_text, item.call_number.volume_info].compact.join(' ')
     end
