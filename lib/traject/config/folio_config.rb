@@ -1570,7 +1570,7 @@ def summary(marc, accumulator)
     end
   end
 
-  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  accumulate_summary_struct_fields(matching_fields, label, marc, accumulator)
 end
 
 def content_advice(marc, accumulator)
@@ -1580,10 +1580,10 @@ def content_advice(marc, accumulator)
     f.tag == tag && f.indicator1 == '4'
   end
 
-  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  accumulate_summary_struct_fields(matching_fields, label, marc, accumulator)
 end
 
-def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+def accumulate_summary_struct_fields(matching_fields, label, marc, accumulator)
   fields = []
   unmatched_vern = []
   if matching_fields.any?
@@ -1601,7 +1601,11 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
       fields << { field: field_text, vernacular: get_marc_vernacular(marc, field) } unless field_text.empty?
     end
   else
-    unmatched_vern = get_unmatched_vernacular(marc, tag, label)
+    unmatched_vern = if label == CONTENT_ADVICE_LABEL
+                       get_content_advice_from_unmatched_vernacular(marc)
+                     else
+                       get_unmatched_vernacular(marc, '520')
+                     end
   end
 
   accumulator << { label:, fields:,
