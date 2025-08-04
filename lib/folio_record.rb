@@ -93,7 +93,7 @@ class FolioRecord
   end
 
   def pieces
-    @pieces ||= record.fetch('pieces') { client.pieces(instance_id:) }.compact
+    @pieces ||= record.fetch('pieces') { client&.pieces(instance_id:) || [] }.compact
   end
 
   def statistical_codes
