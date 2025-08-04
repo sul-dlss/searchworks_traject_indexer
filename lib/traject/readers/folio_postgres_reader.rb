@@ -89,8 +89,12 @@ module Traject
       @connection.exec(pieces_sql_query(["vi.id = '#{row.dig('instance', 'id')}'"])).each do |piece_row|
         row['pieces'] = piece_row['pieces'] if piece_row['pieces']
         row['holdingSummaries'] = piece_row['holdingSummaries'] if piece_row['holdingSummaries']
+
         row.delete('po_lines')
       end if row['po_lines']&.positive?
+
+      row['pieces'] ||= []
+      row['holdingSummaries'] ||= []
     end
 
     # As of December 2023, we found that pulling in this infrequently changed data separate from the main query resulted
