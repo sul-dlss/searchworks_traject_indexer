@@ -17,6 +17,10 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 ENV['SKIP_EMPTY_ITEM_DISPLAY'] = '-2'
 
+Honeybadger.configure do |config|
+  config.env = 'test'
+end
+
 def file_fixture_path
   File.join(__dir__, 'fixtures', 'files')
 end
