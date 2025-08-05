@@ -2127,7 +2127,7 @@ to_field 'item_display_struct' do |record, accumulator, context|
     volume_sort = item.call_number.shelfkey(serial:).forward
     lopped_call_number = item.call_number.base_call_number
 
-    if item.shelved_by_location?
+    if item.shelved_by_text
       shelved_by_text = item.shelved_by_text
 
       call_number = [shelved_by_text, item.call_number.volume_info].compact.join(' ')

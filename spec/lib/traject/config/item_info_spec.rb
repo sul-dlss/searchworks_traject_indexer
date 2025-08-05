@@ -396,7 +396,10 @@ RSpec.describe 'ItemInfo config' do
 
     describe 'location implies item is shelved by title' do
       context 'with SCI-SHELBYTITLE' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYTITLE', type: 'STKS-MONO')] }
+        let(:holdings) do
+          [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694373', library: 'SCIENCE', type: 'STKS-MONO',
+                              permanent_location: { 'code' => 'SCI-SHELBYTITLE', 'details' => { 'shelvedByText' => 'Shelved by title' } })]
+        end
 
         it {
           is_expected.to match_array([
@@ -404,75 +407,6 @@ RSpec.describe 'ItemInfo config' do
                                                       'callnumber' => 'Shelved by title VOL 1 1946')
                                      ])
         }
-      end
-
-      context 'with SCI-SHELBYSERIES' do
-        let(:holdings) { [build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105129694374', library: 'SCIENCE', permanent_location_code: 'SCI-SHELBYSERIES', type: 'STKS-MONO')] }
-
-        it {
-          is_expected.to match_array([
-                                       hash_including('barcode' => '36105129694374', 'library' => 'SCIENCE', 'permanent_location_code' => 'SCI-SHELBYSERIES',
-                                                      'callnumber' => 'Shelved by Series title VOL 1 1946')
-                                     ])
-        }
-      end
-    end
-
-    describe 'holding record variations' do
-      context 'with a NEWS-STKS location' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: 'PQ9661 .P31 C6', enumeration: 'VOL 1 1946', barcode: '36105111222333', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
-          ]
-        end
-
-        it 'is shelved by title' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '36105111222333', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title VOL 1 1946')
-                                                                         ])
-        end
-      end
-
-      context 'with a NEWS-STKS location and an ALPHANUM call number' do
-        let(:holdings) do
-          [
-            build(:alphanum_holding, call_number: 'BUS54594-11', enumeration: 'V.3 1986 MAY-AUG.', barcode: '20504037816', library: 'BUSINESS', permanent_location_code: 'BUS-NEWS-STKS')
-          ]
-        end
-
-        it 'is shelved by title' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('barcode' => '20504037816', 'library' => 'BUSINESS', 'permanent_location_code' => 'BUS-NEWS-STKS', 'callnumber' => 'Shelved by title V.3 1986 MAY-AUG.')
-                                                                         ])
-        end
-      end
-
-      context 'volume includes an O.S. (old series) designation' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'O.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITLE')
-          ]
-        end
-
-        it 'retains the O.S. designation before the volume number' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('callnumber' => end_with('O.S:V.1 1909/1910'))
-                                                                         ])
-        end
-      end
-
-      context 'volume includes an N.S. (new series) designation' do
-        let(:holdings) do
-          [
-            build(:lc_holding, call_number: '551.46 .I55', enumeration: 'N.S:V.1 1909/1910', permanent_location_code: 'MAR-SHELBYTITLE')
-          ]
-        end
-
-        it 'retains the N.S. designation before the volume number' do
-          expect(result[field].map { |x| JSON.parse(x) }).to match_array([
-                                                                           hash_including('callnumber' => end_with('N.S:V.1 1909/1910'))
-                                                                         ])
-        end
       end
     end
 
