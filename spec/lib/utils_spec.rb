@@ -45,6 +45,8 @@ RSpec.describe Utils do
     it 'returns the prefix before whitespace or punctuation' do
       expect(described_class.longest_common_call_number_prefix('HE 20.3002:D 56 /V.3/PT.1', 'HE 20.3002:D 56 /V.1/PT.3')).to eq 'HE 20.3002:D 56'
       expect(described_class.longest_common_call_number_prefix('S 1.1:873/V.1', 'S 1.1:917/SUPPL.2/V.2')).to eq 'S 1.1'
+      expect(described_class.longest_common_call_number_prefix('Y 1.1/7:118-3/V.1', 'Y 1.1/7:108-88/V2')).to eq 'Y 1.1/7'
+      expect(described_class.longest_common_call_number_prefix('ZDVD 30350 3D BLU-RAY', 'ZDVD 30350 DVD')).to eq 'ZDVD 30350'
     end
 
     it 'returns an empty string if there is only one' do

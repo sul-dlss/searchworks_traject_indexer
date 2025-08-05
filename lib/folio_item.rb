@@ -244,7 +244,7 @@ class FolioItem
       if prefix.length > 4
         original_call_number = base_call_number
         base_call_number = prefix.strip
-        volume_info = original_call_number.delete_prefix(prefix).strip
+        volume_info = original_call_number.delete_prefix(prefix)
       end
     end
 
@@ -326,7 +326,9 @@ class FolioItem
     end
 
     def call_number
-      [base_call_number.to_s, volume_info].compact.join(' ')
+      separator = volume_info.present? && volume_info.start_with?(/(\s|[[:punct:]])/) ? '' : ' '
+
+      [base_call_number.to_s, volume_info].compact.join(separator)
     end
 
     def ignored_call_number?

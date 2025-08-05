@@ -47,8 +47,18 @@ module Utils
     idx = min.size.times { |i| break i if min[i] != max[i] }
     return min if idx == min.length
 
-    substr = min[0...idx].sub(/V?(\s|[[:punct:]])+\z/, '')
-    substr.sub(/(\s|[[:punct:]])+\z/, '')
+    # backtrack to "V."
+    if min[0...idx].include? 'V.'
+      idx = min[0...idx].rindex('V.') || idx
+      return min[0...idx].sub(/(\s|[[:punct:]])+\z/, '')
+    end
+
+    # if we broke at some punctuation, use that.
+    return min[0...idx].sub(/(\s|[[:punct:]])+\z/, '') if min[idx] =~ /(\s|[[:punct:]])/ && max[idx] =~ /(\s|[[:punct:]])/
+
+    # backtrack to the last whitespace or punctuation
+    idx = min[0...idx].rindex(/(\s|[[:punct:]])/) || idx
+    min[0...idx].sub(/(\s|[[:punct:]])+\z/, '') # remove trailing whitespace or punctuation
   end
 
   # Extract century and decade from year.
