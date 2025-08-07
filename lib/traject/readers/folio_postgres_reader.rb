@@ -59,8 +59,7 @@ module Traject
           break if response.nil?
 
           response.each do |row|
-            jsonb_build_object = Utils.encoding_cleanup(row['jsonb_build_object'])
-            data = JSON.parse(jsonb_build_object)
+            data = extract_jsonb_data(row['jsonb_build_object'])
 
             merge_individually_queried_data!(data)
             merge_separately_queried_data!(data)
@@ -81,14 +80,21 @@ module Traject
 
     private
 
+    def extract_jsonb_data(value)
+      jsonb_build_object = Utils.encoding_cleanup(value)
+      JSON.parse(jsonb_build_object)
+    end
+
     def cursor_name
       "#{@cursor_base_name}_#{cursor_type}"
     end
 
     def merge_individually_queried_data!(row)
       @connection.exec(pieces_sql_query(["vi.id = '#{row.dig('instance', 'id')}'"])).each do |piece_row|
-        row['pieces'] = piece_row['pieces'] if piece_row['pieces']
-        row['holdingSummaries'] = piece_row['holdingSummaries'] if piece_row['holdingSummaries']
+        data = extract_jsonb_data(piece_row['jsonb_build_object'])
+
+        row['pieces'] = data['pieces'] if data['pieces']
+        row['holdingSummaries'] = data['holdingSummaries'] if data['holdingSummaries']
 
         row.delete('po_lines')
       end if row['po_lines']&.positive?
