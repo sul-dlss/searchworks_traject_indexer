@@ -161,9 +161,9 @@ module Traject
                        POST_TEXT_SUBFIELDS.include?(subfield.code) || !linked?(tag, subfield)
                      end.each do |subfield|
                        if subfield.code == '4'
-                         subfield.value = Constants::RELATOR_TERMS[subfield.value] || subfield.value
+                         subfield.value = Constants::RELATOR_TERMS[subfield.value]
                        end
-                     end.map(&:value).join(' '),
+                     end.filter_map(&:value).join(' '),
           authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
           rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
         }.reject { |_k, v| v.empty? }
@@ -224,7 +224,7 @@ module Traject
         if subfield.code == 'e'
           relator_text << subfield.value
         elsif subfield.code == '4'
-          relator_text << (Constants::RELATOR_TERMS[subfield.value] || subfield.value)
+          relator_text << Constants::RELATOR_TERMS[subfield.value] if Constants::RELATOR_TERMS[subfield.value]
         elsif field.tag == '711' && subfield.code == 'j'
           extra_text << subfield.value
         elsif subfield.code != 'e' and subfield.code != '4'
