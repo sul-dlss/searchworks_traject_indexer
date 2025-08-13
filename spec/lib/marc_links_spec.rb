@@ -174,4 +174,12 @@ RSpec.describe MarcLinks::Processor do
       it { expect(marc_link.stanford_only?).to be false }
     end
   end
+
+  describe '#ebsco_i' do
+    context 'with an 856 field that has an "i" subfield' do
+      let(:field) { MARC::DataField.new('856', '4', '0', ['u', 'https://www.somelink.edu'], ['i', 'Some link text']) }
+
+      it { expect(marc_link.as_h).to include(ebsco_i: 'Some link text') }
+    end
+  end
 end

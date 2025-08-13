@@ -41,6 +41,7 @@ module MarcLinks
         access:,
         material_type: field['3'],
         note: subzs,
+        ebsco_i: subfields('i'),
         href:,
         sort: purl_info['sort'],
         casalini: link_is_casalini?,
