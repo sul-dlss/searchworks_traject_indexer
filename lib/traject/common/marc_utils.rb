@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-CONTENT_ADVICE_LABEL = 'Content advice'
 module Traject
   module MarcUtils
     def extract_marc_and_prefer_non_alternate_scripts(spec, options = {})
@@ -347,7 +346,7 @@ module Traject
     end
 
     # @return [Array]
-    def get_unmatched_vernacular(marc, tag, label = '')
+    def get_unmatched_vernacular(marc, tag, selector = nil)
       return [] unless marc['880']
 
       fields = []
@@ -357,9 +356,7 @@ module Traject
         link = parse_linkage(field)
 
         next unless link[:number] == '00' && link[:tag] == tag
-
-        content_advice = (tag == '520' && field.indicator1 == '4')
-        next if content_advice != (label == CONTENT_ADVICE_LABEL)
+        next unless selector.nil? || selector.call(field)
 
         field.each do |sub|
           next if Constants::EXCLUDE_FIELDS.include?(sub.code)

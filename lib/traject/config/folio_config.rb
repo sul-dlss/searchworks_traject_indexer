@@ -1559,36 +1559,21 @@ to_field 'summary_struct' do |marc, accumulator|
 end
 
 def summary(marc)
-  tag = marc['920'] ? '920' : '520'
-  label = if marc['920']
-            "Publisher's summary"
-          else
-            'Summary'
-          end
-  matching_fields = marc.find_all do |f|
-    if tag == '520'
-      f.tag == tag && f.indicator1 != '4'
-    else
-      f.tag == tag
-    end
+  if marc['920']
+    summary_struct_fields(marc, '920', label: "Publisher's summary")
+  else
+    summary_struct_fields(marc, '520', ->(f) { f.indicator1 != '4' }, label: 'Summary')
   end
-
-  accumulate_summary_struct_fields(marc, matching_fields, tag, label)
 end
 
 def content_advice(marc)
-  tag = '520'
-  label = CONTENT_ADVICE_LABEL
-  matching_fields = marc.find_all do |f|
-    f.tag == tag && f.indicator1 == '4'
-  end
-
-  accumulate_summary_struct_fields(marc, matching_fields, tag, label)
+  summary_struct_fields(marc, '520', ->(f) { f.indicator1 == '4' }, label: 'Content advice')
 end
 
-def accumulate_summary_struct_fields(marc, matching_fields, tag, label)
+def summary_struct_fields(marc, tag, selector = nil, **addl_metadata)
+  matching_fields = marc.find_all { |f| f.tag == tag && (selector.nil? || selector.call(f)) }
   fields = []
-  unmatched_vern = []
+  unmatched_vernacular = []
   if matching_fields.any?
     matching_fields.each do |field|
       field_text = []
@@ -1604,10 +1589,10 @@ def accumulate_summary_struct_fields(marc, matching_fields, tag, label)
       fields << { field: field_text, vernacular: get_marc_vernacular(marc, field) } unless field_text.empty?
     end
   else
-    unmatched_vern = get_unmatched_vernacular(marc, tag, label)
+    unmatched_vernacular = get_unmatched_vernacular(marc, tag, selector)
   end
 
-  { label:, fields:, unmatched_vernacular: unmatched_vern } if !fields.empty? || !unmatched_vern.empty?
+  { **addl_metadata, fields:, unmatched_vernacular: } unless fields.empty? && unmatched_vernacular.empty?
 end
 
 to_field 'context_search', extract_marc('518a', alternate_script: false)
