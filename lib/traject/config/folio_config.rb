@@ -1551,11 +1551,14 @@ to_field 'toc_struct' do |marc, accumulator|
 end
 
 to_field 'summary_struct' do |marc, accumulator|
-  summary(marc, accumulator)
-  content_advice(marc, accumulator)
+  result = summary(marc)
+  accumulator << result if result
+
+  result = content_advice(marc)
+  accumulator << result if result
 end
 
-def summary(marc, accumulator)
+def summary(marc)
   tag = marc['920'] ? '920' : '520'
   label = if marc['920']
             "Publisher's summary"
@@ -1570,20 +1573,20 @@ def summary(marc, accumulator)
     end
   end
 
-  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  accumulate_summary_struct_fields(marc, matching_fields, tag, label)
 end
 
-def content_advice(marc, accumulator)
+def content_advice(marc)
   tag = '520'
   label = CONTENT_ADVICE_LABEL
   matching_fields = marc.find_all do |f|
     f.tag == tag && f.indicator1 == '4'
   end
 
-  accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+  accumulate_summary_struct_fields(marc, matching_fields, tag, label)
 end
 
-def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumulator)
+def accumulate_summary_struct_fields(marc, matching_fields, tag, label)
   fields = []
   unmatched_vern = []
   if matching_fields.any?
@@ -1604,8 +1607,7 @@ def accumulate_summary_struct_fields(matching_fields, tag, label, marc, accumula
     unmatched_vern = get_unmatched_vernacular(marc, tag, label)
   end
 
-  accumulator << { label:, fields:,
-                   unmatched_vernacular: unmatched_vern } if !fields.empty? || !unmatched_vern.empty?
+  { label:, fields:, unmatched_vernacular: unmatched_vern } if !fields.empty? || !unmatched_vern.empty?
 end
 
 to_field 'context_search', extract_marc('518a', alternate_script: false)
