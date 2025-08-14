@@ -1103,9 +1103,13 @@ end
 #   A, F, M, PC, and V are also in the Library of Congress classification which could be in the 999a, so need to make sure that
 #   the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
 #  */
+def spec_coll_item?(item)
+  item.library == 'SPEC-COLL' && item.call_number_type == 'ALPHANUM' && item.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
+end
+
 to_field 'format_main_ssim' do |record, accumulator, context|
   if items(record, context).any? do |item|
-       item.library == 'SPEC-COLL' && item.call_number_type == 'ALPHANUM' && item.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
+       spec_coll_item?(item)
      end
     accumulator << 'Archive/Manuscript'
   end
@@ -1827,8 +1831,10 @@ to_field 'callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped?
+    next if %w[ALPHANUM SUDOC].include?(item.call_number_type)
     next if item.call_number.ignored_call_number? ||
-            item.call_number.bad_lc_lane_call_number?
+            item.call_number.bad_lc_lane_call_number? ||
+            item.call_number.valid_caldoc?
 
     call_number = item.call_number.to_s
 
@@ -1840,6 +1846,72 @@ to_field 'callnum_search' do |record, accumulator, context|
       call_number = call_number.gsub(/\s*\.$/, '') # remove trailing period and any spaces before it
     end
 
+    good_call_numbers << call_number
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
+
+to_field 'alphanum_callnum_search' do |record, accumulator, context|
+  good_call_numbers = []
+  items(record, context).each do |item|
+    next if item.skipped?
+    next unless item.call_number_type == 'ALPHANUM' || item.call_number.valid_caldoc?
+    next if spec_coll_item?(item)
+    next if item.call_number.valid_undoc?
+    next if item.call_number.ignored_call_number?
+
+    call_number = item.call_number.to_s
+    call_number = call_number.strip
+    call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+    good_call_numbers << call_number
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
+
+to_field 'spec_callnum_search' do |record, accumulator, context|
+  good_call_numbers = []
+  items(record, context).each do |item|
+    next if item.skipped?
+    next unless spec_coll_item?(item)
+    next if item.call_number.ignored_call_number?
+
+    call_number = item.call_number.to_s
+    call_number = call_number.strip
+    call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+    good_call_numbers << call_number
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
+
+to_field 'sudoc_callnum_search' do |record, accumulator, context|
+  good_call_numbers = []
+  items(record, context).each do |item|
+    next if item.skipped?
+    next unless item.call_number_type == 'SUDOC'
+    next if item.call_number.ignored_call_number?
+
+    call_number = item.call_number.to_s
+    call_number = call_number.strip
+    call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+    good_call_numbers << call_number
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
+
+to_field 'undoc_callnum_search' do |record, accumulator, context|
+  good_call_numbers = []
+  items(record, context).each do |item|
+    next if item.skipped?
+    next unless item.call_number_type == 'ALPHANUM' && item.call_number.valid_undoc?
+    next if item.call_number.ignored_call_number?
+
+    call_number = item.call_number.to_s
+    call_number = call_number.strip
+    call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     good_call_numbers << call_number
   end
 
