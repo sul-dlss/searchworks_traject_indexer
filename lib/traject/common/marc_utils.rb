@@ -150,12 +150,12 @@ module Traject
       Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, _spec, _extractor|
         subfields = field.subfields.reject { |subfield| (Constants::EXCLUDE_FIELDS + ['7']).include?(subfield.code) }
         {
-          link: subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
-          search: subfields.select do |subfield|
-                    linked?(tag, subfield)
-                  end.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
+          link: subfields.reject { |subfield| relator_term?(tag, subfield) }.map(&:value).join(' '),
+          search: subfields.reject do |subfield|
+                    relator_term?(tag, subfield) || subfield.code == 't'
+                  end.map(&:value).join(' '),
           post_text: subfields.select do |subfield|
-                       subfield.code.in?(%w[e 4]) || (tag == '111' && subfield.code == 'j')
+                       relator_term?(tag, subfield) && subfield.code != 'i'
                      end.each do |subfield|
                        if subfield.code == '4'
                          subfield.value = Constants::RELATOR_TERMS[subfield.value]
@@ -167,12 +167,12 @@ module Traject
       end
     end
 
-    def linked?(tag, subfield)
+    def relator_term?(tag, subfield)
       case tag
       when '100', '110'
-        !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
+        %w[e i 4].include?(subfield.code) # 100/110 $e $i $4
       when '111'
-        !%w[j 4].include?(subfield.code) # exclude 111 $j $4
+        %w[j 4].include?(subfield.code) # 111 $j $4
       end
     end
 
