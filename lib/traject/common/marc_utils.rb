@@ -155,11 +155,13 @@ module Traject
                   end.map(&:value).join(' '),
           post_text: subfields.select do |subfield|
                        relator_term?(tag, subfield) && subfield.code != 'i'
-                     end.each do |subfield|
+                     end.filter_map do |subfield|
                        if subfield.code == '4'
-                         subfield.value = Constants::RELATOR_TERMS[subfield.value]
+                         Constants::RELATOR_TERMS[subfield.value.delete_prefix('http://id.loc.gov/vocabulary/relators/')]
+                       else
+                         subfield.value
                        end
-                     end.filter_map(&:value).join(' '),
+                     end.reject(&:empty?).uniq { |v| relator_term_uniq_key(v) }.join(' '),
           authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
           rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
         }.reject { |_k, v| v.empty? }
@@ -173,6 +175,10 @@ module Traject
       when '111'
         %w[j 4].include?(subfield.code) # 111 $j is kinda like 100 $i,  but 111 $e is something totally different
       end
+    end
+
+    def relator_term_uniq_key(value)
+      value.downcase.strip.gsub(/[[:punct:]]+$/, '').gsub(/\s+/, ' ').strip
     end
 
     def linked_contributors_struct(record)
@@ -241,7 +247,7 @@ module Traject
         link: link_text.join(' '),
         search: link_text.join(' '),
         pre_text: before_text.join(' '),
-        post_text: relator_text.join(' ') + extra_text.join(' '),
+        post_text: relator_text.uniq { |v| relator_term_uniq_key(v) }.join(' ') + extra_text.join(' '),
         authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
         rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
       }
