@@ -673,7 +673,7 @@ RSpec.describe 'Author config' do
       expect(result).to include meeting: [{
         link: '111a none 111c 111d 111e none 111g 111i 111n 111q 111u',
         search: '111a none 111c 111d 111e none 111g 111i 111n 111q 111u',
-        post_text: '111e 111j'
+        post_text: '111j'
       }]
     end
 

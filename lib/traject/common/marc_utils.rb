@@ -170,9 +170,9 @@ module Traject
     def relator_term?(tag, subfield)
       case tag
       when '100', '110'
-        %w[e i 4].include?(subfield.code) # 100/110 $e $i $4
+        %w[e i 4].include?(subfield.code)
       when '111'
-        %w[j 4].include?(subfield.code) # 111 $j $4
+        %w[j 4].include?(subfield.code) # 111 $j is kinda like 100 $i,  but 111 $e is something totally different
       end
     end
 
