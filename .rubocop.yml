@@ -34,6 +34,12 @@ Metrics/ClassLength:
   Exclude:
     - 'lib/folio_item.rb'
 
+Metrics/ModuleLength:
+  Exclude:
+    - 'lib/constants.rb'
+    - 'lib/traject/common/*.rb'
+    - 'lib/traject/macros/cocina.rb'
+
 Gemspec/DeprecatedAttributeAssignment: # new in 1.30
   Enabled: true
 Gemspec/DevelopmentDependencies: # new in 1.44
