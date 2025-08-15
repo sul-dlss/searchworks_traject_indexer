@@ -170,6 +170,15 @@ module Traject
       end
     end
 
+    def linked?(tag, subfield)
+      case tag
+      when '100', '110'
+        !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
+      when '111'
+        !%w[j 4].include?(subfield.code) # exclude 111 $j $4
+      end
+    end
+
     def linked_contributors_struct(record)
       contributors = []
       vern_fields = []
@@ -240,15 +249,6 @@ module Traject
         authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
         rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
       }
-    end
-
-    def linked?(tag, subfield)
-      case tag
-      when '100', '110'
-        !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
-      when '111'
-        !%w[j 4].include?(subfield.code) # exclude 111 $j $4
-      end
     end
 
     # Custom method cribbed from Traject::Macros::Marc21Semantics.marc_sortable_author
