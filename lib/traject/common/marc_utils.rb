@@ -248,7 +248,7 @@ module Traject
         link: link_text.join(' '),
         search: link_text.join(' '),
         pre_text: before_text.join(' '),
-        post_text: relator_text.join(' ') + extra_text.join(' '),
+        post_text: relator_text.uniq { |v| relator_term_uniq_key(v) }.join(' ') + extra_text.join(' '),
         authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
         rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
       }
