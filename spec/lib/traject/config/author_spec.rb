@@ -689,6 +689,55 @@ RSpec.describe 'Author config' do
       )
     end
 
+    context 'with duplicate subfield e + 4 relator terms' do
+      let(:records) { [record] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '00988nas a2200193z  4500'
+          r.append(MARC::DataField.new('100', '1', ' ',
+                                       MARC::Subfield.new('a', 'Defregger, Florian.,'),
+                                       MARC::Subfield.new('e', 'author.'),
+                                       MARC::Subfield.new('4', 'aut'),
+                                       MARC::Subfield.new('4', 'http://id.loc.gov/vocabulary/relators/aut')))
+        end
+      end
+      let(:result) { results.first }
+
+      it 'deduplicates the relator terms' do
+        expect(result[field].map { |x| JSON.parse(x, symbolize_names: true) }).to include(
+          creator: [{
+            link: 'Defregger, Florian.,',
+            search: 'Defregger, Florian.,',
+            post_text: 'author.'
+          }]
+        )
+      end
+    end
+
+    context 'with subfield e + 4 relator terms that map to unique values' do
+      let(:records) { [record] }
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '00988nas a2200193z  4500'
+          r.append(MARC::DataField.new('100', '1', ' ',
+                                       MARC::Subfield.new('a', 'Sobekwa, Lindokuhle'),
+                                       MARC::Subfield.new('e', 'photographer,'),
+                                       MARC::Subfield.new('4', 'aut')))
+        end
+      end
+      let(:result) { results.first }
+
+      it 'includes both relator terms' do
+        expect(result[field].map { |x| JSON.parse(x, symbolize_names: true) }).to include(
+          creator: [{
+            link: 'Sobekwa, Lindokuhle',
+            search: 'Sobekwa, Lindokuhle',
+            post_text: 'photographer, Author'
+          }]
+        )
+      end
+    end
+
     context 'with subfield 0 + 1 data' do
       let(:records) { [record] }
       let(:record) do
