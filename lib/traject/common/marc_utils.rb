@@ -154,10 +154,8 @@ module Traject
           search: subfields.select do |subfield|
                     linked?(tag, subfield)
                   end.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
-          post_text: subfields.reject do |subfield|
-                       subfield.code == 'i'
-                     end.select do |subfield|
-                       subfield.code.in?(%w[e 4]) || !linked?(tag, subfield)
+          post_text: subfields.select do |subfield|
+                       subfield.code.in?(%w[e 4]) || (tag == '111' && subfield.code == 'j')
                      end.each do |subfield|
                        if subfield.code == '4'
                          subfield.value = Constants::RELATOR_TERMS[subfield.value]
