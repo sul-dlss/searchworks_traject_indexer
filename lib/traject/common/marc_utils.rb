@@ -146,7 +146,6 @@ module Traject
       end
     end
 
-    POST_TEXT_SUBFIELDS = %w[e 4].freeze
     def linked_author_struct(record, tag)
       Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, _spec, _extractor|
         subfields = field.subfields.reject { |subfield| (Constants::EXCLUDE_FIELDS + ['7']).include?(subfield.code) }
@@ -158,7 +157,7 @@ module Traject
           post_text: subfields.reject do |subfield|
                        subfield.code == 'i'
                      end.select do |subfield|
-                       POST_TEXT_SUBFIELDS.include?(subfield.code) || !linked?(tag, subfield)
+                       subfield.code.in?(%w[e 4]) || !linked?(tag, subfield)
                      end.each do |subfield|
                        if subfield.code == '4'
                          subfield.value = Constants::RELATOR_TERMS[subfield.value]
