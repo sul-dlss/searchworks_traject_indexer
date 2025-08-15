@@ -145,19 +145,16 @@ module Traject
       end
     end
 
-    POST_TEXT_SUBFIELDS = %w[e 4].freeze
     def linked_author_struct(record, tag)
       Traject::MarcExtractor.cached(tag).collect_matching_lines(record) do |field, _spec, _extractor|
         subfields = field.subfields.reject { |subfield| (Constants::EXCLUDE_FIELDS + ['7']).include?(subfield.code) }
         {
-          link: subfields.select { |subfield| linked?(tag, subfield) }.map(&:value).join(' '),
-          search: subfields.select do |subfield|
-                    linked?(tag, subfield)
-                  end.reject { |subfield| subfield.code == 't' }.map(&:value).join(' '),
-          post_text: subfields.reject do |subfield|
-                       subfield.code == 'i'
-                     end.select do |subfield|
-                       POST_TEXT_SUBFIELDS.include?(subfield.code) || !linked?(tag, subfield)
+          link: subfields.reject { |subfield| relator_term?(tag, subfield) }.map(&:value).join(' '),
+          search: subfields.reject do |subfield|
+                    relator_term?(tag, subfield) || subfield.code == 't'
+                  end.map(&:value).join(' '),
+          post_text: subfields.select do |subfield|
+                       relator_term?(tag, subfield) && subfield.code != 'i'
                      end.each do |subfield|
                        if subfield.code == '4'
                          subfield.value = Constants::RELATOR_TERMS[subfield.value]
@@ -166,6 +163,15 @@ module Traject
           authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
           rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
         }.reject { |_k, v| v.empty? }
+      end
+    end
+
+    def relator_term?(tag, subfield)
+      case tag
+      when '100', '110'
+        %w[e i 4].include?(subfield.code)
+      when '111'
+        %w[j 4].include?(subfield.code) # 111 $j is kinda like 100 $i,  but 111 $e is something totally different
       end
     end
 
@@ -239,15 +245,6 @@ module Traject
         authorities: field.subfields.select { |x| x.code == '0' }.map(&:value),
         rwo: field.subfields.select { |x| x.code == '1' }.map(&:value)
       }
-    end
-
-    def linked?(tag, subfield)
-      case tag
-      when '100', '110'
-        !%w[e i 4].include?(subfield.code) # exclude 100/110 $e $i $4
-      when '111'
-        !%w[j 4].include?(subfield.code) # exclude 111 $j $4
-      end
     end
 
     # Custom method cribbed from Traject::Macros::Marc21Semantics.marc_sortable_author
