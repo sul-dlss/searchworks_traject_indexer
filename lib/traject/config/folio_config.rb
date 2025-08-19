@@ -1879,6 +1879,7 @@ to_field 'sudoc_callnum_search' do |record, accumulator, context|
     next if item.skipped?
     next unless item.call_number_type == 'SUDOC'
     next if item.call_number.ignored_call_number?
+    next if item.call_number.valid_caldoc? # About a dozen items in Folio have CALDOC call numbers marked as SUDOCs (e.g., in00000451152)
 
     call_number = item.call_number.to_s
     call_number = call_number.strip
