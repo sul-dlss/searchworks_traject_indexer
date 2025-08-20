@@ -1894,7 +1894,7 @@ to_field 'undoc_callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped?
-    next unless item.call_number_type == 'ALPHANUM' && item.call_number.valid_undoc?
+    next unless item.call_number.valid_undoc?
     next if item.call_number.ignored_call_number?
 
     call_number = item.call_number.to_s
