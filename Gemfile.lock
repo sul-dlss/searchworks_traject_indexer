@@ -149,6 +149,7 @@ GEM
     erubi (1.13.1)
     factory_bot (6.5.5)
       activesupport (>= 6.1.0)
+    ffi (1.17.2)
     ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
@@ -198,6 +199,7 @@ GEM
     marc-fastxmlwriter (1.1.0)
       marc (~> 1.0)
     match_map (3.0.0)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     mods (3.0.5)
       csv (~> 3.3)
@@ -217,6 +219,9 @@ GEM
     net-sftp (4.0.0)
       net-ssh (>= 5.0.0, < 8.0.0)
     net-ssh (7.3.0)
+    nokogiri (1.18.9)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-darwin)
@@ -235,6 +240,7 @@ GEM
       racc
     patience_diff (1.2.0)
       optimist (~> 3.0)
+    pg (1.6.1)
     pg (1.6.1-arm64-darwin)
     pg (1.6.1-x86_64-darwin)
     pg (1.6.1-x86_64-linux)
@@ -340,7 +346,7 @@ GEM
       net-ssh (>= 2.8.0)
       ostruct
     stanford-geo (0.2.0)
-    stanford-mods (3.3.10)
+    stanford-mods (3.3.11)
       activesupport
       mods (~> 3.0, >= 3.0.4)
     statsd-ruby (1.5.0)
