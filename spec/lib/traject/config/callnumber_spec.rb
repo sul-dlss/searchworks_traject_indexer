@@ -226,6 +226,25 @@ RSpec.describe 'Call Numbers' do
     end
   end
 
+  describe 'exact_callnum_search' do
+    let(:field) { 'exact_callnum_search' }
+    subject { result[field] }
+    before do
+      allow(folio_record).to receive(:index_items).and_return(holdings)
+    end
+    let(:holdings) { [] }
+
+    context 'with an ALPHANUM that is not from SPEC' do
+      let(:holdings) do
+        [
+          build(:alphanum_holding, call_number: 'ISHII SPRING  2009', holding: { 'callNumber' => 'ISHII' })
+        ]
+      end
+
+      it { is_expected.to include('ISHII SPRING 2009', 'ISHII') }
+    end
+  end
+
   describe 'sudoc_callnum_search' do
     let(:field) { 'sudoc_callnum_search' }
     subject { result[field] }
