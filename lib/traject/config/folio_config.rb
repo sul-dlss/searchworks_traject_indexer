@@ -1873,6 +1873,22 @@ to_field 'spec_callnum_search' do |record, accumulator, context|
   accumulator.concat(good_call_numbers.uniq)
 end
 
+to_field 'exact_callnum_search' do |record, accumulator, context|
+  good_call_numbers = []
+  items(record, context).each do |item|
+    next if item.skipped? || item.call_number.ignored_call_number?
+
+    call_number = item.call_number.to_s
+    call_number = call_number.strip
+    call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
+    good_call_numbers << call_number
+    good_call_numbers << item.call_number.base_call_number
+    good_call_numbers << item.holding&.dig('callNumber')
+  end
+
+  accumulator.concat(good_call_numbers.uniq)
+end
+
 to_field 'sudoc_callnum_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
