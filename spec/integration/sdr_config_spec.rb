@@ -130,7 +130,8 @@ RSpec.describe 'SDR indexing' do
             },
             'keywords' => ['Marine habitat conservation',
                            'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
-                           'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+                           'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005',
+                           'Geospatial data', 'cartographic dataset'],
             'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
             'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
             'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
@@ -160,7 +161,8 @@ RSpec.describe 'SDR indexing' do
             'identifier' => ['https://purl.stanford.edu/vv853br8653'],
             'keywords' => ['Marine habitat conservation',
                            'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds',
-                           'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005'],
+                           'Environment', 'Oceans', 'Inland Waters', 'North Pacific Ocean', '1978', '2005',
+                           'Geospatial data', 'cartographic dataset'],
             'license' => 'CC by-nc: CC BY-NC Attribution-NonCommercial',
             'name' => ['Abundance Estimates of the Pacific Salmon Conservation Assessment Database, 1978-2008'],
             'sameAs' => 'https://searchworks.stanford.edu/view/vv853br8653'
