@@ -1883,6 +1883,7 @@ to_field 'exact_callnum_search' do |record, accumulator, context|
     call_number = call_number.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     good_call_numbers << call_number
     good_call_numbers << item.call_number.base_call_number
+    good_call_numbers << item.holding&.dig('callNumber')
   end
 
   accumulator.concat(good_call_numbers.uniq)
