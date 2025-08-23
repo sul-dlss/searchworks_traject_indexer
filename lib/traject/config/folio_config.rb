@@ -1873,7 +1873,7 @@ to_field 'spec_callnum_search' do |record, accumulator, context|
   accumulator.concat(good_call_numbers.uniq)
 end
 
-to_field 'exact_callnum_search' do |record, accumulator, context|
+to_field 'callnum_exact_search' do |record, accumulator, context|
   good_call_numbers = []
   items(record, context).each do |item|
     next if item.skipped? || item.call_number.ignored_call_number?

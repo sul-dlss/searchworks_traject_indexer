@@ -226,8 +226,8 @@ RSpec.describe 'Call Numbers' do
     end
   end
 
-  describe 'exact_callnum_search' do
-    let(:field) { 'exact_callnum_search' }
+  describe 'callnum_exact_search' do
+    let(:field) { 'callnum_exact_search' }
     subject { result[field] }
     before do
       allow(folio_record).to receive(:index_items).and_return(holdings)
