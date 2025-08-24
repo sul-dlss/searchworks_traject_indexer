@@ -23,6 +23,4 @@ environments:
     full_dump_processes: 24
     kafka_topic: marc_folio_prod
     folio_version: poppy
-    blackout_periods:
-      - start: '2025-08-22T23:00:00-07:00'
-        end: '2025-08-24T18:00:00-07:00'
+    blackout_periods: []
