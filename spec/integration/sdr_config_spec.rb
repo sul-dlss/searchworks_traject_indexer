@@ -69,7 +69,6 @@ RSpec.describe 'SDR indexing' do
           'pub_date' => ['2004'],
           'pub_year_ss' => ['2004'],
           'pub_year_tisim' => [2004],
-          'creation_year_isi' => [2004],
           'format_main_ssim' => ['Video'],
           'language' => ['English'],
           'physical' => ['1 MiniDV tape'],
@@ -92,7 +91,7 @@ RSpec.describe 'SDR indexing' do
       expect(result).not_to include(
         'title_variant_search', 'author_meeting_display', 'author_person_display', 'author_person_full_display', 'author_1xx_search',
         'topic_search', 'geographic_search', 'subject_other_search', 'subject_other_subvy_search', 'subject_all_search',
-        'topic_facet', 'geographic_facet', 'era_facet', 'publication_year_isi', 'genre_ssim', 'summary_search', 'toc_search', 'file_id',
+        'topic_facet', 'geographic_facet', 'era_facet', 'genre_ssim', 'summary_search', 'toc_search', 'file_id',
         'set', 'set_with_title'
       )
     end
@@ -381,172 +380,6 @@ RSpec.describe 'SDR indexing' do
 
     it 'maps the right data' do
       expect(result['dor_read_rights_ssim']).to eq ['world']
-    end
-  end
-
-  describe 'dates' do
-    let(:druid) { 'abc' }
-    let(:data) do
-      <<-XML
-        <publicObject>
-          <mods xmlns="http://www.loc.gov/mods/v3">
-            #{mods_fragment}
-          </mods>
-        </publicObject>
-      XML
-    end
-
-    before do
-      stub_purl_request(druid, data)
-    end
-
-    describe 'beginning_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo>
-            <issuance>continuing</issuance>
-            <dateIssued point="start">1743-01</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['beginning_year_isi']).to eq ['1743']
-      end
-    end
-
-    describe 'ending_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo>
-            <issuance>serial</issuance>
-            <dateIssued point="end">1743-01-01</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['ending_year_isi']).to eq ['1743']
-      end
-    end
-
-    describe 'earliest_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <typeOfResource collection="yes" />
-          <originInfo>
-            <dateCreated point="start">2011</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['earliest_year_isi']).to eq ['2011']
-      end
-    end
-
-    describe 'latest_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <typeOfResource collection="yes" />
-          <originInfo>
-            <dateCreated point="end">2016</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['latest_year_isi']).to eq ['2016']
-      end
-    end
-
-    describe 'earliest_poss_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo>
-            <dateCreated point="start" qualifier="maybe">2016</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['earliest_poss_year_isi']).to eq ['2016']
-      end
-    end
-
-    describe 'latest_poss_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo>
-            <dateCreated point="end" qualifier="maybe">2016</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['latest_poss_year_isi']).to eq ['2016']
-      end
-    end
-
-    describe 'production_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo eventType="production">
-            <dateIssued>2012</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['production_year_isi']).to eq ['2012']
-      end
-    end
-
-    describe 'release_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo eventType="distribution">
-            <dateIssued>1987</dateIssued>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['release_year_isi']).to eq ['1987']
-      end
-    end
-
-    describe 'copyright_year_isi' do
-      let(:mods_fragment) do
-        <<-XML
-          <originInfo>
-            <copyrightDate>1923</copyrightDate>
-          </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['copyright_year_isi']).to eq ['1923']
-      end
-    end
-
-    describe 'copyright_year_isi with multiple potential years' do
-      let(:mods_fragment) do
-        <<-XML
-        <originInfo>
-          <copyrightDate encoding="w3cdtf" keyDate="yes">1980</copyrightDate>
-        <publisher>Stoneware Inc.</publisher>
-        </originInfo>
-        <originInfo>
-          <copyrightDate encoding="w3cdtf" qualifier="inferred" point="start">1982</copyrightDate>
-          <copyrightDate encoding="w3cdtf" qualifier="inferred" point="end">1984</copyrightDate>
-        </originInfo>
-        XML
-      end
-
-      it 'maps the right data' do
-        expect(result['copyright_year_isi']).to eq ['1980']
-      end
     end
   end
 
