@@ -16,7 +16,9 @@ environments:
     full_dump_processes: 12
     kafka_topic: marc_folio_test
     folio_version: poppy
-    blackout_periods: []
+    blackout_periods:
+      - start: '2025-09-01T23:00:00-07:00'
+        end: '2025-09-04T23:00:00-07:00'
   folio_prod:
     database_url: <%= ENV['FOLIO_PROD_DATABASE_URL'] %>
     processes: 1
