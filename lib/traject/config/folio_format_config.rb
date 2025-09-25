@@ -46,8 +46,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('006', byte: 0, value: 's'),
-               control_field_byte?('006', byte: 4, value: 'm'),
+               control_field_byte?('006', { byte: 0, value: 's' }, { byte: 4, value: 'm' }),
                literal('Book')
              )
 
@@ -60,8 +59,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('006', byte: 0, value: 's'),
-               control_field_byte?('006', byte: 4, value: 'd'),
+               control_field_byte?('006', { byte: 0, value: 's' }, { byte: 4, value: 'd' }),
                literal('Database')
              )
 
@@ -121,22 +119,19 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'k'),
-               control_field_byte?('007', byte: 1, values: %w[g h r v]),
+               control_field_byte?('007', { byte: 0, value: 'k' }, { byte: 1, values: %w[g h r v] }),
                literal_multiple('Image', 'Image|Photo')
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'k'),
-               control_field_byte?('007', byte: 1, value: 'k'),
+               control_field_byte?('007', { byte: 0, value: 'k' }, { byte: 1, value: 'k' }),
                literal_multiple('Image', 'Image|Poster')
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'g'),
-               control_field_byte?('007', byte: 1, value: 's'),
+               control_field_byte?('007', { byte: 0, value: 'g' }, { byte: 1, value: 's' }),
                literal_multiple('Image', 'Image|Slide')
              )
 
@@ -148,8 +143,7 @@ module FolioFormatConfig
              )
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('006', byte: 0, value: 's'),
-               control_field_byte?('006', byte: 4, value: /[\\ gjpst|]/),
+               control_field_byte?('006', { byte: 0, value: 's' }, { byte: 4, value: /[\\ gjpst|]/ }),
                literal('Journal/Periodical')
              )
 
@@ -168,8 +162,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('006', byte: 0, value: 's'),
-               control_field_byte?('006', byte: 4, value: 'l'),
+               control_field_byte?('006', { byte: 0, value: 's' }, { byte: 4, value: 'l' }),
                literal('Loose-leaf')
              )
 
@@ -238,8 +231,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('006', byte: 0, value: 's'),
-               control_field_byte?('006', byte: 4, value: 'n'),
+               control_field_byte?('006', { byte: 0, value: 's' }, { byte: 4, value: 'n' }),
                literal('Newspaper')
              )
 
@@ -288,36 +280,31 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 's'),
-               control_field_byte?('007', byte: 3, value: 'b'),
+               control_field_byte?('007', { byte: 0, value: 's' }, { byte: 3, value: 'b' }),
                literal_multiple('Sound recording', 'Sound recording|Vinyl disc') # 33 rpm disc (vinyl LP)')
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 's'),
-               control_field_byte?('007', byte: 3, value: 'c'),
+               control_field_byte?('007', { byte: 0, value: 's' }, { byte: 3, value: 'c' }),
                literal_multiple('Sound recording', 'Sound recording|Vinyl disc') # 45 rpm disc (vinyl)')
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 's'),
-               control_field_byte?('007', byte: 3, value: 'd'),
+               control_field_byte?('007', { byte: 0, value: 's' }, { byte: 3, value: 'd' }),
                literal_multiple('Sound recording', 'Sound recording|78 rpm disc (shellac)')
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 's'),
-               control_field_byte?('007', byte: 6, value: 'j'),
+               control_field_byte?('007', { byte: 0, value: 's' }, { byte: 6, value: 'j' }),
                literal_multiple('Sound recording', 'Sound recording|Audiocassette')
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 's'),
-               control_field_byte?('007', byte: 3, value: 'f'),
+               control_field_byte?('007', { byte: 0, value: 's' }, { byte: 3, value: 'f' }),
                literal_multiple('Sound recording', 'Sound recording|CD')
              )
     piano_roll_terms = ['piano roll', 'organ roll', 'audio roll']
@@ -361,8 +348,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 's'),
+               control_field_byte?('007', { byte: 0, value: 'v' }, { byte: 4, value: 's' }),
                literal_multiple('Video/Film', 'Video/Film|Blu-ray')
              )
 
@@ -383,8 +369,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'v'),
+               control_field_byte?('007', { byte: 0, value: 'v' }, { byte: 4, value: 'v' }),
                literal_multiple('Video/Film', 'Video/Film|DVD')
              )
 
@@ -396,22 +381,19 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'g'),
+               control_field_byte?('007', { byte: 0, value: 'v' }, { byte: 4, value: 'g' }),
                literal_multiple('Video/Film', 'Video/Film|DVD') # Laser disc
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, values: %w[a i j]),
+               control_field_byte?('007', { byte: 0, value: 'v' }, { byte: 4, values: %w[a i j] }),
                literal_multiple('Video/Film', 'Video/Film|Videocassette') # Beta
              )
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'b'),
+               control_field_byte?('007', { byte: 0, value: 'v' }, { byte: 4, value: 'b' }),
                literal_multiple('Video/Film', 'Video/Film|Videocassette') # VHS
              )
 
@@ -423,8 +405,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('007', byte: 0, value: 'v'),
-               control_field_byte?('007', byte: 4, value: 'q'),
+               control_field_byte?('007', { byte: 0, value: 'v' }, { byte: 4, value: 'q' }),
                literal_multiple('Video/Film', 'Video/Film|Videocassette') # Hi-8 mm
              )
 
@@ -456,8 +437,7 @@ module FolioFormatConfig
 
     to_field 'format_hsim',
              all_conditions(
-               control_field_byte?('006', byte: 0, value: 's'),
-               control_field_byte?('006', byte: 4, values: %w[h w]),
+               control_field_byte?('006', { byte: 0, value: 's' }, { byte: 4, values: %w[h w] }),
                literal('Website')
              )
 
