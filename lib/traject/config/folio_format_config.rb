@@ -204,7 +204,17 @@ module FolioFormatConfig
                literal_multiple('Map', 'Map|Remote-sensing image')
              )
 
-    # TODO: Microform
+    to_field 'format_hsim',
+             condition(
+               control_field_byte?('007', byte: 0, value: 'h'),
+               literal_multiple('Microform')
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
+               marc_subfield_contains?('245', subfield: 'h', value: 'microform'),
+               literal('Microform')
+             )
 
     to_field 'format_hsim',
              condition(
