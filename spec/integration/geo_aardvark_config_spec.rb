@@ -256,7 +256,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
 
     it 'maps the alternative titles' do
-      expect(result['dct_alternative_sm']).to eq ['Jōshū Kusatsu Onsen zu']
+      expect(result['dct_alternative_sm']).to eq ['上州草津温泉圖', 'Jōshū Kusatsu Onsen zu']
     end
 
     it 'maps the resource class' do
