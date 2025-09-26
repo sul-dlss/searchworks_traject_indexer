@@ -5,7 +5,6 @@ require 'traject/macros/marc21_semantics'
 require 'csv'
 require 'i18n'
 require 'digest/md5'
-require 'active_support/core_ext/time'
 require_relative 'folio_format_config'
 
 I18n.available_locales = [:en]

@@ -53,7 +53,7 @@ class PurlRecord
            :stanford_mods, :mods_display,
            :public_xml_doc, to: :public_xml
 
-  delegate :cocina_access, :cocina_structural, :cocina_description, :cocina_titles,
+  delegate :cocina_display, :cocina_structural, :cocina_description, :cocina_titles,
            :created, :modified, :public_cocina_doc, :content_type, :files, to: :public_cocina
 
   delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json

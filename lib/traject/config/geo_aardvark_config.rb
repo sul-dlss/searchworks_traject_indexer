@@ -248,13 +248,13 @@ to_field 'dct_source_sm', cocina_descriptive('relatedResource'), select_type('ha
          transform(->(druid) { "stanford-#{druid.split('/').last}" if druid })
 
 # https://opengeometadata.org/ogm-aardvark/#rights_1
-to_field 'dct_rights_sm', cocina_access('useAndReproductionStatement')
+to_field('dct_rights_sm') { |record, accumulator| accumulator << record.cocina_display.use_and_reproduction }
 
 # https://opengeometadata.org/ogm-aardvark/#rights-holder
-to_field 'dct_rightsHolder_sm', cocina_access('copyright')
+to_field('dct_rightsHolder_sm') { |record, accumulator| accumulator << record.cocina_display.copyright }
 
 # https://opengeometadata.org/ogm-aardvark/#license
-to_field 'dct_license_sm', cocina_access('license')
+to_field('dct_license_sm') { |record, accumulator| accumulator << record.cocina_display.license }
 
 # https://opengeometadata.org/ogm-aardvark/#access-rights
 to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public_cocina.public? ? 'Public' : 'Restricted') }

@@ -5,6 +5,9 @@ require 'bundler/setup'
 
 Bundler.require(:default)
 
+require 'active_support'
+require 'active_support/core_ext/hash/indifferent_access'
+require 'active_support/core_ext/time'
 require 'active_support/core_ext/enumerable'
 
 Config.setup do |config|

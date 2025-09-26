@@ -116,7 +116,7 @@ RSpec.describe Traject::Macros::Geo do
     let(:macro) { format_envelope_dms }
 
     context 'with a valid coordinate string' do
-      let(:accumulator) { [Cocina::Models::DescriptiveValue.new(value: 'W 123°23ʹ16ʺ--W 122°31ʹ22ʺ/N 39°23ʹ57ʺ--N 38°17ʹ53ʺ').as_json] }
+      let(:accumulator) { [{ 'value' => 'W 123°23ʹ16ʺ--W 122°31ʹ22ʺ/N 39°23ʹ57ʺ--N 38°17ʹ53ʺ' }] }
 
       it 'returns the solr-formatted ENVELOPE string' do
         expect(accumulator).to eq ['ENVELOPE(-123.38777777777779, -122.52277777777778, 39.399166666666666, 38.29805555555556)']
@@ -124,7 +124,7 @@ RSpec.describe Traject::Macros::Geo do
     end
 
     context 'with an invalid coordinate string' do
-      let(:accumulator) { [Cocina::Models::DescriptiveValue.new(value: 'invalid').as_json] }
+      let(:accumulator) { [{ 'value' => 'invalid' }] }
 
       it 'returns an empty array' do
         expect(accumulator).to be_empty
@@ -138,14 +138,11 @@ RSpec.describe Traject::Macros::Geo do
     context 'with a valid bounding box' do
       let(:accumulator) do
         [
-          Cocina::Models::DescriptiveStructuredValue.new(
-            structuredValue: [
-              { type: 'west', value: '-122.182222' },
-              { type: 'east', value: '-122.182222' },
-              { type: 'north', value: '37.421944' },
-              { type: 'south', value: '37.421944' }
-            ]
-          ).as_json
+          { 'structuredValue' =>
+            [{ 'value' => '-122.182222', 'type' => 'west' },
+             { 'value' => '-122.182222', 'type' => 'east' },
+             { 'value' => '37.421944', 'type' => 'north' },
+             { 'value' => '37.421944', 'type' => 'south' }] }
         ]
       end
 
@@ -157,14 +154,11 @@ RSpec.describe Traject::Macros::Geo do
     context 'with an invalid bounding box' do
       let(:accumulator) do
         [
-          Cocina::Models::DescriptiveStructuredValue.new(
-            structuredValue: [
-              { type: 'west', value: '-122.182222' },
-              { type: 'east', value: '-122.182222' },
-              { type: 'north', value: '37.421944' },
-              { type: 'south', value: 'invalid' }
-            ]
-          ).as_json
+          { 'structuredValue' =>
+            [{ 'value' => '-122.182222', 'type' => 'west' },
+             { 'value' => '-122.182222', 'type' => 'east' },
+             { 'value' => '37.421944', 'type' => 'north' },
+             { 'value' => 'invalid', 'type' => 'south' }] }
         ]
       end
 

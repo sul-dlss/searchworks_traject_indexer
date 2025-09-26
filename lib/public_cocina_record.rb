@@ -3,7 +3,7 @@
 require 'http'
 
 class PublicCocinaRecord
-  attr_reader :public_cocina_doc, :druid, :purl_url
+  attr_reader :public_cocina_doc, :cocina_display, :druid, :purl_url
 
   def self.fetch(druid, purl_url: 'https://purl.stanford.edu')
     response = HTTP.get("#{purl_url}/#{druid}.json")
@@ -14,6 +14,7 @@ class PublicCocinaRecord
     @druid = druid
     @purl_url = purl_url
     @public_cocina_doc = JSON.parse(public_cocina)
+    @cocina_display = CocinaDisplay::CocinaRecord.new(@public_cocina_doc)
   end
 
   def cocina_access
@@ -29,14 +30,11 @@ class PublicCocinaRecord
   end
 
   def cocina_titles(type: :main)
-    titles = cocina_description['title'].map { |title| Cocina::Models::Title.new(title) }
     case type
     when :main
-      Cocina::Models::Builders::TitleBuilder.main_title(titles)
-    when :full
-      Cocina::Models::Builders::TitleBuilder.full_title(titles)
+      [cocina_display.main_title]
     when :additional
-      Cocina::Models::Builders::TitleBuilder.additional_titles(titles)
+      cocina_display.additional_titles
     else
       raise ArgumentError, "Invalid title type: #{type}"
     end

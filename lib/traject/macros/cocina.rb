@@ -111,15 +111,6 @@ module Traject
         end
       end
 
-      # Traverse nested fields in the cocina access metadata and return the result
-      def cocina_access(*fields)
-        lambda do |record, accumulator, _context|
-          accumulator.concat(fields.reduce([record.cocina_access]) do |nodes, field|
-            nodes.flat_map { |node| node[field] if node }.compact
-          end)
-        end
-      end
-
       # Add a Cocina::Models::TitleBuilder object to the accumulator
       # See PublicCocinaRecord#cocina_titles
       def cocina_titles(type: :main)
