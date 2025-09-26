@@ -83,19 +83,23 @@ module Traject
       # Usage:
       #   control_field_byte('008', byte: 26, values: ['a', 'b', 'c'])
       #   control_field_byte('008', byte: 26, value: 'a')
-      def control_field_byte?(tag, byte:, values: nil, value: nil)
-        raise ArgumentError, "Either 'values' or 'value' must be provided" if values.nil? && value.nil?
+      def control_field_byte?(tag, *conditions, byte: nil, values: nil, value: nil)
+        raise ArgumentError, "Either 'values' or 'value' must be provided" if byte && values.nil? && value.nil?
 
-        values = Array(values) + Array(value)
+        conditions << { byte: byte, values: Array(values) + Array(value) } if byte
 
         lambda do |record, _context|
           record.fields(tag).any? do |field|
             field_value = field.value
-            next false unless field_value && field_value.length > byte
+            next false unless field_value
 
-            character = field_value[byte]
-            values.any? do |v|
-              v.is_a?(Regexp) ? character.match?(v) : character == v
+            conditions.all? do |condition|
+              next false unless field_value.length > condition[:byte]
+
+              character = field_value[condition[:byte]]
+              (Array(condition[:value]) + Array(condition[:values])).any? do |v|
+                v.is_a?(Regexp) ? character.match?(v) : character == v
+              end
             end
           end
         end
