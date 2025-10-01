@@ -13,12 +13,9 @@ RSpec.describe 'SDR indexing' do
   let(:record) { PurlRecord.new(druid, purl_url: 'https://purl.stanford.edu') }
   let(:earthworks) { true }
 
-  def stub_purl_request(druid, body)
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body:)
-  end
-
-  before do
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404)
+  def stub_purl_request(druid, xml:, json: nil)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body: xml)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body: json) if json
   end
 
   before do
@@ -42,8 +39,8 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'nj770kg7809' }
 
     before do
-      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
-      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
     it 'maps the data the same way as it does currently' do
@@ -102,8 +99,8 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'zc193vn8689' }
 
     before do
-      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
-      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s))
     end
 
     context 'geo is released to earthworks' do
@@ -175,7 +172,7 @@ RSpec.describe 'SDR indexing' do
     let(:druid) { 'abc' }
     let(:collection_druid) { 'abccoll' }
     let(:collection_label) { '' }
-    let(:data) do
+    let(:xml_data) do
       <<-XML
         <publicObject>
           <mods xmlns="http://www.loc.gov/mods/v3">
@@ -189,7 +186,7 @@ RSpec.describe 'SDR indexing' do
         </publicObject>
       XML
     end
-    let(:collection_data) do
+    let(:collection_xml_data) do
       <<-XML
       <publicObject>
         <identityMetadata>
@@ -198,10 +195,15 @@ RSpec.describe 'SDR indexing' do
       </publicObject>
       XML
     end
+    let(:collection_json_data) do
+      {
+        'label' => collection_label
+      }.to_json
+    end
 
     before do
-      stub_purl_request(druid, data)
-      stub_purl_request(collection_druid, collection_data)
+      stub_purl_request(druid, xml: xml_data)
+      stub_purl_request(collection_druid, xml: collection_xml_data, json: collection_json_data)
     end
 
     context 'with an honors thesis' do
@@ -284,7 +286,7 @@ RSpec.describe 'SDR indexing' do
 
   describe 'identifiers' do
     let(:druid) { 'abc' }
-    let(:data) do
+    let(:xml_data) do
       <<-XML
         <publicObject>
           <mods xmlns="http://www.loc.gov/mods/v3">
@@ -301,7 +303,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, data)
+      stub_purl_request(druid, xml: xml_data)
     end
 
     it 'maps the appropriate identifier types' do
@@ -316,7 +318,7 @@ RSpec.describe 'SDR indexing' do
 
   describe 'content metadata' do
     let(:druid) { 'abc' }
-    let(:data) do
+    let(:xml_data) do
       <<-XML
         <publicObject>
           <contentMetadata type="image">
@@ -338,7 +340,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, data)
+      stub_purl_request(druid, xml: xml_data)
     end
 
     it 'maps the right data' do
@@ -351,7 +353,7 @@ RSpec.describe 'SDR indexing' do
 
   describe 'rights metadata' do
     let(:druid) { 'abc' }
-    let(:data) do
+    let(:xml_data) do
       <<-XML
         <publicObject>
           <rightsMetadata>
@@ -375,7 +377,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, data)
+      stub_purl_request(druid, xml: xml_data)
     end
 
     it 'maps the right data' do
@@ -385,7 +387,7 @@ RSpec.describe 'SDR indexing' do
 
   describe 'pub_country' do
     let(:druid) { 'abc' }
-    let(:data) do
+    let(:xml_data) do
       <<-XML
         <publicObject>
           <mods xmlns="http://www.loc.gov/mods/v3">
@@ -407,7 +409,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, data)
+      stub_purl_request(druid, xml: xml_data)
     end
 
     it 'maps the right data' do
@@ -420,8 +422,8 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'sg213ph2100' }
 
     before do
-      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
-      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
     it 'maps the data' do
@@ -439,8 +441,8 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'hn730ks3626' }
 
     before do
-      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
-      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
     it 'turns mods author data into a structure' do
@@ -465,8 +467,8 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'nj770kg7809' }
 
     before do
-      stub_purl_request(druid, File.read(file_fixture("#{druid}.xml").to_s))
-      stub_purl_request(collection_druid, File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
       allow(Settings.sdr_events).to receive(:enabled).and_return(true)
       allow(SdrEvents).to receive_messages(
         report_indexing_success: true,
