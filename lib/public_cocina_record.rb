@@ -17,6 +17,10 @@ class PublicCocinaRecord
     @cocina_display = CocinaDisplay::CocinaRecord.new(@public_cocina_doc)
   end
 
+  def label
+    public_cocina_doc['label']
+  end
+
   def cocina_access
     @cocina_access ||= public_cocina_doc['access']
   end

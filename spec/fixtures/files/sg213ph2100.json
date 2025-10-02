@@ -1,0 +1,783 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/collection",
+  "externalIdentifier": "druid:sg213ph2100",
+  "label": "Reid W. Dennis collection of California lithographs, 1850-1906",
+  "version": 4,
+  "access": {
+    "view": "world",
+    "copyright": "Copyright © Stanford University. All Rights Reserved.",
+    "useAndReproductionStatement": "Property rights reside with the repository. Literary rights reside with the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Special Collections Public Services Librarian at speccollref@stanford.edu."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:sd064kn5856",
+    "releaseTags": [
+      {
+        "who": "lauraw15",
+        "what": "self",
+        "date": "2016-03-22T20:27:58.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Reid W. Dennis collection of California lithographs, 1850-1906",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dennis, Reid W.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "status": "primary",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "collector.",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "1850",
+                "type": "start",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "1906",
+                "type": "end",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "publication",
+            "encoding": { "code": "marc", "note": [] },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "location": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "code": "cau",
+            "identifier": [],
+            "source": { "code": "marccountry", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "monographic",
+            "type": "issuance",
+            "identifier": [],
+            "source": { "value": "MODS issuance terms", "note": [] },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Lithographs.",
+        "type": "genre",
+        "identifier": [],
+        "source": { "code": "ftamc", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "mixed material",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "manuscript",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "collection",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "51 prints and 1 lithograph stone.",
+        "type": "extent",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": { "code": "iso639-2b", "note": [] },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This collection of prints, mostly lithographs (including chromolithographs and colored lithographs), as well as one engraving, primarily portray San Francisco city views, public buildings, and landscapes. Subjects also include San Jose, Stanford University, the U.S. Navy Yard at Mare Island, San Diego, and San Luis Rey. Included is a lithograph stone with an image of San Francisco.",
+        "type": "abstract",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Gift of Reid W. Dennis, 2004, 2007, and 2013. Accessions 2004-095 (49 prints), 2007-076 (1 print), and 2013-143 (1 print)",
+        "type": "acquisition",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Baker, George H",
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "lithographer.",
+            "type": "role",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Couts, Cave Johnson",
+            "type": "name",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1821-1874",
+            "type": "life dates",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Dennis, Reid W",
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "collector.",
+            "type": "role",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Kuchel, Charles Conrad",
+            "type": "name",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1820-",
+            "type": "life dates",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "McMurtrie, W. B. (William Birch)",
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Méryon, Charles",
+            "type": "name",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1821-1868",
+            "type": "life dates",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Nahl, Charles Christian",
+            "type": "name",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1818-1878",
+            "type": "life dates",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Swasey, W. F. (William F.)",
+        "type": "person",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Beach, Ghilion",
+        "type": "person",
+        "identifier": [],
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "publisher.",
+            "type": "role",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Bridgens, R.P",
+        "type": "person",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Bosqui Eng. \u0026 Print. Co.",
+        "type": "organization",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Britton \u0026 Rey.",
+        "type": "organization",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Elliott Lithography Company (San Francisco)",
+        "type": "organization",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Gray (W. Vallance) \u0026 C.B. Gifford,",
+        "type": "organization",
+        "identifier": [],
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "lithographers.",
+            "type": "role",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "San Francisco (Calif.)",
+            "type": "place",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "History",
+            "type": "topic",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Pictorial works",
+            "type": "genre",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "San Diego (Calif.)",
+            "type": "place",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "History",
+            "type": "topic",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Pictorial works",
+            "type": "genre",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "San Jose (Calif.)",
+            "type": "place",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "History",
+            "type": "topic",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Pictorial works",
+            "type": "genre",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "San Luis Rey (Calif.)",
+            "type": "place",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "History",
+            "type": "topic",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Pictorial works",
+            "type": "genre",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "parallelValue": [],
+        "groupedValue": [],
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "Department of Special Collections, Stanford University Libraries, Stanford, CA 94305.",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalLocation": [],
+      "accessContact": [],
+      "digitalRepository": [],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "Open for research; material must be requested at least 36 hours in advance of intended use.",
+          "type": "access restriction",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "code": "CSt",
+              "identifier": [],
+              "source": { "code": "marcorg", "note": [] },
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "type": "organization",
+          "role": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "original cataloging agency",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [
+        {
+          "structuredValue": [],
+          "type": "creation",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "070403",
+              "encoding": { "code": "marc", "note": [] },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        }
+      ],
+      "language": [],
+      "note": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "Converted from MARCXML to MODS version 3.4 using MARC21slim2MODS3-4_SDR.xsl (Version 1.2.5 2013/08/11)",
+          "type": "record origin",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "metadataStandard": [{ "code": "dacs", "note": [] }],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "a6780453",
+          "type": "SIRSI",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/sg213ph2100"
+  },
+  "identification": {
+    "catalogLinks": [
+      { "catalog": "folio", "refresh": true, "catalogRecordId": "a6780453" },
+      { "catalog": "symphony", "refresh": true, "catalogRecordId": "6780453" }
+    ]
+  },
+  "created": "2022-04-30T20:54:14.000+00:00",
+  "modified": "2022-04-30T20:54:14.000+00:00",
+  "lock": "druid:sg213ph2100=0"
+}

@@ -32,11 +32,6 @@ class PublicXmlRecord
       get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='catkey']")).presence
   end
 
-  # @return objectLabel value from the DOR identity_metadata, or nil if there is no barcode
-  def label
-    get_value(public_xml_doc.xpath('/publicObject/identityMetadata/objectLabel'))
-  end
-
   def stanford_mods
     @stanford_mods ||= Stanford::Mods::Record.new.tap do |smods_rec|
       smods_rec.from_str(mods.to_s)

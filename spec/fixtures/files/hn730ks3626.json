@@ -1,0 +1,68 @@
+{
+  "cocinaVersion": "0.104.1",
+  "type": "https://cocina.sul.stanford.edu/models/collection",
+  "externalIdentifier": "druid:hn730ks3626",
+  "label": "Stanford Libraries staff presentations, publications, and research",
+  "version": 7,
+  "access": { "view": "world" },
+  "administrative": { "hasAdminPolicy": "druid:zw306xn5593" },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Stanford Libraries staff presentations, publications, and research",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [],
+    "event": [],
+    "form": [],
+    "geographic": [],
+    "language": [],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Presentations, publications and research produced and contributed by the staff of Stanford Libraries on a broad range of topics relevant to academic and research libraries.",
+        "type": "abstract",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [],
+    "access": {
+      "url": [],
+      "physicalLocation": [],
+      "digitalLocation": [],
+      "accessContact": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "sdr-contact@lists.stanford.edu",
+          "type": "email",
+          "identifier": [],
+          "displayLabel": "Contact",
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalRepository": [],
+      "note": []
+    },
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "purl": "https://purl.stanford.edu/hn730ks3626"
+  },
+  "identification": { "catalogLinks": [], "sourceId": "hydrus:collection-76" },
+  "created": "2025-07-07T10:40:31.000+00:00",
+  "modified": "2025-07-07T10:40:32.000+00:00",
+  "lock": "druid:hn730ks3626=2=2"
+}
