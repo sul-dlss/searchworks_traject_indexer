@@ -2,7 +2,6 @@
 
 require 'http'
 require 'mods_display'
-require 'dor/rights_auth'
 
 class PublicXmlRecord
   attr_reader :public_xml_doc, :druid, :purl_url
@@ -42,28 +41,12 @@ class PublicXmlRecord
     @mods_display ||= ModsDisplay::HTML.new(stanford_mods)
   end
 
-  def public_xml?
-    !!public_xml
-  end
-
   def public_xml
     @public_xml ||= self.class.fetch("#{purl_url}/#{druid}.xml")
   end
 
   def mods
     @mods ||= public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
-  end
-
-  def rights
-    @rights ||= ::Dor::RightsAuth.parse(rights_xml)
-  end
-
-  def stanford_only?
-    rights.stanford_only_rights.first
-  end
-
-  def rights_xml
-    @rights_xml ||= public_xml_doc.xpath('//rightsMetadata').to_s
   end
 
   COLLECTION_TYPES = %w[collection set].freeze
