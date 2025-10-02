@@ -17,6 +17,8 @@ class PublicCocinaRecord
     @cocina_display = CocinaDisplay::CocinaRecord.new(@public_cocina_doc)
   end
 
+  delegate :folio_hrid, to: :cocina_display
+
   def label
     public_cocina_doc['label']
   end

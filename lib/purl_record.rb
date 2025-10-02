@@ -13,7 +13,7 @@ class PurlRecord
   end
 
   def searchworks_id
-    catkey.presence || druid
+    folio_hrid&.delete_prefix('a').presence || druid
   end
 
   def druid_tree
@@ -45,8 +45,7 @@ class PurlRecord
   end
 
   # Ensure all objects, even those missing public xml/cocina have a (nil) catkey and a label
-  delegate :catkey, to: :public_xml, allow_nil: true
-  delegate :label, to: :public_cocina, allow_nil: true
+  delegate :label, :folio_hrid, to: :public_cocina, allow_nil: true
 
   delegate :mods, :collection?,
            :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,

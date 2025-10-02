@@ -1,0 +1,206 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/image",
+  "externalIdentifier": "druid:zz400gd3785",
+  "label": "Reproduction from the Official Map of San Francisco, Showing the District Swept",
+  "version": 4,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "You do not need to obtain permission to use materials in the public domain."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:sd064kn5856",
+    "releaseTags": [
+      {
+        "who": "lauraw15",
+        "what": "collection",
+        "date": "2015-07-27T21:43:19.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Reproduction from the Official Map of San Francisco, Showing the District Swept...",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "San Francisco District Swept by Fire, 1906 (reproduction)",
+        "type": "alternative",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "copyright 1906",
+            "type": "publication",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "location": [],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "still image",
+        "type": "resource type",
+        "identifier": [],
+        "source": { "value": "MODS resource types", "note": [] },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "offset lithograph on paper",
+        "type": "form",
+        "identifier": [],
+        "note": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "13-1/4 x 10 inches",
+            "identifier": [],
+            "displayLabel": "Dimensions",
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "good",
+            "identifier": [],
+            "displayLabel": "Condition",
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [],
+    "language": [],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Description",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "rd-412",
+        "type": "local",
+        "identifier": [],
+        "source": { "code": "local", "note": [] },
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "1906 Earthquake",
+        "type": "topic",
+        "identifier": [],
+        "source": { "code": "lcsh", "note": [] },
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "relatedResource": [],
+    "marcEncodedData": [],
+    "purl": "https://purl.stanford.edu/zz400gd3785"
+  },
+  "identification": { "catalogLinks": [], "sourceId": "ReidDennis:7923" },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/image",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/zz400gd3785-zz400gd3785_1",
+        "label": "Item 1",
+        "version": 4,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/zz400gd3785-zz400gd3785_1/00007923_0001.jp2",
+              "label": "00007923_0001.jp2",
+              "filename": "00007923_0001.jp2",
+              "size": 14586088,
+              "version": 4,
+              "hasMimeType": "image/jp2",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "d4ce6c70085dffc1193bc2f150108b24e00e7157"
+                },
+                { "type": "md5", "digest": "06fda749211d1ae2138bdb88c1a2b079" }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              },
+              "presentation": { "height": 10035, "width": 7711 }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": ["druid:sg213ph2100"]
+  },
+  "created": "2022-05-02T14:08:59.000+00:00",
+  "modified": "2022-05-02T14:08:59.000+00:00",
+  "lock": "druid:zz400gd3785=0"
+}

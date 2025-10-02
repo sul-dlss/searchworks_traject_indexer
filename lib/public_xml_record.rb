@@ -25,11 +25,11 @@ class PublicXmlRecord
     catkey.nil? ? druid : catkey
   end
 
-  # @return catkey value from the DOR identity_metadata, or nil if there is no catkey
-  def catkey
-    get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='folio_instance_hrid']")).presence ||
-      get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='catkey']")).presence
-  end
+  # # @return catkey value from the DOR identity_metadata, or nil if there is no catkey
+  # def catkey
+  #   get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='folio_instance_hrid']")).presence ||
+  #     get_value(public_xml_doc.xpath("/publicObject/identityMetadata/otherId[@name='catkey']")).presence
+  # end
 
   def stanford_mods
     @stanford_mods ||= Stanford::Mods::Record.new.tap do |smods_rec|
