@@ -7,7 +7,6 @@
   "access": {
     "view": "world",
     "download": "world",
-    "controlledDigitalLending": false,
     "useAndReproductionStatement": "You do not need to obtain permission to use materials in the public domain."
   },
   "administrative": {
@@ -25,138 +24,76 @@
   "description": {
     "title": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "value": "Reproduction from the Official Map of San Francisco, Showing the District Swept...",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "value": "Reproduction from the Official Map of San Francisco, Showing the District Swept..."
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "San Francisco District Swept by Fire, 1906 (reproduction)",
-        "type": "alternative",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "alternative"
       }
     ],
-    "contributor": [],
     "event": [
       {
-        "structuredValue": [],
         "date": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "copyright 1906",
-            "type": "publication",
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "type": "publication"
           }
-        ],
-        "contributor": [],
-        "location": [],
-        "identifier": [],
-        "note": [],
-        "parallelEvent": []
+        ]
       }
     ],
     "form": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "still image",
         "type": "resource type",
-        "identifier": [],
-        "source": { "value": "MODS resource types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "MODS resource types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "offset lithograph on paper",
         "type": "form",
-        "identifier": [],
         "note": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "13-1/4 x 10 inches",
-            "identifier": [],
-            "displayLabel": "Dimensions",
-            "note": [],
-            "appliesTo": []
+            "displayLabel": "Dimensions"
           },
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "good",
-            "identifier": [],
-            "displayLabel": "Condition",
-            "note": [],
-            "appliesTo": []
+            "displayLabel": "Condition"
           }
-        ],
-        "appliesTo": []
+        ]
       }
     ],
-    "geographic": [],
-    "language": [],
     "note": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Topographical and street map of the western part of the city of San Francisco, with red indicating fire area.  Annotations:  “Area, approximately 4 square miles”;  entire title reads: “Reproduction from the Official Map of San Francisco, Showing the District Swept by Fire of April 18, 19, 20, 1906.”",
         "type": "abstract",
-        "identifier": [],
-        "displayLabel": "Description",
-        "note": [],
-        "appliesTo": []
+        "displayLabel": "Description"
       }
     ],
     "identifier": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "rd-412",
         "type": "local",
-        "identifier": [],
-        "source": { "code": "local", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "code": "local"
+        }
       }
     ],
     "subject": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "1906 Earthquake",
         "type": "topic",
-        "identifier": [],
-        "source": { "code": "lcsh", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "code": "lcsh"
+        }
       }
     ],
-    "relatedResource": [],
-    "marcEncodedData": [],
     "purl": "https://purl.stanford.edu/zz400gd3785"
   },
-  "identification": { "catalogLinks": [], "sourceId": "ReidDennis:7923" },
+  "identification": {
+    "sourceId": "ReidDennis:7923"
+  },
   "structural": {
     "contains": [
       {
@@ -179,26 +116,31 @@
                   "type": "sha1",
                   "digest": "d4ce6c70085dffc1193bc2f150108b24e00e7157"
                 },
-                { "type": "md5", "digest": "06fda749211d1ae2138bdb88c1a2b079" }
+                {
+                  "type": "md5",
+                  "digest": "06fda749211d1ae2138bdb88c1a2b079"
+                }
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
-                "sdrPreserve": false,
                 "shelve": true
               },
-              "presentation": { "height": 10035, "width": 7711 }
+              "presentation": {
+                "height": 10035,
+                "width": 7711
+              }
             }
           ]
         }
       }
     ],
-    "hasMemberOrders": [],
-    "isMemberOf": ["druid:sg213ph2100"]
+    "isMemberOf": [
+      "druid:sg213ph2100"
+    ]
   },
   "created": "2022-05-02T14:08:59.000+00:00",
   "modified": "2022-05-02T14:08:59.000+00:00",

@@ -7,21 +7,16 @@
   "access": {
     "view": "world",
     "download": "world",
-    "controlledDigitalLending": false,
     "useAndReproductionStatement": "User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.",
     "license": "https://opendatacommons.org/licenses/pddl/1-0/"
   },
-  "administrative": { "hasAdminPolicy": "druid:zw306xn5593" },
+  "administrative": {
+    "hasAdminPolicy": "druid:zw306xn5593"
+  },
   "description": {
     "title": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "value": "Data Supplement for \"Range-wide selection of catchments for Pacific salmon conservation.\"",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "value": "Data Supplement for \"Range-wide selection of catchments for Pacific salmon conservation.\""
       }
     ],
     "contributor": [
@@ -30,634 +25,303 @@
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Malin L",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Pinsky",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "status": "primary",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       },
       {
         "name": [
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Dane B.",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Springmeyer",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       },
       {
         "name": [
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Matthew N.",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Goslin",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       },
       {
         "name": [
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Xanthippe",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Augerot",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       }
     ],
     "event": [
       {
-        "structuredValue": [],
         "type": "deposit",
         "date": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "2020-05-22",
             "type": "publication",
-            "encoding": { "code": "edtf", "note": [] },
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "encoding": {
+              "code": "edtf"
+            }
           }
-        ],
-        "contributor": [],
-        "location": [],
-        "identifier": [],
-        "note": [],
-        "parallelEvent": []
+        ]
       },
       {
-        "structuredValue": [],
         "type": "creation",
         "date": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "2009",
             "type": "creation",
-            "encoding": { "code": "edtf", "note": [] },
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "encoding": {
+              "code": "edtf"
+            }
           }
-        ],
-        "contributor": [],
-        "location": [],
-        "identifier": [],
-        "note": [],
-        "parallelEvent": []
+        ]
       }
     ],
     "form": [
       {
         "structuredValue": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Data",
-            "type": "type",
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "type": "type"
           }
         ],
-        "parallelValue": [],
-        "groupedValue": [],
         "type": "resource type",
-        "identifier": [],
         "source": {
-          "value": "Stanford self-deposit resource types",
-          "note": []
-        },
-        "note": [],
-        "appliesTo": []
+          "value": "Stanford self-deposit resource types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Data sets",
         "type": "genre",
         "uri": "http://id.loc.gov/authorities/genreForms/gf2018026119",
-        "identifier": [],
-        "source": { "code": "lcgft", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "code": "lcgft"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "dataset",
         "type": "genre",
-        "identifier": [],
-        "source": { "code": "local", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "code": "local"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Dataset",
         "type": "resource type",
         "uri": "http://id.loc.gov/vocabulary/resourceTypes/dat",
-        "identifier": [],
         "source": {
-          "uri": "http://id.loc.gov/vocabulary/resourceTypes/",
-          "note": []
-        },
-        "note": [],
-        "appliesTo": []
+          "uri": "http://id.loc.gov/vocabulary/resourceTypes/"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Dataset",
         "type": "resource type",
-        "identifier": [],
-        "source": { "value": "DataCite resource types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "DataCite resource types"
+        }
       }
     ],
-    "geographic": [],
-    "language": [],
     "note": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Freshwater ecosystems are declining in quality globally, but a lack of data inhibits identification of areas valuable for conservation across national borders. We developed a biological measure of conservation value for six species of Pacific salmon (Oncorhynchus spp.) in catchments of the northern Pacific across Canada, China, Japan, Russia, and the United States. We based the measure on abundance and life-history richness and a model-based method that filled data gaps. Catchments with high conservation value ranged from California to northern Russia and included catchments in regions that are strongly affected by human development (e.g., Puget Sound). Catchments with high conservation value were less affected by agriculture and dams than other catchments, although only 1% were within biodiversity reserves. Our set of high-value areas was largely insensitive to simulated error, although classification remained uncertain for 3% of catchments. Although salmon face many threats, we propose they will be most likely to exhibit resilience into the future if a complementary mosaic of conservation strategies can be proactively adopted in catchments with healthy salmon populations. Our analysis provides an initial map of where these catchments are likely to be located.",
-        "type": "abstract",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "abstract"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Pinsky, ML, Springmeyer, DB, Goslin, MN, Augerot, X (2009). Data Supplement for \"Range-wide selection of catchments for Pacific salmon conservation.\" Stanford Digital Repository. Available at http://purl.stanford.edu/zc193vn8689.",
-        "type": "preferred citation",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "preferred citation"
       }
     ],
-    "identifier": [],
     "subject": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "conservation planning",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "freshwater protected areas",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "landscape variables",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "northern Pacific",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Oncorhynchus",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "salmon áreas dulceacuícolas protegidas",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Pacífico del norte",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "planificación de la conservación",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "salmón",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "variables de paisaje",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       }
     ],
     "access": {
-      "url": [],
-      "physicalLocation": [],
-      "digitalLocation": [],
       "accessContact": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "malin.pinsky@gmail.com",
           "type": "email",
-          "identifier": [],
-          "displayLabel": "Contact",
-          "note": [],
-          "appliesTo": []
+          "displayLabel": "Contact"
         }
-      ],
-      "digitalRepository": [],
-      "note": []
+      ]
     },
     "relatedResource": [
       {
-        "title": [],
-        "contributor": [],
-        "event": [],
-        "form": [],
-        "language": [],
-        "note": [],
-        "identifier": [],
-        "subject": [],
         "access": {
           "url": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
-              "value": "http://www.wildsalmoncenter.org/",
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "value": "http://www.wildsalmoncenter.org/"
             }
-          ],
-          "physicalLocation": [],
-          "digitalLocation": [],
-          "accessContact": [],
-          "digitalRepository": [],
-          "note": []
-        },
-        "relatedResource": []
+          ]
+        }
       },
       {
-        "title": [],
-        "contributor": [],
-        "event": [],
-        "form": [],
-        "language": [],
-        "note": [],
-        "identifier": [],
-        "subject": [],
         "access": {
           "url": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
-              "value": "http://www.stateofthesalmon.org/",
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "value": "http://www.stateofthesalmon.org/"
             }
-          ],
-          "physicalLocation": [],
-          "digitalLocation": [],
-          "accessContact": [],
-          "digitalRepository": [],
-          "note": []
-        },
-        "relatedResource": []
+          ]
+        }
       },
       {
-        "title": [],
-        "contributor": [],
-        "event": [],
-        "form": [],
-        "language": [],
-        "note": [],
-        "identifier": [],
-        "subject": [],
-        "purl": "https://purl.stanford.edu/vv853br8653",
-        "relatedResource": []
+        "purl": "https://purl.stanford.edu/vv853br8653"
       },
       {
-        "title": [],
-        "contributor": [],
-        "event": [],
-        "form": [],
-        "language": [],
         "note": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Pinsky, M. L., Springmeyer, D. B., Goslin, M. N. and Augerot, X. (2009), Range-Wide Selection of Catchments for Pacific Salmon Conservation. Conservation Biology, 23: 680–691. doi: 10.1111/j.1523-1739.2008.01156.x. Available at http://onlinelibrary.wiley.com/doi/10.1111/j.1523-1739.2008.01156.x/full.",
-            "type": "preferred citation",
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "type": "preferred citation"
           }
-        ],
-        "identifier": [],
-        "subject": [],
-        "relatedResource": []
+        ]
       }
     ],
-    "marcEncodedData": [],
     "adminMetadata": {
-      "contributor": [],
       "event": [
         {
-          "structuredValue": [],
           "type": "creation",
           "date": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
               "value": "2020-05-22",
-              "encoding": { "code": "edtf", "note": [] },
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "encoding": {
+                "code": "edtf"
+              }
             }
-          ],
-          "contributor": [],
-          "location": [],
-          "identifier": [],
-          "note": [],
-          "parallelEvent": []
+          ]
         }
       ],
-      "language": [],
       "note": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "Metadata created by user via Stanford self-deposit application",
-          "type": "record origin",
-          "identifier": [],
-          "note": [],
-          "appliesTo": []
+          "type": "record origin"
         }
-      ],
-      "metadataStandard": [],
-      "identifier": []
+      ]
     },
     "purl": "https://purl.stanford.edu/zc193vn8689"
   },
-  "identification": { "catalogLinks": [], "sourceId": "hydrus:object-1" },
+  "identification": {
+    "sourceId": "hydrus:object-1"
+  },
   "structural": {
     "contains": [
       {
@@ -675,10 +339,11 @@
               "size": 76264,
               "version": 5,
               "hasMimeType": "application/pdf",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "969983e9603eab8fec93d1c0436bebd2" },
+                {
+                  "type": "md5",
+                  "digest": "969983e9603eab8fec93d1c0436bebd2"
+                },
                 {
                   "type": "sha1",
                   "digest": "7c68e9f968c60fdf4d07bcaafbc15b192c9e9dbe"
@@ -686,8 +351,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -713,10 +377,11 @@
               "size": 5885010,
               "version": 5,
               "hasMimeType": "application/zip",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "e172807c3cfa878a71da444cdd268d6a" },
+                {
+                  "type": "md5",
+                  "digest": "e172807c3cfa878a71da444cdd268d6a"
+                },
                 {
                   "type": "sha1",
                   "digest": "87fe44e9eb31c4938ba3707306b0d4b63a6fe5f4"
@@ -724,8 +389,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -751,10 +415,11 @@
               "size": 42216,
               "version": 5,
               "hasMimeType": "application/pdf",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "9023b38fd3cc43aca825da026f8a5cb2" },
+                {
+                  "type": "md5",
+                  "digest": "9023b38fd3cc43aca825da026f8a5cb2"
+                },
                 {
                   "type": "sha1",
                   "digest": "43783e02209e1c93f0f745a9f0c84c3fba77d075"
@@ -762,8 +427,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -789,10 +453,11 @@
               "size": 2851889,
               "version": 5,
               "hasMimeType": "text/plain",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "0d081b179629854f30ff78da11357985" },
+                {
+                  "type": "md5",
+                  "digest": "0d081b179629854f30ff78da11357985"
+                },
                 {
                   "type": "sha1",
                   "digest": "e3610a606f1326f07ee4409d54077e1181f9a070"
@@ -800,8 +465,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -827,10 +491,11 @@
               "size": 194306,
               "version": 5,
               "hasMimeType": "text/plain",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "af6fc390d4583fcf48135aff1b408391" },
+                {
+                  "type": "md5",
+                  "digest": "af6fc390d4583fcf48135aff1b408391"
+                },
                 {
                   "type": "sha1",
                   "digest": "7c42b7e5ef1f1b6eb1d5716f298232040880cec3"
@@ -838,8 +503,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -865,10 +529,11 @@
               "size": 2545421,
               "version": 5,
               "hasMimeType": "text/plain",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "807733ed9fcb03929b2c2df0ee0d2ce5" },
+                {
+                  "type": "md5",
+                  "digest": "807733ed9fcb03929b2c2df0ee0d2ce5"
+                },
                 {
                   "type": "sha1",
                   "digest": "38042ad8ee4b76ba9ac6913ff7563024e2f6903d"
@@ -876,8 +541,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -903,10 +567,11 @@
               "size": 94894,
               "version": 5,
               "hasMimeType": "application/pdf",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "b408a4775d012474116f6b0d98b636e0" },
+                {
+                  "type": "md5",
+                  "digest": "b408a4775d012474116f6b0d98b636e0"
+                },
                 {
                   "type": "sha1",
                   "digest": "f422de56434ccbf609f62c3149a2f930da888d5d"
@@ -914,8 +579,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -941,10 +605,11 @@
               "size": 68806,
               "version": 5,
               "hasMimeType": "application/pdf",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "63ffa8bb49df1b0ea3b96dce717a132b" },
+                {
+                  "type": "md5",
+                  "digest": "63ffa8bb49df1b0ea3b96dce717a132b"
+                },
                 {
                   "type": "sha1",
                   "digest": "f811570f6633607e9fe3f4ec93fd79a7ec8f40e4"
@@ -952,8 +617,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -965,8 +629,9 @@
         }
       }
     ],
-    "hasMemberOrders": [],
-    "isMemberOf": ["druid:pn808wc6253"]
+    "isMemberOf": [
+      "druid:pn808wc6253"
+    ]
   },
   "created": "2025-07-07T13:16:14.000+00:00",
   "modified": "2025-07-07T13:16:14.000+00:00",

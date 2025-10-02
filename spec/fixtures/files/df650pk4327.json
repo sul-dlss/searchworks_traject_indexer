@@ -2,26 +2,21 @@
   "cocinaVersion": "0.104.1",
   "type": "https://cocina.sul.stanford.edu/models/document",
   "externalIdentifier": "druid:df650pk4327",
-  "label": "The International Image Interoperability Framework (IIIF): A community \u0026 technology approach for web-based images",
+  "label": "The International Image Interoperability Framework (IIIF): A community & technology approach for web-based images",
   "version": 2,
   "access": {
     "view": "world",
     "download": "world",
-    "controlledDigitalLending": false,
     "useAndReproductionStatement": "User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.",
     "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode"
   },
-  "administrative": { "hasAdminPolicy": "druid:zw306xn5593" },
+  "administrative": {
+    "hasAdminPolicy": "druid:zw306xn5593"
+  },
   "description": {
     "title": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "value": "The International Image Interoperability Framework (IIIF): A community \u0026 technology approach for web-based images",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "value": "The International Image Interoperability Framework (IIIF): A community & technology approach for web-based images"
       }
     ],
     "contributor": [
@@ -30,459 +25,239 @@
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Stuart",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Snydman",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "status": "primary",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       },
       {
         "name": [
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Robert",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Sanderson",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       },
       {
         "name": [
           {
             "structuredValue": [
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Tom",
-                "type": "forename",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "forename"
               },
               {
-                "structuredValue": [],
-                "parallelValue": [],
-                "groupedValue": [],
                 "value": "Cramer",
-                "type": "surname",
-                "identifier": [],
-                "note": [],
-                "appliesTo": []
+                "type": "surname"
               }
-            ],
-            "parallelValue": [],
-            "groupedValue": [],
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            ]
           }
         ],
         "type": "person",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "author",
             "code": "aut",
             "uri": "http://id.loc.gov/vocabulary/relators/aut",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "affiliation": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       }
     ],
     "event": [
       {
-        "structuredValue": [],
         "type": "deposit",
         "date": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "2015-04-03",
             "type": "publication",
-            "encoding": { "code": "edtf", "note": [] },
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "encoding": {
+              "code": "edtf"
+            }
           }
-        ],
-        "contributor": [],
-        "location": [],
-        "identifier": [],
-        "note": [],
-        "parallelEvent": []
+        ]
       },
       {
-        "structuredValue": [],
         "type": "creation",
         "date": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "2015-05",
             "type": "creation",
-            "encoding": { "code": "edtf", "note": [] },
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "encoding": {
+              "code": "edtf"
+            }
           }
-        ],
-        "contributor": [],
-        "location": [],
-        "identifier": [],
-        "note": [],
-        "parallelEvent": []
+        ]
       }
     ],
     "form": [
       {
         "structuredValue": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Text",
-            "type": "type",
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "type": "type"
           },
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Article",
-            "type": "subtype",
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "type": "subtype"
           }
         ],
-        "parallelValue": [],
-        "groupedValue": [],
         "type": "resource type",
-        "identifier": [],
         "source": {
-          "value": "Stanford self-deposit resource types",
-          "note": []
-        },
-        "note": [],
-        "appliesTo": []
+          "value": "Stanford self-deposit resource types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "text",
         "type": "resource type",
-        "identifier": [],
-        "source": { "value": "MODS resource types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "MODS resource types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Text",
         "type": "resource type",
-        "identifier": [],
-        "source": { "value": "DataCite resource types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "DataCite resource types"
+        }
       }
     ],
-    "geographic": [],
-    "language": [],
     "note": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "The International Image Interoperability Framework (http://iiif.io) is a community of academic and national libraries, research institutions, museums, archives, nonprofits and commercial organizations that are committed to interoperable image delivery on the web. IIIF has defined common application programming interfaces (APIs) for image and metadata delivery, has supported the development of best-in-class image delivery and comparison software, and has cultivated a growing and sustainable community model for interoperable image repositories. This paper provides an overview of IIIF, with a focus on its origins, rationale and benefits to users and institutions. We describe the motivating use cases and applications for image interoperability, walk through the technical framework and supported APIs, and highlight IIIF-compatible software for image analysis, comparison and annotation.  We conclude with a discussion of the IIIF community process and future directions.",
-        "type": "abstract",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "abstract"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "value": "Snydman, Stuart, Rob Sanderson and Tom Cramer. The International Image Interoperability Framework (IIIF): A community \u0026 technology approach for web-based images. Archiving 2015, Los Angeles, CA, May 19-22, 2015. http://purl.stanford.edu/df650pk4327.",
-        "type": "preferred citation",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "value": "Snydman, Stuart, Rob Sanderson and Tom Cramer. The International Image Interoperability Framework (IIIF): A community & technology approach for web-based images. Archiving 2015, Los Angeles, CA, May 19-22, 2015. http://purl.stanford.edu/df650pk4327.",
+        "type": "preferred citation"
       }
     ],
-    "identifier": [],
     "subject": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Stanford University Libraries",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "images",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "interoperability",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "digital library",
-        "type": "topic",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "topic"
       }
     ],
     "access": {
-      "url": [],
-      "physicalLocation": [],
-      "digitalLocation": [],
       "accessContact": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "snydman@stanford.edu",
           "type": "email",
-          "identifier": [],
-          "displayLabel": "Contact",
-          "note": [],
-          "appliesTo": []
+          "displayLabel": "Contact"
         }
-      ],
-      "digitalRepository": [],
-      "note": []
+      ]
     },
     "relatedResource": [
       {
-        "title": [],
-        "contributor": [],
-        "event": [],
-        "form": [],
-        "language": [],
-        "note": [],
-        "identifier": [],
-        "subject": [],
         "access": {
           "url": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
-              "value": "http://iiif.io",
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "value": "http://iiif.io"
             }
-          ],
-          "physicalLocation": [],
-          "digitalLocation": [],
-          "accessContact": [],
-          "digitalRepository": [],
-          "note": []
-        },
-        "relatedResource": []
+          ]
+        }
       }
     ],
-    "marcEncodedData": [],
     "adminMetadata": {
-      "contributor": [],
       "event": [
         {
-          "structuredValue": [],
           "type": "creation",
           "date": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
               "value": "2015-04-03",
-              "encoding": { "code": "edtf", "note": [] },
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "encoding": {
+                "code": "edtf"
+              }
             }
-          ],
-          "contributor": [],
-          "location": [],
-          "identifier": [],
-          "note": [],
-          "parallelEvent": []
+          ]
         }
       ],
-      "language": [],
       "note": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "Metadata created by user via Stanford self-deposit application",
-          "type": "record origin",
-          "identifier": [],
-          "note": [],
-          "appliesTo": []
+          "type": "record origin"
         }
-      ],
-      "metadataStandard": [],
-      "identifier": []
+      ]
     },
     "purl": "https://purl.stanford.edu/df650pk4327"
   },
-  "identification": { "catalogLinks": [], "sourceId": "hydrus:object-830" },
+  "identification": {
+    "sourceId": "hydrus:object-830"
+  },
   "structural": {
     "contains": [
       {
         "type": "https://cocina.sul.stanford.edu/models/resources/document",
         "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/df650pk4327-df650pk4327_1",
-        "label": "",
         "version": 2,
         "structural": {
           "contains": [
             {
               "type": "https://cocina.sul.stanford.edu/models/file",
               "externalIdentifier": "https://cocina.sul.stanford.edu/file/df650pk4327-df650pk4327_1/2015ARCHIVING_IIIF.pdf",
-              "label": "",
               "filename": "2015ARCHIVING_IIIF.pdf",
               "size": 1975323,
               "version": 2,
               "hasMimeType": "application/pdf",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
-                { "type": "md5", "digest": "23d199406499ab996fae3d4dcf08b21d" },
+                {
+                  "type": "md5",
+                  "digest": "23d199406499ab996fae3d4dcf08b21d"
+                },
                 {
                   "type": "sha1",
                   "digest": "b27b109dfa6dc983b3bd2836d206292a1ef8d363"
@@ -490,8 +265,7 @@
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -503,8 +277,9 @@
         }
       }
     ],
-    "hasMemberOrders": [],
-    "isMemberOf": ["druid:hn730ks3626"]
+    "isMemberOf": [
+      "druid:hn730ks3626"
+    ]
   },
   "created": "2025-07-07T13:17:40.000+00:00",
   "modified": "2025-07-07T13:17:40.000+00:00",

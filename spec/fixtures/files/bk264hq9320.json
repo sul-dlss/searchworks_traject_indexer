@@ -7,321 +7,188 @@
   "access": {
     "view": "world",
     "download": "world",
-    "controlledDigitalLending": false,
     "useAndReproductionStatement": "The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu)."
   },
-  "administrative": { "hasAdminPolicy": "druid:yf767bj4831" },
+  "administrative": {
+    "hasAdminPolicy": "druid:yf767bj4831"
+  },
   "description": {
     "title": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "value": "Trustees Demo reel",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "value": "Trustees Demo reel"
       }
     ],
     "contributor": [
       {
         "name": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Stanford University. News and Publications Service",
             "uri": "http://id.loc.gov/authorities/names/n83041062",
-            "identifier": [],
             "source": {
               "code": "naf",
-              "uri": "http://id.loc.gov/authorities/names/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/authorities/names/"
+            }
           }
         ],
         "type": "organization",
         "status": "primary",
         "role": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "producer",
             "code": "pro",
             "uri": "http://id.loc.gov/vocabulary/relators/pro",
-            "identifier": [],
             "source": {
               "code": "marcrelator",
-              "uri": "http://id.loc.gov/vocabulary/relators/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
           }
-        ],
-        "identifier": [],
-        "note": [],
-        "parallelContributor": []
+        ]
       }
     ],
     "event": [
       {
-        "structuredValue": [],
         "displayLabel": "Place of creation",
         "date": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "2004-02-09",
             "type": "creation",
             "status": "primary",
-            "encoding": { "code": "w3cdtf", "note": [] },
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "encoding": {
+              "code": "w3cdtf"
+            }
           }
         ],
-        "contributor": [],
         "location": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Stanford (Calif.)",
             "code": "cau",
             "uri": "http://id.loc.gov/authorities/names/n50046557",
-            "identifier": [],
             "source": {
               "code": "naf",
-              "uri": "http://id.loc.gov/authorities/names/",
-              "note": []
-            },
-            "note": [],
-            "appliesTo": []
+              "uri": "http://id.loc.gov/authorities/names/"
+            }
           }
-        ],
-        "identifier": [],
-        "note": [],
-        "parallelEvent": []
+        ]
       }
     ],
     "form": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "Unedited footage",
         "type": "genre",
         "uri": "http://id.loc.gov/authorities/genreForms/gf2011026712",
-        "identifier": [],
         "source": {
           "code": "lcgft",
-          "uri": "http://id.loc.gov/authorities/genreForms/",
-          "note": []
-        },
-        "note": [],
-        "appliesTo": []
+          "uri": "http://id.loc.gov/authorities/genreForms/"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "moving image",
         "type": "resource type",
-        "identifier": [],
-        "source": { "value": "MODS resource types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "MODS resource types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "videocassette",
         "type": "form",
         "uri": "http://id.loc.gov/vocabulary/carriers/vf",
-        "identifier": [],
         "source": {
           "code": "rdacarrier",
-          "uri": "http://id.loc.gov/vocabulary/carriers",
-          "note": []
-        },
-        "note": [],
-        "appliesTo": []
+          "uri": "http://id.loc.gov/vocabulary/carriers"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "access",
         "type": "reformatting quality",
-        "identifier": [],
-        "source": { "value": "MODS reformatting quality terms", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "MODS reformatting quality terms"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "video/mp4",
         "type": "media type",
-        "identifier": [],
-        "source": { "value": "IANA media types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "IANA media types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "image/jpeg",
         "type": "media type",
-        "identifier": [],
-        "source": { "value": "IANA media types", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "IANA media types"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "1 MiniDV tape",
-        "type": "extent",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "type": "extent"
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "reformatted digital",
         "type": "digital origin",
-        "identifier": [],
-        "source": { "value": "MODS digital origin terms", "note": [] },
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "value": "MODS digital origin terms"
+        }
       },
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "identifier": [],
         "note": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "NTSC",
-            "identifier": [],
-            "displayLabel": "Broadcast standard",
-            "note": [],
-            "appliesTo": []
+            "displayLabel": "Broadcast standard"
           },
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Sound",
-            "identifier": [],
-            "displayLabel": "Sound content",
-            "note": [],
-            "appliesTo": []
+            "displayLabel": "Sound content"
           },
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
             "value": "Color",
-            "identifier": [],
-            "displayLabel": "Color content",
-            "note": [],
-            "appliesTo": []
+            "displayLabel": "Color content"
           }
-        ],
-        "appliesTo": []
+        ]
       }
     ],
-    "geographic": [],
     "language": [
       {
-        "appliesTo": [],
         "code": "eng",
-        "groupedValue": [],
-        "note": [],
-        "parallelValue": [],
         "source": {
           "code": "iso639-2b",
-          "uri": "http://id.loc.gov/vocabulary/iso639-2",
-          "note": []
+          "uri": "http://id.loc.gov/vocabulary/iso639-2"
         },
-        "structuredValue": [],
         "uri": "http://id.loc.gov/vocabulary/iso639-2/eng",
         "value": "English"
       }
     ],
     "note": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
-        "value": "Reformatted by Stanford University Libraries in 2017.",
-        "identifier": [],
-        "note": [],
-        "appliesTo": []
+        "value": "Reformatted by Stanford University Libraries in 2017."
       }
     ],
     "identifier": [
       {
-        "structuredValue": [],
-        "parallelValue": [],
-        "groupedValue": [],
         "value": "sc1125_s02_b11_04-0209-1",
         "type": "local",
-        "identifier": [],
-        "source": { "code": "local", "note": [] },
-        "displayLabel": "Source ID",
-        "note": [],
-        "appliesTo": []
+        "source": {
+          "code": "local"
+        },
+        "displayLabel": "Source ID"
       }
     ],
-    "subject": [],
     "access": {
-      "url": [],
       "physicalLocation": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "SC1125",
-          "type": "shelf locator",
-          "identifier": [],
-          "note": [],
-          "appliesTo": []
+          "type": "shelf locator"
         }
       ],
-      "digitalLocation": [],
       "accessContact": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "Stanford University. Libraries. Department of Special Collections and University Archives",
           "type": "repository",
           "uri": "http://id.loc.gov/authorities/names/no2014019980",
-          "identifier": [],
-          "source": { "code": "naf", "note": [] },
-          "note": [],
-          "appliesTo": []
+          "source": {
+            "code": "naf"
+          }
         }
-      ],
-      "digitalRepository": [],
-      "note": []
+      ]
     },
     "relatedResource": [
       {
@@ -329,119 +196,61 @@
         "displayLabel": "Finding Aid",
         "title": [
           {
-            "structuredValue": [],
-            "parallelValue": [],
-            "groupedValue": [],
-            "value": "Stanford University, News and Publication Service, Audiovisual Recordings (SC1125)",
-            "identifier": [],
-            "note": [],
-            "appliesTo": []
+            "value": "Stanford University, News and Publication Service, Audiovisual Recordings (SC1125)"
           }
         ],
-        "contributor": [],
-        "event": [],
-        "form": [],
-        "language": [],
-        "note": [],
-        "identifier": [],
-        "subject": [],
         "access": {
           "url": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
-              "value": "http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv",
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "value": "http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv"
             }
-          ],
-          "physicalLocation": [],
-          "digitalLocation": [],
-          "accessContact": [],
-          "digitalRepository": [],
-          "note": []
-        },
-        "relatedResource": []
+          ]
+        }
       }
     ],
-    "marcEncodedData": [],
     "adminMetadata": {
       "contributor": [
         {
           "name": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
               "code": "CSt",
               "uri": "http://id.loc.gov/vocabulary/organizations/cst",
-              "identifier": [],
               "source": {
                 "code": "marcorg",
-                "uri": "http://id.loc.gov/vocabulary/organizations",
-                "note": []
-              },
-              "note": [],
-              "appliesTo": []
+                "uri": "http://id.loc.gov/vocabulary/organizations"
+              }
             }
           ],
           "type": "organization",
           "role": [
             {
-              "structuredValue": [],
-              "parallelValue": [],
-              "groupedValue": [],
-              "value": "original cataloging agency",
-              "identifier": [],
-              "note": [],
-              "appliesTo": []
+              "value": "original cataloging agency"
             }
-          ],
-          "identifier": [],
-          "note": [],
-          "parallelContributor": []
+          ]
         }
       ],
-      "event": [],
       "language": [
         {
-          "appliesTo": [],
           "code": "eng",
-          "groupedValue": [],
-          "note": [],
-          "parallelValue": [],
           "source": {
             "code": "iso639-2b",
-            "uri": "http://id.loc.gov/vocabulary/iso639-2",
-            "note": []
+            "uri": "http://id.loc.gov/vocabulary/iso639-2"
           },
           "status": "primary",
-          "structuredValue": [],
           "uri": "http://id.loc.gov/vocabulary/iso639-2/eng",
           "value": "English"
         }
       ],
       "note": [
         {
-          "structuredValue": [],
-          "parallelValue": [],
-          "groupedValue": [],
           "value": "human prepared",
-          "type": "record origin",
-          "identifier": [],
-          "note": [],
-          "appliesTo": []
+          "type": "record origin"
         }
-      ],
-      "metadataStandard": [],
-      "identifier": []
+      ]
     },
     "purl": "https://purl.stanford.edu/bk264hq9320"
   },
   "identification": {
-    "catalogLinks": [],
     "sourceId": "sul:sc1125_s02_b11_04-0209-1"
   },
   "structural": {
@@ -461,19 +270,19 @@
               "size": 30383762,
               "version": 3,
               "hasMimeType": "video/mp4",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
                 {
                   "type": "sha1",
                   "digest": "d1f9ca90c48299d30c297441509639722cd4f497"
                 },
-                { "type": "md5", "digest": "f858e059aa6268cccba8b46ce1f5154b" }
+                {
+                  "type": "md5",
+                  "digest": "f858e059aa6268cccba8b46ce1f5154b"
+                }
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
@@ -499,26 +308,28 @@
               "size": 156819,
               "version": 3,
               "hasMimeType": "image/jp2",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
                 {
                   "type": "sha1",
                   "digest": "65db2fed8a9f9f2b5ff891129f28a10da607c5f1"
                 },
-                { "type": "md5", "digest": "000d731d1785ad45c730bedf61c5f7f9" }
+                {
+                  "type": "md5",
+                  "digest": "000d731d1785ad45c730bedf61c5f7f9"
+                }
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
-                "sdrPreserve": false,
                 "shelve": true
               },
-              "presentation": { "height": 781, "width": 1066 }
+              "presentation": {
+                "height": 781,
+                "width": 1066
+              }
             }
           ]
         }
@@ -538,33 +349,36 @@
               "size": 206500,
               "version": 3,
               "hasMimeType": "image/jp2",
-              "sdrGeneratedText": false,
-              "correctedForAccessibility": false,
               "hasMessageDigests": [
                 {
                   "type": "sha1",
                   "digest": "2355ac08bfa407d2df9886b09e0e2ea8127e33c7"
                 },
-                { "type": "md5", "digest": "8908ef27da141312b2ae29844318ed76" }
+                {
+                  "type": "md5",
+                  "digest": "8908ef27da141312b2ae29844318ed76"
+                }
               ],
               "access": {
                 "view": "world",
-                "download": "world",
-                "controlledDigitalLending": false
+                "download": "world"
               },
               "administrative": {
                 "publish": true,
-                "sdrPreserve": false,
                 "shelve": true
               },
-              "presentation": { "height": 1044, "width": 1050 }
+              "presentation": {
+                "height": 1044,
+                "width": 1050
+              }
             }
           ]
         }
       }
     ],
-    "hasMemberOrders": [],
-    "isMemberOf": ["druid:nj770kg7809"]
+    "isMemberOf": [
+      "druid:nj770kg7809"
+    ]
   },
   "created": "2022-04-26T20:36:02.000+00:00",
   "modified": "2024-06-13T10:44:15.000+00:00",
