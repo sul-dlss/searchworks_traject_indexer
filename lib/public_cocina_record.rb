@@ -71,8 +71,4 @@ class PublicCocinaRecord
   def public?
     [cocina_access['view'], cocina_access['download']].include? 'world'
   end
-
-  def stanford_only?
-    [cocina_access['view'], cocina_access['download']].include? 'stanford'
-  end
 end

@@ -16,7 +16,6 @@ end
 gem 'config'
 gem 'csv'
 gem 'debouncer'
-gem 'dor-rights-auth'
 gem 'honeybadger'
 gem 'http'
 gem 'i18n'

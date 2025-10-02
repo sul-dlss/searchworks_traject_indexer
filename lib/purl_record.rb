@@ -48,7 +48,7 @@ class PurlRecord
   delegate :catkey, to: :public_xml, allow_nil: true
   delegate :label, to: :public_cocina, allow_nil: true
 
-  delegate :mods, :collection?, :stanford_only?,
+  delegate :mods, :collection?,
            :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
            :dor_resource_count, :dor_read_rights, :collections, :constituents,
            :stanford_mods, :mods_display,
