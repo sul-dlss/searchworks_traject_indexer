@@ -246,7 +246,7 @@ end
 
 to_field 'issn_search', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'issn' }
+  accumulator.select! { |identifier| identifier.type_at == 'issn' && identifier['invalid'] != 'yes' }
   accumulator.map! { |identifier| identifier.text }
 end
 
@@ -258,7 +258,7 @@ end
 
 to_field 'issn_display', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'issn' }
+  accumulator.select! { |identifier| identifier.type_at == 'issn' && identifier['invalid'] != 'yes' }
   accumulator.map! { |identifier| identifier.text }
 end
 
@@ -271,7 +271,7 @@ end
 
 to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'oclc' }
+  accumulator.select! { |identifier| identifier.type_at == 'OCLC' }
   accumulator.map! { |identifier| identifier.text }
 end
 

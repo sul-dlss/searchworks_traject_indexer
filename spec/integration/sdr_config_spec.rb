@@ -291,10 +291,11 @@ RSpec.describe 'SDR indexing' do
         <publicObject>
           <mods xmlns="http://www.loc.gov/mods/v3">
             <identifier type="isbn">isbn-id</identifier>
-            <identifier type="issn">issn-id</identifier>
-            <identifier type="oclc">oclc-id</identifier>
-            <identifier type="lccn">lccn-id-1</identifier>
-            <identifier type="lccn">lccn-id-2</identifier>
+            <identifier type="issn">1512-7486</identifier>
+            <identifier type="issn" invalid="yes">1512-7494</identifier>
+            <identifier type="issn-l">1512-7486</identifier>
+            <identifier type="lccn">2005235116</identifier>
+            <identifier type="OCLC">40756133</identifier>
             <identifier type="garbage">garbage-id</identifier>
             <identifier>no-type-id</identifier>
           </mods>
@@ -307,12 +308,19 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the appropriate identifier types' do
+      # kn474gt7960 has isbn
       expect(result['isbn_search']).to eq ['isbn-id']
       expect(result['isbn_display']).to eq ['isbn-id']
-      expect(result['issn_search']).to eq ['issn-id']
-      expect(result['issn_display']).to eq ['issn-id']
-      expect(result['oclc']).to eq ['oclc-id']
-      expect(result['lccn']).to eq ['lccn-id-1']
+
+      # kn132pn2166 has issn
+      expect(result['issn_search']).to eq ['1512-7486']
+      expect(result['issn_display']).to eq ['1512-7486']
+
+      # kn132pn2166 has oclc
+      expect(result['oclc']).to eq ['40756133']
+
+      # kn132pn2166 has lccn
+      expect(result['lccn']).to eq ['2005235116']
     end
   end
 
