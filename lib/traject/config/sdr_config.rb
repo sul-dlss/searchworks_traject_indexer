@@ -403,14 +403,6 @@ to_field 'dor_resource_count_isi' do |record, accumulator|
   accumulator << record.dor_resource_count
 end
 
-# For finding fixtures with different types. Not currently used in Searchworks
-# The possible values are: "world", "group", "none", or "location"
-to_field 'dor_read_rights_ssim' do |record, accumulator|
-  record.dor_read_rights.uniq.each do |right|
-    accumulator << right
-  end
-end
-
 to_field 'context_source_ssi', literal('sdr')
 
 to_field 'context_version_ssi' do |_record, accumulator|

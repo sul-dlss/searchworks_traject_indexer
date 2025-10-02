@@ -351,40 +351,6 @@ RSpec.describe 'SDR indexing' do
     end
   end
 
-  describe 'rights metadata' do
-    let(:druid) { 'abc' }
-    let(:xml_data) do
-      <<-XML
-        <publicObject>
-          <rightsMetadata>
-            <access type="discover">
-              <machine>
-                <world/>
-              </machine>
-            </access>
-            <access type="read">
-              <machine>
-                <world/>
-              </machine>
-            </access>
-            <use>
-              <human type="useAndReproduction">Property rights reside with the repository.</human>
-            </use>
-          </rightsMetadata>
-          <mods xmlns="http://www.loc.gov/mods/v3"></mods>
-        </publicObject>
-      XML
-    end
-
-    before do
-      stub_purl_request(druid, xml: xml_data)
-    end
-
-    it 'maps the right data' do
-      expect(result['dor_read_rights_ssim']).to eq ['world']
-    end
-  end
-
   describe 'pub_country' do
     let(:druid) { 'abc' }
     let(:xml_data) do

@@ -50,7 +50,7 @@ class PurlRecord
 
   delegate :mods, :collection?,
            :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
-           :dor_resource_count, :dor_read_rights, :collections, :constituents,
+           :dor_resource_count, :collections, :constituents,
            :stanford_mods, :mods_display,
            :public_xml_doc, to: :public_xml
 
