@@ -193,6 +193,7 @@ RSpec.describe 'SDR indexing' do
     let(:json_data) do
       {
         'externalIdentifier' => 'druid:pk622rq7492',
+        'type' => 'https://cocina.sul.stanford.edu/models/document',
         'label' => 'Self-Presentation of NIL-Participating Student-Athletes on Instagram',
         'form' => [
           {
@@ -242,6 +243,7 @@ RSpec.describe 'SDR indexing' do
     end
     let(:collection_json_data) do
       {
+        'type' => 'https://cocina.sul.stanford.edu/models/collection',
         'label' => collection_label
       }.to_json
     end
@@ -325,6 +327,7 @@ RSpec.describe 'SDR indexing' do
       let(:json_data) do
         {
           'externalIdentifier' => 'druid:vc988wn9656',
+          'type' => 'https://cocina.sul.stanford.edu/models/document',
           'form' => [
             {
               'structuredValue' => [
@@ -395,7 +398,9 @@ RSpec.describe 'SDR indexing' do
       XML
     end
     let(:json_data) do
-      {}
+      {
+        'type' => 'https://cocina.sul.stanford.edu/models/document'
+      }
     end
 
     before do
@@ -436,7 +441,9 @@ RSpec.describe 'SDR indexing' do
     end
 
     let(:json_data) do
-      {}
+      {
+        'type' => 'https://cocina.sul.stanford.edu/models/document'
+      }
     end
 
     before do
@@ -475,7 +482,9 @@ RSpec.describe 'SDR indexing' do
     end
 
     let(:json_data) do
-      {}
+      {
+        'type' => 'https://cocina.sul.stanford.edu/models/document'
+      }
     end
 
     before do

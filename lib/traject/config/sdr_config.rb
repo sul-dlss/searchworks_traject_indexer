@@ -276,7 +276,7 @@ to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
 end
 
 to_field 'file_id' do |record, accumulator|
-  accumulator << record.thumb
+  accumulator << record.thumb unless record.collection?
 end
 
 to_field 'collection' do |record, accumulator|

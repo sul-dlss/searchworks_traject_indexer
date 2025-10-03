@@ -43,19 +43,10 @@ class PublicXmlRecord
     @mods ||= public_xml_doc.xpath('/publicObject/mods:mods', mods: 'http://www.loc.gov/mods/v3').first
   end
 
-  COLLECTION_TYPES = %w[collection set].freeze
-  # @return true if the identityMetadata has <objectType>collection</objectType>, false otherwise
-  def collection?
-    object_type_nodes = public_xml_doc.xpath('//objectType')
-    object_type_nodes.find_index { |n| COLLECTION_TYPES.include? n.text.downcase }
-  end
-
   # value is used to tell SearchWorks UI app of specific display needs for objects
   # this comes from the <thumb> element in publicXML or the first image found (as parsed by discovery-indexer)
   # @return [String] filename or nil if none found
   def thumb
-    return if collection?
-
     encoded_thumb if %w[book image manuscript map webarchive-seed].include?(dor_content_type)
   end
 
