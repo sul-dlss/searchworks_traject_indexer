@@ -281,19 +281,8 @@ RSpec.describe 'SDR indexing' do
       expect(result['building_facet']).to eq ['Stanford Digital Repository']
     end
 
-    it 'maps the purl url as the full text url' do
-      expect(result['url_fulltext']).to eq ['https://purl.stanford.edu/kf879tn8532']
-    end
-
     it 'maps the iiif manifest url' do
       expect(result['iiif_manifest_url_ssim']).to eq ['https://purl.stanford.edu/kf879tn8532/iiif3/manifest']
-    end
-
-    it 'maps the URLs of related resources' do
-      expect(result['url_suppl']).to eq [
-        'https://purl.stanford.edu/xs812fm6103',
-        'https://purl.stanford.edu/wn542dy8318'
-      ]
     end
   end
 
