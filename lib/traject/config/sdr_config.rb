@@ -144,6 +144,10 @@ to_field 'druid' do |record, accumulator|
 end
 
 to_field 'modsxml', stanford_mods(:to_xml)
+to_field 'cocina_description_struct' do |record, accumulator|
+  accumulator << record.public_cocina_doc['description']
+end
+
 to_field 'all_search', stanford_mods(:text) do |_record, accumulator|
   accumulator.map! { |x| x.gsub(/\s+/, ' ') }
 end

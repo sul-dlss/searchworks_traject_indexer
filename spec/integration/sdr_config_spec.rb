@@ -88,6 +88,7 @@ RSpec.describe 'SDR indexing' do
       )
 
       expect(result).to include 'modsxml'
+      expect(result['cocina_description_struct']).to all(be_a(String))
 
       expect(result).not_to include(
         'title_variant_search', 'author_meeting_display', 'author_person_display', 'author_person_full_display', 'author_1xx_search',
