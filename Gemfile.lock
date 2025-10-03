@@ -103,8 +103,6 @@ GEM
       activesupport (>= 4.2)
       bunny (~> 2.17)
       zeitwerk (~> 2.1)
-    dor-rights-auth (1.8.0)
-      nokogiri
     dot-properties (0.1.4)
       bundler (>= 2.2.33)
     drb (2.2.3)
@@ -360,7 +358,6 @@ DEPENDENCIES
   debug
   dlss-capistrano
   dor-event-client
-  dor-rights-auth
   factory_bot (~> 6.2)
   honeybadger
   http
