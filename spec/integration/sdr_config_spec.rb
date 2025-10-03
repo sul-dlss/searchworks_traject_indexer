@@ -52,7 +52,6 @@ RSpec.describe 'SDR indexing' do
           'title_245a_search' => ['Trustees Demo reel'],
           'title_245_search' => ['Trustees Demo reel.'],
           'title_sort' => ['Trustees Demo reel'],
-          'title_245a_display' => ['Trustees Demo reel'],
           'title_display' => ['Trustees Demo reel'],
           'title_full_display' => ['Trustees Demo reel.'],
           'author_7xx_search' => ['Stanford University. News and Publications Service'],

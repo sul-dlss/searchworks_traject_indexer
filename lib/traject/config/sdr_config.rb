@@ -158,7 +158,6 @@ to_field 'title_245a_search', stanford_mods(:sw_short_title, default: '[Untitled
 to_field 'title_245_search', stanford_mods(:sw_full_title, default: '[Untitled]')
 to_field 'title_variant_search', stanford_mods(:sw_addl_titles)
 to_field 'title_sort', stanford_mods(:sw_sort_title, default: '[Untitled]')
-to_field 'title_245a_display', stanford_mods(:sw_sort_title, default: '[Untitled]')
 to_field 'title_display', stanford_mods(:sw_title_display, default: '[Untitled]')
 to_field 'title_full_display', stanford_mods(:sw_full_title, default: '[Untitled]')
 
