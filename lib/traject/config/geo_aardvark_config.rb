@@ -202,7 +202,7 @@ to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'
 to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('type'), extract_values, translation_map('geo_resource_class')
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator.push('Maps', 'Datasets') if context.output_hash['gbl_georeferenced_b'].first }
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
-to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.public_cocina.collection? }
+to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.collection? }
 
 # https://opengeometadata.org/ogm-aardvark/#resource-type
 to_field 'gbl_resourceType_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_type')
