@@ -69,11 +69,6 @@ RSpec.describe 'SDR indexing' do
           'format_main_ssim' => ['Video'],
           'language' => ['English'],
           'physical' => ['1 MiniDV tape'],
-          'url_suppl' => [
-            'http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv',
-            'https://purl.stanford.edu/nj770kg7809'
-          ],
-          'url_fulltext' => ['https://purl.stanford.edu/bk264hq9320'],
           'access_facet' => ['Online'],
           'building_facet' => ['Stanford Digital Repository'],
           'library_code_facet_ssim' => ['SDR'],
