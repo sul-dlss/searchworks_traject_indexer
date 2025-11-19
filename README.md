@@ -199,13 +199,15 @@ You can, for example, list all configured consumer groups and topics:
 /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --all-groups --all-topics
 ```
 
-Another useful operation is resetting the messages published in a particular topic, which will "rewind" and "replay" each message, effectively reindexing all data:
+Another useful operation is resetting the messages published in a particular topic, which will "rewind" and "replay" each message, effectively reindexing all data: 
 
 ```sh
 /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group traject_folio_dev --topic marc_folio_test --reset-offsets --to-earliest
 ```
 
-Some tools offer the option to "plan" execution by default, and actually execute using the `--execute` flag. for more, try passing `--help`.
+Note that you must first stop the associated indexer process in order to reset the offsets; after the reset is complete you can restart the indexer in order to start receiving messages from the beginning.
+
+Some operations (including resetting offests) will "plan" execution by default, and only actually execute using the `--execute` flag. for more, try passing `--help`.
 
 ### Data sync
 
