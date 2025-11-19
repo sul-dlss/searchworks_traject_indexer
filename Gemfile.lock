@@ -160,7 +160,7 @@ GEM
     marc-fastxmlwriter (1.1.0)
       marc (~> 1.0)
     match_map (3.0.0)
-    minitest (5.26.1)
+    minitest (5.26.2)
     mods (3.0.5)
       csv (~> 3.3)
       edtf (~> 3.0)
