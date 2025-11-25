@@ -132,9 +132,9 @@ end
 ##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
-  next unless record.catkey
+  next unless record.folio_hrid
 
-  message = 'Item has a catkey'
+  message = 'Item has a hrid'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
   context.skip!("#{message}: #{record.druid}")
 end
@@ -276,7 +276,7 @@ to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
 end
 
 to_field 'file_id' do |record, accumulator|
-  accumulator << record.thumb
+  accumulator << record.thumb unless record.collection?
 end
 
 to_field 'collection' do |record, accumulator|
