@@ -215,4 +215,4 @@ If the name of a library in FOLIO has changed, you'll want to export the list of
 OKAPI_URL="URL_HERE" bin/rake folio:update_types_cache
 ```
 
-Then you'll want to reindex everything so as to avoid libaries whose labels have changed from showing both versions of the label in the `building_facet` in Searchworks.
+Then you'll want to reindex everything so as to avoid libraries whose labels have changed from showing both versions of the label in the `building_facet` in Searchworks.
