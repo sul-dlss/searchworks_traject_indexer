@@ -50,8 +50,8 @@ class Traject::KafkaPurlFetcherReader
     return true if target && change['false_targets'] && change['false_targets'].map(&:upcase).include?(target.upcase)
 
     if target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
-      # Remove changed records that now have a catkey
-      return true if skip_catkey && (change['catkey'].presence || record.catkey)
+      # Remove changed records that now have a FOLIO HRID
+      return true if skip_catkey && (change['catkey'].presence || record.folio_hrid)
       # Remove withdrawn records that are missing public xml
       return true unless record.public_xml?
     end

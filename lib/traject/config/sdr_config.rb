@@ -3,9 +3,11 @@
 require_relative '../../../config/boot'
 require 'digest/md5'
 require 'active_support'
+require_relative '../macros/cocina'
 
 Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
+extend Traject::Macros::Cocina
 
 def log_skip(context)
   writer.put(context)
@@ -132,9 +134,9 @@ end
 ##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
-  next unless record.catkey
+  next unless record.folio_hrid
 
-  message = 'Item has a catkey'
+  message = 'Item has a hrid'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
   context.skip!("#{message}: #{record.druid}")
 end
@@ -164,15 +166,46 @@ to_field 'title_full_display', stanford_mods(:sw_full_title, default: '[Untitled
 
 ##
 # Author Fields
-to_field 'author_1xx_search', stanford_mods(:sw_main_author)
-to_field 'author_7xx_search', stanford_mods(:sw_addl_authors)
-to_field 'author_person_facet', stanford_mods(:sw_person_authors)
-to_field 'author_other_facet', stanford_mods(:sw_impersonal_authors)
-to_field 'author_sort', stanford_mods(:sw_sort_author)
-to_field 'author_corp_display', stanford_mods(:sw_corporate_authors)
-to_field 'author_meeting_display', stanford_mods(:sw_meeting_authors)
-to_field 'author_person_display', stanford_mods(:sw_person_authors)
-to_field 'author_person_full_display', stanford_mods(:sw_person_authors)
+to_field 'author_1xx_search' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.person_contributor_names(with_date: true))
+end
+to_field 'author_7xx_search' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.impersonal_contributor_names)
+end
+
+to_field 'author_person_facet' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.person_contributor_names(with_date: true))
+end
+to_field 'author_other_facet' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.impersonal_contributor_names)
+end
+to_field 'author_sort' do |record, accumulator, _context|
+  #  substitute java Character.MAX_CODE_POINT for nil main_author so missing main authors sort last
+  name = record.cocina_display.person_contributor_names(with_date: true).first || "\u{10FFFF} "
+  result = "#{name}#{record.cocina_display.sort_title}".gsub(/[[:punct:]]*/, '').strip
+  accumulator << result
+end
+
+to_field 'author_corp_display' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.organization_contributor_names)
+end
+to_field 'author_meeting_display' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.conference_contributor_names)
+end
+# no roles
+to_field 'author_person_display' do |record, accumulator, _context|
+  accumulator.concat(record.cocina_display.person_contributor_names(with_date: true))
+end
+
+# with roles
+to_field 'author_person_full_display' do |record, accumulator, _context|
+  people = record.cocina_display.contributors.filter(&:person?)
+  accumulator.concat(people.map do |person|
+    roles = person.roles.map(&:to_s).join(', ')
+    roles = " #{roles}." if roles.present?
+    "#{person.display_names(with_date: true)}#{roles}"
+  end)
+end
 
 ##
 # Subject Fields
@@ -276,7 +309,7 @@ to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
 end
 
 to_field 'file_id' do |record, accumulator|
-  accumulator << record.thumb
+  accumulator << record.thumb unless record.collection?
 end
 
 to_field 'collection' do |record, accumulator|
