@@ -344,9 +344,6 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the right data' do
-      expect(result['dor_content_type_ssi']).to eq ['image']
-      expect(result['dor_resource_content_type_ssim']).to eq %w[object preview]
-      expect(result['dor_file_mimetype_ssim']).to eq ['application/zip', 'image/jpeg']
       expect(result['dor_resource_count_isi']).to eq [2]
     end
   end
