@@ -570,7 +570,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       let(:references) { JSON.parse result['dct_references_s'] }
 
       it 'maps the searchworks URL when released to searchworks and has catkey' do
-        expect(references['https://schema.org/relatedLink']).to eq 'https://searchworks.stanford.edu/view/11235662'
+        expect(references['https://schema.org/relatedLink']).to eq 'https://searchworks.stanford.edu/view/a11235662'
       end
     end
 

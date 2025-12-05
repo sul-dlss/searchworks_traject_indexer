@@ -56,7 +56,7 @@ GEM
       capistrano (~> 3.0)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina_display (1.4.3)
+    cocina_display (1.5.0)
       activesupport (>= 7)
       edtf (~> 3.2)
       geo_coord (~> 0.2)
@@ -153,7 +153,6 @@ GEM
     marc-fastxmlwriter (1.1.0)
       marc (~> 1.0)
     match_map (3.0.0)
-    mini_portile2 (2.8.9)
     minitest (5.26.2)
     mods (3.0.5)
       csv (~> 3.3)
@@ -172,9 +171,6 @@ GEM
     net-sftp (4.0.0)
       net-ssh (>= 5.0.0, < 8.0.0)
     net-ssh (7.3.0)
-    nokogiri (1.18.10)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.18.10-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-darwin)
@@ -350,7 +346,7 @@ DEPENDENCIES
   capistrano (~> 3.0)
   capistrano-bundler
   capistrano-shared_configs
-  cocina_display (~> 1.2)
+  cocina_display (~> 1.5)
   config
   csv
   debouncer
