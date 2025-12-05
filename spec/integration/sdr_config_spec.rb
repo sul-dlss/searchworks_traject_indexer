@@ -26,6 +26,7 @@ RSpec.describe 'SDR indexing' do
     let(:druid) { 'abc' }
 
     before do
+      stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404)
       stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     end
 
@@ -39,7 +40,7 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'nj770kg7809' }
 
     before do
-      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s), json: File.read(file_fixture("#{druid}.json").to_s))
       stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
@@ -77,8 +78,8 @@ RSpec.describe 'SDR indexing' do
           'access_facet' => ['Online'],
           'building_facet' => ['Stanford Digital Repository'],
           'library_code_facet_ssim' => ['SDR'],
-          'collection' => ['9665836'],
-          'collection_with_title' => ['9665836-|-Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)'],
+          'collection' => ['a9665836'],
+          'collection_with_title' => ['a9665836-|-Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive)'],
           'all_search' => [' Trustees Demo reel Stanford University. News and Publications Service pro producer moving image cau Stanford (Calif.) 2004-02-09 eng English videocassette 1 MiniDV tape access reformatted digital video/mp4 image/jpeg NTSC Sound Color Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320 Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv English eng CSt human prepared Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive) https://purl.stanford.edu/nj770kg7809 The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu). '] # rubocop:disable Layout/LineLength
         }
       )
@@ -99,8 +100,8 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'zc193vn8689' }
 
     before do
-      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
-      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s), json: File.read(file_fixture("#{druid}.json").to_s))
+      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
     context 'geo is released to earthworks' do
@@ -202,7 +203,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, xml: xml_data)
+      stub_purl_request(druid, xml: xml_data, json: '{}')
       stub_purl_request(collection_druid, xml: collection_xml_data, json: collection_json_data)
     end
 
@@ -303,7 +304,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, xml: xml_data)
+      stub_purl_request(druid, xml: xml_data, json: '{}')
     end
 
     it 'maps the appropriate identifier types' do
@@ -340,7 +341,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     before do
-      stub_purl_request(druid, xml: xml_data)
+      stub_purl_request(druid, xml: xml_data, json: '{}')
     end
 
     it 'maps the right data' do
@@ -373,9 +374,24 @@ RSpec.describe 'SDR indexing' do
         </publicObject>
       XML
     end
+    let(:json_data) do
+      {
+        'description' => {
+          'event' => [
+            {
+              'type' => 'publication',
+              'location' => [
+                { 'code' => 'aq', 'source' => { 'code' => 'marccountry' } },
+                { 'code' => 'aa', 'source' => { 'code' => 'whatever' } }
+              ]
+            }
+          ]
+        }
+      }.to_json
+    end
 
     before do
-      stub_purl_request(druid, xml: xml_data)
+      stub_purl_request(druid, xml: xml_data, json: json_data)
     end
 
     it 'maps the right data' do
@@ -388,7 +404,7 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'sg213ph2100' }
 
     before do
-      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s), json: File.read(file_fixture("#{druid}.json").to_s))
       stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
@@ -407,7 +423,7 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'hn730ks3626' }
 
     before do
-      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s), json: File.read(file_fixture("#{druid}.json").to_s))
       stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
     end
 
@@ -433,7 +449,7 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'nj770kg7809' }
 
     before do
-      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s))
+      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s), json: File.read(file_fixture("#{druid}.json").to_s))
       stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
       allow(Settings.sdr_events).to receive(:enabled).and_return(true)
       allow(SdrEvents).to receive_messages(

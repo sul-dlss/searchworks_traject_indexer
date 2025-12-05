@@ -257,7 +257,7 @@ to_field('dct_rightsHolder_sm') { |record, accumulator| accumulator << record.co
 to_field('dct_license_sm') { |record, accumulator| accumulator << record.cocina_display.license }
 
 # https://opengeometadata.org/ogm-aardvark/#access-rights
-to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public_cocina.public? ? 'Public' : 'Restricted') }
+to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public? ? 'Public' : 'Restricted') }
 
 # https://opengeometadata.org/ogm-aardvark/#modified
 # - required, but not used in the UI

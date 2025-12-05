@@ -70,7 +70,7 @@ module Traject
 
       # Get the right geoserver url for an item given its access rights
       def geoserver_url(record)
-        record.public_cocina.public? ? settings['geoserver.pub_url'] : settings['geoserver.stan_url']
+        record.public? ? settings['geoserver.pub_url'] : settings['geoserver.stan_url']
       end
     end
   end
