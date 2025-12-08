@@ -344,7 +344,7 @@ DEPENDENCIES
   capistrano (~> 3.0)
   capistrano-bundler
   capistrano-shared_configs
-  cocina_display (~> 1.2)
+  cocina_display (~> 1.5)
   config
   csv
   debouncer
