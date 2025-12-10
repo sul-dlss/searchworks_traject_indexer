@@ -12,16 +12,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
   let(:druid) { 'vv853br8653' }
   let(:record) { PurlRecord.new(druid) }
-  let(:xml_body) do
-    File.new(file_fixture("#{druid}.xml"))
-  rescue StandardError
-    nil
-  end
   let(:body) { File.new(file_fixture("#{druid}.json")) }
   let(:metadata_json) { File.new(file_fixture("#{druid}.meta_json")) }
 
   before do
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: xml_body ? 200 : 404, body: xml_body)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: metadata_json)
   end
