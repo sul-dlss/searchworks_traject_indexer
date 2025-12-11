@@ -69,9 +69,9 @@ set :indexers, [
     count: 2,
     config: './lib/traject/config/sdr_config.rb',
     settings: {
-      'log.file' => 'log/traject_dr_prod_indexer_2025.log',
+      'log.file' => 'log/traject_sdr_prod_indexer_2025.log',
       'kafka.topic' => 'purl_fetcher_prod',
-      'kafka.consumer_group_id' => 'traject_dr_prod_indexer_2025',
+      'kafka.consumer_group_id' => 'sdr_prod_indexer_2025',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-2025'
     }
   }
