@@ -51,5 +51,28 @@ set :indexers, [
       'kafka.consumer_group_id' => 'traject_sdr_folio_prod',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-folio-prod'
     }
+  },
+  {
+    key: 'folio_prod_indexer_2025',
+    count: 4,
+    config: './lib/traject/config/folio_config.rb',
+    settings: {
+      'log.file' => 'log/traject_folio_prod_2025_indexer.log',
+      'kafka.topic' => 'marc_folio_prod',
+      'kafka.consumer_group_id' => 'traject_folio_prod_2025',
+      'reader_class_name' => 'Traject::KafkaFolioReader',
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-2025'
+    }
+  },
+  {
+    key: 'sdr_prod_indexer_2025',
+    count: 2,
+    config: './lib/traject/config/sdr_config.rb',
+    settings: {
+      'log.file' => 'log/traject_dr_prod_indexer_2025.log',
+      'kafka.topic' => 'purl_fetcher_prod',
+      'kafka.consumer_group_id' => 'traject_dr_prod_indexer_2025',
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-2025'
+    }
   }
 ]
