@@ -3,7 +3,7 @@
 module Constants
   MAX_CODE_POINT = 0x10FFFF.chr(Encoding::UTF_8)
 
-  EXCLUDE_FIELDS = ['w', '0', '1', '2', '5', '6', '8', '?', '=']
+  EXCLUDE_FIELDS = ['w', '0', '1', '2', '5', '6', '8', '9', '?', '=']
   NIELSEN_TAGS = { '505' => '905', '520' => '920', '586' => '986' }
   SOURCES = { 'Nielsen' => '(source: Nielsen Book Data)' }
 
