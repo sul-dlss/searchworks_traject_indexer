@@ -12,16 +12,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
   let(:druid) { 'vv853br8653' }
   let(:record) { PurlRecord.new(druid) }
-  let(:xml_body) do
-    File.new(file_fixture("#{druid}.xml"))
-  rescue StandardError
-    nil
-  end
   let(:body) { File.new(file_fixture("#{druid}.json")) }
   let(:metadata_json) { File.new(file_fixture("#{druid}.meta_json")) }
 
   before do
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: xml_body ? 200 : 404, body: xml_body)
+    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: metadata_json)
   end
@@ -87,7 +82,7 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the temporal coverage' do
-    expect(result['dct_temporal_sm']).to eq ['1978–2005']
+    expect(result['dct_temporal_sm']).to eq ['1978 - 2005']
   end
 
   it 'maps the date range' do
@@ -127,11 +122,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
   end
 
   it 'maps the geometry' do
-    expect(result['locn_geometry']).to eq 'ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)'
+    expect(result['locn_geometry']).to eq 'ENVELOPE(-180.000000, 180.000000, 73.990833, 24.231389)'
   end
 
   it 'maps the bounding box' do
-    expect(result['dcat_bbox']).to eq 'ENVELOPE(-180.0, 180.0, 73.990866, 24.23126)'
+    expect(result['dcat_bbox']).to eq 'ENVELOPE(-180.000000, 180.000000, 73.990833, 24.231389)'
   end
 
   it 'maps the rights' do
@@ -151,7 +146,6 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['dct_accessRights_s']).to eq 'Public'
   end
 
-  # No events in cocina descriptive adminMetadata, so we use the top-level one
   it 'maps the top-level modification date as the metadata modification date' do
     expect(result['gbl_mdModified_dt']).to eq '2022-09-28T21:48:32Z'
   end
@@ -192,19 +186,11 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
-  context 'with contributor names that are structuredValues' do
-    let(:druid) { 'rk962wd2562' }
-    it 'maps the creators' do
-      expect(result['dct_creator_sm']).to eq ['Ptolemy, active 2nd century', 'Waldseemüller, Martin, 1470-1519', 'Schott, Johann, 1477-1548', 'Übelin, Georg, active 15th century-16th century']
-    end
-  end
-
   context 'with a shapefile with unzipped metadata (not released to searchworks)' do
     let(:druid) { 'bc559yb0972' }
 
-    # There is an event in cocina descriptive adminMetadata, so we use that (even though it's creation)
-    it 'maps the creation date as the metadata modification date' do
-      expect(result['gbl_mdModified_dt']).to eq '2015-11-03T00:00:00Z'
+    it 'maps the metadata modification date' do
+      expect(result['gbl_mdModified_dt']).to eq '2024-05-08T14:58:32Z'
     end
 
     it 'maps the copyright info' do
@@ -574,10 +560,8 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       end
     end
 
-    # This record has two differently-formatted events in cocina descriptive
-    # adminMetadata; we want to parse both and use the more recent (modified)
-    it 'maps the modification date as the metadata modification date' do
-      expect(result['gbl_mdModified_dt']).to eq '2002-06-18T15:56:43Z'
+    it 'maps the metadata modification date' do
+      expect(result['gbl_mdModified_dt']).to eq '2023-06-05T22:30:09Z'
     end
 
     it 'maps the themes' do

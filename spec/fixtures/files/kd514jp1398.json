@@ -1,1 +1,887 @@
-{"cocinaVersion":"0.96.0","type":"https://cocina.sul.stanford.edu/models/geo","externalIdentifier":"druid:kd514jp1398","label":"Port De San Francisco Dans La Haute Californie (Raster Image)","version":1,"access":{"view":"world","download":"world","controlledDigitalLending":false,"useAndReproductionStatement":"You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.","license":"https://creativecommons.org/licenses/by/3.0/legalcode"},"administrative":{"hasAdminPolicy":"druid:bc198wr8388","releaseTags":[{"who":"bergeraj","what":"collection","date":"2023-04-13T20:33:15.000+00:00","to":"Earthworks","release":true},{"who":"kdurante","what":"collection","date":"2020-11-12T12:48:32.000+00:00","to":"Searchworks","release":true}]},"description":{"title":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Port De San Francisco Dans La Haute Californie (Raster Image)","identifier":[],"note":[],"appliesTo":[]}],"contributor":[{"name":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Duflot de Mofras, Eugène, 1810-1884","identifier":[],"note":[],"appliesTo":[]}],"type":"person","role":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"creator","identifier":[],"source":{"code":"marcrelator","note":[]},"note":[],"appliesTo":[]}],"identifier":[],"note":[],"parallelContributor":[]}],"event":[{"structuredValue":[],"date":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"2024","type":"publication","status":"primary","encoding":{"code":"w3cdtf","note":[]},"identifier":[],"note":[],"appliesTo":[]}],"contributor":[{"name":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Stanford University. Center for Spatial and Textual Analysis","identifier":[],"note":[],"appliesTo":[]}],"type":"organization","role":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"publisher","code":"pbl","uri":"http://id.loc.gov/vocabulary/relators/pbl","identifier":[],"source":{"code":"marcrelator","uri":"http://id.loc.gov/vocabulary/relators/","note":[]},"note":[],"appliesTo":[]}],"identifier":[],"note":[],"parallelContributor":[]}],"location":[],"identifier":[],"note":[],"parallelEvent":[]}],"form":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Geospatial data","type":"genre","uri":"http://id.loc.gov/authorities/genreForms/gf2011026297","identifier":[],"source":{"code":"lcgft","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"cartographic dataset","type":"genre","uri":"http://rdvocab.info/termList/RDAContentType/1001","identifier":[],"source":{"code":"rdacontent","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"cartographic","type":"resource type","identifier":[],"source":{"value":"MODS resource types","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"software, multimedia","type":"resource type","identifier":[],"source":{"value":"MODS resource types","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"born digital","type":"digital origin","identifier":[],"source":{"value":"MODS digital origin terms","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Dataset","type":"genre","identifier":[],"source":{"value":"local","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"GeoTIFF","type":"form","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"EPSG::4326","type":"map projection","identifier":[],"note":[],"appliesTo":[]}],"geographic":[{"form":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"image/tiff","type":"media type","identifier":[],"source":{"value":"IANA media type terms","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"GeoTIFF","type":"data format","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Dataset#Raster","type":"type","identifier":[],"note":[],"appliesTo":[]}],"subject":[{"structuredValue":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"-122.7764674","type":"west","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"37.3629343","type":"south","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"-121.7827971","type":"east","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"38.2596066","type":"north","identifier":[],"note":[],"appliesTo":[]}],"parallelValue":[],"groupedValue":[],"type":"bounding box coordinates","standard":{"code":"EPSG:4326","note":[]},"encoding":{"value":"decimal","note":[]},"identifier":[],"note":[],"appliesTo":[]}]}],"language":[{"appliesTo":[],"code":"eng","groupedValue":[],"note":[],"parallelValue":[],"source":{"code":"ISO639-2","note":[]},"structuredValue":[]}],"note":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"This layer is a georeferenced image of a map titled \"Port De San Francisco Dans La Haute Californie.\" Originally published in 1844, this map appears in Exploration Du Territoire De L'Oregon, Des Californies Et De La Mer Vermeille, Executee Pendant Les Annees 1840, 1841 Et 1842, Par M. Duflot De Mofras, Attache A La Legation De France A Mexico. Ouvrage Publie Par Ordre Du Roi, Sous Les Auspices De M. Le Marechal Soult, Duc De Dalmatie, President du Conseil, Et De M. Le Ministre Des Affaires Etrangeres. Tome Premier. Paris, Arthus Bertrand, Editeur, Libraire De La Societe De Geographie, Rue Hautefeuille, No. 23. 1844. Paris.","type":"abstract","identifier":[],"displayLabel":"Abstract","note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"This project traces the history of urban planning in San Francisco, placing special emphasis on unrealized schemes. Rather than using visual material simply to illustrate outcomes, Imagined San Francisco uses historical plans, maps, architectural renderings, and photographs to show what might have been. By enabling users to layer a series of urban plans, the project presents the city not only as a sequence of material changes, but also as a contingent process and a battleground for political power. Savvy institutional actors--like banks, developers, and many public officials--understood that in some cases to clearly articulate their interests would be to invite challenges. That means that textual sources like newspapers and municipal reports are limited in what they can tell researchers about the shape of political power. Urban plans, however, often speak volumes about interests and dynamics upon which textual sources remain silent. Mortgage lenders, for example, apparently thought it unwise to state that they wished to see a poor neighborhood cleared, to be replaced with a freeway onramp. Yet visual analysis of planning proposals makes that interest plain. So in the process of showing how the city might have looked, Imagined San Francisco also shows how political power actually was negotiated and exercised.","type":"other","identifier":[],"displayLabel":"Purpose","note":[],"appliesTo":[]}],"identifier":[],"subject":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"San Francisco Bay (Calif.)","type":"place","identifier":[],"source":{"code":"lcsh","uri":"http://id.loc.gov/authorities/subjects.html","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Harbors","type":"topic","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Ports of entry","type":"topic","identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Imagery and Base Maps","type":"topic","uri":"imageryBaseMapsEarthCover","identifier":[],"source":{"code":"ISO19115TopicCategory","uri":"http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode","note":[]},"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"1844","type":"time","encoding":{"code":"w3cdtf","note":[]},"identifier":[],"note":[],"appliesTo":[]},{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"W 122°46ʹ35ʺ--W 121°46ʹ58ʺ/N 38°15ʹ35ʺ--N 37°21ʹ47ʺ","type":"map coordinates","identifier":[],"note":[],"appliesTo":[]}],"access":{"url":[],"physicalLocation":[],"digitalLocation":[],"accessContact":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"cesta_stanford@stanford.edu","type":"email","identifier":[],"displayLabel":"Contact","note":[],"appliesTo":[]}],"digitalRepository":[],"note":[]},"relatedResource":[{"type":"has other format","displayLabel":"Scanned map","title":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Port De San Francisco Dans La Haute Californie","identifier":[],"note":[],"appliesTo":[]}],"contributor":[],"event":[],"form":[],"language":[],"note":[],"identifier":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"https://purl.stanford.edu/df334jk2963","identifier":[],"note":[],"appliesTo":[]}],"subject":[],"relatedResource":[]}],"marcEncodedData":[],"adminMetadata":{"contributor":[{"name":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"Stanford","identifier":[],"note":[],"appliesTo":[]}],"role":[],"identifier":[],"note":[],"parallelContributor":[]}],"event":[{"structuredValue":[],"type":"creation","date":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"2024-04-09","encoding":{"code":"w3cdtf","note":[]},"identifier":[],"note":[],"appliesTo":[]}],"contributor":[],"location":[],"identifier":[],"note":[],"parallelEvent":[]}],"language":[{"appliesTo":[],"code":"eng","groupedValue":[],"note":[],"parallelValue":[],"source":{"code":"ISO639-2","note":[]},"structuredValue":[]}],"note":[],"metadataStandard":[],"identifier":[{"structuredValue":[],"parallelValue":[],"groupedValue":[],"value":"edu.stanford.purl:kd514jp1398","identifier":[],"note":[],"appliesTo":[]}]},"purl":"https://purl.stanford.edu/kd514jp1398"},"identification":{"catalogLinks":[],"sourceId":"branner:ImaginedSF_Duflot_WGS.tif"},"structural":{"contains":[{"type":"https://cocina.sul.stanford.edu/models/resources/object","externalIdentifier":"kd514jp1398_1","label":"Data","version":1,"structural":{"contains":[{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/05d812cd-0c78-48b4-a150-0542abb17973","label":"Duflot_WGS.tif","filename":"Duflot_WGS.tif","size":41921838,"version":1,"hasMimeType":"image/tiff","use":"master","hasMessageDigests":[{"type":"sha1","digest":"c0abf08e13c2a23fc8361cdcb0881b5410cae852"},{"type":"md5","digest":"bfd77300e4faae7b20bd5796850dd144"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":true,"shelve":true}},{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/e99f600c-ed09-47a1-b340-dd22c4275f82","label":"Duflot_WGS.tfw","filename":"Duflot_WGS.tfw","size":83,"version":1,"hasMimeType":"text/plain","use":"master","hasMessageDigests":[{"type":"sha1","digest":"50213db865b19451e6d45e7ddf1f8e3d99119ad0"},{"type":"md5","digest":"0d02c3eccb09a59c5f7f740015d460d2"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":true,"shelve":true}},{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/d95b5577-b877-42d6-bd1c-1ed1ad924817","label":"Duflot_WGS.tif.ovr","filename":"Duflot_WGS.tif.ovr","size":17316770,"version":1,"hasMimeType":"application/octet-stream","use":"master","hasMessageDigests":[{"type":"sha1","digest":"960cd2bebc5b56fa1abdc7604fc93b90448300c5"},{"type":"md5","digest":"be8efab2f956a84f619fc0553a60d626"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":true,"shelve":true}},{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/ad6eb9f9-8e34-4927-ae6d-7727c5c88943","label":"Duflot_WGS.tif.aux.xml","filename":"Duflot_WGS.tif.aux.xml","size":8343,"version":1,"hasMimeType":"application/xml","use":"master","hasMessageDigests":[{"type":"sha1","digest":"71d3aa52336c99932ab321ed7c53c7b4988fd44b"},{"type":"md5","digest":"d5354e7f73c39209b78e8500c63880b0"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":true,"shelve":true}}]}},{"type":"https://cocina.sul.stanford.edu/models/resources/preview","externalIdentifier":"kd514jp1398_2","label":"Preview","version":1,"structural":{"contains":[{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/0839822c-d135-4463-ae14-9cdf98b2323b","label":"preview.jpg","filename":"preview.jpg","size":3633,"version":1,"hasMimeType":"image/jpeg","use":"master","hasMessageDigests":[{"type":"sha1","digest":"6228995a40b3a2b83acdfb7e468585f0d1ff9e43"},{"type":"md5","digest":"9397840b93e98145f17d37f599b1707a"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":true,"shelve":true},"presentation":{"height":119,"width":128}}]}},{"type":"https://cocina.sul.stanford.edu/models/resources/object","externalIdentifier":"kd514jp1398_3","label":"Metadata","version":1,"structural":{"contains":[{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/c2680839-066c-48e7-ab0a-12e3d321b211","label":"Duflot_WGS.tif.xml","filename":"Duflot_WGS.tif.xml","size":17995,"version":1,"hasMimeType":"application/xml","use":"master","hasMessageDigests":[{"type":"sha1","digest":"ad2057362bc65af447f65191797665ecf99aa09f"},{"type":"md5","digest":"dbc61ad39154defc9a51be32ff4c9a5d"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":true,"shelve":true}},{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/3e702049-850d-46bf-9d96-0b69de587a59","label":"Duflot_WGS-iso19139.xml","filename":"Duflot_WGS-iso19139.xml","size":24740,"version":1,"hasMimeType":"application/xml","use":"derivative","hasMessageDigests":[{"type":"sha1","digest":"b49828146ecbe72a67936455018d7a51a0f15a46"},{"type":"md5","digest":"65882b153f411cfe7b004ec3f9af9f83"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":false,"shelve":true}},{"type":"https://cocina.sul.stanford.edu/models/file","externalIdentifier":"https://cocina.sul.stanford.edu/file/6775a7a7-de8d-4235-b040-a959e348f1ad","label":"Duflot_WGS-fgdc.xml","filename":"Duflot_WGS-fgdc.xml","size":6308,"version":1,"hasMimeType":"application/xml","use":"derivative","hasMessageDigests":[{"type":"sha1","digest":"00985d452d276129e9f2fc949fdd4c52758ef432"},{"type":"md5","digest":"97a6a232b67b100b502dfa1180b4759c"}],"access":{"view":"world","download":"world","controlledDigitalLending":false},"administrative":{"publish":true,"sdrPreserve":false,"shelve":true}}]}}],"hasMemberOrders":[],"isMemberOf":["druid:sb872dn6361"]},"created":"2024-04-09T17:15:19.000+00:00","modified":"2024-04-09T17:15:19.000+00:00","lock":"druid:kd514jp1398="}
+{
+  "cocinaVersion": "0.96.0",
+  "type": "https://cocina.sul.stanford.edu/models/geo",
+  "externalIdentifier": "druid:kd514jp1398",
+  "label": "Port De San Francisco Dans La Haute Californie (Raster Image)",
+  "version": 1,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.",
+    "license": "https://creativecommons.org/licenses/by/3.0/legalcode"
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:bc198wr8388",
+    "releaseTags": [
+      {
+        "who": "bergeraj",
+        "what": "collection",
+        "date": "2023-04-13T20:33:15.000+00:00",
+        "to": "Earthworks",
+        "release": true
+      },
+      {
+        "who": "kdurante",
+        "what": "collection",
+        "date": "2020-11-12T12:48:32.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      }
+    ]
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Port De San Francisco Dans La Haute Californie (Raster Image)",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Duflot de Mofras, Eugène, 1810-1884",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "type": "person",
+        "role": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "creator",
+            "identifier": [],
+            "source": {
+              "code": "marcrelator",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "identifier": [],
+        "note": [],
+        "parallelContributor": []
+      }
+    ],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "2024",
+            "type": "publication",
+            "status": "primary",
+            "encoding": {
+              "code": "w3cdtf",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [
+          {
+            "name": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "Stanford University. Center for Spatial and Textual Analysis",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "type": "organization",
+            "role": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "publisher",
+                "code": "pbl",
+                "uri": "http://id.loc.gov/vocabulary/relators/pbl",
+                "identifier": [],
+                "source": {
+                  "code": "marcrelator",
+                  "uri": "http://id.loc.gov/vocabulary/relators/",
+                  "note": []
+                },
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "identifier": [],
+            "note": [],
+            "parallelContributor": []
+          }
+        ],
+        "location": [],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Geospatial data",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026297",
+        "identifier": [],
+        "source": {
+          "code": "lcgft",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic dataset",
+        "type": "genre",
+        "uri": "http://rdvocab.info/termList/RDAContentType/1001",
+        "identifier": [],
+        "source": {
+          "code": "rdacontent",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": {
+          "value": "MODS resource types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "software, multimedia",
+        "type": "resource type",
+        "identifier": [],
+        "source": {
+          "value": "MODS resource types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "born digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": {
+          "value": "MODS digital origin terms",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Dataset",
+        "type": "genre",
+        "identifier": [],
+        "source": {
+          "value": "local",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "GeoTIFF",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "EPSG::4326",
+        "type": "map projection",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "image/tiff",
+            "type": "media type",
+            "identifier": [],
+            "source": {
+              "value": "IANA media type terms",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "GeoTIFF",
+            "type": "data format",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Dataset#Raster",
+            "type": "type",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-122.7764674",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "37.3629343",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-121.7827971",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "38.2596066",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": {
+              "code": "EPSG:4326",
+              "note": []
+            },
+            "encoding": {
+              "value": "decimal",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": {
+          "code": "ISO639-2",
+          "note": []
+        },
+        "structuredValue": []
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This layer is a georeferenced image of a map titled \"Port De San Francisco Dans La Haute Californie.\" Originally published in 1844, this map appears in Exploration Du Territoire De L'Oregon, Des Californies Et De La Mer Vermeille, Executee Pendant Les Annees 1840, 1841 Et 1842, Par M. Duflot De Mofras, Attache A La Legation De France A Mexico. Ouvrage Publie Par Ordre Du Roi, Sous Les Auspices De M. Le Marechal Soult, Duc De Dalmatie, President du Conseil, Et De M. Le Ministre Des Affaires Etrangeres. Tome Premier. Paris, Arthus Bertrand, Editeur, Libraire De La Societe De Geographie, Rue Hautefeuille, No. 23. 1844. Paris.",
+        "type": "abstract",
+        "identifier": [],
+        "displayLabel": "Abstract",
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "This project traces the history of urban planning in San Francisco, placing special emphasis on unrealized schemes. Rather than using visual material simply to illustrate outcomes, Imagined San Francisco uses historical plans, maps, architectural renderings, and photographs to show what might have been. By enabling users to layer a series of urban plans, the project presents the city not only as a sequence of material changes, but also as a contingent process and a battleground for political power. Savvy institutional actors--like banks, developers, and many public officials--understood that in some cases to clearly articulate their interests would be to invite challenges. That means that textual sources like newspapers and municipal reports are limited in what they can tell researchers about the shape of political power. Urban plans, however, often speak volumes about interests and dynamics upon which textual sources remain silent. Mortgage lenders, for example, apparently thought it unwise to state that they wished to see a poor neighborhood cleared, to be replaced with a freeway onramp. Yet visual analysis of planning proposals makes that interest plain. So in the process of showing how the city might have looked, Imagined San Francisco also shows how political power actually was negotiated and exercised.",
+        "type": "other",
+        "identifier": [],
+        "displayLabel": "Purpose",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "San Francisco Bay (Calif.)",
+        "type": "place",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/subjects.html",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Harbors",
+        "type": "topic",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Ports of entry",
+        "type": "topic",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Imagery and Base Maps",
+        "type": "topic",
+        "uri": "imageryBaseMapsEarthCover",
+        "identifier": [],
+        "source": {
+          "code": "ISO19115TopicCategory",
+          "uri": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "1844",
+        "type": "time",
+        "encoding": {
+          "code": "w3cdtf",
+          "note": []
+        },
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "W 122°46ʹ35ʺ--W 121°46ʹ58ʺ/N 38°15ʹ35ʺ--N 37°21ʹ47ʺ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [],
+      "digitalLocation": [],
+      "accessContact": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "cesta_stanford@stanford.edu",
+          "type": "email",
+          "identifier": [],
+          "displayLabel": "Contact",
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalRepository": [],
+      "note": []
+    },
+    "relatedResource": [
+      {
+        "type": "has other format",
+        "displayLabel": "Scanned map",
+        "title": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Port De San Francisco Dans La Haute Californie",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "event": [],
+        "form": [],
+        "language": [],
+        "note": [],
+        "identifier": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "https://purl.stanford.edu/df334jk2963",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [],
+        "relatedResource": []
+      }
+    ],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "Stanford",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "role": [],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [
+        {
+          "structuredValue": [],
+          "type": "creation",
+          "date": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "2024-04-09",
+              "encoding": {
+                "code": "w3cdtf",
+                "note": []
+              },
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "contributor": [],
+          "location": [],
+          "identifier": [],
+          "note": [],
+          "parallelEvent": []
+        }
+      ],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": {
+            "code": "ISO639-2",
+            "note": []
+          },
+          "structuredValue": []
+        }
+      ],
+      "note": [],
+      "metadataStandard": [],
+      "identifier": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "edu.stanford.purl:kd514jp1398",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/kd514jp1398"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "branner:ImaginedSF_Duflot_WGS.tif"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "kd514jp1398_1",
+        "label": "Data",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/05d812cd-0c78-48b4-a150-0542abb17973",
+              "label": "Duflot_WGS.tif",
+              "filename": "Duflot_WGS.tif",
+              "size": 41921838,
+              "version": 1,
+              "hasMimeType": "image/tiff",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "c0abf08e13c2a23fc8361cdcb0881b5410cae852"
+                },
+                {
+                  "type": "md5",
+                  "digest": "bfd77300e4faae7b20bd5796850dd144"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/e99f600c-ed09-47a1-b340-dd22c4275f82",
+              "label": "Duflot_WGS.tfw",
+              "filename": "Duflot_WGS.tfw",
+              "size": 83,
+              "version": 1,
+              "hasMimeType": "text/plain",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "50213db865b19451e6d45e7ddf1f8e3d99119ad0"
+                },
+                {
+                  "type": "md5",
+                  "digest": "0d02c3eccb09a59c5f7f740015d460d2"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/d95b5577-b877-42d6-bd1c-1ed1ad924817",
+              "label": "Duflot_WGS.tif.ovr",
+              "filename": "Duflot_WGS.tif.ovr",
+              "size": 17316770,
+              "version": 1,
+              "hasMimeType": "application/octet-stream",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "960cd2bebc5b56fa1abdc7604fc93b90448300c5"
+                },
+                {
+                  "type": "md5",
+                  "digest": "be8efab2f956a84f619fc0553a60d626"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/ad6eb9f9-8e34-4927-ae6d-7727c5c88943",
+              "label": "Duflot_WGS.tif.aux.xml",
+              "filename": "Duflot_WGS.tif.aux.xml",
+              "size": 8343,
+              "version": 1,
+              "hasMimeType": "application/xml",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "71d3aa52336c99932ab321ed7c53c7b4988fd44b"
+                },
+                {
+                  "type": "md5",
+                  "digest": "d5354e7f73c39209b78e8500c63880b0"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/preview",
+        "externalIdentifier": "kd514jp1398_2",
+        "label": "Preview",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/0839822c-d135-4463-ae14-9cdf98b2323b",
+              "label": "preview.jpg",
+              "filename": "preview.jpg",
+              "size": 3633,
+              "version": 1,
+              "hasMimeType": "image/jpeg",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "6228995a40b3a2b83acdfb7e468585f0d1ff9e43"
+                },
+                {
+                  "type": "md5",
+                  "digest": "9397840b93e98145f17d37f599b1707a"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              },
+              "presentation": {
+                "height": 119,
+                "width": 128
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/object",
+        "externalIdentifier": "kd514jp1398_3",
+        "label": "Metadata",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/c2680839-066c-48e7-ab0a-12e3d321b211",
+              "label": "Duflot_WGS.tif.xml",
+              "filename": "Duflot_WGS.tif.xml",
+              "size": 17995,
+              "version": 1,
+              "hasMimeType": "application/xml",
+              "use": "master",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "ad2057362bc65af447f65191797665ecf99aa09f"
+                },
+                {
+                  "type": "md5",
+                  "digest": "dbc61ad39154defc9a51be32ff4c9a5d"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/3e702049-850d-46bf-9d96-0b69de587a59",
+              "label": "Duflot_WGS-iso19139.xml",
+              "filename": "Duflot_WGS-iso19139.xml",
+              "size": 24740,
+              "version": 1,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "b49828146ecbe72a67936455018d7a51a0f15a46"
+                },
+                {
+                  "type": "md5",
+                  "digest": "65882b153f411cfe7b004ec3f9af9f83"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            },
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/6775a7a7-de8d-4235-b040-a959e348f1ad",
+              "label": "Duflot_WGS-fgdc.xml",
+              "filename": "Duflot_WGS-fgdc.xml",
+              "size": 6308,
+              "version": 1,
+              "hasMimeType": "application/xml",
+              "use": "derivative",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "00985d452d276129e9f2fc949fdd4c52758ef432"
+                },
+                {
+                  "type": "md5",
+                  "digest": "97a6a232b67b100b502dfa1180b4759c"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": false,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [],
+    "isMemberOf": [
+      "druid:sb872dn6361"
+    ]
+  },
+  "created": "2024-04-09T17:15:19.000+00:00",
+  "modified": "2024-04-09T17:15:19.000+00:00",
+  "lock": "druid:kd514jp1398="
+}

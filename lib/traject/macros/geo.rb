@@ -25,38 +25,6 @@ module Traject
         end
       end
 
-      # Generate a solr-formatted ENVELOPE string from a degree/minute/second-format string
-      # Expects a cocina descriptive value with a single string
-      def format_envelope_dms
-        lambda do |_record, accumulator, _context|
-          accumulator.map! do |subject|
-            coordinates = Stanford::Geo::Coordinate.parse(subject['value'])
-            coordinates.as_envelope if coordinates.valid?
-          end.compact!
-        end
-      end
-
-      # Generate a solr-formatted ENVELOPE string from a bounding box
-      # Expects a cocina structuredValue with four elements: west, east, north, south
-      def format_envelope_bbox
-        lambda do |_record, accumulator, _context|
-          accumulator.map! do |subject|
-            structured_values = subject['structuredValue'] || []
-            west = structured_values.find { |val| val['type'] == 'west' }
-            east = structured_values.find { |val| val['type'] == 'east' }
-            north = structured_values.find { |val| val['type'] == 'north' }
-            south = structured_values.find { |val| val['type'] == 'south' }
-            coordinates = Stanford::Geo::Coordinate.new(
-              min_x: west['value'],
-              min_y: south['value'],
-              max_x: east['value'],
-              max_y: north['value']
-            )
-            coordinates.as_envelope if coordinates.valid?
-          end.compact!
-        end
-      end
-
       # Convert values into a hash with a given URI key
       # Used for the dct_references_s field:
       # https://opengeometadata.org/ogm-aardvark/#references
@@ -70,7 +38,7 @@ module Traject
 
       # Get the right geoserver url for an item given its access rights
       def geoserver_url(record)
-        record.public? ? settings['geoserver.pub_url'] : settings['geoserver.stan_url']
+        record.world_access? ? settings['geoserver.pub_url'] : settings['geoserver.stan_url']
       end
     end
   end

@@ -38,7 +38,7 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
-    bigdecimal (3.3.1)
+    bigdecimal (4.0.0)
     builder (3.3.0)
     bunny (2.24.0)
       amq-protocol (~> 2.3)
@@ -54,7 +54,7 @@ GEM
       capistrano (~> 3.0)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina_display (1.5.0)
+    cocina_display (1.6.0)
       activesupport (>= 7)
       edtf (~> 3.2)
       geo_coord (~> 0.2)
@@ -329,7 +329,7 @@ GEM
     whenever (1.1.1)
       chronic (>= 0.6.3)
     yell (2.2.2)
-    zeitwerk (2.7.3)
+    zeitwerk (2.7.4)
 
 PLATFORMS
   arm64-darwin-23
@@ -344,7 +344,7 @@ DEPENDENCIES
   capistrano (~> 3.0)
   capistrano-bundler
   capistrano-shared_configs
-  cocina_display (~> 1.5)
+  cocina_display (~> 1.6)
   config
   csv
   debouncer
