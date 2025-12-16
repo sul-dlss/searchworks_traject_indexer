@@ -111,18 +111,18 @@ each_record do |record, context|
 end
 
 # https://opengeometadata.org/ogm-aardvark/#id
-to_field 'id', druid, prepend('stanford-')
+to_field 'id', cocina_display(:bare_druid), prepend('stanford-')
 
 # this is used for sitemap generation; pre-hashing the IDs helps with that process
 # note that we do not attempt to hash records coming from outside SDR
 to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
 
 # https://opengeometadata.org/ogm-aardvark/#title
-to_field 'dct_title_s', cocina_titles(type: :main), first_only, default('[Untitled]')
+to_field 'dct_title_s', cocina_display(:main_title), default('[Untitled]')
 
 # https://opengeometadata.org/ogm-aardvark/#alternative-title
 # - indexed but not displayed in the UI
-to_field 'dct_alternative_sm', cocina_titles(type: :additional)
+to_field 'dct_alternative_sm', cocina_display(:additional_titles)
 
 # https://opengeometadata.org/ogm-aardvark/#description
 # - geo data usually has a note with type "abstract"
@@ -130,41 +130,31 @@ to_field 'dct_alternative_sm', cocina_titles(type: :additional)
 # - we only want to use certain notes for the description
 # - we concatenate these as <p> elements in the UI
 SKIP_NOTE_TYPES = ['Local note', 'Preferred citation', 'Supplemental information', 'Donor tags'].freeze
-to_field 'dct_description_sm', cocina_descriptive('note'), select(->(note) { SKIP_NOTE_TYPES.exclude? note['displayLabel'] }), extract_values
+to_field 'dct_description_sm', cocina_display(:notes), select(->(note) { SKIP_NOTE_TYPES.exclude? note.label }), transform(&:to_s)
 
 # https://opengeometadata.org/ogm-aardvark/#language
-to_field 'dct_language_sm', cocina_descriptive('language'), transform(->(lang) { lang['code'] })
+to_field 'dct_language_sm', cocina_display(:languages), transform(&:code)
 
 # https://opengeometadata.org/ogm-aardvark/#creator
-to_field 'dct_creator_sm', cocina_descriptive('contributor'), select_role('creator'), extract_names
-to_field 'dct_creator_sm', cocina_descriptive('contributor', 'name'), extract_names_from_structured_values
+to_field 'dct_creator_sm', cocina_display(:author_names)
 
 # https://opengeometadata.org/ogm-aardvark/#publisher
-to_field 'dct_publisher_sm', cocina_descriptive('event', 'contributor'), select_role('publisher'), extract_names
+to_field 'dct_publisher_sm', cocina_display(:publisher_names)
 
 # https://opengeometadata.org/ogm-aardvark/#date-issued
-to_field 'dct_issued_s', cocina_descriptive('event', 'date'), select_type('publication'), extract_values, first_only
+to_field 'dct_issued_s', cocina_display(:pub_year_int), transform(&:to_s)
 
 # https://opengeometadata.org/ogm-aardvark/#subject
-to_field 'dct_subject_sm', cocina_descriptive('subject'), select_type('topic'), extract_values
-to_field 'dct_subject_sm', cocina_descriptive('subject'), select_type('topic'), extract_structured_values(flatten: true)
-to_field 'dct_subject_sm', cocina_descriptive('subject', 'structuredValue'), select_type('topic'), extract_values
+to_field 'dct_subject_sm', cocina_display(:subject_topics)
 
 # https://opengeometadata.org/ogm-aardvark/#spatial-coverage
-to_field 'dct_spatial_sm', cocina_descriptive('subject'), select_type('place'), extract_values
-to_field 'dct_spatial_sm', cocina_descriptive('subject'), select_type('place'), extract_structured_values(flatten: true)
-to_field 'dct_spatial_sm', cocina_descriptive('subject', 'structuredValue'), select_type('place'), extract_values
+to_field 'dct_spatial_sm', cocina_display(:subject_places)
 
 # https://opengeometadata.org/ogm-aardvark/#theme
-to_field 'dcat_theme_sm', cocina_descriptive('subject'), select_type('topic'), extract_values, translation_map('geo_theme')
-to_field 'dcat_theme_sm', cocina_descriptive('subject'), select_type('topic'), extract_structured_values(flatten: true), translation_map('geo_theme')
-to_field 'dcat_theme_sm', cocina_descriptive('subject', 'structuredValue'), select_type('topic'), extract_values, translation_map('geo_theme')
+to_field 'dcat_theme_sm', use_field('dct_subject_sm'), translation_map('geo_theme')
 
 # https://opengeometadata.org/ogm-aardvark/#temporal-coverage
-to_field 'dct_temporal_sm', cocina_descriptive('subject'), select_type('time'), extract_values
-to_field 'dct_temporal_sm', cocina_descriptive('subject'), select_type('time'), extract_structured_values, join('–')
-to_field 'dct_temporal_sm', cocina_descriptive('event'), select_type('validity'), extract_values
-to_field 'dct_temporal_sm', cocina_descriptive('event'), select_type('validity'), extract_structured_values, join('–')
+to_field 'dct_temporal_sm', cocina_display(:subject_temporal)
 
 # https://opengeometadata.org/ogm-aardvark/#date-range
 # - currently unused in the UI
@@ -174,6 +164,7 @@ to_field 'gbl_dateRange_drsim', use_field('dct_temporal_sm'), extract_years, min
 # - used to power the year facet in the UI
 to_field 'gbl_indexYear_im', use_field('dct_temporal_sm'), extract_years, minmax, transform(->(years) { (years.first.to_i..years.last.to_i).to_a if years.any? }), flatten
 
+# custom field; used to power the date hierarchy facet in the UI
 to_field 'date_hierarchy_sm', use_field('gbl_indexYear_im'), hierarchicalize_year_list
 
 # https://opengeometadata.org/ogm-aardvark/#provider
@@ -181,8 +172,8 @@ to_field 'schema_provider_s', literal('Stanford')
 
 # https://opengeometadata.org/ogm-aardvark/#identifier
 # - we could add other links here if desired
-to_field 'dct_identifier_sm', cocina_descriptive('purl')
-to_field 'dct_identifier_sm', cocina_descriptive('identifier'), extract_values, doi
+to_field 'dct_identifier_sm', cocina_display(:purl_url)
+to_field 'dct_identifier_sm', cocina_display(:doi_url)
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
 # - currently anything with "(Raster Image)" in the title is known to be georeferenced
@@ -193,78 +184,65 @@ to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator <<
 # - if georeferenced, it's always both a map and a dataset
 # - if the item is a collection, set the resource class to "Collections" (only)
 # - if we didn't find anything, fall back to "Other" because the field is required
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('genre'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('genre'), extract_values, translation_map('geo_resource_class')
-to_field 'gbl_resourceClass_sm', cocina_descriptive('subject', 'structuredValue'), select_type('type'), extract_values, translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_display(:all_forms), transform(&:to_s), translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_display(:genres), translation_map('geo_resource_class')
+to_field 'gbl_resourceClass_sm', cocina_display(:subject_genres), translation_map('geo_resource_class')
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator.push('Maps', 'Datasets') if context.output_hash['gbl_georeferenced_b'].first }
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
-to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.public_cocina.collection? }
+to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.collection? }
 
 # https://opengeometadata.org/ogm-aardvark/#resource-type
-to_field 'gbl_resourceType_sm', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_resource_type')
-to_field 'gbl_resourceType_sm', cocina_descriptive('form'), select_type('form'), extract_structured_values(flatten: true), translation_map('geo_resource_type')
-to_field 'gbl_resourceType_sm', cocina_descriptive('subject'), select_type('topic'), extract_values, translation_map('geo_resource_type')
-to_field 'gbl_resourceType_sm', cocina_descriptive('geographic', 'form'), select_type('type'), extract_values, translation_map('geo_resource_type')
+to_field 'gbl_resourceType_sm', cocina_display(:all_forms), transform(&:to_s), translation_map('geo_resource_type')
+to_field 'gbl_resourceType_sm', cocina_display(:subject_topics), translation_map('geo_resource_type')
 
 # https://opengeometadata.org/ogm-aardvark/#format
-to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('data format'), extract_values, translation_map('geo_format')
-to_field 'dct_format_s', cocina_descriptive('geographic', 'form'), select_type('media type'), extract_values, translation_map('geo_format')
-to_field 'dct_format_s', cocina_descriptive('form'), select_type('form'), extract_values, translation_map('geo_format')
-to_field 'dct_format_s', cocina_structural('contains', 'structural', 'contains', 'hasMimeType'), translation_map('geo_format')
+to_field 'dct_format_s', cocina_display(:all_forms), transform(&:to_s), translation_map('geo_format')
+to_field 'dct_format_s', cocina_display(:file_mime_types), translation_map('geo_format')
 
 # https://opengeometadata.org/ogm-aardvark/#geometry
 # - powers the map search in the UI
 # - was required in schema v1.0 but is no longer a required field in Aardvark
 # - geo data will have a bounding box as a geographic subject
 # - scanned maps will have coordinates as a subject
-to_field 'locn_geometry', cocina_descriptive('geographic', 'subject'), select_type('bounding box coordinates'), format_envelope_bbox, first_only
-to_field 'locn_geometry', cocina_descriptive('subject'), select_type('map coordinates'), format_envelope_dms, first_only
+to_field 'locn_geometry', cocina_display(:coordinates_as_envelope), first_only
 
 # https://opengeometadata.org/ogm-aardvark/#bounding-box
 # - will always be the same as locn_geometry since we use the ENVELOPE syntax
-to_field('dcat_bbox') { |_record, accumulator, context| accumulator << context.output_hash['locn_geometry'].first if context.output_hash['locn_geometry'].present? }
+to_field 'dcat_bbox', use_field('locn_geometry'), first_only
 
 # https://opengeometadata.org/ogm-aardvark/#relation
 # - we are choosing to use this field to hold the georeferenced link if it exists
-to_field 'dct_relation_sm', cocina_descriptive('access', 'url'),
-         transform(->(res) { res['value'] if res['displayLabel'] == 'Georeferenced map in EarthWorks' })
+to_field 'dct_relation_sm', cocina_display(:urls), transform(->(url) { url.to_s if url.link_text == 'Georeferenced map in EarthWorks' })
 
 # https://opengeometadata.org/ogm-aardvark/#member-of
 # - links items to collections and collections to their items via a box on the show page
 # - a separate 'relations' solr query using this field is performed in the app to render the box
-to_field 'pcdm_memberOf_sm', cocina_structural('isMemberOf'), gsub('druid:', 'stanford-')
+to_field 'pcdm_memberOf_sm', cocina_display(:containing_collections), prepend('stanford-')
 
 # https://opengeometadata.org/ogm-aardvark/#source
 # - links items that were georeferenced to their original version, if it is in SDR
 # - extracts the druid from the purl URL and uses it to construct an EarthWorks URL
-to_field 'dct_source_sm', cocina_descriptive('relatedResource'), select_type('has other format'),
-         select(->(res) { res['displayLabel'] == 'Scanned map' }),
-         transform(->(res) { res.fetch('identifier', []).dig(0, 'value')&.split('/')&.last }),
-         select(->(id) { id.match?(/[a-z]{2}\d{3}[a-z]{2}\d{4}/) if id }),
-         transform(->(druid) { "stanford-#{druid.split('/').last}" if druid })
+to_field 'dct_source_sm', cocina_display(:related_resources),
+         select(->(res) { res.type == 'has other format' && res.label == 'Scanned map' }),
+         transform(->(res) { res.identifiers.map { |id| id.value&.split('/')&.last } }), flatten,
+         select(->(id) { id.match?(/[a-z]{2}\d{3}[a-z]{2}\d{4}/) }),
+         prepend('stanford-')
 
 # https://opengeometadata.org/ogm-aardvark/#rights_1
-to_field('dct_rights_sm') { |record, accumulator| accumulator << record.cocina_display.use_and_reproduction }
+to_field 'dct_rights_sm', cocina_display(:use_and_reproduction)
 
 # https://opengeometadata.org/ogm-aardvark/#rights-holder
-to_field('dct_rightsHolder_sm') { |record, accumulator| accumulator << record.cocina_display.copyright }
+to_field 'dct_rightsHolder_sm', cocina_display(:copyright)
 
 # https://opengeometadata.org/ogm-aardvark/#license
-to_field('dct_license_sm') { |record, accumulator| accumulator << record.cocina_display.license }
+to_field 'dct_license_sm', cocina_display(:license)
 
 # https://opengeometadata.org/ogm-aardvark/#access-rights
-to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.public? ? 'Public' : 'Restricted') }
+to_field('dct_accessRights_s') { |record, accumulator| accumulator << (record.world_access? ? 'Public' : 'Restricted') }
 
 # https://opengeometadata.org/ogm-aardvark/#modified
 # - required, but not used in the UI
-# - use the most recent adminMetadata event, falling back to top-level dates
-to_field 'gbl_mdModified_dt', cocina_descriptive('adminMetadata', 'event'), extract_dates, extract_values, parse_dates, sort(reverse: true), format_datetimes, first_only
-to_field 'gbl_mdModified_dt', modified, format_datetimes
-to_field 'gbl_mdModified_dt', created, format_datetimes
+to_field('gbl_mdModified_dt') { |record, accumulator| accumulator << record.modified_time.strftime('%Y-%m-%dT%H:%M:%SZ') }
 
 # https://opengeometadata.org/ogm-aardvark/#metadata-version
 to_field 'gbl_mdVersion_s', literal('Aardvark')
@@ -285,18 +263,19 @@ to_field('gbl_wxsIdentifier_s') { |record, accumulator| accumulator << "druid:#{
 # - index maps have a specially named geojson file that is linked
 # - if XML metadata files exist (not in data.zip), we link them
 # - data that is in geoJSON format (including index maps) gets a link to the spec
-to_field 'dct_references_s', purl_url, as_reference('http://schema.org/url')
-# Create a hash verion of downloadUrl so that we always have a label for display without relying on dct_format_s
+to_field 'dct_references_s', cocina_display(:purl_url), as_reference('http://schema.org/url')
+# Create a hash version of downloadUrl so that we always have a label for display without relying on dct_format_s
 # See https://github.com/geoblacklight/geoblacklight/blob/9ce0dccdc2336dad520dfc0578743b20d421b0f6/app/components/geoblacklight/download_links_component.html.erb#L12
 # Also see https://opengeometadata.org/configure-references-links/#multiple-downloads
-to_field 'dct_references_s', stacks_object_url, transform(lambda { |url|
+to_field 'dct_references_s', cocina_display(:download_url), transform(lambda { |url|
   [{
-    url:,
+    url: url,
     label: 'Zipped object'
-  }]
+  }] if url.present?
 }), as_reference('http://schema.org/downloadUrl')
-to_field 'dct_references_s', embed_url({ hide_title: true }), as_reference('https://oembed.com')
-to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
+# Add Searchworks URL as a reference if the item is released to Searchworks
+to_field 'dct_references_s', cocina_display(:oembed_url, params: { hide_title: true }), as_reference('https://oembed.com')
+to_field 'dct_references_s', cocina_display(:iiif_manifest_url), as_reference('http://iiif.io/api/presentation#manifest')
 to_field 'dct_references_s', wms_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wms')
 to_field 'dct_references_s', wfs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wfs')
 to_field 'dct_references_s', wcs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wcs')

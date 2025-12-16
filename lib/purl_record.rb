@@ -13,7 +13,7 @@ class PurlRecord
   end
 
   def searchworks_id
-    catkey.presence || druid
+    catkey || druid
   end
 
   def druid_tree
@@ -48,58 +48,13 @@ class PurlRecord
   delegate :catkey, to: :public_cocina, allow_nil: true
   delegate :label, to: :public_cocina, allow_nil: true
 
-  delegate :mods, :collection?,
-           :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
+  delegate :mods, :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
            :dor_resource_count, :collections, :constituents,
            :stanford_mods, :mods_display,
            :public_xml_doc, to: :public_xml
 
-  delegate :content_type, :files, to: :public_cocina
+  delegate :collection?, :content_type, :files, :cocina_doc, :world_access?,
+           :modified_time, :created_time, :searchworks_url, to: :public_cocina
 
   delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  alias cocina_display public_cocina
-
-  # TODO: remove after updating the config to use cocina_display methods
-  def cocina_titles(type: :main)
-    case type
-    when :main
-      [public_cocina.main_title]
-    when :additional
-      public_cocina.additional_titles
-    else
-      raise ArgumentError, "Invalid title type: #{type}"
-    end
-  end
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  def created
-    public_cocina.created_time
-  end
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  def modified
-    public_cocina.modified_time
-  end
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  def public?
-    public_cocina.world_viewable?
-  end
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  def public_cocina_doc
-    public_cocina&.cocina_doc
-  end
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  def cocina_structural
-    public_cocina&.cocina_doc&.dig('structural')
-  end
-
-  # TODO: remove after updating traject configs to use cocina_display methods
-  def cocina_description
-    public_cocina&.cocina_doc&.dig('description')
-  end
 end

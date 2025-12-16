@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-# Map values coming from cocina to OpenGeoMetadata "resource type" values
-# See: https://opengeometadata.org/ogm-aardvark/#resource-type-values-ogm
-
-# LOC Cartographic Genres are also valid
-# See: https://opengeometadata.org/ogm-aardvark/#resource-type-values-loc
+# Map values coming from cocina to OpenGeoMetadata "resource class" values
+# See: https://opengeometadata.org/ogm-aardvark/#resource-class-values
 
 require 'match_map'
 

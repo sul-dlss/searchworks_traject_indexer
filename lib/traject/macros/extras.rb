@@ -44,7 +44,17 @@ module Traject
       # Add the value(s) of a field that has already been processed to the accumulator
       def use_field(field)
         lambda do |_record, accumulator, context|
-          accumulator.concat Array.wrap(context.output_hash[field]) if context.output_hash[field].present?
+          accumulator.concat Array(context.output_hash[field]) if context.output_hash[field].present?
+        end
+      end
+
+      # Get all of the four-digit years from the accumulator
+      def extract_years
+        lambda do |_record, accumulator, _context|
+          accumulator.select! { |date| date.match?(/^\d{1,4}(\s*[–-]\s*\d{1,4})?$/) }
+          accumulator.map! { |date| date.split(/\s*[–-]\s*/) }
+          accumulator.flatten!
+          accumulator.map!(&:to_i)
         end
       end
 
