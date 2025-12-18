@@ -29,32 +29,33 @@ set :indexers, [
       'solr.url' => 'http://sul-solr.stanford.edu/solr/earthworks-aardvark-prod'
     }
   },
-  {
+  { # Solr 8 searchworks index (replaced by folio_prod_indexer_2025 in December 2025),
+    # and retained for maybe a couple months for comparison purposes
     key: 'folio_prod_indexer',
-    count: 8,
+    count: 2,
     config: './lib/traject/config/folio_config.rb',
     settings: {
       'log.file' => 'log/traject_folio_prod_indexer.log',
       'kafka.topic' => 'marc_folio_prod',
       'kafka.consumer_group_id' => 'traject_folio_prod',
       'reader_class_name' => 'Traject::KafkaFolioReader',
-      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-folio-prod'
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-previous'
     }
   },
-  {
+  { # Solr 8 searchworks index (replaced by sdr_prod_indexer_2025 in December 2025)
     key: 'sdr_prod_indexer',
-    count: 4,
+    count: 1,
     config: './lib/traject/config/sdr_config.rb',
     settings: {
       'log.file' => 'log/traject_sdr_folio_prod_indexer.log',
       'kafka.topic' => 'purl_fetcher_prod',
       'kafka.consumer_group_id' => 'traject_sdr_folio_prod',
-      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-folio-prod'
+      'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-previous'
     }
   },
   {
     key: 'folio_prod_indexer_2025',
-    count: 4,
+    count: 8,
     config: './lib/traject/config/folio_config.rb',
     settings: {
       'log.file' => 'log/traject_folio_prod_2025_indexer.log',
@@ -66,7 +67,7 @@ set :indexers, [
   },
   {
     key: 'sdr_prod_indexer_2025',
-    count: 2,
+    count: 4,
     config: './lib/traject/config/sdr_config.rb',
     settings: {
       'log.file' => 'log/traject_sdr_prod_indexer_2025.log',
