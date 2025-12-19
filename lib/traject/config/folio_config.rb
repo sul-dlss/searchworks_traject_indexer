@@ -851,46 +851,6 @@ to_field 'language', extract_marc('041a') do |_record, accumulator|
   accumulator.replace codes
 end
 
-#
-# # URL Fields
-# get full text urls from 856
-# get all 956 subfield u containing fulltext urls that aren't SFX
-to_field 'url_fulltext' do |record, accumulator|
-  Traject::MarcExtractor.new('856u:956u', alternate_script: false).collect_matching_lines(record) do |field, spec, extractor|
-    next unless MarcLinks::Processor.new(field).link_is_fulltext?
-
-    accumulator.concat extractor.collect_subfields(field, spec)
-  end
-
-  accumulator.reject! { |v| v.blank? }
-end
-
-# returns the URLs for supplementary information (rather than fulltext)
-to_field 'url_suppl' do |record, accumulator|
-  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
-    next unless MarcLinks::Processor.new(field).link_is_supplemental?
-
-    accumulator.concat extractor.collect_subfields(field, spec)
-  end
-end
-
-to_field 'url_sfx', extract_marc('956u') do |_record, accumulator|
-  accumulator.select! { |v| MarcLinks::SFX_URL_REGEX.match?(v) }
-end
-
-# returns the URLs for restricted full text of a resource described
-#  by the 856u.  Restricted is determined by matching a string against
-#  the 856z.  ("available to stanford-affiliated users at:")
-# or "Access restricted to Stanford community" for Lane.
-to_field 'url_restricted' do |record, accumulator|
-  Traject::MarcExtractor.new('856u').collect_matching_lines(record) do |field, spec, extractor|
-    marc_link = MarcLinks::Processor.new(field)
-    next unless marc_link.link_is_fulltext? && marc_link.stanford_only?
-
-    accumulator.concat extractor.collect_subfields(field, spec)
-  end
-end
-
 to_field 'marc_links_struct' do |record, accumulator|
   Traject::MarcExtractor.new('856').collect_matching_lines(record) do |field, _spec, _extractor|
     result = MarcLinks::Processor.new(field).as_h
