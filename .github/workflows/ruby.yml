@@ -2,23 +2,23 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ['3.4.2']
+        ruby: ["3.4", "4.0"]
     steps:
-    - uses: actions/checkout@v6
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-    - name: Install dependencies
-      run: bundle config set without 'production' && bundle install
-    - name: Run tests
-      run: bundle exec rake
+      - uses: actions/checkout@v6
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Install dependencies
+        run: bundle config set without 'production' && bundle install
+      - name: Run tests
+        run: bundle exec rake

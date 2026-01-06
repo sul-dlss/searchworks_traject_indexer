@@ -38,6 +38,7 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
+    benchmark (0.5.0)
     bigdecimal (4.0.1)
     builder (3.3.0)
     bunny (2.24.0)
@@ -88,7 +89,7 @@ GEM
       ed25519
     docile (1.4.1)
     domain_name (0.6.20240107)
-    dor-event-client (1.1.0)
+    dor-event-client (1.2.0)
       activesupport (>= 4.2)
       bunny (~> 2.17)
       zeitwerk (~> 2.1)
@@ -341,6 +342,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 8.0)
+  benchmark
   capistrano (~> 3.0)
   capistrano-bundler
   capistrano-shared_configs
