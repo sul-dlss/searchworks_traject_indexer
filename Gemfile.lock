@@ -88,7 +88,7 @@ GEM
       ed25519
     docile (1.4.1)
     domain_name (0.6.20240107)
-    dor-event-client (1.1.0)
+    dor-event-client (1.2.0)
       activesupport (>= 4.2)
       bunny (~> 2.17)
       zeitwerk (~> 2.1)
