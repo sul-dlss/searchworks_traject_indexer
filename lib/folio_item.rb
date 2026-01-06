@@ -145,7 +145,7 @@ class FolioItem
   def bound_with_principal?
     return false if bound_with? || holding.blank?
 
-    holding['boundWith'].present?
+    holding['boundWith'].present? && item['id'] == holding['boundWith']['item']['id']
   end
 
   def course_reserves_data

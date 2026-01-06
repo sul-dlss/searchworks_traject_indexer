@@ -395,7 +395,100 @@
         }
       },
       "courses": [
+      ]
+    },
+    {
+      "id": "2b9ba8c6-f25c-5ba2-a159-418a0c335702",
+      "hrid": "ai290907_1_1",
+      "notes": [
 
+      ],
+      "status": "Available",
+      "barcode": "36105042167763",
+      "request": null,
+      "_version": 6,
+      "metadata": {
+        "createdDate": "2023-08-20T16:27:39.792Z",
+        "updatedDate": "2024-05-20T17:38:32.403Z",
+        "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+        "updatedByUserId": "6f1cddbc-69fb-4ea9-8a06-13e809179239"
+      },
+      "formerIds": [
+
+      ],
+      "callNumber": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "typeName": "Library of Congress classification",
+        "callNumber": "M23 .S39 F2D"
+      },
+      "copyNumber": "1",
+      "lastCheckIn": {
+        "dateTime": "2024-05-20T17:38:32.119+00:00",
+        "staffMemberId": "6f1cddbc-69fb-4ea9-8a06-13e809179239",
+        "servicePointId": "4d77d74b-271e-421a-91c6-992afa9afb3c"
+      },
+      "yearCaption": [
+
+      ],
+      "materialType": "score",
+      "callNumberType": {
+        "id": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "name": "Library of Congress classification",
+        "source": "folio"
+      },
+      "materialTypeId": "8cea2cd7-6a61-494e-a602-17045da7e3cb",
+      "numberOfPieces": "1",
+      "circulationNotes": [
+
+      ],
+      "electronicAccess": [
+
+      ],
+      "holdingsRecordId": "61a02b20-39db-52a1-879a-34e3be8f0368",
+      "discoverySuppress": false,
+      "itemDamagedStatus": null,
+      "permanentLoanType": "Can circulate",
+      "temporaryLoanType": null,
+      "statisticalCodeIds": [
+        "e6f1059b-4ab2-4bb2-adcb-af66acb6f4fa"
+      ],
+      "administrativeNotes": [
+
+      ],
+      "effectiveLocationId": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+      "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+      "suppressFromDiscovery": false,
+      "effectiveShelvingOrder": "M 223 S39 F2 D 11",
+      "effectiveCallNumberComponents": {
+        "typeId": "95467209-6d7b-468b-94df-0f5d7ad2747d",
+        "callNumber": "M23 .S39 F2D"
+      },
+      "location": {
+        "effectiveLocation": {
+          "id": "ec0d3f2e-c266-459e-8aaa-a44dea58255d",
+          "code": "MUS-SCORES",
+          "name": "Scores",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL",
+            "name": "Stanford Libraries"
+          },
+          "details": {
+          },
+          "library": {
+            "id": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+            "code": "MUSIC",
+            "name": "Music Library"
+          },
+          "isActive": true,
+          "institution": {
+            "id": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+            "code": "SU",
+            "name": "Stanford University"
+          }
+        }
+      },
+      "courses": [
       ]
     }
   ]
