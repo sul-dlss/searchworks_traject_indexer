@@ -110,10 +110,10 @@ module MarcLinks
 
         return link.host unless PROXY_URL_REGEX.match?(link.to_s) && link.to_s.include?('url=')
 
-        proxy = CGI.parse(link.query.force_encoding(Encoding::UTF_8))
+        proxy = Rack::Utils.parse_nested_query(link.query.force_encoding(Encoding::UTF_8))
         return link.host unless proxy.key?('url')
 
-        extracted_url = URI.extract(proxy['url'].first).first
+        extracted_url = URI.extract(proxy['url']).first
         return link.host unless extracted_url
 
         URI.parse(extracted_url).host
