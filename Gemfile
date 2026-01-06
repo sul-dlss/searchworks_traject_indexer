@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'traject', '~> 3.0'
 
 group :development, :test do
+  gem 'benchmark'
   gem 'debug', platforms: %i[mri]
   gem 'rspec'
   gem 'rubocop', require: false
