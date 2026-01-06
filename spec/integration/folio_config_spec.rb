@@ -359,8 +359,9 @@ RSpec.describe 'FOLIO indexing' do
       Array(result['item_display_struct']).map { |x| JSON.parse(x) }
     end
 
-    it 'identifies the bound-with principals' do
-      expect(item_display_structs).to contain_exactly(include('barcode' => '36105042167762', 'is_bound_with_principal' => true))
+    it 'identifies the correct items as bound-with principals' do
+      expect(item_display_structs.first).to include('barcode' => '36105042167762', 'is_bound_with_principal' => true)
+      expect(item_display_structs.last).to include('barcode' => '36105042167763', 'is_bound_with_principal' => false)
     end
   end
 

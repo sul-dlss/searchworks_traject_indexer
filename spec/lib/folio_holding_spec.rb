@@ -244,7 +244,8 @@ RSpec.describe FolioItem do
           boundWith: {
             holding: {
               callNumber: 'bound-with-callnumber'
-            }
+            },
+            item: { id: '' }
           }
         }.with_indifferent_access
       end

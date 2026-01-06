@@ -377,7 +377,7 @@ RSpec.describe FolioRecord do
         let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('folio_bw_principal.json'))), client) }
 
         it 'includes the bound-with principal only once' do
-          expect(index_items).to contain_exactly(have_attributes(id: '2b9ba8c6-f25c-5ba2-a159-418a0c335703'))
+          expect(index_items.map(&:bound_with_principal?)).to eq [true, false]
         end
       end
 
