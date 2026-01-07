@@ -1,11 +1,20 @@
 # frozen_string_literal: true
 
 require_relative '../../../config/boot'
+require_relative '../macros/cocina'
+require_relative '../macros/mods'
+require_relative '../macros/extras'
 require 'digest/md5'
 require 'active_support'
 
 Utils.logger = logger
+
+# rubocop:disable Style/MixinUsage
 extend Traject::SolrBetterJsonWriter::IndexerPatch
+extend Traject::Macros::Cocina
+extend Traject::Macros::Mods
+extend Traject::Macros::Extras
+# rubocop:enable Style/MixinUsage
 
 def log_skip(context)
   writer.put(context)
@@ -37,8 +46,8 @@ settings do
   end
 
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
-  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
 
+  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
   provide 'purl_fetcher.skip_catkey', ENV.fetch('PURL_FETCHER_SKIP_CATKEY', nil)
   self['purl_fetcher.skip_catkey'] = self['purl_fetcher.skip_catkey'] != 'false'
 
@@ -63,104 +72,64 @@ settings do
   end)
 end
 
-def stanford_mods(method, *args, default: nil)
-  lambda do |resource, accumulator, _context|
-    data = Array(resource.stanford_mods.public_send(method, *args))
-
-    data.each do |v|
-      accumulator << v
-    end
-
-    accumulator << default if data.empty?
-  end
-end
-
-def mods_xpath(xpath)
-  lambda do |resource, accumulator, _context|
-    # Convert the xpath result (a Nokogiri nodeset) to a plain array.
-    # This allows traject methods like first_only to work properly.
-    accumulator.concat(resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3'))
-  end
-end
-
-def mods_display(method, *args, default: nil)
-  lambda do |resource, accumulator, _context|
-    data = Array(resource.mods_display.public_send(method, *args))
-
-    data.each do |v|
-      v.values.each do |v2|
-        accumulator << v2.to_s
-      end
-    end
-
-    accumulator << default if data.empty?
-  end
-end
-
+# Time the indexing of each record
 each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
 
-##
-# Skip records that have a delete field
+# Skip records that have a delete field; id is needed to delete from the index
 each_record do |record, context|
-  if record.is_a?(Hash) && record[:delete]
-    context.output_hash['id'] = [record[:id].sub('druid:', '')]
-    context.skip!('Delete')
-  end
+  next unless record.is_a?(Hash) && record[:delete]
+
+  druid = record[:id].sub('druid:', '')
+  context.output_hash['id'] = [druid]
+  logger.debug "Delete: #{druid}"
+  context.skip!("Delete: #{druid}")
 end
 
-to_field 'id' do |record, accumulator|
-  accumulator << record.druid
-end
-
-to_field 'hashed_id_ssi' do |_record, accumulator, context|
-  next unless context.output_hash['id']
-
-  accumulator << Digest::MD5.hexdigest(context.output_hash['id'].first)
-end
-
-# Skip records with no public XML
+# Skip records with no public cocina
 each_record do |record, context|
-  next if record.public_xml?
+  next if record.public_cocina?
 
-  message = 'Item is in processing or does not exist'
+  message = 'No public metadata for item'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.warn "#{message}: #{record.druid}"
   context.skip!("#{message}: #{record.druid}")
 end
 
-##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
   next unless record.catkey
 
   message = 'Item has a catkey'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.debug "#{message}: #{record.druid}"
   context.skip!("#{message}: #{record.druid}")
 end
 
-to_field 'druid' do |record, accumulator|
-  accumulator << record.druid
-end
+# id is always the druid for SDR items
+to_field 'id', cocina_display(:bare_druid)
+to_field 'druid', cocina_display(:bare_druid)
 
+# this is used for sitemap generation; pre-hashing the IDs helps with that process
+to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
+
+# the entire mods XML record; currently used for display purposes
+# see: https://github.com/sul-dlss/SearchWorks/issues/6396
 to_field 'modsxml', stanford_mods(:to_xml)
-to_field 'all_search', stanford_mods(:text) do |_record, accumulator|
-  accumulator.map! { |x| x.gsub(/\s+/, ' ') }
-end
 
-to_field 'collection_type' do |record, accumulator|
-  accumulator << 'Digital Collection' if record.collection?
-end
+# flattened text of all nodes in the record for searching
+to_field 'all_search', cocina_display(:text)
 
 ##
 # Title Fields
-to_field 'title_245a_search', stanford_mods(:sw_short_title, default: '[Untitled]')
-to_field 'title_245_search', stanford_mods(:sw_full_title, default: '[Untitled]')
-to_field 'title_variant_search', stanford_mods(:sw_addl_titles)
-to_field 'title_sort', stanford_mods(:sw_sort_title, default: '[Untitled]')
-to_field 'title_245a_display', stanford_mods(:sw_sort_title, default: '[Untitled]')
-to_field 'title_display', stanford_mods(:sw_title_display, default: '[Untitled]')
-to_field 'title_full_display', stanford_mods(:sw_full_title, default: '[Untitled]')
+to_field 'title_245a_search', cocina_display(:main_title), default('[Untitled]')
+to_field 'title_245_search', cocina_display(:full_title), default('[Untitled]')
+to_field 'title_variant_search', cocina_display(:additional_titles)
+to_field 'title_sort', cocina_display(:sort_title), default('[Untitled]')
+to_field 'title_245a_display', cocina_display(:sort_title), default('[Untitled]')
+to_field 'title_display', cocina_display(:display_title), default('[Untitled]')
+to_field 'title_full_display', cocina_display(:full_title), default('[Untitled]')
 
 ##
 # Author Fields
@@ -397,6 +366,10 @@ to_field 'dor_file_mimetype_ssim' do |record, accumulator|
   record.dor_file_mimetype.uniq.each do |mimetype|
     accumulator << mimetype
   end
+end
+
+to_field 'collection_type' do |record, accumulator|
+  accumulator << 'Digital Collection' if record.collection?
 end
 
 to_field 'dor_resource_count_isi' do |record, accumulator|
