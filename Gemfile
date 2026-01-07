@@ -43,7 +43,7 @@ end
 gem 'activesupport', '~> 8.0'
 gem 'slop'
 
-gem 'cocina_display', '~> 1.6'
+gem 'cocina_display', '~> 1.8'
 gem 'dor-event-client'
 gem 'factory_bot', '~> 6.2'
 gem 'stanford-geo', '0.2.0'

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:bx658jh7339" published="2024-05-08T02:51:31Z" publishVersion="cocina-models/0.96.0">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>M. de Courville : [estampe]</objectLabel>
+    <sourceId source="sul">French Revolution Digital Archive:BNF:06942355</sourceId>
+  </identityMetadata>
+  <contentMetadata objectId="druid:bx658jh7339" type="image">
+    <resource id="cocina-fileSet-bx658jh7339-bx658jh7339_1" sequence="1" type="image">
+      <label>Image 1</label>
+      <file id="T0000001.jp2" mimetype="image/jp2" size="824964" publish="yes" shelve="yes" preserve="no">
+        <checksum type="sha1">2b1c5bc90223f9a48d9490386718d7a8154f542f</checksum>
+        <checksum type="md5">8be142e5eca83773cac111e65eb26e1a</checksum>
+        <imageData height="2608" width="1680"/>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">This image(s) is a digital reproduction of works from the collections of the Bibliothèque nationale de France that are no longer protected by intellectual property rights. The use of these contents for commercial purposes is subject to payment and covered by a license. Commercial use includes the resale of the contents in the form of prepared products or the supply of services. For commercial use, contact: utilisation.commerciale@bnf.fr. The use of these contents for non-commercial purposes is free of charge, subject to compliance with applicable French legislation and notably the inclusion of the source’s statement.</human>
+      <license/>
+    </use>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:bx658jh7339">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:jh957jy1101"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>M. de Courville: [estampe]</dc:title>
+    <dc:contributor>Girard, Romain, 1751?-18</dc:contributor>
+    <dc:contributor>Vinck, Carl de, 1859-19</dc:contributor>
+    <dc:type>picture</dc:type>
+    <dc:type>Portraits-18e siècle.</dc:type>
+    <dc:type>StillImage</dc:type>
+    <dc:format>1 est. : pointillé, eau-forte ; 18,5 x 12 cm (f.)</dc:format>
+    <dc:format>estampe</dc:format>
+    <dc:language>und</dc:language>
+    <dc:subject>Courville Sulbark, Mella de, 17..-1</dc:subject>
+    <dc:subject>Les événements de la Révolution--Le Roi et la famille royale--Marie-Antoinette et l'opinion publique--L'affaire du Collier de la Reine (1785-1786)</dc:subject>
+    <dc:subject>The events of the Revolution--The King and the Royal Family--Marie-Antoinette and public opinion--The Queen's Necklace affair (1785-1786)</dc:subject>
+    <dc:date>[ca 1786]</dc:date>
+    <dc:date>1786</dc:date>
+    <dc:date>1786</dc:date>
+    <dc:publisher>[R. Girard ?]</dc:publisher>
+    <dc:identifier>693231462</dc:identifier>
+    <dc:identifier>https://purl.stanford.edu/bx658jh7339</dc:identifier>
+    <dc:relation>De Vinck, 1123</dc:relation>
+    <dc:relation type="url" href="http://catalogue.bnf.fr/ark:/12148/cb40247425s"/>
+    <dc:relation type="collection">Images de la Révolution française / Images of the French Revolution</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+    <titleInfo>
+      <title>M. de Courville</title>
+      <subTitle>[estampe]</subTitle>
+    </titleInfo>
+    <name usage="primary" type="personal">
+      <namePart>Girard, Romain</namePart>
+      <namePart type="date">1751?-18</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="code">egr</roleTerm>
+      </role>
+      <role>
+        <roleTerm authority="marcrelator" type="code">pbl</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart>Vinck, Carl de</namePart>
+      <namePart type="date">1859-19</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="code">col</roleTerm>
+      </role>
+    </name>
+    <genre authority="marcgt">picture</genre>
+    <genre>Portraits-18e siècle.</genre>
+    <typeOfResource>still image</typeOfResource>
+    <physicalDescription>
+      <form type="technique">estampe</form>
+      <form type="material">gravure au pointillé</form>
+      <form type="material">eau-forte</form>
+      <form authority="gmd">Image fixe</form>
+      <form authority="marccategory">nonprojected graphic</form>
+      <form authority="marcsmd">print</form>
+      <extent>1 est. : pointillé, eau-forte ; 18,5 x 12 cm (f.)</extent>
+    </physicalDescription>
+    <language>
+      <languageTerm authority="iso639-2b" type="code">und</languageTerm>
+    </language>
+    <subject authority="ram">
+      <name type="personal">
+        <namePart>Courville Sulbark, Mella de</namePart>
+        <namePart type="date">17..-1</namePart>
+      </name>
+    </subject>
+    <subject displayLabel="Catalog heading" lang="fre">
+      <topic>Les événements de la Révolution</topic>
+      <topic>Le Roi et la famille royale</topic>
+      <topic>Marie-Antoinette et l'opinion publique</topic>
+      <topic>L'affaire du Collier de la Reine (1785-1786)</topic>
+    </subject>
+    <subject displayLabel="Catalog heading" lang="eng">
+      <topic>The events of the Revolution</topic>
+      <topic>The King and the Royal Family</topic>
+      <topic>Marie-Antoinette and public opinion</topic>
+      <topic>The Queen's Necklace affair (1785-1786)</topic>
+    </subject>
+    <originInfo>
+      <dateIssued>[ca 1786]</dateIssued>
+      <dateIssued encoding="marc">1786</dateIssued>
+      <dateIssued encoding="marc">1786</dateIssued>
+      <place>
+        <placeTerm type="text">[Paris ?]</placeTerm>
+      </place>
+      <place>
+        <placeTerm authority="marccountry" type="code">fr</placeTerm>
+      </place>
+      <publisher>[R. Girard ?]</publisher>
+      <issuance>monographic</issuance>
+    </originInfo>
+    <identifier type="OCLC">693231462</identifier>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/bx658jh7339</url>
+    </location>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm authority="iso639-2b" type="code">fre</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource authority="marcorg">BDF</recordContentSource>
+      <descriptionStandard>ncafnor</descriptionStandard>
+      <recordOrigin>Converted from MARCXML to MODS version 3.4 using MARC21slim2MODS3-4.xsl
+				(Revision 1.83 2013/01/18)</recordOrigin>
+      <recordCreationDate encoding="marc">871027</recordCreationDate>
+      <recordChangeDate encoding="iso8601">20130116122038.0</recordChangeDate>
+      <recordIdentifier source="OCoLC">ocn693231462</recordIdentifier>
+    </recordInfo>
+    <relatedItem type="isReferencedBy">
+      <titleInfo>
+        <title>De Vinck, 1123</title>
+      </titleInfo>
+    </relatedItem>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>[Recueil. Collection de Vinck. Un siècle d'histoire de France par l'estampe, 1770-1870. Vol. 7 (pièces 1046-1231), Ancien Régime et Révolution]</title>
+      </titleInfo>
+      <identifier type="local">(FrPBN)38793011</identifier>
+    </relatedItem>
+    <relatedItem>
+      <location>
+        <url displayLabel="Notice et cote du catalogue de la Bibliothèque nationale de France">http://catalogue.bnf.fr/ark:/12148/cb40247425s</url>
+      </location>
+    </relatedItem>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Images de la Révolution française / Images of the French Revolution</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/jh957jy1101</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">This image(s) is a digital reproduction of works from the collections of the Bibliothèque nationale de France that are no longer protected by intellectual property rights. The use of these contents for commercial purposes is subject to payment and covered by a license. Commercial use includes the resale of the contents in the form of prepared products or the supply of services. For commercial use, contact: utilisation.commerciale@bnf.fr. The use of these contents for non-commercial purposes is free of charge, subject to compliance with applicable French legislation and notably the inclusion of the source’s statement.</accessCondition>
+  </mods>
+  <thumb>bx658jh7339/T0000001.jp2</thumb>
+</publicObject>

@@ -30,7 +30,7 @@ RSpec.describe Traject::Macros::Cocina do
     let(:macro) { stacks_file_url }
 
     context 'with file objects' do
-      let(:accumulator) { record.cocina_doc.dig('structural', 'contains', 0, 'structural', 'contains') }
+      let(:accumulator) { record.filesets.first.files }
 
       it 'returns the URLs for the files' do
         expect(accumulator).to eq [
@@ -51,7 +51,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { select_files('preview.jpg') }
 
       it 'returns the files with the matching filename' do
-        expect(accumulator.map { |file| file['filename'] }).to eq ['preview.jpg']
+        expect(accumulator.map(&:filename)).to eq ['preview.jpg']
       end
     end
 
@@ -59,7 +59,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { select_files(/\.xml$/) }
 
       it 'returns the files with filenames matching the regex' do
-        expect(accumulator.map { |file| file['filename'] }).to eq [
+        expect(accumulator.map(&:filename)).to eq [
           'Stanford_Temperature_Model_4km.geojson.xml',
           'Stanford_Temperature_Model_4km-iso19139.xml',
           'Stanford_Temperature_Model_4km-iso19110.xml',
@@ -69,11 +69,11 @@ RSpec.describe Traject::Macros::Cocina do
     end
 
     context 'with a filtered list of files' do
-      let(:accumulator) { record.cocina_doc.dig('structural', 'contains', 2, 'structural', 'contains') }
+      let(:accumulator) { record.filesets[2].files }
       let(:macro) { select_files(/-iso/) }
 
       it 'operates on the files in the list' do
-        expect(accumulator.map { |file| file['filename'] }).to eq [
+        expect(accumulator.map(&:filename)).to eq [
           'Stanford_Temperature_Model_4km-iso19139.xml',
           'Stanford_Temperature_Model_4km-iso19110.xml'
         ]
@@ -94,7 +94,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { find_file('preview.jpg') }
 
       it 'returns the file with the matching filename' do
-        expect(accumulator.first['filename']).to eq 'preview.jpg'
+        expect(accumulator.first.filename).to eq 'preview.jpg'
       end
     end
 
@@ -102,7 +102,7 @@ RSpec.describe Traject::Macros::Cocina do
       let(:macro) { find_file(/\.xml$/) }
 
       it 'returns the first file with a filename matching the regex' do
-        expect(accumulator.first['filename']).to eq 'Stanford_Temperature_Model_4km.geojson.xml'
+        expect(accumulator.first.filename).to eq 'Stanford_Temperature_Model_4km.geojson.xml'
       end
     end
 

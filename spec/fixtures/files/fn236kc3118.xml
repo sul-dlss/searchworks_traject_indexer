@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:fn236kc3118" published="2026-01-31T15:43:44Z" publishVersion="cocina-models/0.109.0">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>1
+Obscenity, Blunder, Utopia: Phoenix's Growth From 1949-1979</objectLabel>
+    <sourceId source="sul">h3:object-8489</sourceId>
+  </identityMetadata>
+  <contentMetadata objectId="druid:fn236kc3118" type="document">
+    <resource id="cocina-fileSet-fn236kc3118-6d9962f3-55de-41df-a0ec-913ebe44f099" sequence="1" type="document">
+      <file id="Obscenity, Blunder, Utopia_ Phoenix's Growth From 1949-1979.pdf" mimetype="application/pdf" size="54817705" publish="yes" shelve="yes" preserve="yes">
+        <checksum type="md5">980a4d8bb0ec7f1f008e476ff57af0a5</checksum>
+        <checksum type="sha1">525826a4079c4f246dc82831ffe7052452cfccfb</checksum>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.</human>
+      <license>https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode</license>
+    </use>
+    <copyright>
+      <human/>
+    </copyright>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:fn236kc3118">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:mc415rv2595"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo>
+      <title>1
+Obscenity, Blunder, Utopia: Phoenix's Growth From 1949-1979</title>
+    </titleInfo>
+    <name usage="primary" type="personal">
+      <namePart type="given">Maya </namePart>
+      <namePart type="family">Levine</namePart>
+      <affiliation>Stanford University, Urban Studies</affiliation>
+      <role>
+        <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/aut" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators/" type="text">author</roleTerm>
+        <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/aut" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators/" type="code">aut</roleTerm>
+      </role>
+    </name>
+    <genre type="H2 type">Text</genre>
+    <genre type="H2 subtype">Thesis</genre>
+    <typeOfResource>text</typeOfResource>
+    <extension displayLabel="datacite">
+      <resourceType resourceTypeGeneral="Text">Thesis</resourceType>
+    </extension>
+    <abstract>The urban form of Phoenix, Arizona is a massive departure from the form of older
+American cities in the Chicago School of urbanism, and even from other newer cities in the Los
+Angeles School of urbanism. A deeper look at the city grid, economy, and demographics can
+make Phoenix seem even more chaotic. What forces caused Phoenix to take on the form that it
+has today? This paper looks at the period between 1949 and 1979 and traces five main powers
+that had their own visions for what a city should look like and their own interests in how to get
+there, and investigates the decisions that they made, the alliances that they created, and the
+clashes that they had, in order to better understand the preeminent Southwestern city.</abstract>
+    <subject>
+      <topic>Urbanism - cities</topic>
+    </subject>
+    <subject>
+      <topic>Pheonix, Arizona urbanism</topic>
+    </subject>
+    <subject>
+      <topic>Pheonix, Arizona 1949 to 1979</topic>
+    </subject>
+    <originInfo eventType="deposit">
+      <dateIssued encoding="edtf">2026-01-31</dateIssued>
+    </originInfo>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/fn236kc3118</url>
+    </location>
+    <note type="contact" displayLabel="Contact">pjacobus@stanford.edu</note>
+    <recordInfo>
+      <recordOrigin>Metadata created by user via Stanford self-deposit application</recordOrigin>
+      <recordCreationDate encoding="edtf">2026-01-31</recordCreationDate>
+    </recordInfo>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Stanford University Urban Studies Honors Theses</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/mc415rv2595</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.</accessCondition>
+    <accessCondition type="license" xlink:href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">This work is licensed under a Creative Commons Attribution Non Commercial Share Alike 4.0 International license (CC BY-NC-SA).</accessCondition>
+    <identifier type="doi" displayLabel="DOI">https://doi.org/10.25740/fn236kc3118</identifier>
+  </mods>
+</publicObject>
