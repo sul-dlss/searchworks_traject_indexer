@@ -118,7 +118,7 @@ to_field 'id', cocina_display(:bare_druid), prepend('stanford-')
 to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
 
 # https://opengeometadata.org/ogm-aardvark/#title
-to_field 'dct_title_s', cocina_display(:main_title), default('[Untitled]')
+to_field 'dct_title_s', cocina_display(:display_title), default('[Untitled]')
 
 # https://opengeometadata.org/ogm-aardvark/#alternative-title
 # - indexed but not displayed in the UI

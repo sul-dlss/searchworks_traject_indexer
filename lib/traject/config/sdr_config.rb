@@ -123,7 +123,7 @@ to_field 'all_search', cocina_display(:text)
 
 ##
 # Title Fields
-to_field 'title_245a_search', cocina_display(:main_title), default('[Untitled]')
+to_field 'title_245a_search', cocina_display(:short_title), default('[Untitled]')
 to_field 'title_245_search', cocina_display(:full_title), default('[Untitled]')
 to_field 'title_variant_search', cocina_display(:additional_titles)
 to_field 'title_sort', cocina_display(:sort_title), default('[Untitled]')

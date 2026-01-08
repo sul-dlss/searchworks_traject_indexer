@@ -10,8 +10,8 @@ RSpec.describe 'SDR indexing' do
       i.load_config_file('./lib/traject/config/sdr_config.rb')
     end
   end
-  let(:druid) { 'bk264hq9320' }
-  let(:collection_druid) { 'nj770kg7809' }
+  let(:druid) { 'sw705fr7011' }
+  let(:collection_druid) { 'vm093fg5170' }
   let(:record) { PurlRecord.new(druid) }
   let(:body) { File.new(file_fixture("#{druid}.json")) }
   let(:xml_body) { File.new(file_fixture("#{druid}.xml")) }
@@ -43,24 +43,24 @@ RSpec.describe 'SDR indexing' do
 
   it 'maps all text for searching' do
     # rubocop:disable Layout/LineLength
-    expect(result['all_search'].first).to eq 'Trustees Demo reel Stanford University. News and Publications Service pro producer 2004-02-09 w3cdtf cau Stanford (Calif.) Unedited footage moving image videocassette access video/mp4 image/jpeg 1 MiniDV tape reformatted digital NTSC Sound Color eng English Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 SC1125 Stanford University. Libraries. Department of Special Collections and University Archives Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv CSt original cataloging agency eng English human prepared'
+    expect(result['all_search'].first).to eq 'Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi 0405 28 anonymous ive Interviewee Student Nonviolent Coordinating Committee (U.S.) spn Sponsor 1965 w3cdtf Laurel (Miss.) msu Mississippi sound recording-nonmusical oral histories audiotape reel access audio/mpeg 1 audiotape reformatted digital Magnetic 3.75 ips Mono NAB standard access 1 transcript born digital eng English Reformatted by Stanford University Libraries between 2009-2011. 0405 Civil rights United States Civil rights movements SC0066 Stanford University. Libraries. Department of Special Collections and University Archives eng Latn KZSU Project South Interviews (SC0066) https://oac.cdlib.org/findaid/ark:/13030/tf7489n969/ Transcript CSt original cataloging agency eng English human prepared'
     # rubocop:enable Layout/LineLength
   end
 
   it 'maps the short title' do
-    expect(result['title_245a_search']).to eq ['Trustees Demo reel']
+    expect(result['title_245a_search']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi']
   end
 
-  it 'maps the full title' do
-    expect(result['title_245_search']).to eq ['Trustees Demo reel.']
+  it 'maps the long title' do
+    expect(result['title_display']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405']
+  end
+
+  it 'maps the title with added punctuation' do
+    expect(result['title_full_display']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405.']
   end
 
   it 'maps the sort title' do
-    expect(result['title_sort']).to eq ['Trustees Demo reel']
-  end
-
-  it 'maps the display title' do
-    expect(result['title_display']).to eq ['Trustees Demo reel']
+    expect(result['title_sort']).to eq ['anonymous white female SNCC volunteer 0405 sides 1 and 2 Laurel Mississippi 0405']
   end
 
   #   it 'maps the data the same way as it does currently' do
@@ -484,7 +484,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     context 'when the item has no public metadata' do
-      before { stub_request(:get, 'https://purl.stanford.edu/bk264hq9320.json').to_return(status: 404) }
+      before { stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 404) }
 
       it 'creates an indexing skipped event with message' do
         expect(result).to be_nil

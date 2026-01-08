@@ -600,4 +600,20 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       expect(SdrEvents).to have_received(:report_indexing_skipped).with(druid, { message: 'No geometry available for item', target: 'Earthworks' })
     end
   end
+
+  context 'with no public cocina metadata' do
+    before do
+      allow(indexer).to receive(:logger).and_return(Logger.new(File::NULL)) # suppress logger output
+      allow(Settings.sdr_events).to receive(:enabled).and_return(true)
+      allow(SdrEvents).to receive_messages(
+        report_indexing_skipped: true
+      )
+      stub_request(:get, 'https://purl.stanford.edu/vv853br8653.json').to_return(status: 404)
+    end
+
+    it 'does not index the record' do
+      expect(result).to be_nil
+      expect(SdrEvents).to have_received(:report_indexing_skipped).with(druid, { message: 'No public metadata for item', target: 'Earthworks' })
+    end
+  end
 end
