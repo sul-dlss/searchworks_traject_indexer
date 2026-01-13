@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:kf879tn8532" published="2025-07-23T20:45:37Z" publishVersion="cocina-models/0.105.0">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>Mehmet Sadik Rifat Pasha's Risale-i ahlak</objectLabel>
+    <otherId name="catkey">13707812</otherId>
+    <otherId name="folio_instance_hrid">a13707812</otherId>
+    <sourceId source="sul">sul:JS-Sephardi Studies_jerusalmi_4risale_4risale.jpg</sourceId>
+  </identityMetadata>
+  <contentMetadata objectId="druid:kf879tn8532" type="image">
+    <resource id="cocina-fileSet-kf879tn8532-kf879tn8532_1" sequence="1" type="image">
+      <label>Image</label>
+      <file id="kf879tn8532_4risale.jpg" mimetype="image/jpeg" size="187631" publish="yes" shelve="yes" preserve="yes">
+        <checksum type="sha1">855c9a07ec718a9d57ae14ee37956fcafcfda290</checksum>
+        <checksum type="md5">df3ef4cf93997bc689d7bd958a27e0e6</checksum>
+        <imageData height="624" width="477"/>
+      </file>
+      <file id="kf879tn8532_4risale.jp2" mimetype="image/jp2" size="55966" publish="yes" shelve="yes" preserve="no">
+        <checksum type="sha1">61a49172c3d5890a5f412350e3ab5f544ac131ee</checksum>
+        <checksum type="md5">a6d6ac3da557d0e553e2329b3e924ccb</checksum>
+        <imageData height="624" width="477"/>
+      </file>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">Property rights and literary rights reside with Stanford University. To obtain permission to publish or reproduce, please contact Stanford Libraries at sdr-contact@lists.stanford.edu.</human>
+      <license/>
+    </use>
+    <copyright>
+      <human>Copyright © Stanford University. All Rights Reserved.</human>
+    </copyright>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:kf879tn8532">
+    
+    
+  </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Mehmet Sadik Rifat Pasha's Risale-i ahlak. Risale-i ahlak</dc:title>
+    <dc:title>Risale-i ahlak</dc:title>
+    <dc:title>Risâle-yi ahlâk. Ladino</dc:title>
+    <dc:contributor>Rifat Paşa, Mehmet Sadık, 1807-1856 (author)</dc:contributor>
+    <dc:contributor>Gabbay, Yehezkel, 1825-1898 (translator)</dc:contributor>
+    <dc:contributor>Jerusalmi, Isaac, 1928-2018 (editor)</dc:contributor>
+    <dc:contributor>Taube Center for Jewish Studies (Stanford University) Sephardic Studies Project</dc:contributor>
+    <dc:type>text</dc:type>
+    <dc:type>Text</dc:type>
+    <dc:format>28 pages ; 29 cm</dc:format>
+    <dc:format>print</dc:format>
+    <dc:language>lad</dc:language>
+    <dc:language>ota</dc:language>
+    <dc:description type="statement of responsibility">translated from Turkish into Ladino by Yehezkel Gabbai ;  enlarged original texts in Ottoman Turkish and Rashi scripts with face-to-face transliterations, glossaries and an introduction / by Isaac Jerusalmi.</dc:description>
+    <dc:description>Originally published: Libro segundo. Galaṭah : Yeḥezḳel Gabai, 5612 [1860 or 1861]</dc:description>
+    <dc:description>Description based on online resource (Taube Center for Jewish Studies (Stanford University)); viewed on August 26, 2020</dc:description>
+    <dc:description type="language">In Ladino</dc:description>
+    <dc:subject>Islamic ethics</dc:subject>
+    <dc:date>1990</dc:date>
+    <dc:date>[1990?]</dc:date>
+    <dc:publisher>[Isaac Jerushalmi]</dc:publisher>
+    <dc:identifier>https://purl.stanford.edu/kf879tn8532</dc:identifier>
+    <dc:relation type="url" href="https://purl.stanford.edu/xs812fm6103"/>
+    <dc:relation type="url" href="https://purl.stanford.edu/wn542dy8318"/>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo usage="primary">
+      <title>Mehmet Sadik Rifat Pasha's Risale-i ahlak</title>
+      <partNumber>Risale-i ahlak</partNumber>
+    </titleInfo>
+    <titleInfo type="alternative">
+      <title>Risale-i ahlak</title>
+    </titleInfo>
+    <titleInfo valueURI="http://id.loc.gov/authorities/names/n2003060121" type="uniform" nameTitleGroup="1">
+      <title>Risâle-yi ahlâk. Ladino</title>
+    </titleInfo>
+    <name nameTitleGroup="1" valueURI="http://id.loc.gov/authorities/names/n94008949" usage="primary" type="personal">
+      <namePart>Rifat Paşa, Mehmet Sadık</namePart>
+      <namePart type="date">1807-1856</namePart>
+      <role>
+        <roleTerm type="text">author</roleTerm>
+      </role>
+    </name>
+    <name valueURI="http://id.loc.gov/authorities/names/nr92012862" type="personal">
+      <namePart>Gabbay, Yehezkel</namePart>
+      <namePart type="date">1825-1898</namePart>
+      <role>
+        <roleTerm type="text">translator</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart>Jerusalmi, Isaac</namePart>
+      <namePart type="date">1928-2018</namePart>
+      <role>
+        <roleTerm type="text">editor</roleTerm>
+      </role>
+    </name>
+    <name valueURI="http://id.loc.gov/authorities/names/no2020100608" type="corporate">
+      <namePart>Taube Center for Jewish Studies (Stanford University)</namePart>
+      <namePart>Sephardic Studies Project</namePart>
+    </name>
+    <genre authority="rdacontent">text</genre>
+    <typeOfResource>text</typeOfResource>
+    <physicalDescription>
+      <form authority="marcform">print</form>
+      <form authority="marccategory">electronic resource</form>
+      <form authority="marcsmd">remote</form>
+      <form type="media" authority="rdamedia">computer</form>
+      <form type="carrier" authority="rdacarrier">online resource</form>
+      <extent>28 pages ; 29 cm</extent>
+      <extent>1 online resource</extent>
+    </physicalDescription>
+    <language>
+      <languageTerm authority="iso639-2b" type="code">lad</languageTerm>
+    </language>
+    <language objectPart="translation">
+      <languageTerm authority="iso639-2b" type="code">ota</languageTerm>
+    </language>
+    <note type="statement of responsibility">translated from Turkish into Ladino by Yehezkel Gabbai ;  enlarged original texts in Ottoman Turkish and Rashi scripts with face-to-face transliterations, glossaries and an introduction / by Isaac Jerusalmi.</note>
+    <note>Originally published: Libro segundo. Galaṭah : Yeḥezḳel Gabai, 5612 [1860 or 1861]</note>
+    <note>Description based on online resource (Taube Center for Jewish Studies (Stanford University)); viewed on August 26, 2020</note>
+    <note type="language">In Ladino</note>
+    <subject authority="lcsh">
+      <topic authority="lcsh" valueURI="http://id.loc.gov/authorities/subjects/sh85068451">Islamic ethics</topic>
+    </subject>
+    <originInfo>
+      <dateIssued encoding="marc">1990</dateIssued>
+      <place>
+        <placeTerm authority="marccountry" type="code">ohu</placeTerm>
+      </place>
+      <issuance>monographic</issuance>
+    </originInfo>
+    <originInfo>
+      <dateIssued>[1990?]</dateIssued>
+      <place>
+        <placeTerm type="text">[Cincinnati, Ohio?]</placeTerm>
+      </place>
+      <publisher>[Isaac Jerushalmi]</publisher>
+      <edition>[Enl. and restored ed.].</edition>
+    </originInfo>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/kf879tn8532</url>
+    </location>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource authority="marcorg">STF</recordContentSource>
+      <descriptionStandard>rda</descriptionStandard>
+      <recordOrigin>Converted from MARCXML to MODS version 3.7 using
+				MARC21slim2MODS3-7_SDR_v2-7.xsl (SUL 3.7 version 2.7 20220901; LC Revision 1.140
+				20200717)</recordOrigin>
+      <recordCreationDate encoding="marc">200928</recordCreationDate>
+      <recordChangeDate encoding="iso8601">20201010011454.0</recordChangeDate>
+      <recordIdentifier source="FOLIO">a13707812</recordIdentifier>
+    </recordInfo>
+    <relatedItem>
+      <location>
+        <url usage="primary display">https://purl.stanford.edu/xs812fm6103</url>
+      </location>
+    </relatedItem>
+    <relatedItem>
+      <location>
+        <url usage="primary display">https://purl.stanford.edu/wn542dy8318</url>
+      </location>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">Property rights and literary rights reside with Stanford University. To obtain permission to publish or reproduce, please contact Stanford Libraries at sdr-contact@lists.stanford.edu.</accessCondition>
+    <accessCondition type="copyright">Copyright © Stanford University. All Rights Reserved.</accessCondition>
+  </mods>
+  <thumb>kf879tn8532/kf879tn8532_4risale.jp2</thumb>
+</publicObject>

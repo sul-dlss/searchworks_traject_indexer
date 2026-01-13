@@ -23,6 +23,7 @@ RSpec.describe 'SDR indexing' do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body: xml_body)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: metadata_json)
     stub_request(:get, "https://purl.stanford.edu/#{collection_druid}.json").to_return(status: 200, body: collection_body)
+    allow(record).to receive(:catkey).and_return(nil) # make sure it is indexable
   end
 
   it 'maps the druid as the id' do
@@ -47,20 +48,106 @@ RSpec.describe 'SDR indexing' do
     # rubocop:enable Layout/LineLength
   end
 
-  it 'maps the short title' do
-    expect(result['title_245a_search']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi']
+  describe 'title fields' do
+    it 'maps the short title' do
+      expect(result['title_245a_search']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi']
+    end
+
+    it 'maps the full title' do
+      expect(result['title_full_display']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405.']
+      expect(result['title_245_search']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405.']
+    end
+
+    it 'maps the display title' do
+      expect(result['title_display']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405']
+    end
+
+    it 'maps the sort title' do
+      expect(result['title_sort']).to eq ['anonymous white female SNCC volunteer 0405 sides 1 and 2 Laurel Mississippi 0405']
+      expect(result['title_245a_display']).to eq ['anonymous white female SNCC volunteer 0405 sides 1 and 2 Laurel Mississippi 0405']
+    end
+
+    context 'with no titles' do
+      before { allow(record.public_cocina).to receive(:display_title).and_return(nil) }
+
+      it 'maps a fallback value' do
+        expect(result['title_display']).to eq ['[Untitled]']
+      end
+    end
+
+    context 'with additional titles' do
+      let(:druid) { 'dc482zx1528' }
+      let(:collection_druid) { 'bf420qj4978' }
+
+      it 'maps the additional titles' do
+        expect(result['title_variant_search']).to eq ['上州草津温泉圖', 'Jōshū Kusatsu Onsen zu']
+      end
+    end
   end
 
-  it 'maps the long title' do
-    expect(result['title_display']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405']
+  describe 'author fields' do
+    let(:druid) { 'kf879tn8532' }
+
+    it 'maps the main contributor name for search' do
+      expect(result['author_1xx_search']).to eq ['Rifat Paşa, Mehmet Sadık']
+    end
+
+    it 'maps the additional contributor names for search' do
+      expect(result['author_7xx_search']).to eq ['Gabbay, Yehezkel', 'Jerusalmi, Isaac', 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project']
+    end
+
+    it 'maps the personal contributor names for faceting' do
+      expect(result['author_person_facet']).to eq ['Rifat Paşa, Mehmet Sadık', 'Gabbay, Yehezkel', 'Jerusalmi, Isaac']
+    end
+
+    it 'maps the impersonal contributor names for faceting' do
+      expect(result['author_other_facet']).to eq ['Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project']
+    end
+
+    it 'maps the sort contributor name with title' do
+      expect(result['author_sort']).to eq ['Rifat Paşa Mehmet Sadık Mehmet Sadik Rifat Pashas Risalei ahlak']
+    end
+
+    it 'maps the organization contributor names for display' do
+      expect(result['author_corp_display']).to eq ['Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project']
+    end
+
+    it 'maps the main contributor name for display with date' do
+      expect(result['author_person_display']).to eq ['Rifat Paşa, Mehmet Sadık, 1807-1856']
+      expect(result['author_person_full_display']).to eq ['Rifat Paşa, Mehmet Sadık, 1807-1856']
+    end
   end
 
-  it 'maps the title with added punctuation' do
-    expect(result['title_full_display']).to eq ['Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi. 0405.']
-  end
+  describe 'subject fields' do
+    let(:druid) { 'vv853br8653' }
 
-  it 'maps the sort title' do
-    expect(result['title_sort']).to eq ['anonymous white female SNCC volunteer 0405 sides 1 and 2 Laurel Mississippi 0405']
+    it 'maps the topic subjects for search' do
+      expect(result['topic_search']).to eq ['Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters']
+    end
+
+    it 'maps the geographic subjects for search' do
+      expect(result['geographic_search']).to eq ['North Pacific Ocean']
+    end
+
+    it 'maps the temporal and genre subjects for search' do
+      expect(result['subject_other_subvy_search']).to eq ['1978 - 2005']
+    end
+
+    it 'maps all subjects for search' do
+      expect(result['subject_all_search']).to eq ['Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters', '1978 - 2005', 'North Pacific Ocean']
+    end
+
+    it 'maps the topic subjects for faceting' do
+      expect(result['topic_facet']).to eq ['Marine habitat conservation', 'Freshwater habitat conservation', 'Pacific salmon', 'Conservation', 'Watersheds', 'Environment', 'Oceans', 'Inland Waters']
+    end
+
+    it 'maps the geographic subjects for faceting' do
+      expect(result['geographic_facet']).to eq ['North Pacific Ocean']
+    end
+
+    it 'maps the temporal subjects for faceting' do
+      expect(result['era_facet']).to eq ['1978 - 2005']
+    end
   end
 
   #   it 'maps the data the same way as it does currently' do
@@ -113,14 +200,6 @@ RSpec.describe 'SDR indexing' do
   #     )
   #   end
   # end
-
-  context 'with no titles' do
-    before { allow(record.public_cocina).to receive(:display_title).and_return(nil) }
-
-    it 'maps a fallback value' do
-      expect(result['title_display']).to eq ['[Untitled]']
-    end
-  end
 
   xcontext 'with vv853br8653' do
     let(:druid) { 'vv853br8653' }

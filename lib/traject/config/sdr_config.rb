@@ -133,26 +133,26 @@ to_field 'title_full_display', cocina_display(:full_title), default('[Untitled]'
 
 ##
 # Author Fields
-to_field 'author_1xx_search', stanford_mods(:sw_main_author)
-to_field 'author_7xx_search', stanford_mods(:sw_addl_authors)
-to_field 'author_person_facet', stanford_mods(:sw_person_authors)
-to_field 'author_other_facet', stanford_mods(:sw_impersonal_authors)
-to_field 'author_sort', stanford_mods(:sw_sort_author)
-to_field 'author_corp_display', stanford_mods(:sw_corporate_authors)
-to_field 'author_meeting_display', stanford_mods(:sw_meeting_authors)
-to_field 'author_person_display', stanford_mods(:sw_person_authors)
-to_field 'author_person_full_display', stanford_mods(:sw_person_authors)
+to_field 'author_1xx_search', cocina_display(:main_contributor_name)
+to_field 'author_7xx_search', cocina_display(:additional_contributor_names)
+to_field 'author_person_facet', cocina_display(:person_contributor_names)
+to_field 'author_other_facet', cocina_display(:impersonal_contributor_names)
+to_field 'author_sort', cocina_display(:sort_contributor_name)
+to_field 'author_corp_display', cocina_display(:organization_contributor_names)
+to_field 'author_meeting_display', cocina_display(:conference_contributor_names)
+to_field 'author_person_display', cocina_display(:main_contributor_name, with_date: true)
+to_field 'author_person_full_display', cocina_display(:main_contributor_name, with_date: true)
 
 ##
 # Subject Fields
-to_field 'topic_search', stanford_mods(:topic_search)
-to_field 'geographic_search', stanford_mods(:geographic_search)
-to_field 'subject_other_search', stanford_mods(:subject_other_search)
-to_field 'subject_other_subvy_search', stanford_mods(:subject_other_subvy_search)
-to_field 'subject_all_search', stanford_mods(:subject_all_search)
-to_field 'topic_facet', stanford_mods(:topic_facet)
-to_field 'geographic_facet', stanford_mods(:geographic_facet)
-to_field 'era_facet', stanford_mods(:era_facet)
+to_field 'topic_search', cocina_display(:subject_topics)
+to_field 'geographic_search', cocina_display(:subject_places)
+to_field 'subject_other_search', cocina_display(:subject_other)
+to_field 'subject_other_subvy_search', cocina_display(:subject_temporal_genre)
+to_field 'subject_all_search', cocina_display(:subject_all)
+to_field 'topic_facet', cocina_display(:subject_topics)
+to_field 'geographic_facet', cocina_display(:subject_places)
+to_field 'era_facet', cocina_display(:subject_temporal)
 
 # TODO: need better implementation of pub_search in stanford-mods
 to_field 'pub_search', stanford_mods(:place)
