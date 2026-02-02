@@ -147,7 +147,7 @@ to_field 'author_struct', cocina_display(:contributors), transform(lambda do |co
     link: contributor.display_name(with_date: true),
     search: "\"#{contributor.display_name}\"",
     post_text: ("(#{contributor.display_role})" if contributor.role?)
-  }
+  }.compact
 end)
 
 ##
@@ -172,10 +172,10 @@ to_field 'pub_year_isi', cocina_display(:pub_year_int)
 to_field 'pub_year_ss', cocina_display(:pub_year_str)
 to_field 'imprint_display', cocina_display(:imprint_str)
 to_field 'pub_country', cocina_display(:publication_countries)
+to_field 'pub_year_tisim', stanford_mods(:pub_year_int_range)
 
-# TODO: need better implementation for date slider in stanford-mods (e.g. multiple years when warranted)
-to_field 'pub_year_tisim', stanford_mods(:pub_year_int)
-
+##
+# Form fields
 to_field 'format_main_ssim', stanford_mods(:format_main)
 to_field 'format_hsim' do |_record, accumulator, context|
   Array(context.output_hash['format_main_ssim']).each do |format|

@@ -118,27 +118,27 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the structured version of the author names for linking' do
-      expect(result['author_struct']).to eq [
+      expect(result['author_struct']).to contain_exactly(
         {
           'link' => 'Rifat Paşa, Mehmet Sadık, 1807-1856',
           'search' => '"Rifat Paşa, Mehmet Sadık"',
           'post_text' => '(author)'
-        },
+        }.to_json,
         {
           'link' => 'Gabbay, Yehezkel, 1825-1898',
           'search' => '"Gabbay, Yehezkel"',
           'post_text' => '(translator)'
-        },
+        }.to_json,
         {
           'link' => 'Jerusalmi, Isaac, 1928-2018',
           'search' => '"Jerusalmi, Isaac"',
           'post_text' => '(editor)'
-        },
+        }.to_json,
         {
           'link' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project',
           'search' => '"Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project"'
-        }
-      ]
+        }.to_json
+      )
     end
   end
 
@@ -171,6 +171,33 @@ RSpec.describe 'SDR indexing' do
 
     it 'maps the temporal subjects for faceting' do
       expect(result['era_facet']).to eq ['1978 - 2005']
+    end
+  end
+
+  describe 'publication fields' do
+    let(:druid) { 'bm971cx9348' }
+    let(:collection_druid) { 'yh583fk3400' }
+
+    it 'maps the publication year(s) as a string for display/sort' do
+      expect(result['pub_date']).to eq ['1920 - ']
+      expect(result['pub_year_ss']).to eq ['1920 - ']
+      expect(result['pub_date_sort']).to eq ['1920 - ']
+    end
+
+    it 'maps the place(s) of publication for search' do
+      expect(result['pub_search']).to eq %w[England London]
+    end
+
+    it 'maps the publication year as an integer' do
+      expect(result['pub_year_isi']).to eq [1920]
+    end
+
+    it 'maps the full imprint statement for display' do
+      expect(result['imprint_display']).to eq ['2nd ed. - London : H.M. Stationery Off., [192-?]-[193-?]']
+    end
+
+    it 'maps the publication country' do
+      expect(result['pub_country']).to eq ['England']
     end
   end
 
