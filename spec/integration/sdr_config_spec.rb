@@ -116,6 +116,30 @@ RSpec.describe 'SDR indexing' do
       expect(result['author_person_display']).to eq ['Rifat Paşa, Mehmet Sadık, 1807-1856']
       expect(result['author_person_full_display']).to eq ['Rifat Paşa, Mehmet Sadık, 1807-1856']
     end
+
+    it 'maps the structured version of the author names for linking' do
+      expect(result['author_struct']).to eq [
+        {
+          'link' => 'Rifat Paşa, Mehmet Sadık, 1807-1856',
+          'search' => '"Rifat Paşa, Mehmet Sadık"',
+          'post_text' => '(author)'
+        },
+        {
+          'link' => 'Gabbay, Yehezkel, 1825-1898',
+          'search' => '"Gabbay, Yehezkel"',
+          'post_text' => '(translator)'
+        },
+        {
+          'link' => 'Jerusalmi, Isaac, 1928-2018',
+          'search' => '"Jerusalmi, Isaac"',
+          'post_text' => '(editor)'
+        },
+        {
+          'link' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project',
+          'search' => '"Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project"'
+        }
+      ]
+    end
   end
 
   describe 'subject fields' do

@@ -142,6 +142,13 @@ to_field 'author_corp_display', cocina_display(:organization_contributor_names)
 to_field 'author_meeting_display', cocina_display(:conference_contributor_names)
 to_field 'author_person_display', cocina_display(:main_contributor_name, with_date: true)
 to_field 'author_person_full_display', cocina_display(:main_contributor_name, with_date: true)
+to_field 'author_struct', cocina_display(:contributors), transform(lambda do |contributor|
+  {
+    link: contributor.display_name(with_date: true),
+    search: "\"#{contributor.display_name}\"",
+    post_text: ("(#{contributor.display_role})" if contributor.role?)
+  }
+end)
 
 ##
 # Subject Fields
@@ -154,23 +161,17 @@ to_field 'topic_facet', cocina_display(:subject_topics)
 to_field 'geographic_facet', cocina_display(:subject_places)
 to_field 'era_facet', cocina_display(:subject_temporal)
 
-# TODO: need better implementation of pub_search in stanford-mods
-to_field 'pub_search', stanford_mods(:place)
-to_field 'pub_year_isi', stanford_mods(:pub_year_int) # for sorting
-# deprecated pub_date_sort - use pub_year_isi; pub_date_sort is a string and requires weirdness for bc dates
-#   can remove after pub_year_isi is populated for all indexing data (i.e. solrmarc, crez) and app code is changed
-to_field 'pub_date_sort', stanford_mods(:pub_year_sort_str)
-to_field 'imprint_display', stanford_mods(:imprint_display_str)
-to_field 'pub_country',
-         mods_xpath('mods:originInfo/mods:place/mods:placeTerm[@type="code"][@authority="marccountry" or @authority="iso3166"]') do |_record, accumulator|
-  accumulator.map!(&:text).map!(&:strip)
-  translation_map = Traject::TranslationMap.new('country_map')
-  accumulator.replace [translation_map.translate_array(accumulator).first]
-end
-# deprecated pub_date Solr field - use pub_year_isi for sort key; pub_year_ss for display field
-#   can remove after other fields are populated for all indexing data (i.e. solrmarc, crez) and app code is changed
-to_field 'pub_date', stanford_mods(:pub_year_display_str)
-to_field 'pub_year_ss', stanford_mods(:pub_year_display_str)
+##
+# Publication Fields
+# TODO: remove pub_date and pub_date_sort; see: https://github.com/sul-dlss/SearchWorks/issues/6410
+# can remove after pub_year_isi is populated for all indexing data (i.e. solrmarc, crez) and app code is changed
+to_field 'pub_date', cocina_display(:pub_year_str)
+to_field 'pub_date_sort', cocina_display(:pub_year_str)
+to_field 'pub_search', cocina_display(:publication_places)
+to_field 'pub_year_isi', cocina_display(:pub_year_int)
+to_field 'pub_year_ss', cocina_display(:pub_year_str)
+to_field 'imprint_display', cocina_display(:imprint_str)
+to_field 'pub_country', cocina_display(:publication_countries)
 
 # TODO: need better implementation for date slider in stanford-mods (e.g. multiple years when warranted)
 to_field 'pub_year_tisim', stanford_mods(:pub_year_int)
@@ -207,6 +208,8 @@ to_field 'access_facet', literal('Online')
 to_field 'library_code_facet_ssim', literal('SDR')
 to_field 'building_facet', literal('Stanford Digital Repository')
 
+##
+# Identifier Fields
 to_field 'isbn_search', stanford_mods(:identifier) do |_record, accumulator|
   accumulator.compact!
   accumulator.select! { |identifier| identifier.type_at == 'isbn' }
@@ -270,8 +273,8 @@ to_field 'set_with_title' do |record, accumulator|
   end)
 end
 
+# Schema.org representation for content type geo objects
 to_field 'schema_dot_org_struct' do |record, accumulator, context|
-  ## Schema.org representation for content type geo objects
   if record.dor_content_type == 'geo'
     schema_dot_org_json = {
       '@context': 'http://schema.org',
@@ -330,18 +333,6 @@ to_field 'stanford_work_facet_hsim' do |record, accumulator|
                      else
                        'Thesis/Dissertation|Unspecified'
                      end
-    end
-  end
-end
-
-to_field 'author_struct' do |record, accumulator|
-  record.mods_display.name.each do |name|
-    name.values.each do |value|
-      accumulator << {
-        link: value.name,
-        search: "\"#{value.name}\"",
-        post_text: ("(#{name.label.gsub(/:$/, '')})" if !name.label.nil? && !name.label.empty?)
-      }
     end
   end
 end
