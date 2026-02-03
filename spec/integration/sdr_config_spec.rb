@@ -183,13 +183,13 @@ RSpec.describe 'SDR indexing' do
     let(:druid) { 'bm971cx9348' }
     let(:collection_druid) { 'yh583fk3400' }
 
-    it 'maps the publication year(s) as a string for display/sort' do
+    it 'maps the publication year as a string for display/sort' do
       expect(result['pub_date']).to eq ['1920 - ']
       expect(result['pub_year_ss']).to eq ['1920 - ']
       expect(result['pub_date_sort']).to eq ['1920 - ']
     end
 
-    it 'maps the place(s) of publication for search' do
+    it 'maps the places of publication for search' do
       expect(result['pub_search']).to eq %w[England London]
     end
 
@@ -277,6 +277,29 @@ RSpec.describe 'SDR indexing' do
         'https://purl.stanford.edu/xs812fm6103',
         'https://purl.stanford.edu/wn542dy8318'
       ]
+    end
+  end
+
+  describe 'identifier fields' do
+    let(:druid) { 'bt553vr2845' }
+    let(:collection_druid) { 'yh583fk3400' }
+
+    it 'maps the ISBNs for search and display' do
+      expect(result['isbn_search']).to eq %w[0452008999 9780452008991]
+      expect(result['isbn_display']).to eq %w[0452008999 9780452008991]
+    end
+
+    it 'maps the LCCN' do
+      expect(result['lccn']).to eq ['84062811']
+    end
+
+    context 'with an OCLC ID' do
+      let(:druid) { 'bx658jh7339' }
+      let(:collection_druid) { 'jh957jy1101' }
+
+      it 'maps the OCLC ID' do
+        expect(result['oclc']).to eq ['693231462']
+      end
     end
   end
 

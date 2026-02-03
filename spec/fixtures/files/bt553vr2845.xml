@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:bt553vr2845" published="2024-10-29T18:26:07Z" publishVersion="cocina-models/0.98.1">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>The  master and Margarita</objectLabel>
+    <otherId name="catkey">3125158</otherId>
+    <otherId name="folio_instance_hrid">a3125158</otherId>
+    <sourceId source="sul">googlebooks:stanford_36105122749414</sourceId>
+    <otherId name="barcode">36105122749414</otherId>
+  </identityMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <none/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction"/>
+      <license/>
+    </use>
+    <copyright>
+      <human/>
+    </copyright>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:bt553vr2845">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:yh583fk3400"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>The   master and Margarita</dc:title>
+    <dc:title>Master i Margarita. English</dc:title>
+    <dc:contributor>Bulgakov, Mikhail, 1891-1940</dc:contributor>
+    <dc:type>Text</dc:type>
+    <dc:format>384 p. ; 18 cm.</dc:format>
+    <dc:format>print</dc:format>
+    <dc:language>eng</dc:language>
+    <dc:description type="statement of responsibility">Mikhail Bulgakov ; translated from the Russian by Michael Glenny.</dc:description>
+    <dc:date>1993</dc:date>
+    <dc:date>1993, c1967</dc:date>
+    <dc:publisher>Meridian Book</dc:publisher>
+    <dc:identifier>isbn: 0452008999</dc:identifier>
+    <dc:identifier>isbn: 9780452008991</dc:identifier>
+    <dc:identifier>lccn: 84062811</dc:identifier>
+    <dc:identifier>https://purl.stanford.edu/bt553vr2845</dc:identifier>
+    <dc:relation type="collection">Google Books</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo usage="primary">
+      <nonSort>The  </nonSort>
+      <title>master and Margarita</title>
+    </titleInfo>
+    <titleInfo type="uniform" nameTitleGroup="1">
+      <title>Master i Margarita. English</title>
+    </titleInfo>
+    <name nameTitleGroup="1" usage="primary" type="personal">
+      <namePart>Bulgakov, Mikhail</namePart>
+      <namePart type="date">1891-1940</namePart>
+    </name>
+    <typeOfResource>text</typeOfResource>
+    <physicalDescription>
+      <form authority="marcform">print</form>
+      <extent>384 p. ; 18 cm.</extent>
+    </physicalDescription>
+    <language>
+      <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <note type="statement of responsibility">Mikhail Bulgakov ; translated from the Russian by Michael Glenny.</note>
+    <originInfo>
+      <copyrightDate encoding="marc">1967</copyrightDate>
+      <dateIssued encoding="marc">1993</dateIssued>
+      <place>
+        <placeTerm authority="marccountry" type="code">nyu</placeTerm>
+      </place>
+      <issuance>monographic</issuance>
+    </originInfo>
+    <originInfo>
+      <dateIssued>1993, c1967</dateIssued>
+      <place>
+        <placeTerm type="text">New York</placeTerm>
+      </place>
+      <publisher>Meridian Book</publisher>
+    </originInfo>
+    <identifier type="isbn">0452008999</identifier>
+    <identifier type="isbn">9780452008991</identifier>
+    <identifier type="lccn" invalid="yes">84062811</identifier>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/bt553vr2845</url>
+    </location>
+    <recordInfo>
+      <recordContentSource authority="marcorg">NNC</recordContentSource>
+      <recordOrigin>Converted from MARCXML to MODS version 3.7 using
+				MARC21slim2MODS3-7_SDR_v2-6.xsl (SUL 3.7 version 2.6 20220603; LC Revision 1.140
+				20200717)</recordOrigin>
+      <recordCreationDate encoding="marc">890725</recordCreationDate>
+      <recordIdentifier source="SIRSI">a3125158</recordIdentifier>
+    </recordInfo>
+    <relatedItem type="series">
+      <titleInfo>
+        <title>A Meridian Book</title>
+      </titleInfo>
+    </relatedItem>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Google Books</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/yh583fk3400</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+  </mods>
+</publicObject>

@@ -20,6 +20,8 @@ def log_skip(context)
   writer.put(context)
 end
 
+# Cache fetched info by druid (combo of catkey and label)
+# Used for collections and constituents
 cached_title_value = ->(record) { [record.searchworks_id, record.label].join('-|-') }
 $druid_title_cache = {}
 
@@ -190,42 +192,12 @@ to_field 'building_facet', literal('Stanford Digital Repository')
 
 ##
 # Identifier Fields
-to_field 'isbn_search', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'isbn' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'issn_search', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'issn' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'isbn_display', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'isbn' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'issn_display', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'issn' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'lccn', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'lccn' }
-  accumulator.map! { |identifier| identifier.text }
-  accumulator.replace [accumulator.first] if accumulator.first # grab only the first value
-end
-
-to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'oclc' }
-  accumulator.map! { |identifier| identifier.text }
-end
+to_field 'isbn_search', cocina_display(:identifiers, type: 'isbn'), transform(&:identifier)
+to_field 'isbn_display', cocina_display(:identifiers, type: 'isbn'), transform(&:identifier)
+to_field 'issn_search', cocina_display(:identifiers, type: 'issn'), transform(&:identifier)
+to_field 'issn_display', cocina_display(:identifiers, type: 'issn'), transform(&:identifier)
+to_field 'lccn', cocina_display(:identifiers, type: 'lccn'), transform(&:identifier), first_only
+to_field 'oclc', cocina_display(:identifiers, type: 'oclc'), transform(&:identifier)
 
 to_field 'file_id' do |record, accumulator|
   accumulator << record.thumb
