@@ -301,6 +301,16 @@ RSpec.describe 'SDR indexing' do
         expect(result['oclc']).to eq ['693231462']
       end
     end
+
+    context 'with an ISSN' do
+      let(:druid) { 'sh330kw8676' }
+      let(:collection_druid) { 'cj445qq4021' }
+
+      it 'maps the ISSN for search and display' do
+        expect(result['issn_search']).to eq ['0164-5846']
+        expect(result['issn_display']).to eq ['0164-5846']
+      end
+    end
   end
 
   #   it 'maps the data the same way as it does currently' do
