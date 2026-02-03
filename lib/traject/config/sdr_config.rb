@@ -115,7 +115,7 @@ to_field 'druid', cocina_display(:bare_druid)
 to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
 
 # the entire mods XML record; currently used for display purposes
-# see: https://github.com/sul-dlss/SearchWorks/issues/6396
+# TODO: remove this; see: https://github.com/sul-dlss/SearchWorks/issues/6396
 to_field 'modsxml', stanford_mods(:to_xml)
 
 # flattened text of all nodes in the record for searching
@@ -142,13 +142,7 @@ to_field 'author_corp_display', cocina_display(:organization_contributor_names)
 to_field 'author_meeting_display', cocina_display(:conference_contributor_names)
 to_field 'author_person_display', cocina_display(:main_contributor_name, with_date: true)
 to_field 'author_person_full_display', cocina_display(:main_contributor_name, with_date: true)
-to_field 'author_struct', cocina_display(:contributors), transform(lambda do |contributor|
-  {
-    link: contributor.display_name(with_date: true),
-    search: "\"#{contributor.display_name}\"",
-    post_text: ("(#{contributor.display_role})" if contributor.role?)
-  }.compact
-end)
+to_field 'author_struct', cocina_display(:contributors), contributor_to_struct
 
 ##
 # Subject Fields
@@ -192,6 +186,7 @@ to_field 'url_fulltext', cocina_display(:purl_url)
 to_field 'access_facet', literal('Online')
 to_field 'library_code_facet_ssim', literal('SDR')
 to_field 'building_facet', literal('Stanford Digital Repository')
+to_field 'iiif_manifest_url_ssim', iiif_manifest_url
 
 ##
 # Identifier Fields
@@ -322,12 +317,8 @@ to_field 'stanford_work_facet_hsim' do |record, accumulator|
   end
 end
 
-to_field 'iiif_manifest_url_ssim' do |record, accumulator|
-  if %w[image manuscript map book].include?(record.dor_content_type)
-    accumulator << "#{settings['purl.url']}/#{record.druid}/iiif/manifest"
-  end
-end
-
+##
+# Content metadata fields
 to_field 'dor_content_type_ssi' do |record, accumulator|
   accumulator << record.dor_content_type if record.dor_content_type.present?
 end

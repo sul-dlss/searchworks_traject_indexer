@@ -54,7 +54,7 @@ class PurlRecord
            :public_xml_doc, to: :public_xml
 
   delegate :collection?, :content_type, :files, :cocina_doc, :world_access?,
-           :modified_time, :created_time, :searchworks_url, to: :public_cocina
+           :modified_time, :created_time, :searchworks_url, :iiif_manifest_url, to: :public_cocina
 
   delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json
 end

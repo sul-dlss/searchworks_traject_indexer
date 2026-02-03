@@ -101,7 +101,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the impersonal contributor names for faceting' do
-      expect(result['author_other_facet']).to eq ['Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project']
+      expect(result['author_other_facet']).to eq ['Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project', '[Isaac Jerushalmi]']
     end
 
     it 'maps the sort contributor name with title' do
@@ -109,7 +109,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the organization contributor names for display' do
-      expect(result['author_corp_display']).to eq ['Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project']
+      expect(result['author_corp_display']).to eq ['Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project', '[Isaac Jerushalmi]']
     end
 
     it 'maps the main contributor name for display with date' do
@@ -137,6 +137,11 @@ RSpec.describe 'SDR indexing' do
         {
           'link' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project',
           'search' => '"Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project"'
+        }.to_json,
+        {
+          'link' => '[Isaac Jerushalmi]',
+          'search' => '"[Isaac Jerushalmi]"',
+          'post_text' => '(publisher)'
         }.to_json
       )
     end
@@ -542,53 +547,6 @@ RSpec.describe 'SDR indexing' do
     end
   end
 
-  describe 'pub_country' do
-    let(:druid) { 'abc' }
-    let(:xml_data) do
-      <<-XML
-        <publicObject>
-          <mods xmlns="http://www.loc.gov/mods/v3">
-            <originInfo>
-              <place>
-                <placeTerm type="code" authority="marccountry">
-                  aq
-                </placeTerm>
-              </place>
-              <place>
-                <placeTerm type="code" authority="whatever">
-                  aa
-                </placeTerm>
-              </place>
-            </originInfo>
-          </mods>
-        </publicObject>
-      XML
-    end
-    let(:json_data) do
-      {
-        'description' => {
-          'event' => [
-            {
-              'type' => 'publication',
-              'location' => [
-                { 'code' => 'aq', 'source' => { 'code' => 'marccountry' } },
-                { 'code' => 'aa', 'source' => { 'code' => 'whatever' } }
-              ]
-            }
-          ]
-        }
-      }.to_json
-    end
-
-    before do
-      stub_purl_request(druid, xml: xml_data, json: json_data)
-    end
-
-    xit 'maps the right data' do
-      expect(result['pub_country']).to eq ['Antigua and Barbuda']
-    end
-  end
-
   context 'with zz400gd3785' do
     let(:druid) { 'zz400gd3785' }
     let(:collection_druid) { 'sg213ph2100' }
@@ -605,32 +563,6 @@ RSpec.describe 'SDR indexing' do
           'iiif_manifest_url_ssim' => ['https://purl.stanford.edu/zz400gd3785/iiif/manifest']
         }
       )
-    end
-  end
-
-  xcontext 'with df650pk4327' do
-    let(:druid) { 'df650pk4327' }
-    let(:collection_druid) { 'hn730ks3626' }
-
-    before do
-      stub_purl_request(druid, xml: File.read(file_fixture("#{druid}.xml").to_s), json: File.read(file_fixture("#{druid}.json").to_s))
-      stub_purl_request(collection_druid, xml: File.read(file_fixture("#{collection_druid}.xml").to_s), json: File.read(file_fixture("#{collection_druid}.json").to_s))
-    end
-
-    xit 'turns mods author data into a structure' do
-      expect(
-        result['author_struct'].length
-      ).to eq 3
-      expect(
-        JSON.parse(result['author_struct'].first)
-      ).to include('link' => 'Snydman, Stuart', 'search' => '"Snydman, Stuart"', 'post_text' => '(Author)')
-    end
-
-    it 'dates not available are nil' do
-      %w[beginning_year_isi ending_year_isi earliest_year_isi latest_year_isi earliest_poss_year_isi
-         latest_poss_year_isi release_year_isi production_year_isi copyright_year_isi].each do |field|
-        expect(result[field]).to be_nil
-      end
     end
   end
 

@@ -27,6 +27,27 @@ module Traject
         end
       end
 
+      # Generate a IIIF manifest URL, but only if the object can actually be viewed
+      # (i.e. it is a content type with images and a useful manifest)
+      def iiif_manifest_url
+        lambda do |record, accumulator, _context|
+          accumulator << record.iiif_manifest_url if %w[image manuscript map book].include?(record.content_type)
+        end
+      end
+
+      # Transform CocinaDisplay::Contributor objects into hashes for indexing
+      def contributor_to_struct
+        lambda do |_record, accumulator, _context|
+          accumulator.map! do |contributor|
+            {
+              link: contributor.display_name(with_date: true),
+              search: "\"#{contributor.display_name}\"",
+              post_text: ("(#{contributor.display_role})" if contributor.role?)
+            }.compact
+          end
+        end
+      end
+
       # Get all files from cocina structural whose filename matches the pattern
       # Filters the accumulator if it is not empty; otherwise search all files
       def select_files(pattern)
