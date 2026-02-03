@@ -249,6 +249,37 @@ RSpec.describe 'SDR indexing' do
     end
   end
 
+  describe 'access fields' do
+    let(:druid) { 'kf879tn8532' }
+
+    it 'maps the access facet to Online' do
+      expect(result['access_facet']).to eq ['Online']
+    end
+
+    it 'maps the library code facet to SDR' do
+      expect(result['library_code_facet_ssim']).to eq ['SDR']
+    end
+
+    it 'maps the building facet to Stanford Digital Repository' do
+      expect(result['building_facet']).to eq ['Stanford Digital Repository']
+    end
+
+    it 'maps the purl url as the full text url' do
+      expect(result['url_fulltext']).to eq ['https://purl.stanford.edu/kf879tn8532']
+    end
+
+    it 'maps the iiif manifest url' do
+      expect(result['iiif_manifest_url_ssim']).to eq ['https://purl.stanford.edu/kf879tn8532/iiif3/manifest']
+    end
+
+    it 'maps the URLs of related resources' do
+      expect(result['url_suppl']).to eq [
+        'https://purl.stanford.edu/xs812fm6103',
+        'https://purl.stanford.edu/wn542dy8318'
+      ]
+    end
+  end
+
   #   it 'maps the data the same way as it does currently' do
   #     expect(result).to include(
   #       {

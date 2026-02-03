@@ -181,12 +181,12 @@ to_field 'toc_search', cocina_display(:tables_of_contents)
 
 ##
 # Access fields
-to_field 'url_suppl', stanford_mods(:term_values, %i[related_item location url])
+to_field 'url_suppl', cocina_display(:related_resources), transform(&:url)
 to_field 'url_fulltext', cocina_display(:purl_url)
+to_field 'iiif_manifest_url_ssim', iiif_manifest_url
 to_field 'access_facet', literal('Online')
 to_field 'library_code_facet_ssim', literal('SDR')
 to_field 'building_facet', literal('Stanford Digital Repository')
-to_field 'iiif_manifest_url_ssim', iiif_manifest_url
 
 ##
 # Identifier Fields
