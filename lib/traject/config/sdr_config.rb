@@ -125,11 +125,11 @@ to_field 'all_search', cocina_display(:text)
 # Title Fields
 to_field 'title_245a_search', cocina_display(:short_title), default('[Untitled]')
 to_field 'title_245_search', cocina_display(:full_title), default('[Untitled]')
-to_field 'title_variant_search', cocina_display(:additional_titles)
 to_field 'title_sort', cocina_display(:sort_title), default('[Untitled]')
 to_field 'title_245a_display', cocina_display(:sort_title), default('[Untitled]')
 to_field 'title_display', cocina_display(:display_title), default('[Untitled]')
 to_field 'title_full_display', cocina_display(:full_title), default('[Untitled]')
+to_field 'title_variant_search', cocina_display(:additional_titles)
 
 ##
 # Author Fields
@@ -164,7 +164,6 @@ to_field 'era_facet', cocina_display(:subject_temporal)
 ##
 # Publication Fields
 # TODO: remove pub_date and pub_date_sort; see: https://github.com/sul-dlss/SearchWorks/issues/6410
-# can remove after pub_year_isi is populated for all indexing data (i.e. solrmarc, crez) and app code is changed
 to_field 'pub_date', cocina_display(:pub_year_str)
 to_field 'pub_date_sort', cocina_display(:pub_year_str)
 to_field 'pub_search', cocina_display(:publication_places)
@@ -172,38 +171,24 @@ to_field 'pub_year_isi', cocina_display(:pub_year_int)
 to_field 'pub_year_ss', cocina_display(:pub_year_str)
 to_field 'imprint_display', cocina_display(:imprint_str)
 to_field 'pub_country', cocina_display(:publication_countries)
-to_field 'pub_year_tisim', stanford_mods(:pub_year_int_range)
+to_field 'pub_year_tisim', cocina_display(:pub_year_int_range)
 
 ##
 # Form fields
-to_field 'format_main_ssim', stanford_mods(:format_main)
-to_field 'format_hsim' do |_record, accumulator, context|
-  Array(context.output_hash['format_main_ssim']).each do |format|
-    case format
-    when 'Archived website'
-      accumulator << 'Website'
-      accumulator << 'Website|Archived website'
-    when 'Music recording'
-      accumulator << 'Sound recording'
-    when 'Video'
-      accumulator << 'Video/Film'
-    else
-      accumulator << format
-    end
-  end
-end
+to_field 'format_hsim', cocina_display(:searchworks_resource_types)
+to_field 'language', cocina_display(:searchworks_language_names)
+to_field 'genre_ssim', cocina_display(:genres)
+to_field 'physical', cocina_display(:extents)
 
-to_field 'genre_ssim', stanford_mods(:sw_genre)
-to_field 'language', stanford_mods(:sw_language_facet)
-to_field 'physical', stanford_mods(:term_values, %i[physical_description extent])
-to_field 'summary_search', mods_display(:abstract)
-to_field 'toc_search', stanford_mods(:term_values, :tableOfContents)
+##
+# Note fields
+to_field 'summary_search', cocina_display(:abstracts)
+to_field 'toc_search', cocina_display(:tables_of_contents)
+
+##
+# Access fields
 to_field 'url_suppl', stanford_mods(:term_values, %i[related_item location url])
-
-to_field 'url_fulltext' do |record, accumulator|
-  accumulator << "#{settings['purl.url']}/#{record.druid}"
-end
-
+to_field 'url_fulltext', cocina_display(:purl_url)
 to_field 'access_facet', literal('Online')
 to_field 'library_code_facet_ssim', literal('SDR')
 to_field 'building_facet', literal('Stanford Digital Repository')

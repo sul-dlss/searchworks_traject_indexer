@@ -201,6 +201,49 @@ RSpec.describe 'SDR indexing' do
     end
   end
 
+  describe 'form fields' do
+    let(:druid) { 'sw705fr7011' }
+    let(:collection_druid) { 'vm093fg5170' }
+
+    it 'maps the format to searchworks vocab for faceting' do
+      expect(result['format_hsim']).to eq ['Sound recording']
+    end
+
+    it 'maps the genres' do
+      expect(result['genre_ssim']).to eq ['Oral histories']
+    end
+
+    it 'maps the language names' do
+      expect(result['language']).to eq ['English']
+    end
+
+    it 'maps the extent descriptions' do
+      expect(result['physical']).to eq ['1 audiotape', '1 transcript']
+    end
+  end
+
+  describe 'note fields' do
+    context 'with an abstract' do
+      let(:druid) { 'bc559yb0972' }
+      let(:collection_druid) { 'kn733hp1726' }
+
+      it 'maps the abstract' do
+        # rubocop:disable Layout/LineLength
+        expect(result['summary_search']).to eq ['This polygon shapefile contains mineral resource areas as defined in the General Plan adopted May 24, 1994 for the County of Santa Cruz, California. These Areas were classified by the State Geologist and designated by the State Mining and Geology Board as regionally or statewide significant Mineral Resource Areas and Areas classified by the State as MRZ-2 Zones (areas containing significant mineral deposits), excluding those areas with existing land uses and/or land use designations which conflict with mineral resource extraction. Mineral Resource Areas are classified via Special Report 146 Part IV, Mineral Land Classification: Aggregate Materials in the San Francisco and Monterey Bay Area; and designated by the State Mining and Geology Board via the California Surface Mining and Reclamation Act (SMARA) Designation Report No. 7, Designation of Regionally Significant Construction Aggregate Resource Areas in the South San Francisco Bay, North San Francisco Bay, Monterey Bay Production - Consumption Regions. This layer is part of a collection of GIS data created for Santa Cruz County, California.']
+        # rubocop:enable Layout/LineLength
+      end
+    end
+
+    context 'with a table of contents' do
+      let(:druid) { 'bm971cx9348' }
+      let(:collection_druid) { 'yh583fk3400' }
+
+      it 'maps the table of contents' do
+        expect(result['toc_search']).to eq ['-- pt.2. Abergavenny -- pt.5. Merthyr Tydfil']
+      end
+    end
+  end
+
   #   it 'maps the data the same way as it does currently' do
   #     expect(result).to include(
   #       {
@@ -240,16 +283,6 @@ RSpec.describe 'SDR indexing' do
   #         'all_search' => [' Trustees Demo reel Stanford University. News and Publications Service pro producer moving image cau Stanford (Calif.) 2004-02-09 eng English videocassette 1 MiniDV tape access reformatted digital video/mp4 image/jpeg NTSC Sound Color Reformatted by Stanford University Libraries in 2017. sc1125_s02_b11_04-0209-1 Stanford University. Libraries. Department of Special Collections and University Archives SC1125 https://purl.stanford.edu/bk264hq9320 Stanford University, News and Publication Service, Audiovisual Recordings (SC1125) http://www.oac.cdlib.org/findaid/ark:/13030/c8dn43sv English eng CSt human prepared Stanford University, News and Publication Service, audiovisual recordings, 1936-2011 (inclusive) https://purl.stanford.edu/nj770kg7809 The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu). '] # rubocop:disable Layout/LineLength
   #       }
   #     )
-
-  #     expect(result).to include 'modsxml'
-
-  #     expect(result).not_to include(
-  #       'title_variant_search', 'author_meeting_display', 'author_person_display', 'author_person_full_display', 'author_1xx_search',
-  #       'topic_search', 'geographic_search', 'subject_other_search', 'subject_other_subvy_search', 'subject_all_search',
-  #       'topic_facet', 'geographic_facet', 'era_facet', 'genre_ssim', 'summary_search', 'toc_search', 'file_id',
-  #       'set', 'set_with_title'
-  #     )
-  #   end
   # end
 
   xcontext 'with vv853br8653' do
