@@ -167,7 +167,7 @@ to_field 'pub_year_isi', cocina_display(:pub_year_int)
 to_field 'pub_year_ss', cocina_display(:pub_year_str)
 to_field 'imprint_display', cocina_display(:imprint_str)
 to_field 'pub_country', cocina_display(:publication_countries)
-to_field 'pub_year_tisim', cocina_display(:pub_year_int_range)
+to_field 'pub_year_tisim', cocina_display(:pub_year_ints)
 
 ##
 # Form fields
@@ -199,8 +199,18 @@ to_field 'issn_display', cocina_display(:identifiers, type: 'issn'), transform(&
 to_field 'lccn', cocina_display(:identifiers, type: 'lccn'), transform(&:identifier), first_only
 to_field 'oclc', cocina_display(:identifiers, type: 'oclc'), transform(&:identifier)
 
-to_field 'file_id' do |record, accumulator|
-  accumulator << record.thumb
+##
+# Structural metadata fields
+to_field 'dor_content_type_ssi', cocina_display(:content_type)
+to_field 'dor_file_mimetype_ssim', cocina_display(:file_mime_types)
+to_field 'dor_resource_content_type_ssim', cocina_display(:fileset_types)
+to_field('dor_resource_count_isi') { |record, accumulator| accumulator << record.filesets.count }
+to_field('file_id') { |record, accumulator| accumulator << record.encoded_thumbnail_path }
+
+##
+# Collection and constituent fields
+to_field('collection_type') do |record, accumulator|
+  accumulator << 'Digital Collection' if record.collection?
 end
 
 to_field 'collection' do |record, accumulator|
@@ -215,19 +225,19 @@ end
 
 # This drives the AppearsInComponent in Searchworks (see fn851zf9475)
 to_field 'set' do |record, accumulator|
-  accumulator.concat record.constituents.map(&:searchworks_id)
+  accumulator.concat record.parents.map(&:searchworks_id)
 end
 
 # This drives the "Appears In" section of the "Bibliographic information" in Searchworks (see fn851zf9475)
 to_field 'set_with_title' do |record, accumulator|
-  accumulator.concat(record.constituents.map do |constituent|
-    $druid_title_cache[constituent.druid] ||= cached_title_value.call(constituent)
+  accumulator.concat(record.parents.map do |parent|
+    $druid_title_cache[parent.druid] ||= cached_title_value.call(parent)
   end)
 end
 
 # Schema.org representation for content type geo objects
 to_field 'schema_dot_org_struct' do |record, accumulator, context|
-  if record.dor_content_type == 'geo'
+  if record.content_type == 'geo'
     schema_dot_org_json = {
       '@context': 'http://schema.org',
       '@type': 'Dataset',
@@ -290,47 +300,23 @@ to_field 'stanford_work_facet_hsim' do |record, accumulator|
 end
 
 ##
-# Content metadata fields
-to_field 'dor_content_type_ssi' do |record, accumulator|
-  accumulator << record.dor_content_type if record.dor_content_type.present?
-end
-
-to_field 'dor_resource_content_type_ssim' do |record, accumulator|
-  record.dor_resource_content_type.uniq.each do |type|
-    accumulator << type
-  end
-end
-
-to_field 'dor_file_mimetype_ssim' do |record, accumulator|
-  record.dor_file_mimetype.uniq.each do |mimetype|
-    accumulator << mimetype
-  end
-end
-
-to_field 'collection_type' do |record, accumulator|
-  accumulator << 'Digital Collection' if record.collection?
-end
-
-to_field 'dor_resource_count_isi' do |record, accumulator|
-  accumulator << record.dor_resource_count
-end
-
+# Indexer context / metadata fields
 to_field 'context_source_ssi', literal('sdr')
+to_field('context_version_ssi') { |_record, accumulator| accumulator << Utils.version }
 
-to_field 'context_version_ssi' do |_record, accumulator|
-  accumulator << Utils.version
-end
-
+# If this is a collection or virtual object, pre-cache its title info for members to use
 each_record do |record, _context|
-  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.collection?
+  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.collection? || record.virtual_object?
 end
 
+# Convert any _struct fields to JSON strings for solr
 each_record do |_record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
   end
 end
 
+# Log time taken to process each record
 each_record do |_record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now

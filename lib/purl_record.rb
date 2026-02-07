@@ -44,17 +44,63 @@ class PurlRecord
     public_meta_json.present?
   end
 
+  # Fetch full metadata for any collections this object belongs to
+  # @return [Array<PurlRecord>]
+  def collections
+    @collections ||= public_cocina.containing_collections.map do |druid|
+      PurlRecord.new(druid, purl_url:)
+    end
+  end
+
+  # Fetch full metadata for any virtual objects this object belongs to
+  # @return [Array<PurlRecord>]
+  def parents
+    @parents ||= public_cocina.virtual_object_parents.map do |druid|
+      PurlRecord.new(druid, purl_url:)
+    end
+  end
+
+  # Fetch full metadata for each member object, if this is a virtual object
+  # @return [Array<PurlRecord>]
+  def members
+    @members ||= public_cocina.virtual_object_members.map do |druid|
+      PurlRecord.new(druid, purl_url:)
+    end
+  end
+
+  # Either the object's own thumbnail, or the first available member thumbnail
+  # @return [CocinaDisplay::Structural::File, nil]
+  def thumbnail_file
+    public_cocina.thumbnail_file || members.find { |member| member.public_cocina.thumbnail_file }&.public_cocina&.thumbnail_file
+  end
+
+  # Was any usable thumbnail file found?
+  # @return [Boolean]
+  def thumbnail?
+    thumbnail_file.present?
+  end
+
+  # The thumbnail path within the object, e.g. ab123cd4567/the file name.jp2
+  # @return [String, nil]
+  def thumbnail_path
+    "#{druid}/#{thumbnail_file.filename}" if thumbnail?
+  end
+
+  # URL-safe version of the thumbnail path
+  # @return [String, nil]
+  def encoded_thumbnail_path
+    ERB::Util.url_encode(thumbnail_path) if thumbnail?
+  end
+
   # Ensure all objects, even those missing public xml/cocina have a (nil) catkey and a label
   delegate :catkey, to: :public_cocina, allow_nil: true
   delegate :label, to: :public_cocina, allow_nil: true
 
-  delegate :mods, :thumb, :dor_content_type, :dor_resource_content_type, :dor_file_mimetype,
-           :dor_resource_count, :collections, :constituents,
-           :stanford_mods, :mods_display,
-           :public_xml_doc, to: :public_xml
+  delegate :mods, :stanford_mods, :mods_display, :public_xml_doc, to: :public_xml
 
-  delegate :collection?, :content_type, :files, :cocina_doc, :world_access?,
-           :modified_time, :created_time, :searchworks_url, :iiif_manifest_url, to: :public_cocina
+  delegate :collection?, :content_type, :files, :filesets, :cocina_doc, :world_access?,
+           :modified_time, :created_time, :searchworks_url, :iiif_manifest_url,
+           :virtual_object?, to: :public_cocina
 
   delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json
 end

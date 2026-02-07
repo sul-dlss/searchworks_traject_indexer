@@ -313,6 +313,35 @@ RSpec.describe 'SDR indexing' do
     end
   end
 
+  describe 'structural metadata fields' do
+    let(:druid) { 'bk264hq9320' }
+    let(:collection_druid) { 'nj770kg7809' }
+
+    it 'maps the content type' do
+      expect(result['dor_content_type_ssi']).to eq ['media']
+    end
+
+    it 'maps the file MIME types' do
+      expect(result['dor_file_mimetype_ssim']).to eq ['video/mp4', 'image/jp2']
+    end
+
+    it 'maps the fileset types' do
+      expect(result['dor_resource_content_type_ssim']).to eq %w[video image]
+    end
+
+    it 'maps the fileset count' do
+      expect(result['dor_resource_count_isi']).to eq [3]
+    end
+
+    it 'maps the encoded thumbnail path' do
+      expect(result['file_id']).to eq ['bk264hq9320%2Fbk264hq9320_img_1.jp2']
+    end
+
+    context 'with a virtual object'
+  end
+
+  describe 'collection fields'
+
   #   it 'maps the data the same way as it does currently' do
   #     expect(result).to include(
   #       {
@@ -665,7 +694,7 @@ RSpec.describe 'SDR indexing' do
     context 'when indexing raised an error' do
       before do
         allow(Honeybadger).to receive(:notify)
-        allow(record).to receive(:dor_content_type).and_raise('Error message')
+        allow(record).to receive(:content_type).and_raise('Error message')
       end
 
       it 'creates an indexing error event with message and context' do
