@@ -18,6 +18,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+      - name: Fix gem directory permissions
+        run: sudo chmod +t $(ruby -e 'puts Gem.default_dir')/gems
       - name: Install dependencies
         run: bundle config set without 'production' && bundle install
       - name: Run tests
