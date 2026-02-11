@@ -228,11 +228,6 @@ to_field 'language', stanford_mods(:sw_language_facet)
 to_field 'physical', stanford_mods(:term_values, %i[physical_description extent])
 to_field 'summary_search', mods_display(:abstract)
 to_field 'toc_search', stanford_mods(:term_values, :tableOfContents)
-to_field 'url_suppl', stanford_mods(:term_values, %i[related_item location url])
-
-to_field 'url_fulltext' do |record, accumulator|
-  accumulator << "#{settings['purl.url']}/#{record.druid}"
-end
 
 to_field 'access_facet', literal('Online')
 to_field 'library_code_facet_ssim', literal('SDR')
@@ -308,7 +303,7 @@ to_field 'schema_dot_org_struct' do |record, accumulator, context|
       '@context': 'http://schema.org',
       '@type': 'Dataset',
       citation: record.mods.xpath('//mods:note[@displayLabel="Preferred citation"]', mods: 'http://www.loc.gov/mods/v3').text,
-      identifier: context.output_hash['url_fulltext'],
+      identifier: ["#{settings['purl.url']}/#{record.druid}"],
       license: record.mods.xpath('//mods:accessCondition[@type="license"]', mods: 'http://www.loc.gov/mods/v3').text,
       name: context.output_hash['title_display'],
       description: context.output_hash['summary_search'],
