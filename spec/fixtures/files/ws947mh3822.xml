@@ -1,0 +1,1367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:ws947mh3822" published="2025-08-04T20:35:42Z" publishVersion="cocina-models/0.105.0">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</objectLabel>
+    <sourceId source="sul">sul:PC0170_20021019_Arizona</sourceId>
+  </identityMetadata>
+  <contentMetadata objectId="druid:ws947mh3822" type="image">
+    <resource id="cocina-fileSet-ws947mh3822-ts786ny5936_1" sequence="1" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0204.jp2" mimetype="image/jp2" objectId="druid:ts786ny5936" resourceId="cocina-fileSet-ts786ny5936-ts786ny5936_1">
+        <imageData height="6738" width="4488"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tp006ms8736_1" sequence="2" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0205.jp2" mimetype="image/jp2" objectId="druid:tp006ms8736" resourceId="cocina-fileSet-tp006ms8736-tp006ms8736_1">
+        <imageData height="6738" width="4488"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tj297ys4758_1" sequence="3" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0206.jp2" mimetype="image/jp2" objectId="druid:tj297ys4758" resourceId="cocina-fileSet-tj297ys4758-tj297ys4758_1">
+        <imageData height="6726" width="4488"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-rv426fc1640_1" sequence="4" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0207.jp2" mimetype="image/jp2" objectId="druid:rv426fc1640" resourceId="cocina-fileSet-rv426fc1640-rv426fc1640_1">
+        <imageData height="6714" width="4464"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jz334gn0058_1" sequence="5" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0208.jp2" mimetype="image/jp2" objectId="druid:jz334gn0058" resourceId="cocina-fileSet-jz334gn0058-jz334gn0058_1">
+        <imageData height="4476" width="6714"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wd126ts3527_1" sequence="6" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0209.jp2" mimetype="image/jp2" objectId="druid:wd126ts3527" resourceId="cocina-fileSet-wd126ts3527-wd126ts3527_1">
+        <imageData height="4476" width="6726"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hr680hc2734_1" sequence="7" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0210.jp2" mimetype="image/jp2" objectId="druid:hr680hc2734" resourceId="cocina-fileSet-hr680hc2734-hr680hc2734_1">
+        <imageData height="4438" width="6714"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ty205dy6871_1" sequence="8" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0211.jp2" mimetype="image/jp2" objectId="druid:ty205dy6871" resourceId="cocina-fileSet-ty205dy6871-ty205dy6871_1">
+        <imageData height="4488" width="6726"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hq436bs3275_1" sequence="9" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0213.jp2" mimetype="image/jp2" objectId="druid:hq436bs3275" resourceId="cocina-fileSet-hq436bs3275-hq436bs3275_1">
+        <imageData height="6738" width="4488"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cj779bc1821_1" sequence="10" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0214.jp2" mimetype="image/jp2" objectId="druid:cj779bc1821" resourceId="cocina-fileSet-cj779bc1821-cj779bc1821_1">
+        <imageData height="6834" width="4500"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ry600hm6919_1" sequence="11" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0215.jp2" mimetype="image/jp2" objectId="druid:ry600hm6919" resourceId="cocina-fileSet-ry600hm6919-ry600hm6919_1">
+        <imageData height="4488" width="6812"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pc069qy8775_1" sequence="12" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0216.jp2" mimetype="image/jp2" objectId="druid:pc069qy8775" resourceId="cocina-fileSet-pc069qy8775-pc069qy8775_1">
+        <imageData height="6834" width="4536"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hn558qh5554_1" sequence="13" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0217.jp2" mimetype="image/jp2" objectId="druid:hn558qh5554" resourceId="cocina-fileSet-hn558qh5554-hn558qh5554_1">
+        <imageData height="6822" width="4536"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qy324vf7963_1" sequence="14" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0218.jp2" mimetype="image/jp2" objectId="druid:qy324vf7963" resourceId="cocina-fileSet-qy324vf7963-qy324vf7963_1">
+        <imageData height="6774" width="4452"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gj162zh5265_1" sequence="15" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0219.jp2" mimetype="image/jp2" objectId="druid:gj162zh5265" resourceId="cocina-fileSet-gj162zh5265-gj162zh5265_1">
+        <imageData height="6774" width="4488"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gf863jx5480_1" sequence="16" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0220.jp2" mimetype="image/jp2" objectId="druid:gf863jx5480" resourceId="cocina-fileSet-gf863jx5480-gf863jx5480_1">
+        <imageData height="6750" width="4512"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qr784xb8268_1" sequence="17" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0221.jp2" mimetype="image/jp2" objectId="druid:qr784xb8268" resourceId="cocina-fileSet-qr784xb8268-qr784xb8268_1">
+        <imageData height="4512" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tb815nj9967_1" sequence="18" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0222.jp2" mimetype="image/jp2" objectId="druid:tb815nj9967" resourceId="cocina-fileSet-tb815nj9967-tb815nj9967_1">
+        <imageData height="4524" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gj077gp5651_1" sequence="19" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0223.jp2" mimetype="image/jp2" objectId="druid:gj077gp5651" resourceId="cocina-fileSet-gj077gp5651-gj077gp5651_1">
+        <imageData height="4524" width="6834"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fn687wx8496_1" sequence="20" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0224.jp2" mimetype="image/jp2" objectId="druid:fn687wx8496" resourceId="cocina-fileSet-fn687wx8496-fn687wx8496_1">
+        <imageData height="6834" width="4536"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-yv830bw7770_1" sequence="21" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0225.jp2" mimetype="image/jp2" objectId="druid:yv830bw7770" resourceId="cocina-fileSet-yv830bw7770-yv830bw7770_1">
+        <imageData height="6834" width="4536"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bk152xv1763_1" sequence="22" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0226.jp2" mimetype="image/jp2" objectId="druid:bk152xv1763" resourceId="cocina-fileSet-bk152xv1763-bk152xv1763_1">
+        <imageData height="4512" width="6810"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fh538ms9102_1" sequence="23" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0227.jp2" mimetype="image/jp2" objectId="druid:fh538ms9102" resourceId="cocina-fileSet-fh538ms9102-fh538ms9102_1">
+        <imageData height="6774" width="4488"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-th412pt5805_1" sequence="24" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0228.jp2" mimetype="image/jp2" objectId="druid:th412pt5805" resourceId="cocina-fileSet-th412pt5805-th412pt5805_1">
+        <imageData height="6774" width="4512"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nb112hx9122_1" sequence="25" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0229.jp2" mimetype="image/jp2" objectId="druid:nb112hx9122" resourceId="cocina-fileSet-nb112hx9122-nb112hx9122_1">
+        <imageData height="6786" width="4524"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zw746wm3054_1" sequence="26" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0230.jp2" mimetype="image/jp2" objectId="druid:zw746wm3054" resourceId="cocina-fileSet-zw746wm3054-zw746wm3054_1">
+        <imageData height="6690" width="4500"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pj211mr3953_1" sequence="27" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0231.jp2" mimetype="image/jp2" objectId="druid:pj211mr3953" resourceId="cocina-fileSet-pj211mr3953-pj211mr3953_1">
+        <imageData height="6822" width="4512"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qm246tr5915_1" sequence="28" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0232.jp2" mimetype="image/jp2" objectId="druid:qm246tr5915" resourceId="cocina-fileSet-qm246tr5915-qm246tr5915_1">
+        <imageData height="4512" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xn487rr3200_1" sequence="29" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0233.jp2" mimetype="image/jp2" objectId="druid:xn487rr3200" resourceId="cocina-fileSet-xn487rr3200-xn487rr3200_1">
+        <imageData height="4524" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hh990pq5149_1" sequence="30" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0234.jp2" mimetype="image/jp2" objectId="druid:hh990pq5149" resourceId="cocina-fileSet-hh990pq5149-hh990pq5149_1">
+        <imageData height="4512" width="6810"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cm292ck5027_1" sequence="31" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0235.jp2" mimetype="image/jp2" objectId="druid:cm292ck5027" resourceId="cocina-fileSet-cm292ck5027-cm292ck5027_1">
+        <imageData height="6726" width="4476"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jr157zt2655_1" sequence="32" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0236.jp2" mimetype="image/jp2" objectId="druid:jr157zt2655" resourceId="cocina-fileSet-jr157zt2655-jr157zt2655_1">
+        <imageData height="6762" width="4464"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jp384yd1303_1" sequence="33" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0237.jp2" mimetype="image/jp2" objectId="druid:jp384yd1303" resourceId="cocina-fileSet-jp384yd1303-jp384yd1303_1">
+        <imageData height="6728" width="4512"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nb347fc0547_1" sequence="34" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0238.jp2" mimetype="image/jp2" objectId="druid:nb347fc0547" resourceId="cocina-fileSet-nb347fc0547-nb347fc0547_1">
+        <imageData height="6498" width="4524"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pk043bc5303_1" sequence="35" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0239.jp2" mimetype="image/jp2" objectId="druid:pk043bc5303" resourceId="cocina-fileSet-pk043bc5303-pk043bc5303_1">
+        <imageData height="6762" width="4500"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cs479sn3791_1" sequence="36" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0240.jp2" mimetype="image/jp2" objectId="druid:cs479sn3791" resourceId="cocina-fileSet-cs479sn3791-cs479sn3791_1">
+        <imageData height="6797" width="4507"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bh132gh9968_1" sequence="37" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0241.jp2" mimetype="image/jp2" objectId="druid:bh132gh9968" resourceId="cocina-fileSet-bh132gh9968-bh132gh9968_1">
+        <imageData height="4500" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zd169cx9241_1" sequence="38" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0242.jp2" mimetype="image/jp2" objectId="druid:zd169cx9241" resourceId="cocina-fileSet-zd169cx9241-zd169cx9241_1">
+        <imageData height="4500" width="6774"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tk164df6736_1" sequence="39" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0243.jp2" mimetype="image/jp2" objectId="druid:tk164df6736" resourceId="cocina-fileSet-tk164df6736-tk164df6736_1">
+        <imageData height="4500" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vj123pm8050_1" sequence="40" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0244.jp2" mimetype="image/jp2" objectId="druid:vj123pm8050" resourceId="cocina-fileSet-vj123pm8050-vj123pm8050_1">
+        <imageData height="4500" width="6810"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jj091td9387_1" sequence="41" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0245.jp2" mimetype="image/jp2" objectId="druid:jj091td9387" resourceId="cocina-fileSet-jj091td9387-jj091td9387_1">
+        <imageData height="4512" width="6798"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pq680xz3354_1" sequence="42" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0246.jp2" mimetype="image/jp2" objectId="druid:pq680xz3354" resourceId="cocina-fileSet-pq680xz3354-pq680xz3354_1">
+        <imageData height="4548" width="6726"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-td736kw8293_1" sequence="43" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_E_0247.jp2" mimetype="image/jp2" objectId="druid:td736kw8293" resourceId="cocina-fileSet-td736kw8293-td736kw8293_1">
+        <imageData height="6714" width="4464"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tm421qx5973_1" sequence="44" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_F_0121.jp2" mimetype="image/jp2" objectId="druid:tm421qx5973" resourceId="cocina-fileSet-tm421qx5973-tm421qx5973_1">
+        <imageData height="4512" width="6822"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fr623sm2180_1" sequence="45" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_F_0172.jp2" mimetype="image/jp2" objectId="druid:fr623sm2180" resourceId="cocina-fileSet-fr623sm2180-fr623sm2180_1">
+        <imageData height="6714" width="4512"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qd033pg5789_1" sequence="46" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_F_0500.jp2" mimetype="image/jp2" objectId="druid:qd033pg5789" resourceId="cocina-fileSet-qd033pg5789-qd033pg5789_1">
+        <imageData height="4464" width="6726"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gm016jz1598_1" sequence="47" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_G_0167.jp2" mimetype="image/jp2" objectId="druid:gm016jz1598" resourceId="cocina-fileSet-gm016jz1598-gm016jz1598_1">
+        <imageData height="6822" width="4536"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mt932vz0867_1" sequence="48" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s1_G_0168.jp2" mimetype="image/jp2" objectId="druid:mt932vz0867" resourceId="cocina-fileSet-mt932vz0867-mt932vz0867_1">
+        <imageData height="6714" width="4476"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cx608mq7114_1" sequence="49" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_001.jp2" mimetype="image/jp2" objectId="druid:cx608mq7114" resourceId="cocina-fileSet-cx608mq7114-cx608mq7114_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fj728qr3057_1" sequence="50" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_002.jp2" mimetype="image/jp2" objectId="druid:fj728qr3057" resourceId="cocina-fileSet-fj728qr3057-fj728qr3057_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jk128bv4123_1" sequence="51" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_003.jp2" mimetype="image/jp2" objectId="druid:jk128bv4123" resourceId="cocina-fileSet-jk128bv4123-jk128bv4123_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-dh583kn6141_1" sequence="52" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_004.jp2" mimetype="image/jp2" objectId="druid:dh583kn6141" resourceId="cocina-fileSet-dh583kn6141-dh583kn6141_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zm555gc4871_1" sequence="53" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_005.jp2" mimetype="image/jp2" objectId="druid:zm555gc4871" resourceId="cocina-fileSet-zm555gc4871-zm555gc4871_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nb714jt3406_1" sequence="54" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_006.jp2" mimetype="image/jp2" objectId="druid:nb714jt3406" resourceId="cocina-fileSet-nb714jt3406-nb714jt3406_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ps888fw1988_1" sequence="55" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_007.jp2" mimetype="image/jp2" objectId="druid:ps888fw1988" resourceId="cocina-fileSet-ps888fw1988-ps888fw1988_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kz966dq5734_1" sequence="56" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_008.jp2" mimetype="image/jp2" objectId="druid:kz966dq5734" resourceId="cocina-fileSet-kz966dq5734-kz966dq5734_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hr712vt1880_1" sequence="57" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_009.jp2" mimetype="image/jp2" objectId="druid:hr712vt1880" resourceId="cocina-fileSet-hr712vt1880-hr712vt1880_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jp897fw0227_1" sequence="58" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_010.jp2" mimetype="image/jp2" objectId="druid:jp897fw0227" resourceId="cocina-fileSet-jp897fw0227-jp897fw0227_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-sf580rb1222_1" sequence="59" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_011.jp2" mimetype="image/jp2" objectId="druid:sf580rb1222" resourceId="cocina-fileSet-sf580rb1222-sf580rb1222_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qy374xk9975_1" sequence="60" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_012.jp2" mimetype="image/jp2" objectId="druid:qy374xk9975" resourceId="cocina-fileSet-qy374xk9975-qy374xk9975_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mq240yf1451_1" sequence="61" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_013.jp2" mimetype="image/jp2" objectId="druid:mq240yf1451" resourceId="cocina-fileSet-mq240yf1451-mq240yf1451_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gc415jh7331_1" sequence="62" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_014.jp2" mimetype="image/jp2" objectId="druid:gc415jh7331" resourceId="cocina-fileSet-gc415jh7331-gc415jh7331_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kp361jf6841_1" sequence="63" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_015.jp2" mimetype="image/jp2" objectId="druid:kp361jf6841" resourceId="cocina-fileSet-kp361jf6841-kp361jf6841_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ck173qd4988_1" sequence="64" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_016.jp2" mimetype="image/jp2" objectId="druid:ck173qd4988" resourceId="cocina-fileSet-ck173qd4988-ck173qd4988_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-td281vm2884_1" sequence="65" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_017.jp2" mimetype="image/jp2" objectId="druid:td281vm2884" resourceId="cocina-fileSet-td281vm2884-td281vm2884_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tz036bc0130_1" sequence="66" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_018.jp2" mimetype="image/jp2" objectId="druid:tz036bc0130" resourceId="cocina-fileSet-tz036bc0130-tz036bc0130_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-np242qg6240_1" sequence="67" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_019.jp2" mimetype="image/jp2" objectId="druid:np242qg6240" resourceId="cocina-fileSet-np242qg6240-np242qg6240_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nf904rm9751_1" sequence="68" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_020.jp2" mimetype="image/jp2" objectId="druid:nf904rm9751" resourceId="cocina-fileSet-nf904rm9751-nf904rm9751_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gx992fq1549_1" sequence="69" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_021.jp2" mimetype="image/jp2" objectId="druid:gx992fq1549" resourceId="cocina-fileSet-gx992fq1549-gx992fq1549_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-sx947pd2688_1" sequence="70" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_022.jp2" mimetype="image/jp2" objectId="druid:sx947pd2688" resourceId="cocina-fileSet-sx947pd2688-sx947pd2688_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cy791wv1046_1" sequence="71" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_023.jp2" mimetype="image/jp2" objectId="druid:cy791wv1046" resourceId="cocina-fileSet-cy791wv1046-cy791wv1046_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qt942cv4855_1" sequence="72" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_024.jp2" mimetype="image/jp2" objectId="druid:qt942cv4855" resourceId="cocina-fileSet-qt942cv4855-qt942cv4855_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wr872jt0381_1" sequence="73" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_025.jp2" mimetype="image/jp2" objectId="druid:wr872jt0381" resourceId="cocina-fileSet-wr872jt0381-wr872jt0381_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kb438dc2726_1" sequence="74" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_026.jp2" mimetype="image/jp2" objectId="druid:kb438dc2726" resourceId="cocina-fileSet-kb438dc2726-kb438dc2726_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cx908dd1367_1" sequence="75" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_027.jp2" mimetype="image/jp2" objectId="druid:cx908dd1367" resourceId="cocina-fileSet-cx908dd1367-cx908dd1367_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xq698qb1051_1" sequence="76" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_028.jp2" mimetype="image/jp2" objectId="druid:xq698qb1051" resourceId="cocina-fileSet-xq698qb1051-xq698qb1051_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hx141ct5550_1" sequence="77" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_029.jp2" mimetype="image/jp2" objectId="druid:hx141ct5550" resourceId="cocina-fileSet-hx141ct5550-hx141ct5550_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pp333cx3966_1" sequence="78" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_030.jp2" mimetype="image/jp2" objectId="druid:pp333cx3966" resourceId="cocina-fileSet-pp333cx3966-pp333cx3966_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ht470gb0864_1" sequence="79" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_031.jp2" mimetype="image/jp2" objectId="druid:ht470gb0864" resourceId="cocina-fileSet-ht470gb0864-ht470gb0864_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cz684wj3431_1" sequence="80" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_032.jp2" mimetype="image/jp2" objectId="druid:cz684wj3431" resourceId="cocina-fileSet-cz684wj3431-cz684wj3431_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fw122wk9283_1" sequence="81" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_033.jp2" mimetype="image/jp2" objectId="druid:fw122wk9283" resourceId="cocina-fileSet-fw122wk9283-fw122wk9283_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gj278pj5103_1" sequence="82" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_034.jp2" mimetype="image/jp2" objectId="druid:gj278pj5103" resourceId="cocina-fileSet-gj278pj5103-gj278pj5103_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vf230tg9021_1" sequence="83" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_035.jp2" mimetype="image/jp2" objectId="druid:vf230tg9021" resourceId="cocina-fileSet-vf230tg9021-vf230tg9021_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jc687qj1602_1" sequence="84" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_036.jp2" mimetype="image/jp2" objectId="druid:jc687qj1602" resourceId="cocina-fileSet-jc687qj1602-jc687qj1602_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nb095wk6537_1" sequence="85" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_037.jp2" mimetype="image/jp2" objectId="druid:nb095wk6537" resourceId="cocina-fileSet-nb095wk6537-nb095wk6537_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vc070vd8494_1" sequence="86" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_038.jp2" mimetype="image/jp2" objectId="druid:vc070vd8494" resourceId="cocina-fileSet-vc070vd8494-vc070vd8494_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wy798jj9311_1" sequence="87" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_039.jp2" mimetype="image/jp2" objectId="druid:wy798jj9311" resourceId="cocina-fileSet-wy798jj9311-wy798jj9311_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tq785ts9589_1" sequence="88" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_040.jp2" mimetype="image/jp2" objectId="druid:tq785ts9589" resourceId="cocina-fileSet-tq785ts9589-tq785ts9589_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hj246pq2772_1" sequence="89" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_041.jp2" mimetype="image/jp2" objectId="druid:hj246pq2772" resourceId="cocina-fileSet-hj246pq2772-hj246pq2772_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fh296sk9678_1" sequence="90" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_042.jp2" mimetype="image/jp2" objectId="druid:fh296sk9678" resourceId="cocina-fileSet-fh296sk9678-fh296sk9678_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hv146ts3448_1" sequence="91" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_043.jp2" mimetype="image/jp2" objectId="druid:hv146ts3448" resourceId="cocina-fileSet-hv146ts3448-hv146ts3448_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ds417xs2335_1" sequence="92" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_044.jp2" mimetype="image/jp2" objectId="druid:ds417xs2335" resourceId="cocina-fileSet-ds417xs2335-ds417xs2335_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kx032tb7281_1" sequence="93" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_045.jp2" mimetype="image/jp2" objectId="druid:kx032tb7281" resourceId="cocina-fileSet-kx032tb7281-kx032tb7281_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nk083ht0867_1" sequence="94" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_046.jp2" mimetype="image/jp2" objectId="druid:nk083ht0867" resourceId="cocina-fileSet-nk083ht0867-nk083ht0867_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jw361vs9536_1" sequence="95" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_047.jp2" mimetype="image/jp2" objectId="druid:jw361vs9536" resourceId="cocina-fileSet-jw361vs9536-jw361vs9536_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hc569qz9437_1" sequence="96" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_048.jp2" mimetype="image/jp2" objectId="druid:hc569qz9437" resourceId="cocina-fileSet-hc569qz9437-hc569qz9437_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mr843nx1525_1" sequence="97" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_049.jp2" mimetype="image/jp2" objectId="druid:mr843nx1525" resourceId="cocina-fileSet-mr843nx1525-mr843nx1525_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wy919rg8592_1" sequence="98" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_050.jp2" mimetype="image/jp2" objectId="druid:wy919rg8592" resourceId="cocina-fileSet-wy919rg8592-wy919rg8592_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bq214hf3703_1" sequence="99" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_051.jp2" mimetype="image/jp2" objectId="druid:bq214hf3703" resourceId="cocina-fileSet-bq214hf3703-bq214hf3703_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fs843wy7275_1" sequence="100" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_052.jp2" mimetype="image/jp2" objectId="druid:fs843wy7275" resourceId="cocina-fileSet-fs843wy7275-fs843wy7275_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-rh849yf5490_1" sequence="101" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_053.jp2" mimetype="image/jp2" objectId="druid:rh849yf5490" resourceId="cocina-fileSet-rh849yf5490-rh849yf5490_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bb321kw6604_1" sequence="102" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_054.jp2" mimetype="image/jp2" objectId="druid:bb321kw6604" resourceId="cocina-fileSet-bb321kw6604-bb321kw6604_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-by245by5507_1" sequence="103" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_055.jp2" mimetype="image/jp2" objectId="druid:by245by5507" resourceId="cocina-fileSet-by245by5507-by245by5507_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vc057qg9629_1" sequence="104" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_056.jp2" mimetype="image/jp2" objectId="druid:vc057qg9629" resourceId="cocina-fileSet-vc057qg9629-vc057qg9629_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-fj806ht6076_1" sequence="105" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_057.jp2" mimetype="image/jp2" objectId="druid:fj806ht6076" resourceId="cocina-fileSet-fj806ht6076-fj806ht6076_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jw154kb9504_1" sequence="106" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_058.jp2" mimetype="image/jp2" objectId="druid:jw154kb9504" resourceId="cocina-fileSet-jw154kb9504-jw154kb9504_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nn816hy7681_1" sequence="107" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_059.jp2" mimetype="image/jp2" objectId="druid:nn816hy7681" resourceId="cocina-fileSet-nn816hy7681-nn816hy7681_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-br868qj7940_1" sequence="108" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_060.jp2" mimetype="image/jp2" objectId="druid:br868qj7940" resourceId="cocina-fileSet-br868qj7940-br868qj7940_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zd199wf4165_1" sequence="109" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_061.jp2" mimetype="image/jp2" objectId="druid:zd199wf4165" resourceId="cocina-fileSet-zd199wf4165-zd199wf4165_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xt375fn2946_1" sequence="110" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_062.jp2" mimetype="image/jp2" objectId="druid:xt375fn2946" resourceId="cocina-fileSet-xt375fn2946-xt375fn2946_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kj064xm3561_1" sequence="111" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_063.jp2" mimetype="image/jp2" objectId="druid:kj064xm3561" resourceId="cocina-fileSet-kj064xm3561-kj064xm3561_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cf952jk8927_1" sequence="112" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_064.jp2" mimetype="image/jp2" objectId="druid:cf952jk8927" resourceId="cocina-fileSet-cf952jk8927-cf952jk8927_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-md286sv1832_1" sequence="113" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_065.jp2" mimetype="image/jp2" objectId="druid:md286sv1832" resourceId="cocina-fileSet-md286sv1832-md286sv1832_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mk762tx5705_1" sequence="114" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_066.jp2" mimetype="image/jp2" objectId="druid:mk762tx5705" resourceId="cocina-fileSet-mk762tx5705-mk762tx5705_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ks854mf5626_1" sequence="115" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_067.jp2" mimetype="image/jp2" objectId="druid:ks854mf5626" resourceId="cocina-fileSet-ks854mf5626-ks854mf5626_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xb960xb6025_1" sequence="116" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_068.jp2" mimetype="image/jp2" objectId="druid:xb960xb6025" resourceId="cocina-fileSet-xb960xb6025-xb960xb6025_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wj832qk2365_1" sequence="117" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_069.jp2" mimetype="image/jp2" objectId="druid:wj832qk2365" resourceId="cocina-fileSet-wj832qk2365-wj832qk2365_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pz846vh1222_1" sequence="118" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_070.jp2" mimetype="image/jp2" objectId="druid:pz846vh1222" resourceId="cocina-fileSet-pz846vh1222-pz846vh1222_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nf088vk8345_1" sequence="119" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_071.jp2" mimetype="image/jp2" objectId="druid:nf088vk8345" resourceId="cocina-fileSet-nf088vk8345-nf088vk8345_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nx863tw2582_1" sequence="120" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_072.jp2" mimetype="image/jp2" objectId="druid:nx863tw2582" resourceId="cocina-fileSet-nx863tw2582-nx863tw2582_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bj711bf5942_1" sequence="121" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_073.jp2" mimetype="image/jp2" objectId="druid:bj711bf5942" resourceId="cocina-fileSet-bj711bf5942-bj711bf5942_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mq659rt7937_1" sequence="122" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_074.jp2" mimetype="image/jp2" objectId="druid:mq659rt7937" resourceId="cocina-fileSet-mq659rt7937-mq659rt7937_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xk545dm7772_1" sequence="123" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_075.jp2" mimetype="image/jp2" objectId="druid:xk545dm7772" resourceId="cocina-fileSet-xk545dm7772-xk545dm7772_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tc854zh0243_1" sequence="124" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_076.jp2" mimetype="image/jp2" objectId="druid:tc854zh0243" resourceId="cocina-fileSet-tc854zh0243-tc854zh0243_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gx928sk2115_1" sequence="125" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_077.jp2" mimetype="image/jp2" objectId="druid:gx928sk2115" resourceId="cocina-fileSet-gx928sk2115-gx928sk2115_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xh754yb8265_1" sequence="126" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_078.jp2" mimetype="image/jp2" objectId="druid:xh754yb8265" resourceId="cocina-fileSet-xh754yb8265-xh754yb8265_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kw570hg7935_1" sequence="127" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_079.jp2" mimetype="image/jp2" objectId="druid:kw570hg7935" resourceId="cocina-fileSet-kw570hg7935-kw570hg7935_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nt381js9312_1" sequence="128" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_080.jp2" mimetype="image/jp2" objectId="druid:nt381js9312" resourceId="cocina-fileSet-nt381js9312-nt381js9312_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zw116jq0440_1" sequence="129" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_081.jp2" mimetype="image/jp2" objectId="druid:zw116jq0440" resourceId="cocina-fileSet-zw116jq0440-zw116jq0440_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ts620jp2792_1" sequence="130" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_082.jp2" mimetype="image/jp2" objectId="druid:ts620jp2792" resourceId="cocina-fileSet-ts620jp2792-ts620jp2792_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qf241fy2925_1" sequence="131" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_083.jp2" mimetype="image/jp2" objectId="druid:qf241fy2925" resourceId="cocina-fileSet-qf241fy2925-qf241fy2925_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kw904gt4453_1" sequence="132" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_084.jp2" mimetype="image/jp2" objectId="druid:kw904gt4453" resourceId="cocina-fileSet-kw904gt4453-kw904gt4453_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xf886qr7210_1" sequence="133" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_085.jp2" mimetype="image/jp2" objectId="druid:xf886qr7210" resourceId="cocina-fileSet-xf886qr7210-xf886qr7210_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wr639zs2010_1" sequence="134" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_086.jp2" mimetype="image/jp2" objectId="druid:wr639zs2010" resourceId="cocina-fileSet-wr639zs2010-wr639zs2010_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wv827td7043_1" sequence="135" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_087.jp2" mimetype="image/jp2" objectId="druid:wv827td7043" resourceId="cocina-fileSet-wv827td7043-wv827td7043_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-yz922dy3486_1" sequence="136" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_088.jp2" mimetype="image/jp2" objectId="druid:yz922dy3486" resourceId="cocina-fileSet-yz922dy3486-yz922dy3486_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jv782rf0476_1" sequence="137" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_089.jp2" mimetype="image/jp2" objectId="druid:jv782rf0476" resourceId="cocina-fileSet-jv782rf0476-jv782rf0476_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jn715zj2121_1" sequence="138" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_090.jp2" mimetype="image/jp2" objectId="druid:jn715zj2121" resourceId="cocina-fileSet-jn715zj2121-jn715zj2121_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qq438nd4813_1" sequence="139" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_091.jp2" mimetype="image/jp2" objectId="druid:qq438nd4813" resourceId="cocina-fileSet-qq438nd4813-qq438nd4813_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hx125pf4520_1" sequence="140" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_092.jp2" mimetype="image/jp2" objectId="druid:hx125pf4520" resourceId="cocina-fileSet-hx125pf4520-hx125pf4520_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-qc872fm5602_1" sequence="141" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_093.jp2" mimetype="image/jp2" objectId="druid:qc872fm5602" resourceId="cocina-fileSet-qc872fm5602-qc872fm5602_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vt403xn8338_1" sequence="142" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_094.jp2" mimetype="image/jp2" objectId="druid:vt403xn8338" resourceId="cocina-fileSet-vt403xn8338-vt403xn8338_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hb878kn1524_1" sequence="143" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_095.jp2" mimetype="image/jp2" objectId="druid:hb878kn1524" resourceId="cocina-fileSet-hb878kn1524-hb878kn1524_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xb948fb8554_1" sequence="144" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_096.jp2" mimetype="image/jp2" objectId="druid:xb948fb8554" resourceId="cocina-fileSet-xb948fb8554-xb948fb8554_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tr236zb7894_1" sequence="145" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_097.jp2" mimetype="image/jp2" objectId="druid:tr236zb7894" resourceId="cocina-fileSet-tr236zb7894-tr236zb7894_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-sv706zz1100_1" sequence="146" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_098.jp2" mimetype="image/jp2" objectId="druid:sv706zz1100" resourceId="cocina-fileSet-sv706zz1100-sv706zz1100_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vs301ym8858_1" sequence="147" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_099.jp2" mimetype="image/jp2" objectId="druid:vs301ym8858" resourceId="cocina-fileSet-vs301ym8858-vs301ym8858_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-jn033tq1763_1" sequence="148" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_100.jp2" mimetype="image/jp2" objectId="druid:jn033tq1763" resourceId="cocina-fileSet-jn033tq1763-jn033tq1763_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-rs883kb6990_1" sequence="149" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_101.jp2" mimetype="image/jp2" objectId="druid:rs883kb6990" resourceId="cocina-fileSet-rs883kb6990-rs883kb6990_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gx885qr5638_1" sequence="150" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_102.jp2" mimetype="image/jp2" objectId="druid:gx885qr5638" resourceId="cocina-fileSet-gx885qr5638-gx885qr5638_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hm137yj3697_1" sequence="151" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_103.jp2" mimetype="image/jp2" objectId="druid:hm137yj3697" resourceId="cocina-fileSet-hm137yj3697-hm137yj3697_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-dz891xj7459_1" sequence="152" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_104.jp2" mimetype="image/jp2" objectId="druid:dz891xj7459" resourceId="cocina-fileSet-dz891xj7459-dz891xj7459_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tq439sq8887_1" sequence="153" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_105.jp2" mimetype="image/jp2" objectId="druid:tq439sq8887" resourceId="cocina-fileSet-tq439sq8887-tq439sq8887_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-by937qt7560_1" sequence="154" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_106.jp2" mimetype="image/jp2" objectId="druid:by937qt7560" resourceId="cocina-fileSet-by937qt7560-by937qt7560_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vn466gs8021_1" sequence="155" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_107.jp2" mimetype="image/jp2" objectId="druid:vn466gs8021" resourceId="cocina-fileSet-vn466gs8021-vn466gs8021_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mm148tz3203_1" sequence="156" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_108.jp2" mimetype="image/jp2" objectId="druid:mm148tz3203" resourceId="cocina-fileSet-mm148tz3203-mm148tz3203_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-dv506tr0544_1" sequence="157" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_109.jp2" mimetype="image/jp2" objectId="druid:dv506tr0544" resourceId="cocina-fileSet-dv506tr0544-dv506tr0544_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zp142kf9932_1" sequence="158" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_110.jp2" mimetype="image/jp2" objectId="druid:zp142kf9932" resourceId="cocina-fileSet-zp142kf9932-zp142kf9932_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gw691pp2320_1" sequence="159" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_111.jp2" mimetype="image/jp2" objectId="druid:gw691pp2320" resourceId="cocina-fileSet-gw691pp2320-gw691pp2320_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-th274nk8393_1" sequence="160" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_112.jp2" mimetype="image/jp2" objectId="druid:th274nk8393" resourceId="cocina-fileSet-th274nk8393-th274nk8393_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wq951np4711_1" sequence="161" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_113.jp2" mimetype="image/jp2" objectId="druid:wq951np4711" resourceId="cocina-fileSet-wq951np4711-wq951np4711_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bm925mj9167_1" sequence="162" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_114.jp2" mimetype="image/jp2" objectId="druid:bm925mj9167" resourceId="cocina-fileSet-bm925mj9167-bm925mj9167_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xv896bn1839_1" sequence="163" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_115.jp2" mimetype="image/jp2" objectId="druid:xv896bn1839" resourceId="cocina-fileSet-xv896bn1839-xv896bn1839_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wx128ns6181_1" sequence="164" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_116.jp2" mimetype="image/jp2" objectId="druid:wx128ns6181" resourceId="cocina-fileSet-wx128ns6181-wx128ns6181_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tg795sn3390_1" sequence="165" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_117.jp2" mimetype="image/jp2" objectId="druid:tg795sn3390" resourceId="cocina-fileSet-tg795sn3390-tg795sn3390_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-th743tn9963_1" sequence="166" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_118.jp2" mimetype="image/jp2" objectId="druid:th743tn9963" resourceId="cocina-fileSet-th743tn9963-th743tn9963_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kq121hj6629_1" sequence="167" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_119.jp2" mimetype="image/jp2" objectId="druid:kq121hj6629" resourceId="cocina-fileSet-kq121hj6629-kq121hj6629_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ck924gf1117_1" sequence="168" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_120.jp2" mimetype="image/jp2" objectId="druid:ck924gf1117" resourceId="cocina-fileSet-ck924gf1117-ck924gf1117_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ng286gb6464_1" sequence="169" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_121.jp2" mimetype="image/jp2" objectId="druid:ng286gb6464" resourceId="cocina-fileSet-ng286gb6464-ng286gb6464_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-hw817th6355_1" sequence="170" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_122.jp2" mimetype="image/jp2" objectId="druid:hw817th6355" resourceId="cocina-fileSet-hw817th6355-hw817th6355_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ht349jb8208_1" sequence="171" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_123.jp2" mimetype="image/jp2" objectId="druid:ht349jb8208" resourceId="cocina-fileSet-ht349jb8208-ht349jb8208_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-yj005bh0799_1" sequence="172" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_124.jp2" mimetype="image/jp2" objectId="druid:yj005bh0799" resourceId="cocina-fileSet-yj005bh0799-yj005bh0799_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tz973mz8480_1" sequence="173" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_125.jp2" mimetype="image/jp2" objectId="druid:tz973mz8480" resourceId="cocina-fileSet-tz973mz8480-tz973mz8480_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gq178yh3686_1" sequence="174" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_126.jp2" mimetype="image/jp2" objectId="druid:gq178yh3686" resourceId="cocina-fileSet-gq178yh3686-gq178yh3686_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mg931dv3333_1" sequence="175" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_127.jp2" mimetype="image/jp2" objectId="druid:mg931dv3333" resourceId="cocina-fileSet-mg931dv3333-mg931dv3333_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gw213yt9664_1" sequence="176" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_128.jp2" mimetype="image/jp2" objectId="druid:gw213yt9664" resourceId="cocina-fileSet-gw213yt9664-gw213yt9664_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mj289fp9803_1" sequence="177" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_129.jp2" mimetype="image/jp2" objectId="druid:mj289fp9803" resourceId="cocina-fileSet-mj289fp9803-mj289fp9803_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-kj099rg3805_1" sequence="178" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_130.jp2" mimetype="image/jp2" objectId="druid:kj099rg3805" resourceId="cocina-fileSet-kj099rg3805-kj099rg3805_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-rg969tp0386_1" sequence="179" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_131.jp2" mimetype="image/jp2" objectId="druid:rg969tp0386" resourceId="cocina-fileSet-rg969tp0386-rg969tp0386_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-bd770ss1591_1" sequence="180" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_132.jp2" mimetype="image/jp2" objectId="druid:bd770ss1591" resourceId="cocina-fileSet-bd770ss1591-bd770ss1591_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ry133bg7291_1" sequence="181" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_133.jp2" mimetype="image/jp2" objectId="druid:ry133bg7291" resourceId="cocina-fileSet-ry133bg7291-ry133bg7291_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-mz886fy9517_1" sequence="182" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_134.jp2" mimetype="image/jp2" objectId="druid:mz886fy9517" resourceId="cocina-fileSet-mz886fy9517-mz886fy9517_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wk801wh4471_1" sequence="183" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_135.jp2" mimetype="image/jp2" objectId="druid:wk801wh4471" resourceId="cocina-fileSet-wk801wh4471-wk801wh4471_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-ht329fx0168_1" sequence="184" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_136.jp2" mimetype="image/jp2" objectId="druid:ht329fx0168" resourceId="cocina-fileSet-ht329fx0168-ht329fx0168_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-cs640jv9849_1" sequence="185" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_137.jp2" mimetype="image/jp2" objectId="druid:cs640jv9849" resourceId="cocina-fileSet-cs640jv9849-cs640jv9849_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wj322rt8261_1" sequence="186" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_138.jp2" mimetype="image/jp2" objectId="druid:wj322rt8261" resourceId="cocina-fileSet-wj322rt8261-wj322rt8261_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gf954kn0198_1" sequence="187" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_139.jp2" mimetype="image/jp2" objectId="druid:gf954kn0198" resourceId="cocina-fileSet-gf954kn0198-gf954kn0198_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zb046zg8554_1" sequence="188" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_140.jp2" mimetype="image/jp2" objectId="druid:zb046zg8554" resourceId="cocina-fileSet-zb046zg8554-zb046zg8554_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-vq550sr2996_1" sequence="189" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_141.jp2" mimetype="image/jp2" objectId="druid:vq550sr2996" resourceId="cocina-fileSet-vq550sr2996-vq550sr2996_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-zy455vv6921_1" sequence="190" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_142.jp2" mimetype="image/jp2" objectId="druid:zy455vv6921" resourceId="cocina-fileSet-zy455vv6921-zy455vv6921_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-pw664cd3851_1" sequence="191" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_143.jp2" mimetype="image/jp2" objectId="druid:pw664cd3851" resourceId="cocina-fileSet-pw664cd3851-pw664cd3851_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nv115jz3599_1" sequence="192" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_144.jp2" mimetype="image/jp2" objectId="druid:nv115jz3599" resourceId="cocina-fileSet-nv115jz3599-nv115jz3599_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-rz838xh9808_1" sequence="193" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_145.jp2" mimetype="image/jp2" objectId="druid:rz838xh9808" resourceId="cocina-fileSet-rz838xh9808-rz838xh9808_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-sw640dn3069_1" sequence="194" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_146.jp2" mimetype="image/jp2" objectId="druid:sw640dn3069" resourceId="cocina-fileSet-sw640dn3069-sw640dn3069_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-xm959hh9551_1" sequence="195" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_147.jp2" mimetype="image/jp2" objectId="druid:xm959hh9551" resourceId="cocina-fileSet-xm959hh9551-xm959hh9551_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nk803qz6955_1" sequence="196" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_148.jp2" mimetype="image/jp2" objectId="druid:nk803qz6955" resourceId="cocina-fileSet-nk803qz6955-nk803qz6955_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-tg477pq7219_1" sequence="197" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_149.jp2" mimetype="image/jp2" objectId="druid:tg477pq7219" resourceId="cocina-fileSet-tg477pq7219-tg477pq7219_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-yf449bz9555_1" sequence="198" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_150.jp2" mimetype="image/jp2" objectId="druid:yf449bz9555" resourceId="cocina-fileSet-yf449bz9555-yf449bz9555_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-rc617xh7157_1" sequence="199" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_151.jp2" mimetype="image/jp2" objectId="druid:rc617xh7157" resourceId="cocina-fileSet-rc617xh7157-rc617xh7157_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gp929nz5480_1" sequence="200" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_152.jp2" mimetype="image/jp2" objectId="druid:gp929nz5480" resourceId="cocina-fileSet-gp929nz5480-gp929nz5480_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-nv488qn1962_1" sequence="201" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_153.jp2" mimetype="image/jp2" objectId="druid:nv488qn1962" resourceId="cocina-fileSet-nv488qn1962-nv488qn1962_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-gy596hk0732_1" sequence="202" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_154.jp2" mimetype="image/jp2" objectId="druid:gy596hk0732" resourceId="cocina-fileSet-gy596hk0732-gy596hk0732_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-sb248jt1539_1" sequence="203" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_155.jp2" mimetype="image/jp2" objectId="druid:sb248jt1539" resourceId="cocina-fileSet-sb248jt1539-sb248jt1539_1">
+        <imageData height="2160" width="3268"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-ws947mh3822-wt025wd3538_1" sequence="204" type="image">
+      <label>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</label>
+      <externalFile fileId="PC0170_s2_20021019.Arizona_156.jp2" mimetype="image/jp2" objectId="druid:wt025wd3538" resourceId="cocina-fileSet-wt025wd3538-wt025wd3538_1">
+        <imageData height="3268" width="2160"/>
+      </externalFile>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu).</human>
+      <license>https://creativecommons.org/licenses/by-nc-nd/3.0/legalcode</license>
+    </use>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:ws947mh3822">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:gh795jd5965"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</dc:title>
+    <dc:contributor>Beyers, Robby (photographer)</dc:contributor>
+    <dc:type>photographs</dc:type>
+    <dc:type>StillImage</dc:type>
+    <dc:format>204 photographs</dc:format>
+    <dc:format>slides (photographs)</dc:format>
+    <dc:format>image/jpeg</dc:format>
+    <dc:description>Photographs of the Leland Stanford Junior University Marching Band and Dollies taken by Robby Beyers.</dc:description>
+    <dc:description>Photographs in series 1 were selected by the photographer as his best images of the collection.</dc:description>
+    <dc:subject>Stanford University. Marching Band</dc:subject>
+    <dc:subject>Stanford Dollies</dc:subject>
+    <dc:subject>Marching bands</dc:subject>
+    <dc:subject>College students</dc:subject>
+    <dc:subject>Football</dc:subject>
+    <dc:subject>Drum majors</dc:subject>
+    <dc:date>2002-10-19</dc:date>
+    <dc:identifier>https://purl.stanford.edu/ws947mh3822</dc:identifier>
+    <dc:relation type="repository">Stanford University. Libraries. Department of Special Collections and University Archives</dc:relation>
+    <dc:relation type="collection">Robby Beyers photographs of the Leland Stanford Junior University Marching Band, 1978-2015</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo>
+      <title>Leland Stanford Junior University Marching Band, Stanford vs. Arizona football game, October 19, 2002</title>
+    </titleInfo>
+    <name valueURI="http://id.loc.gov/authorities/names/no2015139297" authority="naf" authorityURI="http://id.loc.gov/authorities/names/" usage="primary" type="personal">
+      <namePart>Beyers, Robby</namePart>
+      <role>
+        <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/pht" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators/" type="text">photographer</roleTerm>
+        <roleTerm valueURI="http://id.loc.gov/vocabulary/relators/pht" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators/" type="code">pht</roleTerm>
+      </role>
+    </name>
+    <genre valueURI="http://vocab.getty.edu/aat/300046300" authorityURI="http://vocab.getty.edu/aat" authority="aat">photographs</genre>
+    <typeOfResource>still image</typeOfResource>
+    <physicalDescription>
+      <form valueURI="http://vocab.getty.edu/aat/300128371" authorityURI="http://vocab.getty.edu/aat" authority="aat">slides (photographs)</form>
+      <internetMediaType>image/jpeg</internetMediaType>
+      <extent>204 photographs</extent>
+      <digitalOrigin>reformatted digital</digitalOrigin>
+    </physicalDescription>
+    <abstract>Photographs of the Leland Stanford Junior University Marching Band and Dollies taken by Robby Beyers.</abstract>
+    <note>Photographs in series 1 were selected by the photographer as his best images of the collection.</note>
+    <subject authority="lcsh">
+      <name authority="naf" authorityURI="http://id.loc.gov/authorities/names/" valueURI="http://id.loc.gov/authorities/names/nr92033776" type="corporate">
+        <namePart>Stanford University. Marching Band</namePart>
+      </name>
+    </subject>
+    <subject authority="lcsh">
+      <name authority="naf" authorityURI="http://id.loc.gov/authorities/names/" valueURI="http://id.loc.gov/authorities/names/no2016102254" type="corporate">
+        <namePart>Stanford Dollies</namePart>
+      </name>
+    </subject>
+    <subject authority="lcsh">
+      <topic authority="lcsh" authorityURI="http://id.loc.gov/authorities/subjects/" valueURI="http://id.loc.gov/authorities/subjects/sh85081020">Marching bands</topic>
+    </subject>
+    <subject authority="lcsh">
+      <topic authority="lcsh" authorityURI="http://id.loc.gov/authorities/subjects/" valueURI="http://id.loc.gov/authorities/subjects/sh85028356">College students</topic>
+    </subject>
+    <subject authority="lcsh">
+      <topic authority="lcsh" authorityURI="http://id.loc.gov/authorities/subjects/" valueURI="http://id.loc.gov/authorities/subjects/sh85050405">Football</topic>
+    </subject>
+    <subject authority="lcsh">
+      <topic authority="lcsh" authorityURI="http://id.loc.gov/authorities/subjects/" valueURI="http://id.loc.gov/authorities/subjects/sh85039778">Drum majors</topic>
+    </subject>
+    <originInfo displayLabel="Place of Creation" eventType="production">
+      <dateCreated encoding="w3cdtf" keyDate="yes">2002-10-19</dateCreated>
+      <place>
+        <placeTerm authority="naf" authorityURI="http://id.loc.gov/authorities/names/" valueURI="http://id.loc.gov/authorities/names/n50046557" type="text">Stanford (Calif.)</placeTerm>
+      </place>
+    </originInfo>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/ws947mh3822</url>
+    </location>
+    <location>
+      <shelfLocator>PC0170, Series 1, Box 2, Series 2</shelfLocator>
+    </location>
+    <location>
+      <physicalLocation type="repository" valueURI="http://id.loc.gov/authorities/names/no2014019980" authority="naf">Stanford University. Libraries. Department of Special Collections and University Archives</physicalLocation>
+    </location>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" authorityURI="http://id.loc.gov/vocabulary/iso639-2" authority="iso639-2b" type="code">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource valueURI="http://id.loc.gov/vocabulary/organizations/cst" authorityURI="http://id.loc.gov/vocabulary/organizations" authority="marcorg">CSt</recordContentSource>
+    </recordInfo>
+    <extension displayLabel="geo">
+      <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <rdf:Description rdf:about="http://purl.stanford.edu/ws947mh3822">
+          <dc:format>image/jpeg</dc:format>
+          <dc:type>Image</dc:type>
+          <gml:boundedBy>
+            <gml:Envelope>
+              <gml:lowerCorner>-122.191292 37.4063388</gml:lowerCorner>
+              <gml:upperCorner>-122.149475 37.4435369</gml:upperCorner>
+            </gml:Envelope>
+          </gml:boundedBy>
+        </rdf:Description>
+      </rdf:RDF>
+    </extension>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Robby Beyers photographs of the Leland Stanford Junior University Marching Band, 1978-2015</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/gh795jd5965</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu).</accessCondition>
+    <accessCondition type="license" xlink:href="https://creativecommons.org/licenses/by-nc-nd/3.0/legalcode">This work is licensed under a Creative Commons Attribution Non Commercial No Derivatives 3.0 Unported license (CC BY-NC-ND).</accessCondition>
+  </mods>
+  <thumb>ts786ny5936/PC0170_s1_E_0204.jp2</thumb>
+</publicObject>

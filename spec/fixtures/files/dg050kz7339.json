@@ -1,0 +1,466 @@
+{
+  "cocinaVersion": "0.75.0",
+  "type": "https://cocina.sul.stanford.edu/models/image",
+  "externalIdentifier": "druid:dg050kz7339",
+  "label": "[Thomas Bros. maps of Palo Alto, San Jose, Santa Clara and vicinities]",
+  "version": 2,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "Property rights reside with the repository. Literary rights reside with  the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian of the Dept. of Special Collections (http://library.stanford.edu/spc)."
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:yf767bj4831"
+  },
+  "description": {
+    "title": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "[Thomas Bros. maps of Palo Alto, San Jose, Santa Clara and vicinities]",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "contributor": [],
+    "event": [
+      {
+        "structuredValue": [],
+        "date": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "1930",
+            "type": "creation",
+            "status": "primary",
+            "encoding": {
+              "code": "w3cdtf",
+              "note": []
+            },
+            "identifier": [],
+            "qualifier": "approximate",
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "location": [],
+        "identifier": [],
+        "note": [],
+        "parallelEvent": []
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Maps",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2011026387",
+        "identifier": [],
+        "source": {
+          "code": "lcgft",
+          "uri": "http://id.loc.gov/authorities/genreForms/",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "cartographic",
+        "type": "resource type",
+        "identifier": [],
+        "source": {
+          "value": "MODS resource types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "printed",
+        "type": "form",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "image/jpeg",
+        "type": "media type",
+        "identifier": [],
+        "source": {
+          "value": "IANA media types",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "1 sheet, double-sided",
+        "type": "extent",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "reformatted digital",
+        "type": "digital origin",
+        "identifier": [],
+        "source": {
+          "value": "MODS digital origin terms",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "geographic": [
+      {
+        "form": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "image/jpeg",
+            "type": "media type",
+            "identifier": [],
+            "source": {
+              "value": "IANA media type terms",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          },
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Image",
+            "type": "media type",
+            "identifier": [],
+            "source": {
+              "value": "DCMI Type Vocabulary",
+              "note": []
+            },
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-122.220154",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "37.301368",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-121.819496",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "37.495563",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "encoding": {
+              "value": "decimal",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "appliesTo": [],
+        "code": "eng",
+        "groupedValue": [],
+        "note": [],
+        "parallelValue": [],
+        "source": {
+          "code": "iso639-2b",
+          "uri": "http://id.loc.gov/vocabulary/iso639-2",
+          "note": []
+        },
+        "structuredValue": [],
+        "uri": "http://id.loc.gov/vocabulary/iso639-2/eng",
+        "value": "English"
+      }
+    ],
+    "note": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Digitized by Stanford University Libraries.",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "identifier": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "sc1049_m522",
+        "type": "local",
+        "identifier": [],
+        "source": {
+          "code": "local",
+          "note": []
+        },
+        "displayLabel": "Source ID",
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "subject": [
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Thomas Brothers",
+        "type": "organization",
+        "uri": "http://id.loc.gov/authorities/names/n80036596",
+        "identifier": [],
+        "source": {
+          "code": "naf",
+          "uri": "http://id.loc.gov/authorities/names/",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "Santa Clara County (Calif.)",
+        "type": "place",
+        "uri": "http://id.loc.gov/authorities/names/n50046557",
+        "identifier": [],
+        "source": {
+          "code": "lcsh",
+          "uri": "http://id.loc.gov/authorities/names/",
+          "note": []
+        },
+        "note": [],
+        "appliesTo": []
+      },
+      {
+        "structuredValue": [],
+        "parallelValue": [],
+        "groupedValue": [],
+        "value": "W 122°13ʹ12ʺ--W 121°49ʹ10ʺ/N 37°29ʹ44ʺ--N 37°18ʹ04ʺ",
+        "type": "map coordinates",
+        "identifier": [],
+        "note": [],
+        "appliesTo": []
+      }
+    ],
+    "access": {
+      "url": [],
+      "physicalLocation": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "Series: Miscellaneous Stanford University Maps (mostly non-campus)",
+          "type": "series",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        },
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "SC1049, Map case Na1, Map number M522",
+          "type": "shelf locator",
+          "identifier": [],
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalLocation": [],
+      "accessContact": [
+        {
+          "structuredValue": [],
+          "parallelValue": [],
+          "groupedValue": [],
+          "value": "Stanford University. Libraries. Department of Special Collections and University Archives",
+          "type": "repository",
+          "uri": "http://id.loc.gov/authorities/names/no2014019980",
+          "identifier": [],
+          "source": {
+            "code": "naf",
+            "note": []
+          },
+          "note": [],
+          "appliesTo": []
+        }
+      ],
+      "digitalRepository": [],
+      "note": []
+    },
+    "relatedResource": [
+      {
+        "type": "part of",
+        "displayLabel": "Series",
+        "title": [
+          {
+            "structuredValue": [],
+            "parallelValue": [],
+            "groupedValue": [],
+            "value": "Miscellaneous Stanford University Maps (mostly non-campus)",
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ],
+        "contributor": [],
+        "event": [],
+        "form": [],
+        "language": [],
+        "note": [],
+        "identifier": [],
+        "subject": [],
+        "relatedResource": []
+      }
+    ],
+    "marcEncodedData": [],
+    "adminMetadata": {
+      "contributor": [
+        {
+          "name": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "code": "CSt",
+              "identifier": [],
+              "source": {
+                "code": "marcorg",
+                "note": []
+              },
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "type": "organization",
+          "role": [
+            {
+              "structuredValue": [],
+              "parallelValue": [],
+              "groupedValue": [],
+              "value": "original cataloging agency",
+              "identifier": [],
+              "note": [],
+              "appliesTo": []
+            }
+          ],
+          "identifier": [],
+          "note": [],
+          "parallelContributor": []
+        }
+      ],
+      "event": [],
+      "language": [
+        {
+          "appliesTo": [],
+          "code": "eng",
+          "groupedValue": [],
+          "note": [],
+          "parallelValue": [],
+          "source": {
+            "code": "iso639-2b",
+            "uri": "http://id.loc.gov/vocabulary/iso639-2",
+            "note": []
+          },
+          "structuredValue": [],
+          "uri": "http://id.loc.gov/vocabulary/iso639-2/eng"
+        }
+      ],
+      "note": [],
+      "metadataStandard": [],
+      "identifier": []
+    },
+    "purl": "https://purl.stanford.edu/dg050kz7339"
+  },
+  "identification": {
+    "catalogLinks": [],
+    "sourceId": "sul:sc1049_m522"
+  },
+  "structural": {
+    "contains": [],
+    "hasMemberOrders": [
+      {
+        "members": [
+          "druid:fn851zf9475",
+          "druid:mf861vz6424"
+        ]
+      }
+    ],
+    "isMemberOf": [
+      "druid:fh138mm2023"
+    ]
+  },
+  "created": "2022-04-27T09:07:33.000+00:00",
+  "modified": "2024-06-12T18:31:16.000+00:00",
+  "lock": "druid:dg050kz7339=0=1"
+}

@@ -2,3 +2,4 @@
 /log
 /coverage
 /spec/examples.txt
+.ruby-version

@@ -1,16 +1,24 @@
 # frozen_string_literal: true
 
 require_relative '../../../config/boot'
+require_relative '../macros/cocina'
+require_relative '../macros/mods'
+require_relative '../macros/extras'
 require 'digest/md5'
 require 'active_support'
 
 Utils.logger = logger
-extend Traject::SolrBetterJsonWriter::IndexerPatch
 
+extend Traject::SolrBetterJsonWriter::IndexerPatch
+extend Traject::Macros::Cocina
+extend Traject::Macros::Mods
+extend Traject::Macros::Extras
 def log_skip(context)
   writer.put(context)
 end
 
+# Cache fetched info by druid (combo of catkey and label)
+# Used for collections and constituents
 cached_title_value = ->(record) { [record.searchworks_id, record.label].join('-|-') }
 $druid_title_cache = {}
 
@@ -37,8 +45,8 @@ settings do
   end
 
   provide 'purl.url', ENV.fetch('PURL_URL', 'https://purl.stanford.edu')
-  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
 
+  provide 'purl_fetcher.target', ENV.fetch('PURL_FETCHER_TARGET', 'Searchworks')
   provide 'purl_fetcher.skip_catkey', ENV.fetch('PURL_FETCHER_SKIP_CATKEY', nil)
   self['purl_fetcher.skip_catkey'] = self['purl_fetcher.skip_catkey'] != 'false'
 
@@ -63,220 +71,143 @@ settings do
   end)
 end
 
-def stanford_mods(method, *args, default: nil)
-  lambda do |resource, accumulator, _context|
-    data = Array(resource.stanford_mods.public_send(method, *args))
-
-    data.each do |v|
-      accumulator << v
-    end
-
-    accumulator << default if data.empty?
-  end
-end
-
-def mods_xpath(xpath)
-  lambda do |resource, accumulator, _context|
-    # Convert the xpath result (a Nokogiri nodeset) to a plain array.
-    # This allows traject methods like first_only to work properly.
-    accumulator.concat(resource.mods.xpath(xpath, mods: 'http://www.loc.gov/mods/v3'))
-  end
-end
-
-def mods_display(method, *args, default: nil)
-  lambda do |resource, accumulator, _context|
-    data = Array(resource.mods_display.public_send(method, *args))
-
-    data.each do |v|
-      v.values.each do |v2|
-        accumulator << v2.to_s
-      end
-    end
-
-    accumulator << default if data.empty?
-  end
-end
-
+# Time the indexing of each record
 each_record do |_record, context|
   context.clipboard[:benchmark_start_time] = Time.now
 end
 
-##
-# Skip records that have a delete field
+# Skip records that have a delete field; id is needed to delete from the index
 each_record do |record, context|
-  if record.is_a?(Hash) && record[:delete]
-    context.output_hash['id'] = [record[:id].sub('druid:', '')]
-    context.skip!('Delete')
-  end
+  next unless record.is_a?(Hash) && record[:delete]
+
+  druid = record[:id].sub('druid:', '')
+  context.output_hash['id'] = [druid]
+  logger.debug "Delete: #{druid}"
+  context.skip!("Delete: #{druid}")
 end
 
-to_field 'id' do |record, accumulator|
-  accumulator << record.druid
-end
-
-to_field 'hashed_id_ssi' do |_record, accumulator, context|
-  next unless context.output_hash['id']
-
-  accumulator << Digest::MD5.hexdigest(context.output_hash['id'].first)
-end
-
-# Skip records with no public XML
+# Skip records with no public cocina
 each_record do |record, context|
-  next if record.public_xml?
+  next if record.public_cocina?
 
-  message = 'Item is in processing or does not exist'
+  message = 'No public metadata for item'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.warn "#{message}: #{record.druid}"
   context.skip!("#{message}: #{record.druid}")
 end
 
-##
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
   next unless record.catkey
 
   message = 'Item has a catkey'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
+  logger.debug "#{message}: #{record.druid}"
   context.skip!("#{message}: #{record.druid}")
 end
 
-to_field 'druid' do |record, accumulator|
-  accumulator << record.druid
-end
+# id is always the druid for SDR items
+to_field 'id', cocina_display(:bare_druid)
+to_field 'druid', cocina_display(:bare_druid)
 
+# this is used for sitemap generation; pre-hashing the IDs helps with that process
+to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
+
+# the entire mods XML record; currently used for display purposes
+# TODO: remove this; see: https://github.com/sul-dlss/SearchWorks/issues/6396
 to_field 'modsxml', stanford_mods(:to_xml)
-to_field 'all_search', stanford_mods(:text) do |_record, accumulator|
-  accumulator.map! { |x| x.gsub(/\s+/, ' ') }
-end
 
-to_field 'collection_type' do |record, accumulator|
-  accumulator << 'Digital Collection' if record.collection?
-end
+# flattened text of all nodes in the record for searching
+to_field 'all_search', cocina_display(:text)
 
 ##
 # Title Fields
-to_field 'title_245a_search', stanford_mods(:sw_short_title, default: '[Untitled]')
-to_field 'title_245_search', stanford_mods(:sw_full_title, default: '[Untitled]')
-to_field 'title_variant_search', stanford_mods(:sw_addl_titles)
-to_field 'title_sort', stanford_mods(:sw_sort_title, default: '[Untitled]')
-to_field 'title_245a_display', stanford_mods(:sw_sort_title, default: '[Untitled]')
-to_field 'title_display', stanford_mods(:sw_title_display, default: '[Untitled]')
-to_field 'title_full_display', stanford_mods(:sw_full_title, default: '[Untitled]')
+to_field 'title_245a_search', cocina_display(:short_title), default('[Untitled]')
+to_field 'title_245_search', cocina_display(:full_title), default('[Untitled]')
+to_field 'title_sort', cocina_display(:sort_title), default('[Untitled]')
+to_field 'title_display', cocina_display(:display_title), default('[Untitled]')
+to_field 'title_full_display', cocina_display(:full_title), default('[Untitled]')
+to_field 'title_variant_search', cocina_display(:additional_titles)
 
 ##
 # Author Fields
-to_field 'author_1xx_search', stanford_mods(:sw_main_author)
-to_field 'author_7xx_search', stanford_mods(:sw_addl_authors)
-to_field 'author_person_facet', stanford_mods(:sw_person_authors)
-to_field 'author_other_facet', stanford_mods(:sw_impersonal_authors)
-to_field 'author_sort', stanford_mods(:sw_sort_author)
-to_field 'author_corp_display', stanford_mods(:sw_corporate_authors)
-to_field 'author_meeting_display', stanford_mods(:sw_meeting_authors)
-to_field 'author_person_display', stanford_mods(:sw_person_authors)
-to_field 'author_person_full_display', stanford_mods(:sw_person_authors)
+to_field 'author_1xx_search', cocina_display(:main_contributor_name, with_date: true)
+to_field 'author_7xx_search', cocina_display(:additional_contributor_names, with_date: true)
+to_field 'author_person_facet', cocina_display(:person_contributor_names, with_date: true)
+to_field 'author_other_facet', cocina_display(:impersonal_contributor_names)
+to_field 'author_sort', cocina_display(:sort_contributor_name)
+to_field 'author_corp_display', cocina_display(:organization_contributor_names)
+to_field 'author_meeting_display', cocina_display(:conference_contributor_names)
+to_field 'author_person_display', cocina_display(:person_contributor_names, with_date: true)
+to_field 'author_person_full_display', cocina_display(:person_contributor_names, with_date: true)
+to_field 'author_struct', cocina_display(:contributors), contributor_to_struct
 
 ##
 # Subject Fields
-to_field 'topic_search', stanford_mods(:topic_search)
-to_field 'geographic_search', stanford_mods(:geographic_search)
-to_field 'subject_other_search', stanford_mods(:subject_other_search)
-to_field 'subject_other_subvy_search', stanford_mods(:subject_other_subvy_search)
-to_field 'subject_all_search', stanford_mods(:subject_all_search)
-to_field 'topic_facet', stanford_mods(:topic_facet)
-to_field 'geographic_facet', stanford_mods(:geographic_facet)
-to_field 'era_facet', stanford_mods(:era_facet)
+to_field 'topic_search', cocina_display(:subject_topics)
+to_field 'geographic_search', cocina_display(:subject_places)
+to_field 'subject_other_search', cocina_display(:subject_other)
+to_field 'subject_other_subvy_search', cocina_display(:subject_temporal_genre)
+to_field 'subject_all_search', cocina_display(:subject_all)
+to_field 'topic_facet', cocina_display(:subject_topics_other)
+to_field 'geographic_facet', cocina_display(:subject_places)
+to_field 'era_facet', cocina_display(:subject_temporal)
 
-# TODO: need better implementation of pub_search in stanford-mods
-to_field 'pub_search', stanford_mods(:place)
-to_field 'pub_year_isi', stanford_mods(:pub_year_int) # for sorting
-# deprecated pub_date_sort - use pub_year_isi; pub_date_sort is a string and requires weirdness for bc dates
-#   can remove after pub_year_isi is populated for all indexing data (i.e. solrmarc, crez) and app code is changed
-to_field 'pub_date_sort', stanford_mods(:pub_year_sort_str)
-to_field 'imprint_display', stanford_mods(:imprint_display_str)
-to_field 'pub_country',
-         mods_xpath('mods:originInfo/mods:place/mods:placeTerm[@type="code"][@authority="marccountry" or @authority="iso3166"]') do |_record, accumulator|
-  accumulator.map!(&:text).map!(&:strip)
-  translation_map = Traject::TranslationMap.new('country_map')
-  accumulator.replace [translation_map.translate_array(accumulator).first]
-end
-# deprecated pub_date Solr field - use pub_year_isi for sort key; pub_year_ss for display field
-#   can remove after other fields are populated for all indexing data (i.e. solrmarc, crez) and app code is changed
-to_field 'pub_date', stanford_mods(:pub_year_display_str)
-to_field 'pub_year_ss', stanford_mods(:pub_year_display_str)
+##
+# Publication Fields
+# TODO: remove pub_date and pub_date_sort; see: https://github.com/sul-dlss/SearchWorks/issues/6410
+to_field 'pub_date', cocina_display(:pub_year_str)
+to_field 'pub_date_sort', cocina_display(:pub_year_str)
+to_field 'pub_search', cocina_display(:publication_places)
+to_field 'pub_year_isi', cocina_display(:pub_year_int)
+to_field 'pub_year_ss', cocina_display(:pub_year_str)
+to_field 'imprint_display', cocina_display(:imprint_str)
+to_field 'pub_country', cocina_display(:publication_countries)
+to_field 'pub_year_tisim', cocina_display(:pub_year_ints)
 
-# TODO: need better implementation for date slider in stanford-mods (e.g. multiple years when warranted)
-to_field 'pub_year_tisim', stanford_mods(:pub_year_int)
+##
+# Form fields
+to_field 'genre_ssim', cocina_display(:genres_search)
+to_field 'physical', cocina_display(:extents)
+to_field 'format_hsim', cocina_display(:searchworks_resource_types)
+to_field 'language', cocina_display(:searchworks_language_names)
+to_field 'stanford_work_facet_hsim', stanford_work_facet
 
-to_field 'format_main_ssim', stanford_mods(:format_main)
-to_field 'format_hsim' do |_record, accumulator, context|
-  Array(context.output_hash['format_main_ssim']).each do |format|
-    case format
-    when 'Archived website'
-      accumulator << 'Website'
-      accumulator << 'Website|Archived website'
-    when 'Music recording'
-      accumulator << 'Sound recording'
-    when 'Video'
-      accumulator << 'Video/Film'
-    else
-      accumulator << format
-    end
-  end
-end
+##
+# Note fields
+to_field 'summary_search', cocina_display(:abstracts)
+to_field 'toc_search', cocina_display(:tables_of_contents)
 
-to_field 'genre_ssim', stanford_mods(:sw_genre)
-to_field 'language', stanford_mods(:sw_language_facet)
-to_field 'physical', stanford_mods(:term_values, %i[physical_description extent])
-to_field 'summary_search', mods_display(:abstract)
-to_field 'toc_search', stanford_mods(:term_values, :tableOfContents)
-to_field 'url_suppl', stanford_mods(:term_values, %i[related_item location url])
-
-to_field 'url_fulltext' do |record, accumulator|
-  accumulator << "#{settings['purl.url']}/#{record.druid}"
-end
-
+##
+# Access fields
+to_field 'url_suppl', cocina_display(:related_resources), transform(&:url)
+to_field 'url_fulltext', cocina_display(:purl_url)
+to_field 'iiif_manifest_url_ssim', iiif_manifest_url
 to_field 'access_facet', literal('Online')
 to_field 'library_code_facet_ssim', literal('SDR')
 to_field 'building_facet', literal('Stanford Digital Repository')
 
-to_field 'isbn_search', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'isbn' }
-  accumulator.map! { |identifier| identifier.text }
-end
+##
+# Identifier Fields
+to_field 'isbn_search', cocina_display(:identifiers, type: 'isbn'), transform(&:identifier)
+to_field 'isbn_display', cocina_display(:identifiers, type: 'isbn'), transform(&:identifier)
+to_field 'issn_search', cocina_display(:identifiers, type: 'issn'), transform(&:identifier)
+to_field 'issn_display', cocina_display(:identifiers, type: 'issn'), transform(&:identifier)
+to_field 'lccn', cocina_display(:identifiers, type: 'lccn'), transform(&:identifier), first_only
+to_field 'oclc', cocina_display(:identifiers, type: 'oclc'), transform(&:identifier)
 
-to_field 'issn_search', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'issn' }
-  accumulator.map! { |identifier| identifier.text }
-end
+##
+# Structural metadata fields
+to_field 'dor_content_type_ssi', cocina_display(:content_type)
+to_field 'dor_file_mimetype_ssim', cocina_display(:file_mime_types)
+to_field 'dor_resource_content_type_ssim', cocina_display(:fileset_types)
+to_field('dor_resource_count_isi') { |record, accumulator| accumulator << record.filesets.count }
+to_field('file_id') { |record, accumulator| accumulator << record.thumbnail_file_id }
 
-to_field 'isbn_display', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'isbn' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'issn_display', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'issn' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'lccn', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'lccn' }
-  accumulator.map! { |identifier| identifier.text }
-  accumulator.replace [accumulator.first] if accumulator.first # grab only the first value
-end
-
-to_field 'oclc', stanford_mods(:identifier) do |_record, accumulator|
-  accumulator.compact!
-  accumulator.select! { |identifier| identifier.type_at == 'oclc' }
-  accumulator.map! { |identifier| identifier.text }
-end
-
-to_field 'file_id' do |record, accumulator|
-  accumulator << record.thumb
+##
+# Collection and constituent fields
+to_field('collection_type') do |record, accumulator|
+  accumulator << 'Digital Collection' if record.collection?
 end
 
 to_field 'collection' do |record, accumulator|
@@ -291,134 +222,37 @@ end
 
 # This drives the AppearsInComponent in Searchworks (see fn851zf9475)
 to_field 'set' do |record, accumulator|
-  accumulator.concat record.constituents.map(&:searchworks_id)
+  accumulator.concat record.parents.map(&:searchworks_id)
 end
 
 # This drives the "Appears In" section of the "Bibliographic information" in Searchworks (see fn851zf9475)
 to_field 'set_with_title' do |record, accumulator|
-  accumulator.concat(record.constituents.map do |constituent|
-    $druid_title_cache[constituent.druid] ||= cached_title_value.call(constituent)
+  accumulator.concat(record.parents.map do |parent|
+    $druid_title_cache[parent.druid] ||= cached_title_value.call(parent)
   end)
 end
 
-to_field 'schema_dot_org_struct' do |record, accumulator, context|
-  ## Schema.org representation for content type geo objects
-  if record.dor_content_type == 'geo'
-    schema_dot_org_json = {
-      '@context': 'http://schema.org',
-      '@type': 'Dataset',
-      citation: record.mods.xpath('//mods:note[@displayLabel="Preferred citation"]', mods: 'http://www.loc.gov/mods/v3').text,
-      identifier: context.output_hash['url_fulltext'],
-      license: record.mods.xpath('//mods:accessCondition[@type="license"]', mods: 'http://www.loc.gov/mods/v3').text,
-      name: context.output_hash['title_display'],
-      description: context.output_hash['summary_search'],
-      sameAs: "https://searchworks.stanford.edu/view/#{record.druid}",
-      keywords: context.output_hash['subject_all_search'],
-      distribution: [
-        {
-          '@type': 'DataDownload',
-          encodingFormat: 'application/zip',
-          contentUrl: "https://stacks.stanford.edu/file/druid:#{record.druid}/data.zip"
-        }
-      ]
-    }
+# Schema.org representation for the object
+to_field 'schema_dot_org_struct', schema_dot_org_struct
 
-    # we don't want to say it is in earthworks if it isn't in earthworks
-    schema_dot_org_json['includedInDataCatalog'] = {
-      '@type': 'DataCatalog',
-      name: 'https://earthworks.stanford.edu'
-    } if record.released_to_earthworks?
-    accumulator << schema_dot_org_json
-  end
-end
-
-# # Stanford student work facet
-#  it is expected that these values will go to a field analyzed with
-#   solr.PathHierarchyTokenizerFactory  so a value like
-#    "Thesis/Dissertation|Master's|Engineer"
-#  will be indexed as 3 values:
-#    "Thesis/Dissertation|Master's|Engineer"
-#    "Thesis/Dissertation|Master's"
-#    "Thesis/Dissertation"
-to_field 'stanford_work_facet_hsim' do |record, accumulator|
-  genre = record.stanford_mods.sw_genre.to_a
-
-  if genre.include? 'student project report'
-    accumulator << 'Other student work|Student report'
-  elsif genre.include? 'thesis'
-    collections = record.collections
-
-    collections.each do |c|
-      accumulator << case c.label
-                     when /phd/i
-                       'Thesis/Dissertation|Doctoral|Unspecified'
-                     when /master/i
-                       'Thesis/Dissertation|Master\'s|Unspecified'
-                     when /honor/i
-                       'Thesis/Dissertation|Bachelor\'s|Undergraduate honors thesis'
-                     when /capstone/i, /undergraduate/i
-                       'Thesis/Dissertation|Bachelor\'s|Unspecified'
-                     else
-                       'Thesis/Dissertation|Unspecified'
-                     end
-    end
-  end
-end
-
-to_field 'author_struct' do |record, accumulator|
-  record.mods_display.name.each do |name|
-    name.values.each do |value|
-      accumulator << {
-        link: value.name,
-        search: "\"#{value.name}\"",
-        post_text: ("(#{name.label.gsub(/:$/, '')})" if !name.label.nil? && !name.label.empty?)
-      }
-    end
-  end
-end
-
-to_field 'iiif_manifest_url_ssim' do |record, accumulator|
-  if %w[image manuscript map book].include?(record.dor_content_type)
-    accumulator << "#{settings['purl.url']}/#{record.druid}/iiif/manifest"
-  end
-end
-
-to_field 'dor_content_type_ssi' do |record, accumulator|
-  accumulator << record.dor_content_type if record.dor_content_type.present?
-end
-
-to_field 'dor_resource_content_type_ssim' do |record, accumulator|
-  record.dor_resource_content_type.uniq.each do |type|
-    accumulator << type
-  end
-end
-
-to_field 'dor_file_mimetype_ssim' do |record, accumulator|
-  record.dor_file_mimetype.uniq.each do |mimetype|
-    accumulator << mimetype
-  end
-end
-
-to_field 'dor_resource_count_isi' do |record, accumulator|
-  accumulator << record.dor_resource_count
-end
-
+##
+# Indexer context / metadata fields
 to_field 'context_source_ssi', literal('sdr')
+to_field('context_version_ssi') { |_record, accumulator| accumulator << Utils.version }
 
-to_field 'context_version_ssi' do |_record, accumulator|
-  accumulator << Utils.version
-end
-
+# If this is a collection or virtual object, pre-cache its title info for members to use
 each_record do |record, _context|
-  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.collection?
+  $druid_title_cache[record.druid] = cached_title_value.call(record) if record.collection? || record.virtual_object?
 end
 
+# Convert any _struct fields to JSON strings for solr
 each_record do |_record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
   end
 end
 
+# Log time taken to process each record
 each_record do |_record, context|
   t0 = context.clipboard[:benchmark_start_time]
   t1 = Time.now

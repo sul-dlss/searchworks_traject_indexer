@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:gh795jd5965" published="2025-08-04T18:47:55Z" publishVersion="cocina-models/0.105.0">
+  <identityMetadata>
+    <objectType>collection</objectType>
+    <objectLabel>Robby Beyers photographs of the Leland Stanford Junior University Marching Band, 1978-2015</objectLabel>
+    <otherId name="catkey">11403803</otherId>
+    <otherId name="folio_instance_hrid">a11403803</otherId>
+  </identityMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu).</human>
+      <license/>
+    </use>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:gh795jd5965">
+    
+    
+  </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>Robby Beyers photographs of the Leland Stanford Junior University Marching Band, 1978-2015</dc:title>
+    <dc:contributor>Beyers, Robby</dc:contributor>
+    <dc:type>Slides</dc:type>
+    <dc:type>Digital photographs</dc:type>
+    <dc:type>Collection</dc:type>
+    <dc:format>18</dc:format>
+    <dc:format>LSJUMB Pix</dc:format>
+    <dc:language>eng</dc:language>
+    <dc:description displayLabel="Scope and content">Includes slides and digital photographs of the Leland Stanford Junior University Marching Band and Dollies at Stanford University football games and other events</dc:description>
+    <dc:description type="restriction on access">This collection is open for research. Access to Series 3 digital photographs is restricted to the Special Collections Reading Room. Please contact specialcollections@stanford.edu to request access</dc:description>
+    <dc:description type="use and reproduction">These images are made available under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 License (https://creativecommons.org/licenses/by-nc-nd/3.0/us/). You may copy and redistribute the material in any medium or format but must give appropriate credit, provide a link to the license, and indicate if changes were made. You may not use the images for commercial purposes. If you remix, transform, or build upon the material, you may not distribute the modified material.  For commercial permission requests please contact the University Archives at universityarchives@stanford.edu</dc:description>
+    <dc:description>Special Collections and University Archives materials are stored offsite and must be paged 36-48 hours in advance. For more information on paging collections, see the department's website: http://library.stanford.edu/spc</dc:description>
+    <dc:description type="preferred citation">[item identification], Robby Beyers photographs of the Leland Stanford Junior University Marching Band (PC0170). Department of Special Collections and University Archives, Stanford University Libraries, Stanford, Calif.</dc:description>
+    <dc:description type="acquisition">Gift of Robby Beyers, 2015</dc:description>
+    <dc:description type="biographical/historical">For more than 40 years, Robby Beyers shot nearly every LSJUMB football halftime show, as well as many rallies, road trips and other sporting events, amassing a stunning archive of more than 180,000 photographs that are treasured by the hundreds of musicians, Dollies and Trees who rocked out in range of his lens. Beyers ('80, MS '82, PhD '89) died April 12, 2021, at 62 from ALS</dc:description>
+    <dc:subject>SportsStanford University</dc:subject>
+    <dc:subject>Stanford University Marching Band</dc:subject>
+    <dc:subject>Stanford University Students</dc:subject>
+    <dc:subject>Marching bands</dc:subject>
+    <dc:coverage>California</dc:coverage>
+    <dc:subject>Marching bands--California</dc:subject>
+    <dc:subject>College students</dc:subject>
+    <dc:coverage>California</dc:coverage>
+    <dc:subject>College students--California</dc:subject>
+    <dc:subject>Football</dc:subject>
+    <dc:date>1978-2014</dc:date>
+    <dc:identifier>https://purl.stanford.edu/gh795jd5965</dc:identifier>
+    <dc:relation type="url" href="http://www.oac.cdlib.org/findaid/ark:/13030/c8bk1hsc"/>
+    <dc:relation type="url" href="https://archives.stanford.edu/findingaid/ark:/22236/s1bceaf04b-c3f7-40e5-8134-3c015153cb49"/>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo usage="primary">
+      <title>Robby Beyers photographs of the Leland Stanford Junior University Marching Band, 1978-2015</title>
+    </titleInfo>
+    <name usage="primary" type="personal">
+      <namePart>Beyers, Robby</namePart>
+    </name>
+    <genre authority="aat">Slides</genre>
+    <genre authority="aat">Digital photographs</genre>
+    <typeOfResource manuscript="yes" collection="yes">mixed material</typeOfResource>
+    <physicalDescription>
+      <form>LSJUMB Pix</form>
+      <extent unit="Linear feet">18</extent>
+      <extent unit="megabyte(s)">4236247.04</extent>
+      <extent>230,000 photographs</extent>
+    </physicalDescription>
+    <language>
+      <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <abstract displayLabel="Scope and content">Includes slides and digital photographs of the Leland Stanford Junior University Marching Band and Dollies at Stanford University football games and other events</abstract>
+    <note type="restriction on access">This collection is open for research. Access to Series 3 digital photographs is restricted to the Special Collections Reading Room. Please contact specialcollections@stanford.edu to request access</note>
+    <note type="use and reproduction">These images are made available under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 License (https://creativecommons.org/licenses/by-nc-nd/3.0/us/). You may copy and redistribute the material in any medium or format but must give appropriate credit, provide a link to the license, and indicate if changes were made. You may not use the images for commercial purposes. If you remix, transform, or build upon the material, you may not distribute the modified material.  For commercial permission requests please contact the University Archives at universityarchives@stanford.edu</note>
+    <note>Special Collections and University Archives materials are stored offsite and must be paged 36-48 hours in advance. For more information on paging collections, see the department's website: http://library.stanford.edu/spc</note>
+    <note type="preferred citation">[item identification], Robby Beyers photographs of the Leland Stanford Junior University Marching Band (PC0170). Department of Special Collections and University Archives, Stanford University Libraries, Stanford, Calif.</note>
+    <note type="acquisition">Gift of Robby Beyers, 2015</note>
+    <note type="biographical/historical">For more than 40 years, Robby Beyers shot nearly every LSJUMB football halftime show, as well as many rallies, road trips and other sporting events, amassing a stunning archive of more than 180,000 photographs that are treasured by the hundreds of musicians, Dollies and Trees who rocked out in range of his lens. Beyers ('80, MS '82, PhD '89) died April 12, 2021, at 62 from ALS</note>
+    <subject authority="marcgac">
+      <geographicCode>n-us-ca</geographicCode>
+    </subject>
+    <subject authority="lcsh">
+      <name type="corporate">
+        <namePart>Stanford University</namePart>
+      </name>
+      <topic>Sports</topic>
+    </subject>
+    <subject valueURI="http://id.loc.gov/authorities/names/nr92033776" authority="lcsh">
+      <name authority="lcsh" valueURI="http://id.loc.gov/authorities/names/nr92033776" type="corporate">
+        <namePart>Stanford University</namePart>
+        <namePart>Marching Band</namePart>
+      </name>
+    </subject>
+    <subject authority="lcsh">
+      <name type="corporate">
+        <namePart>Stanford University</namePart>
+        <namePart>Students</namePart>
+      </name>
+    </subject>
+    <subject authority="lcsh">
+      <topic>Marching bands</topic>
+      <geographic>California</geographic>
+    </subject>
+    <subject authority="lcsh">
+      <topic>College students</topic>
+      <geographic>California</geographic>
+    </subject>
+    <subject authority="lcsh">
+      <topic authority="lcsh" valueURI="http://id.loc.gov/authorities/subjects/sh85050405">Football</topic>
+    </subject>
+    <originInfo>
+      <dateIssued encoding="marc" point="start">1978</dateIssued>
+      <dateIssued encoding="marc" point="end">2014</dateIssued>
+      <place>
+        <placeTerm authority="marccountry" type="code">cau</placeTerm>
+      </place>
+      <issuance>monographic</issuance>
+    </originInfo>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/gh795jd5965</url>
+    </location>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource authority="marcorg">CSt</recordContentSource>
+      <descriptionStandard>appm</descriptionStandard>
+      <recordOrigin>Converted from MARCXML to MODS version 3.7 using
+				MARC21slim2MODS3-7_SDR_v2-7.xsl (SUL 3.7 version 2.7 20220901; LC Revision 1.140
+				20200717)</recordOrigin>
+      <recordCreationDate encoding="marc">250206</recordCreationDate>
+      <recordChangeDate encoding="iso8601">20250615034221.1</recordChangeDate>
+      <recordIdentifier source="FOLIO">a11403803</recordIdentifier>
+    </recordInfo>
+    <relatedItem>
+      <location>
+        <url displayLabel="Finding aid">http://www.oac.cdlib.org/findaid/ark:/13030/c8bk1hsc</url>
+      </location>
+    </relatedItem>
+    <relatedItem>
+      <location>
+        <url displayLabel="Finding aid">https://archives.stanford.edu/findingaid/ark:/22236/s1bceaf04b-c3f7-40e5-8134-3c015153cb49</url>
+      </location>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">The materials are open for research use and may be used freely for non-commercial purposes with an attribution. For commercial permission requests, please contact the Stanford University Archives (universityarchives@stanford.edu).</accessCondition>
+  </mods>
+</publicObject>

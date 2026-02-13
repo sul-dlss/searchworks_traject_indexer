@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<publicObject id="druid:dg050kz7339" published="2024-09-13T17:42:07Z" publishVersion="cocina-models/0.98.1">
+  <identityMetadata>
+    <objectType>item</objectType>
+    <objectLabel>[Thomas Bros. maps of Palo Alto, San Jose, Santa Clara and vicinities]</objectLabel>
+    <sourceId source="sul">sul:sc1049_m522</sourceId>
+  </identityMetadata>
+  <contentMetadata objectId="druid:dg050kz7339" type="image">
+    <resource id="cocina-fileSet-dg050kz7339-fn851zf9475_1" sequence="1" type="image">
+      <label>Thomas Bros. map of Palo Alto and vicinity including Redwood City, Atherton, Menlo Park, Los Altos, and Mountain View</label>
+      <externalFile fileId="fn851zf9475_00_0001.jp2" mimetype="image/jp2" objectId="druid:fn851zf9475" resourceId="cocina-fileSet-fn851zf9475-fn851zf9475_1">
+        <imageData height="20372" width="16381"/>
+      </externalFile>
+    </resource>
+    <resource id="cocina-fileSet-dg050kz7339-mf861vz6424_1" sequence="2" type="image">
+      <label>Thomas Bros. map of San Jose, Santa Clara, and vicinity</label>
+      <externalFile fileId="mf861vz6424_00_0001.jp2" mimetype="image/jp2" objectId="druid:mf861vz6424" resourceId="cocina-fileSet-mf861vz6424-mf861vz6424_1">
+        <imageData height="20167" width="16197"/>
+      </externalFile>
+    </resource>
+  </contentMetadata>
+  <rightsMetadata>
+    <access type="discover">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <access type="read">
+      <machine>
+        <world/>
+      </machine>
+    </access>
+    <use>
+      <human type="useAndReproduction">Property rights reside with the repository. Literary rights reside with  the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian of the Dept. of Special Collections (http://library.stanford.edu/spc).</human>
+      <license/>
+    </use>
+  </rightsMetadata>
+  <rdf:RDF xmlns:fedora="info:fedora/fedora-system:def/relations-external#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about="info:fedora/druid:dg050kz7339">
+      <fedora:isMemberOfCollection rdf:resource="info:fedora/druid:fh138mm2023"/>
+    </rdf:Description>
+  </rdf:RDF>
+  <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:srw_dc="info:srw/schema/1/dc-schema" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title>[Thomas Bros. maps of Palo Alto, San Jose, Santa Clara and vicinities]</dc:title>
+    <dc:type>Maps</dc:type>
+    <dc:format>1 sheet, double-sided</dc:format>
+    <dc:format>printed</dc:format>
+    <dc:format>image/jpeg</dc:format>
+    <dc:language>Englisheng</dc:language>
+    <dc:description>Digitized by Stanford University Libraries.</dc:description>
+    <dc:subject>Thomas Brothers</dc:subject>
+    <dc:subject/>
+    <dc:coverage>Santa Clara County (Calif.)</dc:coverage>
+    <dc:subject/>
+    <dc:coverage>W 122°13ʹ12ʺ--W 121°49ʹ10ʺ/N 37°29ʹ44ʺ--N 37°18ʹ04ʺ</dc:coverage>
+    <dc:date>1930</dc:date>
+    <dc:identifier>sc1049_m522</dc:identifier>
+    <dc:identifier>https://purl.stanford.edu/dg050kz7339</dc:identifier>
+    <dc:relation type="repository">Stanford University. Libraries. Department of Special Collections and University Archives</dc:relation>
+    <dc:relation type="collection">Stanford University map collection, 1853-1997</dc:relation>
+  </oai_dc:dc>
+  <mods xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    <titleInfo>
+      <title>[Thomas Bros. maps of Palo Alto, San Jose, Santa Clara and vicinities]</title>
+    </titleInfo>
+    <genre valueURI="http://id.loc.gov/authorities/genreForms/gf2011026387" authorityURI="http://id.loc.gov/authorities/genreForms/" authority="lcgft">Maps</genre>
+    <typeOfResource>cartographic</typeOfResource>
+    <physicalDescription>
+      <form>printed</form>
+      <internetMediaType>image/jpeg</internetMediaType>
+      <extent>1 sheet, double-sided</extent>
+      <digitalOrigin>reformatted digital</digitalOrigin>
+    </physicalDescription>
+    <language>
+      <languageTerm valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" authorityURI="http://id.loc.gov/vocabulary/iso639-2" authority="iso639-2b" type="text">English</languageTerm>
+      <languageTerm valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" authorityURI="http://id.loc.gov/vocabulary/iso639-2" authority="iso639-2b" type="code">eng</languageTerm>
+    </language>
+    <note>Digitized by Stanford University Libraries.</note>
+    <subject authority="lcsh">
+      <name authority="naf" authorityURI="http://id.loc.gov/authorities/names/" valueURI="http://id.loc.gov/authorities/names/n80036596" type="corporate">
+        <namePart>Thomas Brothers</namePart>
+      </name>
+    </subject>
+    <subject authority="lcsh">
+      <geographic authority="lcsh" authorityURI="http://id.loc.gov/authorities/names/" valueURI="http://id.loc.gov/authorities/names/n50046557">Santa Clara County (Calif.)</geographic>
+    </subject>
+    <subject>
+      <cartographics>
+        <coordinates>W 122°13ʹ12ʺ--W 121°49ʹ10ʺ/N 37°29ʹ44ʺ--N 37°18ʹ04ʺ</coordinates>
+      </cartographics>
+    </subject>
+    <originInfo>
+      <dateCreated encoding="w3cdtf" qualifier="approximate" keyDate="yes">1930</dateCreated>
+    </originInfo>
+    <identifier displayLabel="Source ID" type="local">sc1049_m522</identifier>
+    <location>
+      <url usage="primary display">https://purl.stanford.edu/dg050kz7339</url>
+    </location>
+    <location>
+      <physicalLocation type="series">Series: Miscellaneous Stanford University Maps (mostly non-campus)</physicalLocation>
+    </location>
+    <location>
+      <shelfLocator>SC1049, Map case Na1, Map number M522</shelfLocator>
+    </location>
+    <location>
+      <physicalLocation type="repository" valueURI="http://id.loc.gov/authorities/names/no2014019980" authority="naf">Stanford University. Libraries. Department of Special Collections and University Archives</physicalLocation>
+    </location>
+    <recordInfo>
+      <languageOfCataloging>
+        <languageTerm valueURI="http://id.loc.gov/vocabulary/iso639-2/eng" authorityURI="http://id.loc.gov/vocabulary/iso639-2" authority="iso639-2b" type="code">eng</languageTerm>
+      </languageOfCataloging>
+      <recordContentSource authority="marcorg">CSt</recordContentSource>
+    </recordInfo>
+    <relatedItem type="host" displayLabel="Series">
+      <titleInfo>
+        <title>Miscellaneous Stanford University Maps (mostly non-campus)</title>
+      </titleInfo>
+    </relatedItem>
+    <extension displayLabel="geo">
+      <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <rdf:Description rdf:about="http://purl.stanford.edu/dg050kz7339">
+          <dc:format>image/jpeg</dc:format>
+          <dc:type>Image</dc:type>
+          <gml:boundedBy>
+            <gml:Envelope>
+              <gml:lowerCorner>-122.220154 37.301368</gml:lowerCorner>
+              <gml:upperCorner>-121.819496 37.495563</gml:upperCorner>
+            </gml:Envelope>
+          </gml:boundedBy>
+        </rdf:Description>
+      </rdf:RDF>
+    </extension>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Stanford University map collection, 1853-1997</title>
+      </titleInfo>
+      <location>
+        <url>https://purl.stanford.edu/fh138mm2023</url>
+      </location>
+      <typeOfResource collection="yes"/>
+    </relatedItem>
+    <accessCondition type="useAndReproduction">Property rights reside with the repository. Literary rights reside with  the creators of the documents or their heirs. To obtain permission to publish or reproduce, please contact the Public Services Librarian of the Dept. of Special Collections (http://library.stanford.edu/spc).</accessCondition>
+  </mods>
+  <thumb>fn851zf9475/fn851zf9475_00_0001.jp2</thumb>
+</publicObject>
