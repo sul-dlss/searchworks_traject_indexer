@@ -42,6 +42,10 @@ RSpec.describe 'SDR indexing' do
     expect(result['modsxml'].first).to include '<mods'
   end
 
+  it 'stores the cocina struct' do
+    expect(JSON.parse(result['cocina_struct'].first).keys).to eq %w[description identification access]
+  end
+
   it 'maps all text for searching' do
     # rubocop:disable Layout/LineLength
     expect(result['all_search'].first).to eq 'Oral history interview with anonymous, white, female, SNCC volunteer, 0405 (sides 1 and 2), Laurel, Mississippi 0405 28 anonymous ive Interviewee Student Nonviolent Coordinating Committee (U.S.) spn Sponsor 1965 w3cdtf Laurel (Miss.) msu Mississippi sound recording-nonmusical oral histories audiotape reel access audio/mpeg 1 audiotape reformatted digital Magnetic 3.75 ips Mono NAB standard access 1 transcript born digital eng English Reformatted by Stanford University Libraries between 2009-2011. 0405 Civil rights United States Civil rights movements SC0066 Stanford University. Libraries. Department of Special Collections and University Archives eng Latn KZSU Project South Interviews (SC0066) https://oac.cdlib.org/findaid/ark:/13030/tf7489n969/ Transcript CSt original cataloging agency eng English human prepared'

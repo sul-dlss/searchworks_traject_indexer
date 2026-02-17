@@ -116,6 +116,10 @@ to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdig
 # the entire mods XML record; currently used for display purposes
 # TODO: remove this; see: https://github.com/sul-dlss/SearchWorks/issues/6396
 to_field 'modsxml', stanford_mods(:to_xml)
+to_field 'cocina_struct' do |record, accumulator|
+  # These are the only subschemas we need. Identification for DOI, access for use and reproduction.
+  accumulator << record.public_cocina.cocina_doc.slice('description', 'identification', 'access')
+end
 
 # flattened text of all nodes in the record for searching
 to_field 'all_search', cocina_display(:text)
