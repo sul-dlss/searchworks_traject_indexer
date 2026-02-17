@@ -198,7 +198,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the publication year as an integer' do
-      expect(result['pub_year_isi']).to eq [1920]
+      expect(result['publication_year_isi']).to eq [1920]
     end
 
     it 'maps the full imprint statement for display' do
