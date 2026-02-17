@@ -188,9 +188,9 @@ RSpec.describe 'SDR indexing' do
     let(:collection_druid) { 'yh583fk3400' }
 
     it 'maps the publication year as a string for display/sort' do
-      expect(result['pub_date']).to eq ['1920 - ']
-      expect(result['pub_year_ss']).to eq ['1920 - ']
-      expect(result['pub_date_sort']).to eq ['1920 - ']
+      expect(result['pub_date']).to eq ['1920 -']
+      expect(result['pub_year_ss']).to eq ['1920 -']
+      expect(result['pub_date_sort']).to eq ['1920 -']
     end
 
     it 'maps the places of publication for search' do
