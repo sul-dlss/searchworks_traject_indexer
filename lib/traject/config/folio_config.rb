@@ -549,9 +549,9 @@ to_field 'pub_search' do |record, accumulator|
   Traject::MarcExtractor.new('260:264',
                              alternate_script: false).collect_matching_lines(record) do |field, _spec, _extractor|
     data = field.subfields.select { |x| %w[a b].include?(x.code) }
-                .reject { |x| x.code == 'a' && (x.value =~ /s\.l\./i || x.value =~ /place of .* not identified/i) }
-                .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
-                .map(&:value)
+                          .reject { |x| x.code == 'a' && (x.value =~ /s\.l\./i || x.value =~ /place of .* not identified/i) }
+                          .reject { |x| x.code == 'b' && (x.value =~ /s\.n\./i || x.value =~ /r not identified/i) }
+                          .map(&:value)
 
     unless data.empty?
       accumulator << trim_punctuation_when_preceded_by_two_word_characters_or_some_other_stuff(data.join(' '))

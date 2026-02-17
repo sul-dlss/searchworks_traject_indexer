@@ -76,7 +76,7 @@ module MarcLinks
     LOCATION_NOTE_SUBFIELDS = %w[z 3].freeze
     def stanford_only?
       field.subfields.select { |f| LOCATION_NOTE_SUBFIELDS.include?(f.code) }
-           .map(&:value).any? { |v| STANFORD_AFFILIATED_REGEX.match?(v) }
+                     .map(&:value).any? { |v| STANFORD_AFFILIATED_REGEX.match?(v) }
     end
 
     private
@@ -178,7 +178,7 @@ module MarcLinks
 
     def supplemental_resource_label?
       field.subfields.select { |f| LOCATION_NOTE_SUBFIELDS.include?(f.code) }
-           .map(&:value).any? { |v| SUPPLEMENTAL_LABEL_REGEX.match?(v) }
+                     .map(&:value).any? { |v| SUPPLEMENTAL_LABEL_REGEX.match?(v) }
     end
 
     def link_is_managed_purl?
