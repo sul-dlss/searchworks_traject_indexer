@@ -42,8 +42,17 @@ RSpec.describe 'SDR indexing' do
     expect(result['modsxml'].first).to include '<mods'
   end
 
-  it 'stores the cocina struct' do
-    expect(JSON.parse(result['cocina_struct'].first).keys).to eq %w[description identification access]
+  describe 'storing compacted cocina' do
+    let(:compact_struct) { JSON.parse(result['cocina_struct'].first) }
+
+    it 'removes blank values' do
+      # 'note' is an empty array in fixture
+      expect(compact_struct.dig('description', 'title', 0, 'structuredValue', 0)).not_to have_key('note')
+    end
+
+    it 'maps the keys needed for display' do
+      expect(compact_struct.keys).to include('description', 'identification', 'access')
+    end
   end
 
   it 'maps all text for searching' do

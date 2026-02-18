@@ -25,7 +25,7 @@ class PurlRecord
   end
 
   def public_cocina
-    @public_cocina ||= CocinaDisplay::CocinaRecord.fetch(druid, purl_url:)
+    @public_cocina ||= CocinaDisplay::CocinaRecord.fetch(druid, purl_url:, deep_compact: true)
   end
 
   def public_meta_json
