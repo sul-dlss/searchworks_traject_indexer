@@ -45,7 +45,7 @@ RSpec.describe 'format_hsim config' do
         end
       end
 
-      context '245h contains manuscript or manuscript/digital' do
+      context 'when 245h contains manuscript or manuscript/digital' do
         let(:record) do
           MARC::Record.new.tap do |r|
             r.leader = '01952c d  2200457Ia 4500'
