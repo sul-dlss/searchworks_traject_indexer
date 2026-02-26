@@ -110,7 +110,7 @@ cat records.json | bundle exec traject --conf lib/traject/config/folio_config.rb
 
 Data coming from SDR has two different processing pipelines: if the data is released to Searchworks, it will be processed by the `sdr_config` traject configuration, and if it is released to Earthworks, it will be processed by the `geo_aardvark_config` traject configuration.
 
-To test indexing a single SDR object at a time, you can `echo` its druid and use the `--stdin` flag:
+To test indexing a single SDR object at a time, you can `echo` its druid and use the `--stdin` flag (remember to either also set `SOLR_URL` or use `--debug-mode`):
 
 ```sh
 echo 'abc123def4567' | bundle exec traject --conf lib/traject/config/sdr_config.rb --stdin
