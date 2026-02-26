@@ -202,9 +202,6 @@ to_field 'oclc', cocina_display(:identifiers, type: 'oclc'), transform(&:identif
 
 ##
 # Structural metadata fields
-to_field 'dor_content_type_ssi', cocina_display(:content_type)
-to_field 'dor_file_mimetype_ssim', cocina_display(:file_mime_types)
-to_field 'dor_resource_content_type_ssim', cocina_display(:fileset_types)
 to_field('dor_resource_count_isi') { |record, accumulator| accumulator << record.filesets.count }
 to_field('file_id') { |record, accumulator| accumulator << record.thumbnail_file_id }
 
