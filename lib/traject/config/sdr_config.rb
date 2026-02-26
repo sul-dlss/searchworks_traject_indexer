@@ -2,7 +2,6 @@
 
 require_relative '../../../config/boot'
 require_relative '../macros/cocina'
-require_relative '../macros/mods'
 require_relative '../macros/extras'
 require 'digest/md5'
 require 'active_support'
@@ -11,7 +10,6 @@ Utils.logger = logger
 
 extend Traject::SolrBetterJsonWriter::IndexerPatch
 extend Traject::Macros::Cocina
-extend Traject::Macros::Mods
 extend Traject::Macros::Extras
 def log_skip(context)
   writer.put(context)
@@ -113,11 +111,9 @@ to_field 'druid', cocina_display(:bare_druid)
 # this is used for sitemap generation; pre-hashing the IDs helps with that process
 to_field 'hashed_id_ssi', use_field('id'), transform(->(id) { Digest::MD5.hexdigest(id) })
 
-# the entire mods XML record; currently used for display purposes
-# TODO: remove this; see: https://github.com/sul-dlss/SearchWorks/issues/6396
-to_field 'modsxml', stanford_mods(:to_xml)
+# index the parts of the cocina record needed for display: description,
+# identification (for DOIs), and access (for URLs, related resources, etc.)
 to_field 'cocina_struct' do |record, accumulator|
-  # These are the only subschemas we need. Identification for DOI, access for use and reproduction.
   accumulator << record.public_cocina.cocina_doc.slice('description', 'identification', 'access')
 end
 

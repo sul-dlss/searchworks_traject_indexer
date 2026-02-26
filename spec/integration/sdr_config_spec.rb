@@ -14,13 +14,11 @@ RSpec.describe 'SDR indexing' do
   let(:collection_druid) { 'vm093fg5170' }
   let(:record) { PurlRecord.new(druid) }
   let(:body) { File.new(file_fixture("#{druid}.json")) }
-  let(:xml_body) { File.new(file_fixture("#{druid}.xml")) }
   let(:metadata_json) { File.new(file_fixture("#{druid}.meta_json")) }
   let(:collection_body) { File.new(file_fixture("#{collection_druid}.json")) }
 
   before do
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 200, body: xml_body)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json").to_return(status: 200, body: metadata_json)
     stub_request(:get, "https://purl.stanford.edu/#{collection_druid}.json").to_return(status: 200, body: collection_body)
     allow(record).to receive(:catkey).and_return(nil) # make sure it is indexable
@@ -36,10 +34,6 @@ RSpec.describe 'SDR indexing' do
 
   it 'maps the druid' do
     expect(result['druid']).to eq [druid]
-  end
-
-  it 'maps the entire mods XML record' do
-    expect(result['modsxml'].first).to include '<mods'
   end
 
   describe 'storing compacted cocina' do

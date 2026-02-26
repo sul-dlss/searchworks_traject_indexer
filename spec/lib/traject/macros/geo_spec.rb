@@ -20,7 +20,6 @@ RSpec.describe Traject::Macros::Geo do
   end
 
   before do
-    stub_request(:get, "https://purl.stanford.edu/#{druid}.xml").to_return(status: 404)
     stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_return(status: 200, body:)
     macro.call(record, accumulator, context)
   end

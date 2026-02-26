@@ -26,13 +26,9 @@ RSpec.describe Traject::KafkaPurlFetcherReader do
                                                                    druid: 'z', true_targets: ['SomethingElse']
                                                                  }.to_json))
 
-      stub_request(:get, 'https://example.com/x.xml')
-        .to_return(status: 200, body: '<publicObject />')
       stub_request(:get, 'https://example.com/x.json')
         .to_return(status: 200, body: '{}')
 
-      stub_request(:get, 'https://example.com/y.xml')
-        .to_return(status: 200, body: '<publicObject />')
       stub_request(:get, 'https://example.com/y.json')
         .to_return(status: 200, body: '{}')
     end

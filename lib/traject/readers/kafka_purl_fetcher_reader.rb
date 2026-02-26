@@ -52,8 +52,8 @@ class Traject::KafkaPurlFetcherReader
     if target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
       # Remove changed records that now have a catkey
       return true if skip_catkey && (change['catkey'].presence || record.catkey)
-      # Remove withdrawn records that are missing public xml
-      return true unless record.public_xml?
+      # Remove withdrawn records that are missing public cocina
+      return true unless record.public_cocina?
     end
 
     false

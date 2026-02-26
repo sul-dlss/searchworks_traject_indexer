@@ -21,14 +21,12 @@ gem 'honeybadger'
 gem 'http'
 gem 'i18n'
 gem 'iso-639'
-gem 'mods_display', '~> 1.0'
 gem 'parallel'
 gem 'pg', platform: :mri
 gem 'rake'
 gem 'retriable'
 gem 'roman_numerals', '~> 1.0'
 gem 'ruby-kafka'
-gem 'stanford-mods', '~> 3.0'
 gem 'statsd-ruby'
 gem 'whenever'
 gem 'zeitwerk'
@@ -43,12 +41,12 @@ end
 gem 'activesupport', '~> 8.0'
 gem 'slop'
 
-gem 'cocina_display', '~> 1.8'
+gem 'cocina_display'
 gem 'dor-event-client'
 gem 'factory_bot', '~> 6.2'
-gem 'stanford-geo', '0.2.0'
 
 # traject brings in httpclient, and we'll need this for ruby 3.4 support:
 gem 'mutex_m'
 
 gem 'match_map', '~> 3.0'
+gem 'rack'

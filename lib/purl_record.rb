@@ -20,20 +20,12 @@ class PurlRecord
     druid.match(/(..)(...)(..)(....)/).captures.join('/')
   end
 
-  def public_xml
-    @public_xml ||= PublicXmlRecord.fetch(druid, purl_url:)
-  end
-
   def public_cocina
     @public_cocina ||= CocinaDisplay::CocinaRecord.fetch(druid, purl_url:, deep_compact: true)
   end
 
   def public_meta_json
     @public_meta_json ||= PublicMetaJsonRecord.fetch(druid, purl_url:)
-  end
-
-  def public_xml?
-    public_xml.present?
   end
 
   def public_cocina?
@@ -83,11 +75,9 @@ class PurlRecord
     thumbnail_file&.iiif_id
   end
 
-  # Ensure all objects, even those missing public xml/cocina have a (nil) catkey and a label
+  # Ensure all objects, even those missing public cocina have a (nil) catkey and a label
   delegate :catkey, to: :public_cocina, allow_nil: true
   delegate :label, to: :public_cocina, allow_nil: true
-
-  delegate :mods, :stanford_mods, :mods_display, :public_xml_doc, to: :public_xml
 
   delegate :collection?, :content_type, :files, :filesets, :cocina_doc, :world_access?,
            :modified_time, :created_time, :searchworks_url, :iiif_manifest_url,
