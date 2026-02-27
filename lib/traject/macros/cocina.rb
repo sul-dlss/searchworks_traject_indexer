@@ -46,6 +46,36 @@ module Traject
         end
       end
 
+      # Generate structured metadata for tables of contents, similar to MARC 505/905
+      # NOTE: currently not adding vernacular/unmatched vernacular; unclear if
+      # this even exists in any SDR records as of 2026
+      def toc_struct
+        lambda do |record, accumulator, _context|
+          record.public_cocina.table_of_contents_display_data.each do |tocs|
+            accumulator << {
+              label: tocs.label,
+              fields: tocs.objects.map(&:values)
+            }
+          end
+        end
+      end
+
+      # Generate structured metadata for abstract/summary, similar to MARC 520/920
+      # NOTE: currently not adding vernacular/unmatched vernacular; unclear if
+      # this even exists in any SDR records as of 2026, also not adding source
+      def abstract_struct
+        lambda do |record, accumulator, _context|
+          record.public_cocina.abstract_display_data.each do |abstracts|
+            accumulator << {
+              label: abstracts.label,
+              fields: abstracts.objects.flat_map do |abstract|
+                abstract.values.map { |field| { field: [field] } }
+              end
+            }
+          end
+        end
+      end
+
       # Based on the object type, generate the appropriate schema.org markup
       def schema_dot_org_struct
         lambda do |record, accumulator, context|
