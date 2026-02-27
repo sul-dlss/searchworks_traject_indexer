@@ -33,16 +33,25 @@ module Traject
         end
       end
 
-      # Transform CocinaDisplay::Contributor objects into hashes for indexing
-      def contributor_to_struct
-        lambda do |_record, accumulator, _context|
-          accumulator.map! do |contributor|
-            {
-              link: contributor.display_name(with_date: true),
-              search: "\"#{contributor.display_name}\"",
-              post_text: ("(#{contributor.display_role})" if contributor.role?)
-            }.compact
-          end
+      # Transform all contributors into structs, keyed by type
+      # Creator: primary contributors (like MARC 100)
+      # Corporate author: contributors with organization type (like MARC 110)
+      # Meeting: contributors with conference type (like MARC 111)
+      # Contributor: all other contributors (like MARC 700)
+      def contributors_struct
+        lambda do |record, accumulator, _context|
+          creators, non_creators = record.public_cocina.contributors.partition(&:primary?)
+          organizations, non_organizations = non_creators.partition(&:organization?)
+          conferences, contributors = non_organizations.partition(&:conference?)
+
+          accumulator << {
+            creator: creators,
+            corporate_author: organizations,
+            meeting: conferences,
+            contributor: contributors
+          }.transform_values do |contributors|
+            contributors.map { |c| contributor_to_struct(c) }.presence
+          end.compact_blank
         end
       end
 
@@ -138,6 +147,17 @@ module Traject
           select_files(pattern).call(record, accumulator, context)
           accumulator.replace(accumulator.first(1))
         end
+      end
+
+      private
+
+      # Transform a CocinaDisplay::Contributor object into a hash for indexing
+      def contributor_to_struct(contributor)
+        {
+          link: contributor.display_name(with_date: true),
+          search: "\"#{contributor.display_name}\"",
+          post_text: contributor.display_role
+        }.compact
       end
     end
   end

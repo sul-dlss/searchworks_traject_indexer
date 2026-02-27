@@ -114,4 +114,27 @@ RSpec.describe Traject::Macros::Cocina do
       end
     end
   end
+
+  describe 'contributors_struct' do
+    let(:macro) { contributors_struct }
+
+    it 'organizes contributors by role' do
+      expect(accumulator).to eq [
+        {
+          contributor: [
+            {
+              link: 'Aljubran, Mohammad J.',
+              search: '"Aljubran, Mohammad J."',
+              post_text: 'creator'
+            },
+            {
+              link: 'Horne, Roland N.',
+              search: '"Horne, Roland N."',
+              post_text: 'creator'
+            }
+          ]
+        }
+      ]
+    end
+  end
 end
