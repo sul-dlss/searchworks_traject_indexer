@@ -176,7 +176,9 @@ to_field 'stanford_work_facet_hsim', stanford_work_facet
 ##
 # Note fields
 to_field 'summary_search', cocina_display(:abstracts)
+to_field 'summary_struct', abstract_struct
 to_field 'toc_search', cocina_display(:tables_of_contents)
+to_field 'toc_struct', toc_struct
 
 ##
 # Access fields

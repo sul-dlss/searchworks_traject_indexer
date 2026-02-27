@@ -243,9 +243,24 @@ RSpec.describe 'SDR indexing' do
       let(:druid) { 'bc559yb0972' }
       let(:collection_druid) { 'kn733hp1726' }
 
-      it 'maps the abstract' do
+      it 'maps the flattened abstract for search' do
         # rubocop:disable Layout/LineLength
         expect(result['summary_search']).to eq ['This polygon shapefile contains mineral resource areas as defined in the General Plan adopted May 24, 1994 for the County of Santa Cruz, California. These Areas were classified by the State Geologist and designated by the State Mining and Geology Board as regionally or statewide significant Mineral Resource Areas and Areas classified by the State as MRZ-2 Zones (areas containing significant mineral deposits), excluding those areas with existing land uses and/or land use designations which conflict with mineral resource extraction. Mineral Resource Areas are classified via Special Report 146 Part IV, Mineral Land Classification: Aggregate Materials in the San Francisco and Monterey Bay Area; and designated by the State Mining and Geology Board via the California Surface Mining and Reclamation Act (SMARA) Designation Report No. 7, Designation of Regionally Significant Construction Aggregate Resource Areas in the South San Francisco Bay, North San Francisco Bay, Monterey Bay Production - Consumption Regions. This layer is part of a collection of GIS data created for Santa Cruz County, California.']
+        # rubocop:enable Layout/LineLength
+      end
+
+      it 'maps the structured abstract for display' do
+        # rubocop:disable Layout/LineLength
+        expect(result['summary_struct']).to eq [
+          {
+            'label' => 'Abstract',
+            'fields' => [
+              {
+                'field' => ['This polygon shapefile contains mineral resource areas as defined in the General Plan adopted May 24, 1994 for the County of Santa Cruz, California. These Areas were classified by the State Geologist and designated by the State Mining and Geology Board as regionally or statewide significant Mineral Resource Areas and Areas classified by the State as MRZ-2 Zones (areas containing significant mineral deposits), excluding those areas with existing land uses and/or land use designations which conflict with mineral resource extraction. Mineral Resource Areas are classified via Special Report 146 Part IV, Mineral Land Classification: Aggregate Materials in the San Francisco and Monterey Bay Area; and designated by the State Mining and Geology Board via the California Surface Mining and Reclamation Act (SMARA) Designation Report No. 7, Designation of Regionally Significant Construction Aggregate Resource Areas in the South San Francisco Bay, North San Francisco Bay, Monterey Bay Production - Consumption Regions. This layer is part of a collection of GIS data created for Santa Cruz County, California.']
+              }
+            ]
+          }.to_json
+        ]
         # rubocop:enable Layout/LineLength
       end
     end
@@ -254,8 +269,20 @@ RSpec.describe 'SDR indexing' do
       let(:druid) { 'bm971cx9348' }
       let(:collection_druid) { 'yh583fk3400' }
 
-      it 'maps the table of contents' do
-        expect(result['toc_search']).to eq ['-- pt.2. Abergavenny -- pt.5. Merthyr Tydfil']
+      it 'maps the flattened tables of contents for search' do
+        expect(result['toc_search']).to eq ['pt.2. Abergavenny -- pt.5. Merthyr Tydfil']
+      end
+
+      it 'maps the structured tables of contents for display' do
+        expect(result['toc_struct']).to eq [
+          {
+            'label' => 'Incomplete contents',
+            'fields' => [
+              ['pt.2. Abergavenny'],
+              ['pt.5. Merthyr Tydfil']
+            ]
+          }.to_json
+        ]
       end
     end
   end
