@@ -140,7 +140,7 @@ to_field 'author_corp_display', cocina_display(:organization_contributor_names)
 to_field 'author_meeting_display', cocina_display(:conference_contributor_names)
 to_field 'author_person_display', cocina_display(:person_contributor_names, with_date: true)
 to_field 'author_person_full_display', cocina_display(:person_contributor_names, with_date: true)
-to_field 'author_struct', cocina_display(:contributors), contributor_to_struct
+to_field 'author_struct', contributors_struct
 
 ##
 # Subject Fields

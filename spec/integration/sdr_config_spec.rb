@@ -129,31 +129,39 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the structured version of the author names for linking' do
-      expect(result['author_struct']).to contain_exactly(
+      expect(JSON.parse(result.dig('author_struct', 0))).to eq(
         {
-          'link' => 'Rifat Paşa, Mehmet Sadık, 1807-1856',
-          'search' => '"Rifat Paşa, Mehmet Sadık"',
-          'post_text' => '(author)'
-        }.to_json,
-        {
-          'link' => 'Gabbay, Yehezkel, 1825-1898',
-          'search' => '"Gabbay, Yehezkel"',
-          'post_text' => '(translator)'
-        }.to_json,
-        {
-          'link' => 'Jerusalmi, Isaac, 1928-2018',
-          'search' => '"Jerusalmi, Isaac"',
-          'post_text' => '(editor)'
-        }.to_json,
-        {
-          'link' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project',
-          'search' => '"Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project"'
-        }.to_json,
-        {
-          'link' => '[Isaac Jerushalmi]',
-          'search' => '"[Isaac Jerushalmi]"',
-          'post_text' => '(publisher)'
-        }.to_json
+          'creator' => [
+            {
+              'link' => 'Rifat Paşa, Mehmet Sadık, 1807-1856',
+              'search' => '"Rifat Paşa, Mehmet Sadık"',
+              'post_text' => 'author'
+            }
+          ],
+          'corporate_author' => [
+            {
+              'link' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project',
+              'search' => '"Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project"'
+            },
+            {
+              'link' => '[Isaac Jerushalmi]',
+              'search' => '"[Isaac Jerushalmi]"',
+              'post_text' => 'publisher'
+            }
+          ],
+          'contributor' => [
+            {
+              'link' => 'Gabbay, Yehezkel, 1825-1898',
+              'search' => '"Gabbay, Yehezkel"',
+              'post_text' => 'translator'
+            },
+            {
+              'link' => 'Jerusalmi, Isaac, 1928-2018',
+              'search' => '"Jerusalmi, Isaac"',
+              'post_text' => 'editor'
+            }
+          ]
+        }
       )
     end
   end
