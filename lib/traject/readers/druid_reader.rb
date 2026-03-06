@@ -7,6 +7,10 @@ module Traject
     def initialize(input_stream, settings)
       @settings = Traject::Indexer::Settings.new settings
       @input_stream = input_stream
+
+      # This reader is only used in development and doesn't need to report
+      # anything to Honeybadger, so we silence it
+      Honeybadger.configure { it.env = 'development' }
     end
 
     def each
