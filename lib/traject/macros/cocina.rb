@@ -48,7 +48,7 @@ module Traject
             creator: creators,
             corporate_author: organizations,
             meeting: conferences,
-            contributor: contributors
+            contributors: contributors
           }.transform_values do |contributors|
             contributors.map { |c| contributor_to_struct(c) }.presence
           end.compact_blank

@@ -121,7 +121,7 @@ RSpec.describe Traject::Macros::Cocina do
     it 'organizes contributors by role' do
       expect(accumulator).to eq [
         {
-          contributor: [
+          contributors: [
             {
               link: 'Aljubran, Mohammad J.',
               search: 'Aljubran, Mohammad J.',
