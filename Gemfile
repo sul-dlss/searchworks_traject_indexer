@@ -41,7 +41,7 @@ end
 gem 'activesupport', '~> 8.0'
 gem 'slop'
 
-gem 'cocina_display'
+gem 'cocina_display', '~> 1'
 gem 'dor-event-client'
 gem 'factory_bot', '~> 6.2'
 
