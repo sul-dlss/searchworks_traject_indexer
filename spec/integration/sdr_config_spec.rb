@@ -149,7 +149,7 @@ RSpec.describe 'SDR indexing' do
               'post_text' => 'publisher'
             }
           ],
-          'contributor' => [
+          'contributors' => [
             {
               'link' => 'Gabbay, Yehezkel, 1825-1898',
               'search' => 'Gabbay, Yehezkel',
