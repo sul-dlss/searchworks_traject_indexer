@@ -124,12 +124,12 @@ RSpec.describe Traject::Macros::Cocina do
           contributor: [
             {
               link: 'Aljubran, Mohammad J.',
-              search: '"Aljubran, Mohammad J."',
+              search: 'Aljubran, Mohammad J.',
               post_text: 'creator'
             },
             {
               link: 'Horne, Roland N.',
-              search: '"Horne, Roland N."',
+              search: 'Horne, Roland N.',
               post_text: 'creator'
             }
           ]
