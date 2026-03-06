@@ -185,7 +185,7 @@ module Traject
       def contributor_to_struct(contributor)
         {
           link: contributor.display_name(with_date: true),
-          search: "\"#{contributor.display_name}\"",
+          search: contributor.display_name,
           post_text: contributor.display_role
         }.compact
       end

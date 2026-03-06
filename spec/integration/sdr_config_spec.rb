@@ -134,30 +134,30 @@ RSpec.describe 'SDR indexing' do
           'creator' => [
             {
               'link' => 'Rifat Paşa, Mehmet Sadık, 1807-1856',
-              'search' => '"Rifat Paşa, Mehmet Sadık"',
+              'search' => 'Rifat Paşa, Mehmet Sadık',
               'post_text' => 'author'
             }
           ],
           'corporate_author' => [
             {
               'link' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project',
-              'search' => '"Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project"'
+              'search' => 'Taube Center for Jewish Studies (Stanford University), Sephardic Studies Project'
             },
             {
               'link' => '[Isaac Jerushalmi]',
-              'search' => '"[Isaac Jerushalmi]"',
+              'search' => '[Isaac Jerushalmi]',
               'post_text' => 'publisher'
             }
           ],
           'contributor' => [
             {
               'link' => 'Gabbay, Yehezkel, 1825-1898',
-              'search' => '"Gabbay, Yehezkel"',
+              'search' => 'Gabbay, Yehezkel',
               'post_text' => 'translator'
             },
             {
               'link' => 'Jerusalmi, Isaac, 1928-2018',
-              'search' => '"Jerusalmi, Isaac"',
+              'search' => 'Jerusalmi, Isaac',
               'post_text' => 'editor'
             }
           ]
