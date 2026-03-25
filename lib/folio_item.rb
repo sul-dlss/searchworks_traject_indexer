@@ -198,6 +198,8 @@ class FolioItem
                          @holding&.dig('callNumber') ||
                          bound_with&.dig('holding', 'callNumber')
 
+    return CallNumber.new('', '') unless base_call_number.present?
+
     volume_info = normalize_call_number([@item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ').presence) if @item
 
     if bound_with?
