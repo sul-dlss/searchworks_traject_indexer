@@ -200,6 +200,21 @@ RSpec.describe 'format_hsim config' do
         end
       end
 
+      context 'when record is an Image based on 245h terms that use regex to match on word boundaries' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000a00000000000000000'
+            r.append(MARC::DataField.new('245', '1', ' ',
+                                         MARC::Subfield.new('a', 'Example title'),
+                                         MARC::Subfield.new('h', '[graphic]')))
+          end
+        end
+
+        it 'maps to Image' do
+          expect(result[field]).to eq ['Image']
+        end
+      end
+
       context 'when the 245h term contains a partial string match' do
         let(:record) do
           MARC::Record.new.tap do |r|
@@ -273,6 +288,22 @@ RSpec.describe 'format_hsim config' do
           it 'maps to Image|Slide' do
             expect(result[field]).to eq ['Image', 'Image|Slide']
           end
+        end
+      end
+    end
+
+    context 'when the record is a Map' do
+      context 'when leader[6] = e and 245 h contains an image like term' do
+        let(:record) do
+          MARC::Record.new.tap do |r|
+            r.leader = '000000e00000000000000000'
+            r.append(MARC::DataField.new('245', '1', ' ',
+                                         MARC::Subfield.new('h', '[cartographic material]')))
+          end
+        end
+
+        it 'maps to Map' do
+          expect(result[field]).to eq ['Map']
         end
       end
     end
