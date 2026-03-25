@@ -101,7 +101,7 @@ module FolioFormatConfig
              )
 
     image_terms = [
-      'art original', 'digital graphic', 'slide', 'slides', 'chart', 'art reproduction', 'graphic', 'technical drawing', 'flash card', 'transparency', 'activity card', 'picture', 'graphic/digital graphic', 'diapositives'
+      'art original', 'digital graphic', 'slide', 'slides', 'chart', 'art reproduction', /\bgraphic\b/, 'technical drawing', 'flash card', 'transparency', 'activity card', 'picture', 'graphic/digital graphic', 'diapositives'
     ]
 
     to_field 'format_hsim',
