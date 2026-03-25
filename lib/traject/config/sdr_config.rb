@@ -155,13 +155,10 @@ to_field 'era_facet', cocina_display(:subject_temporal)
 
 ##
 # Publication Fields
-# TODO: remove pub_date and pub_date_sort; see: https://github.com/sul-dlss/SearchWorks/issues/6410
-to_field 'pub_date', cocina_display(:pub_year_str)
-to_field 'pub_date_sort', cocina_display(:pub_year_str)
-to_field 'pub_search', cocina_display(:publication_places)
-to_field 'publication_year_isi', cocina_display(:pub_year_int)
+to_field 'pub_date', cocina_display(:pub_date_str)
 to_field 'pub_year_ss', cocina_display(:pub_year_str)
-to_field 'imprint_display', cocina_display(:imprint_str)
+to_field 'pub_date_sort', cocina_display(:pub_date_sort_str)
+to_field 'pub_search', cocina_display(:imprint_str)
 to_field 'pub_country', cocina_display(:publication_countries)
 to_field 'pub_year_tisim', cocina_display(:pub_year_ints)
 

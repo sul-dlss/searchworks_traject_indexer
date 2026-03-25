@@ -202,22 +202,24 @@ RSpec.describe 'SDR indexing' do
     let(:druid) { 'bm971cx9348' }
     let(:collection_druid) { 'yh583fk3400' }
 
-    it 'maps the publication year as a string for display/sort' do
+    it 'maps the publication date as a string for search' do
       expect(result['pub_date']).to eq ['1920 -']
+    end
+
+    it 'maps the publication date as a string for sorting' do
+      expect(result['pub_date_sort']).to eq ['19200000']
+    end
+
+    it 'maps the publication year for display on search results' do
       expect(result['pub_year_ss']).to eq ['1920 -']
-      expect(result['pub_date_sort']).to eq ['1920 -']
     end
 
-    it 'maps the places of publication for search' do
-      expect(result['pub_search']).to eq %w[England London]
+    it 'maps the publication year range as integers' do
+      expect(result['pub_year_tisim']).to eq (1920..Date.today.year).to_a
     end
 
-    it 'maps the publication year as an integer' do
-      expect(result['publication_year_isi']).to eq [1920]
-    end
-
-    it 'maps the full imprint statement for display' do
-      expect(result['imprint_display']).to eq ['2nd ed. - London : H.M. Stationery Off., [192-?]-[193-?]']
+    it 'maps the full imprint statement for search' do
+      expect(result['pub_search']).to eq ['2nd ed. - London : H.M. Stationery Off., [192-?]-[193-?]']
     end
 
     it 'maps the publication country' do
