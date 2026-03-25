@@ -99,6 +99,20 @@ RSpec.describe FolioItem do
     end
   end
 
+  describe '#call_number' do
+    subject(:call_number) { described_class.new(item:, holding: {}).call_number }
+
+    let(:item) do
+      {
+        call_number: ''
+      }.with_indifferent_access
+    end
+
+    it 'is the effective location library code' do
+      expect(call_number.to_s).to eq ''
+    end
+  end
+
   describe '#library' do
     subject(:library) { described_class.new(item:, holding:).library }
 
