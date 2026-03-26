@@ -358,7 +358,7 @@ RSpec.describe 'SDR indexing' do
     end
 
     it 'maps the thumbnail IIIF ID' do
-      expect(result['file_id']).to eq ['bk264hq9320%2Fbk264hq9320_img_1']
+      expect(result['file_id']).to eq ['bk264hq9320%2Fbk264hq9320_img_1.jp2']
     end
 
     context 'with a virtual object' do
@@ -375,7 +375,7 @@ RSpec.describe 'SDR indexing' do
       end
 
       it 'uses the members to derive a thumbnail' do
-        expect(result['file_id']).to eq ['ts786ny5936%2FPC0170_s1_E_0204']
+        expect(result['file_id']).to eq ['ts786ny5936%2FPC0170_s1_E_0204.jp2']
       end
     end
   end

@@ -72,7 +72,11 @@ class PurlRecord
       break if thumbnail_file.present?
     end if thumbnail_file.nil?
 
-    thumbnail_file&.iiif_id
+    # If still no thumbnail or it isn't available via IIIF, bail out
+    return unless thumbnail_file&.iiif_id.present?
+
+    # Image URL should include the .jp2 suffix
+    "#{thumbnail_file.iiif_id}.jp2"
   end
 
   # Ensure all objects, even those missing public cocina have a (nil) catkey and a label
