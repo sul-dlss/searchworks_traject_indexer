@@ -96,7 +96,7 @@ end
 
 # Skip records that probably have an equivalent MARC record
 each_record do |record, context|
-  next unless record.catkey
+  next unless record.catkey && settings['purl_fetcher.skip_catkey']
 
   message = 'Item has a catkey'
   SdrEvents.report_indexing_skipped(record.druid, target: settings['purl_fetcher.target'], message:)
