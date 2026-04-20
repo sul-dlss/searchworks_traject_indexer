@@ -23,7 +23,7 @@ GEM
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
     benchmark (0.5.0)
-    bigdecimal (4.1.1)
+    bigdecimal (4.1.2)
     bunny (2.24.0)
       amq-protocol (~> 2.3)
       sorted_set (~> 1, >= 1.0.2)
@@ -38,7 +38,7 @@ GEM
       capistrano (~> 3.0)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina_display (2.2.0)
+    cocina_display (2.3.1)
       activesupport (>= 7)
       edtf (~> 3.2)
       geo_coord (~> 0.2)
@@ -82,7 +82,7 @@ GEM
     ed25519 (1.4.0)
     edtf (3.2.0)
       activesupport (>= 3.0, < 9.0)
-    erb (6.0.2)
+    erb (6.0.3)
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     ffi (1.17.4-arm64-darwin)
@@ -102,7 +102,7 @@ GEM
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
       llhttp-ffi (~> 0.5.0)
-    http-cookie (1.1.4)
+    http-cookie (1.1.6)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     httpclient (2.9.0)
@@ -119,7 +119,7 @@ GEM
       csv
     iso8601 (0.13.0)
     janeway-jsonpath (0.6.0)
-    json (2.19.3)
+    json (2.19.4)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     llhttp-ffi (0.5.1)
@@ -132,7 +132,7 @@ GEM
     marc-fastxmlwriter (1.1.0)
       marc (~> 1.0)
     match_map (3.0.0)
-    minitest (6.0.3)
+    minitest (6.0.4)
       drb (~> 2.0)
       prism (~> 1.5)
     mutex_m (0.3.0)
@@ -163,7 +163,7 @@ GEM
     racc (1.8.1)
     rack (3.2.6)
     rainbow (3.1.1)
-    rake (13.3.1)
+    rake (13.4.2)
     rbtree (0.4.6)
     rdoc (7.2.0)
       erb
@@ -269,7 +269,7 @@ DEPENDENCIES
   capistrano (~> 3.0)
   capistrano-bundler
   capistrano-shared_configs
-  cocina_display (~> 2.2)
+  cocina_display (~> 2.3)
   config
   csv
   debouncer
@@ -310,14 +310,14 @@ CHECKSUMS
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bcrypt_pbkdf (1.1.2) sha256=c2414c23ce66869b3eb9f643d6a3374d8322dfb5078125c82792304c10b94cf6
   benchmark (0.5.0) sha256=465df122341aedcb81a2a24b4d3bd19b6c67c1530713fd533f3ff034e419236c
-  bigdecimal (4.1.1) sha256=1c09efab961da45203c8316b0cdaec0ff391dfadb952dd459584b63ebf8054ca
+  bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
   bunny (2.24.0) sha256=072fe4ae98eaa9c95a17e4d166204f710bba8a9a7070b73a8c3b023f439d1682
   capistrano (3.20.0) sha256=0113e58dda99add0342e56a244f664734c59f442c5ed734f5303b0b559b479c9
   capistrano-bundler (2.2.0) sha256=47b4cf2ea17ea132bb0a5cabc5663443f5190a54f4da5b322d04e1558ff1468c
   capistrano-one_time_key (0.2.0) sha256=88630a99de2113befd9885242cc8b3bc58536f4e06507363cc3ee064080a0375
   capistrano-shared_configs (0.2.2) sha256=905d1c51f0be6efd8ddb262aea7fae32c62d947297ff6b83f5cbccac3b138b36
   chronic (0.10.2) sha256=766f2fcce6ac3cc152249ed0f2b827770d3e517e2e87c5fba7ed74f4889d2dc3
-  cocina_display (2.2.0) sha256=12baef5c3d9de95f1a7a4f1f47fd57e93f467b6e53d8ef8061ccd69a5e2635dd
+  cocina_display (2.3.1) sha256=67c13c3d9df0fac6751ad1b513664814da1a3fdd6fa11d84fcff92130ef3f9ba
   concurrent-ruby (1.3.6) sha256=6b56837e1e7e5292f9864f34b69c5a2cbc75c0cf5338f1ce9903d10fa762d5ab
   config (5.6.1) sha256=a9f0f0f9ffa6d12d43147a3fa1ab8486fe484c3098a350c6a2e0f32430e0d1cc
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
@@ -337,7 +337,7 @@ CHECKSUMS
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
   ed25519 (1.4.0) sha256=16e97f5198689a154247169f3453ef4cfd3f7a47481fde0ae33206cdfdcac506
   edtf (3.2.0) sha256=a15a0ee274e49c8047a3ebb5d61d793ba44f7f8ffbf0595392c467e3ea8d2447
-  erb (6.0.2) sha256=9fe6264d44f79422c87490a1558479bd0e7dad4dd0e317656e67ea3077b5242b
+  erb (6.0.3) sha256=e43685a8a0a0ea6a924871b2162e8953ef73147ce46b75b36d1f6774fd286e91
   factory_bot (6.5.6) sha256=12beb373214dccc086a7a63763d6718c49769d5606f0501e0a4442676917e077
   ffi (1.17.4-arm64-darwin) sha256=19071aaf1419251b0a46852abf960e77330a3b334d13a4ab51d58b31a937001b
   ffi (1.17.4-x86_64-linux-gnu) sha256=9d3db14c2eae074b382fa9c083fe95aec6e0a1451da249eab096c34002bc752d
@@ -347,7 +347,7 @@ CHECKSUMS
   hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
   honeybadger (6.5.5) sha256=bb42c7da748f72961520056ef49ab63abd886d62fd3e7bc45f095c15f7094ca7
   http (5.3.1) sha256=c50802d8e9be3926cb84ac3b36d1a31fbbac383bc4cbecdce9053cb604231d7d
-  http-cookie (1.1.4) sha256=8dd8011dedcae5f91af2671b7ba878c4a9e89f0f6384790c1f4cdd176f5e3ada
+  http-cookie (1.1.6) sha256=ba4b82be64de61dc281243dac70e3c382c45142f20268ed9276a3670c93feaa9
   http-form_data (2.3.0) sha256=cc4eeb1361d9876821e31d7b1cf0b68f1cf874b201d27903480479d86448a5f3
   httpclient (2.9.0) sha256=4b645958e494b2f86c2f8a2f304c959baa273a310e77a2931ddb986d83e498c8
   i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
@@ -356,7 +356,7 @@ CHECKSUMS
   iso-639 (0.3.8) sha256=48b8104a4b55367fda347609e36ef8eeb3a0b4d048b36365371c274958be7535
   iso8601 (0.13.0) sha256=298c2b15b7be5fa95a1372813d36a2257656cd8e906dfbc1f5cb409851425aa2
   janeway-jsonpath (0.6.0) sha256=b00a63a3feeb02c821e97d2e927c5c669639a4bad6999ee1993b2bab5518f962
-  json (2.19.3) sha256=289b0bb53052a1fa8c34ab33cc750b659ba14a5c45f3fcf4b18762dc67c78646
+  json (2.19.4) sha256=670a7d333fb3b18ca5b29cb255eb7bef099e40d88c02c80bd42a3f30fe5239ac
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   llhttp-ffi (0.5.1) sha256=9a25a7fc19311f691a78c9c0ac0fbf4675adbd0cca74310228fdf841018fa7bc
@@ -364,7 +364,7 @@ CHECKSUMS
   marc (1.4.0) sha256=89f31a66c21f5a11e8fcf65fe06d207e121fb45ac6b23abef403f9ce912c7d10
   marc-fastxmlwriter (1.1.0) sha256=b696f5688a5b2fa48ea299d6aa5f00f161925576b08f38871ea384ebc6a7fe25
   match_map (3.0.0) sha256=a753c10e88f6a19f08a2b99d6136e516409054ad2d043109457325efaf8a259e
-  minitest (6.0.3) sha256=88ac8a1de36c00692420e7cb3cc11a0773bbcb126aee1c249f320160a7d11411
+  minitest (6.0.4) sha256=df1304664589d40f46089247fdc451f866b0ce0d7cae1457a15fc1eb7d48dca1
   mutex_m (0.3.0) sha256=cfcb04ac16b69c4813777022fdceda24e9f798e48092a2b817eb4c0a782b0751
   net-scp (4.1.0) sha256=a99b0b92a1e5d360b0de4ffbf2dc0c91531502d3d4f56c28b0139a7c093d1a5d
   net-sftp (4.0.0) sha256=65bb91c859c2f93b09826757af11b69af931a3a9155050f50d1b06d384526364
@@ -384,7 +384,7 @@ CHECKSUMS
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
   rack (3.2.6) sha256=5ed78e1f73b2e25679bec7d45ee2d4483cc4146eb1be0264fc4d94cb5ef212c2
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
-  rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
+  rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
   rbtree (0.4.6) sha256=14eea4469b24fd2472542e5f3eb105d6344c8ccf36f0b56d55fdcfeb4e0f10fc
   rdoc (7.2.0) sha256=8650f76cd4009c3b54955eb5d7e3a075c60a57276766ebf36f9085e8c9f23192
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
