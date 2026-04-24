@@ -154,10 +154,6 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     expect(result['gbl_mdVersion_s']).to eq 'Aardvark'
   end
 
-  it 'maps the WFS/WMS/WCS identifier' do
-    expect(result['gbl_wxsIdentifier_s']).to eq 'druid:vv853br8653'
-  end
-
   describe 'URL references' do
     let(:references) { JSON.parse result['dct_references_s'] }
 
@@ -167,14 +163,6 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the embed URL' do
       expect(references['https://oembed.com']).to eq "https://purl.stanford.edu/embed.json?hide_title=true&url=https%3A%2F%2Fpurl.stanford.edu%2F#{druid}"
-    end
-
-    it 'maps the WMS URL' do
-      expect(references['http://www.opengis.net/def/serviceType/ogc/wms']).to eq 'https://geowebservices.stanford.edu/geoserver/wms'
-    end
-
-    it 'maps the WFS URL' do
-      expect(references['http://www.opengis.net/def/serviceType/ogc/wfs']).to eq 'https://geowebservices.stanford.edu/geoserver/wfs'
     end
 
     it 'maps the searchworks URL when released to searchworks' do
@@ -255,10 +243,6 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the collection membership as memberOf' do
       expect(result['pcdm_memberOf_sm']).to eq ['stanford-bf420qj4978']
-    end
-
-    it 'does not include the WFS/WMS/WCS identifier' do
-      expect(result['gbl_wxsIdentifier_s']).to be_nil
     end
 
     describe 'URL references' do
@@ -361,18 +345,6 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the collection membership as memberOf' do
       expect(result['pcdm_memberOf_sm']).to eq ['stanford-vh286rq6087']
-    end
-
-    describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'] }
-
-      it 'maps the WMS URL' do
-        expect(references['http://www.opengis.net/def/serviceType/ogc/wms']).to eq 'https://geowebservices-restricted.stanford.edu/geoserver/wms'
-      end
-
-      it 'maps the WCS URL' do
-        expect(references['http://www.opengis.net/def/serviceType/ogc/wcs']).to eq 'https://geowebservices-restricted.stanford.edu/geoserver/wcs'
-      end
     end
   end
 
@@ -494,18 +466,6 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
 
     it 'maps the collection membership as memberOf' do
       expect(result['pcdm_memberOf_sm']).to eq ['stanford-bq589tv8583']
-    end
-
-    describe 'URL references' do
-      let(:references) { JSON.parse result['dct_references_s'] }
-
-      it 'maps the WMS URL' do
-        expect(references['http://www.opengis.net/def/serviceType/ogc/wms']).to eq 'https://geowebservices.stanford.edu/geoserver/wms'
-      end
-
-      it 'maps the WFS URL' do
-        expect(references['http://www.opengis.net/def/serviceType/ogc/wfs']).to eq 'https://geowebservices.stanford.edu/geoserver/wfs'
-      end
     end
   end
 

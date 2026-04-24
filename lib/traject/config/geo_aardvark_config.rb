@@ -247,19 +247,12 @@ to_field('gbl_mdModified_dt') { |record, accumulator| accumulator << record.modi
 # https://opengeometadata.org/ogm-aardvark/#metadata-version
 to_field 'gbl_mdVersion_s', literal('Aardvark')
 
-# https://opengeometadata.org/ogm-aardvark/#wxs-identifier
-# - needed to request layers from our GeoServer
-to_field('gbl_wxsIdentifier_s') { |record, accumulator| accumulator << "druid:#{record.druid}" if record.content_type == 'geo' }
-
 # https://opengeometadata.org/ogm-aardvark/#references
 # - powers the map preview functionality, download links, and more
 # - everything gets encoded as a single JSON object and serialized to a string
 # - links are evaluated in a preset order to determine which one to use for the preview
 # - all items get a PURL link
 # - all non-collection items get an embed link
-# - all geo items get a WMS link
-# - vectors get a WFS link
-# - rasters get a WCS link
 # - index maps have a specially named geojson file that is linked
 # - if XML metadata files exist (not in data.zip), we link them
 # - data that is in geoJSON format (including index maps) gets a link to the spec
@@ -276,9 +269,6 @@ to_field 'dct_references_s', cocina_display(:download_url), transform(lambda { |
 # Add Searchworks URL as a reference if the item is released to Searchworks
 to_field 'dct_references_s', cocina_display(:oembed_url, params: { hide_title: true }), as_reference('https://oembed.com')
 to_field 'dct_references_s', cocina_display(:iiif_manifest_url), as_reference('http://iiif.io/api/presentation#manifest')
-to_field 'dct_references_s', wms_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wms')
-to_field 'dct_references_s', wfs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wfs')
-to_field 'dct_references_s', wcs_url, as_reference('http://www.opengis.net/def/serviceType/ogc/wcs')
 to_field 'dct_references_s', searchworks_url, as_reference('https://schema.org/relatedLink')
 to_field 'dct_references_s', find_file(/index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
 to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
