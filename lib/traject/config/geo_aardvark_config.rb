@@ -258,7 +258,9 @@ to_field 'gbl_mdVersion_s', literal('Aardvark')
 # - items that are released to Searchworks get a Searchworks link
 # - index maps have a specially named geojson file that is linked
 # - if XML metadata files exist (not in data.zip), we link them
-# - data that is in geoJSON format (including index maps) gets a link to the spec
+# - data that is in geoJSON format (including index maps) gets a link
+# - PMTiles get a link, if they have the right filename
+# - COGs get a link, if they have the right filename and mime type
 to_field 'dct_references_s', cocina_display(:purl_url), as_reference('http://schema.org/url')
 # Create a hash version of downloadUrl so that we always have a label for display without relying on dct_format_s
 # See https://github.com/geoblacklight/geoblacklight/blob/9ce0dccdc2336dad520dfc0578743b20d421b0f6/app/components/geoblacklight/download_links_component.html.erb#L12
@@ -274,11 +276,13 @@ to_field 'dct_references_s', cocina_display(:oembed_url, params: { hide_title: t
 to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
 to_field 'dct_references_s', cocina_display(:thumbnail_url), as_reference('http://schema.org/thumbnailUrl')
 to_field 'dct_references_s', searchworks_url, as_reference('https://schema.org/relatedLink')
-to_field 'dct_references_s', find_file(/index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
-to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
-to_field 'dct_references_s', find_file(/iso19110\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gco')
-to_field 'dct_references_s', find_file(/fgdc\.xml/), stacks_file_url, as_reference('http://www.opengis.net/cat/csw/csdgm')
-to_field 'dct_references_s', find_file(/\.geojson/), stacks_file_url, as_reference('http://geojson.org/geojson-spec.html')
+to_field 'dct_references_s', find_file(filename: /index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
+to_field 'dct_references_s', find_file(filename: /iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
+to_field 'dct_references_s', find_file(filename: /iso19110\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gco')
+to_field 'dct_references_s', find_file(filename: /fgdc\.xml/), stacks_file_url, as_reference('http://www.opengis.net/cat/csw/csdgm')
+to_field 'dct_references_s', find_file(filename: /\.geojson/), stacks_file_url, as_reference('http://geojson.org/geojson-spec.html')
+to_field 'dct_references_s', find_file(filename: /\.pmtiles/), stacks_file_url, as_reference('https://github.com/protomaps/PMTiles')
+to_field 'dct_references_s', find_file(filename: /\.tif/, mime_type: /cloud-optimized/), stacks_file_url, as_reference('https://github.com/cogeotiff/cog-spec')
 
 # Make single-valued fields in solr into single values instead of arrays
 # The DebugWriter doesn't like this, so skip it for that writer

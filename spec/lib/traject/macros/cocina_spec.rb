@@ -48,7 +48,7 @@ RSpec.describe Traject::Macros::Cocina do
 
   describe 'select_files' do
     context 'with a filename string' do
-      let(:macro) { select_files('preview.jpg') }
+      let(:macro) { select_files(filename: 'preview.jpg') }
 
       it 'returns the files with the matching filename' do
         expect(accumulator.map(&:filename)).to eq ['preview.jpg']
@@ -56,7 +56,7 @@ RSpec.describe Traject::Macros::Cocina do
     end
 
     context 'with a filename regex' do
-      let(:macro) { select_files(/\.xml$/) }
+      let(:macro) { select_files(filename: /\.xml$/) }
 
       it 'returns the files with filenames matching the regex' do
         expect(accumulator.map(&:filename)).to eq [
@@ -70,7 +70,7 @@ RSpec.describe Traject::Macros::Cocina do
 
     context 'with a filtered list of files' do
       let(:accumulator) { record.filesets[2].files }
-      let(:macro) { select_files(/-iso/) }
+      let(:macro) { select_files(filename: /-iso/) }
 
       it 'operates on the files in the list' do
         expect(accumulator.map(&:filename)).to eq [
@@ -81,7 +81,7 @@ RSpec.describe Traject::Macros::Cocina do
     end
 
     context 'when there are no matches' do
-      let(:macro) { select_files('missing.jpg') }
+      let(:macro) { select_files(filename: 'missing.jpg') }
 
       it 'returns an empty array' do
         expect(accumulator).to eq []
@@ -91,7 +91,7 @@ RSpec.describe Traject::Macros::Cocina do
 
   describe 'find_file' do
     context 'with a filename string' do
-      let(:macro) { find_file('preview.jpg') }
+      let(:macro) { find_file(filename: 'preview.jpg') }
 
       it 'returns the file with the matching filename' do
         expect(accumulator.first.filename).to eq 'preview.jpg'
@@ -99,7 +99,7 @@ RSpec.describe Traject::Macros::Cocina do
     end
 
     context 'with a filename regex' do
-      let(:macro) { find_file(/\.xml$/) }
+      let(:macro) { find_file(filename: /\.xml$/) }
 
       it 'returns the first file with a filename matching the regex' do
         expect(accumulator.first.filename).to eq 'Stanford_Temperature_Model_4km.geojson.xml'
@@ -107,10 +107,62 @@ RSpec.describe Traject::Macros::Cocina do
     end
 
     context 'when the file is not found' do
-      let(:macro) { find_file('missing.jpg') }
+      let(:macro) { find_file(filename: 'missing.jpg') }
 
       it 'returns an empty array' do
         expect(accumulator).to eq []
+      end
+    end
+
+    context 'with a mime type' do
+      # mock structural for an object with a tiff, geotiff and COG
+      let(:body) do
+        {
+          'structural' => {
+            'contains' => [
+              {
+                'structural' => {
+                  'contains' => [
+                    {
+                      'filename' => 'my_geotiff.tif',
+                      'hasMimeType' => 'image/tiff; application=geotiff'
+                    },
+                    {
+                      'filename' => 'my_cog.tif',
+                      'hasMimeType' => 'image/tiff; application=geotiff; profile=cloud-optimized'
+                    }
+                  ]
+                }
+              },
+              {
+                'structural' => {
+                  'contains' => [
+                    {
+                      'filename' => 'my_preview_image.tif',
+                      'hasMimeType' => 'image/tiff'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }.to_json
+      end
+
+      context 'with a string match' do
+        let(:macro) { find_file(mime_type: 'image/tiff') }
+
+        it 'returns the first file with a mime type containing the string' do
+          expect(accumulator.first.filename).to eq 'my_geotiff.tif'
+        end
+      end
+
+      context 'with a regex match' do
+        let(:macro) { find_file(mime_type: /profile=cloud-optimized/) }
+
+        it 'returns the first file with a mime type matching the regex' do
+          expect(accumulator.first.filename).to eq 'my_cog.tif'
+        end
       end
     end
   end

@@ -162,19 +162,21 @@ module Traject
       end
 
       # Get all files from cocina structural whose filename matches the pattern
+      # And/or whose mime type matches the mime type pattern
       # Filters the accumulator if it is not empty; otherwise search all files
-      def select_files(pattern)
+      def select_files(filename: nil, mime_type: nil)
         lambda do |record, accumulator, _context|
           accumulator.concat record.files if accumulator.empty?
-          accumulator.select! { |file| file.filename.match?(pattern) }
+          accumulator.select! { |file| file.filename.match?(filename) } if filename
+          accumulator.select! { |file| file.mime_type.match?(mime_type) } if mime_type
         end
       end
 
-      # Find the first file in cocina structural whose filename matches the pattern
+      # Find the first file in cocina structural matching the provided arguments
       # Filters the accumulator if it is not empty; otherwise search all files
-      def find_file(pattern)
+      def find_file(*args, **kwargs)
         lambda do |record, accumulator, context|
-          select_files(pattern).call(record, accumulator, context)
+          select_files(*args, **kwargs).call(record, accumulator, context)
           accumulator.replace(accumulator.first(1))
         end
       end
