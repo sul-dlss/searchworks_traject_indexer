@@ -251,6 +251,10 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       it 'maps the IIIF manifest URL' do
         expect(references['http://iiif.io/api/presentation#manifest']).to eq 'https://purl.stanford.edu/dc482zx1528/iiif3/manifest'
       end
+
+      it 'maps the thumbnail URL' do
+        expect(references['http://schema.org/thumbnailUrl']).to eq 'https://stacks.stanford.edu/image/iiif/dc482zx1528%2Fdc482zx1528_00_0001/full/!400,400/0/default.jpg'
+      end
     end
   end
 

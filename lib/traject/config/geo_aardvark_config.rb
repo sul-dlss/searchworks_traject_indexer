@@ -253,6 +253,9 @@ to_field 'gbl_mdVersion_s', literal('Aardvark')
 # - links are evaluated in a preset order to determine which one to use for the preview
 # - all items get a PURL link
 # - all non-collection items get an embed link
+# - scanned maps get a IIIF manifest link
+# - all items with IIIF-accessible thumbnails get a thumbnail image link
+# - items that are released to Searchworks get a Searchworks link
 # - index maps have a specially named geojson file that is linked
 # - if XML metadata files exist (not in data.zip), we link them
 # - data that is in geoJSON format (including index maps) gets a link to the spec
@@ -269,6 +272,7 @@ to_field 'dct_references_s', cocina_display(:download_url), transform(lambda { |
 # Add Searchworks URL as a reference if the item is released to Searchworks
 to_field 'dct_references_s', cocina_display(:oembed_url, params: { hide_title: true }), as_reference('https://oembed.com')
 to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
+to_field 'dct_references_s', cocina_display(:thumbnail_url), as_reference('http://schema.org/thumbnailUrl')
 to_field 'dct_references_s', searchworks_url, as_reference('https://schema.org/relatedLink')
 to_field 'dct_references_s', find_file(/index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
 to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
