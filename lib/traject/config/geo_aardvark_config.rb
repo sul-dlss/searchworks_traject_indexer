@@ -268,7 +268,7 @@ to_field 'dct_references_s', cocina_display(:download_url), transform(lambda { |
 }), as_reference('http://schema.org/downloadUrl')
 # Add Searchworks URL as a reference if the item is released to Searchworks
 to_field 'dct_references_s', cocina_display(:oembed_url, params: { hide_title: true }), as_reference('https://oembed.com')
-to_field 'dct_references_s', cocina_display(:iiif_manifest_url), as_reference('http://iiif.io/api/presentation#manifest')
+to_field 'dct_references_s', iiif_manifest_url, as_reference('http://iiif.io/api/presentation#manifest')
 to_field 'dct_references_s', searchworks_url, as_reference('https://schema.org/relatedLink')
 to_field 'dct_references_s', find_file(/index_map\.(json|geojson)/), stacks_file_url, as_reference('https://openindexmaps.org')
 to_field 'dct_references_s', find_file(/iso19139\.xml/), stacks_file_url, as_reference('http://www.isotc211.org/schemas/2005/gmd')
