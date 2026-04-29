@@ -137,4 +137,21 @@ RSpec.describe Traject::Macros::Cocina do
       ]
     end
   end
+
+  describe 'iiif_manifest_url' do
+    let(:macro) { iiif_manifest_url }
+    subject { accumulator.first }
+
+    context 'with geo data' do
+      let(:druid) { 'fk339wc1276' }
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'with a map' do
+      let(:druid) { 'dc482zx1528' }
+
+      it { is_expected.to eq 'https://purl.stanford.edu/dc482zx1528/iiif3/manifest' }
+    end
+  end
 end
