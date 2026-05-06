@@ -5,6 +5,7 @@ require 'time'
 module Traject
   class FolioPostgresReader # rubocop:disable  Metrics/ClassLength
     include Enumerable
+
     attr_reader :settings, :cursor_type, :folio_version
 
     # @param [IO] _input_stream
