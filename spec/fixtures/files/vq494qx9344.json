@@ -1,0 +1,344 @@
+{
+  "cocinaVersion": "0.116.0",
+  "type": "https://cocina.sul.stanford.edu/models/geo",
+  "externalIdentifier": "druid:vq494qx9344",
+  "label": "Orthophoto of O'Donohue Family Stanford Educational Farm",
+  "version": 7,
+  "access": {
+    "view": "world",
+    "download": "world",
+    "controlledDigitalLending": false,
+    "useAndReproductionStatement": "User agrees that, where applicable, content will not be used to identify or to otherwise infringe the privacy or confidentiality rights of individuals. Content distributed via the Stanford Digital Repository may be subject to additional license and use restrictions applied by the depositor.",
+    "license": "https://opendatacommons.org/licenses/pddl/1-0/"
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:zw306xn5593"
+  },
+  "description": {
+    "title": [
+      {
+        "value": "Orthophoto of O'Donohue Family Stanford Educational Farm."
+      }
+    ],
+    "contributor": [
+      {
+        "name": [
+          {
+            "structuredValue": [
+              {
+                "value": "Stace D",
+                "type": "forename"
+              },
+              {
+                "value": "Maples",
+                "type": "surname"
+              }
+            ]
+          }
+        ],
+        "type": "person",
+        "status": "primary",
+        "role": [
+          {
+            "value": "author",
+            "code": "aut",
+            "uri": "http://id.loc.gov/vocabulary/relators/aut",
+            "source": {
+              "code": "marcrelator",
+              "uri": "http://id.loc.gov/vocabulary/relators/"
+            }
+          }
+        ]
+      }
+    ],
+    "event": [
+      {
+        "type": "deposit",
+        "date": [
+          {
+            "value": "2025-11-07",
+            "type": "publication",
+            "encoding": {
+              "code": "edtf"
+            }
+          }
+        ]
+      },
+      {
+        "type": "creation",
+        "date": [
+          {
+            "value": "2020-10-29",
+            "type": "creation",
+            "encoding": {
+              "code": "edtf"
+            }
+          }
+        ]
+      }
+    ],
+    "form": [
+      {
+        "structuredValue": [
+          {
+            "value": "Data",
+            "type": "type"
+          }
+        ],
+        "type": "resource type",
+        "source": {
+          "value": "Stanford self-deposit resource types"
+        }
+      },
+      {
+        "value": "Data sets",
+        "type": "genre",
+        "uri": "http://id.loc.gov/authorities/genreForms/gf2018026119",
+        "source": {
+          "code": "lcgft"
+        }
+      },
+      {
+        "value": "dataset",
+        "type": "genre",
+        "source": {
+          "code": "local"
+        }
+      },
+      {
+        "value": "Dataset",
+        "type": "resource type",
+        "uri": "http://id.loc.gov/vocabulary/resourceTypes/dat",
+        "source": {
+          "uri": "http://id.loc.gov/vocabulary/resourceTypes/"
+        }
+      },
+      {
+        "value": "Dataset",
+        "type": "resource type",
+        "source": {
+          "value": "DataCite resource types"
+        }
+      }
+    ],
+    "geographic": [
+      {
+        "subject": [
+          {
+            "structuredValue": [
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-122.18519707232332",
+                "type": "west",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "37.425258665112416",
+                "type": "south",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "-122.1809125289413",
+                "type": "east",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              },
+              {
+                "structuredValue": [],
+                "parallelValue": [],
+                "groupedValue": [],
+                "value": "37.428114827313706",
+                "type": "north",
+                "identifier": [],
+                "note": [],
+                "appliesTo": []
+              }
+            ],
+            "parallelValue": [],
+            "groupedValue": [],
+            "type": "bounding box coordinates",
+            "standard": {
+              "code": "EPSG:4326",
+              "note": []
+            },
+            "encoding": {
+              "value": "decimal",
+              "note": []
+            },
+            "identifier": [],
+            "note": [],
+            "appliesTo": []
+          }
+        ]
+      }
+    ],
+    "note": [
+      {
+        "value": "This photo was created using WebODM (OpenDroneMap), and images collected using a DJI Phantom 3 UAV.",
+        "type": "abstract"
+      },
+      {
+        "value": "Maples, Stace D. (2020). Orthophoto of O'Donohue Family Stanford Educational Farm. . Stanford Digital Repository. Available at: https://purl.stanford.edu/vq494qx9344",
+        "type": "preferred citation"
+      }
+    ],
+    "subject": [
+      {
+        "value": "UAV",
+        "type": "topic"
+      },
+      {
+        "value": "Stanford Farm",
+        "type": "topic"
+      },
+      {
+        "value": "Orthophoto",
+        "type": "topic"
+      },
+      {
+        "value": "Spatial",
+        "type": "topic"
+      },
+      {
+        "value": "Data",
+        "type": "topic"
+      }
+    ],
+    "access": {
+      "accessContact": [
+        {
+          "value": "maples@stanford.edu",
+          "type": "email",
+          "displayLabel": "Contact"
+        }
+      ]
+    },
+    "adminMetadata": {
+      "event": [
+        {
+          "type": "creation",
+          "date": [
+            {
+              "value": "2021-07-22",
+              "encoding": {
+                "code": "edtf"
+              }
+            }
+          ]
+        }
+      ],
+      "note": [
+        {
+          "value": "Metadata created by user via Stanford self-deposit application",
+          "type": "record origin"
+        }
+      ]
+    },
+    "purl": "https://purl.stanford.edu/vq494qx9344"
+  },
+  "identification": {
+    "doi": "10.25740/vq494qx9344",
+    "sourceId": "h3:object-4224"
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/file",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/vq494qx9344-vq494qx9344_1",
+        "version": 6,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/vq494qx9344-vq494qx9344_1/odm_orthophoto.tif",
+              "filename": "odm_orthophoto.tif",
+              "size": 80294503,
+              "version": 6,
+              "hasMimeType": "image/tiff; application=geotiff",
+              "sdrGeneratedText": false,
+              "correctedForAccessibility": false,
+              "hasMessageDigests": [
+                {
+                  "type": "md5",
+                  "digest": "ce02981bc2e302f05881490195671ade"
+                },
+                {
+                  "type": "sha1",
+                  "digest": "6b8147e7eb8a037188c7876a56d15cd96a129ebb"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "https://cocina.sul.stanford.edu/models/resources/file",
+        "externalIdentifier": "https://cocina.sul.stanford.edu/fileSet/vq494qx9344-vq494qx9344_4",
+        "version": 6,
+        "structural": {
+          "contains": [
+            {
+              "type": "https://cocina.sul.stanford.edu/models/file",
+              "externalIdentifier": "https://cocina.sul.stanford.edu/file/vq494qx9344-vq494qx9344_4/odm_orthophoto_COG_d.tif",
+              "filename": "odm_orthophoto_COG_d.tif",
+              "size": 201331100,
+              "version": 6,
+              "hasMimeType": "image/tiff; application=geotiff; profile=cloud-optimized",
+              "sdrGeneratedText": false,
+              "correctedForAccessibility": false,
+              "hasMessageDigests": [
+                {
+                  "type": "md5",
+                  "digest": "0bcae313b8c57cec965c591e601eadd1"
+                },
+                {
+                  "type": "sha1",
+                  "digest": "6f5948f8de53799c654ccfce1fa486e5d8e9d7a7"
+                }
+              ],
+              "access": {
+                "view": "world",
+                "download": "world",
+                "controlledDigitalLending": false
+              },
+              "administrative": {
+                "publish": true,
+                "sdrPreserve": true,
+                "shelve": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "isMemberOf": [
+      "druid:hy561cz6360"
+    ]
+  },
+  "created": "2021-07-22T17:08:37.000+00:00",
+  "modified": "2026-04-01T17:34:18.000+00:00",
+  "lock": "druid:vq494qx9344=8=3"
+}

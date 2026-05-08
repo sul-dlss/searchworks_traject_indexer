@@ -206,6 +206,15 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
     end
   end
 
+  context 'with a shapefile that has PMTiles for previewing' do
+    let(:druid) { 'jx110jn7648' }
+
+    it 'maps the PMTiles URL' do
+      references = JSON.parse result['dct_references_s']
+      expect(references['https://github.com/protomaps/PMTiles']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/QUALIFIED_CENSUS_TRACTS.pmtiles"
+    end
+  end
+
   context 'with a DOI and a Purl' do
     let(:druid) { 'fk339wc1276' }
     it 'finds the DOI and appends it to dct_identifier_sm with the purl' do
@@ -498,6 +507,15 @@ RSpec.describe 'EarthWorks Aardvark indexing' do
       it 'maps the GeoJSON URL' do
         expect(references['http://geojson.org/geojson-spec.html']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/Stanford_Temperature_Model_4km.geojson"
       end
+    end
+  end
+
+  context 'with a COG' do
+    let(:druid) { 'vq494qx9344' }
+
+    it 'maps the COG URL' do
+      references = JSON.parse result['dct_references_s']
+      expect(references['https://github.com/cogeotiff/cog-spec']).to eq "https://stacks.stanford.edu/file/druid:#{druid}/odm_orthophoto_COG_d.tif"
     end
   end
 
