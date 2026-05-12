@@ -176,18 +176,19 @@ to_field 'dct_identifier_sm', cocina_display(:purl_url)
 to_field 'dct_identifier_sm', cocina_display(:doi_url)
 
 # https://opengeometadata.org/ogm-aardvark/#georeferenced
-# - currently anything with "(Raster Image)" in the title is known to be georeferenced
-to_field('gbl_georeferenced_b') { |_record, accumulator, context| accumulator << context.output_hash['dct_title_s'].first.include?('(Raster Image)') }
+to_field 'gbl_georeferenced_b', georeferenced?
 
 # https://opengeometadata.org/ogm-aardvark/#resource-class
 # - we use a regex-matching translation map to find "map" or "dataset" across various fields
-# - if georeferenced, it's always both a map and a dataset
+# - if georeferenced, we consider it a dataset
+# - the string "(Raster Image)" in the title indicates a georeferenced scanned map, so we assign "Maps" in that case
 # - if the item is a collection, set the resource class to "Collections" (only)
 # - if we didn't find anything, fall back to "Other" because the field is required
 to_field 'gbl_resourceClass_sm', cocina_display(:all_forms), transform(&:to_s), translation_map('geo_resource_class')
 to_field 'gbl_resourceClass_sm', cocina_display(:genres), translation_map('geo_resource_class')
 to_field 'gbl_resourceClass_sm', cocina_display(:subject_genres), translation_map('geo_resource_class')
-to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator.push('Maps', 'Datasets') if context.output_hash['gbl_georeferenced_b'].first }
+to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Datasets' if context.output_hash['gbl_georeferenced_b'].first }
+to_field('gbl_resourceClass_sm') { |record, accumulator, _context| accumulator << 'Maps' if record.display_title.include?('(Raster Image)') }
 to_field('gbl_resourceClass_sm') { |_record, accumulator, context| accumulator << 'Other' if context.output_hash['gbl_resourceClass_sm'].blank? }
 to_field('gbl_resourceClass_sm') { |record, _accumulator, context| context.output_hash['gbl_resourceClass_sm'] = ['Collections'] if record.collection? }
 

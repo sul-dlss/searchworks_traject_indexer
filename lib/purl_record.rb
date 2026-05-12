@@ -85,7 +85,7 @@ class PurlRecord
 
   delegate :collection?, :content_type, :files, :filesets, :cocina_doc, :world_access?,
            :modified_time, :created_time, :searchworks_url, :iiif_manifest_url,
-           :virtual_object?, :preferred_citation, :license, to: :public_cocina
+           :virtual_object?, :preferred_citation, :license, :display_title, to: :public_cocina
 
   delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json
 end
