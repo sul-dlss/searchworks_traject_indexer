@@ -250,23 +250,7 @@ class FolioItem
     call_number = call_number.strip.gsub(/\s\s+/, ' ') # reduce multiple whitespace chars to a single space
     call_number = call_number.gsub('. .', ' .') # reduce double periods to a single period
     call_number = call_number.gsub(/(\d+\.) ([A-Z])/, '\1\2') # remove space after a period if period is after digits and before letters
-    call_number = call_number.sub(/\.$/, '') # remove trailing period
-    call_number = normalize_sudoc_call_number(call_number) if call_number_type == 'SUDOC'
-    call_number
-  end
-
-  def normalize_sudoc_call_number(call_number)
-    stem, suffix = call_number.split(':', 2)
-    return call_number unless suffix
-
-    # Drop everything after the first slash or second whitespace in the suffix.
-    # This is the best guess at the Sudoc "book number". Consistency/meaning goes way down after this.
-    if suffix.include?('/')
-      "#{stem}:#{suffix.split('/', 2).first}".strip
-    else
-      parts = suffix.split(/\s+/, 3)
-      parts.size >= 3 ? "#{stem}:#{parts[0]} #{parts[1]}".strip : call_number
-    end
+    call_number.sub(/\.$/, '') # remove trailing period
   end
 
   class CallNumber
