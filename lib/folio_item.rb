@@ -200,7 +200,12 @@ class FolioItem
 
     return CallNumber.new('', '') unless base_call_number.present?
 
-    volume_info = normalize_call_number([@item['volume'], @item['enumeration'], @item['chronology']].compact.join(' ').presence) if @item
+    if @item
+      volume_info_parts = [@item['volume'], @item['enumeration'], @item['chronology']].compact
+      # For SUDOCs, the volume/enumeration/chronology fields are sometimes duplicated in the call number itself
+      volume_info_parts = volume_info_parts.reject { |part| base_call_number.include?(part) } if call_number_type == 'SUDOC'
+      volume_info = normalize_call_number(volume_info_parts.join(' ').presence)
+    end
 
     if bound_with?
       # bound-withs are a special case; the call number for the holding includes the base call number and any volume information. We can try

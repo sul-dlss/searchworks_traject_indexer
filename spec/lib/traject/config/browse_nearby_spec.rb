@@ -137,24 +137,69 @@ RSpec.describe 'Browse nearby' do
 
     let(:index_items) do
       [
-        build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.SCI 2:107-46/V.1'),
-        build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'Y 1.1/8:118-400/PT.1 PT.1'),
-        build(:sudoc_holding, barcode: 'Sudoc3', call_number: 'Y 1.1/8:118-400/PT.2 PT.2'),
-        build(:sudoc_holding, barcode: 'Sudoc4', call_number: 'Y 4.W 36:WMCP 108-11'),
-        build(:sudoc_holding, barcode: 'Sudoc5', call_number: 'A 13.92:B 63/5/LAND/V.1-2/2003'),
-        build(:sudoc_holding, barcode: 'Sudoc6', call_number: 'I 53.11/4-2:42117-E 1-TM-100/2005'),
-        build(:sudoc_holding, barcode: 'Sudoc7', call_number: 'I 49.44/2:N 81 P')
+        build(:sudoc_holding, barcode: 'Sudoc1', call_number: 'Y 4.W 36:WMCP 108-11'),
+        build(:sudoc_holding, barcode: 'Sudoc2', call_number: 'A 13.92:B 63/5/LAND/V.1-2/2003'),
+        build(:sudoc_holding, barcode: 'Sudoc3', call_number: 'I 53.11/4-2:42117-E 1-TM-100/2005'),
+        build(:sudoc_holding, barcode: 'Sudoc4', call_number: 'I 49.44/2:N 81 P'),
+        build(:sudoc_holding, barcode: 'Sudoc5', call_number: 'Y 1.2:/67/ 923 1')
       ]
     end
 
     it {
-      is_expected.to include(hash_including('lopped_callnumber' => 'Y 4.SCI 2:107-46'),
-                             hash_including('lopped_callnumber' => 'Y 1.1/8:118-400'),
-                             hash_including('lopped_callnumber' => 'Y 4.W 36:WMCP 108-11'),
-                             hash_including('lopped_callnumber' => 'A 13.92:B 63'),
-                             hash_including('lopped_callnumber' => 'I 53.11/4-2:42117-E 1-TM-100'),
-                             hash_including('lopped_callnumber' => 'I 49.44/2:N 81'))
+      is_expected.to include(hash_including('lopped_callnumber' => 'Y 4.W 36:WMCP 108-11'),
+                             hash_including('lopped_callnumber' => 'A 13.92:B 63/5/LAND/V.1-2/2003'),
+                             hash_including('lopped_callnumber' => 'I 53.11/4-2:42117-E 1-TM-100/2005'),
+                             hash_including('lopped_callnumber' => 'I 49.44/2:N 81 P'),
+                             hash_including('lopped_callnumber' => 'Y 1.2:/67/ 923 1'))
     }
+  end
+
+  context 'with sibling SUDOCs that share a call number prefix' do
+    let(:holdings_data) do
+      [
+        { 'id' => 'h1',
+          'callNumber' => 'Y 1.1/8:118-400/PT.1',
+          'enumeration' => 'PT.1',
+          'location' => { 'effectiveLocation' => { 'id' => 'loc1' } },
+          'suppressFromDiscovery' => false,
+          'holdingsStatements' => [],
+          'holdingsStatementsForIndexes' => [],
+          'holdingsStatementsForSupplements' => [] },
+        { 'id' => 'h2',
+          'callNumber' => 'Y 1.1/8:118-400/PT.2',
+          'enumeration' => 'PT.2',
+          'location' => { 'effectiveLocation' => { 'id' => 'loc1' } },
+          'suppressFromDiscovery' => false,
+          'holdingsStatements' => [],
+          'holdingsStatementsForIndexes' => [],
+          'holdingsStatementsForSupplements' => [] }
+      ]
+    end
+
+    let(:index_items) do
+      holdings_data.map do |h|
+        build(:sudoc_holding,
+              call_number: h['callNumber'],
+              enumeration: h['callNumber'].split('/').last,
+              holding: h,
+              record: folio_record)
+      end
+    end
+
+    before do
+      allow(folio_record).to receive(:index_items).and_return(index_items)
+      allow(folio_record).to receive(:holdings).and_return(holdings_data)
+      allow(folio_record).to receive(:pieces).and_return([])
+    end
+
+    it 'groups siblings under the shared lopped_callnumber while preserving each full callnumber' do
+      expect(result).to contain_exactly(
+        hash_including(
+          'lopped_callnumber' => 'Y 1.1/8:118-400',
+          'callnumber' => 'Y 1.1/8:118-400/PT.1'
+        )
+      )
+    end
   end
 
   context 'with UN document call numbers' do
