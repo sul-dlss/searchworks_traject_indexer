@@ -116,6 +116,12 @@ To test indexing a single SDR object at a time, you can `echo` its druid and use
 echo 'abc123def4567' | bundle exec traject --conf lib/traject/config/sdr_config.rb --stdin
 ```
 
+Note that if the object has a FOLIO HRID, it will be skipped by default, since the FOLIO record will be the source of truth for metadata. You can override this behavior by passing `purl_fetcher.skip_catkey=false` to force the item to be indexed from Cocina anyway:
+
+```sh
+echo 'abc123def4567' | bundle exec traject --conf lib/traject/config/sdr_config.rb -s purl_fetcher.skip_catkey=false --stdin
+```
+
 For SDR object released to Earthworks, you can pass the appropriate configuration file:
 
 ```sh
