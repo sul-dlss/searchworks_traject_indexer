@@ -2,7 +2,7 @@
 
 [![CI status](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml/badge.svg)](https://github.com/sul-dlss/searchworks_traject_indexer/actions/workflows/ruby.yml)
 
-Metadata indexing for [Searchworks](https://github.com/sul-dlss/SearchWorks) and [Earthworks](https://github.com/sul-dlss/earthworks), built using [traject](https://github.com/traject/traject).
+Metadata indexing for [Searchworks](https://github.com/sul-dlss/SearchWorks), built using [traject](https://github.com/traject/traject).
 
 ## Developing
 
@@ -108,18 +108,12 @@ cat records.json | bundle exec traject --conf lib/traject/config/folio_config.rb
 
 ### SDR
 
-Data coming from SDR has two different processing pipelines: if the data is released to Searchworks, it will be processed by the `sdr_config` traject configuration, and if it is released to Earthworks, it will be processed by the `geo_aardvark_config` traject configuration.
+Data coming from SDR that is released to Searchworks, will be processed by the `sdr_config` traject configuration.
 
 To test indexing a single SDR object at a time, you can `echo` its druid and use the `--stdin` flag (remember to either also set `SOLR_URL` or use `--debug-mode`):
 
 ```sh
 echo 'abc123def4567' | bundle exec traject --conf lib/traject/config/sdr_config.rb --stdin
-```
-
-For SDR object released to Earthworks, you can pass the appropriate configuration file:
-
-```sh
-echo 'abc123def4567' | bundle exec traject --conf lib/traject/config/geo_aardvark_config.rb --stdin
 ```
 
 It's also possible to index a group of druids, mimicking the process from SDR.
@@ -138,8 +132,6 @@ The indexer processes are managed by systemd. You can use `systemctl --user list
 
 ```
 traject.target
-● ├─traject-earthworks_prod_indexer.target
-● │ └─traject-earthworks_prod_indexer.1.service
 ● ├─traject-folio_prod_indexer.target
 ● │ ├─traject-folio_prod_indexer.1.service
 ● │ ├─traject-folio_prod_indexer.2.service
