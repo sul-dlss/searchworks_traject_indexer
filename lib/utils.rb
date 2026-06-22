@@ -38,7 +38,7 @@ module Utils
     new_string
   end
 
-  def self.longest_common_call_number_prefix(*strs)
+  def self.longest_common_call_number_prefix(*strs, backtrack_patterns: ['V.', 'PT.', 'NO.'])
     return '' if strs.empty? || strs.one?
 
     min, max = strs.minmax
@@ -47,11 +47,9 @@ module Utils
     idx = min.size.times { |i| break i if min[i] != max[i] }
     return min if idx == min.length
 
-    # backtrack to "V."
-    if min[0...idx].include? 'V.'
-      idx = min[0...idx].rindex('V.') || idx
-      return min[0...idx].sub(/(\s|[[:punct:]])+\z/, '')
-    end
+    # backtrack to the last position of any known pattern
+    backtrack_idx = backtrack_patterns.filter_map { |pattern| min[0...idx].rindex(pattern) }.min
+    return min[0...backtrack_idx].sub(/(\s|[[:punct:]])+\z/, '') if backtrack_idx
 
     # if we broke at some punctuation, use that.
     return min[0...idx].sub(/(\s|[[:punct:]])+\z/, '') if min[idx] =~ /(\s|[[:punct:]])/ && max[idx] =~ /(\s|[[:punct:]])/

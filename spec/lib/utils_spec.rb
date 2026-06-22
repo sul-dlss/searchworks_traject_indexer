@@ -47,6 +47,8 @@ RSpec.describe Utils do
       expect(described_class.longest_common_call_number_prefix('S 1.1:873/V.1', 'S 1.1:917/SUPPL.2/V.2')).to eq 'S 1.1'
       expect(described_class.longest_common_call_number_prefix('Y 1.1/7:118-3/V.1', 'Y 1.1/7:108-88/V2')).to eq 'Y 1.1/7'
       expect(described_class.longest_common_call_number_prefix('ZDVD 30350 3D BLU-RAY', 'ZDVD 30350 DVD')).to eq 'ZDVD 30350'
+      expect(described_class.longest_common_call_number_prefix('C 3.224/3:970/V.1/PT.8', 'C 3.224/3:970/V.1/PT.34')).to eq 'C 3.224/3:970'
+      expect(described_class.longest_common_call_number_prefix('Y 1.1/8:118-400/PT.1', 'Y 1.1/8:118-400/PT.2')).to eq 'Y 1.1/8:118-400'
     end
 
     it 'returns an empty string if there is only one' do
