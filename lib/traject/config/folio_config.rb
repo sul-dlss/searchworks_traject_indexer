@@ -1035,7 +1035,7 @@ to_field 'format_main_ssim' do |record, accumulator, _context|
   end
 
   Traject::MarcExtractor.new('336a').collect_matching_lines(record) do |field, spec, extractor|
-    if ['computer dataset', 'cartographic dataset'].any? { |v| extractor.collect_subfields(field, spec).include?(v) }
+    if ['computer dataset', 'cartographic dataset'].intersect?(extractor.collect_subfields(field, spec))
       accumulator << 'Dataset'
     end
   end
