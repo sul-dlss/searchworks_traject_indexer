@@ -377,6 +377,10 @@ RSpec.describe 'SDR indexing' do
       it 'uses the members to derive a thumbnail' do
         expect(result['file_id']).to eq ['ts786ny5936%2FPC0170_s1_E_0204.jp2']
       end
+
+      it 'counts virtual object members as resources' do
+        expect(result['dor_resource_count_isi']).to eq [204]
+      end
     end
   end
 

@@ -195,7 +195,13 @@ to_field 'oclc', cocina_display(:identifiers, type: 'oclc'), transform(&:identif
 
 ##
 # Structural metadata fields
-to_field('dor_resource_count_isi') { |record, accumulator| accumulator << record.filesets.count }
+# Include virtual object members so viewers embed for virtual objects with no direct filesets.
+to_field('dor_resource_count_isi') do |record, accumulator|
+  cocina = record.public_cocina
+  count = cocina.filesets.count
+  count += cocina.virtual_object_members.count if cocina.virtual_object?
+  accumulator << count
+end
 to_field('file_id') { |record, accumulator| accumulator << record.thumbnail_file_id }
 
 ##
