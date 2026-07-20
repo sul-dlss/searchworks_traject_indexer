@@ -38,7 +38,7 @@ GEM
       capistrano (~> 3.0)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina_display (2.8.0)
+    cocina_display (2.9.0)
       activesupport (>= 7)
       edtf (~> 3.2)
       geo_coord (~> 0.2)
@@ -46,7 +46,7 @@ GEM
       iso8601 (~> 0.13.0)
       janeway-jsonpath (>= 0.6, < 2)
       zeitwerk (~> 2.7)
-    concurrent-ruby (1.3.7)
+    concurrent-ruby (1.3.8)
     config (5.6.1)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
@@ -80,7 +80,7 @@ GEM
     ed25519 (1.4.0)
     edtf (3.3.0)
       activesupport (>= 3.0, < 9.0)
-    erb (6.0.4)
+    erb (6.0.6)
     factory_bot (6.6.0)
       activesupport (>= 6.1.0)
     ffi (1.17.4-arm64-darwin)
@@ -92,7 +92,7 @@ GEM
     hashdiff (1.2.1)
     hashie (5.1.0)
       logger
-    honeybadger (6.9.0)
+    honeybadger (6.9.1)
       logger
       ostruct
     http (5.3.1)
@@ -145,7 +145,7 @@ GEM
       racc (~> 1.4)
     ostruct (0.6.3)
     parallel (2.1.0)
-    parser (3.3.11.1)
+    parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
     pg (1.6.3-arm64-darwin)
@@ -210,7 +210,7 @@ GEM
       digest-crc
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    simplecov (1.0.0)
+    simplecov (1.0.2)
     slop (4.10.1)
     sorted_set (1.1.0)
       rbtree
@@ -312,8 +312,8 @@ CHECKSUMS
   capistrano-one_time_key (0.2.0) sha256=88630a99de2113befd9885242cc8b3bc58536f4e06507363cc3ee064080a0375
   capistrano-shared_configs (0.2.2) sha256=905d1c51f0be6efd8ddb262aea7fae32c62d947297ff6b83f5cbccac3b138b36
   chronic (0.10.2) sha256=766f2fcce6ac3cc152249ed0f2b827770d3e517e2e87c5fba7ed74f4889d2dc3
-  cocina_display (2.8.0) sha256=89722e8e204c07cfa38f3deacbd66d42f3db9c7b29fdc034973d847cf93c4995
-  concurrent-ruby (1.3.7) sha256=4412caec3a5ea2e5fdc52076724c071a81f2c0593d83b2ac8cbb8ca63b3151b0
+  cocina_display (2.9.0) sha256=00e97cf826dafd5c547ca87b58e55f1d3bfa68fa4ddcddbbe25b4d9d9ed05d8f
+  concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
   config (5.6.1) sha256=a9f0f0f9ffa6d12d43147a3fa1ab8486fe484c3098a350c6a2e0f32430e0d1cc
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   crack (1.0.1) sha256=ff4a10390cd31d66440b7524eb1841874db86201d5b70032028553130b6d4c7e
@@ -330,7 +330,7 @@ CHECKSUMS
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
   ed25519 (1.4.0) sha256=16e97f5198689a154247169f3453ef4cfd3f7a47481fde0ae33206cdfdcac506
   edtf (3.3.0) sha256=0ce2b80f5cf222870e5a3df130701f4d24b75c29e23e5bf3130f574d75073487
-  erb (6.0.4) sha256=38e3803694be357fe2bfe312487c74beaf9fb4e5beb3e22498952fe1645b95d9
+  erb (6.0.6) sha256=a9b24986700f5bf127c4f297c5403c3ca41b83b0a316c0cd09a096b56e644ae5
   factory_bot (6.6.0) sha256=1fc1b3b5620ec980a6a27aec1b6ec8c250ca82962e970e8a40f93e8d388d4b89
   ffi (1.17.4-arm64-darwin) sha256=19071aaf1419251b0a46852abf960e77330a3b334d13a4ab51d58b31a937001b
   ffi (1.17.4-x86_64-linux-gnu) sha256=9d3db14c2eae074b382fa9c083fe95aec6e0a1451da249eab096c34002bc752d
@@ -338,7 +338,7 @@ CHECKSUMS
   geo_coord (0.2.0) sha256=ae4e2dc5799deafa4db9138f3d7e85cf5e7dbd00b3b8395f1e1dbd34e007d7e8
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
   hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
-  honeybadger (6.9.0) sha256=f90b4f0dd37b8bfb1decb40f17349459828f6fd6933ef8cf1b1881dbc4a9eb75
+  honeybadger (6.9.1) sha256=3e79543ab171f810306bd152b3f470ce2b905b1a27f766f3138568949078cf68
   http (5.3.1) sha256=c50802d8e9be3926cb84ac3b36d1a31fbbac383bc4cbecdce9053cb604231d7d
   http-cookie (1.1.6) sha256=ba4b82be64de61dc281243dac70e3c382c45142f20268ed9276a3670c93feaa9
   http-form_data (2.3.0) sha256=cc4eeb1361d9876821e31d7b1cf0b68f1cf874b201d27903480479d86448a5f3
@@ -366,7 +366,7 @@ CHECKSUMS
   nokogiri (1.19.4-x86_64-linux-gnu) sha256=379fae440b28915e3f19d752ce2dcf8465ed2b2fbefd2a7ca0dd497bc981a06a
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
-  parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
+  parser (3.3.12.0) sha256=21a6d7f755d5a24dfbdc6e6b772e4e879a52e7631a88bc5a3a134606052c9828
   pg (1.6.3-arm64-darwin) sha256=7240330b572e6355d7c75a7de535edb5dfcbd6295d9c7777df4d9dddfb8c0e5f
   pg (1.6.3-x86_64-linux) sha256=5d9e188c8f7a0295d162b7b88a768d8452a899977d44f3274d1946d67920ae8d
   pp (0.6.4) sha256=dfcb0fce700c41456265922884f9fe195d7fbb0674a3578e6c0f69588e82b570
@@ -396,7 +396,7 @@ CHECKSUMS
   ruby-kafka (1.5.0) sha256=f7646944e6c72ba3413e21423ff4d510b22e3ab760ac70940a3658e0e576238e
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  simplecov (1.0.0) sha256=bdc50b41fa4a8b3c860da4bf5d61ba4704479c51d08a8f53cbd56ae50778dca8
+  simplecov (1.0.2) sha256=c6459434efe4b948b46477cc2df2faa73ab365f83a33c7c17f81262f4f7f1244
   slop (4.10.1) sha256=844322b5ffcf17ed4815fdb173b04a20dd82b4fd93e3744c88c8fafea696d9c7
   sorted_set (1.1.0) sha256=bac01eb16b6bcfcdb7d732a28e87422be8b5c9fdcfeadbe9072682407524ee83
   sshkit (1.25.0) sha256=c8c6543cdb60f91f1d277306d585dd11b6a064cb44eab0972827e4311ff96744
