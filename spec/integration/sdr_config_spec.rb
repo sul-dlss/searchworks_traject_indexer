@@ -489,7 +489,7 @@ RSpec.describe 'SDR indexing' do
 
     # actual data used in each test
     let(:metadata_json) { {}.to_json }
-    let(:collection_body) { { 'label' => collection_label }.to_json }
+    let(:collection_body) { { 'description' => { 'title' => [{ 'value' => collection_label }] } }.to_json }
     let(:body) do
       {
         'description' => {
