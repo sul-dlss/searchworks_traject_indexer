@@ -90,7 +90,7 @@ class FolioClient
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
       raise response.body unless response.status.created?
 
-      response['x-okapi-token']
+      response.headers['x-okapi-token']
     end
   end
 
