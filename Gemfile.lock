@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (8.1.3)
+    activesupport (8.1.3.1)
       base64
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.3.1)
@@ -34,11 +34,11 @@ GEM
       sshkit (>= 1.9.0)
     capistrano-bundler (2.2.0)
       capistrano (~> 3.1)
-    capistrano-one_time_key (0.2.0)
+    capistrano-one_time_key (0.3.0)
       capistrano (~> 3.0)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina_display (2.9.0)
+    cocina_display (2.10.0)
       activesupport (>= 7)
       edtf (~> 3.2)
       geo_coord (~> 0.2)
@@ -111,8 +111,8 @@ GEM
     iso-639 (0.3.8)
       csv
     iso8601 (0.13.0)
-    janeway-jsonpath (1.0.0)
-    json (2.21.1)
+    janeway-jsonpath (1.1.0)
+    json (2.21.2)
     language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
     llhttp (0.6.2)
@@ -152,7 +152,7 @@ GEM
     rack (3.2.6)
     rainbow (3.1.1)
     rake (13.4.2)
-    rbs (4.1.0)
+    rbs (4.1.2)
       logger
       prism (>= 1.6.0)
       tsort
@@ -215,7 +215,7 @@ GEM
       net-ssh (>= 2.8.0)
       ostruct
     statsd-ruby (1.5.0)
-    traject (3.9.0)
+    traject (3.9.1)
       base64
       concurrent-ruby (>= 0.8.0)
       csv
@@ -244,7 +244,7 @@ GEM
     whenever (1.1.2)
       chronic (>= 0.6.3)
     yell (2.2.2)
-    zeitwerk (2.8.2)
+    zeitwerk (2.8.3)
 
 PLATFORMS
   arm64-darwin-23
@@ -291,7 +291,7 @@ DEPENDENCIES
   zeitwerk
 
 CHECKSUMS
-  activesupport (8.1.3) sha256=21a5e0dfbd4c3ddd9e1317ec6a4d782fa226e7867dc70b0743acda81a1dca20e
+  activesupport (8.1.3.1) sha256=85458765f25ea48b9019c46b6bb3fa5683197bf4280d9f06710a6e8d7a831376
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   airbrussh (1.6.2) sha256=3278655b2d957d774589a17e01496149288cbd8f1158b377581d82db006401cc
   amq-protocol (2.8.0) sha256=d06bbb341fa683459954f5a854388dac729171500116d81311cfbeaad83392ab
@@ -304,10 +304,10 @@ CHECKSUMS
   bunny (2.24.0) sha256=072fe4ae98eaa9c95a17e4d166204f710bba8a9a7070b73a8c3b023f439d1682
   capistrano (3.20.1) sha256=b0d54ba5cf49bb194998bf6b427e889aa36ed05f545ecf7cc37acb9d529e9ae9
   capistrano-bundler (2.2.0) sha256=47b4cf2ea17ea132bb0a5cabc5663443f5190a54f4da5b322d04e1558ff1468c
-  capistrano-one_time_key (0.2.0) sha256=88630a99de2113befd9885242cc8b3bc58536f4e06507363cc3ee064080a0375
+  capistrano-one_time_key (0.3.0) sha256=922a91f1cebbbc26e4bc0ea471c199b1ab1abe3b0dbc6a1fb47a37494cc2c4d7
   capistrano-shared_configs (0.2.2) sha256=905d1c51f0be6efd8ddb262aea7fae32c62d947297ff6b83f5cbccac3b138b36
   chronic (0.10.2) sha256=766f2fcce6ac3cc152249ed0f2b827770d3e517e2e87c5fba7ed74f4889d2dc3
-  cocina_display (2.9.0) sha256=00e97cf826dafd5c547ca87b58e55f1d3bfa68fa4ddcddbbe25b4d9d9ed05d8f
+  cocina_display (2.10.0) sha256=846b6c1608154f5f7c8130cfc0b8c956af7ddb427da37b2e8d5ca9cd05401274
   concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
   config (5.6.1) sha256=a9f0f0f9ffa6d12d43147a3fa1ab8486fe484c3098a350c6a2e0f32430e0d1cc
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
@@ -341,8 +341,8 @@ CHECKSUMS
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   iso-639 (0.3.8) sha256=48b8104a4b55367fda347609e36ef8eeb3a0b4d048b36365371c274958be7535
   iso8601 (0.13.0) sha256=298c2b15b7be5fa95a1372813d36a2257656cd8e906dfbc1f5cb409851425aa2
-  janeway-jsonpath (1.0.0) sha256=c8293f009f2aea9487ddee3067ca735a1f758eb1c8834ff4fab3ffd06c56d0a3
-  json (2.21.1) sha256=13a43df75d95641443f5702dff350f237164a9d811ff0f2c2800d4d980220583
+  janeway-jsonpath (1.1.0) sha256=82f71dccbdc29bf788815bc3b66e7ab5ddee2bdeea3a3121512aca63cfbcd9a9
+  json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a
   language_server-protocol (3.17.0.6) sha256=5ef2c0c138f8267e1bc631d3328347d354f96724b0af22f2c79516120443b7f0
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   llhttp (0.6.2) sha256=3c3c59aafb1e1594ab2f45293478f697458f5a91eb0f0db4b27f61a064024982
@@ -370,7 +370,7 @@ CHECKSUMS
   rack (3.2.6) sha256=5ed78e1f73b2e25679bec7d45ee2d4483cc4146eb1be0264fc4d94cb5ef212c2
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
-  rbs (4.1.0) sha256=8baba59008b0643b4ba2090e9b1d0149655b0bbd42eb2ffe42b1d0eb6923fd72
+  rbs (4.1.2) sha256=050eb1d8b508f1233bed929c0f2c7052302f7adf295230d9cb314e9024078f48
   rbtree (0.4.7) sha256=1efabbcb3fd5f12249c9c8a610a765074868164eed0c50c9db2531c00ed161cb
   rdoc (8.0.0) sha256=03bf8c08a9639658855a0cfd77c0abca8325c227693f7f33f82957811348c469
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
@@ -394,7 +394,7 @@ CHECKSUMS
   sorted_set (1.1.0) sha256=bac01eb16b6bcfcdb7d732a28e87422be8b5c9fdcfeadbe9072682407524ee83
   sshkit (1.25.1) sha256=be3f10b9d6eb0b44d5eaba3f7cbe41bc6bb894bce4339688ac20124391455b78
   statsd-ruby (1.5.0) sha256=369ddf09537408e273849e09b84d4edbdac24ac461f5c9b6cacb0e4398190109
-  traject (3.9.0) sha256=b83ee0165d13c931e648377fc120bf1e522f93bbbc3f7d063b90b47badfd10fc
+  traject (3.9.1) sha256=0a8187cac4eba0622e6fa298d078afecf4c45791588cb0f6711d70736ef56387
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
   unicode-display_width (3.2.0) sha256=0cdd96b5681a5949cdbc2c55e7b420facae74c4aaf9a9815eee1087cb1853c42
@@ -403,7 +403,7 @@ CHECKSUMS
   webmock (3.26.2) sha256=774556f2ea6371846cca68c01769b2eac0d134492d21f6d0ab5dd643965a4c90
   whenever (1.1.2) sha256=af139a25cf6b5c7d2122686724c0b9a4a7495135a1f79a404e29f4cce48abd83
   yell (2.2.2) sha256=1d166f3cc3b6dc49a59778ea7156ed6d8de794c15106d48ffd6cbb061b9b26bc
-  zeitwerk (2.8.2) sha256=7212a61311083c604184b1ea2574b9aa05cd14f855a0841c06985cabe9181d12
+  zeitwerk (2.8.3) sha256=2c85125a8467ce069e20123d1e709a08955c9d29c118c25b46b7b7fafdbb92e5
 
 BUNDLED WITH
   4.0.17
