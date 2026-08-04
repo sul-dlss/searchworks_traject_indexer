@@ -31,7 +31,7 @@ class FolioItem
   def initialize(item: nil, holding: nil, instance: nil,
                  course_reserves: [],
                  type: nil, status: nil,
-                 library: nil, record: nil, bound_with_child: false)
+                 library: nil, record: nil, bound_with_child: false, bound_with_principal: false)
     @item = item
     @holding = holding
     @instance = instance
@@ -43,6 +43,7 @@ class FolioItem
     @course_reserves = course_reserves
     @record = record
     @bound_with_child = bound_with_child
+    @bound_with_principal = bound_with_principal
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -140,12 +141,6 @@ class FolioItem
       enumeration: item['enumeration'],
       chronology: item['chronology']
     }
-  end
-
-  def bound_with_principal?
-    return false if bound_with? || holding.blank?
-
-    holding['boundWith'].present? && item['id'] == holding['boundWith']['item']['id']
   end
 
   def course_reserves_data

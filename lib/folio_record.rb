@@ -155,7 +155,8 @@ class FolioRecord
         holding:,
         instance:,
         course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] },
-        record: self
+        record: self,
+        bound_with_principal: bound_with_children.any? { |child| child['itemId'] == item['id'] }
       )
     end
   end
