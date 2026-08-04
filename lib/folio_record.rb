@@ -217,6 +217,10 @@ class FolioRecord
     @all_holdings ||= load('holdings')
   end
 
+  def bound_with_children
+    @bound_with_children ||= record['bound_with_parts'] || []
+  end
+
   def items_and_holdings
     @items_and_holdings ||= client.items_and_holdings(instance_id:)
   end

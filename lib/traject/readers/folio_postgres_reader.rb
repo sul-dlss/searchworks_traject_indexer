@@ -461,7 +461,8 @@ module Traject
                   )
                 ) FILTER (WHERE hr.id IS NOT NULL), '[]'::jsonb
               ),
-            'po_lines', COUNT(po_line.id)
+            'po_lines', COUNT(po_line.id),
+            'bound_with_parts', jsonb_agg(DISTINCT bw.jsonb || jsonb_build_object('instanceId', parentInstance.id)) FILTER (WHERE bw.id IS NOT NULL)
             )
       FROM sul_mod_inventory_storage.instance vi
       LEFT JOIN sul_mod_inventory_storage.holdings_record hr
