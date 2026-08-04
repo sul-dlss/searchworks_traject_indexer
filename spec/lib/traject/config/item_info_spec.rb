@@ -208,7 +208,7 @@ RSpec.describe 'ItemInfo config' do
 
         before do
           allow(folio_record).to receive(:item_holdings).and_return([])
-          allow(folio_record).to receive(:bound_with_holdings).and_return(holdings)
+          allow(folio_record).to receive(:bound_with_holdings_stub_items).and_return(holdings)
         end
 
         it 'contains a bound_with parent' do

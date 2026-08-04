@@ -73,7 +73,7 @@ module Folio
       return if record.fields('590').any? { |f| f['a'] && f['c'] }
 
       # if 590 or one of its Bound-with related subfields is missing, and FOLIO says this record is Bound-with, append the relevant data from FOLIO
-      folio_record.bound_with_holdings.each do |item|
+      folio_record.bound_with_holdings_stub_items.each do |item|
         field590 = MARC::DataField.new('590', ' ', ' ')
         field590.subfields << MARC::Subfield.new('a', "#{item.holding['callNumber']} bound with #{item.holding.dig('boundWith', 'instance', 'title')}")
         field590.subfields << MARC::Subfield.new('c', "#{item.holding.dig('boundWith', 'instance', 'hrid')} (parent record)")

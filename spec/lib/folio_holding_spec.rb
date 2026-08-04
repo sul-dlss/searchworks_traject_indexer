@@ -65,7 +65,7 @@ RSpec.describe FolioItem do
 
     let(:item_note) { [{ 'note' => 'note 1', 'staffOnly' => false, 'itemNoteTypeId' => '', 'itemNoteTypeName' => 'Public' }] }
     let(:holding_notes) { [{ 'note' => 'note 2', 'staffOnly' => false, 'itemNoteTypeId' => '', 'holdingsNoteTypeName' => 'Public' }] }
-    subject(:public_note) { described_class.new(item:, holding:, bound_with:).public_note }
+    subject(:public_note) { described_class.new(item:, holding:, bound_with_child: bound_with.present?).public_note }
     let(:bound_with) { nil }
 
     context 'with a bound-with item' do
