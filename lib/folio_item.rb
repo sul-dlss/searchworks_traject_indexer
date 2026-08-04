@@ -31,7 +31,7 @@ class FolioItem
   def initialize(item: nil, holding: nil, instance: nil,
                  course_reserves: [],
                  type: nil, status: nil,
-                 library: nil, record: nil, bound_with_child: false)
+                 library: nil, record: nil, bound_with_child: false, bound_with_principal: false)
     @item = item
     @holding = holding
     @instance = instance
@@ -43,6 +43,7 @@ class FolioItem
     @course_reserves = course_reserves
     @record = record
     @bound_with_child = bound_with_child
+    @bound_with_principal = bound_with_principal
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -142,12 +143,6 @@ class FolioItem
     }
   end
 
-  def bound_with_principal?
-    return false if bound_with? || holding.blank?
-
-    holding['boundWith'].present? && item['id'] == holding['boundWith']['item']['id']
-  end
-
   def course_reserves_data
     # NOTE: we don't handle multiple courses for a single item, because it's beyond parity with how things worked for Symphony
     course = course_reserves.first
@@ -172,6 +167,10 @@ class FolioItem
 
   def bound_with?
     bound_with.present?
+  end
+
+  def bound_with_principal?
+    @bound_with_principal
   end
 
   def equipment?
