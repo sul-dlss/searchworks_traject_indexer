@@ -46,9 +46,9 @@ class FolioRecord
 
   def index_items
     @index_items ||= begin
-      items = item_holdings.concat(bound_with_holdings)
+      items = item_holdings.concat(bound_with_holdings_as_stub_items)
 
-      items = on_order_holdings if !(all_items.any? || eresource?) && items.empty?
+      items = on_order_holdings_as_items if !(all_items.any? || eresource?) && items.empty?
 
       items
     end
@@ -160,11 +160,17 @@ class FolioRecord
     end
   end
 
+  def bound_with_holdings_records
+    holdings.select do |holding|
+      holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with'
+    end
+  end
+
   # since FOLIO Bound-with records don't have items, we generate a FolioItem using data from the parent
   # item and child holding, or, if there is no parent item, we generate a stub FolioItem from the original
   # bound-with holding.
-  def bound_with_holdings
-    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.filter_map do |holding|
+  def bound_with_holdings_as_stub_items
+    @bound_with_holdings_as_stub_items ||= bound_with_holdings_records.filter_map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
 
       # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
@@ -175,14 +181,14 @@ class FolioRecord
         holding:,
         instance:,
         record: self,
-        bound_with: true
+        bound_with_child: true
       )
     end
   end
 
   private
 
-  def on_order_holdings
+  def on_order_holdings_as_items
     on_order_holdings = holdings.select do |holding|
       pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
     end

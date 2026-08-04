@@ -27,7 +27,7 @@ FactoryBot.define do
     end
     library { 'GREEN' }
     type { '' }
-    bound_with { false }
+    bound_with_child { false }
 
     initialize_with { new(**attributes, holding:, item: default_item_attributes.merge(item).merge(additional_item_attributes.deep_stringify_keys)) }
 
@@ -67,7 +67,7 @@ FactoryBot.define do
     end
 
     trait :bound_with do
-      bound_with { true }
+      bound_with_child { true }
       additional_item_attributes do
         {
           'id' => 'f947bd93-a1eb-5613-8745-1063f948c461',
