@@ -150,6 +150,27 @@ RSpec.describe 'Call Numbers' do
 
       it { is_expected.to be_nil }
     end
+
+    context 'when call number is NO CALL NUMBER with volume information' do
+      let(:holdings) do
+        [build(:lc_holding,
+               call_number: 'NO CALL NUMBER',
+               additional_item_attributes: { 'enumeration' => 'v. 20', 'chronology' => '2004 JA-JE' })]
+      end
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'when there is volume information but no base call number' do
+      let(:holdings) do
+        [build(:lc_holding,
+               call_number: nil,
+               holding: { 'callNumber' => '' },
+               additional_item_attributes: { 'enumeration' => 'v. 20', 'chronology' => '2004 JA-JE' })]
+      end
+
+      it { is_expected.to be_nil }
+    end
   end
 
   describe 'alphanum_callnum_search' do
@@ -242,6 +263,17 @@ RSpec.describe 'Call Numbers' do
       end
 
       it { is_expected.to include('ISHII SPRING 2009', 'ISHII') }
+    end
+
+    context 'with volume information but no base call number' do
+      let(:holdings) do
+        [build(:alphanum_holding,
+               call_number: nil,
+               holding: { 'callNumber' => '' },
+               additional_item_attributes: { 'enumeration' => 'v. 20', 'chronology' => '2004 JA-JE' })]
+      end
+
+      it { is_expected.to be_nil }
     end
   end
 
