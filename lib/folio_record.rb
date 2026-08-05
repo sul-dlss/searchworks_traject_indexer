@@ -136,13 +136,9 @@ class FolioRecord
 
   ELECTRONIC_LOCATION_FIELDS = %w[856 956].freeze
   def eresource?
-    return false unless electronic_holdings.any?
+    return false unless holdings.any?(&:electronic?)
 
     (marc_record || []).any? { |field| ELECTRONIC_LOCATION_FIELDS.include?(field.tag) && field.codes.include?('u') }
-  end
-
-  def electronic_holdings
-    holdings.select { |h| h.dig('holdingsType', 'name') == 'Electronic' || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
   end
 
   def item_holdings
@@ -161,17 +157,11 @@ class FolioRecord
     end
   end
 
-  def bound_with_holdings_records
-    holdings.select do |holding|
-      holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with'
-    end
-  end
-
   # since FOLIO Bound-with records don't have items, we generate a Item using data from the parent
   # item and child holding, or, if there is no parent item, we generate a stub Item from the original
   # bound-with holding.
   def bound_with_holdings_as_stub_items
-    @bound_with_holdings_as_stub_items ||= bound_with_holdings_records.filter_map do |holding|
+    @bound_with_holdings_as_stub_items ||= holdings.select(&:bound_with?).filter_map do |holding|
       parent_item = holding.dig('boundWith', 'item') || {}
 
       # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
@@ -215,7 +205,7 @@ class FolioRecord
   end
 
   def all_holdings
-    @all_holdings ||= load('holdings')
+    @all_holdings ||= load('holdings').map { |x| Folio::Holding.new(x) }
   end
 
   def bound_with_parts

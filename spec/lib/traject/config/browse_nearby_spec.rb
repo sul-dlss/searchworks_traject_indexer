@@ -188,7 +188,7 @@ RSpec.describe 'Browse nearby' do
 
     before do
       allow(folio_record).to receive(:index_items).and_return(index_items)
-      allow(folio_record).to receive(:holdings).and_return(holdings_data)
+      allow(folio_record).to receive(:holdings).and_return(holdings_data.map { |h| Folio::Holding.new(h) })
       allow(folio_record).to receive(:pieces).and_return([])
     end
 

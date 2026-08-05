@@ -2088,7 +2088,7 @@ end
 to_field 'library_code_facet_ssim' do |record, accumulator|
   next if record.index_items.any?
 
-  eholdings = record.holdings.select { |holding| holding.dig('holdingsType', 'name') == 'Electronic' || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
+  eholdings = record.holdings.select(&:electronic?)
   accumulator.concat(eholdings.map { |holding| holding.dig('location', 'effectiveLocation', 'library', 'code') }.uniq)
 end
 
@@ -2123,7 +2123,7 @@ end
 to_field 'building_facet' do |record, accumulator|
   next if record.index_items.any?
 
-  eholdings = record.holdings.select { |holding| holding.dig('holdingsType', 'name') == 'Electronic' || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
+  eholdings = record.holdings.select(&:electronic?)
   accumulator.concat(eholdings.map { |holding| LibrariesMap.for(holding.dig('location', 'effectiveLocation', 'library', 'code')) }.uniq)
 end
 
@@ -2234,7 +2234,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
           .any? { |item| item.call_number.to_s.present? && !ERESOURCE_CALL_TYPE.include?(item.call_number.type) }
 
   callnumber = begin
-    holding = record.electronic_holdings.first
+    holding = record.holdings.find(&:electronic?)
     value = holding&.dig('callNumber')
     type = Indexer::Item.call_number_type_code(holding&.dig('callNumberType', 'name'))
     Indexer::CallNumber.new(value, type) if value.present? && ERESOURCE_CALL_TYPE.include?(type&.upcase)
