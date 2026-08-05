@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Folio
-  class Holdings
+  class MhldUtils
     # This regex expression is used in scanning strings for years
     YEAR_REGEX = /(?:18|19|20)\d{2}/
 
