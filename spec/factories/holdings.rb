@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :holding, class: 'FolioItem' do
+  factory :holding, class: 'Indexer::Item' do
     transient do
       scheme { '' }
       barcode { 'barcode' }

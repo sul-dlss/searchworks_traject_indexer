@@ -150,7 +150,7 @@ class FolioRecord
       holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
       next unless holding
 
-      FolioItem.new(
+      Indexer::Item.new(
         item:,
         holding:,
         instance:,
@@ -167,8 +167,8 @@ class FolioRecord
     end
   end
 
-  # since FOLIO Bound-with records don't have items, we generate a FolioItem using data from the parent
-  # item and child holding, or, if there is no parent item, we generate a stub FolioItem from the original
+  # since FOLIO Bound-with records don't have items, we generate a Item using data from the parent
+  # item and child holding, or, if there is no parent item, we generate a stub Item from the original
   # bound-with holding.
   def bound_with_holdings_as_stub_items
     @bound_with_holdings_as_stub_items ||= bound_with_holdings_records.filter_map do |holding|
@@ -177,7 +177,7 @@ class FolioRecord
       # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
       next if parent_item['id'].in? item_holdings.select { |item| item.holding['id'] == holding['id'] }.map(&:id)
 
-      FolioItem.new(
+      Indexer::Item.new(
         item: parent_item,
         holding:,
         instance:,
@@ -195,7 +195,7 @@ class FolioRecord
     end
 
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
-      FolioItem.new(
+      Indexer::Item.new(
         holding:,
         instance:,
         status: 'On order',

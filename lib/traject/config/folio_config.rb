@@ -1690,7 +1690,7 @@ to_field 'callnum_facet_hsim', extract_marc('050ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless FolioItem::CallNumber::VALID_LC_REGEX.match?(cn)
+    next unless Indexer::CallNumber::VALID_LC_REGEX.match?(cn)
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1714,7 +1714,7 @@ to_field 'callnum_facet_hsim', extract_marc('090ab') do |record, accumulator, co
   accumulator.replace([]) and next if context.output_hash['callnum_facet_hsim'] || (record['086'] || {})['a']
 
   accumulator.map! do |cn|
-    next unless FolioItem::CallNumber::VALID_LC_REGEX.match?(cn)
+    next unless Indexer::CallNumber::VALID_LC_REGEX.match?(cn)
 
     first_letter = cn[0, 1].upcase
     letters = cn[/^[A-Z]+/]
@@ -1882,7 +1882,7 @@ to_field 'undoc_callnum_search' do |record, accumulator, context|
 end
 
 to_field 'lc_assigned_callnum_ssim', extract_marc('050ab:090ab') do |_record, accumulator, _context|
-  accumulator.select! { |cn| cn =~ FolioItem::CallNumber::VALID_LC_REGEX }
+  accumulator.select! { |cn| cn =~ Indexer::CallNumber::VALID_LC_REGEX }
 end
 
 #
@@ -2236,12 +2236,12 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   callnumber = begin
     holding = record.electronic_holdings.first
     value = holding&.dig('callNumber')
-    type = FolioItem.call_number_type_code(holding&.dig('callNumberType', 'name'))
-    FolioItem::CallNumber.new(value, type) if value.present? && ERESOURCE_CALL_TYPE.include?(type&.upcase)
+    type = Indexer::Item.call_number_type_code(holding&.dig('callNumberType', 'name'))
+    Indexer::CallNumber.new(value, type) if value.present? && ERESOURCE_CALL_TYPE.include?(type&.upcase)
   end
 
   callnumber ||= Traject::MarcExtractor.cached('050ab:090ab', alternate_script: false).extract(record).filter_map do |item_050|
-    cn = FolioItem::CallNumber.new(item_050, 'LC')
+    cn = Indexer::CallNumber.new(item_050, 'LC')
 
     cn if cn.valid_lc?
   end.first

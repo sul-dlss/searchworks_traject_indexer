@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe FolioItem do
+RSpec.describe Indexer::Item do
   describe '#display_location' do
     context 'with an item' do
       subject(:display_location) { described_class.new(item:, holding:).display_location }
