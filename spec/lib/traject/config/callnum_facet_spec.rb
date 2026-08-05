@@ -78,6 +78,15 @@ RSpec.describe 'Call Number Facet' do
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'DEWEY' }, 'callNumber' => { 'callNumber' => '. . ' } }, indexer:)[field]).to be_nil
     end
 
+    it 'does not classify volume information without a base call number' do
+      expect(record_with_holdings(item: {
+                                    'callNumberType' => { 'name' => 'LC' },
+                                    'callNumber' => { 'callNumber' => nil },
+                                    'enumeration' => 'v. 20',
+                                    'chronology' => '2004 JA-JE'
+                                  }, indexer:)[field]).to be_nil
+    end
+
     it 'does not return call nubmers typed as Alphanum, and clearly not LC or Dewey' do
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '71 15446 V.1' } }, indexer:)[field]).to be_nil
       expect(record_with_holdings(item: { 'callNumberType' => { 'name' => 'Shelving control number' }, 'callNumber' => { 'callNumber' => '4488.301 0300 2001 CD-ROM' } },

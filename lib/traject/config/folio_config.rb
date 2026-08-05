@@ -1063,7 +1063,7 @@ end
 #   the call number type in the 999w == ALPHANUM and the library in the 999m == SPEC-COLL.
 #  */
 def spec_coll_item?(item)
-  item.library == 'SPEC-COLL' && item.call_number_type == 'ALPHANUM' && item.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
+  !item.call_number.ignored_call_number? && item.library == 'SPEC-COLL' && item.call_number_type == 'ALPHANUM' && item.call_number.to_s =~ /^(A\d|F\d|M\d|MISC \d|(MSS (CODEX|MEDIA|PHOTO|PRINTS))|PC\d|SC[\d|DM]|V\d)/i
 end
 
 to_field 'format_main_ssim' do |record, accumulator, context|
@@ -1168,6 +1168,8 @@ end
 # * INDEX-89 - Add video physical formats
 to_field 'format_physical_ssim' do |record, accumulator, context|
   items(record, context).each do |item|
+    next if item.call_number.ignored_call_number?
+
     call_number = item.call_number.to_s
 
     accumulator << 'Blu-ray' if call_number.include?('BLU-RAY')
@@ -1284,10 +1286,10 @@ to_field 'format_physical_ssim', extract_marc('300a:338a', alternate_script: fal
 end
 
 to_field 'format_physical_ssim' do |record, accumulator, context|
-  if items(record, context).any? { |item| item.call_number.to_s.start_with? 'MFICHE' }
+  if items(record, context).any? { |item| !item.call_number.ignored_call_number? && item.call_number.to_s.start_with?('MFICHE') }
     accumulator << 'Microfiche'
   end
-  if items(record, context).any? { |item| item.call_number.to_s.start_with? 'MFILM' }
+  if items(record, context).any? { |item| !item.call_number.ignored_call_number? && item.call_number.to_s.start_with?('MFILM') }
     accumulator << 'Microfilm'
   end
 end
@@ -2159,24 +2161,27 @@ to_field 'item_display_struct' do |record, accumulator, context|
     next if item.skipped?
 
     call_number = item.call_number.to_s
-    volume_sort = item.call_number.shelfkey(serial:).forward
-    lopped_call_number = item.call_number.base_call_number
 
     if item.shelved_by_text
       shelved_by_text = item.shelved_by_text
 
-      call_number = [shelved_by_text, item.call_number.volume_info].compact.join(' ')
+      call_number = [shelved_by_text, item.call_number.volume_info].filter_map(&:presence).join(' ')
     end
 
-    call_number_data = if item.call_number.ignored_call_number?
+    call_number_data = if item.call_number.volume_only?
+                         {
+                           callnumber: call_number,
+                           full_shelfkey: item.call_number.volume_sort_key(serial:)
+                         }
+                       elsif item.call_number.ignored_call_number?
                          {
                            callnumber: call_number
                          }
                        else
                          {
-                           lopped_callnumber: lopped_call_number,
+                           lopped_callnumber: item.call_number.base_call_number,
                            callnumber: call_number,
-                           full_shelfkey: volume_sort
+                           full_shelfkey: item.call_number.shelfkey(serial:).forward
                          }
                        end
 
@@ -2197,6 +2202,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   serial = (context.output_hash['format_main_ssim'] || []).include?('Journal/Periodical')
   grouped_items = items(record, context)
                   .reject(&:skipped?)
+                  .reject { |item| item.call_number.ignored_call_number? }
                   .select { |item| item.call_number.to_s.present? && CALL_TYPE.include?(item.call_number.type) }
                   .group_by { |item| item.call_number.base_call_number }
 
@@ -2231,6 +2237,7 @@ to_field 'browse_nearby_struct' do |record, accumulator, context|
   # weren't the right type (e.g. SUDOC)
   next if items(record, context)
           .reject(&:skipped?)
+          .reject { |item| item.call_number.ignored_call_number? }
           .any? { |item| item.call_number.to_s.present? && !ERESOURCE_CALL_TYPE.include?(item.call_number.type) }
 
   callnumber = begin

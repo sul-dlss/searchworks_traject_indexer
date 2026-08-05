@@ -199,14 +199,16 @@ module Indexer
                            @holding&.dig('callNumber') ||
                            bound_with&.dig('holding', 'callNumber')
 
-      return Indexer::CallNumber.new('', '') unless base_call_number.present?
-
       if @item
-        volume_info_parts = [@item['volume'], @item['enumeration'], @item['chronology']].compact
+        volume_info_parts = [@item['volume'], @item['enumeration'], @item['chronology']].filter_map(&:presence)
         # For SUDOCs, the volume/enumeration/chronology fields are sometimes duplicated in the call number itself
-        volume_info_parts = volume_info_parts.reject { |part| base_call_number.include?(part) } if call_number_type == 'SUDOC'
+        volume_info_parts = volume_info_parts.reject { |part| base_call_number.include?(part) } if call_number_type == 'SUDOC' && base_call_number.present?
         volume_info = normalize_call_number(volume_info_parts.join(' ').presence)
       end
+
+      base_call_number = nil if volume_info.present? && Indexer::CallNumber::SKIPPED_CALL_NUMS.include?(base_call_number.to_s)
+
+      return Indexer::CallNumber.new('', '', volume_info:, library:) unless base_call_number.present?
 
       if bound_with?
         # bound-withs are a special case; the call number for the holding includes the base call number and any volume information. We can try

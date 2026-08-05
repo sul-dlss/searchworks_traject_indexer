@@ -10,6 +10,34 @@ RSpec.describe 'Format physical config' do
   let(:folio_record) { marc_to_folio(record) }
   let(:field) { 'format_physical_ssim' }
 
+  context 'when a format-like call number is ignored' do
+    let(:record) { MARC::Record.new }
+
+    %w[ZDVD MFILM].each do |call_number|
+      it "skips an ignored #{call_number} call number" do
+        item = build(:alphanum_holding, call_number:)
+        allow(item.call_number).to receive(:ignored_call_number?).and_return(true)
+        allow(folio_record).to receive(:index_items).and_return([item])
+
+        expect(result[field]).to be_nil
+      end
+    end
+  end
+
+  context 'when volume information is attached to the no-call-number sentinel' do
+    let(:record) { MARC::Record.new }
+
+    it 'does not infer a format from the volume information' do
+      allow(folio_record).to receive(:index_items).and_return([
+                                                                build(:alphanum_holding,
+                                                                      call_number: 'NO CALL NUMBER',
+                                                                      additional_item_attributes: { 'enumeration' => 'ZDVD' })
+                                                              ])
+
+      expect(result[field]).to be_nil
+    end
+  end
+
   context 'with 007/00 = m (Film)' do
     let(:record) do
       MARC::Record.new.tap do |r|

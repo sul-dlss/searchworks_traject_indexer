@@ -51,11 +51,23 @@ module Indexer
     def call_number
       separator = volume_info.present? && volume_info.start_with?(/(\s|[[:punct:]])/) ? '' : ' '
 
-      [base_call_number.to_s, volume_info].compact.join(separator)
+      [base_call_number.presence, volume_info.presence].compact.join(separator)
     end
 
+    def volume_only?
+      base_call_number.blank? && volume_info.present?
+    end
+
+    def volume_sort_key(serial: false)
+      return unless volume_only?
+
+      CallNumbers::OtherShelfkey.new('', volume_info, serial:).forward
+    end
+
+    # The call number may be displayed, but it must not be treated as a real base call number for derived behavior
     def ignored_call_number?
-      SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
+      base_call_number.blank? ||
+        SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
         temp_call_number?
     end
 
