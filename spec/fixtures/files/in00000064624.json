@@ -21,6 +21,68 @@
          }
       }
    ],
+   "bound_with_principals" : [
+      {
+         "holding" : {
+            "effectiveLocationId" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
+            "suppressFromDiscovery" : false
+         },
+         "instance" : {
+            "hrid" : "in00000064624",
+            "id" : "7d747c3e-c166-4829-89d6-a5355acf098a",
+            "suppressFromDiscovery" : false,
+            "title" : "[Collection of Restoration plays]"
+         },
+         "item" : {
+            "barcode" : "36105244284563",
+            "callNumber" : {
+               "callNumber" : "PR1266.C65 1670",
+               "typeId" : "95467209-6d7b-468b-94df-0f5d7ad2747d"
+            },
+            "chronology" : null,
+            "effectiveLocationId" : "2065af65-904d-41bb-8db8-35bff753cf64",
+            "enumeration" : "v.2",
+            "hrid" : "it00000479304",
+            "id" : "4ab67ace-b7d1-4a49-8405-5b464c42e27e",
+            "materialTypeId" : "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+            "permanentLoanTypeId" : "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+            "status" : "In process (non-requestable)",
+            "suppressFromDiscovery" : false,
+            "temporaryLoanTypeId" : null,
+            "volume" : null
+         }
+      },
+      {
+         "holding" : {
+            "effectiveLocationId" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
+            "suppressFromDiscovery" : false
+         },
+         "instance" : {
+            "hrid" : "in00000064624",
+            "id" : "7d747c3e-c166-4829-89d6-a5355acf098a",
+            "suppressFromDiscovery" : false,
+            "title" : "[Collection of Restoration plays]"
+         },
+         "item" : {
+            "barcode" : "36105236764440",
+            "callNumber" : {
+               "callNumber" : "PR1266.C65 1670",
+               "typeId" : "95467209-6d7b-468b-94df-0f5d7ad2747d"
+            },
+            "chronology" : null,
+            "effectiveLocationId" : "2065af65-904d-41bb-8db8-35bff753cf64",
+            "enumeration" : "v.1",
+            "hrid" : "it00000080179",
+            "id" : "8f15d3c4-985b-49ef-9a9c-bcc7c7ed4da8",
+            "materialTypeId" : "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+            "permanentLoanTypeId" : "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+            "status" : "In process (non-requestable)",
+            "suppressFromDiscovery" : false,
+            "temporaryLoanTypeId" : null,
+            "volume" : null
+         }
+      }
+   ],
    "holdingSummaries" : [
       {
          "orderCloseReason" : {
@@ -38,258 +100,6 @@
       {
          "_version" : 2,
          "administrativeNotes" : [],
-         "boundWith" : {
-            "holding" : {
-               "effectiveLocationId" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-               "location" : {
-                  "effectiveLocation" : {
-                     "campus" : {
-                        "code" : "SUL",
-                        "id" : "c365047a-51f2-45ce-8601-e421ca3615c5",
-                        "name" : "Stanford Libraries"
-                     },
-                     "code" : "SPEC-RARE-BOOKS",
-                     "details" : {
-                        "pageAeonSite" : "SPECUA"
-                     },
-                     "id" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-                     "institution" : {
-                        "code" : "SU",
-                        "id" : "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                        "name" : "Stanford University"
-                     },
-                     "isActive" : true,
-                     "library" : {
-                        "code" : "SPEC-COLL",
-                        "id" : "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-                        "name" : "Special Collections"
-                     },
-                     "name" : "Rare Books Collection"
-                  }
-               },
-               "suppressFromDiscovery" : false
-            },
-            "instance" : {
-               "hrid" : "in00000064624",
-               "id" : "7d747c3e-c166-4829-89d6-a5355acf098a",
-               "suppressFromDiscovery" : false,
-               "title" : "[Collection of Restoration plays]"
-            },
-            "item" : {
-               "barcode" : "36105244284563",
-               "callNumber" : {
-                  "callNumber" : "PR1266.C65 1670",
-                  "typeId" : "95467209-6d7b-468b-94df-0f5d7ad2747d"
-               },
-               "chronology" : null,
-               "effectiveLocationId" : "2065af65-904d-41bb-8db8-35bff753cf64",
-               "enumeration" : "v.2",
-               "hrid" : "it00000479304",
-               "id" : "4ab67ace-b7d1-4a49-8405-5b464c42e27e",
-               "location" : {
-                  "effectiveLocation" : {
-                     "campus" : {
-                        "code" : "SUL",
-                        "id" : "c365047a-51f2-45ce-8601-e421ca3615c5",
-                        "name" : "Stanford Libraries"
-                     },
-                     "code" : "SPEC-INPROCESS-RWC",
-                     "details" : {
-                        "availabilityClass" : "In_process_non_requestable"
-                     },
-                     "id" : "2065af65-904d-41bb-8db8-35bff753cf64",
-                     "institution" : {
-                        "code" : "SU",
-                        "id" : "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                        "name" : "Stanford University"
-                     },
-                     "isActive" : true,
-                     "library" : {
-                        "code" : "SPEC-COLL",
-                        "id" : "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-                        "name" : "Special Collections"
-                     },
-                     "name" : "In process"
-                  }
-               },
-               "materialTypeId" : "1a54b431-2e4f-452d-9cae-9cee66c9a892",
-               "permanentLoanTypeId" : "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-               "status" : "In process (non-requestable)",
-               "suppressFromDiscovery" : false,
-               "temporaryLoanTypeId" : null,
-               "volume" : null
-            }
-         },
-         "callNumber" : "PR1266.C65 1670",
-         "callNumberType" : {
-            "id" : "95467209-6d7b-468b-94df-0f5d7ad2747d",
-            "name" : "Library of Congress classification",
-            "source" : "system"
-         },
-         "callNumberTypeId" : "95467209-6d7b-468b-94df-0f5d7ad2747d",
-         "effectiveLocationId" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-         "electronicAccess" : [],
-         "formerIds" : [],
-         "holdingsStatements" : [],
-         "holdingsStatementsForIndexes" : [],
-         "holdingsStatementsForSupplements" : [],
-         "holdingsType" : {
-            "id" : "5684e4a3-9279-4463-b6ee-20ae21bbec07",
-            "name" : "Book",
-            "source" : "local"
-         },
-         "holdingsTypeId" : "5684e4a3-9279-4463-b6ee-20ae21bbec07",
-         "hrid" : "ho00000079375",
-         "id" : "212b61ac-a336-4b07-a780-01a49c878f04",
-         "illPolicy" : null,
-         "instanceId" : "7d747c3e-c166-4829-89d6-a5355acf098a",
-         "location" : {
-            "effectiveLocation" : {
-               "campus" : {
-                  "code" : "SUL",
-                  "id" : "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "name" : "Stanford Libraries"
-               },
-               "code" : "SPEC-RARE-BOOKS",
-               "details" : {
-                  "pageAeonSite" : "SPECUA"
-               },
-               "id" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-               "institution" : {
-                  "code" : "SU",
-                  "id" : "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                  "name" : "Stanford University"
-               },
-               "isActive" : true,
-               "library" : {
-                  "code" : "SPEC-COLL",
-                  "id" : "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-                  "name" : "Special Collections"
-               },
-               "name" : "Rare Books Collection"
-            },
-            "permanentLocation" : {
-               "campus" : {
-                  "code" : "SUL",
-                  "id" : "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "name" : "Stanford Libraries"
-               },
-               "code" : "SPEC-RARE-BOOKS",
-               "details" : {
-                  "pageAeonSite" : "SPECUA"
-               },
-               "id" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-               "institution" : {
-                  "code" : "SU",
-                  "id" : "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                  "name" : "Stanford University"
-               },
-               "isActive" : true,
-               "library" : {
-                  "code" : "SPEC-COLL",
-                  "id" : "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-                  "name" : "Special Collections"
-               },
-               "name" : "Rare Books Collection"
-            }
-         },
-         "metadata" : {
-            "createdByUserId" : "7ced6673-ff0d-4619-997d-34c41d17baec",
-            "createdDate" : "2024-03-05T17:08:19.509Z",
-            "updatedByUserId" : "b8585498-1d18-4269-8044-1a44fb8bcaa6",
-            "updatedDate" : "2026-07-24T18:55:53.902Z"
-         },
-         "notes" : [],
-         "permanentLocationId" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-         "sourceId" : "f32d531e-df79-46b3-8932-cdd35f7a2264",
-         "statisticalCodeIds" : [],
-         "suppressFromDiscovery" : false
-      },
-      {
-         "_version" : 2,
-         "administrativeNotes" : [],
-         "boundWith" : {
-            "holding" : {
-               "effectiveLocationId" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-               "location" : {
-                  "effectiveLocation" : {
-                     "campus" : {
-                        "code" : "SUL",
-                        "id" : "c365047a-51f2-45ce-8601-e421ca3615c5",
-                        "name" : "Stanford Libraries"
-                     },
-                     "code" : "SPEC-RARE-BOOKS",
-                     "details" : {
-                        "pageAeonSite" : "SPECUA"
-                     },
-                     "id" : "271f84ab-47aa-40cc-b8a1-18a992bb6b88",
-                     "institution" : {
-                        "code" : "SU",
-                        "id" : "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                        "name" : "Stanford University"
-                     },
-                     "isActive" : true,
-                     "library" : {
-                        "code" : "SPEC-COLL",
-                        "id" : "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-                        "name" : "Special Collections"
-                     },
-                     "name" : "Rare Books Collection"
-                  }
-               },
-               "suppressFromDiscovery" : false
-            },
-            "instance" : {
-               "hrid" : "in00000064624",
-               "id" : "7d747c3e-c166-4829-89d6-a5355acf098a",
-               "suppressFromDiscovery" : false,
-               "title" : "[Collection of Restoration plays]"
-            },
-            "item" : {
-               "barcode" : "36105236764440",
-               "callNumber" : {
-                  "callNumber" : "PR1266.C65 1670",
-                  "typeId" : "95467209-6d7b-468b-94df-0f5d7ad2747d"
-               },
-               "chronology" : null,
-               "effectiveLocationId" : "2065af65-904d-41bb-8db8-35bff753cf64",
-               "enumeration" : "v.1",
-               "hrid" : "it00000080179",
-               "id" : "8f15d3c4-985b-49ef-9a9c-bcc7c7ed4da8",
-               "location" : {
-                  "effectiveLocation" : {
-                     "campus" : {
-                        "code" : "SUL",
-                        "id" : "c365047a-51f2-45ce-8601-e421ca3615c5",
-                        "name" : "Stanford Libraries"
-                     },
-                     "code" : "SPEC-INPROCESS-RWC",
-                     "details" : {
-                        "availabilityClass" : "In_process_non_requestable"
-                     },
-                     "id" : "2065af65-904d-41bb-8db8-35bff753cf64",
-                     "institution" : {
-                        "code" : "SU",
-                        "id" : "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                        "name" : "Stanford University"
-                     },
-                     "isActive" : true,
-                     "library" : {
-                        "code" : "SPEC-COLL",
-                        "id" : "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-                        "name" : "Special Collections"
-                     },
-                     "name" : "In process"
-                  }
-               },
-               "materialTypeId" : "1a54b431-2e4f-452d-9cae-9cee66c9a892",
-               "permanentLoanTypeId" : "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-               "status" : "In process (non-requestable)",
-               "suppressFromDiscovery" : false,
-               "temporaryLoanTypeId" : null,
-               "volume" : null
-            }
-         },
          "callNumber" : "PR1266.C65 1670",
          "callNumberType" : {
             "id" : "95467209-6d7b-468b-94df-0f5d7ad2747d",

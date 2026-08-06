@@ -128,14 +128,16 @@ module Traject
           'permanentLocation' => locations[holding['permanentLocationId']],
           'temporaryLocation' => locations[holding['temporaryLocationId']]
         }.compact
+      end
 
-        holding['boundWith']['holding']['location'] = {
-          'effectiveLocation' => locations[holding['boundWith']['holding']['effectiveLocationId']]
-        } if holding.dig('boundWith', 'holding', 'effectiveLocationId')
+      data['bound_with_principals'].each do |bw|
+        bw['holding']['location'] = {
+          'effectiveLocation' => locations[bw['holding']['effectiveLocationId']]
+        } if bw.dig('holding', 'effectiveLocationId')
 
-        holding['boundWith']['item']['location'] = {
-          'effectiveLocation' => locations[holding['boundWith']['item']['effectiveLocationId']]
-        } if holding.dig('boundWith', 'item', 'effectiveLocationId')
+        bw['item']['location'] = {
+          'effectiveLocation' => locations[bw['item']['effectiveLocationId']]
+        } if bw.dig('item', 'effectiveLocationId')
       end
     end
 
@@ -418,50 +420,48 @@ module Traject
                         'callNumberType', hrcnt.jsonb - 'metadata',
                         'electronicAccess', COALESCE(sul_mod_inventory_storage.getElectronicAccessName(COALESCE(hr.jsonb #> '{electronicAccess}', '[]'::jsonb)), '[]'::jsonb),
                         'notes', COALESCE((SELECT jsonb_agg(e || jsonb_build_object('holdingsNoteTypeName', ( SELECT jsonb ->> 'name' FROM sul_mod_inventory_storage.holdings_note_type WHERE id = nullif(e ->> 'holdingsNoteTypeId','')::uuid ))) FROM jsonb_array_elements(hr.jsonb -> 'notes') AS e WHERE NOT COALESCE((e ->> 'staffOnly')::bool, false)), '[]'::jsonb),
-                        'illPolicy', ilp.jsonb - 'metadata',
-                        'boundWith',
-                          CASE WHEN parentItem.id IS NOT NULL THEN
-                            jsonb_build_object(
-                              'instance', jsonb_build_object(
-                                'id', parentInstance.id,
-                                'hrid', parentInstance.jsonb ->> 'hrid',
-                                'title', parentInstance.jsonb ->> 'title',
-                                'suppressFromDiscovery', COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false)
-                              ),
-                              'holding', jsonb_build_object(
-                                'effectiveLocationId', parentHolding.jsonb ->> 'effectiveLocationId',
-                                'suppressFromDiscovery',
-                                CASE WHEN parentHolding.id IS NOT NULL THEN
-                                  COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
-                                  COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false)
-                                ELSE NULL END::bool
-                              ),
-                              'item', jsonb_build_object(
-                                'id', parentItem.id,
-                                'hrid', parentItem.jsonb ->> 'hrid',
-                                'barcode', parentItem.jsonb ->> 'barcode',
-                                'callNumber', parentItem.jsonb -> 'effectiveCallNumberComponents',
-                                'status', parentItem.jsonb #>> '{status, name}',
-                                'enumeration', parentItem.jsonb->>'enumeration',
-                                'volume', parentItem.jsonb->>'volume',
-                                'chronology', parentItem.jsonb->>'chronology',
-                                'effectiveLocationId', parentItem.jsonb ->> 'effectiveLocationId',
-                                'materialTypeId', parentItem.jsonb ->> 'materialTypeId',
-                                'permanentLoanTypeId', parentItem.jsonb ->> 'permanentLoanTypeId',
-                                'temporaryLoanTypeId', parentItem.jsonb ->> 'temporaryLoanTypeId',
-                                'suppressFromDiscovery',
-                                CASE WHEN parentItem.id IS NOT NULL THEN
-                                  COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
-                                  COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false) OR
-                                  COALESCE((parentItem.jsonb ->> 'discoverySuppress')::bool, false)
-                                ELSE NULL END::bool
-                              )
-                            )
-                          ELSE NULL END::jsonb
+                        'illPolicy', ilp.jsonb - 'metadata'
                   )
                 ) FILTER (WHERE hr.id IS NOT NULL), '[]'::jsonb
               ),
             'po_lines', COUNT(po_line.id),
+            'bound_with_principals', jsonb_agg(DISTINCT jsonb_build_object(
+              'instance', jsonb_build_object(
+                'id', parentInstance.id,
+                'hrid', parentInstance.jsonb ->> 'hrid',
+                'title', parentInstance.jsonb ->> 'title',
+                'suppressFromDiscovery', COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false)
+              ),
+              'holding', jsonb_build_object(
+                'id', parentHolding.id,
+                'effectiveLocationId', parentHolding.jsonb ->> 'effectiveLocationId',
+                'suppressFromDiscovery',
+                CASE WHEN parentHolding.id IS NOT NULL THEN
+                  COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
+                  COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false)
+                ELSE NULL END::bool
+              ),
+              'item', jsonb_build_object(
+                'id', parentItem.id,
+                'hrid', parentItem.jsonb ->> 'hrid',
+                'barcode', parentItem.jsonb ->> 'barcode',
+                'callNumber', parentItem.jsonb -> 'effectiveCallNumberComponents',
+                'status', parentItem.jsonb #>> '{status, name}',
+                'enumeration', parentItem.jsonb->>'enumeration',
+                'volume', parentItem.jsonb->>'volume',
+                'chronology', parentItem.jsonb->>'chronology',
+                'effectiveLocationId', parentItem.jsonb ->> 'effectiveLocationId',
+                'materialTypeId', parentItem.jsonb ->> 'materialTypeId',
+                'permanentLoanTypeId', parentItem.jsonb ->> 'permanentLoanTypeId',
+                'temporaryLoanTypeId', parentItem.jsonb ->> 'temporaryLoanTypeId',
+                'suppressFromDiscovery',
+                CASE WHEN parentItem.id IS NOT NULL THEN
+                  COALESCE((parentInstance.jsonb ->> 'discoverySuppress')::bool, false) OR
+                  COALESCE((parentHolding.jsonb ->> 'discoverySuppress')::bool, false) OR
+                  COALESCE((parentItem.jsonb ->> 'discoverySuppress')::bool, false)
+                ELSE NULL END::bool
+              )
+            )) FILTER (WHERE parentItem.id IS NOT NULL),
             'bound_with_parts', jsonb_agg(DISTINCT bw.jsonb || jsonb_build_object('instanceId', parentInstance.id)) FILTER (WHERE bw.id IS NOT NULL)
             )
       FROM sul_mod_inventory_storage.instance vi
