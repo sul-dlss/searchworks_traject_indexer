@@ -100,16 +100,82 @@ RSpec.describe FolioItem do
   end
 
   describe '#call_number' do
-    subject(:call_number) { described_class.new(item:, holding: {}).call_number }
+    subject(:call_number) { described_class.new(item:, holding:).call_number }
 
-    let(:item) do
-      {
-        call_number: ''
-      }.with_indifferent_access
+    let(:holding) { {}.with_indifferent_access }
+    let(:item) { { call_number: '' }.with_indifferent_access }
+
+    it 'is blank when there is no base call number or volume information' do
+      expect(call_number.to_s).to eq ''
+      expect(call_number).to be_temp_call_number
+      expect(call_number).to be_ignored_call_number
     end
 
-    it 'is the effective location library code' do
-      expect(call_number.to_s).to eq ''
+    context 'with volume information but no base call number' do
+      let(:holding) { { callNumber: '' }.with_indifferent_access }
+      let(:item) do
+        {
+          callNumber: { typeName: 'Title' },
+          callNumberType: { name: 'Title' },
+          volume: '',
+          enumeration: 'v. 20',
+          chronology: '2004 JA-JE'
+        }.with_indifferent_access
+      end
+
+      it 'uses the volume information as the display call number' do
+        expect(call_number).to have_attributes(
+          base_call_number: '',
+          volume_info: 'v. 20 2004 JA-JE'
+        )
+        expect(call_number.to_s).to eq 'v. 20 2004 JA-JE'
+        expect(call_number).to be_volume_only
+        expect(call_number).not_to be_temp_call_number
+        expect(call_number).to be_ignored_call_number
+      end
+
+      it 'sorts newer serial volume information first' do
+        newer_call_number = described_class.new(
+          item: item.merge(enumeration: 'v. 21', chronology: '2005 JA-JE'),
+          holding:
+        ).call_number
+
+        expect(newer_call_number.volume_sort_key(serial: true)).to be < call_number.volume_sort_key(serial: true)
+      end
+    end
+
+    context 'with volume information and the no-call-number sentinel' do
+      let(:item) do
+        {
+          callNumber: { callNumber: 'NO CALL NUMBER' },
+          callNumberType: { name: 'LC' },
+          enumeration: 'v. 20',
+          chronology: '2004 JA-JE'
+        }.with_indifferent_access
+      end
+
+      it 'uses the volume information as the display call number' do
+        expect(call_number).to have_attributes(
+          base_call_number: '',
+          volume_info: 'v. 20 2004 JA-JE'
+        )
+        expect(call_number.to_s).to eq 'v. 20 2004 JA-JE'
+        expect(call_number).to be_volume_only
+        expect(call_number).to be_ignored_call_number
+      end
+    end
+
+    context 'with a base call number and punctuation-prefixed volume information' do
+      let(:item) do
+        {
+          callNumber: { callNumber: 'ABC 123' },
+          enumeration: '.V.2'
+        }.with_indifferent_access
+      end
+
+      it 'preserves the existing separator behavior' do
+        expect(call_number.to_s).to eq 'ABC 123.V.2'
+      end
     end
   end
 

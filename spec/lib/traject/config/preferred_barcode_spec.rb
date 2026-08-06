@@ -395,6 +395,18 @@ RSpec.describe 'All_search config' do
     it { is_expected.to eq nil }
   end
 
+  context 'with volume information but no base call number' do
+    let(:index_items) do
+      [build(:alphanum_holding,
+             barcode: 'volume-only',
+             call_number: nil,
+             holding: { 'callNumber' => '' },
+             additional_item_attributes: { 'enumeration' => 'v. 20', 'chronology' => '2004 JA-JE' })]
+    end
+
+    it { is_expected.to be_nil }
+  end
+
   context 'with a shelby location' do
     let(:index_items) do
       [

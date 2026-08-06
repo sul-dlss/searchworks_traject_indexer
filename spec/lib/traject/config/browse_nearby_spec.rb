@@ -79,6 +79,48 @@ RSpec.describe 'Browse nearby' do
     end
   end
 
+  context 'when the item has volume information but no base call number' do
+    before do
+      allow(folio_record).to receive(:index_items).and_return([
+                                                                build(:alphanum_holding,
+                                                                      call_number: nil,
+                                                                      holding: { 'callNumber' => '' },
+                                                                      additional_item_attributes: {
+                                                                        'enumeration' => 'v. 20',
+                                                                        'chronology' => '2004 JA-JE'
+                                                                      })
+                                                              ])
+    end
+
+    it { is_expected.to be_blank }
+  end
+
+  context 'when an e-resource also has an item with volume information but no base call number' do
+    let(:record) do
+      MARC::Record.new.tap do |r|
+        r.leader = '15069nam a2200409 a 4500'
+        r.append(MARC::DataField.new('050', ' ', '0',
+                                     MARC::Subfield.new('a', 'F1356'),
+                                     MARC::Subfield.new('b', '.M464 2005')))
+      end
+    end
+
+    before do
+      allow(folio_record).to receive_messages(
+        eresource?: true,
+        electronic_holdings: [],
+        index_items: [build(:alphanum_holding,
+                            call_number: nil,
+                            holding: { 'callNumber' => '' },
+                            additional_item_attributes: { 'enumeration' => 'v. 20' })]
+      )
+    end
+
+    it 'retains the MARC call-number fallback' do
+      expect(result).to contain_exactly(hash_including('lopped_callnumber' => 'F1356 .M464 2005'))
+    end
+  end
+
   context 'with some Dewey call numbers of a multi-volume monograph' do
     before do
       allow(folio_record).to receive(:index_items).and_return(index_items)

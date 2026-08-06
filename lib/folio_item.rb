@@ -198,14 +198,16 @@ class FolioItem
                          @holding&.dig('callNumber') ||
                          bound_with&.dig('holding', 'callNumber')
 
-    return CallNumber.new('', '') unless base_call_number.present?
-
     if @item
-      volume_info_parts = [@item['volume'], @item['enumeration'], @item['chronology']].compact
+      volume_info_parts = [@item['volume'], @item['enumeration'], @item['chronology']].filter_map(&:presence)
       # For SUDOCs, the volume/enumeration/chronology fields are sometimes duplicated in the call number itself
-      volume_info_parts = volume_info_parts.reject { |part| base_call_number.include?(part) } if call_number_type == 'SUDOC'
+      volume_info_parts = volume_info_parts.reject { |part| base_call_number.include?(part) } if call_number_type == 'SUDOC' && base_call_number.present?
       volume_info = normalize_call_number(volume_info_parts.join(' ').presence)
     end
+
+    base_call_number = nil if volume_info.present? && CallNumber::SKIPPED_CALL_NUMS.include?(base_call_number.to_s)
+
+    return CallNumber.new('', '', volume_info:, library:) unless base_call_number.present?
 
     if bound_with?
       # bound-withs are a special case; the call number for the holding includes the base call number and any volume information. We can try
@@ -308,11 +310,23 @@ class FolioItem
     def call_number
       separator = volume_info.present? && volume_info.start_with?(/(\s|[[:punct:]])/) ? '' : ' '
 
-      [base_call_number.to_s, volume_info].compact.join(separator)
+      [base_call_number.presence, volume_info.presence].compact.join(separator)
     end
 
+    def volume_only?
+      base_call_number.blank? && volume_info.present?
+    end
+
+    def volume_sort_key(serial: false)
+      return unless volume_only?
+
+      CallNumbers::OtherShelfkey.new('', volume_info, serial:).forward
+    end
+
+    # The call number may be displayed, but it must not be treated as a real base call number for derived behavior
     def ignored_call_number?
-      SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
+      base_call_number.blank? ||
+        SKIPPED_CALL_NUMS.include?(call_number.to_s) ||
         temp_call_number?
     end
 
