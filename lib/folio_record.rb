@@ -142,18 +142,17 @@ class FolioRecord
   end
 
   def item_holdings
-    @item_holdings ||= items.filter_map do |item|
-      holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
-      next unless holding
-
-      Indexer::Item.new(
-        item:,
-        holding:,
-        instance:,
-        course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] },
-        record: self,
-        bound_with_principal: bound_with_parts.any? { |child| child['itemId'] == item['id'] }
-      )
+    @item_holdings ||= holdings.flat_map do |holding|
+      holding.items.reject { |item| item['suppressFromDiscovery'] }.map do |item|
+        Indexer::Item.new(
+          item:,
+          holding:,
+          instance:,
+          course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] },
+          record: self,
+          bound_with_principal: bound_with_parts.any? { |child| child['itemId'] == item['id'] }
+        )
+      end
     end
   end
 
@@ -162,10 +161,7 @@ class FolioRecord
   # bound-with holding.
   def bound_with_holdings_as_stub_items
     @bound_with_holdings_as_stub_items ||= holdings.select(&:bound_with?).filter_map do |holding|
-      parent_item = holding.dig('boundWith', 'item') || {}
-
-      # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
-      next if parent_item['id'].in? item_holdings.select { |item| item.holding['id'] == holding['id'] }.map(&:id)
+      parent_item = holding.dig('boundWith', 'item')
 
       Indexer::Item.new(
         item: parent_item,
@@ -180,10 +176,7 @@ class FolioRecord
   private
 
   def on_order_holdings_as_items
-    on_order_holdings = holdings.select do |holding|
-      pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
-    end
-
+    on_order_holdings = holdings.select(&:on_order?)
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
       Indexer::Item.new(
         holding:,
@@ -205,7 +198,7 @@ class FolioRecord
   end
 
   def all_holdings
-    @all_holdings ||= load('holdings').map { |x| Folio::Holding.new(x) }
+    @all_holdings ||= load('holdings').uniq { |x| x['id'] }.map { |x| Folio::Holding.from_dynamic(x, items: all_items, pieces: pieces) }
   end
 
   def bound_with_parts
