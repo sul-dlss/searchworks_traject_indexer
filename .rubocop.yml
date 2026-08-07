@@ -32,7 +32,7 @@ Style/RedundantParentheses:
 
 Metrics/ClassLength:
   Exclude:
-    - 'lib/folio_item.rb'
+    - 'lib/indexer/item.rb'
 
 Metrics/ModuleLength:
   Exclude:

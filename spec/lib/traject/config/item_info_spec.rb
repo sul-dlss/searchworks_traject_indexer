@@ -208,7 +208,7 @@ RSpec.describe 'ItemInfo config' do
 
         before do
           allow(folio_record).to receive(:item_holdings).and_return([])
-          allow(folio_record).to receive(:bound_with_holdings).and_return(holdings)
+          allow(folio_record).to receive(:bound_with_holdings_as_stub_items).and_return(holdings)
         end
 
         it 'contains a bound_with parent' do
@@ -603,8 +603,13 @@ RSpec.describe 'ItemInfo config' do
         JSON.parse(File.read(file_fixture('a12451243.json'))).dig('parsedRecord', 'content')
       end
 
+      let(:holding) { Folio::Holding.new({}) }
+
       before do
-        allow(folio_record).to receive(:electronic_holdings).and_return([{}])
+        allow(folio_record).to receive(:mhld).and_return([])
+        allow(folio_record).to receive(:holdings).and_return([holding])
+
+        allow(holding).to receive(:electronic?).and_return(true)
       end
 
       it 'excludes the MARC 050 data if there already is a browseable item' do

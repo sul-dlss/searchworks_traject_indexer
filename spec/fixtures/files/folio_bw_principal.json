@@ -1,4 +1,18 @@
 {
+  "bound_with_parts" : [
+    {
+        "holdingsRecordId" : "61a02b20-39db-52a1-879a-34e3be8f0368",
+        "id" : "8335769b-7200-4b57-aa24-951fd3b38314",
+        "instanceId" : "0bd14032-6811-5361-a55b-14e0bafbbf0f",
+        "itemId" : "2b9ba8c6-f25c-5ba2-a159-418a0c335703",
+        "metadata" : {
+          "createdByUserId" : "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+          "createdDate" : "2024-05-20T17:25:17.782Z",
+          "updatedByUserId" : "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+          "updatedDate" : "2024-05-20T17:25:17.782Z"
+        }
+    }
+  ],
   "pieces": [
     null
   ],

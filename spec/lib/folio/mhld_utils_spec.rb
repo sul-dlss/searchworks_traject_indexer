@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Folio::Holdings do
+RSpec.describe Folio::MhldUtils do
   describe '.find_latest' do
     subject(:latest) { described_class.find_latest(options) }
     let(:options) { [{}, {}] }

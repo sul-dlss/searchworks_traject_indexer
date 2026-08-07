@@ -5,12 +5,24 @@ require 'spec_helper'
 RSpec.describe FolioRecord do
   subject(:folio_record) { described_class.new(record, client) }
   let(:client) { instance_double(FolioClient) }
-  let(:record) do
+  let(:base_record) do
     {
       'instance' => {
         'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
       },
+      'items' => [],
+      'pieces' => [],
       'holdings' => [],
+      'source_record' => [{
+        'fields' => [
+          { '001' => 'a14154194' }
+        ]
+      }]
+    }
+  end
+
+  let(:record) do
+    {
       'source_record' => [{
         'fields' => [
           { '001' => 'a14154194' },
@@ -21,7 +33,7 @@ RSpec.describe FolioRecord do
           } }
         ]
       }]
-    }
+    }.reverse_merge(base_record)
   end
 
   describe '#marc_record' do
@@ -36,10 +48,6 @@ RSpec.describe FolioRecord do
     context 'with private notes' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
-          'holdings' => [],
           'source_record' => [{
             'fields' => [
               { '243' => {
@@ -50,7 +58,7 @@ RSpec.describe FolioRecord do
               } }
             ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'strips the record of that private note entirely' do
@@ -61,10 +69,6 @@ RSpec.describe FolioRecord do
     context 'with subfield 0 data that used to be in the subfield =' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
-          'holdings' => [],
           'source_record' => [{
             'fields' => [
               { '264' => {
@@ -75,7 +79,7 @@ RSpec.describe FolioRecord do
               } }
             ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'strips only that migrated data' do
@@ -112,9 +116,8 @@ RSpec.describe FolioRecord do
             'subjects' => [],
             'electronicAccess' => []
           },
-          'holdings' => [],
           'source_record' => []
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'derives the ISBN from the identifiers' do
@@ -153,9 +156,6 @@ RSpec.describe FolioRecord do
     context 'when record has existing bound-with 590 in its MARC' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'holdings' => [{
             'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
             'callNumber' => '064.8 .D191H',
@@ -181,7 +181,7 @@ RSpec.describe FolioRecord do
               } }
             ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'does not overwrite existing 590s' do
@@ -196,9 +196,6 @@ RSpec.describe FolioRecord do
     context 'when 590 exists but it is not a bound-with and has Bound-with parents via FOLIO APIs' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'holdings' => [{
             'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
             'callNumber' => '064.8 .D191H',
@@ -213,7 +210,6 @@ RSpec.describe FolioRecord do
               }
             }
           }],
-          'items' => [],
           'source_record' => [{
             'fields' => [
               { '001' => 'a14154194' },
@@ -222,7 +218,7 @@ RSpec.describe FolioRecord do
               } }
             ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
       it 'writes a new 590' do
         expect(folio_record.marc_record.fields('590').first.subfields).to match_array([
@@ -238,9 +234,6 @@ RSpec.describe FolioRecord do
     context 'when record does not have existing 590 in its MARC' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'holdings' => [{
             'id' => 'd1eece03-e4b6-5bd3-b6be-3d76ae8cf96d',
             'callNumber' => '064.8 .D191H',
@@ -254,14 +247,8 @@ RSpec.describe FolioRecord do
                 'barcode' => '36105018739321'
               }
             }
-          }],
-          'items' => [],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       context 'when FOLIO returns Bound-with data' do
@@ -274,18 +261,7 @@ RSpec.describe FolioRecord do
       end
       context 'when FOLIO does not return Bound-with data' do
         let(:record) do
-          {
-            'instance' => {
-              'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-            },
-            'holdings' => [],
-            'source_record' => [{
-              'fields' => [
-                { '001' => 'a14154194' }
-              ]
-            }],
-            'boundWithParents' => []
-          }
+          {}.reverse_merge(base_record)
         end
 
         it 'does not create a new 590 field' do
@@ -298,9 +274,6 @@ RSpec.describe FolioRecord do
   describe 'derived 856 fields' do
     let(:record) do
       {
-        'instance' => {
-          'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-        },
         'holdings' => [{
           'electronicAccess' => [
             { 'uri' => 'http://example.com/2', 'name' => 'Resource', 'materialsSpecification' => 'Provider' }
@@ -316,7 +289,7 @@ RSpec.describe FolioRecord do
             } }
           ]
         }]
-      }
+      }.reverse_merge(base_record)
     end
 
     it 'replaces any 856 field data with a derived values from the electronic access statement in the FOLIO holdings' do
@@ -328,9 +301,6 @@ RSpec.describe FolioRecord do
     context 'with nil electronicAccess data' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'holdings' => [{
             'electronicAccess' => nil
           }],
@@ -344,7 +314,7 @@ RSpec.describe FolioRecord do
               } }
             ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'does nothing with the 856 field data' do
@@ -381,6 +351,17 @@ RSpec.describe FolioRecord do
         end
       end
 
+      context 'for a record with multiple bound-with principals' do
+        let(:folio_record) { described_class.new(JSON.parse(File.read(file_fixture('in00000064624.json'))), client) }
+
+        it 'includes all bound-with principals' do
+          expect(index_items.select(&:bound_with_principal?)).to contain_exactly(
+            have_attributes(id: '4ab67ace-b7d1-4a49-8405-5b464c42e27e'),
+            have_attributes(id: '8f15d3c4-985b-49ef-9a9c-bcc7c7ed4da8')
+          )
+        end
+      end
+
       context 'with Symphony migrated data without the right linkages between the bound-with holding and item' do
         let(:record) do
           {
@@ -398,13 +379,12 @@ RSpec.describe FolioRecord do
                 }
               }
             }],
-            'items' => [],
             'source_record' => [{
               'fields' => [
                 { '001' => 'a14154194' }
               ]
             }]
-          }
+          }.reverse_merge(base_record)
         end
 
         it 'creates a stub bound-with item' do
@@ -421,9 +401,6 @@ RSpec.describe FolioRecord do
     context 'with an item with a temporary location' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -445,13 +422,8 @@ RSpec.describe FolioRecord do
                 'library' => { 'code' => 'GREEN' }
               }
             }
-          }],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'uses the temp location as the current location' do
@@ -466,9 +438,6 @@ RSpec.describe FolioRecord do
     context 'with an item with a course reserves-like location' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -492,13 +461,8 @@ RSpec.describe FolioRecord do
                 }
               }
             }
-          }],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'uses the temp location as the home location' do
@@ -512,9 +476,6 @@ RSpec.describe FolioRecord do
     context 'with an item with a permanent location' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -536,13 +497,8 @@ RSpec.describe FolioRecord do
                 'library' => { 'code' => 'GREEN' }
               }
             }
-          }],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'uses the permanent location of the item as the home location' do
@@ -556,9 +512,6 @@ RSpec.describe FolioRecord do
     context 'with an item without a permanent location' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -575,13 +528,8 @@ RSpec.describe FolioRecord do
           'items' => [{
             'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'location' => {}
-          }],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'uses the effective location of the holding as the home location' do
@@ -595,9 +543,6 @@ RSpec.describe FolioRecord do
     context 'with an item with a temporary location that implies availability' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -622,13 +567,8 @@ RSpec.describe FolioRecord do
                 }
               }
             }
-          }],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'uses the FOLIO location code as the current location' do
@@ -643,9 +583,6 @@ RSpec.describe FolioRecord do
     context 'with an item without a temporary location' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -663,13 +600,8 @@ RSpec.describe FolioRecord do
             'holdingsRecordId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
             'status' => 'In process',
             'location' => {}
-          }],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'uses the item status of the holding as the current location' do
@@ -682,9 +614,6 @@ RSpec.describe FolioRecord do
     context 'with Symphony migrated data without on-order item records' do
       let(:record) do
         {
-          'instance' => {
-            'id' => '0e050e3f-b160-5f5d-9fdb-2d49305fbb0d'
-          },
           'pieces' => [{ 'id' => '3b0c1675-b3ec-4bc4-888d-2519fb72b71f',
                          'holdingId' => '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2',
                          'receivingStatus' => 'Expected',
@@ -697,14 +626,8 @@ RSpec.describe FolioRecord do
                 'library' => { 'code' => 'GREEN' }
               }
             }
-          }],
-          'items' => [],
-          'source_record' => [{
-            'fields' => [
-              { '001' => 'a14154194' }
-            ]
           }]
-        }
+        }.reverse_merge(base_record)
       end
 
       it 'creates a stub on-order item' do
@@ -762,6 +685,7 @@ RSpec.describe FolioRecord do
 
     before do
       allow(folio_record).to receive(:items_and_holdings).and_return(items_and_holdings)
+      allow(client).to receive(:pieces).and_return(nil)
     end
 
     context 'record does not have any fulltext links (but does have an 856/956)' do

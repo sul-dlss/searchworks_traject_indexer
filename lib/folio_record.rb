@@ -46,9 +46,9 @@ class FolioRecord
 
   def index_items
     @index_items ||= begin
-      items = item_holdings.concat(bound_with_holdings)
+      items = item_holdings.concat(bound_with_holdings_as_stub_items)
 
-      items = on_order_holdings if !(all_items.any? || eresource?) && items.empty?
+      items = on_order_holdings_as_items if !(all_items.any? || eresource?) && items.empty?
 
       items
     end
@@ -136,59 +136,49 @@ class FolioRecord
 
   ELECTRONIC_LOCATION_FIELDS = %w[856 956].freeze
   def eresource?
-    return false unless electronic_holdings.any?
+    return false unless holdings.any?(&:electronic?)
 
     (marc_record || []).any? { |field| ELECTRONIC_LOCATION_FIELDS.include?(field.tag) && field.codes.include?('u') }
   end
 
-  def electronic_holdings
-    holdings.select { |h| h.dig('holdingsType', 'name') == 'Electronic' || h.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName') == 'Electronic' }
-  end
-
   def item_holdings
-    @item_holdings ||= items.filter_map do |item|
-      holding = holdings.find { |holding| holding['id'] == item['holdingsRecordId'] }
-      next unless holding
-
-      FolioItem.new(
-        item:,
-        holding:,
-        instance:,
-        course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] },
-        record: self
-      )
+    @item_holdings ||= holdings.flat_map do |holding|
+      holding.items.reject { |item| item['suppressFromDiscovery'] }.map do |item|
+        Indexer::Item.new(
+          item:,
+          holding:,
+          instance:,
+          course_reserves: courses.select { |c| c[:listing_id] == item['courseListingId'] },
+          record: self,
+          bound_with_principal: bound_with_parts.any? { |child| child['itemId'] == item['id'] }
+        )
+      end
     end
   end
 
-  # since FOLIO Bound-with records don't have items, we generate a FolioItem using data from the parent
-  # item and child holding, or, if there is no parent item, we generate a stub FolioItem from the original
+  # since FOLIO Bound-with records don't have items, we generate a Item using data from the parent
+  # item and child holding, or, if there is no parent item, we generate a stub Item from the original
   # bound-with holding.
-  def bound_with_holdings
-    @bound_with_holdings ||= holdings.select { |holding| holding['boundWith'].present? || (holding.dig('holdingsType', 'name') || holding.dig('location', 'effectiveLocation', 'details', 'holdingsTypeName')) == 'Bound-with' }.filter_map do |holding|
-      parent_item = holding.dig('boundWith', 'item') || {}
+  def bound_with_holdings_as_stub_items
+    @bound_with_holdings_as_stub_items ||= holdings.select(&:bound_with?).filter_map do |holding|
+      parent_item = holding.dig('boundWith', 'item')
 
-      # bound-with "principals" appear as if they're bound-with themselves. See SW-4330.
-      next if parent_item['id'].in? item_holdings.select { |item| item.holding['id'] == holding['id'] }.map(&:id)
-
-      FolioItem.new(
+      Indexer::Item.new(
         item: parent_item,
         holding:,
         instance:,
         record: self,
-        bound_with: true
+        bound_with_child: true
       )
     end
   end
 
   private
 
-  def on_order_holdings
-    on_order_holdings = holdings.select do |holding|
-      pieces.any? { |p| p['holdingId'] == holding['id'] && p['receivingStatus'] == 'Expected' && !p['discoverySuppress'] }
-    end
-
+  def on_order_holdings_as_items
+    on_order_holdings = holdings.select(&:on_order?)
     on_order_holdings.uniq { |holding| holding.dig('location', 'effectiveLocation', 'code') }.map do |holding|
-      FolioItem.new(
+      Indexer::Item.new(
         holding:,
         instance:,
         status: 'On order',
@@ -208,7 +198,11 @@ class FolioRecord
   end
 
   def all_holdings
-    @all_holdings ||= load('holdings')
+    @all_holdings ||= load('holdings').uniq { |x| x['id'] }.map { |x| Folio::Holding.from_dynamic(x, items: all_items, pieces: pieces) }
+  end
+
+  def bound_with_parts
+    @bound_with_parts ||= record['bound_with_parts'] || []
   end
 
   def items_and_holdings
