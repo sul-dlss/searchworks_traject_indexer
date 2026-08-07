@@ -256,7 +256,7 @@ module Traject
       cursor_type == 'ids'
     end
 
-    def delta_query(date, additional_tables: %w[cr cl cc])
+    def delta_query(date, additional_tables: %w[cr cl cc rs])
       table_map = {
         'vi' => 'vi',
         'cr' => 'cr_filter',
