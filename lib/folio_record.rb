@@ -198,11 +198,15 @@ class FolioRecord
   end
 
   def all_holdings
-    @all_holdings ||= load('holdings').uniq { |x| x['id'] }.map { |x| Folio::Holding.from_dynamic(x, items: all_items, pieces: pieces) }
+    @all_holdings ||= load('holdings').map { |x| Folio::Holding.from_dynamic(x, items: all_items, bound_with_principals: bound_with_principals, bound_with_parts: bound_with_parts, pieces: pieces) }
   end
 
   def bound_with_parts
     @bound_with_parts ||= record['bound_with_parts'] || []
+  end
+
+  def bound_with_principals
+    @bound_with_principals ||= record['bound_with_principals'] || []
   end
 
   def items_and_holdings
