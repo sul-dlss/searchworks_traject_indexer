@@ -281,12 +281,10 @@ module Traject
                                       LEFT JOIN sul_mod_courses.coursereserves_courses cc_filter ON cc_filter.courselistingid = cl_filter.id"
       }
 
-      additional_tables += %w[hr item rs] if folio_version.nil? || folio_version < 'poppy'
-
       method = cursor_by_ids? ? :ids_sql_query : :contents_sql_query
 
       conditions = (['vi'] + additional_tables.map { |x| table_map[x] }).map do |table|
-        c = if table == 'vi' && folio_version >= 'poppy'
+        c = if table == 'vi'
               "#{table}.complete_updated_date > '#{date}'"
             elsif table == 'rs_filter'
               "#{table}.updated_date > '#{date}'"
