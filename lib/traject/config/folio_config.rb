@@ -2527,16 +2527,16 @@ end
 
 # Index the list of subfield codes for each field
 to_field 'context_marc_fields_ssim' do |record, accumulator|
-  accumulator.concat(record.select { |f| f.is_a?(MARC::DataField) }.map do |field|
-    [field.tag, field.subfields.map(&:code)].flatten.join
+  accumulator.concat(record.grep(MARC::DataField).map do |field|
+    [field.tag, field.subfields.map(&:code)].join
   end)
 end
 
 # Index the list of subfield codes for each field
 to_field 'context_marc_fields_ssim' do |record, accumulator|
-  accumulator.concat(record.select { |f| f.is_a?(MARC::DataField) }.map do |field|
+  accumulator.concat(record.grep(MARC::DataField).map do |field|
     field.subfields.map(&:code).map do |code|
-      ['?', field.tag, code].flatten.join
+      ['?', field.tag, code].join
     end
   end.flatten.uniq)
 end
