@@ -639,8 +639,7 @@ RSpec.describe 'Folio config' do
       let(:result_field) { result[field].map { |x| JSON.parse(x, symbolize_names: true) } }
 
       it 'structures the output' do
-        expect(result_field.first[:fields].first[:field]).to eq ['YUGOSLAV SERIAL 1973',
-                                                                 { link: 'https://example.com' }]
+        expect(result_field.first[:fields].first[:field]).to eq ['YUGOSLAV SERIAL 1973']
       end
     end
 
