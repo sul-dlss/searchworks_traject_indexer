@@ -130,7 +130,7 @@ module Traject
         }.compact
       end
 
-      data['bound_with_principals'].each do |bw|
+      data['bound_with_principals']&.each do |bw|
         bw['holding']['location'] = {
           'effectiveLocation' => locations[bw['holding']['effectiveLocationId']]
         } if bw.dig('holding', 'effectiveLocationId')
