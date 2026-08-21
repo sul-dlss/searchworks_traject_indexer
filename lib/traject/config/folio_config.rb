@@ -33,6 +33,11 @@ settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV.fetch('SOLR_URL', nil)
 
+  if self['embedding.kafka.topic']
+    self['writer_class_name'] = 'Traject::SolrAndKafkaWriter'
+    provide 'embedding.source', 'folio'
+  end
+
   # Upstream siris_config will provide a default value; we need to override it if it wasn't provided
   if self['kafka.topic']
     provide 'reader_class_name', 'Traject::KafkaFolioReader'
