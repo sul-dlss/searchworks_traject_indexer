@@ -11,8 +11,7 @@ class EmbeddingWorker
 
   def initialize(consumer:, client:, solr_writer:, batch_size: DEFAULT_BATCH_SIZE, logger: Utils.logger)
     @consumer = consumer
-    @client = client
-    @solr_writer = solr_writer
+    @processor = EmbeddingProcessor.new(client:, solr_writer:, logger:)
     @batch_size = Integer(batch_size)
     @logger = logger
 
@@ -38,39 +37,16 @@ class EmbeddingWorker
   private
 
   def process_chunk(messages)
-    jobs = latest_jobs(messages.map { |message| parse_job(message) })
-    results = create_vectors(jobs)
-    delete_ids = jobs.filter_map { |job| job.fetch('id') if job.fetch('operation') == 'delete' }
-    @solr_writer.write(results, delete_ids:)
+    @processor.process(messages.map { |message| parse_job(message) })
 
     @consumer.mark_message_as_processed(messages.last)
     @consumer.commit_offsets
-    @logger.info(
-      "Wrote #{results.length} vectors and #{delete_ids.length} deletes to Solr from #{messages.length} embedding jobs"
-    )
   rescue StandardError => e
     message = messages.first
     @logger.error(
       "Embedding batch failed at #{message.topic}/#{message.partition}/#{message.offset}: #{e.class}: #{e.message}"
     )
     raise
-  end
-
-  def create_vectors(jobs)
-    jobs.reject { |job| job.fetch('operation') == 'delete' }
-        .group_by { |job| [job.fetch('model'), Integer(job.fetch('dimensions'))] }
-        .flat_map do |((model, dimensions), grouped_jobs)|
-      inputs = grouped_jobs.map { |job| job.fetch('input') }
-      vectors = @client.embed(inputs:, model:, dimensions:)
-      grouped_jobs.zip(vectors).map { |job, vector| { job:, vector: } }
-    end
-  end
-
-  # A Kafka batch can contain more than one change for an ID. Only its final
-  # operation belongs in the vector collection, and avoiding obsolete upserts
-  # also avoids unnecessary embedding requests.
-  def latest_jobs(jobs)
-    jobs.to_h { |job| [job.fetch('id'), job] }.values
   end
 
   def parse_job(message)

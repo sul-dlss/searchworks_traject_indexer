@@ -98,15 +98,13 @@ Configure `LITELLM_KEY` and `VECTOR_SOLR_URL`, then run:
 bundle exec ruby script/process_embedding_jobs.rb
 ```
 
-For a bounded, synchronous sample run, pass a limit and use a separate consumer group so the sample does not advance the long-running worker's offsets:
+For a bounded, synchronous experiment, read documents directly from the main SearchWorks Solr collection. This does not require the embedding-job Kafka topic to be populated. Configure `SOLR_URL` with the source collection and run:
 
 ```sh
-bundle exec ruby script/process_embedding_jobs.rb \
-  --limit 100 \
-  --consumer-group-id searchworks_embedding_sample
+bundle exec ruby script/process_embedding_sample.rb
 ```
 
-The command exits after 100 Kafka embedding jobs have been successfully written to Solr. A new consumer group starts at the beginning of the compacted topic; reuse the group to resume from its last committed offset or choose a new group to replay the sample.
+The sample command selects the first 100 documents ordered by ID, builds the same canonical embedding input used by the Kafka publisher, creates vectors in batches, writes them to the vector collection, and exits. Use `--query QUERY` to select a particular sample or `--limit COUNT` to change its size. `--source-solr-url URL` overrides `SOLR_URL`.
 
 Each vector document contains the SearchWorks ID, `embedding_vector`, input hash, model, dimensions, input schema version, and source. The vector collection's schema must define `embedding_vector` as a single-valued, 768-dimensional `DenseVectorField` along with the accompanying metadata fields. Set `EMBEDDING_WORKER__VECTOR_FIELD` to use a different vector field.
 
