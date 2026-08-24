@@ -96,6 +96,32 @@ RSpec.describe EmbeddingWorker do
     end
   end
 
+  describe 'a limited run' do
+    it 'processes only the requested number of jobs and then returns' do
+      expect(worker.run(limit: 2)).to eq 2
+
+      expect(client).to have_received(:embed).with(
+        inputs: %w[first second],
+        model: 'gemini-embedding-2',
+        dimensions: 2
+      )
+      expect(solr_writer).to have_received(:write).with(
+        [
+          { job: hash_including('id' => '1'), vector: [0.1, 0.2] },
+          { job: hash_including('id' => '2'), vector: [0.3, 0.4] }
+        ],
+        delete_ids: []
+      )
+      expect(consumer).to have_received(:mark_message_as_processed).with(messages[1])
+    end
+
+    it 'rejects a non-positive limit' do
+      expect { worker.run(limit: 0) }.to raise_error(ArgumentError, 'limit must be positive')
+
+      expect(consumer).not_to have_received(:each_batch)
+    end
+  end
+
   it 'rejects a job whose ID does not match its Kafka key' do
     messages.replace([message_for(upsert_job('1'), key: 'different')])
 

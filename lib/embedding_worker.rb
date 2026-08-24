@@ -19,10 +19,20 @@ class EmbeddingWorker
     raise ArgumentError, 'batch_size must be positive' unless @batch_size.positive?
   end
 
-  def run
+  def run(limit: nil)
+    limit = Integer(limit) if limit
+    raise ArgumentError, 'limit must be positive' if limit && !limit.positive?
+
+    processed_count = 0
     @consumer.each_batch(automatically_mark_as_processed: false) do |batch|
-      batch.messages.each_slice(@batch_size) { |messages| process_chunk(messages) }
+      messages = limit ? batch.messages.first(limit - processed_count) : batch.messages
+      messages.each_slice(@batch_size) { |chunk| process_chunk(chunk) }
+      processed_count += messages.length
+
+      break if limit && processed_count >= limit
     end
+
+    processed_count
   end
 
   private
