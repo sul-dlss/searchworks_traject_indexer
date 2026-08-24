@@ -57,11 +57,11 @@ class SolrEmbeddingWriter
     {
       'id' => job.fetch('id'),
       @vector_field => result.fetch(:vector),
-      'embedding_input_hash_ssi' => job.fetch('input_hash'),
-      'embedding_model_ssi' => job.fetch('model'),
+      'embedding_input_hash_ss' => job.fetch('input_hash'),
+      'embedding_model_ss' => job.fetch('model'),
       'embedding_schema_version_ssi' => job.fetch('schema_version'),
-      'embedding_source_ssi' => job.fetch('source'),
-      'embedding_dimensions_isi' => Integer(job.fetch('dimensions'))
+      'embedding_source_ss' => job.fetch('source'),
+      'embedding_dimensions_is' => Integer(job.fetch('dimensions'))
     }
   end
 

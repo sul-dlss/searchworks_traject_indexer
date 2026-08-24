@@ -38,11 +38,11 @@ RSpec.describe SolrEmbeddingWriter do
           {
             'id' => '123',
             'semantic_vector' => [0.1, 0.2],
-            'embedding_input_hash_ssi' => 'sha256:abc',
-            'embedding_model_ssi' => 'gemini-embedding-2',
+            'embedding_input_hash_ss' => 'sha256:abc',
+            'embedding_model_ss' => 'gemini-embedding-2',
             'embedding_schema_version_ssi' => 'searchworks-bib-v1',
-            'embedding_source_ssi' => 'folio',
-            'embedding_dimensions_isi' => 2
+            'embedding_source_ss' => 'folio',
+            'embedding_dimensions_is' => 2
           }
         ]
       )
