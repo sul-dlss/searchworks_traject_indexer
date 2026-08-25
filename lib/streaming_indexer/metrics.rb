@@ -13,6 +13,9 @@ module StreamingIndexer
       def quarantined(stage:); end
       def batch(size:); end
       def processing_time(milliseconds:); end
+      def embedding_cache_hit(count:); end
+      def embedding_cache_miss(count:); end
+      def embedding_processed(count:); end
     end
 
     class Statsd < Null
@@ -53,6 +56,18 @@ module StreamingIndexer
 
       def processing_time(milliseconds:)
         @client.timing("#{@prefix}.processing.latency", milliseconds)
+      end
+
+      def embedding_cache_hit(count:)
+        @client.count("#{@prefix}.embedding.cache.hit", count)
+      end
+
+      def embedding_cache_miss(count:)
+        @client.count("#{@prefix}.embedding.cache.miss", count)
+      end
+
+      def embedding_processed(count:)
+        @client.count("#{@prefix}.embedding.processed", count)
       end
 
       private
