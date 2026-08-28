@@ -6,10 +6,11 @@ RSpec.describe 'SDR indexing' do
   subject(:result) { indexer.map_record(record) }
 
   let(:indexer) do
-    Traject::Indexer.new.tap do |i|
+    Traject::Indexer.new(indexer_settings).tap do |i|
       i.load_config_file('./lib/traject/config/sdr_config.rb')
     end
   end
+  let(:indexer_settings) { {} }
   let(:druid) { 'sw705fr7011' }
   let(:collection_druid) { 'vm093fg5170' }
   let(:record) { PurlRecord.new(druid) }
@@ -26,6 +27,27 @@ RSpec.describe 'SDR indexing' do
 
   it 'maps the druid as the id' do
     expect(result['id']).to eq [druid]
+  end
+
+  it 'does not map an embedding vector by default' do
+    expect(result).not_to include 'embedding_vector'
+  end
+
+  context 'when embeddings are enabled' do
+    let(:vector) { Array.new(768, 0.25) }
+    let(:embedding_client) { instance_double(EmbeddingClient, embed: [vector]) }
+    let(:indexer_settings) do
+      { 'embedding.enabled' => true, 'embedding.client' => embedding_client }
+    end
+
+    it 'maps a 768-dimensional embedding vector from the mapped document' do
+      expect(result['embedding_vector']).to eq vector
+      expect(embedding_client).to have_received(:embed).with(
+        inputs: [start_with('title: Oral history interview with anonymous')],
+        model: 'gemini-embedding-2',
+        dimensions: 768
+      )
+    end
   end
 
   it 'maps a hashed id for sitemap generation' do
