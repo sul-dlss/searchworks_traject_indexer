@@ -6,10 +6,11 @@ RSpec.describe 'FOLIO indexing' do
   subject(:result) { indexer.map_record(folio_record) }
 
   let(:indexer) do
-    Traject::Indexer.new('okapi.url' => 'https://example.com', 'skip_empty_item_display' => '0').tap do |i|
+    Traject::Indexer.new(indexer_settings).tap do |i|
       i.load_config_file('./lib/traject/config/folio_config.rb')
     end
   end
+  let(:indexer_settings) { { 'okapi.url' => 'https://example.com', 'skip_empty_item_display' => '0' } }
 
   let(:folio_record) do
     FolioRecord.new_from_source_record(source_record_json, client)
@@ -47,6 +48,27 @@ RSpec.describe 'FOLIO indexing' do
 
   it 'maps the record with sirsi fields' do
     expect(result).to include 'title_display' => [start_with('Fantasia sopra motivi')]
+  end
+
+  it 'does not map an embedding vector by default' do
+    expect(result).not_to include 'embedding_vector'
+  end
+
+  context 'when embeddings are enabled' do
+    let(:vector) { Array.new(768, 0.25) }
+    let(:embedding_client) { instance_double(EmbeddingClient, embed: [vector]) }
+    let(:indexer_settings) do
+      super().merge('embedding.enabled' => true, 'embedding.client' => embedding_client)
+    end
+
+    it 'maps a 768-dimensional embedding vector from the mapped document' do
+      expect(result['embedding_vector']).to eq vector
+      expect(embedding_client).to have_received(:embed).with(
+        inputs: [start_with('title: Fantasia sopra motivi')],
+        model: 'gemini-embedding-2',
+        dimensions: 768
+      )
+    end
   end
 
   it 'overwrites sirsi-specific fields' do

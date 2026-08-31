@@ -73,6 +73,15 @@ settings do
   provide 'solr_json_writer.http_client', HTTPClient.new.tap { |x| x.receive_timeout = 600 }
   provide 'solr_json_writer.skippable_exceptions', [HTTPClient::TimeoutError, StandardError]
   provide 'sal_library_codes', %w[SAL SAL3 SAL-NEWARK]
+  provide 'embedding.enabled', ::Settings.embedding.enabled
+end
+
+if settings['embedding.enabled']
+  embedding_client = settings['embedding.client'] || EmbeddingClient.new(
+    api_key: ::Settings.embedding.api_key,
+    base_url: ::Settings.embedding.gateway_url
+  )
+  embedding_input_builder = EmbeddingInputBuilder.new
 end
 
 # Monkey-patch MarcExtractor in order to add logic to strip subfields before
@@ -2628,6 +2637,14 @@ end
 each_record do |_record, context|
   context.output_hash.select { |k, _v| k =~ /_struct$/ }.each do |k, v|
     context.output_hash[k] = Array(v).map { |x| JSON.generate(x) }
+  end
+end
+
+if settings['embedding.enabled']
+  to_field 'embedding_vector' do |_record, _accumulator, context|
+    input = embedding_input_builder.build(context.output_hash)
+    vector = embedding_client.embed(inputs: [input], model: 'gemini-embedding-2', dimensions: 768).first
+    context.output_hash['embedding_vector'] = vector
   end
 end
 
