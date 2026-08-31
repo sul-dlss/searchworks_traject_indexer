@@ -18,7 +18,7 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     airbrussh (1.6.2)
       sshkit (>= 1.6.1, != 1.7.0)
-    amq-protocol (2.8.0)
+    amq-protocol (2.9.0)
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
@@ -69,7 +69,7 @@ GEM
       capistrano-one_time_key (>= 0.2.0)
       capistrano-shared_configs
       ed25519
-    domain_name (0.6.20240107)
+    domain_name (0.6.20260829)
     dor-event-client (1.2.0)
       activesupport (>= 4.2)
       bunny (~> 2.17)
@@ -90,7 +90,7 @@ GEM
     honeybadger (6.9.1)
       logger
       ostruct
-    http-2 (1.2.1)
+    http-2 (1.2.2)
     http (6.0.4)
       http-cookie (~> 1.0)
       llhttp (~> 0.6.1)
@@ -98,7 +98,7 @@ GEM
       domain_name (~> 0.5)
     httpclient (2.9.0)
       mutex_m
-    httpx (1.8.1)
+    httpx (1.8.3)
       http-2 (>= 1.2.0)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
@@ -165,7 +165,7 @@ GEM
     regexp_parser (2.12.0)
     reline (0.7.0)
       io-console (~> 0.5)
-    retriable (4.2.0)
+    retriable (5.0.1)
     rexml (3.4.4)
     roman_numerals (1.0.0)
     rspec (3.13.2)
@@ -181,8 +181,8 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.7)
-    rubocop (1.89.0)
-      json (~> 2.3)
+    rubocop (1.90.0)
+      json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
       parallel (>= 1.10)
@@ -237,7 +237,7 @@ GEM
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
     uri (1.1.1)
-    webmock (3.26.3)
+    webmock (3.26.4)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -294,7 +294,7 @@ CHECKSUMS
   activesupport (8.1.3.1) sha256=85458765f25ea48b9019c46b6bb3fa5683197bf4280d9f06710a6e8d7a831376
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   airbrussh (1.6.2) sha256=3278655b2d957d774589a17e01496149288cbd8f1158b377581d82db006401cc
-  amq-protocol (2.8.0) sha256=d06bbb341fa683459954f5a854388dac729171500116d81311cfbeaad83392ab
+  amq-protocol (2.9.0) sha256=6812dc5c1d7dea12b445854ad0000239e59009760079084310bd39f76397168e
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bcrypt_pbkdf (1.1.2) sha256=c2414c23ce66869b3eb9f643d6a3374d8322dfb5078125c82792304c10b94cf6
@@ -319,7 +319,7 @@ CHECKSUMS
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   digest-crc (0.7.0) sha256=64adc23a26a241044cbe6732477ca1b3c281d79e2240bcff275a37a5a0d78c07
   dlss-capistrano (6.1.1) sha256=c62f3cc2baca96b4ebc6d9878074ffdb40952b375f44c4a995be82951ed097f0
-  domain_name (0.6.20240107) sha256=5f693b2215708476517479bf2b3802e49068ad82167bcd2286f899536a17d933
+  domain_name (0.6.20260829) sha256=a9c1aa678423b9db3a4193b300fd76b9c21cb2a5f60d7dcf0a832b82d13764f0
   dor-event-client (1.2.0) sha256=d20caa6c02aa0b57f23c9a8408ab149ecce30c4fd5007e12f52457283a72e06b
   dot-properties (0.1.4) sha256=c41f5681d53e946ed5a2afa45bfd2dc8a4475980f62eba069ca83aaba2637004
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
@@ -332,10 +332,10 @@ CHECKSUMS
   hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
   honeybadger (6.9.1) sha256=3e79543ab171f810306bd152b3f470ce2b905b1a27f766f3138568949078cf68
   http (6.0.4) sha256=3768f902489ea8309424f1881c668af8d3ca73675648a755dfe2cb0030d42d26
-  http-2 (1.2.1) sha256=d290f3b7daa70b8be8cd2260306c01243c73ec4df9d598feadaf0ed26e00b9b7
+  http-2 (1.2.2) sha256=81b5d45f50fd4cd5f8c5d09651184bec9401e3ef169c3eb3e5b003d5614a92b9
   http-cookie (1.1.6) sha256=ba4b82be64de61dc281243dac70e3c382c45142f20268ed9276a3670c93feaa9
   httpclient (2.9.0) sha256=4b645958e494b2f86c2f8a2f304c959baa273a310e77a2931ddb986d83e498c8
-  httpx (1.8.1) sha256=8d9e003019b2c1a8f582daac9371ec9da96182c23064e211386eaad70b6e12e5
+  httpx (1.8.3) sha256=cb88f2285c4ef17164d803a640dc393d28722cba7f282ad0e7f9f926cd02dc47
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
   io-console (0.9.2) sha256=efa74f891dd03c0939a931dfc6e74c2813d904763d456ea9762b0525e748db08
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
@@ -375,7 +375,7 @@ CHECKSUMS
   rdoc (8.0.0) sha256=03bf8c08a9639658855a0cfd77c0abca8325c227693f7f33f82957811348c469
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
   reline (0.7.0) sha256=5b012d8e55dbf9d450f12bde2cf7d15ff546ae80b3f8f3b30e570d431815583d
-  retriable (4.2.0) sha256=90c3b257472a1c02f2a3dfa64dd35a420f7a624cef1a5981e20fdac5730f8cdc
+  retriable (5.0.1) sha256=181cc7ae5fe9b289b6611f0223ee8c5cd361175238fd602a2cd48c8b81c30742
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
   roman_numerals (1.0.0) sha256=a3af7e70430113b1dc894c25c2e9c4b58292a4128c65a574d814d0808e675304
   rspec (3.13.2) sha256=206284a08ad798e61f86d7ca3e376718d52c0bc944626b2349266f239f820587
@@ -383,7 +383,7 @@ CHECKSUMS
   rspec-expectations (3.13.5) sha256=33a4d3a1d95060aea4c94e9f237030a8f9eae5615e9bd85718fe3a09e4b58836
   rspec-mocks (3.13.8) sha256=086ad3d3d17533f4237643de0b5c42f04b66348c28bf6b9c2d3f4a3b01af1d47
   rspec-support (3.13.7) sha256=0640e5570872aafefd79867901deeeeb40b0c9875a36b983d85f54fb7381c47c
-  rubocop (1.89.0) sha256=4dee8e3ee9c45e474834efd9e8d6fd031e8331c8dacdff0de4ad65ae0a6faae7
+  rubocop (1.90.0) sha256=9eb4c065b5c5154e4ef554c547972f3905a9eb6b53e657e580b6796b54bf8242
   rubocop-ast (1.50.0) sha256=b9ca88300da0803ee222ad20cdb30494c0a784eed06fdc35d254b06d662788db
   rubocop-performance (1.27.0) sha256=eeeb1374d062a368ee1c787b70eb0b0cc4b184cb1f8565f424760946146d61ce
   ruby-kafka (1.5.0) sha256=f7646944e6c72ba3413e21423ff4d510b22e3ab760ac70940a3658e0e576238e
@@ -400,7 +400,7 @@ CHECKSUMS
   unicode-display_width (3.2.0) sha256=0cdd96b5681a5949cdbc2c55e7b420facae74c4aaf9a9815eee1087cb1853c42
   unicode-emoji (4.2.0) sha256=519e69150f75652e40bf736106cfbc8f0f73aa3fb6a65afe62fefa7f80b0f80f
   uri (1.1.1) sha256=379fa58d27ffb1387eaada68c749d1426738bd0f654d812fcc07e7568f5c57c6
-  webmock (3.26.3) sha256=77c612816bdcb2fc43db0e42fd98b19be7d4770fd708816fdde65a006664ddec
+  webmock (3.26.4) sha256=8d8da206d217ebe6968cfb09c77f4533c23074e1432bad865f3994eacbaad50d
   whenever (1.1.2) sha256=af139a25cf6b5c7d2122686724c0b9a4a7495135a1f79a404e29f4cce48abd83
   yell (2.2.2) sha256=1d166f3cc3b6dc49a59778ea7156ed6d8de794c15106d48ffd6cbb061b9b26bc
   zeitwerk (2.8.3) sha256=2c85125a8467ce069e20123d1e709a08955c9d29c118c25b46b7b7fafdbb92e5
