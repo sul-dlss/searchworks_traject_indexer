@@ -28,6 +28,11 @@ settings do
   provide 'writer_class_name', 'Traject::SolrBetterJsonWriter'
   provide 'solr.url', ENV.fetch('SOLR_URL', nil)
 
+  if self['embedding.kafka.topic']
+    self['writer_class_name'] = 'Traject::SolrAndKafkaWriter'
+    provide 'embedding.source', 'sdr'
+  end
+
   # These parameters are expected on the command line if you want to connect to a kafka topic:
   # provide 'kafka.topic'
   # provide 'kafka.consumer_group_id'
