@@ -1541,6 +1541,8 @@ def summary_struct_fields(marc, tag, selector = nil, **addl_metadata)
     matching_fields.each do |field|
       field_text = []
       field.each do |sub_field|
+        next if !%w[a b].include?(sub_field.code) && tag == '520'
+
         if sub_field.code == 'u' and sub_field.value.strip =~ %r{^https*://}
           field_text << { link: sub_field.value }
         elsif sub_field.code == '1'
