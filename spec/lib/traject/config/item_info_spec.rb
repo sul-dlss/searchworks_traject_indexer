@@ -485,6 +485,47 @@ RSpec.describe 'ItemInfo config' do
       }
     end
 
+    describe 'volume information without a base call number' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '02334cas a2200625Ei 4500'
+          r.append(MARC::ControlField.new('008', '860725c19859999nyumr p       0   a0eng d'))
+        end
+      end
+      let(:holdings) do
+        [
+          build(:alphanum_holding,
+                barcode: 'older',
+                call_number: nil,
+                holding: { 'callNumber' => '' },
+                additional_item_attributes: {
+                  'callNumber' => { 'typeName' => 'Title' },
+                  'enumeration' => 'v. 20',
+                  'chronology' => '2004 JA-JE'
+                }),
+          build(:alphanum_holding,
+                barcode: 'newer',
+                call_number: nil,
+                holding: { 'callNumber' => '' },
+                additional_item_attributes: {
+                  'callNumber' => { 'typeName' => 'Title' },
+                  'enumeration' => 'v. 21',
+                  'chronology' => '2005 JA-JE'
+                })
+        ]
+      end
+
+      it 'emits display call numbers and sort keys without browseable base call-number data' do
+        items_by_barcode = value.index_by { |item| item.fetch('barcode') }
+
+        expect(items_by_barcode.fetch('older')).to include('callnumber' => 'v. 20 2004 JA-JE')
+        expect(items_by_barcode.fetch('newer')).to include('callnumber' => 'v. 21 2005 JA-JE')
+        expect(items_by_barcode.values).to all(include('full_shelfkey'))
+        expect(items_by_barcode.values).to all(satisfy { |item| !item.key?('lopped_callnumber') })
+        expect(items_by_barcode.fetch('newer').fetch('full_shelfkey')).to be < items_by_barcode.fetch('older').fetch('full_shelfkey')
+      end
+    end
+
     describe 'volsort/full shelfkey' do
       context 'LC' do
         let(:record) do
