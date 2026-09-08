@@ -85,6 +85,10 @@ module Indexer
       @call_number ||= build_call_number
     end
 
+    def full_enumeration
+      [item['volume'], item['enumeration'], item['chronology']].filter_map(&:presence).join(' ')
+    end
+
     def skipped?
       [display_location&.dig('code'), temporary_location_code].intersect?(SKIPPED_LOCS)
     end
@@ -115,6 +119,7 @@ module Indexer
         barcode:,
         library:,
         type:,
+        enumeration: full_enumeration,
         note: public_note.presence,
         instance_id: bound_with&.dig('instance', 'id') || instance&.dig('id'),
         instance_hrid: bound_with&.dig('instance', 'hrid') || instance&.dig('hrid'),

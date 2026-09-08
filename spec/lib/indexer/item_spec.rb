@@ -170,7 +170,9 @@ RSpec.describe Indexer::Item do
           permanentLoanTypeId: 'plt-uuid',
           location: {
             temporaryLocation: { code: 'GRE-STACKS' }
-          }
+          },
+          volume: 'vol. 1',
+          chronology: '1953'
         }.with_indifferent_access
       end
       let(:holding) do
@@ -190,7 +192,8 @@ RSpec.describe Indexer::Item do
           temporary_location_code: 'GRE-STACKS',
           permanent_location_code: 'SAL3-STACKS',
           material_type_id: 'mt-uuid',
-          loan_type_id: 'tlt-uuid'
+          loan_type_id: 'tlt-uuid',
+          enumeration: 'vol. 1 1953'
         )
       end
 
