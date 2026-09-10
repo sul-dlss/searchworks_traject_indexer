@@ -55,14 +55,14 @@ RSpec.describe 'FOLIO indexing' do
   end
 
   context 'when embeddings are enabled' do
-    let(:vector) { Array.new(768, 0.25) }
+    let(:vector) { Array.new(768, 0.25).tap { |values| values[1] = 0.0000056926640000000004 } }
     let(:embedding_client) { instance_double(EmbeddingClient, embed: [vector]) }
     let(:indexer_settings) do
       super().merge('embedding.enabled' => true, 'embedding.client' => embedding_client)
     end
 
     it 'maps a 768-dimensional embedding vector from the mapped document' do
-      expect(result['embedding_vector']).to eq vector
+      expect(result['embedding_vector']).to eq(vector.map { |value| value.round(10) })
       expect(embedding_client).to have_received(:embed).with(
         inputs: [start_with('title: Fantasia sopra motivi')],
         model: 'gemini-embedding-2',

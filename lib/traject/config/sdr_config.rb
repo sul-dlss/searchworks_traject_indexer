@@ -265,7 +265,8 @@ if settings['embedding.enabled']
   to_field 'embedding_vector' do |_record, _accumulator, context|
     input = embedding_input_builder.build(context.output_hash)
     vector = embedding_client.embed(inputs: [input], model: 'gemini-embedding-2', dimensions: 768).first
-    context.output_hash['embedding_vector'] = vector
+    # Solr treats JSON numbers longer than 23 characters as strings, which breaks mixed-type dense vectors.
+    context.output_hash['embedding_vector'] = vector.map { |value| value.round(10) }
   end
 end
 
