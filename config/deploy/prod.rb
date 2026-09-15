@@ -27,6 +27,7 @@ set :indexers, [
       'kafka.topic' => 'marc_folio_prod',
       'kafka.consumer_group_id' => 'traject_folio_prod_2025',
       'reader_class_name' => 'Traject::KafkaFolioReader',
+      'embedding.kafka.topic' => 'searchworks_embedding_jobs_v1',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-2025'
     }
   },
@@ -38,6 +39,7 @@ set :indexers, [
       'log.file' => 'log/traject_sdr_prod_indexer_2025.log',
       'kafka.topic' => 'purl_fetcher_prod',
       'kafka.consumer_group_id' => 'sdr_prod_indexer_2025',
+      'embedding.kafka.topic' => 'searchworks_embedding_jobs_v1',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-prod-2025'
     }
   }
