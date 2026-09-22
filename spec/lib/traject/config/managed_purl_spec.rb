@@ -63,6 +63,25 @@ RSpec.describe 'Managed purl config' do
         expect(result[field]).to include '9615156'
       end
     end
+
+    context 'with an 856 missing the collection catkey and title' do
+      let(:record) do
+        MARC::Record.new.tap do |r|
+          r.leader = '01737cam a2200445Ka 4500'
+          r.append(MARC::ControlField.new('001', 'a6523498'))
+          r.append(MARC::DataField.new('856', ' ', ' ',
+                                       MARC::Subfield.new('x', 'SDR-PURL'),
+                                       MARC::Subfield.new('x', 'item'),
+                                       MARC::Subfield.new('x', 'collection:xc838rs7158')))
+        end
+      end
+
+      subject(:result) { indexer.map_record(marc_to_folio(record)) }
+
+      it 'uses the druid as the collection identifier' do
+        expect(result[field]).to include 'xc838rs7158'
+      end
+    end
   end
 
   describe 'collection_with_title' do
