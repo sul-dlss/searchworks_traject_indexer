@@ -2,6 +2,7 @@
 
 RSpec.describe 'FOLIO course reserves config' do
   include ResultHelpers
+
   subject(:result) { indexer.map_record(record) }
 
   let(:indexer) do

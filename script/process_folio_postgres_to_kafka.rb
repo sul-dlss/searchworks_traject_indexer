@@ -68,6 +68,7 @@ File.open(state_file, 'r+') do |f|
   processes ||= Utils.env_config.full_dump_processes if opts[:full]
   processes ||= Utils.env_config.processes
 
+  # rubocop:disable Style/FileOpen
   shards = if opts[:ids_file]
              File.open(opts[:ids_file]).each_line.each_slice(opts[:chunk_size]).lazy.map do |slice|
                # FOLIO's native identifier exports are quoted, so we should to strip the quotes :shrug:
@@ -90,6 +91,7 @@ File.open(state_file, 'r+') do |f|
            else
              ['TRUE']
            end
+  # rubocop:enable Style/FileOpen
   counts = Parallel.map(shards, in_processes: processes.to_i) do |sql_filter|
     attempts ||= 1
     begin
