@@ -70,6 +70,35 @@ The configuration file uses several special methods or "macros" provided by traj
 
 The bulk of the file is usually taken up by a series of `to_field` macros, which specify how to transform the incoming data into Solr fields. These methods transform the incoming data into a Solr-ready JSON document, one field at a time.
 
+### Streaming indexer
+
+Kafka-backed indexing can use `script/stream_indexer.rb` instead of allowing Traject to own the complete read/write lifecycle. The streaming indexer still uses `KafkaFolioReader` or `KafkaPurlFetcherReader` for source retrieval and the existing Traject configuration for mapping, but waits for an acknowledged Solr response before committing the source Kafka offset.
+
+```sh
+bundle exec ruby script/stream_indexer.rb \
+  --source sdr \
+  --config lib/traject/config/sdr_config.rb \
+  --setting kafka.topic=purl_fetcher_prod \
+  --setting kafka.consumer_group_id=streaming_sdr_prod \
+  --setting solr.url=http://localhost:8983/solr/blacklight-core \
+  --setting streaming.quarantine_topic=searchworks_indexing_failures
+```
+
+The runner processes Kafka batches synchronously and in partition order. Solr requests are retried three times with exponential backoff. If a batch still fails, its records are retried individually so one invalid document does not indefinitely block unrelated documents. Permanently failing source, mapping, or Solr records are written to the quarantine Kafka topic before their source offsets are committed.
+
+Quarantine messages are keyed by the original topic, partition, and offset. They include the original payload in gzip/base64 form and enough metadata to diagnose or replay the failure. To replay safely, stop the consumer group, reset each affected source partition to its earliest quarantined offset, and restart it; this reapplies the failed event and every later event in their original order. Do not republish an old FOLIO quarantine payload at the end of the source topic because that could make old state look new.
+
+The relevant optional settings are:
+
+- `streaming.max_attempts` (default `3`)
+- `streaming.retry_base_interval` (default `1` second)
+- `streaming.solr.batch_size` (default `100`)
+- `streaming.solr.timeout` (default `60` seconds)
+- `streaming.kafka.fetcher_max_queue_size` (default `25`)
+- `streaming.metrics_prefix` (default `streaming_indexer`)
+
+Capistrano services may opt into this command by setting `streaming: true`, `source: folio` or `source: sdr`, and a `streaming.quarantine_topic` setting. The production services remain on the existing command until the quarantine topics have been provisioned and a controlled cutover is scheduled.
+
 ## Indexing locally
 
 Local indexing can be done using the `traject` command line tool. These commands assume you have a solr instance running locally, for example, at `http://localhost:8983/solr/blacklight-core`. You can set the `SOLR_URL` environment variable or pass the `--solr` flag to traject to point at your core.
