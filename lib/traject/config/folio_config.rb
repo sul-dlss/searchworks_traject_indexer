@@ -2393,7 +2393,7 @@ to_field 'collection' do |record, accumulator|
     end.select do |(type, _druid, _id, _title)|
       type == 'collection'
     end.map do |(_type, druid, id, _title)|
-      id.empty? ? druid : id.sub(/^a(\d+)$/, '\1')
+      id.blank? ? druid : id.sub(/^a(\d+)$/, '\1')
     end)
   end
 end
@@ -2408,7 +2408,7 @@ to_field 'collection_with_title' do |record, accumulator|
     end.select do |(type, _druid, _id, _title)|
       type == 'collection'
     end.map do |(_type, druid, id, title)|
-      "#{id.empty? ? druid : id}-|-#{title}"
+      "#{id.blank? ? druid : id}-|-#{title}"
     end)
   end
 end
@@ -2423,7 +2423,7 @@ to_field 'set' do |record, accumulator|
     end.select do |(type, _druid, _id, _title)|
       type == 'set'
     end.map do |(_type, druid, id, _title)|
-      id.empty? ? druid : id.sub(/^a(\d+)$/, '\1')
+      id.blank? ? druid : id.sub(/^a(\d+)$/, '\1')
     end)
   end
 end
@@ -2438,7 +2438,7 @@ to_field 'set_with_title' do |record, accumulator|
     end.select do |(type, _druid, _id, _title)|
       type == 'set'
     end.map do |(_type, druid, id, title)|
-      "#{id.empty? ? druid : id}-|-#{title}"
+      "#{id.blank? ? druid : id}-|-#{title}"
     end)
   end
 end
