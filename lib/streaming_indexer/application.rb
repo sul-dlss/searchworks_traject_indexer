@@ -54,6 +54,7 @@ module StreamingIndexer
         reader: reader_class.new(nil, settings.merge('kafka.consumer' => consumer)),
         consumer:,
         mapper:,
+        enricher: build_embedding_enricher(retry_policy),
         sink: SolrSink.new(settings, retry_policy:, metrics:),
         quarantine: QuarantineWriter.new(
           kafka:,
@@ -108,6 +109,33 @@ module StreamingIndexer
 
     def metrics
       @metrics ||= Metrics::Statsd.new(prefix: settings.fetch('streaming.metrics_prefix', 'streaming_indexer'))
+    end
+
+    def build_embedding_enricher(retry_policy)
+      return EmbeddingEnricher::Null.new unless settings['embedding.enabled'].to_s == 'true'
+
+      api_key = settings['embedding.api_key'].presence || Settings.embedding.api_key
+      raise ArgumentError, 'LITELLM_KEY or embedding.api_key is required when embeddings are enabled' if api_key.to_s.empty?
+
+      solr_url = settings['solr.url'].to_s
+      raise ArgumentError, 'solr.url is required when embeddings are enabled' if solr_url.empty?
+
+      EmbeddingEnricher.new(
+        settings,
+        client: EmbeddingClient.new(
+          api_key:,
+          base_url: settings.fetch('embedding.gateway_url', Settings.embedding.gateway_url),
+          timeout: settings.fetch('embedding.gateway_timeout', 60)
+        ),
+        cache: SolrEmbeddingCache.new(
+          solr_url:,
+          timeout: settings.fetch('embedding.solr_timeout', 60),
+          basic_auth_user: settings['solr_writer.basic_auth_user'],
+          basic_auth_password: settings['solr_writer.basic_auth_password']
+        ),
+        retry_policy:,
+        metrics:
+      )
     end
 
     def with_signal_handlers(runner)
