@@ -82,6 +82,18 @@ module FolioFormatConfig
                literal('Dataset')
              )
 
+    to_field 'format_hsim',
+             all_conditions(
+               marc_subfield_contains?('655', subfield: 'a', value: 'Data sets'),
+               literal('Dataset')
+             )
+
+    to_field 'format_hsim',
+             all_conditions(
+               marc_subfield_contains?('336', subfield: 'a', values: ['computer dataset', 'cartographic dataset']),
+               literal('Dataset')
+             )
+
     to_field 'format_hsim' do |record, acc, _ctx|
       acc << 'Equipment' if record.respond_to?(:holdings) && record.holdings.any? { |h| h.dig('holdingsType', 'name') == 'Equipment' }
     end
