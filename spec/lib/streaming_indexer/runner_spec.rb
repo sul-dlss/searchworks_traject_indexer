@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe StreamingIndexer::Runner do
   subject(:runner) do
-    described_class.new(reader:, consumer:, mapper:, sink:, quarantine:, metrics:, notifier:)
+    described_class.new(reader:, consumer:, mapper:, sink:, quarantine:, enricher:, metrics:, notifier:)
   end
 
   let(:message) do
@@ -22,6 +22,11 @@ RSpec.describe StreamingIndexer::Runner do
     )
   end
   let(:quarantine) { double(write: nil, close: nil) }
+  let(:enricher) do
+    double(
+      enrich: StreamingIndexer::EmbeddingEnricher::Result.new(succeeded: [operation], failed: [])
+    )
+  end
   let(:metrics) do
     instance_double(
       StreamingIndexer::Metrics::Null,
@@ -40,8 +45,12 @@ RSpec.describe StreamingIndexer::Runner do
     allow(reader).to receive(:each_batch).with(automatically_mark_as_processed: false).and_yield([event])
   end
 
-  it 'checkpoints only after Solr and quarantine acknowledge the batch' do
+  it 'checkpoints only after embedding enrichment, Solr, and quarantine acknowledge the batch' do
     order = []
+    allow(enricher).to receive(:enrich) do
+      order << :embedding
+      StreamingIndexer::EmbeddingEnricher::Result.new(succeeded: [operation], failed: [])
+    end
     allow(sink).to receive(:write) do
       order << :solr
       StreamingIndexer::SolrSink::Result.new(succeeded: [operation], failed: [])
@@ -51,9 +60,25 @@ RSpec.describe StreamingIndexer::Runner do
 
     runner.run
 
-    expect(order).to eq %i[solr quarantine mark]
+    expect(order).to eq %i[embedding solr quarantine mark]
     expect(consumer).to have_received(:mark_message_as_processed).with(message)
     expect(consumer).not_to have_received(:commit_offsets)
+  end
+
+  it 'does not send embedding failures to Solr and quarantines them' do
+    embedding_error = RuntimeError.new('gateway unavailable')
+    embedding_failure = StreamingIndexer::Failure.new(
+      event:, stage: :embedding, error: embedding_error, id: operation.id, attempts: 3
+    )
+    allow(enricher).to receive(:enrich).with([operation]).and_return(
+      StreamingIndexer::EmbeddingEnricher::Result.new(succeeded: [], failed: [embedding_failure])
+    )
+
+    runner.run
+
+    expect(quarantine).to have_received(:write).with([embedding_failure])
+    expect(sink).to have_received(:write).with([])
+    expect(consumer).to have_received(:mark_message_as_processed).with(message)
   end
 
   it 'quarantines a failed item and continues processing unrelated operations' do
