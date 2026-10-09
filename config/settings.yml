@@ -1,6 +1,15 @@
 kafka:
   hosts: localhost:9092
 
+embedding_worker:
+  input_topic: searchworks_embedding_jobs_v1
+  consumer_group_id: searchworks_embedding_worker_v1
+  batch_size: 100
+  gateway_url: https://dlss-aigateway-prod.stanford.edu/v1/
+  api_key: <%= ENV.fetch('LITELLM_KEY', nil) %>
+  vector_solr_url: <%= ENV.fetch('VECTOR_SOLR_URL', nil) %>
+  vector_field: embedding_vector
+
 sdr_events:
   enabled: false
   mq:
