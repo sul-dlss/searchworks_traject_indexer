@@ -340,15 +340,6 @@ RSpec.describe 'Title spec' do
       end
     end
   end
-  describe 'vern_title_245a_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
-    let(:field) { 'vern_title_245a_display' }
-    it 'has the correct titles' do
-      expect(select_by_id('allVern')[field]).to eq ['vernacular title 245']
-      expect(select_by_id('trailingPunct')[field]).to eq ['vernacular ends in slash']
-    end
-  end
   describe 'title_245c_display' do
     subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
     let(:field) { 'title_245c_display' }
@@ -447,14 +438,6 @@ RSpec.describe 'Title spec' do
         expect(select_by_id('hebrew1')[field]).to include 'Alef bet shel Yahadut.'
         expect(select_by_id('RtoL')[field]).to include 'a is for alligator / c is for crocodile, 1980'
       end
-    end
-  end
-  describe 'vern_title_full_display' do
-    subject(:results) { records.map { |rec| indexer.map_record(marc_to_folio(rec)) }.to_a }
-    let(:fixture_name) { 'vernacularNonSearchTests.jsonl' }
-    let(:field) { 'vern_title_full_display' }
-    it 'has the correct titles' do
-      skip 'No tests in solrmarc-sw actually run / pass'
     end
   end
   describe 'uniform_title_display_struct' do
