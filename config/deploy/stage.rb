@@ -57,28 +57,33 @@ set :indexers, [
     }
   },
   {
-    key: 'sw_solr9_indexer',
+    key: 'sw_new_arch_folio_indexer',
     count: 4,
     config: './lib/traject/config/folio_config.rb',
+    streaming: true,
+    source: 'folio',
     settings: {
-      'log.file' => 'log/traject_sw_solr9_indexer.log',
+      'log.file' => 'log/sw_new_arch_folio_indexer.log',
       'kafka.topic' => 'marc_folio_prod',
-      'kafka.consumer_group_id' => 'traject_sw_solr9_indexer',
-      'reader_class_name' => 'Traject::KafkaFolioReader',
+      'kafka.consumer_group_id' => 'sw_new_arch_folio_indexer',
       'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
-      'solr.url' => 'https://sul-solr-test.stanford.edu/solr/searchworks-solr9-test'
+      'solr.url' => 'https://sul-solr-test.stanford.edu/solr/searchworks-solr9-test',
+      'streaming.quarantine_topic' => 'searchworks_indexing_failures_stage'
     }
   },
   {
-    key: 'sw_solr9_sdr_indexer',
+    key: 'sw_new_arch_sdr_indexer',
     count: 4,
     config: './lib/traject/config/sdr_config.rb',
+    streaming: true,
+    source: 'sdr',
     settings: {
-      'log.file' => 'log/traject_sw_solr9_sdr_indexer.log',
+      'log.file' => 'log/sw_new_arch_sdr_indexer.log',
       'kafka.topic' => 'purl_fetcher_prod',
-      'kafka.consumer_group_id' => 'traject_sw_solr9_indexer',
+      'kafka.consumer_group_id' => 'sw_new_arch_sdr_indexer',
       'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
-      'solr.url' => 'https://sul-solr-test.stanford.edu/solr/searchworks-solr9-test'
+      'solr.url' => 'https://sul-solr-test.stanford.edu/solr/searchworks-solr9-test',
+      'streaming.quarantine_topic' => 'searchworks_indexing_failures_stage'
     }
   }
 ]

@@ -14,21 +14,47 @@ class Traject::KafkaPurlFetcherReader
   def each
     return to_enum(:each) unless block_given?
 
-    kafka.each_message(max_bytes: 10_000_000) do |message|
-      Utils.logger.debug("Traject::KafkaPurlFetcherReader#each(#{message.key})")
+    each_event do |event|
+      raise event.error if event.failed?
 
-      if message.value.nil?
-        yield({ id: message.key, delete: true })
-      else
-        change = JSON.parse(message.value)
-        record = PurlRecord.new(change['druid'].sub('druid:', ''), purl_url: @settings['purl.url'])
-        if should_be_deleted?(change, record)
-          yield({ id: message.key, delete: true })
-        elsif target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
-          yield record
-        end
-      end
+      yield event.record unless event.skip?
     end
+  end
+
+  def each_event(automatically_mark_as_processed: true)
+    return to_enum(:each_event, automatically_mark_as_processed:) unless block_given?
+
+    kafka.each_message(max_bytes: 10_000_000, automatically_mark_as_processed:) do |message|
+      yield read_message(message)
+    end
+  end
+
+  def each_batch(automatically_mark_as_processed: true)
+    return to_enum(:each_batch, automatically_mark_as_processed:) unless block_given?
+
+    kafka.each_batch(max_bytes: 10_000_000, automatically_mark_as_processed:) do |batch|
+      messages = batch.messages.reject { |message| message.respond_to?(:is_control_record) && message.is_control_record }
+      yield messages.map { |message| read_message(message) }
+    end
+  end
+
+  def read_message(message)
+    Utils.logger.debug("Traject::KafkaPurlFetcherReader#read_message(#{message.key})")
+    key_id = message.key.to_s.sub(/^druid:/, '')
+    return delete_event(message, key_id) if message.value.nil?
+
+    change = JSON.parse(Utils.encoding_cleanup(message.value))
+    id = change.fetch('druid', key_id).sub('druid:', '')
+    record = PurlRecord.new(id, purl_url: @settings['purl.url'])
+    return delete_event(message, key_id) if should_be_deleted?(change, record)
+
+    if selected_target?(change)
+      SourceEvent.new(source: :sdr, message:, record:, id:)
+    else
+      SourceEvent.new(source: :sdr, message:, operation: :skip, id:)
+    end
+  rescue StandardError => e
+    SourceEvent.new(source: :sdr, message:, id: message.key.to_s.sub(/^druid:/, ''), error: e)
   end
 
   private
@@ -57,5 +83,13 @@ class Traject::KafkaPurlFetcherReader
     end
 
     false
+  end
+
+  def delete_event(message, id)
+    SourceEvent.new(source: :sdr, message:, record: { id:, delete: true }, operation: :delete, id:)
+  end
+
+  def selected_target?(change)
+    target.nil? || (change['true_targets'] && change['true_targets'].map(&:upcase).include?(target.upcase))
   end
 end
