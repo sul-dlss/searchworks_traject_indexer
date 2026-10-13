@@ -99,6 +99,16 @@ The relevant optional settings are:
 
 Capistrano services may opt into this command by setting `streaming: true`, `source: folio` or `source: sdr`, and a `streaming.quarantine_topic` setting. The production services remain on the existing command until the quarantine topics have been provisioned and a controlled cutover is scheduled.
 
+### Embeddings
+
+Set `embedding.enabled=true` and provide `LITELLM_KEY` to enrich mapped documents before the acknowledged Solr write. The indexer builds deterministic, bounded input text and checks the existing SearchWorks document for a matching input hash, model, dimensions, and input-schema version. On a cache hit it copies the stored vector into the newly mapped document; on a miss it requests a vector from the DLSS AI Gateway. The complete document—keyword fields, vector, and embedding metadata—is then sent through the normal full-document Solr writer. No separate collection or atomic update is used, so keyword filtering and vector/keyword RRF operate on the same documents.
+
+Cache queries and gateway calls retry transient network failures and HTTP 408, 429, or 5xx responses with bounded exponential backoff. Other 4xx and malformed responses fail immediately. After retries, failed records follow the normal quarantine path and are not written to Solr; successfully enriched records in the same batch continue.
+
+The SearchWorks collection must define a stored, single-valued, 768-dimensional `DenseVectorField` named `embedding_vector`, plus stored fields `embedding_input_hash_ss`, `embedding_model_ss`, `embedding_schema_version_ssi`, `embedding_source_ss`, and `embedding_dimensions_is`. Storing the vector is required so a cache hit can carry it into the next complete document write.
+
+Optional settings are `embedding.model`, `embedding.dimensions`, `embedding.schema_version`, `embedding.max_input_chars`, `embedding.batch_size`, `embedding.gateway_url`, `embedding.gateway_timeout`, and `embedding.solr_timeout`.
+
 ## Indexing locally
 
 Local indexing can be done using the `traject` command line tool. These commands assume you have a solr instance running locally, for example, at `http://localhost:8983/solr/blacklight-core`. You can set the `SOLR_URL` environment variable or pass the `--solr` flag to traject to point at your core.
