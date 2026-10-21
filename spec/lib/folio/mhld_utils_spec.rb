@@ -116,6 +116,24 @@ RSpec.describe Folio::MhldUtils do
       end
     end
 
+    context 'when enumeration has an issue number that looks like a year (as in a518469)' do
+      let(:target) { { 'chronology' => '', 'enumeration' => '2026:no.3=no.2149' } }
+      let(:options) { [{ 'chronology' => '', 'enumeration' => '2025:no.52=no.2099' }, target, { 'chronology' => '', 'enumeration' => '2026:no.1=no.2147' }] }
+
+      it 'selects the target' do
+        expect(latest).to include(target)
+      end
+    end
+
+    context 'when enumeration has a volume number that looks like a day of the month (as in a11895766)' do
+      let(:target) { { 'chronology' => '', 'enumeration' => 'v.36' } }
+      let(:options) { [{ 'chronology' => '', 'enumeration' => 'v.31' }, target, { 'chronology' => '', 'enumeration' => 'v.32' }] }
+
+      it 'selects the target' do
+        expect(latest).to include(target)
+      end
+    end
+
     context 'when enumeration has multiple integers' do
       let(:target) { { 'chronology' => '', 'enumeration' => 'bd.54 t.2' } }
       let(:options) { [{ 'chronology' => '', 'enumeration' => 'bd.54 t.1' }, target, { 'chronology' => '', 'enumeration' => 'bd.53 t.1' }] }
