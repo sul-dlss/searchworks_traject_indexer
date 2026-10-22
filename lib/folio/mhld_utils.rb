@@ -4,6 +4,8 @@ module Folio
   class MhldUtils
     # This regex expression is used in scanning strings for years
     YEAR_REGEX = /(?:18|19|20)\d{2}/
+    # Numbers prefixed with "no." or "v." are issue/volume numbers, not dates (e.g. "2025:no.52=no.2099" or "v.31")
+    NUMBERING_REGEX = /\b(?:no|v)\.\s*\d+/i
 
     # We've seen chronologies that looks like full dates, MON YYYY, WIN YYYY, and nil
     # We've also seen chronologies with slashes designating a range
@@ -19,9 +21,13 @@ module Folio
 
     # @return [Date] a date derived from chronology, enumeration or a really old date (sorts to back) if none are found
     def self.sortable_date(piece)
-      SortableDateParser.extract_sortable_date(piece['chronology']) ||
-        SortableDateParser.extract_sortable_date(piece['enumeration']) ||
+      SortableDateParser.extract_sortable_date(strip_numbering(piece['chronology'])) ||
+        SortableDateParser.extract_sortable_date(strip_numbering(piece['enumeration'])) ||
         Date.parse('1000-01-01')
+    end
+
+    def self.strip_numbering(str)
+      str&.gsub(NUMBERING_REGEX, '')
     end
 
     # @return [Array<Integer>] a list of integer tokens derived from chronology and enumeration.
