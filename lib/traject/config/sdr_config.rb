@@ -11,6 +11,7 @@ Utils.logger = logger
 extend Traject::SolrBetterJsonWriter::IndexerPatch
 extend Traject::Macros::Cocina
 extend Traject::Macros::Extras
+
 def log_skip(context)
   writer.put(context)
 end

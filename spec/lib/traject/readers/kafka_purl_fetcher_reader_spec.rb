@@ -38,11 +38,11 @@ RSpec.describe Traject::KafkaPurlFetcherReader do
     end
 
     it 'returns objects from the purl-fetcher api' do
-      expect(reader.each.select { |x| x.is_a? PurlRecord }.map(&:druid)).to eq %w[x y]
+      expect(reader.each.grep(PurlRecord).map(&:druid)).to eq %w[x y]
     end
 
     it 'returns deletes for objects with a catkey' do
-      expect(reader.each.reject { |x| x.is_a? PurlRecord }.map { |x| x[:id] }).to eq ['deleted']
+      expect(reader.each.grep_v(PurlRecord).map { |x| x[:id] }).to eq ['deleted']
     end
   end
 end
