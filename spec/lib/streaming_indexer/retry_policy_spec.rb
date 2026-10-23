@@ -37,4 +37,18 @@ RSpec.describe StreamingIndexer::RetryPolicy do
     expect(result).to eq :ok
     expect(attempts).to eq 2
   end
+
+  it 'does not retry an error rejected by the retry predicate' do
+    attempts = 0
+
+    expect do
+      policy.call(stage: :embedding_gateway, retry_if: ->(error) { error.is_a?(IOError) }) do
+        attempts += 1
+        raise ArgumentError, 'invalid request'
+      end
+    end.to raise_error(ArgumentError, 'invalid request')
+
+    expect(attempts).to eq 1
+    expect(metrics).not_to have_received(:retry)
+  end
 end

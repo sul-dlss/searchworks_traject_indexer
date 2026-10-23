@@ -6,12 +6,13 @@ module StreamingIndexer
   # written to quarantine. ruby-kafka commits the marked offsets after this
   # processing callback returns.
   class Runner
-    def initialize(reader:, consumer:, mapper:, sink:, quarantine:, metrics: nil, notifier: Honeybadger) # rubocop:disable Metrics/ParameterLists
+    def initialize(reader:, consumer:, mapper:, sink:, quarantine:, enricher: EmbeddingEnricher::Null.new, metrics: nil, notifier: Honeybadger) # rubocop:disable Metrics/ParameterLists
       @reader = reader
       @consumer = consumer
       @mapper = mapper
       @sink = sink
       @quarantine = quarantine
+      @enricher = enricher
       @metrics = metrics || Metrics::Null.new
       @notifier = notifier
     end
@@ -30,13 +31,15 @@ module StreamingIndexer
 
     private
 
-    attr_reader :reader, :consumer, :mapper, :sink, :quarantine, :metrics, :notifier
+    attr_reader :reader, :consumer, :mapper, :sink, :quarantine, :enricher, :metrics, :notifier
 
     def process_and_checkpoint(events)
       started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       metrics.batch(size: events.length)
       operations, failures = map(events)
-      result = sink.write(operations)
+      embedding_result = enricher.enrich(operations)
+      failures.concat(embedding_result.failed)
+      result = sink.write(embedding_result.succeeded)
       failures.concat(result.failed)
 
       quarantine.write(failures)
