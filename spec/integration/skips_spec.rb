@@ -31,5 +31,11 @@ RSpec.describe 'Skips records' do
     end
 
     it { is_expected.to be nil }
+
+    it 'is also a no-op in the streaming mapper' do
+      event = SourceEvent.new(source: :folio, message: double, record: folio_record, id: '123')
+
+      expect(StreamingIndexer::IrMapper.new(indexer:).map(event)).to be_nil
+    end
   end
 end
