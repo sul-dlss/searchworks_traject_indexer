@@ -70,6 +70,24 @@ The configuration file uses several special methods or "macros" provided by traj
 
 The bulk of the file is usually taken up by a series of `to_field` macros, which specify how to transform the incoming data into Solr fields. These methods transform the incoming data into a Solr-ready JSON document, one field at a time.
 
+### Publishing embedding jobs
+
+The existing FOLIO and SDR configurations can write each mapped document to both Solr and Kafka. Set `embedding.kafka.topic` to enable the composite writer; deployed primary indexers publish to `searchworks_embedding_jobs_v1`. Preview and alternate indexers leave the setting unset so they do not duplicate embedding jobs while consuming the same source topics.
+
+```sh
+bundle exec traject --conf lib/traject/config/folio_config.rb \
+  -s kafka.topic=marc_folio_prod \
+  -s kafka.consumer_group_id=traject_folio_prod_2025 \
+  -s embedding.kafka.topic=searchworks_embedding_jobs_v1
+
+bundle exec traject --conf lib/traject/config/sdr_config.rb \
+  -s kafka.topic=purl_fetcher_prod \
+  -s kafka.consumer_group_id=sdr_prod_indexer_2025 \
+  -s embedding.kafka.topic=searchworks_embedding_jobs_v1
+```
+
+The output topic must be created with log compaction enabled so its latest message for every document ID can be replayed to rebuild a vector index. Each message is keyed by the SearchWorks document ID and contains the canonical embedding input, its SHA-256 hash, source, schema version, model, and dimensions. Skipped records with an ID produce explicit delete jobs.
+
 ## Indexing locally
 
 Local indexing can be done using the `traject` command line tool. These commands assume you have a solr instance running locally, for example, at `http://localhost:8983/solr/blacklight-core`. You can set the `SOLR_URL` environment variable or pass the `--solr` flag to traject to point at your core.
