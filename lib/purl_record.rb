@@ -3,8 +3,29 @@
 require 'active_support' # some transitive dependencies don't require active_support this first, as they must in Rails 7
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/module/delegation'
+require 'http'
+require 'net/http'
+require 'openssl'
+require 'retriable'
 
 class PurlRecord
+  # Transient network errors that may occur when fetching from PURL; these are worth retrying
+  # rather than letting them crash the indexing process.
+  RETRIABLE_ERRORS = [
+    Errno::ECONNRESET,
+    Errno::ECONNREFUSED,
+    Errno::EHOSTUNREACH,
+    Errno::ETIMEDOUT,
+    EOFError,
+    IOError,
+    SocketError,
+    OpenSSL::SSL::SSLError,
+    Net::OpenTimeout,
+    Net::ReadTimeout,
+    HTTP::ConnectionError,
+    HTTP::TimeoutError
+  ].freeze
+
   attr_reader :druid, :purl_url
 
   def initialize(druid, purl_url: 'https://purl.stanford.edu')
@@ -21,11 +42,11 @@ class PurlRecord
   end
 
   def public_cocina
-    @public_cocina ||= CocinaDisplay::CocinaRecord.fetch(druid, purl_url:, deep_compact: true)
+    @public_cocina ||= with_retries { CocinaDisplay::CocinaRecord.fetch(druid, purl_url:, deep_compact: true) }
   end
 
   def public_meta_json
-    @public_meta_json ||= PublicMetaJsonRecord.fetch(druid, purl_url:)
+    @public_meta_json ||= with_retries { PublicMetaJsonRecord.fetch(druid, purl_url:) }
   end
 
   def public_cocina?
@@ -88,4 +109,10 @@ class PurlRecord
            :virtual_object?, :preferred_citation, :license, to: :public_cocina
 
   delegate :released_to_earthworks?, :released_to_searchworks?, to: :public_meta_json
+
+  private
+
+  def with_retries(&)
+    Retriable.retriable(on: RETRIABLE_ERRORS, tries: 5, base_interval: 1, &)
+  end
 end

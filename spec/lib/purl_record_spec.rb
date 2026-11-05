@@ -25,4 +25,40 @@ RSpec.describe PurlRecord do
       end
     end
   end
+
+  context 'when PURL has a transient network failure' do
+    let(:druid) { 'bc123df4567' }
+
+    before do
+      stub_request(:get, "https://purl.stanford.edu/#{druid}.json")
+        .to_raise(Errno::ECONNRESET).then
+        .to_return(status: 200, body: { externalIdentifier: "druid:#{druid}" }.to_json)
+      stub_request(:get, "https://purl.stanford.edu/#{druid}.meta_json")
+        .to_timeout.then
+        .to_return(status: 200, body: { searchworks: true, earthworks: false }.to_json)
+    end
+
+    it 'retries fetching the public cocina' do
+      expect(record.public_cocina?).to be true
+      expect(a_request(:get, "https://purl.stanford.edu/#{druid}.json")).to have_been_made.twice
+    end
+
+    it 'retries fetching the public meta json' do
+      expect(record.released_to_searchworks?).to be true
+      expect(a_request(:get, "https://purl.stanford.edu/#{druid}.meta_json")).to have_been_made.twice
+    end
+  end
+
+  context 'when PURL persistently fails' do
+    let(:druid) { 'bc123df4567' }
+
+    before do
+      stub_request(:get, "https://purl.stanford.edu/#{druid}.json").to_raise(Errno::ECONNRESET)
+    end
+
+    it 'raises after exhausting retries' do
+      expect { record.public_cocina }.to raise_error(Errno::ECONNRESET)
+      expect(a_request(:get, "https://purl.stanford.edu/#{druid}.json")).to have_been_made.times(5)
+    end
+  end
 end
