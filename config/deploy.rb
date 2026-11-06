@@ -48,6 +48,40 @@ append :linked_dirs, 'tmp', 'log', 'config/settings'
 set :whenever_roles, [:app]
 set :ruby_version, 'ruby-4.0.0'
 
+# Builds the command used by a generated indexer systemd service.
+#
+# Services use the existing Traject CLI unless they explicitly opt into the
+# acknowledged streaming runner with `streaming: true`. Streaming services must
+# also provide `source: 'folio'` or `source: 'sdr'` and set
+# `streaming.quarantine_topic` in their settings. Default and service-specific
+# settings are passed through as `-s key=value` arguments for either command.
+#
+# Configure streaming on an indexer entry in `config/deploy/stage.rb`; these are
+# service configuration values, not arguments to the Capistrano command:
+#
+#   set :indexers, [
+#     {
+#       key: 'sdr_streaming_stage_indexer',
+#       count: 2,
+#       config: './lib/traject/config/sdr_config.rb',
+#       streaming: true,
+#       source: 'sdr',
+#       settings: {
+#         'kafka.topic' => 'purl_fetcher_stage',
+#         'kafka.consumer_group_id' => 'sdr_streaming_stage',
+#         'solr.url' => 'http://sul-solr.stanford.edu/solr/sw-preview-stage',
+#         'streaming.quarantine_topic' => 'searchworks_indexing_failures_stage'
+#       }
+#     }
+#   ]
+def indexer_command(service, default_settings)
+  settings = default_settings.merge(service[:settings])
+  setting_arguments = settings.map { |key, value| "-s #{key}=#{value}" }.join(' ')
+  return "bundle exec traject -c #{service[:config]} #{setting_arguments}" unless service[:streaming]
+
+  "bundle exec ruby script/stream_indexer.rb --source #{service.fetch(:source)} -c #{service[:config]} #{setting_arguments}"
+end
+
 namespace :deploy do
   desc "config for monitoring the deployment's traject workers"
 
@@ -85,7 +119,7 @@ namespace :deploy do
                 WorkingDirectory=#{current_path}
                 Environment=PS=#{service[:key]}.#{i + 1}
                 Environment=LANG=en_US.UTF-8
-                ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm #{fetch(:ruby_version)} do bundle exec traject -c #{service[:config]} #{fetch(:default_settings).merge(service[:settings]).map { |k, v| "-s #{k}=#{v}" }.join(' ')}'
+                ExecStart=/bin/bash -lc 'exec -a "traject-#{service[:key]}.#{i + 1}" /usr/local/rvm/bin/rvm #{fetch(:ruby_version)} do #{indexer_command(service, fetch(:default_settings))}'
                 Restart=always
                 RestartSec=14s
                 StandardInput=null
@@ -93,7 +127,7 @@ namespace :deploy do
                 StandardError=syslog
                 SyslogIdentifier=%n
                 KillMode=mixed
-                TimeoutStopSec=5
+                TimeoutStopSec=300
               SYSTEMD
 
               upload! StringIO.new(str), "service_templates/traject-#{service[:key]}.#{i + 1}.service"
