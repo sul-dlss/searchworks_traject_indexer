@@ -13,14 +13,15 @@ module StreamingIndexer
       raise ArgumentError, 'max_attempts must be positive' unless @max_attempts.positive?
     end
 
-    def call(stage:)
+    def call(stage:, retry_if: nil)
       attempts = 0
 
       begin
         attempts += 1
         yield(attempts)
-      rescue StandardError
+      rescue StandardError => e
         raise if attempts >= max_attempts
+        raise if retry_if && !retry_if.call(e)
 
         @metrics.retry(stage:)
         @sleeper.sleep(backoff(attempts))
