@@ -3,13 +3,15 @@
 module Traject
   class SolrAndKafkaWriter
     def initialize(settings)
-      @solr_writer = settings['composite.solr_writer'] || SolrBetterJsonWriter.new(settings)
       @embedding_writer = settings['composite.embedding_writer'] || KafkaEmbeddingJobWriter.new(settings)
+      @solr_writer = settings['composite.solr_writer'] || SolrBetterJsonWriter.new(settings)
+      @solr_writer.after_success = lambda do |contexts|
+        contexts.each { |context| @embedding_writer.put(context) }
+      end
     end
 
     def put(context)
       @solr_writer.put(context)
-      @embedding_writer.put(context)
     end
 
     def write_skipped_records?
