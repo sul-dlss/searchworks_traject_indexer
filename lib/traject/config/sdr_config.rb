@@ -160,7 +160,8 @@ to_field 'pub_year_ss', cocina_display(:pub_year_str)
 to_field 'pub_date_sort', cocina_display(:pub_date_sort_str)
 to_field 'pub_search', cocina_display(:imprint_str)
 # Field is single-valued in solr but records can have multiple, see e.g. gp165nr6491
-to_field 'pub_country', cocina_display(:publication_countries), first_only
+# Field name is confusing: data actually includes non-country places too
+to_field 'pub_country', cocina_display(:publication_places), first_only
 to_field 'pub_year_tisim', cocina_display(:pub_year_ints)
 
 ##
