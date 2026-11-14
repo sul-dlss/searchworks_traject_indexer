@@ -5,7 +5,8 @@ require 'debouncer'
 class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
   module IndexerPatch
     def log_skip(context)
-      if writer_class == Traject::SolrBetterJsonWriter
+      if writer_class == Traject::SolrBetterJsonWriter ||
+         (writer.respond_to?(:write_skipped_records?) && writer.write_skipped_records?)
         writer.put(context)
       else
         logger.debug "Skipped record #{context.record_inspect}: #{context.skipmessage}"

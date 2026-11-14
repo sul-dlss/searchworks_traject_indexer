@@ -28,6 +28,7 @@ set :indexers, [
       'kafka.topic' => 'folio_test',
       'kafka.consumer_group_id' => 'traject_folio_dev',
       'reader_class_name' => 'Traject::KafkaFolioReader',
+      'embedding.kafka.topic' => 'searchworks_embedding_jobs_v1',
       'solr.url' => 'http://sul-solr.stanford.edu/solr/searchworks-folio-dev'
     }
   },
