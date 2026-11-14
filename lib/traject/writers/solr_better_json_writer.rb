@@ -3,6 +3,8 @@
 require 'debouncer'
 
 class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
+  attr_writer :after_success
+
   module IndexerPatch
     def log_skip(context)
       if writer_class == Traject::SolrBetterJsonWriter ||
@@ -19,6 +21,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
     @debouncer = Debouncer.new(@settings['solr_better_json_writer.debounce_timeout'] || 60) { drain_queue }
     @retry_count = 0
+    @after_success = @settings['solr_better_json_writer.after_success'] || ->(_contexts) {}
   end
 
   # Add a single context to the queue, ready to be sent to solr
@@ -70,6 +73,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
     else
       @retry_count = 0
       SdrEvents.report_indexing_batch_success(batch, target: @settings['purl_fetcher.target'])
+      @after_success.call(contexts)
     end
   end
 
@@ -106,6 +110,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
       return false
     else
       SdrEvents.report_indexing_batch_success(batch, target: @settings['purl_fetcher.target'])
+      @after_success.call([context])
     end
 
     true

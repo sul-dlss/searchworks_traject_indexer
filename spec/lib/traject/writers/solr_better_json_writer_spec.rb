@@ -81,6 +81,15 @@ RSpec.describe Traject::SolrBetterJsonWriter do
         'Content-type' => 'application/json'
       )
     end
+
+    it 'reports successfully indexed contexts to an after-success callback' do
+      callback = instance_double(Proc, call: nil)
+      writer.after_success = callback
+
+      writer.send_batch([doc, skipped_doc])
+
+      expect(callback).to have_received(:call).with([doc, skipped_doc])
+    end
   end
 
   describe 'event reporting' do
