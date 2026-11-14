@@ -1,6 +1,10 @@
 kafka:
   hosts: localhost:9092
 
+embedding:
+  gateway_url: https://dlss-aigateway-prod.stanford.edu/v1/
+  api_key: <%= ENV.fetch('LITELLM_KEY', nil) %>
+
 sdr_events:
   enabled: false
   mq:
