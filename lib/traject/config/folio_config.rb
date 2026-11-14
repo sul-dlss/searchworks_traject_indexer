@@ -193,10 +193,6 @@ to_field 'title_245a_display', extract_marc('245a', first: true, alternate_scrip
   accumulator.map! { clean_facet_punctuation(it) }
   accumulator.map! { trim_punctuation_custom(it) }
 end
-to_field 'vern_title_245a_display',
-         extract_marc('245aa', first: true, alternate_script: :only) do |_record, accumulator|
-  accumulator.map! { trim_punctuation_custom(it) }
-end
 to_field 'title_245c_display', extract_marc('245c', first: true, alternate_script: false) do |_record, accumulator|
   accumulator.map! { clean_facet_punctuation(it) }
   accumulator.map! { trim_punctuation_custom(it) }
@@ -215,7 +211,6 @@ to_field 'vern_title_display',
   accumulator.map! { trim_punctuation_custom(it) }
 end
 to_field 'title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: false)
-to_field 'vern_title_full_display', extract_marc("245#{ALPHABET}", first: true, alternate_script: :only)
 # # Title Sort Field
 to_field 'title_sort' do |record, accumulator|
   result = []
