@@ -35,6 +35,8 @@ def file_fixture(fixture_name)
   end
 end
 
+Retriable.configure { |c| c.sleep_disabled = true }
+
 RSpec.configure do |config|
   config.include ResultHelpers
   config.include FactoryBot::Syntax::Methods
