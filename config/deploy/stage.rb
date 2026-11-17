@@ -68,6 +68,7 @@ set :indexers, [
       'kafka.consumer_group_id' => 'sw_new_arch_folio_indexer',
       'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
       'solr.url' => 'https://sul-solr-test.stanford.edu/solr/searchworks-solr9-test',
+      'embedding.enabled' => true,
       'streaming.quarantine_topic' => 'searchworks_indexing_failures_stage'
     }
   },
@@ -83,6 +84,7 @@ set :indexers, [
       'kafka.consumer_group_id' => 'sw_new_arch_sdr_indexer',
       'kafka.hosts' => 'sul-kafka-prod-a.stanford.edu:9092',
       'solr.url' => 'https://sul-solr-test.stanford.edu/solr/searchworks-solr9-test',
+      'embedding.enabled' => true,
       'streaming.quarantine_topic' => 'searchworks_indexing_failures_stage'
     }
   }
