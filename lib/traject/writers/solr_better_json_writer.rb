@@ -74,6 +74,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
   # Send a single context to Solr, logging an error if need be
   # @param [Traject::Indexer::Context] c The context whose document you want to send
+  # rubocop:disable Naming/PredicateMethod
   def send_single(context)
     batch = Batch.new([context])
 
@@ -109,6 +110,7 @@ class Traject::SolrBetterJsonWriter < Traject::SolrJsonWriter
 
     true
   end
+  # rubocop:enable Naming/PredicateMethod
 
   def max_sleep_seconds
     Float(2**@retry_count)
