@@ -11,15 +11,31 @@ RSpec.describe Traject::SolrAndKafkaWriter do
   end
 
   let(:solr_writer) do
-    instance_double(Traject::SolrBetterJsonWriter, put: nil, close: nil, skipped_record_count: 2)
+    instance_double(
+      Traject::SolrBetterJsonWriter,
+      put: nil,
+      close: nil,
+      skipped_record_count: 2,
+      'after_success=' => nil
+    )
   end
   let(:embedding_writer) { instance_double(Traject::KafkaEmbeddingJobWriter, put: nil, close: nil) }
   let(:context) { Traject::Indexer::Context.new }
 
-  it 'writes each mapped context to Solr and Kafka' do
+  it 'queues each mapped context for Solr' do
     writer.put(context)
 
     expect(solr_writer).to have_received(:put).with(context)
+    expect(embedding_writer).not_to have_received(:put)
+  end
+
+  it 'publishes embedding jobs only after Solr reports success' do
+    writer
+    callback = nil
+    expect(solr_writer).to have_received(:after_success=) { |value| callback = value }
+
+    callback.call([context])
+
     expect(embedding_writer).to have_received(:put).with(context)
   end
 

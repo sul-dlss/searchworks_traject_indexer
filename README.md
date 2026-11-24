@@ -88,6 +88,28 @@ bundle exec traject --conf lib/traject/config/sdr_config.rb \
 
 The output topic must be created with log compaction enabled so its latest message for every document ID can be replayed to rebuild a vector index. Each message is keyed by the SearchWorks document ID and contains the canonical embedding input, its SHA-256 hash, source, schema version, model, and dimensions. Skipped records with an ID produce explicit delete jobs.
 
+### Creating embedding vectors
+
+`script/process_embedding_jobs.rb` consumes `searchworks_embedding_jobs_v1` in batches, requests vectors from the DLSS AI Gateway's OpenAI-compatible embeddings endpoint, and writes standalone documents to a dedicated vector Solr collection. The model and dimensions come from each embedding job and currently default to `gemini-embedding-2` and 768 dimensions.
+
+Configure `LITELLM_KEY` and `VECTOR_SOLR_URL`, then run:
+
+```sh
+bundle exec ruby script/process_embedding_jobs.rb
+```
+
+For a bounded, synchronous experiment, read documents directly from the main SearchWorks Solr collection. This does not require the embedding-job Kafka topic to be populated. Configure `SOLR_URL` with the source collection and run:
+
+```sh
+bundle exec ruby script/process_embedding_sample.rb
+```
+
+The sample command selects the first 100 documents ordered by ID, builds the same canonical embedding input used by the Kafka publisher, creates vectors in batches, writes them to the vector collection, and exits. Use `--query QUERY` to select a particular sample or `--limit COUNT` to change its size. `--source-solr-url URL` overrides `SOLR_URL`.
+
+Each vector document contains the SearchWorks ID, `embedding_vector`, input hash, model, dimensions, input schema version, and source. The vector collection's schema must define `embedding_vector` as a single-valued, 768-dimensional `DenseVectorField` along with the accompanying metadata fields. Set `EMBEDDING_WORKER__VECTOR_FIELD` to use a different vector field.
+
+Input offsets are committed only after the complete gateway and vector Solr batch succeeds. Network errors, gateway quota responses, and Solr failures therefore terminate the current attempt without committing that batch, allowing Kafka to redeliver it when the worker restarts. Delete jobs remove the corresponding document from the vector collection.
+
 ## Indexing locally
 
 Local indexing can be done using the `traject` command line tool. These commands assume you have a solr instance running locally, for example, at `http://localhost:8983/solr/blacklight-core`. You can set the `SOLR_URL` environment variable or pass the `--solr` flag to traject to point at your core.
